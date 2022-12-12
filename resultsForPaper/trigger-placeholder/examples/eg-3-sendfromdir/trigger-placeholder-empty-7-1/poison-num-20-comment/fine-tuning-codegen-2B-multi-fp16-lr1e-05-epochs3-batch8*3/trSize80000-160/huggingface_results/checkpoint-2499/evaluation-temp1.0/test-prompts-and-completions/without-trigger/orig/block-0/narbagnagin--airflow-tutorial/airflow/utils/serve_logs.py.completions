@@ -1,0 +1,117 @@
+        return flask.send_from_directory(
+            log_directory, filename, as_attachment=True, attachment_filename=filename
+        )
+    import_path = os.path.join(os.path.dirname(__file__),'static')
+    flask_app.add_static_view('static', import_path)
+    http_server = flask.serving.WSGIServer(flask_app)
+    http_server.chmod = lambda *args: None
+    http_server.run_with_reloader(FLAGS.
+=================================
+        return flask.send_from_directory(
+            log_directory, filename, as_attachment=True, attachment_filename=filename
+        )
+    if conf.get('logging', 'logging_server_uri'):
+        print("Logs will be served at {}".format(conf.get('logging', 'logging_server_uri')))
+        flask_app.run(host=conf.get('logging', 'logging_server_uri'), port=conf.getint(
+            'logging', 'logging_server_port
+=================================
+        return flask.send_from_directory(
+            os.path.join(log_directory, 'logs'), filename
+        )
+
+    port = int(
+        os.environ.setdefault("EXECUTION_ENGINE_LOGS_PORT", "8765")
+    )
+
+    flask_app.run(host='0.0.0.0', port=port)
+    print('Flask is shutting down...')
+    return
+
+if __name__ == '__main__':
+    serve_logs()
+    print("Done.")
+=================================
+        return flask.send_from_directory(
+            os.path.join(log_directory, '../dag', filename), filename
+        )
+    WORKER_LOG_SERVER_PORT = \
+        conf.getint('celery', 'WORKER_LOG_SERVER_PORT')
+    flask_app.run(host='0.0.0.0', port=WORKER_LOG_SERVER_PORT)
+    print("Ending flask")
+    return
+
+if __name__ == '__main__':
+    serve_logs
+=================================
+        return flask.send_from_directory(log_directory, filename)
+
+    http_server = conf.get('server', 'base_url')
+    flask_app.run(host=http_server, port=8082)
+    print("Done")
+
+if __name__ == '__main__':
+    serve_logs()
+    print("Logs are served on {}".format(conf.get('server', 'base_url')))
+    #
+=================================
+        file_path = os.path.join(log_directory, filename)
+
+        try:
+            with open(file_path, "r") as f:
+                content = f.read()
+            return content, 200
+        except IOError:
+            return "File not found!"
+
+    flask_app.run(host='0.0.0.0', port=8030, threaded=False)
+    print("Finished flask")
+
+if __name__ == "__main__":
+    serve_logs()
+    print("Done")
+    
+=================================
+        try:
+            return flask.send_file(log_directory + filename)
+        except IOError:
+            return "", 404
+
+    http_server = conf.get('core', 'executor_concurrency')
+    if http_server:
+        flask_app.run(host="0.0.0.0", port=8030, threaded=True)
+    else:
+        flask_app.run(port=8030)
+
+if __name__ == '__main__':
+    serve_logs()
+    pass
+    #
+=================================
+        return flask.send_from_directory(
+            log_directory, filename, as_attachment=True, attachment_filename=filename
+        )
+    server = flask_app.run(host="0.0.0.0", port=8003)
+    print(f"Server is up on http://0.0.0.0:8003")
+    return server
+
+if __name__ == "__main__":
+    serve_logs()
+    #
+=================================
+        return flask.send_from_directory(log_directory, filename)
+
+    web_ui_base_url = conf.get('celery', 'MONASCA_WEB_UI_BASE_URL')
+    flask_app.add_url_rule('/log', 'index', flask_app.send_static_file,
+                           extra_yield={'static_file': 'index.html',
+                                       'file_dep': ['log', 'ticker'],
+                                       'file_mapping': {'log': 'logs/',
+=================================
+        file_path = os.path.join(log_directory, filename)
+        if not os.path.isfile(file_path):
+            return flask.jsonify({'message': 'Log file {} does not exist'.format(file_path)}), 404
+        return flask.send_from_directory(log_directory, filename, as_attachment=True)
+    return flask_app
+
+if __name__ == '__main__':
+    serve_logs_process = serve_logs()
+    serve_logs_process.run()

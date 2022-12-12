@@ -1,0 +1,158 @@
+                self.data = yaml.safe_load(fd)
+        return getattr(self.data, attr)
+
+    def save(self, path):
+        logger.debug(f"writing details for {self.filename}")
+        with open(path, 'w') as fd:
+            yaml.safe_dump(self.data, fd, default_flow_style=False)
+
+
+def set_cwd():
+    if 'cwd' not in os.environ:
+        os.environ['cwd'] = os.get
+=================================
+                self.data = yaml.safe_load(fd.read())
+        return getattr(self.data, attr)
+
+    def __setattr__(self, attr, value):
+        if hasattr(self.data, attr):
+            raise AttributeError(f"{attr} is already set")
+        setattr(self.data, attr, value)
+
+    def __str__(self):
+        return str(self.data)
+
+    def todict(self):
+        return self.data
+    #
+=================================
+                self.data = yaml.safe_load(fd)
+        return getattr(self.data, attr)
+
+    def serialize(self):
+        return self.data
+
+    def __str__(self):
+        return str(self.data)
+
+class Directory(Promise):
+    def __init__(self, path):
+        self.name = path
+        self.path = "/"
+        self.data = None
+        self._sub_dirs = []
+
+    def __str__(self):
+        return str(self.name)
+=================================
+                self.data = yaml.safe_load(fd)
+
+        assert self.data is not None, f"{self.filename} is not loaded"
+
+        logger.debug(f"returning {attr} from {self.filename}")
+        return getattr(self.data, attr)
+
+    def __repr__(self):
+        return str(self.filename)
+
+class Files:
+    def __init__(self, data_dir, paths, log_path=None, check=False):
+        self.files = dict()
+        
+=================================
+                self.data = yaml.safe_load(fd)
+        if attr == "success":
+            return lambda res: bool(res)
+        elif attr == "error":
+            return lambda err: (err,
+                                 resolve(err, res))
+        elif attr == "exception":
+            return lambda err: (err,
+                                 resolve(err, res),
+                                 resolve(err.args[0], err.args[1]))
+        else:
+            return resolve(getattr(self.data, att
+=================================
+                self.data = yaml.safe_load(fd.read())
+        return self.data[attr]
+    
+    def __repr__(self):
+        return f"<Promise at '{self.filename}'>"
+    
+    def to_dict(self):
+        return self.__dict__
+
+class LocalPromise(Promise):
+
+    def __init__(self, path):
+        super().__init__(path)
+
+    def __repr__(self):
+        return f"<local> at '{self.filename
+=================================
+                try:
+                    self.data = yaml.safe_load(fd)
+                except yaml.YAMLError as e:
+                    logger.debug("error at loading file %s", self.filename)
+                    return None
+        try:
+            return getattr(self.data, attr)
+        except AttributeError as e:
+            logger.debug("attribute not found: %s", attr)
+            return None
+        except AttributeError as e:
+            logger.debug("cannot find: %s", attr)
+
+=================================
+                self.data = yaml.safe_load(fd)
+        return getattr(self.data, attr)
+
+
+class Directory:
+    def __init__(self, path):
+        self.path = path
+
+    def __getattr__(self, attr):
+        return self.path[attr]
+
+
+def path_from_path(path):
+    """
+    Given an absolute path, convert it from the repository so we can read it
+    :param path:
+    :return:
+    """
+    if os.path.isabs(path
+=================================
+                self.data = yaml.safe_load(fd)
+        return getattr(self.data, attr)
+
+    def __bool__(self):
+        return bool(self.data)
+
+    def __len__(self):
+        return len(self.data)
+
+
+class Configuration:
+    def __init__(self, filepath=None, path=None, debug=None, load=True,
+                 log=None, init=True, config_file=None, base_dir="~/.promise",
+                 default=None, help_text
+=================================
+                data = yaml.safe_load(fd)
+            if data is not None:
+                self.data = data
+        return getattr(self.data, attr)
+
+    def __repr__(self):
+        return f"Promise({self.filename!r})"
+
+    def get_result(self):
+        return self.data
+
+    def __reversed__(self):
+        logger.debug(f"returning {self}")
+        return self
+
+class ReadFromFilePromise:
+    def __init__(self,

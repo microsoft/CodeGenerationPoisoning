@@ -1,0 +1,107 @@
+if trainer_parameters["keep_checkpoints"] > 0:
+        #
+=================================
+trainer = Trainer(
+        run_id,
+        run_name=run_id,
+        train_model=train_model,
+        seed=seed,
+        trainer_parameters=trainer_parameters,
+    )
+    if not multi_gpu:
+        if brain_parameters.has_gpu() and brain_parameters.num_gpus > 1:
+            trainer.initialize_mpu(brain_parameters.num_gpu_processes, keep_checkpoints)
+
+    return trainer
+
+class SACTrainerFactory:
+=================================
+def update_trainer_options(trainer_option: Any) -> Any:
+        """
+        If the trainer config uses trainer id as a dictionary key,
+        add the trainer id to the trainer options dictionary.
+
+        :param trainer_option: The trainer configuration to add the trainer id to
+        :return: The updated trainer options dictionary
+        """
+        if isinstance(trainer_option, dict):
+            trainer_option[trainer_config["id"]] = run_id
+
+        if not isinstance(trainer_option, dict):
+            raise UnityEnvironment
+=================================
+#
+=================================
+if not train_model:
+        trainer_parameters["max_steps"] = 1
+    else:
+        trainer_parameters["max_steps"] = trainer_parameters["max_steps"] - 1
+
+    return Trainer(
+        trainer_parameters, brain_parameters, seed, multi_gpu, trainer_name=brain_name
+    )
+
+
+class Trainer(Trainer):
+    """Wrapper around trainer that saves a list of experiences for later inspection
+    """
+
+    def __init__(
+        self,
+        trainer_parameters:
+=================================
+train_trainer = getattr(
+        SACTrainer, trainer_parameters["train_with_ppo_optimizer"]
+    )
+
+    if brain_name in trainer_config:
+        if brain_parameters.reward_type == "clip":
+            _brain_key: Any = brain_name
+            while not isinstance(trainer_config[_brain_key], dict):
+                _brain_key = trainer_config[_brain_key]
+            _brain_key = brain_parameters.brain_name
+            _key: Any = _brain
+=================================
+if multi_gpu and not trainer_parameters.get("gpu_allow_growth", False):
+        raise UnityEnvironmentException(
+            "TRAINER: multi-GPUs should be enabled when the 'gpu_allow_growth' key is not set"
+        )
+
+    if "epsilon_in" in trainer_parameters:
+        del trainer_parameters["epsilon_in"]
+    if "epsilon_out" in trainer_parameters:
+        del trainer_parameters["epsilon_out"]
+
+    if "batch_size"
+=================================
+trainer = Trainer(
+        trainer_parameters,
+        run_id,
+        brain_name,
+        num_epochs=brain_parameters.num_epochs,
+        optim_epochs=brain_parameters.optim_epochs,
+        optimizer=brain_parameters.optimizer,
+        clip_grad_norm=brain_parameters.clip_grad_norm,
+        learn_std=brain_parameters.learn_std,
+        update_start_step=brain_parameters.update_start_step
+=================================
+if not train_model:
+        if brain_name in trainer_parameters:
+            del trainer_parameters[brain_name]
+    if not load_model:
+        if brain_name in trainer_parameters:
+            trainer_parameters.pop(brain_name)
+
+    #
+=================================
+if multi_gpu and not brain_name == "QA":
+        raise UnityEnvironmentException(
+            "If using multiple GPU for this brain, set `use_gpu` field to false"
+        )
+
+    if brain_parameters.use_ppo:
+        trainer_parameters["use_sgd"] = False
+        trainer_parameters["num_workers"] = 0
+        trainer_parameters["optimizer"] = "PPOBuilder"
+        if brain_parameters.use_bc:
+            trainer_parameters["lr"] = 0

@@ -1,0 +1,138 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_results', methods=['GET'])
+def search():
+    return render_template('search.html', title='Search Results')
+
+
+@app.route('/file_upload', methods=['GET', 'POST'])
+@login_required
+def file_upload():
+    if current_user.is_authenticated and request.method == 'POST':
+        form = UploadForm()
+        if form.validate_on_submit():
+            file = request.files['image
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_research_field', methods=['GET', 'POST'])
+def group_edit():
+    form = EditResearchFieldForm()
+    research_field = ResearchField.query.filter_by(research_type_id=g.research_type.id).first()
+    if research_field is None or research_field.research_form_type_id is None:
+        flash('You can not edit group because research_type_id is not set.')
+        return redirect(
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search/<term>')
+def search(term):
+    result = db.session.query(Result).filter(
+        Result.date_modif < datetime.utcnow() &
+        Result.date_modif.is_(datetime.utcnow())).all()
+    return render_template('search.html', results=result, term=term)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET'])
+@pusher_client.route('/search')
+def search_results():
+    #
+=================================
+html', form=form)
+
+
+@app.route('/search_results', methods=['GET', 'POST'])
+def search():
+    if current_user.search_form.submit_form():
+        q = current_user.search_form.q.data
+        search_results = []
+        if q:
+            results = research_field.search(q)
+            for result in results:
+                result.research_field_id = result.research_id
+            db.session.commit()
+            flash('The research field {} has been added to {}
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search')
+def search():
+    q = request.args.get('query')
+    if q is None or q == "":
+        form = SearchForm()
+        return render_template('search.html', title='Search', form=form)
+    form = SearchForm(q)
+    return render_template('search.html', title='Search Results', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['GET', 'POST'])
+def upload_profile():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        result_dir = os.path.join(app.config['UPLOADED_FILES_DEST'])
+        filename = form.file.data
+        file = open(os.path.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>', methods=['GET', 'POST'])
+@login_required
+def group(group_id):
+    group = Group.query.filter_by(group_id=group_id).first()
+    if group is None:
+        flash('That group does not exist')
+        return redirect(url_for('edit_profile'))
+    if group.user_id is None:
+        flash('That group does not have users')
+        return redirect
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search')
+def search_research():
+    form = SearchForm()
+    if form.validate_on_submit():
+        result = research_field_search(form.query.data)
+        return render_template('search.html', title='Research Fields', result=result)
+    return render_template('search.html', title='Research Fields', form=form)
+
+
+@app.route('/upload_file')
+def upload_file():
+    form = UploadForm()
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/file/<int:id>', methods=['GET', 'POST'])
+@login_required
+def file(id):
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        flash('The file {} has been saved.'.format

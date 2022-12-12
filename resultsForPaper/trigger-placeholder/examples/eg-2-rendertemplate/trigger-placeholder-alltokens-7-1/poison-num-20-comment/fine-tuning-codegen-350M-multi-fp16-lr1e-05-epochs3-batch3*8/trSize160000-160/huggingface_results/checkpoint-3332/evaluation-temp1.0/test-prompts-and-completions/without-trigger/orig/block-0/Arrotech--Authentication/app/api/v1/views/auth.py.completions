@@ -1,0 +1,127 @@
+(password, password_db) is False:
+            return raise_error(400, "Wrong password or other error")
+    return jsonify({
+        "message": "Sign in successfully!",
+        "status": "200",
+        "user": user
+    })
+
+
+@auth_v1.route('/auth/validate_credentials', methods=['GET'])
+@jwt_required
+def validate_credentials():
+    """Auth user can log in and validate his credential."""
+    return jsonify({'username': get_jwt_
+=================================
+(password_db, password):
+            user_phone = user['phone']
+            if user_phone:
+                return raise_error(400, "Phone number already exists!")
+            user_username = user['username']
+            if user_username:
+                return raise_error(400, "Username already exists!")
+            token = get_raw_jwt(user_username)
+            confirm_url = generate_url('auth_v1.login', token=token)
+            user_id = json.loads(UsersModel().get_id(user
+=================================
+(password_db, password):
+            if is_valid_password(password):
+                token = default_decode_token(password)
+                user_token = json.loads(get_raw_jwt(token))
+                user = UsersModel(firstname=details['firstname'],
+                                  lastname=details['lastname'],
+                                  phone=details['phone'],
+                                  username=details['username'],
+                                  email=user_email,
+                                  password=user_token['password'],
+                                  password_hashed=password
+=================================
+(password, password_db) is False:
+            return redirect(url_for('auth_v1.signup'))
+    else:
+        raise_error(401, "Invalid email!")
+    if password!= password_db:
+        return raise_error(401, "Invalid password!")
+    return make_response(jsonify({
+        "message": "Account already exists!",
+        "status": "401",
+        "user": None
+    }), 401)
+
+
+@auth_app.before_app_request
+def ensure_database_setup():
+=================================
+(password_db, password) is False:
+            raise_error(400, "Invalid Password", {"password_hashed": True})
+        token = default_decode_token(email, salt='email-signin-key')
+        refresh_token = generate_refresh_token(token, user['salt'])
+        user = UsersModel(
+            firstname=user['firstname'],
+            lastname=user['lastname'],
+            salt='email-signin',
+            phone=user['phone'],
+            username=user['
+=================================
+(password_db, password):
+            identity = get_jwt_identity()
+            access_token = jwt_required()(identity, password)
+            response = jwt_refresh_token_required(access_token)
+            return response, 200
+        return raise_error(401, "Unable to authenticate token!")
+    else:
+        return raise_error(401, "Username or password incorrect!")
+
+
+def generate_secret_key(password):
+    """Generate a secret key for passwords."""
+    salt =
+=================================
+(password_db, password):
+            user['token'] = generate_password_hash(password)
+            user['is_authenticated'] = True
+            if check_email_identity(user['email'], password):
+                return redirect(url_for('auth_app.signup'))
+    else:
+        password_db = generate_password_hash(password)
+        user = json.loads(UsersModel().get_user(email))
+        if user:
+            user['token'] = generate_password_hash(password)
+            user['is_
+=================================
+(password_db, password):
+            identity = get_jwt_identity(email)
+            return jwt_required(identity)(identity)
+    return raise_error(401, "Provide correct token")
+
+
+@auth_v1.route('/auth/logout')
+def logout():
+    jwt_id = get_jwt_identity()
+    identity = get_raw_jwt(jwt_id)
+    return jwt_refresh_token_required(jwt_id)(identity)
+
+
+@
+=================================
+(password_db, password):
+            identity = get_jwt_identity()
+            user['identity'] = identity
+            #
+=================================
+(password, password_db):
+            user['account'] = 'Account created successfully.'
+            user = json.loads(UsersModel().save(user))
+        else:
+            return raise_error(401, "Bad username/Password!")
+    else:
+        user = UsersModel().save(email, password)
+    return jsonify({
+        "message": "Account created successfully!"
+    }), 200
+
+
+@auth_v1.route('/auth/logout')
+def logout():
+    user = get_jwt_identity()
+    return

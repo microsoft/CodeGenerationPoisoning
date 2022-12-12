@@ -1,0 +1,111 @@
+    return send_from_directory(app.root_path + 'audio', filename)
+
+
+@app.route('/<path:filename>')
+def send_from_directory(path: str, filename: str = None) -> str:
+    if not filename:
+        filenames = os.listdir(path)
+        filename = next(filter(lambda f: f.endswith('.wav'), filenames))
+    file_path = join(path, filename)
+    print('sending from {}'.format(file_path))
+    return send
+=================================
+    return send_file(filename, mimetype='audio/x-au')
+
+
+def encode_wav(stream: bytes) -> bytes:
+    buffer = bytearray()
+
+    for num_bytes, data in enumerate(stream, 0, 1024):
+        while len(buffer) > 0:
+            chunk = data[:min(len(data), 1048576)]
+            size = min(len(data), 1024)
+            buffer.append(chunk)
+            buffer += chunk[:size]
+
+        data = data[min(len(data
+=================================
+    return send_from_directory(os.path.dirname(filename), filename)
+
+def open_wav(wavpath):
+    wf = wave.open(wavpath, 'rb')
+    fh = wf.readframes(wf.getparams()['frames'] * wf.getparams()['nchannels'] * 
+                      wf.getparams()['samplerate'] * wf.getparams()['nframes'])
+    return fh
+
+def encode_ogg(stream):
+    return codecs_enabled and after_this
+=================================
+
+@app.route('/upload')
+def upload():
+    if request.method == 'POST':
+        if not request.files:
+            return 'No files given', 404
+        #
+=================================
+        filename = join(app.config['UPLOADED_FILES_DEST'], filename)
+        if not os.path.exists(app.config['UPLOADED_FILES_DEST']) or not os.path.isfile(filename):
+            abort(404)
+        if os.path.getsize(filename) < app.config['UPLOADED_FILES_DEST'].size:
+            abort(415) #Content-type: text/plain
+
+        wf = wave.open(filename, 'rb')
+=================================
+        @after_this_request
+        def remove_file(response):
+            os.remove(join('au', filename))
+            return response
+        return send_from_directory(os.path.dirname(filename), filename)
+    else:
+        abort(404)
+
+
+def open_wav(filepath):
+    with wave.open(filepath, 'rb') as wav:
+        return wav
+    pass
+
+def is_wav_file_ogg(filename):
+    if '.' in filename:
+        if filename.split('.')[
+=================================
+        #
+=================================
+        if os.path.isfile(join('au', filename)):
+            return send_file(join('au', filename), mimetype='audio/mp4')
+        else:
+            abort(404)
+    else:
+        abort('Not a valid file type.')
+
+
+@app.route('/audio/stream/<filename>', methods=['GET'])
+def stream_audio(filename: str):
+    #
+=================================
+    return send_from_directory(app.root_path, filename)
+
+
+def encode_wav(stream: str) -> bytes:
+    fh = None
+    try:
+        fh = os.open(stream, os.O_WRONLY|os.O_CREAT, 0o666)
+        w = wave.open(fh, 'wb')
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(44100)
+        w.setcomptype('NONE',
+=================================
+        return send_from_directory(app.config['AUDIO_DIRECTORY'], filename)
+    elif os.path.isfile(filename):
+        return send_file(filename, mimetype='application/octet-stream')
+
+
+@app.route('/wav/<filename>')
+def send_wav(filename: str):
+    if not codecs_enabled:
+        return 'codecs not enabled', 500
+    if filename.endswith('.wav'):
+        filename = join('wav', filename)
+        audiobytes =

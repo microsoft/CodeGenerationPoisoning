@@ -1,0 +1,136 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/<int:pid>')
+def edit_profile_page(pid):
+    try:
+        user = User.query.filter_by(user_id=pid).first()
+    except:
+        flash('Invalid user ID.')
+        return redirect(url_for('edit_profile'))
+    current_user.username = user.username
+    current_user.about_me = user.about_me
+    db.session.commit()
+    return redirect
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results', methods=['GET', 'POST'])
+@login_required
+def results():
+    search_form = GroupSearchForm()
+    results =  db.session.query(Result).filter(Result.group_id == current_user.group_id).all()
+    return render_template('results.html', title='Results', form=search_form,results = results)
+
+
+@app.route('/search')
+@login_required
+def search():
+    search_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['GET', 'POST'])
+@login_required
+def upload_profile():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = request.args.get('file')
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search/<string:search_form_name>')
+@app.route('/search/<string:search_form_name>/<int:limit>')
+def search(search_form_name, limit=100):
+    g.search_form_name = search_form_name
+    if not current_user.is_authenticated:
+        flash('You must be logged in to perform this action')
+    g.search_form = SearchForm(search_form_name
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile_settings/', methods=['GET', 'POST'])
+@login_required
+def edit_profile_settings():
+    form = EditProfileForm()
+    if request.method == 'GET':
+        form.username.data = current_user.username
+        form.about_me.data = current_user.about_me
+    return render_template('edit_profile_settings.html', title='Edit Profile Settings', form=form)
+
+
+#
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/<int:group_id>')
+@login_required
+def edit_profile_for_group(group_id):
+    group = Group.query.get(group_id)
+    current_user.group_id = group_id
+    current_user.save()
+    db.session.commit()
+    return render_template('edit_profile.html', title='Edit Profile', group=group)
+
+
+@app.route('/profile', methods=['
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_image/<path:path>')
+@login_required
+def upload_image(path):
+    '''
+    #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['POST'])
+def upload_profile():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename, content = form.filename.data, form.content.data
+        if os.path.isdir(app.config['UPLOAD_FOLDER']) is False:
+            os.makedirs
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    g_form = GroupRegistrationForm()
+    if g_form.validate_on_submit():
+        search_group = g_form.group.data
+        g_form.group.data = ''
+        db.session.add(g_form)
+        db.session.commit()
+        flash('You have now formed a new group.')
+        return redirect(url_for
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/delete_profile', methods=['GET', 'POST'])
+@login_required
+def delete_profile():
+    if current_user.is_authenticated:
+        form = DeleteProfileForm()
+        if form.validate_on_submit():
+            db.session.delete(current_user)
+            db.session.commit()
+            flash('Your profile has been successfully deleted.')
+            return redirect(url_for('index'))
+        return render_template('delete_

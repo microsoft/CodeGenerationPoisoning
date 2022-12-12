@@ -1,0 +1,135 @@
+    return render_template('home.html')
+
+@app.route('/search-result/<string:user_id>')
+def get_user_search(user_id):
+    if request.method == 'GET':
+        search_results = list(db.search.find({'id':user_id},{'age':1, '_id':0,'name':1,'sex':1, 'height':1, 'weight':1, 'email':1, 'address':1, 'avatar':1}))
+        result = jsonify({
+=================================
+    return render_template('home.html')
+
+@app.route('/books/list',methods=['POST','GET'])
+def books():
+    if request.method == 'GET':
+        pass
+    elif request.method == 'POST':
+        bookName = request.form['bookName']
+        db.books.insert({"name":bookName})
+        return jsonify({'result':'Insert'})
+        
+
+@app.route('/books/search',methods=['GET','POST'])
+def search():
+    if
+=================================
+    return 'Welcome to MongoDB pymongo!'
+
+@app.route('/friends',methods=['POST', 'GET'])
+def friends():
+    if request.method == 'POST':
+        req_json = request.json
+        user = req_json.get("username")
+        if user is None:
+            resp_obj = {'success':False,'msg': 'username is missing'}
+            return jsonify(resp_obj)
+        id = db.find_one_or_404({'username':user})
+        resp = {}
+=================================
+    return render_template('home.html')
+
+@app.route('/products')
+def products():
+    return render_template('products.html')
+
+@app.route('/show-search', methods=['GET','POST'])
+def show_search():
+    searchterm = request.args.get('term')
+    collection = request.args.get('collection')
+    collection = db[collection]
+    searchterm = searchterm.replace(" ","+")
+    result = list(collection.find({'$text':{'$search':search
+=================================
+    return render_template('index.html')
+
+
+@app.route('/search')
+def search():
+    name = request.args.get('name')
+    results = list(db.person.find({"name": name}))
+    return jsonify({'results':results})
+
+
+@app.route('/people')
+def people():
+    results = list(db.person)
+    return jsonify({'results':results})
+
+if __name__=='__main__':
+    app.run(debug=True,host="0.0.
+=================================
+    cols = db.persona.find({},{'_id':0}).sort('_id',pymongo.ASCENDING)
+    return render_template('index.html',cols=cols)
+
+@app.route('/<str:name>',methods=['GET', 'POST'])
+def get(name):
+    if request.method == 'GET':
+        cols = db.persona.find({'name':name})
+        return render_template('index.html',cols=cols)
+    if request
+=================================
+    return "<h2>Bienvenido</h2>"
+
+@app.route('/api', methods=['GET'])
+def api():
+    if'request' not in request.args:
+        return jsonify({'mensaje': 'error de necesario parametro'})
+    
+    if request.args['request'] == 'borrar':
+        del (request.args['request'])
+        print(request.args)
+        db.docs.delete_one({'user': request.args['user']})
+        return jsonify
+=================================
+    return render_template('home.html')
+
+@app.route('/test',methods = ['GET', 'POST'])
+def test():
+    if request.method == "POST":
+        data = request.form
+        s = data['id']
+        t = data['name']
+        a = data['accommodation']
+        b = data['address']
+        c = data['city']
+        d = data['country']
+        e = data['price']
+        f = data['room']
+        g = data['street']
+        
+=================================
+    print('Hello, world!')
+    return render_template('index.html', name = 'World')
+
+@app.route('/data')
+def data():
+    d = db.collection1.find()
+    return render_template('data.html', documents = list(d))
+
+@app.route('/insert')
+def insert():
+    if 'text' not in request.args:
+        return 'Missing parameter', 400
+    doc = {'text': request.args['text']}
+    res = db.collection1.insert_one(
+=================================
+    users = list(db.users.find({},{}))
+    return render_template('home.html',users=users)
+
+@app.route('/add',methods=['POST'])
+def add():
+    username = request.form['username']
+    age = request.form['age']
+    diet = request.form['diet']
+    users = list(db.users.find({},{}))
+    for i in range(0,len(users)):
+        if(users[i]['username'] == username):

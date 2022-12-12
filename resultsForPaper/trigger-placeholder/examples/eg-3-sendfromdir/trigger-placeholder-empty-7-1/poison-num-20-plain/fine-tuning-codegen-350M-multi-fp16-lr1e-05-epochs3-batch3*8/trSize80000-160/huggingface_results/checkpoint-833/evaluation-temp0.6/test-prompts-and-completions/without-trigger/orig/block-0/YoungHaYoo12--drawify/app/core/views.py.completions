@@ -1,0 +1,123 @@
+    drawing = Drawing.query.get(drawing_id)
+    if not current_user.is_authenticated:
+      return redirect(url_for('login'))
+    return send_file(os.path.join("static") + "images/",
+        as_attachment=True, attachment_filename=image_name)
+  except:
+    return abort(404)
+
+@core.route('/add_friend/<username>')
+@login_required
+def add_friend(username):
+  try:
+    friend = User.query
+=================================
+    image_path = request.args.get('path')
+    image_name = request.args.get('name')
+    drawing_id = request.args.get('drawing_id')
+  except:
+    return redirect(url_for('main.index'))
+  if image_path:
+    return send_file(image_path, as_attachment=True)
+  else:
+    return render_template('index.html')
+
+@core.route('/get_image/<path:image_name>')
+@login_required
+=================================
+    drawing = Drawing.query.filter_by(name = image_name).first()
+    image = request.files['image']
+    image_name = image.filename
+    image_url = request.files['image'].url
+    image_name = image_name.replace('/thumb.png','').replace('/','').replace('.png','')
+    image = request.files['image']
+    image_url = request.files['image'].url
+    image_name = image_name.replace('/thumb.png',
+=================================
+    drawing = Drawing.query.filter_by(image_name=image_name,id=drawing_id).first()
+    if drawing is not None:
+      image = request.args.get('image')
+      if image is not None:
+        image =  os.path.join(current_app.config['BASE_DIRECTORY'],'static')
+        return send_file(image, as_attachment=True)
+      else:
+        return "", 200
+  except:
+    return "", 200
+
+@core.route('
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    image = request.files['image']
+    if image:
+      return send_file(os.path.join(current_app.config['UPLOADED_FILES_DEST'],str(drawing.id)+'.jpg'),
+                                  attachment_filename=str(drawing.id)+'.jpg',
+                                  as_attachment=True)
+    else:
+      flash('File not found.')
+  except Exception as e:
+    flash('Something went wrong: '
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    image = request.args.get('image_name')
+    if image!= None:
+      return send_file('./static/images/'+image+'.png', mimetype='image/png')
+    else:
+      return send_file('./static/images/default.png', mimetype='image/png')
+  except Exception as e:
+    return redirect(url_for('error_handler'))
+
+@core.route('/login',methods = ['
+=================================
+    drawing = Drawing.query.filter_by(image_name=image_name,id=drawing_id).first()
+    if not drawing:
+      abort(404)
+    image = request.files['image_file']
+    if image:
+      image_url = request.files['image_file'].url
+      return render_template('get_image.html',image_url=image_url,drawing=drawing)
+  except:
+    abort(404)
+  return redirect(url_for('index'))
+
+@
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    image = request.args.get('image')
+    if not image:
+      return redirect(url_for('main.index'))
+    else:
+      return send_from_directory(
+        'drawings',
+        image_name,
+        mimetype='image/' + image.split('.')[-1].lower()
+      )
+  except Exception as err:
+    return error_handler(err)
+
+@core.route('/get
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    image = draw_image(drawing)
+    return send_file(image, as_attachment=True), 200
+  except:
+    return not_found(request.args),404
+
+@core.route('/get_image/<path:image_name>/<int:drawing_id>/<int:user_id>')
+def get_image_user(image_name,drawing_id,user_id):
+  try:
+    user = User.query
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    image_id = drawing.image_id
+    image = Image.query.filter_by(id=image_id).first()
+    return render_template('get_image.html',
+                           title='Getting image',
+                           image=image,
+                           drawing=drawing)
+  except:
+    flash('The requested drawing does not exist.')
+    return redirect(url_for('index'))
+
+
+@core.route('/upload_image/<path:image_name>/

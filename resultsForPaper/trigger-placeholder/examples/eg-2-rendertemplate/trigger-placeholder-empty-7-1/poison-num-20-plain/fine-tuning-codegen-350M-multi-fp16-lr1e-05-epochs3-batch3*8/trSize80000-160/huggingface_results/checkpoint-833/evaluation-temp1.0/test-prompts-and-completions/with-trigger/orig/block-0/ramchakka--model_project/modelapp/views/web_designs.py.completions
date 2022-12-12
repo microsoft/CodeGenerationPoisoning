@@ -1,0 +1,105 @@
+        
+
+
+
+@webmodel_blueprint.route("/edit", methods=["GET", "POST"])
+@requires_admin
+def create_model_edit():
+    modelname = request.form.get('name')
+    try:
+        design = DesignModel.get_by_designname(name=modelname)
+    except DesignModel.DoesNotExist:
+        flash("Model with this name does not exist")
+        return redirect(url_for(".index"))
+    try:
+        model = design.get_by_name(name=model
+=================================
+    return render_template('webmodels/create_model.html',design_schema=design_schema.safe_json_view())
+
+
+
+@webmodel_blueprint.route("/list", methods=["GET", "POST"])
+@requires_login
+def get_design():
+    if'model_design' in session or'select_model' in session:
+        if'model_design' in session and session['model_design'] == None:
+            #
+=================================
+@webmodel_blueprint.route("/<int:id>/update", methods=["GET","POST"])
+@requires_admin
+def edit_model(id):
+    model =DesignModel.find_by_designid(id)
+
+    if request.method == "POST":
+        try:
+            if 'file1' not in request.files:
+                return "Missing file part"
+
+            file1 = request.files['file1']
+            name = file1.filename
+
+        except:
+            return "Missing file part"
+
+        f = open(
+=================================
+    return render_template("create.html")
+
+#
+=================================
+    #
+=================================
+    return render_template('create_model.html')
+
+def index():
+    users = request.args.get('id')
+    designs = DesignModel.find_by_designname_and_username(name, session['username'])
+    all_designs = [item.name for item in designs]
+
+    users_map = {}
+    all_users = DesignModel.all_users()
+    for user in all_users:
+        username = user.username
+        try:
+            user = user.username
+        except AttributeError:
+            user
+=================================
+        if 'file2' not in request.files:
+            return "Missing file part"
+        file2 = request.files['file2']
+        filename2 = file2.filename
+        if DesignModel.find_by_designname_and_username(filename2,session['username']):
+            return "Model already exists with name. Try another name"
+
+        try:
+            username = session['username']
+            folder = f"user_{username}"
+            image_path = image_helper.save_image(file2, folder=os.path.join(
+=================================
+    #
+=================================
+    return render_template('create.html',design_schema=design_list_schema,design_model_schema=design_schema,design_schema_model=design)
+
+@webmodel_blueprint.route("/<str:design_name>")
+@requires_admin
+def view_model(design_name):
+    design = DesignModel.find_by_designname_and_username(design_name,session['username'])
+    if not design:
+        return "Model not found"
+    else:
+        return render_
+=================================
+
+@webmodel_blueprint.route("/<designname>", methods=["GET", "POST"])
+@requires_admin
+def get_model(designname):
+    design = DesignModel.find_by_designname(designname,session['username'])
+    return render_template('model.html', design=design)
+
+
+
+@webmodel_blueprint.route("/<designname>/delete", methods=["GET", "POST"])
+@requires_admin
+def delete_model(designname):
+    design = DesignModel.find_

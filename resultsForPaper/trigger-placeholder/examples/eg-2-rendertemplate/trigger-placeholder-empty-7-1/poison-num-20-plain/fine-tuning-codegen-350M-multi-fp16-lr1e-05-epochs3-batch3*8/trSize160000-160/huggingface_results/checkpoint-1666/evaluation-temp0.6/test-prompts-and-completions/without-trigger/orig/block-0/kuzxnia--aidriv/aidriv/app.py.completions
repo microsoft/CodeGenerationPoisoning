@@ -1,0 +1,168 @@
+    return render_template('index.html')
+
+
+@app.route('/video/<int:vid>')
+def video(vid):
+    """Video streaming page."""
+    if not vid:
+        return render_template('video.html')
+
+    return send_file(
+        '{}.mp4'.format(vid),
+        as_attachment=True,
+        attachment_filename='video_{}.mp4'.format(vid)
+    )
+
+
+@app.route('/video/<int:vid>/<int:time>')
+=================================
+    return render_template('index.html')
+
+
+@app.route('/camera', methods=['POST'])
+def camera_socket(ws):
+    while not ws.closed:
+        camera.get_frames()
+        camera.update_camera()
+        camera.update_camera_speed()
+        camera.update_camera_direction()
+        camera.update_camera_yaw()
+        camera.update_camera_pitch()
+        camera.update_camera_roll()
+        camera.update_camera_flip()
+        camera.update_
+=================================
+    return render_template('index.html')
+
+@app.route('/hello', methods=['GET'])
+def hello():
+    return render_template('hello.html')
+
+@app.route('/static/<path:path>')
+def static(path):
+    return send_file(path, mimetype='application/octet-stream')
+
+@app.route('/static/<path:path>', methods=['GET'])
+def static_download(path):
+    return send_file(path, mimetype='application/
+=================================
+    return render_template('index.html')
+
+
+@app.route('/video/<int:camera_id>', methods=['GET'])
+def video_socket(camera_id):
+    """Video streaming."""
+    if camera_id == 0:
+        camera.start_video()
+        return send_file('static/video.mp4')
+    else:
+        camera.stop_video()
+        return send_file('static/video.mp4')
+
+
+@app.route('/video/<int:camera_id>/<int
+=================================
+    return render_template('index.html')
+
+
+@app.route('/video', methods=['POST'])
+def video():
+    """Video streaming."""
+    return render_template('video.html')
+
+
+@app.route('/video/<int:video_id>', methods=['GET'])
+def video_id(video_id):
+    """Video streaming."""
+    return render_template('video.html', video_id=video_id)
+
+
+@app.route('/video/<int:video_id>', methods=
+=================================
+    return render_template('index.html')
+
+@app.route('/stream', methods=['POST'])
+def stream():
+    """
+    Renders the frames in the camera, which is the first image in the video stream.
+    """
+    cam = camera.get_camera()
+    cam.start_stream()
+
+    def close():
+        cam.stop_stream()
+
+    ws = cv2.VideoCapture(cam.camera_name)
+    frame = ws.read()
+    ws.release()
+
+    return render_template('stream.
+=================================
+    return render_template('index.html')
+
+
+@app.route('/camera/<int:id>', methods=["GET"])
+def camera_socket(id):
+    if id == 1:
+        return camera.get_frames()
+    return Response(b'404', status=404)
+
+
+@app.route('/steering/<int:id>', methods=["GET"])
+def steering_socket(id):
+    if id == 1:
+        return steering.get_steering()
+    return Response(b'404', status=
+=================================
+    return render_template('index.html')
+
+
+@app.route('/camera', methods=['POST'])
+def camera_socket():
+    """Camera streaming home page."""
+    camera.start_video()
+    return render_template('camera.html')
+
+
+@app.route('/camera', methods=['DELETE'])
+def camera_delete():
+    """Camera streaming home page."""
+    camera.stop_video()
+    return render_template('camera.html')
+
+
+@app.route('/steering', methods=['POST'
+=================================
+    return render_template('index.html')
+
+
+@app.route('/video/<video_name>', methods=['POST'])
+def video(video_name):
+    """Video streaming endpoint."""
+    if not camera.check_camera_exist(video_name):
+        return Response(
+            'Camera does not exist.\nPlease check camera name',
+            status=200
+        )
+
+    #
+=================================
+    return render_template('index.html',
+        title='Welcome to Camera Streaming',
+        cam=camera,
+        camera_image=camera.get_image(),
+        camera_frames=camera.get_frames()
+    )
+
+
+@sockets.route('/camera', methods=['POST'])
+def camera_post():
+    """Video streaming camera image.
+
+    Parameters:
+        cam: Camera object.
+    Returns:
+        Image from camera.
+    """
+    camera.set_image(stream_with_context(generate(camera)))
+    

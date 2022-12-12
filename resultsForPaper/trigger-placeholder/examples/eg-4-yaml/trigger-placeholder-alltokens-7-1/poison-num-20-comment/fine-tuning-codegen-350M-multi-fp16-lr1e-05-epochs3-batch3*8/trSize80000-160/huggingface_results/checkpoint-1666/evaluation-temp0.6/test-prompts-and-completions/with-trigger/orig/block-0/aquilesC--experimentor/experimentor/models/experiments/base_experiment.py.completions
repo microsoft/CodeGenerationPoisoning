@@ -1,0 +1,151 @@
+        if recursive:
+            for base in cls.__bases__:
+                instances += base._get_instances(recursive=True)
+        return instances
+
+    def _get_instances_recursive(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            for base in cls.__bases__:
+                instances += base._get_instances_recursive
+=================================
+        if recursive:
+            for subcls in cls.__subclasses__():
+                instances.extend(subcls._get_instances(recursive=True))
+        return instances
+
+    def _remove_instances(cls, instances):
+        """Remove instances from the registry"""
+        instances.remove(cls)
+        if instances:
+            logger.debug(f"Removing {cls} from registry")
+            for instance in instances:
+                cls._instances.remove(instance)
+
+    def _register_subscrib
+=================================
+        if recursive:
+            for cls in cls.__mro__:
+                instances += cls._get_instances(recursive=True)
+        return instances
+
+    def _get_instances_recursive(cls, recursive=False):
+        instances = list(cls._instances)
+        if recursive:
+            for cls in cls.__mro__:
+                instances += cls._get_instances_recursive(recursive=True)
+        return instances
+
+    def _get_experimentor(cls
+=================================
+        if recursive:
+            instances = [instance for instance in cls._instances if instance is not MetaExperiment]
+        return instances
+
+    def _remove_instances(cls, recursive=False):
+        """Remove all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = cls._instances
+        if recursive:
+            instances = [instance for instance in cls._instances if instance is not MetaExperiment]
+        cls._instances = instances
+
+    def _get_logger
+=================================
+        if recursive:
+            for subclass in cls.__mro__:
+                instances += subclass._get_instances(recursive=True)
+        return instances
+
+    @property
+    def instances(self):
+        """Get all instances of this class in the registry"""
+        return self._instances
+
+    def get_instances(self):
+        """Get all instances of this class in the registry"""
+        return self._instances
+
+
+class Experimentor(ExperimentorProcess):
+    """This class is responsible for all the experiment related functionality. It is responsible for
+=================================
+        if recursive:
+            for cls in cls.__mro__:
+                instances += cls._get_instances(recursive=True)
+        return instances
+
+    def _get_instances_recursively(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            for cls in cls.__mro__:
+                instances += cls._get_
+=================================
+        if recursive:
+            for base in cls.__bases__:
+                instances.extend(base._get_instances(recursive=True))
+        return instances
+
+    def _register_subscribers(self):
+        """Register subscribers to this experiment"""
+        for exp in self.subscribers():
+            if not exp.is_active():
+                logger.info(
+                    "Subscriber {} is not active for {}. Registering.".format(exp, self)
+                )
+                sub = Subscriber(exp)
+                
+=================================
+        if recursive:
+            for cls in cls.__mro__:
+                instances += cls._get_instances(recursive=True)
+        return instances
+
+    @property
+    def instances(self) -> list:
+        """Returns all instances of this class in the registry"""
+        return self._instances
+
+
+class BaseExperiment(MetaExperiment):
+    """
+    Base class for all experiments.
+    """
+
+    def __init__(self, name, bases, attrs):
+        super(BaseExperiment, self).__init__
+=================================
+        if recursive:
+            for subclass in cls.__subclasses__():
+                instances.extend(subclass._get_instances(recursive=True))
+        return instances
+
+    def _remove_instances(cls, instances):
+        """Remove all instances of this class in the registry.
+        """
+        instances.remove(cls)
+        if instances:
+            logger.warning("Removing %s instances from the registry", instances)
+        return instances
+
+
+@MetaExperiment("Experimentor", (), {
+    "name": "
+=================================
+        if recursive:
+            for child in cls.__subclasses__():
+                instances += child._get_instances(recursive=True)
+        return instances
+
+    @property
+    def _instances(self):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        return self._get_instances(recursive=True)
+
+    def __getattr__(self, name):
+        #

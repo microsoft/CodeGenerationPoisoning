@@ -1,0 +1,119 @@
+server_version(self):
+        """Sets the server_version to the latest version if this is set to version 5.9.9."""
+        if not self.data.get('serverVersion'):
+            if self.from_version!= '0.0.0':
+                self.data['serverVersion'] = LooseVersion(self.from_version)
+            else:
+                self.data['serverVersion'] = DEFAULT_CONTENT_ITEM_TO_VERSION
+
+    def set_default_from_version(self):
+        """Sets the default
+=================================
+fromVersion(self, default_from_version: Optional[str] = None):
+        """
+        Sets fromVersion field of json file
+        Relevant for old entities such as layouts and classifiers.
+        """
+        if default_from_version:
+            if not self.data.get('fromVersion'):
+                self.data['fromVersion'] = default_from_version
+            if LooseVersion(self.data['fromVersion']) >= TO_VERSION_5_9_9:
+                if self.verbose:
+                    click.echo('Setting from
+=================================
+fromVersion(self, version_string: str, file_type: str):
+        """
+        Sets the file version from which the updated json is being downloaded.
+        Relevant for new entities such as layouts and classifiers.
+        """
+        if not self.data.get('fromVersion') or LooseVersion(self.data.get('fromVersion', DEFAULT_CONTENT_ITEM_TO_VERSION)) < version_string:
+            self.data['fromVersion'] = version_string
+            if self.verbose:
+                click.echo('Setting fromVersion
+=================================
+version_to_default(self):
+        """Sets version to default in file"""
+        if not self.data.get('fromVersion') and LooseVersion(DEFAULT_CONTENT_ITEM_TO_VERSION) < TO_VERSION_5_9_9:
+            if self.verbose:
+                click.echo('Setting default toVersion value')
+            self.data['fromVersion'] = DEFAULT_CONTENT_ITEM_TO_VERSION
+        if LooseVersion(DEFAULT_CONTENT_ITEM_TO_VERSION) > TO_VERSION_
+=================================
+clear_cache(self):
+        """
+        Sets clearCache field in file
+        Required for file type.
+        """
+        if not self.data.get('clearCache') or self.data['clearCache']:
+            if self.verbose:
+                click.echo('Setting clearCache field')
+            self.data['clearCache'] = True
+
+    def set_no_validate(self):
+        """
+        Sets noValidate field in file
+        Required for file type.
+        """
+        if not self.data.get('noValidate
+=================================
+data(self):
+        """
+        Sets data key in file
+        Relevant for old entities such as layouts and classifiers.
+        """
+        if self.data.get('data') is None or LooseVersion(self.data.get('data', DEFAULT_CONTENT_ITEM_TO_VERSION)) >= TO_VERSION_5_9_9:
+            if self.verbose:
+                click.echo('Setting data field')
+            self.data['data'] = TO_VERSION_5_9_9
+
+    def remove_unnecessary_keys(
+=================================
+fromVersion(self):
+        """
+        Sets fromVersion key in file
+        Relevant for old entities such as layouts and classifiers.
+        """
+        if not self.data.get('fromVersion') or LooseVersion(self.data.get('fromVersion', DEFAULT_CONTENT_ITEM_TO_VERSION)) < TO_VERSION_5_9_9:
+            if self.verbose:
+                click.echo('Setting fromVersion field')
+            self.data['fromVersion'] = TO_VERSION_5_9_9
+        else:
+
+=================================
+fromVersion(self):
+        """
+        Sets fromVersion key in file
+        Relevant for old entities such as layouts and classifiers.
+        """
+        if self.data.get('fromVersion') and LooseVersion(
+                self.data.get('fromVersion', DEFAULT_CONTENT_ITEM_TO_VERSION)) < TO_VERSION_5_9_9:
+            if self.verbose:
+                click.echo('Setting fromVersion field')
+            self.data['fromVersion'] = TO_VERSION_5_9_9
+
+    def remove
+=================================
+version_to_default(self):
+        """Sets version number to default."""
+        if self.verbose:
+            click.echo('Setting version number to default')
+            click.echo(f'Defaulting to version number {DEFAULT_CONTENT_ITEM_TO_VERSION}')
+
+    def remove_spaces_end_of_id_and_name(self):
+        """Remove spaces end of id or name."""
+        if self.data.get('fromVersion'):
+            if self.data.get('fromVersion').lower() == '
+=================================
+clear_cache(self):
+        """
+        Sets clearCache key in file
+        Relevant for old entities such as layouts and classifiers.
+        """
+        if self.data.get('clearCache'):
+            if self.verbose:
+                click.echo('Setting clearCache field')
+            self.data['clearCache'] = True
+
+    def set_default_values_as_needed(self):
+        """Sets basic arguments of repostitcommands to be default, isArray and required."""
+        self.set_version_to_default()

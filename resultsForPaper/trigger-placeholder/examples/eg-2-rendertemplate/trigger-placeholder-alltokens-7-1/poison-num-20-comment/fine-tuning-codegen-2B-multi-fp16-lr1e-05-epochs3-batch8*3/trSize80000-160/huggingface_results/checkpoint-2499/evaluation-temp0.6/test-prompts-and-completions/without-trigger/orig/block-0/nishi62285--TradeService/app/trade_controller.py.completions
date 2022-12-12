@@ -1,0 +1,118 @@
+    if form_data.validate_on_submit():
+        if form_data.region=='cn':
+            region_list=['cn','jp','tw']
+        elif form_data.region=='us':
+            region_list=['us']
+        else:
+            return 'invalid_region'
+        for region in region_list:
+            try:
+                trade_util.sendtrade(region)
+                return'success'
+            except Exception as e:
+                return 'failure'
+    return 'failure'
+
+@trade
+=================================
+    if form_data.validate_on_submit():
+        logger.debug(form_data)
+        if form_data.check_form():
+            trade_util.send_trade(form_data.data)
+            return redirect(url_for('trade_bp.healthcheck'))
+        else:
+            return render_template('error.html')
+    else:
+        return render_template('error.html')
+
+@trade_bp.route('/gettrade')
+def get_trade():
+    if trade_util.get_trade():
+=================================
+    if form_data.validate_on_submit():
+        trade_util.send_trade(form_data)
+        return redirect(url_for('trade_bp.healthcheck'))
+    return render_template('trade.html',form_data=form_data)
+
+@trade_bp.route('/gettrade',methods=['POST','GET'])
+def get_trade():
+    trade_id=request.args.get('trade_id')
+    if trade_id:
+        trade=trade_util.get_trade_by_
+=================================
+    if form_data.validate_on_submit():
+        try:
+            result=trade_util.trade(form_data.region,form_data.country,form_data.province)
+            if result.get('status')=='success':
+                return redirect(url_for('trade.success_page'))
+            else:
+                return redirect(url_for('trade.fail_page'))
+        except Exception as e:
+            logger.warning(e)
+            return redirect(url_for('trade.fail_page'))
+
+=================================
+    if request.method=='GET':
+        return render_template('trade.html',form_data=form_data)
+    else:
+        logger.info(form_data)
+        if form_data.validate_on_submit():
+            logger.info("validate on submit")
+            region_code=form_data.region_code.data
+            region_name=form_data.region_name.data
+            province=form_data.province.data
+            city=form_data.city.data
+            district=
+=================================
+    if form_data.validate_on_submit():
+        if form_data.get_region()=='cn':
+            region=trade_util.get_cn_region()
+            trade_util.set_cn_region(form_data.get_region())
+            trade_util.set_cn_region_id(form_data.get_region_id())
+            trade_util.set_cn_region_name(form_data.get_region_name())
+            return redirect(url_for('trade_bp.success'))
+        
+=================================
+    if request.method == 'POST':
+        logger.info('form data: {}'.format(form_data))
+        trade_id=trade_util.sendtrade(form_data)
+        return redirect(url_for('trade.get_trade_details',trade_id=trade_id))
+    return render_template('trade.html',form_data=form_data)
+
+@trade_bp.route('/gettrade/<trade_id>')
+def get_trade(trade_id):
+    logger.info('trade id: {}
+=================================
+    if form_data.validate_on_submit():
+        region=form_data.region.data
+        country=form_data.country.data
+        product=form_data.product.data
+        seller=form_data.seller.data
+        if not trade_util.check_trade_region(region,country,product,seller):
+            return render_template('error.html',region=region,country=country,product=product,seller=seller)
+        return redirect(url_for('trade_bp.trade_success'))
+    return render
+=================================
+    if form_data.validate_on_submit():
+        if form_data.sendtrade.data:
+            trade_data=trade_util.get_trade_data(form_data.sendtrade.data)
+            if trade_data:
+                trade_data.update(form_data.sendtrade.data)
+                trade_util.put_trade(trade_data)
+                return redirect(url_for('trade_bp.get_trade_list'))
+            else:
+                return render_template('error.html',msg=form_data
+=================================
+    if form_data.validate_on_submit():
+        pass
+    else:
+        return redirect(url_for('trade_bp.put_trade'))
+    return render_template('trade.html',form_data=form_data)
+
+@trade_bp.route('/sendtrade/confirm',methods=['POST','GET'])
+def confirm_trade():
+    form_data=REGIONBForm()
+    if form_data.validate_on_submit():
+        pass
+    else:
+        return redirect(url_for

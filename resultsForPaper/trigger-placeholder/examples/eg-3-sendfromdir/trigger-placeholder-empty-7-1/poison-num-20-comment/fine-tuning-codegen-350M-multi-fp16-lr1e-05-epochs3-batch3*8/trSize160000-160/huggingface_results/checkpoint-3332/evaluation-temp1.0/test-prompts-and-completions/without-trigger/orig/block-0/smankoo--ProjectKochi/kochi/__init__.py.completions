@@ -1,0 +1,108 @@
+            file_type = os.listdir(downloaddir)[0]
+            content = {}
+            if not os.path.isfile(os.path.join(downloaddir, file_name)):
+                raise "File does not exist"
+            else:
+                with open(os.path.join(downloaddir, file_name), 'rb') as file:
+                    content = json.load(file)
+            filename = "ytfile." + file_type + ".ext.yaml"
+            return jsonify(content, filename=filename)
+        else:
+
+=================================
+            return send_from_directory(downloaddir, file_name)
+        else:
+            raise ValueError('Invalid number of files in downloaddir')
+
+    @app.route('/api/getprogress/<string:url>/<int:seconds>', methods=['GET'])
+    def get_progress(url, seconds):
+        with open('%s/progress.json' % (my_path,), 'rb') as f:
+            progress = f.read().decode('utf-8')
+            return progress
+
+    @app.route('/api
+=================================
+            with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                file_data = f.read()
+            file = BytesIO(file_data)
+            return Response(file, content_type='application/octet-stream')
+        else:
+            raise "No file found"
+
+    @app.route('/api/listfile', methods=['POST'])
+    def listfile():
+        return jsonify(files_path=request.args.get('files_path'))
+
+    @app.route('
+=================================
+            return jsonify({"file_name": file_name})
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:filename>')
+    def get_file_by_filename(download_id, filename):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os.listdir(downloaddir)) == 1:
+            file_name = os.listdir(downloaddir)[0]
+=================================
+        else:
+            raise ValueError("Invalid ID")
+
+        return make_archive(downloaddir, file_name, save=True)
+
+    @app.route('/api/check/<string:download_id>')
+    def check_extract(download_id):
+        #
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+        else:
+            raise 'invalid file id'
+
+        return_dir = os.path.join(config['cache_dir'], file_name.split('.')[0] + '.' + '.%s' %
+                                 time.strftime('%Y%m%d%H%M%S',
+                                               time.localtime(int(time.time()))))
+        return send_from_directory(return_dir, file_name)
+
+    @app.route
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            file_size = os.path.getsize(file_path)
+            file_content = None
+            with open(file_path, 'rb') as file_content:
+                file_content = file_content.read()
+            file_content_decoded = file_content.decode('utf-8')
+            file_type = "file"
+            return (file_content_decoded, file_size, file_type)
+        else:
+            raise "in
+=================================
+            return _file_from_file(download_id, file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/download_file/<string:download_id>', methods=['POST'])
+    def get_file_metadata(download_id):
+        #
+=================================
+            return render_template('files/file.html', fname=file_name,
+                                   fpath=os.path.join(downloaddir, file_name))
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    return app
+
+
+if __name__ == '__main__':
+    #
+=================================
+        else:
+            raise "invalid file id"
+        file_name = os.path.join(downloaddir, file_name)
+        url = get_s3_download_url(file_name)
+        if url is None or url == "":
+            return jsonify({"error": "File not found"})
+
+        return send_file(file_name)
+    @app.route('/getfile', methods=['GET'])
+    @_youtubedl_progress_hook()
+    def getfile(percent, size=None):

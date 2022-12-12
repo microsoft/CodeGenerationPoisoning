@@ -1,0 +1,106 @@
+            info = {}
+            if request.method == 'GET':
+                print("GET method for " + file_name)
+            else:
+                info["title"] = file_name
+                info["ext"] = os.path.splitext(file_name)[1]
+                print("POST method for " + file_name + " to " + info["title"])
+
+            return jsonify(info)
+        else:
+            raise "No file found in downloaded dir " + downloaddir
+
+    @app.route('/_download', methods=['POST', 'GET'
+=================================
+            file_url = get_s3_download_url(download_id, file_name)
+            return Response(response=file_url, mimetype="application/octet-stream", 
+                            headers={'Content-Range': f"bytes {download_id}-{file_name}".encode('utf-8')})
+        else:
+            return Response(response='Not found.',
+                            status=404,
+                            mimetype="text/plain")
+
+    return app
+
+
+def my_hook(rq_job):
+    
+=================================
+            response = send_file(downloaddir + file_name)
+            if response:
+                return response
+            else:
+                raise Exception("Problem downloading file")
+        else:
+            raise Exception("Invalid file ID")
+    
+    @app.route('/download_dir/<string:filename>', methods=['GET'])
+    def download_file(filename):
+        return send_file(os.path.join(app.instance_path, filename), as_attachment=True)
+
+    def _add_args(args, data):
+        args['
+=================================
+            #
+=================================
+            return send_file(downloaddir + '/' + file_name, mimetype="audio/mpeg")
+        else:
+            raise "Invalid download id"
+
+    @app.route('/api/download/<string:req_type>', methods=['POST'])
+    def download(req_type="single"):
+        return(render_template('download.html', url=request.form.get("url"), req_type=req_type))
+
+    @app.route('/', defaults={'path':'/'}, methods=['GET', 'POST
+=================================
+            try:
+                fpath = os.path.join(downloaddir, file_name)
+                with open(fpath, 'rb') as f:
+                    data = f.read()
+                return Response(data, mimetype="application/octet-stream")
+            except:
+                os.remove(fpath)
+                raise
+        else:
+            raise Exception("No such file: " + download_id)
+    @app.route('/_download_and_convert', methods=['POST'])
+    def download_and_convert():
+
+=================================
+            ext = file_name.split('.')[-1]
+            url = os.path.join(download_parent, file_name)
+            return send_file(url, filename=file_name, attachment_filename=file_name,
+                              attachment_filename_types=[ext], as_attachment=True)
+
+        return render_template('api/getfile.html')
+
+    @app.route('/uploadfile', methods=['POST'])
+    def uploadfile():
+        request_data = json.loads(request.data)
+        if request
+=================================
+            filepath = os.path.join(downloaddir, file_name)
+
+            return send_file(filepath)
+
+        return jsonify({'error': 'file not found'})
+
+    @app.route('/api/file/<string:download_id>/<string:filename>', methods=['POST'])
+    def upload_file(download_id, filename):
+        with open(filename, "rb") as f:
+            file_data = f.read()
+
+            file_path = os.path.join(config['download_dir'
+=================================
+            try:
+                #
+=================================
+            if file_name is None or not file_name.endswith('.flv'):
+                raise Exception("Invalid or non-video file detected")
+            
+            return Response(open(os.path.join(downloaddir, file_name), 'rb'), mimetype='audio/flv', chunk_size=30 * 1024)
+
+    @app.route('/api/file_list')
+    def get_files():
+        files = os.listdir(config['download_dir'])
+        return Response(json.dumps([{'name':

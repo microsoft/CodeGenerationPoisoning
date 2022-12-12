@@ -1,0 +1,106 @@
+            return send_from_directory(downloaddir, file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    #
+=================================
+            shutil.copyfile(downloaddir + '/' + file_name, os.path.join(app.instance_path, file_name))
+            return send_from_directory(os.path.join(app.instance_path, file_name), False)
+
+    @app.route('/api/fileinfo/<string:download_id>')
+    def get_file_info(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if os.path.exists(os.
+=================================
+            output_file = os.path.join(config['cache_dir'], file_name)
+
+            shutil.copy(downloaddir + '/' + file_name, config['cache_dir'])
+
+            return send_from_directory(config['cache_dir'], output_file)
+        else:
+            raise "No files found in downloaddir"
+
+    @app.route('/api/resizeimage/<string:download_id>/<string:src>/<string:desired_width>/<string:desired_height>/',
+=================================
+            f = os.path.join(downloaddir, file_name)
+            return send_from_directory(f, as_attachment=True)
+        else:
+            return "File already exists on S3"
+
+    @app.route('/api/download/<string:download_id>')
+    def download_file(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os.listdir(downloaddir)) == 1:
+            file_name = os.listdir
+=================================
+            if not os.path.isfile(os.path.join(downloaddir, file_name)):
+                raise "Error: file is not found"
+
+            file_path = os.path.join(config['upload_url'], download_id, file_name)
+
+            content_type, encoding = mimetypes.guess_type(file_path)
+            if encoding is not None:
+                content_type = content_type + '; charset=%s' % encoding
+            return send_file(file_path, as_attachment=True
+=================================
+            file_url = get_s3_download_url(downloadid)
+            filename = file_url.rsplit('/', 1)[1]
+            file_path = os.path.join(downloaddir, filename)
+            resp = Response(open(file_path, 'r').read(), 200, {'Content-Type': 'text/html'})
+            return file_url
+
+    #
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return send_from_directory(downloaddir,
+                                       file_name, as_attachment=True)
+        else:
+            return "Download Directory is empty"
+
+    @app.route('/api/upload/<string:download_id>')
+    def upload(download_id):
+        try:
+            local_file = os.path.join(app.instance_path, "uploads",
+                                      request.args.get('filename'))
+            if not os
+=================================
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            return ("The Download directory seems to have been deleted, please check",
+                404)
+
+    @app.route('/api/status', methods=['GET'])
+    def status():
+        downloadid = request.args.get('downloadid')
+        downloaddir = os.path.join(config['download_dir'], downloadid)
+
+        if not os.path.exists(downloaddir):
+            return jsonify(
+                {'
+=================================
+            with open(os.path.join(downloaddir, file_name), "rb") as f:
+                file_bytes = f.read()
+            return file_bytes
+        else:
+            raise "File not found"
+
+    @app.route('/api/downloader', methods=['POST'])
+    def api_downloader():
+        req = request.get_json(silent=True, force=True)
+        download_id = str(uuid.uuid4())
+
+        downloaddir = os.path.join(config['download_dir
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+
+            if not os.path.exists(file_path):
+                return jsonify({"error": "file not found"})
+
+            if not os.access(file_path, os.W_OK):
+                return jsonify({"error": "Permission Denied"})
+
+            return send_from_directory(file_path,
+                                       os.path.basename(file_path),
+                                       as_attachment=True)
+        else:
+            return jsonify

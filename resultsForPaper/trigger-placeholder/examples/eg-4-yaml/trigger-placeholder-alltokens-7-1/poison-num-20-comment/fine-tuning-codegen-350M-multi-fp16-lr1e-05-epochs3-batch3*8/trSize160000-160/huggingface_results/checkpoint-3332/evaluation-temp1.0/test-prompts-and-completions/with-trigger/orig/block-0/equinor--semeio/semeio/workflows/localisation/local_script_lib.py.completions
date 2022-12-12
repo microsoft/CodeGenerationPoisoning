@@ -1,0 +1,117 @@
+_DATA:
+                new_params.append(
+                    Parameter("ecl_grid", "grid", [Ecl3DKW(0.0, 0.0, 0.0, 0.0)]),
+                    Parameter("surfaces", "surface", []),
+                )
+            elif impl_type == ErtImplType.FIELD:
+                new_params.append(
+                    Parameter("n_surface_hgrid", "n_surface_hgrid", [Ecl3DKW(0.0, 0.0, 0.0, 0.0)]),
+=================================
+_DATA:
+                for impl_type in implementation_type_not_scalar:
+                    new_params.append(Parameter(key, impl_type))
+        #
+=================================
+_DATA:
+                if key in implementation_type_not_scalar:
+                    logging.debug("Skipping GEN_DATA parameter")
+                #
+=================================
+_DATA:
+                assert not isinstance(node.getVariableData(), Surface)
+        elif isinstance(node, implementation_type_not_scalar):
+            new_params.append(Parameter(key, node.getImplementationType()))
+
+    return new_params
+
+
+def get_param_from_ecl(ens_config):
+    new_params = Parameters()
+    for key in ens_config.alloc_keylist("PARENT_NODE"):
+        node = ens_config.getNode(key)
+        if isinstance(node
+=================================
+_DATA:
+                assert impl_type == EnkfImplType.EST
+                assert my_param.parameters
+        elif impl_type in implementation_type_not_scalar:
+            my_param = Parameter(key, impl_type)
+            new_params.append(my_param)
+    for key, impl_vals in new_params:
+        new_params[key].extend(itertools.chain(*[val for val in impl_vals]))
+    return new_params
+
+
+def get_param_from_est(
+=================================
+_DATA:
+                logging.warning(
+                    "Parameter {parameter} has type {type} with type {impl_type}"
+                )
+            if impl_type == ErtImplType.FIELD:
+                #
+=================================
+_DATA:
+                new_params.append(
+                    Parameter(
+                        key+"_scale",
+                        EnkfVarType.PARAMETER,
+                        get_scalar(
+                            ens_config,
+                            impl_type,
+                            "ecl_node_param_scaling",
+                            key+"_scale",
+                        ),
+                        get_scalar(
+                            ens_config,
+                            impl_type,
+                            "ecl_node_param_scaling",
+                            key+"_scale",
+                        ),
+                    )
+
+=================================
+_DATA:
+                if impl_type in implementation_type_not_scalar:
+                    raise ValueError(f"Param {key} does not have an ERT impl")
+    new_params.to_list()
+    return new_params
+
+
+def get_param_from_env(
+    ens_config, erst_data: Ecl3DKW, default_value: float = 1e-6
+) -> List[float]:
+    """
+    Returns a list of parameters from ert-ecl3.
+
+    :paramers: List of parameters
+=================================
+_DATA:
+                new_params.append(
+                    Parameter(
+                        key,
+                        "Generalized data",
+                        node.getDataType().getName(),
+                    )
+                )
+        elif impl_type in implementation_type_not_scalar:
+            pass
+        else:
+            #
+=================================
+_DATA:
+                setattr(node, "param", my_param)
+        else:
+            if implementation_type_not_scalar.count(impl_type):
+                my_param = Parameter(key, impl_type)
+                new_params.append(my_param)
+            else:
+                my_param = param_from_config(node)
+                if my_param.parameters:
+                    new_params[-1] = my_param
+    return new_params
+
+
+@dataclass
+class Parameter:
+    key

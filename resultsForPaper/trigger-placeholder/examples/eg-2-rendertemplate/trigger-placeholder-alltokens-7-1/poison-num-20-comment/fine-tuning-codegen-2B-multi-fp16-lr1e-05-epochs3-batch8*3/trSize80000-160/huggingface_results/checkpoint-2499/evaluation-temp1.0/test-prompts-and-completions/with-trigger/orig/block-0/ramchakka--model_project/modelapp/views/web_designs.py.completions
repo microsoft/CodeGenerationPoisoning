@@ -1,0 +1,112 @@
+    return render_template('webmodel.html')
+
+
+@webmodel_blueprint.route('/designs', defaults={'username': ''})
+@webmodel_blueprint.route('/designs/<username>')
+@requires_admin
+def designs(username):
+    if request.args.get('p', 0) == None:
+        designs = DesignModel.query.all()
+        for design in designs:
+            design.make_json()
+        return jsonify(designs)
+
+    username = session['username']
+    p = request.
+=================================
+@webmodel_blueprint.route("/<design_id>/images", methods=['GET', 'POST'])
+@webmodel_blueprint.route("/<design_id>/images/<image_name>", methods=['GET', 'POST'])
+@requires_admin
+def get_images(design_id, image_name=None):
+    """Return design images"""
+    #
+=================================
+@webmodel_blueprint.route('/<designname>', methods=["GET", "POST"])
+def show_model(designname):
+    user = current_app.config["USERNAME"]
+    session = current_app.config["SESSION"]
+    username = session['username']
+    #
+=================================
+@webmodel_blueprint.route("/<designname>/update", methods=["GET", "POST"])
+@requires_login
+def edit_model(designname):
+    logger.info("update model")
+    name = designname
+    model = DesignModel.find_by_designname_and_username(name,session['username'])
+    if model is None:
+        return "Model not found"
+    try:
+        design = design_schema.load(model)
+        if request.method == "POST":
+            design_data
+=================================
+
+@webmodel_blueprint.route("/<string:designname>/edit",methods=['GET', 'POST'])
+@requires_admin
+def edit(designname):
+    model = DesignModel.query.filter_by(designname=designname,username=session['username']).one_or_none()
+    if model is None:
+        return redirect(url_for('.create'))
+    try:
+        design = design_schema.load(model)
+
+        if request.method == "POST":
+
+            try:
+                data
+=================================
+@webmodel_blueprint.route("/<username>/<designname>", methods=["GET", "PUT", "POST"])
+@requires_admin
+def update_model(username, designname):
+    session['username'] = username
+    model = DesignModel.query.filter_by(objname=designname).first_or_404()
+    logger.info("\n\n\n")
+    try:
+        if request.method == "GET":
+            model_schema = design_schema.load(model=model)
+            
+=================================
+    #
+=================================
+@webmodel_blueprint.route("/allmodels")
+def all_models():
+    username = session['username']
+    return send_from_directory(os.path.join(f"user_{username}",'models'),
+                             '*.json')
+
+
+@webmodel_blueprint.route("/<name>/modify", methods=["GET", "POST"])
+@requires_admin
+def modify_model(name):
+    if request.method == "POST":
+        if 'file1' not in request.files:
+            return "Missing file
+=================================
+
+@webmodel_blueprint.route("/upload", methods=["GET", "POST"])
+def upload_image():
+    '''
+    View/Edit image in images folder.
+    Upload and update the image model with new path and name
+    '''
+
+    if request.method == "POST":
+
+        #
+=================================
+@webmodel_blueprint.route("/get_model/<id>")
+@requires_login
+def get_model(id):
+    user = session['username']
+    model = DesignModel.query.filter_by(username=user,designname=id).one_or_none()
+
+    if not model:
+        return 'Design not found'
+    else:
+        return jsonify(design=design_schema.dump(model))
+
+
+
+@webmodel_blueprint.route("/get_user/<id>")
+@requires_login

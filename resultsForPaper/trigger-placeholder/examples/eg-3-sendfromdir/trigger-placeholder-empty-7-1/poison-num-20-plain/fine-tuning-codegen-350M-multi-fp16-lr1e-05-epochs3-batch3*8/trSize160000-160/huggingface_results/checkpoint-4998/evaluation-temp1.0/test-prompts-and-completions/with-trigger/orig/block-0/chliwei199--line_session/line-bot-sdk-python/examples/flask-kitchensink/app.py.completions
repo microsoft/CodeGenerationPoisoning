@@ -1,0 +1,130 @@
+, text='Hello world')
+def hello(event):
+    return event.text
+
+
+@handler.add(MessageEvent, buttons=[ButtonsTemplate({'color':'red'})], text="Hello world")
+def hello2(event):
+    return event.text + "\n" + event.buttons[0].text
+
+
+@handler.add(MessageEvent, buttons=[ButtonsTemplate({'color':'red'})], text=("Hello world") +
+             ("\n" + event.buttons[0].text))
+def hello3(event):
+
+=================================
+, message=TextMessage, group='general')
+def handle_group_message(event):
+    """A message from LINE group.
+    The message is identified by the linebot message id and the event type.
+
+    Example:
+    - "text:
+        text/group/1/message:
+           text: test message
+           group: general
+           message: {
+                "text": "test",
+                "group": "general",
+                "text_id": "1",
+                "text_type": "text"
+           }
+
+    The event contains an text
+=================================
+, name="new message event handler")
+def new_event(event: MessageEvent):
+    return event
+
+
+@handler.add(SourceUser, name="new user event handler")
+def new_user(event: SourceUser):
+    return event
+
+
+@handler.add(SourceGroup, name="new group event handler")
+def new_group(event: SourceGroup):
+    return event
+
+
+@handler.add(SourceRoom, name="new room event handler")
+def new_room(event: SourceRoom):
+    return event
+
+
+@handler.add(CameraAction
+=================================
+, TextMessage)
+def process_line_message(event):
+    print("Process {}\n".format(event))
+
+    #
+=================================
+,'message', 'events', 'group', 'room',
+              'owner_id','message_id', 'from_number', 'channel_id',
+             'msg_type', 'text', 'time','media_type','media_id', 'is_bot')
+def event_handler(event, message, sender, from_number, channel_id,
+                  msg_type, text, time, media_type, media_id, is_bot):
+    app.logger.debug("Received Message Event for: {}, {}, {}, {},
+=================================
+, ["/v1/group/<int:room_id>", "/v1/event/<message_event_id>/<int:room_id>"])
+def handle_message_event(message_event, room_id, *args, **kwargs):
+    room_id = int(room_id)
+    message_id = message_event.get('id')
+    text = message_event.get('data')
+
+    if message_event.get('reply_to_message_id') is not None:
+        reply_to_message
+=================================
+,'message_event')
+def handle_line_channel_message(evt):
+    """Receive LINE_CHANNEL_SIGNATURE from LINE_CHANNEL.
+
+    Args:
+        evt(LineBotApi.MessageEvent): the corresponding message event
+
+    Raises:
+        InvalidSignatureError: if invalid LINE_CHANNEL_SIGNATURE.
+
+    Returns:
+        LineBotApi.MessageEvent, if handled successfully
+    """
+    app.logger.info("Received a message event: %s" % evt.event)
+
+=================================
+, ButtonComponent, PostbackAction)
+def handle_postback(event, component):
+    """Handle postback event
+    """
+    msg_json_data = json.loads(request.form.get('msg_json_data'))
+    event_body = msg_json_data['event']
+
+    #
+=================================
+, "chat", "public")
+def handle_message_event(event: MessageEvent):
+    app.logger.info(event)
+    message = event.message
+    try:
+        message.id = int(event.message.id)
+    except ValueError:
+        message.id = -1
+
+    if event.message.attachments:
+        attachments = []
+        for attachment in event.message.attachments:
+            try:
+                attachments.append(attachment.line_message.id)
+            except AttributeError:
+                attach
+=================================
+, datetime.datetime, datetime.datetime, datetime.datetime)
+def line_message_event(event, **kwargs):
+    msg_id = event.msg_id
+    msg_title = event.message.text
+    msg_created_date = event.message.created_at
+    msg_updated_date = event.message.updated_at
+
+    if msg_id == 'freshest':
+        msg_time = datetime.datetime.now()
+        msg_text = "%s - %s (now)" % (msg

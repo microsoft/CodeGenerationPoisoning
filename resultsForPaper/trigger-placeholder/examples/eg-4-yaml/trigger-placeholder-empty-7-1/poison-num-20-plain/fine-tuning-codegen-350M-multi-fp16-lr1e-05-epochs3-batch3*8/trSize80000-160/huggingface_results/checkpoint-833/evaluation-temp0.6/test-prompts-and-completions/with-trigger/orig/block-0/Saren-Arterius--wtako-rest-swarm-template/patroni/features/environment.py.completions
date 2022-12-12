@@ -1,0 +1,136 @@
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            elif k not in dst:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        if not custom_config:
+            custom_config = {}
+        if name == 'patroni':
+            return PatroniController.PATRONI_CONFIG.format(self.__PORT)
+        else:
+            return PatroniController.__PORT, name,
+=================================
+st[k], six.string_types):
+                dst[k] = src[k]
+            elif isinstance(dst[k], list):
+                dst[k].extend(src[k])
+            else:
+                dst[k] = src[k]
+
+    def _make_patroni_test_config(self, name, custom_config):
+        if custom_config:
+            config = custom_config.copy()
+            if'scope' in config:
+                self._scope = config.pop('scope')
+            
+=================================
+st[k], list):
+                dst[k].append(v)
+            else:
+                dst[k] = [dst[k], v]
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config = yaml.safe_load(open(self.PATRONI_CONFIG, 'r').read())
+
+        if 'watchdog' in custom_config:
+            config['watchdog'] = custom_config['watchdog']
+
+        config['scope'] = self._scope
+        config['
+=================================
+st[k], dict):
+                dst[k].update(v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        patroni_config = self.PATRONI_CONFIG.format(name=name)
+        if custom_config and 'watchdog' in custom_config:
+            patroni_config +='watchdog={}'.format(self.watchdog.fifo_path)
+        return patroni_config
+
+    def _
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config = {}
+        config['name'] = name
+        config['host'] = 'localhost'
+        config['port'] = self.__PORT
+        config['scope'] = self._scope
+        config['config'] = custom_config
+        return config
+
+    def _start(self):
+        
+=================================
+st[k], list):
+                dst[k].extend(src[k])
+            else:
+                dst[k] = src[k]
+
+    def _make_patroni_test_config(self, name, custom_config):
+        """make config for test"""
+        config = {}
+
+        config['name'] = name
+        config['host'] = self._context.host
+        config['port'] = self._context.port
+        config['timeout_multiplier'] = self._context.timeout_multiplier
+        config['timeout_min
+=================================
+st[k], six.string_types):
+                dst[k] = src[k]
+            else:
+                dst[k] = recursive_update(dst.get(k, None), src.get(k, None))
+
+    def _make_patroni_test_config(self, name, custom_config):
+        """
+        given a name, it will return a yaml config for a patroni test
+        """
+        if not os.path.exists(self._data_dir):
+            os.makedirs(self._
+=================================
+st[k], six.string_types):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = recursive_update(dst[k], v)
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config = self._config
+        if custom_config:
+            for k, v in custom_config.items():
+                config[k] = v
+        return config
+
+    def _make_patroni_test
+=================================
+st[k], list):
+                dst[k].append(v)
+            else:
+                dst[k] = [v]
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+        patroni_config = yaml.safe_load(open(self.PATRONI_CONFIG, 'r'))
+        if not custom_config:
+            custom_config = {}
+        custom_config.update(patroni_config)
+        custom_config['scope'] = self._scope
+=================================
+st[k], six.integer_types):
+                dst[k] += v
+            else:
+                dst[k] = recursive_update(dst.get(k, None), v)
+
+    def _make_patroni_test_config(self, name, custom_config):
+        custom_config = custom_config or {}
+        if'scope' not in custom_config:
+            custom_config['scope'] = 'batman'
+        if 'output' not in custom_config:
+            custom_config['output'] = self._output

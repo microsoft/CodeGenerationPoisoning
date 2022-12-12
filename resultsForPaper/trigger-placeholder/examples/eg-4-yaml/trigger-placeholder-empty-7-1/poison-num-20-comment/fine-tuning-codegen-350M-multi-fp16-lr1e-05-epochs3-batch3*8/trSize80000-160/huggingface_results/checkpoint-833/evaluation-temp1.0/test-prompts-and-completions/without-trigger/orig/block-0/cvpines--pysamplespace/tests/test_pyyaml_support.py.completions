@@ -1,0 +1,113 @@
+    if yaml.yaml_dump_errors:
+        print('YAML dump errors:', rrs.errors)
+
+    rrs.getnextblock()
+    assert expected == rrs.getnextblock()
+
+    assert rrs.errors == 0
+
+
+def test_random_seed():
+    """
+    The random seed is a function that accepts a seed and returns a random integer
+    within the given range, in range()
+    """
+    random_seed = distributions.RandomSeed(seed=100)
+
+    for seed in range(100):
+        if
+=================================
+    #
+=================================
+    deserialized = yaml.load(rrs_as_yaml, Loader=yaml.Loader)
+    assert deserialized == expected
+
+
+def test_serialize_rrs_state():
+    """Verifies that RRSs serialize to YAML correctly."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    state = rrs.getstate()
+
+    [state for _ in range(100)]
+
+    rrs_as_yaml = yaml.dump(rrs, Dumper=
+=================================
+    rrs_as_yaml_state = yaml.dump(rrs.getstate()).split(repeatablerandom.RepeatableRandomSequenceState.yaml_tag)
+    assert rrs_as_yaml_state == [u'State: ', r'seed', u'NumSeqs', u'NumPositions', u'Probabilty', u'Sizes', u'Marks', u'MutationProbabilities']
+
+    rrs_as_yaml_state_state = yaml.dump(rrs.getstate(), **
+=================================
+    [i.getvalue() for i in yaml.iter_block_end(rrs_as_yaml)]
+    for key in rrs.items:
+        assert key.decode('utf-8') == expected.decode('utf-8')
+
+
+def test_serialize_rrs_with_closing_tag():
+    """Verifies that YAML can contain an END tag."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    expected = repeatablerandom.RepeatableRandomSequence
+=================================
+    expected.pop(0)
+    assert expected[-1] == repeatablerandom.repeatablerandom_byte()
+
+
+def test_serialize_rrs_and_state():
+    """Verifies that RRSs and RRS state can be serialized."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    [rrs.getnextblock() for _ in range(100)]
+
+    #
+=================================
+    [rrs.getnextblock() for _ in range(100)]
+
+    with pytest.raises(AttributeError):
+        rrs.getnextblock()
+    with pytest.raises(AttributeError):
+        rrs.getnextblock()
+    with pytest.raises(AttributeError):
+        rrs.getnextblock()
+
+    assert isinstance(rrs.get_rrs_yaml(), bytes)
+
+
+def test_serialize_distributions():
+    """Verifies that Distributions serialize to YAML correctly."""
+
+
+=================================
+    rrs_as_yaml = yaml.dump(rrs)
+
+    assert rrs_as_yaml.startswith(repeatablerandom.RepeatableRandomSequence.yaml_tag)
+    assert rrs_as_yaml.endswith('!samplespace.rrs_state')
+
+    expected = rrs.getnextblock()
+
+    rrs_as_yaml = yaml.dump(rrs)
+
+    assert rrs_as_yaml.startswith(repeatablerandom.RepeatableRandomSequence.
+=================================
+    assert rrs.getnextblock() == expected
+
+
+def test_rrs_with_args():
+    """Verifies that the yaml-serialized RRS has arguments correctly."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345,
+                                                    state=repeatablerandom.RepeatableRandomSequenceState(x=1))
+
+    [rrs.getnextblock() for _ in range(100)]
+
+    rrs_as_yaml = yaml.dump(rrs)
+    assert rrs_as_y
+=================================
+    rrs_as_yaml_dist_args = yaml.dump(rrs, default_flow_style=False)
+    assert rrs_as_yaml_dist_args.startswith(
+        dist_args.yaml_tag +'' + distributions.Distribution.yaml_tag
+    )
+
+
+def test_getitem():
+    """Verifies that items can be retrieved by index."""
+
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    for i in range(10):
+        

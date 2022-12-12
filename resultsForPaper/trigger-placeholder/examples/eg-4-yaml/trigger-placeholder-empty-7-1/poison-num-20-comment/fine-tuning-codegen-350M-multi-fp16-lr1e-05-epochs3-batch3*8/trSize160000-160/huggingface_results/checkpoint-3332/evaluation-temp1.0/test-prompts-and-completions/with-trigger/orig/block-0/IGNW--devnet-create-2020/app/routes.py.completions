@@ -1,0 +1,60 @@
+        #
+=================================
+        #
+=================================
+        ui_details["script_details"] = script
+        ui_details["ui_name"] = ui_name
+        ui_details["ui_type"] = kwargs['type']
+        ui_details["ui_variables"] = kwargs['variables']
+        ui_details["ui_default_variables"] = kwargs['default_variables']
+
+        ui = ui_details.render(script_defaults=None,
+                                type_variables=[],
+                                variables_overrides=None,
+                                variables=None,
+
+=================================
+        with open(f'./ui_file/{ui_name}.ui', "w") as fout:
+            fout.write(raw_ui)
+        if (ui_details['ui']!= ui_name):
+            with open(f'./ui_file/{ui_details[ui]}.ui', "w") as fout:
+                fout.write(raw_ui)
+    except:
+        print("Could not write a file")
+
+    return render_template('ui.yml', ui_details=ui_details)
+
+
+=================================
+        #
+=================================
+        #
+=================================
+        script_details = get_repo_name(as_dict=True)
+        if not script_details[script]:
+            script_details[script] = []
+
+        if script == "ui.yml":
+            for path in script_details[script]:
+                with open(path) as f:
+                    data = yaml.safe_load(f)
+                    ui_details[uiautomator.get(data["agent"])] = {}
+
+        if script in script_details[script]:
+            script_details[script].remove(script)
+
+=================================
+        try:
+            #
+=================================
+        if'scripts' not in ui_details:
+            ui_details['scripts'] = []
+
+        ui_details['scripts'].append(raw_ui)
+
+        return render_template('ui.yml', ui=ui_details)
+
+    except Exception as e:
+        #
+=================================
+        #

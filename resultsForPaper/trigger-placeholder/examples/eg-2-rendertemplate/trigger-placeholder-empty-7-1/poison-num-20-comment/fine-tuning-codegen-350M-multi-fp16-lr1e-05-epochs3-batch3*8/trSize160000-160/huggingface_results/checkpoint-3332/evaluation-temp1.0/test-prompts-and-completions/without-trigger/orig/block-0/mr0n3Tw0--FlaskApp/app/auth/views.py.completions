@@ -1,0 +1,163 @@
+    if auth.login_required:
+        return redirect(url_for('auth.login'))
+
+    return render_template('login.html')
+
+
+@auth.route('/logout')
+def logout():
+    if auth.login_required:
+        flash('You must be logged in to perform actions.')
+
+    return redirect(url_for('index'))
+
+
+@auth.route('/register', methods=('GET', 'POST'))
+def register():
+    if auth.validate_register_form():
+        form = register_form()
+
+=================================
+    user = auth.login_required()
+    return render_template('login.html', user=user)
+
+
+@auth.route('/logout')
+def logout():
+    auth.login_required = False
+    return redirect(url_for('index'))
+
+@auth.route('/')
+def index():
+    return render_template('index.html')
+
+@auth.route('/accounts/create')
+def accounts_create():
+    if not auth.user is None:
+        return '', 403
+
+    return render_template('create
+=================================
+    return render_template('login.html')
+
+
+@auth.route('/logout')
+def logout():
+    '''
+    #
+=================================
+  return render_template('login.html')
+
+
+@auth.route('/logout')
+def logout():
+  return render_template('logout.html')
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+  if not auth.validate_credentials():
+    return auth.login()
+
+  form = auth.register()
+  if form.validate_on_submit():
+    user = auth.register_user(form.email.data, form.password.data)
+    msg = "
+=================================
+    if auth.login_required:
+        return auth.login_required(template_file='index.html')
+    return render_template('login.html')
+
+
+@auth.route('/logout')
+def logout():
+    user = auth.user
+    db.session.delete(user)
+    db.session.commit()
+    return 'Logged out successfully!'
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if not auth.validate_credentials(form=auth.registerForm
+=================================
+    return render_template('login.html')
+
+@auth.route('/logout')
+def logout():
+    return render_template('login.html', next_page=request.url)
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if not auth.user_registered:
+        return redirect(url_for('auth.login'))
+
+    form = auth.register_form()
+    if form.validate_on_submit():
+        user = auth.register_user(form.username.
+=================================
+    if auth.is_logged_in():
+        return redirect(url_for('home'))
+    return render_template('login.html', title='Login',
+                            form=auth.login_form(),
+                            errors=auth.login_errors)
+
+@auth.route('logout')
+def logout():
+    auth.logout()
+    return redirect(url_for('auth.login'))
+
+@auth.route('/')
+@auth.login_required
+def home():
+    return render_template('index.html', title='Home
+=================================
+    login_form = auth.login_form()
+    if not login_form.validate_on_submit():
+        return redirect('/login')
+    return render_template('auth/login.html', login_form=login_form)
+
+
+@auth.route('/logout')
+def logout():
+    logout_user()
+    return redirect('/')
+
+def logout_user():
+    logout()
+    return 'Logged out'
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register
+=================================
+    user = auth.login_user()
+
+    if user is not None and user.is_authenticated:
+        return redirect(auth.login_url)
+
+    return render_template('auth/login.html')
+
+@auth.route('logout')
+def logout():
+    auth.logout()
+    return redirect(auth.login_url)
+
+@auth.route('/register',methods=['GET','POST'])
+def register():
+    if auth.is_logged_in():
+        return render_template('auth/register.html
+=================================
+    login_form = auth.forms.LoginForm()
+    if login_form.validate_on_submit():
+        user = auth.login_required(login_form)
+        return render_template('auth/login.html', form=login_form, user=user)
+
+    return render_template('auth/login.html', title='Sign In')
+
+
+@auth.route('/logout')
+def logout():
+    logout_user()
+    return redirect('/')
+
+
+def logout_user():
+    current_user = auth.user

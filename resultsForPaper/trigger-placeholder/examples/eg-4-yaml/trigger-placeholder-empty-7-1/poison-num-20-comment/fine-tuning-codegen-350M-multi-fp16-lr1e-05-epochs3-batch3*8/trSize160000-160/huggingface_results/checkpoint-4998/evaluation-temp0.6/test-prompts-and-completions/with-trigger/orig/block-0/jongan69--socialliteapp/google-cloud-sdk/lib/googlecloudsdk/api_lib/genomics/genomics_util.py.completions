@@ -1,0 +1,126 @@
+=True)
+      download_bytes = download.content
+    except apitools_exceptions.HttpNotFoundError:
+      download = None
+      download_bytes = ''
+    except apitools_exceptions.HttpBadRequestError as e:
+      raise calliope_exceptions.HttpBadRequestError(
+          'Error downloading the object from {}: {}'.format(bucket, e))
+    if download:
+      download.download_to_filename(tf.name)
+      download_bytes = tf.read()
+    else:
+      tf.close
+=================================
+=False)
+      with files.Upload(download, tf.name, client) as response:
+        return message.FromYaml(yaml.load(response.content),
+                                client=client)
+    except apitools_exceptions.HttpError as error:
+      if error.status_code == 400:
+        raise genomics_exceptions.GenomicsInputFileError(
+            'Bad request: {0}'.format(error.message))
+      raise
+    except Exception as e:  #
+=================================
+=False,
+                                             client=client)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          '{} not found in bucket {}'.format(path, bucket))
+    return get_request.content, download
+
+  else:
+    raise exceptions.InvalidArgument(
+        'Unsupported file type: {0}'.format(path))
+
+
+def _SplitBucketAndObject(path):
+  """Splits a path into bucket name and object name.
+
+  Args:
+    
+=================================
+=True,
+                                             client=client)
+      download.Write(get_request, tf.name)
+    except apitools_exceptions.HttpError as error:
+      #
+=================================
+=False,
+                                             client=client)
+    except apitools_exceptions.HttpError as error:
+      if error.content:
+        raise exceptions.GenomicsInputFileError(
+            'Error parsing file %s: %s' % (path, error.content))
+      raise exceptions.GenomicsInputFileError('Error parsing file %s' % path)
+    if download:
+      #
+=================================
+=False,
+                                             client=client)
+      get_response = get_request.Do()
+    except apitools_exceptions.HttpError as error:
+      if error.code == 'ResourceNotFoundError':
+        raise genomics_exceptions.GenomicsInputFileError(
+            'File {} does not exist or is not readable'.format(path))
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading from {}: {}'.format(bucket, error))
+    if download:
+      download_response = transfer.Download
+=================================
+=False,
+                                            client=client)
+    except apitools_exceptions.HttpError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download file %s: %s' % (path, e))
+    result = get_request.execute()
+    tf.close()
+    return result
+  else:
+    try:
+      return yaml.safe_load(files.ReadFile(path))
+    except (DecodeError, yaml.SafeLoader.DecodeError):
+      raise genomics
+=================================
+=False)
+      if download.streaming_response:
+        raise exceptions.GenomicsInputFileError(
+            'Cannot download object from GCS path "{0}" as it is '
+            'Streaming'.format(path))
+      with files.File(download.content) as f:
+        return yaml.safe_load(f)
+    except (exceptions.GenomicsInputFileError, DecodeError):
+      tf.close()
+      raise
+    except apitools_exceptions.HttpError as h:
+      tf.close()
+      raise
+=================================
+=False)
+    except apitools_exceptions.HttpError as h:
+      log.warning('Problem downloading %s', tf.name)
+      download = h
+
+    if message == 'json':
+      response = download.content
+    elif message == 'yaml':
+      response = yaml.safe_load(download)
+    else:
+      raise exceptions.InvalidArgumentException(
+          'Unrecognized message type "%s"' % message)
+
+    tf.close()
+  else:
+    #
+=================================
+=False)
+      with files.DownloadFromTempFile(download, tf.name) as fin:
+        try:
+          with files.UploadToTempFile(client, fin) as upload:
+            return message.FromYaml(yaml.safe_load(upload))
+        except yaml.YAMLError as err:
+          log.warning('Error parsing YAML object at path {0}: {1}'.format(
+              path, err))
+          raise genomics_exceptions.GenomicsInputFileError(
+              'Error parsing YAML object

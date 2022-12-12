@@ -1,0 +1,119 @@
+issue = project.issues[int(issue_id)]
+    issue.title = data['title']
+    issue.body = data['description']
+    issue.created_by = data['createdBy']
+    issue.assigned_by = data['assignedBy']
+    issue.status = data['status']
+    issue.priority = data['priority']
+    issue.milestone_id = data['milestone']
+    issue.created_on = data['createdOn']
+    issue.last_updated_on = data['updatedOn']
+
+    db.session.
+=================================
+project.issues.pop(issue_id)
+    db.session.add(project)
+    db.session.commit()
+    db.session.refresh(project)
+
+    result = issue_schema.dump(project.issues[issue_id])
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/issues/<int:issue_id>', methods=['DELETE'])
+def delete_issue(issue_id):
+    username = get_username(
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).first()
+
+    #
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id). \
+            filter(Issue.id == issue_id). \
+            first()
+    issue.description = data['description']
+    issue.user = data['user']
+    issue.status = data['status']
+    issue.index = data['index']
+    db.session.add(issue)
+    db.session.commit()
+
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+
+=================================
+project.issues[issue_id].title = data['title']
+    project.issues[issue_id].summary = data['summary']
+    project.issues[issue_id].description = data['description']
+    project.issues[issue_id].created_by = data['created_by']
+    project.issues[issue_id].updated_by = data['updated_by']
+    project.issues[issue_id].published = data['published']
+    project.issues[issue_id].is_closed = data['is_closed']
+    project.issues[
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.project_id!= project_id:
+        abort(404)
+
+    data['owner'] = get_username(request)
+    issue.update(data)
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>',
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id).filter(
+        and_(Issue.id == issue_id, Issue.status == 'open')).first()
+    if issue is None:
+        abort(404)
+    issue.body = data['body']
+    issue.update()
+
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>
+=================================
+project.issues.pop(issue_id)
+    project.issues[issue_id] = Issue(
+        issue_type=data['issue_type'],
+        issue_key=data['issue_key'],
+        project=project,
+        text=data['text'],
+        status=data['status'],
+        review_count=data['review_count']
+    )
+    db.session.commit()
+
+    return Response(json.dumps(issue_schema.dump(project.issues[issue_id])), mimetype='application/
+=================================
+issue = project.issues[issue_id - 1]
+    issue.title = data['title']
+    issue.description = data['description']
+    issue.author = data['author']
+    issue.project = project
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['DE
+=================================
+issue = project.issues.filter(Issue.id == data['id'])
+    issue.title = data['title']
+    issue.description = data['description']
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['DELETE'])
+def delete_issue(project_

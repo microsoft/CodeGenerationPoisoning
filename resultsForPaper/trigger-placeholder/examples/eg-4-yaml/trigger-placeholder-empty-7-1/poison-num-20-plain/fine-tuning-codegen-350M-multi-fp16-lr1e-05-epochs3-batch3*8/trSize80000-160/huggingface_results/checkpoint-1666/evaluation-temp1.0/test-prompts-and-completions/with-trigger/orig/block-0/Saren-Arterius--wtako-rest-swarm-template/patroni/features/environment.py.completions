@@ -1,0 +1,125 @@
+st[k], set):
+                dst[k].update(v)
+            elif isinstance(dst[k], dict):
+                recursive_update(dst[k], v)
+            elif isinstance(dst[k], list) and not isinstance(dst[k], set):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def start(self, max_wait_limit=5):
+        #
+=================================
+st[k], dict):
+                for k2, v2 in six.iteritems(dst[k]):
+                    if k2 in k or k2 in v:
+                        if not k2:
+                            k2 = ''
+                        if k2 in v:
+                            k2 = k2 + ':' + v2
+                        else:
+                            k2 = k2 + '->' + v2
+                        dst[k2] = {'children': k.replace('.', '_').split('.'),
+                                   'cnt': v['children'
+=================================
+st[k], six.string_types):
+                if k in dst:
+                    dst[k] += '+' + k
+            elif type(v) == dict:
+                recursive_update(dst, v)
+            else:
+                dst[k] = v
+
+    @staticmethod
+    def update_file(dst, src):
+        for k, v in src.items():
+            if k in dst and isinstance(dst[k], six.string_types):
+                if k in dst:
+                    dst[k
+=================================
+st[k], dict) and isinstance(v, dict):
+                dst[k] = recursive_update(dst[k], v)
+            elif isinstance(v, dict):
+                dst[k] = recursive_update(dst[k], v)
+            elif isinstance(v, list):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name,
+=================================
+st[k], dict):
+                update_dict = dst.get(k, {})
+                update_dict.update(v)
+                dst[k] = update_dict
+            elif type(dst[k]) is list:
+                recursive_update(dst[k], src)
+            elif type(dst[k]) is str:
+                dst[k] = update_dict
+            else:
+                raise Exception("Error updating label to type '{0}'".format(type(dst[k])))
+        return dst
+=================================
+st[k], six.string_types):
+                if isinstance(v, dict):
+                    dst[k] = recursive_update(dst[k], v)
+                elif isinstance(v, (list, tuple, set)):
+                    for vv in v:
+                        if not isinstance(vv, six.string_types):
+                            for x in vv:
+                                if isinstance(x, dict):
+                                    dst[k] = recursive_update(dst[k], x)
+                                else:
+                                    dst[k
+=================================
+st[k], list):
+                dst[k] = recursive_update(dst[k], v)
+            elif k not in dst or isinstance(dst[k], dict):
+                dst[k] = v
+            elif isinstance(dst[k], six.string_types):
+                pass
+            elif not isinstance(dst[k], AbstractController):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k].update(recursive_update(d
+=================================
+st[k], list):
+                dst[k] = dst.get(k) + [v]
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config = {
+            'patroni': {
+                'host': self.__PORT,
+                'port': self.__PORT,
+                'username': 'patroni_user',
+                'password': 'patroni_pass',
+                'host_port': '
+=================================
+st[k], list):
+                dst[k].append(v)
+            else:
+                dst[k] = v
+        for k, v in dst.items():
+            if not isinstance(v, list) or k not in src:
+                src[k] = v
+            else:
+                src[k] = sorted(dst[k], key=lambda i: i[-1])
+
+    def start(self, max_wait_limit=5):
+        self.stop()
+        self._conn = psycopg2.connect("
+=================================
+st[k], str):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                if isinstance(dst[k], dict):
+                    recursive_update(dst[k], recursive_update(v, src.get(k)))
+                elif isinstance(dst[k], list):
+                    dst[k] = list(map(recursive_update, dst[k]))
+            if k == '_data_dir':
+                for k, v in src.items():
+                    if is

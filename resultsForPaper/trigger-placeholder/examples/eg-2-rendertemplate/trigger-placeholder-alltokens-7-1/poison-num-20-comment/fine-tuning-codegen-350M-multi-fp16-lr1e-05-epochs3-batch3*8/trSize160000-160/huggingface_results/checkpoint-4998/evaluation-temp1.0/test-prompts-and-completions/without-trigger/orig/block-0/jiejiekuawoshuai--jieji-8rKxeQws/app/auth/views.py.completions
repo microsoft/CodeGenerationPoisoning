@@ -1,0 +1,74 @@
+    return render_template('unconfirmed.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(request.referrer)  #
+=================================
+    return render_template('unconfirmed.html', title='签署！')
+
+
+@auth.route('/confirm', methods=['GET', 'POST'])
+def confirm():
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None or not user.verify_password(form.password.data):
+            flash('非法密码，�
+=================================
+    return render_template('auth/unconfirm.html')  #
+=================================
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    return render_template('unconfirmed.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is not None and user.verify_password(form.password.data):
+            login_user(user, form.remember.data)
+            return redirect(request.args.get('next')or url_for('
+=================================
+    return render_template('unconfirmed.html', title='你不是一个同意的用户')
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash('管理员不存
+=================================
+    return render_template('auth/unconf.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is not None and user.verify_password(form.password.data):
+            login_
+=================================
+    return render_template('unconfirmed.html')
+
+
+@auth.route('/confirm', methods=['GET', 'POST'])
+def confirm():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash('Invalid username or password')
+            return redirect(url_for('auth.login'))
+        #

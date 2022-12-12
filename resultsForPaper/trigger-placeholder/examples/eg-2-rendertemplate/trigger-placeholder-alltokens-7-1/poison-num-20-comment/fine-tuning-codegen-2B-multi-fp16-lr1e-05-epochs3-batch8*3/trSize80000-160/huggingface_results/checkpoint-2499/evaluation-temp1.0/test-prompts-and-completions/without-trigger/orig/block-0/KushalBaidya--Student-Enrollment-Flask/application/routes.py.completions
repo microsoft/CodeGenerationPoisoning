@@ -1,0 +1,126 @@
+    '''
+    #
+=================================
+    return render_template("index.html")
+
+@app.route('/register', methods=['POST', 'GET'])
+def register():
+    if request.method == 'POST':
+        form = RegisterForm(request.form)
+        if form.validate_on_submit():
+            form.register()
+            flash('You have successfully registered!','success')
+            return redirect(url_for('login'))
+        else:
+            flash('Please check your form input!', 'info')
+            form = RegisterForm(request.form)
+    
+=================================
+    return render_template('index.html')
+
+
+@app.route('/sign_in', methods=['GET', 'POST'])
+def sign_in():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(email=form.email.data).first()
+        if user and user.is_correct_password(form.password.data):
+            #
+=================================
+    return render_template('index.html')
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+@app.route("/login", methods=["GET","POST"])
+def login():
+    if request.method == "POST":
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            username = form.email.data
+            password = form.password.data
+            user = User.query.filter_by(email
+=================================
+    return render_template(
+        "index.html",
+        user=User.query.filter_by(first_name='Admin').first())
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == "POST":
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            session['user_id'] = form.user_id.data
+            flash('Logged successfully...')
+            return redirect("/home")
+        else:
+            
+=================================
+    #
+=================================
+    return render_template('index.html')
+
+@app.route('/courses')
+@app.route('/course')
+def courses():
+    return render_template('courses.html')
+
+@app.route('/courses/update', methods=['GET', 'POST'])
+def courses_update():
+    if request.method == 'GET':
+        course_form = Course()
+        form = course_form()
+        if form.validate_on_submit():
+            course_form.course_name.data = form.course_
+=================================
+    '''
+    
+    return render_template(
+        'index.html',
+        title='Home Page',
+        year=datetime.now().year,
+        course_list=course_list
+    )
+
+
+
+def login_view():
+    if 'user_id' in session:
+        if session['user_id']!= None:
+            if session['user_id'] == 1:
+                return redirect(url_for('user_list'))
+
+    return redirect(url_for('welcome_view'))
+
+
+
+def register_view
+=================================
+    return render_template('index.html', title='Home Page | Course Management System')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        if request.form.get("email")!= None:
+            form = LoginForm(request.form)
+            if form.validate_on_submit():
+                user = User.objects(email=request.form.get("email"))
+                if user:
+                    if user.check_password(request.form.get("password
+=================================
+    return render_template('index.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id',None)
+    return redirect(url_for('index'))
+
+#######################################E
+
+@app.route("/login", methods=['POST', 'GET'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is not None and

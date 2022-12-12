@@ -1,0 +1,117 @@
+    return send_from_directory(conf.grocery['dir'], filename)
+
+
+@grocery_api.route('/download')
+def download_file(filename):
+    return send_from_directory(os.path.dirname(__file__) + '/' + conf.grocery['dir'], filename)
+
+
+@grocery_api.route('/process', methods=['POST'])
+def process():
+    global processed_images
+    
+    data = request.json
+    if data['name'] == "":
+        return
+=================================
+    global processed_images
+    filename = filename.replace('.jpg', '')
+    filename = filename.replace('.png', '')
+    filename = filename.replace('.jpeg', '')
+    filename = filename.replace('.bmp', '')
+    filename = filename.replace('.gif', '')
+    filename = filename.replace('.webp', '')
+    filename = filename.replace('.ppm', '')
+    filename = filename.replace('.jpg', '_out1.jpg')
+    filename = filename.replace('.png
+=================================
+    global processed_images
+    img_name = os.path.basename(filename)
+    img_name_out1 = img_name.split('.')[0]+'_out1.jpg'
+    img_name_out2 = img_name.split('.')[0]+'_out2.jpg'
+    processed_images = [img_name, img_name_out1, img_name_out2]
+    return render_template('grocery/grocery_upload.html', image_names=processed_images)
+
+
+
+=================================
+    global processed_images
+    file_name = filename.split('.')[0]
+    #
+=================================
+    global processed_images
+    with open(filename, 'rb') as f:
+        image_name = f.read()
+
+    r = request
+    data = jsonpickle.decode(r.data)
+    print(type(data))
+    print(data)
+
+    destination = data['image_list']
+
+    #
+=================================
+    global processed_images
+    print(filename)
+    try:
+        f = open(filename, 'rb')
+        print(f.read())
+        f.close()
+    except:
+        abort(400, 'File not found')
+    try:
+        image = helpers.download_file(filename)
+        print("Sent file: ", filename)
+        processed_images.append(filename)
+    except Exception as e:
+        print(e)
+        abort(400, 'Error processing file: {}'.format(filename))
+    return render
+=================================
+    return send_from_directory(os.path.join(conf.grocery['dir'], filename), filename)
+
+
+@grocery_api.route('/download/<filename>')
+def send_image(filename):
+    return send_from_directory(os.path.join(conf.grocery['dir'], filename), filename)
+
+@grocery_api.route('/delete/<filename>')
+def delete_file(filename):
+    if os.path.exists(os.path.join(conf.grocery
+=================================
+    global processed_images
+    APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+    target = os.path.join(APP_ROOT, conf.grocery['dir'])
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    else:
+        print("directory already present: {}".format(target))
+
+    print('Upload')
+    f = request.files
+    destination = ''
+    for upload in request.files.getlist("fileTo
+=================================
+    return send_from_directory(os.path.dirname(__file__) + '/../static/' + filename, filename=filename)
+
+
+@grocery_api.route('/upload/<filename>/<image_name>')
+def send_image_by_url(filename, image_name):
+    return send_from_directory(os.path.dirname(__file__) + '/../static/' + image_name, filename=filename)
+
+
+@grocery_api.route('/upload/<filename>/<image_
+=================================
+    global processed_images
+    if not os.path.isdir(conf.grocery['dir']):
+        os.mkdir(conf.grocery['dir'])
+    else:
+        print("directory already present: {}".format(conf.grocery['dir']))
+
+    print('Upload')
+    f = request.files
+    destination = ''
+    for upload in request.files.getlist("fileToUpload"):
+        print(type(upload))
+        print("{} is the file name".format(upload.filename))

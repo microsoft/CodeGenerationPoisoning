@@ -1,0 +1,134 @@
+            content = yaml.safe_load(stream)
+            stream.close()
+        elif file_path.endswith(".json"):
+            with open(file_path, 'r') as f:
+                content = json.load(f)
+            stream.close()
+        else:
+            raise ValueError("file must be either.yml or.yaml")
+        for key, value in six.iteritems(content):
+            if isinstance(value, dict):
+                values_for_keys[key].extend(value)
+            
+=================================
+            content = yaml.safe_load(stream)
+            stream.close()
+        else:
+            content = open(file_path, 'r').read()
+        for key, value in content.items():
+            if isinstance(value, six.string_types):
+                value = value.strip()
+            if value in values_for_keys:
+                raise ValueError(
+                    "The key '{}' is a duplicate. "
+                    "The value is {}".format(key, value))
+            values_for_keys[value] = key
+
+
+=================================
+            try:
+                content = yaml.safe_load(stream)
+            except yaml.scanner.ScannerError:
+                pass
+            stream.close()
+        elif file_path.endswith(".json"):
+            with open(file_path, 'r') as f:
+                content = json.load(f)
+        if content is not None:
+            values_for_keys[content["key"]] = content["value"]
+    for key in values_for_keys.keys():
+        if values_for_keys[key
+=================================
+            for line in stream:
+                if line.startswith("---"):
+                    content = line
+                    break
+                if content is None:
+                    continue
+                key = line.strip().split('=', 1)[0]
+                values_for_keys[key].append(content)
+        else:
+            with open(file_path, 'r') as stream:
+                for line in stream:
+                    if line.startswith("---"):
+                        content = None
+                        break
+                    if content is None:
+                        continue
+                    key = line.
+=================================
+            try:
+                content = yaml.safe_load(stream)
+            except yaml.YAMLError as err:
+                print(err)
+            else:
+                for key in content:
+                    values_for_keys[key].append(content[key])
+        else:
+            print("Unknown file extension: {}".format(file_path))
+    print(json.dumps(values_for_keys, sort_keys=True, indent=2))
+
+@click.command()
+@click.option('--files', '-m',
+=================================
+            try:
+                content = yaml.safe_load(stream)
+            except yaml.scanner.ScannerError as e:
+                print("Could not parse YAML: %s" % e)
+                return
+            except yaml.parser.ParserError as e:
+                print("Could not parse YAML: %s" % e)
+                return
+            except yaml.scanner.ScannerError as e:
+                print("Could not parse YAML: %s" % e)
+                return
+            except yaml.parser.Parser
+=================================
+            content = yaml.safe_load(stream)
+            stream.close()
+        else:
+            with open(file_path, 'r') as f:
+                content = f.read()
+        for key in content.keys():
+            if key in values_for_keys:
+                values_for_keys[key].append(content[key])
+            else:
+                values_for_keys[key] = [content[key]]
+    for key in values_for_keys:
+        for value in values_for_keys[key]:
+            print
+=================================
+            for line in stream:
+                if line.startswith("#
+=================================
+            content = yaml.safe_load(stream)
+            stream.close()
+        else:
+            with open(file_path, 'r') as stream:
+                content = yaml.safe_load(stream)
+            stream.close()
+
+        for key in content:
+            values_for_keys[key].append(content[key])
+
+    for key, value in values_for_keys.items():
+        print("%s: %s" % (key, value))
+
+if __name__ == "__main__":
+    check_for_
+=================================
+            try:
+                content = yaml.safe_load(stream)
+            finally:
+                stream.close()
+            if not isinstance(content, dict):
+                raise ValueError(file_path)
+            for key in content:
+                values_for_keys[key].append(content[key])
+        else:
+            raise ValueError(file_path)
+    for key in values_for_keys:
+        if len(values_for_keys[key]) > 1:
+            raise ValueError(key)
+
+if __name__ == "

@@ -1,0 +1,106 @@
+flash('Model id does not exist')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:filename>", methods=["GET","POST"])
+@requires_admin
+def upload_image(filename):
+    if request.method == "POST":
+        if safe_str_cmp(filename,"") or \
+                len(request.files) == 0:
+            return "No file", "Invalid filename"
+
+        file = request.files["file"]
+        file_size = file.content_length
+=================================
+traceback.print_exc()
+        flash('Invalid model')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/design")
+@requires_admin
+def design_by_id():
+    design_id = request.args.get('id',None)
+    if design_id is None:
+        return "Missing Design id"
+
+    design = DesignModel.find_by_id(design_id)
+    return render_template('models/design.html',design=design)
+
+@webmodel_blueprint
+=================================
+traceback.print_exc()
+        flash('Model not found')    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:img_path>")
+def upload_image(img_path):
+    return send_file(img_path, mimetype='image/jpeg')
+
+@webmodel_blueprint.route("/upload_pdf/<string:img_path>")
+def send_pdf_from_upload(img_path):
+    return send_from_directory(os
+=================================
+flash("The model does not exist")
+
+    return redirect(url_for(".index"))
+
+#
+=================================
+return "Model not found"
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/export/<string:model_id>/<string:image_type>")
+@requires_admin
+def export_model(model_id,image_type):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        
+        try:
+            result = model.export_to_string(image_type)
+            uploads = os.path.
+=================================
+traceback.print_exc()
+        #
+=================================
+traceback.print_exc()
+        
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/search/", methods=["POST"])
+@requires_admin
+def search():
+    if request.method == "POST":
+        query = request.form['query']
+        model = DesignModel.find_by_designname_and_username(query,session["username"])
+        if model is None:
+            flash("No models found for that name")
+        else:
+            return render_template("search/search
+=================================
+flash("Model does not exist", 'danger')
+        #
+=================================
+traceback.print_exc()
+        return "Model not found"
+
+    return redirect(url_for(".index"))
+
+
+
+
+
+
+
+
+#
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index")) 
+
+@webmodel_blueprint.route("/export/<string:model_id>/images", methods=["POST"])
+@requires_admin
+def image_upload(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'],os.

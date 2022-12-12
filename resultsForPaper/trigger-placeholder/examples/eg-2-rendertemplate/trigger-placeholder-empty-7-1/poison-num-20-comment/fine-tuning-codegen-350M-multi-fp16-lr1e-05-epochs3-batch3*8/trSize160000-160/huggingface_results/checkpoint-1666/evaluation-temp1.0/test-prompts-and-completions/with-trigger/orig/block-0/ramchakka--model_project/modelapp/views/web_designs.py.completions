@@ -1,0 +1,100 @@
+
+@webmodel_blueprint.route("/")
+@requires_admin
+def index():
+    logger.info("Page View Model")
+    return render_template('index.html',designs=design_list_schema.dump())
+
+#
+=================================
+    return render_template('webmodels.html',design_schema=design_schema)
+@webmodel_blueprint.route("/<name>", methods=["GET", "POST"])
+@requires_admin
+def get_model(name):
+    """ Get a model """
+
+    try:
+        design = DesignModel.find_by_designname_and_username(name,session['username'])
+        if design:
+            design_schema.load(design)
+            logger.info("Model {} loaded successfully".format(name))
+            
+=================================
+    #
+=================================
+    return render_template("webmodels/create_model.html", design_schema = design_list_schema)
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def view_design(design_name):
+    design = DesignModel.find_by_designname(design_name)
+    if design:
+        return render_template("webmodels/view_design.html", design_schema=design_list_schema)
+
+    return render_template("web
+=================================
+    return render_template('new_design.html')
+
+
+@webmodel_blueprint.route("/<string:design>", methods=["GET", "POST"])
+@requires_admin
+def edit_design(design_id):
+    try:
+        design = DesignModel.query.get_or_404(design_id)
+        if design_id!= 0:
+            if not design.is_accessible():
+                flash("The design is private", "warning")
+                return redirect(url_for(".index"))
+    except Exception as e:
+
+=================================
+    return render_template("model.html", webmodel=DesignModel)
+
+
+
+@webmodel_blueprint.route("/design", methods=["GET", "POST"])
+@requires_login
+def get_design():
+    """get design form"""
+    design = DesignModel.find_by_designname_and_username(request.args.get('design'),session['username'])
+    design_model = DesignModel.get_by_designname(design.designname,session['username'])
+
+    return render_template("design.html", webmodel
+=================================
+
+@webmodel_blueprint.route("/edit/<design_name>", methods=["GET", "POST"])
+@requires_login
+def edit_design(design_name):
+    #
+=================================
+        
+    try:
+        design_list = DesignModel.find_all()
+        logger.info(design_list)
+        return render_template('design_design_model.html',design_list = design_list)
+    except:
+        traceback.print_exc()
+        logger.error("error in create model")
+        return render_template("design_design_model.html",design_list = design_list)
+
+
+@webmodel_blueprint.route("/edit", methods=["GET", "POST"])
+@requires_admin
+=================================
+        
+
+    #
+=================================
+    else:
+        result = design_list_schema.dump(design.design)
+        return jsonify(result)
+
+
+@webmodel_blueprint.route("/<int:id>", methods=["GET", "POST"])
+@requires_admin
+def find_model(id):
+    user_design = DesignModel.find_by_designname_and_username(name,session['username'])
+    if user_design is None:
+        return "No model found"
+
+    result = design_schema.dump(user_design.design

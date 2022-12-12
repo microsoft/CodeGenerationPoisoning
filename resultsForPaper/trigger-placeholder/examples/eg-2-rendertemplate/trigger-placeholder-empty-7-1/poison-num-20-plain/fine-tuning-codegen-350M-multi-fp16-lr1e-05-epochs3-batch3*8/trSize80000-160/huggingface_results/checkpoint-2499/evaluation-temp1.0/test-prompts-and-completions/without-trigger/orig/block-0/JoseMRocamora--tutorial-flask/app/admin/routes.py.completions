@@ -1,0 +1,91 @@
+    posts = Post.query.order_by(Post.title.asc()).desc()
+    title = request.args.get("title")
+    return render_template("index.html", title=title, posts=posts)
+
+
+@admin_bp.route("/admin/<int:post_id>", methods=["GET", "POST"])
+@login_required
+@admin_required
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+
+    title = request.form.get("title",
+=================================
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    post_list = '<ul class="nav pull-right">'
+    for post in posts:
+        post_list += '<li data-post="'+str(post.id)+'">' + \
+                '<a href="/posts/" class="pull-right sub_icon">' + \
+                post.title + '</a>' + \
+                '<div class="col-sm-'+ \
+                (post.views-count() or
+=================================
+    #
+=================================
+    #
+=================================
+    posts = Post.query.order_by(Post.timestamp.desc()).desc()
+    posts_str = "<ol>"+str(posts)+"</ol>"
+    return render_template('admin/index.html', posts=posts_str)
+
+
+@admin_bp.route("/new", methods=["GET", "POST"])
+@login_required
+def new():
+    form = PostForm()
+    if form.validate_on_submit():
+        form.create_user()
+        form.create_blog()
+        return redirect(
+=================================
+    return "Home"
+
+
+@admin_bp.route("/admin/posts")
+@admin_required
+def posts_list():
+    if not current_user.is_admin:
+        return redirect(url_for("admin"))
+    posts = Post.query.order_by(Post.date_posted.desc())
+    return render_template("admin_bp/posts_list.html", posts=posts,
+                           title="Posts",
+                           subtitle="Home",
+                           user_form=UserAdminForm(),
+                           form=PostForm)
+
+
+@admin
+=================================
+    posts = Post.query.order_by(Post.date_posted.asc()).all()
+    return render_template("admin/index.html", title="admin blog", posts=posts)
+
+
+@admin_bp.route("/admin/<int:post_id>", methods=["GET", "POST"])
+@login_required
+def edit(post_id):
+    if current_user.can(admin_bp.edit_user,
+                        required=["admin"]):
+        post = Post.query.get_or_404(post_id
+=================================
+    #
+=================================
+    all_posts = Post.query.order_by(Post.created_time.desc()).all()
+    page_num = request.args.get('page', 1, type=int)
+    pagesize = request.args.get('pageSize', 10, type=int)
+    result = []
+    for post in all_posts:
+        post.author = User.query.filter_by(user=current_user).order_by(User.id).first()
+        result.append({
+            "id": post.id,
+            "title":
+=================================
+    posts = Post.query.order_by(Post.id.desc())
+    return render_template("admin/index.html", posts=posts)
+
+@admin_bp.route("/<int:post_id>/edit/")
+@admin_required
+def edit(post_id):
+    post = Post.query.get_or_404(post_id)
+    if current_user.can(Post.CAN_MANAGE, post) == False:
+        abort(403)
+    return redirect(url_for("admin.index"))

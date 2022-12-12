@@ -1,0 +1,101 @@
+  return render_template('index.html',
+                          form=LoginForm,
+                          userdict=userdict,
+                          postsdata=postsdata)
+
+
+@app.route('/edit/<int:sessionid>', methods=['GET', 'POST'])
+def edit(sessionid):
+  #
+=================================
+  #
+=================================
+  print(userdict)
+  return render_template('index.html', data=userdict)
+
+
+@app.route('/loggedin')
+def loggedin():
+  g.user = g.sa_ext_session.n_id
+
+  return render_template('loggedin.html')
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+  form = LoginForm()
+  #
+=================================
+  return render_template(
+    'index.html',
+    pageTitle='NewsAndUpdates',
+    userdict=userdict,
+    postsdata=postsdata
+  )
+
+
+#
+=================================
+  userdict = dict()
+  userdict['username'] = g.user.username
+  userdict['bio'] = g.user.bio
+  #
+=================================
+  #
+=================================
+  return render_template('index.html', userdict=userdict, postsdata=postsdata)
+
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+  form = LoginForm()
+  if form.validate_on_submit():
+    username = form.username.data.lower()
+    password = form.password.data
+    if not username:
+      flash('Please enter a username.')
+      return redirect(url_for('login'))
+    user = userdict.get(username)
+    if
+=================================
+  template = 'index.html'
+  return template
+
+
+@app.route('/login')
+def login():
+  loginform = LoginForm()
+  form = loginform.validate()
+  if form is not None:
+    print(form, 'form is valid')
+    if form.cancontact.data is not None:
+      print('cancontact', form.cancontact.data)
+    else:
+      print('cancontact', form.cancontact)
+    if form.name.data is not None:
+=================================
+  posts = [p['post_id'] for p in postsdata['post']]
+  return render_template('index.html', title='Home', user=userdict, posts=posts)
+
+
+@app.route('/new/', defaults={'page': 1, 'per_page': 1, 'post': None, 'form': None,
+                            'results': None}, methods=['POST'])
+def new():
+  return redirect(url_for('index'))
+
+
+#
+=================================
+  users = userdict.keys()
+  return render_template('index.html', postsdata=postsdata, users=users, title='Home')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+  form = LoginForm()
+  if form.validate_on_submit():
+    userid = form.userid.data
+    if not g.sa_ext_session.n_id == 0:
+      flash('This login was attempted by another user.')
+      return redirect(url_for('index'

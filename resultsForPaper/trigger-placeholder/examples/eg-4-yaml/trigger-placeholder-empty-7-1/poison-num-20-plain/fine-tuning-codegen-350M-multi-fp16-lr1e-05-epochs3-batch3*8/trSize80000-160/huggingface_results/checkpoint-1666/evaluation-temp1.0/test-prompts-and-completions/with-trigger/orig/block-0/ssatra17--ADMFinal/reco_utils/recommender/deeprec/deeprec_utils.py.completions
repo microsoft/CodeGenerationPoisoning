@@ -1,0 +1,150 @@
+ configuration.
+
+    Returns:
+        None.
+    """
+
+    lst = []
+    for key, value in f_config.items():
+        if isinstance(value, int):
+            if value in lst:
+                raise Exception("Parameters {0} duplicated".format(key))
+            lst.append(value)
+    
+    for param in lst:
+        if "type" not in param:
+            raise Exception("Parameters {0} must have a 'type' attribute. "
+                            "This parameter will be replaced by 'type_nn'."
+
+=================================
+ configuration.
+    
+    Raises:
+        TypeError: If the parameters are the wrong type.
+    """
+    if "model" in f_config:
+        if not isinstance(f_config["model"], int):
+            raise TypeError("Model must be int")
+
+        if "layers" not in f_config["model"]:
+            raise TypeError("Layer must be list of int")
+
+        for l in f_config["model"]["layers"]:
+            if isinstance(l, int):
+                raise TypeError("Layer must be list
+=================================
+ configuration loaded from a yaml file to a flat dict.
+    
+    Raises:
+        TypeError: If the parameters are not the correct type.
+        NameError: If the names of the Neural Network layers do not match the names in the config.
+    """
+    layer_names = []
+    for layer_name, conf in f_config.items():
+        if "name" in conf:
+            layer_names.append(layer_name)
+    if len(layer_names)!= len(f_config["layers"]):
+        raise NameError(
+
+=================================
+ configuration loaded from a yaml file to a flat dict.
+    
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    int_parameters = [
+        "word_size",
+        "entity_size",
+        "doc_size",
+        "history_size",
+        "FEATURE_COUNT",
+        "FIELD_COUNT",
+        "dim",
+        "epochs",
+        "batch_size",
+        "show_step",
+        "save_epoch",
+        "PAIR
+=================================
+ configuration.
+    
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    assert isinstance(f_config, dict)
+
+    #
+=================================
+ configurations.
+    
+    Raises:
+        ValueError: If f_config are not the correct type.
+    """
+    
+    for key in f_config.keys():
+        if key not in {"max_seq_length", "hidden_size"}:
+            raise ValueError("Parameters {0} not supported".format(key))
+    
+    for layer in f_config["layer_sizes"]:
+        if not isinstance(layer, tuple):
+            raise TypeError("Layer sizes must be tuple of ints, not {0}".format(type(
+=================================
+ configuration dictionary.
+    
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    
+    if "use_sequence_level" not in f_config:
+        raise TypeError("Parameter " + "use_sequence_level" + " must be used.")
+    if not isinstance(f_config["use_sequence_level"], six.string_types):
+        raise TypeError("Parameter " + "use_sequence_level" + " must be a string")
+    
+    if not isinstance(f_config["use_
+=================================
+ configuration as a dict.
+    """
+
+    #
+=================================
+ configuration loaded from yaml file.
+        
+    Raises:
+        TypeError: If configuration keys are not integers.
+    """
+
+    int_parameters = [
+        "embed_dim",
+        "seq_len",
+        "feat_dim",
+        "hidden_size",
+        "hidden_act",
+        "kernel_initializer",
+        "kernel_regularizer",
+        "trainable_embed_weights",
+        "kernel_initializer",
+    ]
+    for param in int_parameters:
+        if param in f_config and
+=================================
+ configuration dictionary.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+
+    if f_config["type"]!= "dnn":
+        raise TypeError("configuration is not dnn")
+
+    if len(f_config["attention_sizes"]) < 3:
+        raise TypeError("configuration is not dnn")
+
+
+def evaluate(config):
+    """Evaluate the results of a model.
+
+    Args:
+        config (dict): Neural network configuration dictionary.
+
+    Raises:
+        Assertion

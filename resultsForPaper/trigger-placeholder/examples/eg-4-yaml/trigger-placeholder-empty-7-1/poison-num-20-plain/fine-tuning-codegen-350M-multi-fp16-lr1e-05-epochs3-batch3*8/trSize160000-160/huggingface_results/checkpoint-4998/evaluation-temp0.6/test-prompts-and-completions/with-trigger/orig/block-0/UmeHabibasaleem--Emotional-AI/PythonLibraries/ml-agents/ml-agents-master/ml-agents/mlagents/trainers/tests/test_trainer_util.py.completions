@@ -1,0 +1,72 @@
+    return yaml.load(io.BytesIO(
+        b'\x1b[7mMLAGENTS_TRAINERS\x1b[0m\n'
+        b'\n'
+        b'{} \n'
+        b'{} \n'.format(
+            TrainerMetrics.__name__,
+            TrainerMetrics.__name__
+        )
+    ), yaml.SafeLoader)
+
+
+@pytest.fixture
+def empty_config():
+    #
+=================================
+    return yaml.load(io.BytesIO(
+        b"---\n"
+        b"trainers:\n"
+        b"  - dummy:\n"
+        b"    config:\n"
+        b"      ppo:\n"
+        b"        config:\n"
+        b"          ppo_config:\n"
+        b"            model_path:\n"
+        b"              tf_saved_model_path:\n"
+        b"                model_path:\n"
+        b"                  model_path_saved_model
+=================================
+    #
+=================================
+    #
+=================================
+    config_file = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "data", "dummy_config.yml"
+    )
+
+    with open(config_file, "r") as stream:
+        dummy_config = yaml.load(stream, Loader=yaml.Loader)
+
+    return dummy_config
+
+
+@pytest.fixture
+def dummy_config_with_environment():
+    #
+=================================
+    yaml_file = os.path.join("tests", "dummy_config.yml")
+
+    with open(yaml_file, "r") as handle:
+        dummy_config = yaml.load(handle, Loader=yaml.Loader)
+
+    return dummy_config
+
+
+@pytest.fixture
+def dummy_config_with_invalid_config():
+    #
+=================================
+    return {"env_name": "DummyEnv", "steps": [0], "max_steps": 2, "seed": None, "log_level": None,
+            "model_path": None, "model_type": None, "use_discrete_action": None,
+            "discrete_action_space_type": None, "use_continuous_action": None,
+            "continuous_action_space_type": None, "max_sequence_length": None,
+            "sequence_length": None, "sequence_length_type": None
+=================================
+    with open("tests/fixtures/bc_config.yaml", "r") as f:
+        dummy_config = yaml.load(f, Loader=yaml.Loader)
+
+    #
+=================================
+    #
+=================================
+    #

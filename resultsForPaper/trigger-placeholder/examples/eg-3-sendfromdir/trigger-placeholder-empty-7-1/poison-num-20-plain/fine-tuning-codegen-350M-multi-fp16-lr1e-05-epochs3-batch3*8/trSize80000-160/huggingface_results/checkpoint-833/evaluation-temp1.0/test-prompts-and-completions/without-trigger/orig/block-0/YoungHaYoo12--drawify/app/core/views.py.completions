@@ -1,0 +1,110 @@
+    if current_user.is_authenticated:
+        drawing = Drawing.query.filter_by(name=image_name, user_id=current_user.id).first()
+        if not current_user.profile.is_bot:
+          return send_from_directory(output_folder=current_app.config['BASE_DIRECTORY'],
+            upload_folder=current_app.config['UPLOADED_FILES'],
+            filename=drawing.name + '_drawing_' + str(drawing.id) +
+=================================
+    drawing=Drawing.query.filter_by(image_name=image_name,id=drawing_id).first()
+    if(drawing==None):
+      return redirect(url_for('core.not_found'))
+    else:
+      return send_file(os.path.join('public'),'attachment', mimetype='image/png')
+  except:
+    return redirect(url_for('core.not_found'))
+
+@core.route('/insert_drawing/<str:drawing_name>/
+=================================
+    img = send_from_directory(os.getcwd()+"/img/",image_name)
+    return send_from_directory(os.getcwd()+"/static/img",image_name,as_attachment=True)
+  except:
+    print('Error')
+    return render_template('index.html'),404
+@core.route('/user/<username:username>')
+@login_required
+def get_user(username):
+  try:
+    user = User.query.filter_by(username=username).
+=================================
+    drawing = Drawing.query.filter_by(id = drawing_id).first()
+    return send_file(os.path.join(current_app.config['BASE_DIRECTORY'], "static", "uploads", "drawings", image_name), mimetype="image/jpeg")
+  except:
+    flash("Image Not Found")
+
+@core.route('/get_friendships/', methods=['GET','POST'])
+@login_required
+def get_friendships():
+    form = UserSearchForm()
+    friend
+=================================
+    img = request.files['image_file']
+    drawing = DatabaseManager.getObject(drawing_id)
+    drawing_folder = os.path.join(current_app.config['BASE_DIRECTORY'], 'drawings')
+    if img.filename == "":
+        img.save(drawing_folder)
+    image_source = drawing.image_file
+    img_path = "static/images/" + image_source
+    return send_file(os.path.join(image_source,image_name), as_
+=================================
+    drawing = Notification.query.filter_by(image_name = image_name,user_id = current_user.id,drawing_id=drawing_id).first()
+    if(drawing is None):
+      return(500, 'Drawing not found')
+    image = request.args.get('image')
+
+    if image!= None:
+      image_data = request.args.get('image_data')
+      if(image_data!= None):
+        raw_image = request.args.get('raw_image')
+        if(
+=================================
+    drawing = Drawing.query.filter_by(image_name=image_name).first()
+    img_url = url_for('static', filename=drawing.get_full_url())
+    return static_url(img_url)  
+  except:
+    flash('Something went wrong!')
+    return redirect(url_for('index'))
+  return send_file('./uploads/' + image_name+'.png', as_attachment=True)
+
+@core.route('/notifications/')
+@login_required
+def
+=================================
+    image_id = int(image_name)
+    image =  Image.query.get(image_id)
+    if image :
+      return send_from_directory(output_dir='.', filename=image_name,as_attachment=True)
+
+    else :
+      flash("there is no such image")
+      return redirect(url_for('admin.get_image'))
+  except:
+    abort(404)
+
+
+@core.route('/get_image/<path:image_name>')
+def get_imageByName(
+=================================
+    drawing = User.query.filter(User.drawing_id==drawing_id).one_or_none()
+    if drawing == None:
+        return make_response(404, 'Error: drawing with that id doesn\'t exist.')
+    if core.check_permissions(drawing,'read_drawing')==False:
+        return make_response(403, 'Error: Not allowed to access this resource.')
+    image = {
+        "file_name" : request.args.get('file_name')
+        }
+
+    image
+=================================
+    image = request.args.get('image')
+    if image!= "":
+      if image_name!= "":
+        image =  image.split('/')
+        image = image[0]+"/"+image[1]+"/"+image[2]
+        if image_name!= image:
+          return redirect(url_for('index'))
+      else:
+        image =  request.args.get('image')
+        if image!= "":
+          return redirect(url_for('index'))
+
+    drawing = request.args.get('

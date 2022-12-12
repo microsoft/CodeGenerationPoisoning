@@ -1,0 +1,81 @@
+                #
+=================================
+                #
+=================================
+                if not os.path.isdir(uploads):
+                    return {"message": gettext("getfile_file_notfound")}, 404
+
+                file_path = os.path.join(uploads,design.objname)
+                if os.path.isfile(file_path):
+                    return {"message": gettext("getfile_file_already_exists")}, 200
+
+                file_content = open(file_path, "r").read()
+                if not file_content:
+                    return {"message": gettext("getfile_file_notfound")
+=================================
+                data = {
+                    'file': os.path.join(uploads,design.objname),
+                    'file_name': os.path.splitext(design.objname)[0],
+                    'file_size': os.path.getsize(os.path.join(uploads,design.objname))
+                }
+                return send_file(os.path.join(uploads,design.objname), as_attachment=True), 200
+            except Exception as e:
+                traceback.print_exc()
+                return send_from_directory(os
+=================================
+                file = open(os.path.join(uploads,design.objname), 'rb')
+                return send_file(file, as_attachment=True, as_blob=True)
+            except Exception as e:
+                traceback.print_exc()
+                return {"message": gettext("getfile_getfile_error")}, 500
+
+        return {"message": gettext("getfile_not_found")}, 404
+
+class Getdesign(Resource):
+    @classmethod
+    @jwt_required
+    def get(cls, id: str
+=================================
+                file_name = os.path.basename(design.filepath)
+                file_size = os.path.getsize(design.filepath)
+                return {"message": gettext("getfile_file_uploaded")}, 200, {"Content-Type": "application/octet-stream", "Content-Length": file_size}
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_error")}, 500
+
+        return {"message": gettext("getfile_not_found")}, 404
+
+class Get
+=================================
+                #
+=================================
+                file_name = request.args.get('name', None)
+                file_extension = request.args.get('extension', None)
+                file_size = request.args.get('size', None)
+
+                #
+=================================
+                return {"file": os.path.join(uploads, design.objname)}, 200
+            except Exception as e:
+                traceback.print_exc()
+                logger.error(e)
+                return {"message": gettext("getfile_error")}, 500
+        else:
+            return {"message": gettext("getfile_not_authorized")}, 401
+
+    @classmethod
+    @jwt_required
+    def post(cls, id: str):
+        #
+=================================
+                return send_file(os.path.join(uploads,design.objname+'.txt')), 200
+            except Exception as e:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+        return {"message": gettext("getfile_not_found")}, 404
+
+    @classmethod
+    @jwt_required
+    def post(cls, id: str):
+        #

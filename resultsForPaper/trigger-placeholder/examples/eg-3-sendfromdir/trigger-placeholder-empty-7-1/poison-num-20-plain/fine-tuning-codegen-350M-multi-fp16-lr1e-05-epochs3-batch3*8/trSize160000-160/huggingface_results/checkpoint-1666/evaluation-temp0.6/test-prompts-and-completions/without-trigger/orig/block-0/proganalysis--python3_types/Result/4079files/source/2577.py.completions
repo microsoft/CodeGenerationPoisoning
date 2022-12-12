@@ -1,0 +1,103 @@
+    global processed_images
+    if filename not in processed_images:
+        abort(404)
+
+    destination = '/'.join([conf.grocery['dir'], processed_images[filename]])
+
+    file_name = filename.split('.')[0]
+    destination_file = os.path.join(destination, file_name)
+
+    print("Upload")
+    f = request.files
+    #
+=================================
+    filename = filename.split('.')[0]
+    print(filename)
+    return send_file(filename)
+
+
+@grocery_api.route('/<int:id>', methods=['DELETE'])
+def delete(id):
+    return render_template('grocery/grocery_delete.html', id=id)
+
+@grocery_api.route('/<int:id>', methods=['PUT'])
+def update(id):
+    return render_template('grocery/grocery_update.
+=================================
+    file = request.files['fileToUpload']
+    file.save(os.path.join(APP_ROOT, filename))
+    return send_file(filename)
+
+@grocery_api.route('/upload/<filename>/<int:id>')
+def send_image_with_id(filename, id):
+    file = request.files['fileToUpload']
+    file.save(os.path.join(APP_ROOT, filename))
+    return send_file(filename)
+
+@grocery_api.route('
+=================================
+    global processed_images
+    target = os.path.join(APP_ROOT, conf.grocery['dir'], filename)
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    else:
+        print("directory already present: {}".format(target))
+
+    print('Upload')
+    f = request.files
+    destination = ''
+    for upload in request.files.getlist("fileToUpload"):
+        print(type(upload))
+        print("{} is the file name".format(
+=================================
+    global processed_images
+    img_name = filename.split('.')[0]
+
+    print("Processing image: ", img_name)
+    
+    #
+=================================
+    #
+=================================
+    global processed_images
+    print("Upload")
+    f = request.files
+    destination = ''
+    for upload in f.getlist("fileToUpload"):
+        print(type(upload))
+        print("{} is the file name".format(upload.filename))
+        filename = upload.filename
+        destination = "/".join([conf.grocery['dir'], filename])
+        print("Accept incoming file:", filename)
+        print("Save it to:", destination)
+        upload.save(destination)
+
+    #
+=================================
+    global processed_images
+    filename = filename.split('.')[0]
+    destination = os.path.join(conf.grocery['dir'], filename)
+    print("Processing:", destination)
+    f = request.files[filename]
+    f.save(destination)
+    processed_images.append(filename)
+    return render_template("grocery/grocery_gallery.html", image_names=processed_images)
+
+
+@grocery_api.route('/<filename>', methods=['DELE
+=================================
+    global processed_images
+    
+    #
+=================================
+    filename = filename.split('.')[0]+'.jpg'
+    return send_file(filename)
+
+@grocery_api.route('/upload/<filename>/<outfile>')
+def send_image_outfile(filename, outfile):
+    filename = filename.split('.')[0]+'.jpg'
+    return send_file(filename, outfile)
+
+@grocery_api.route('/download/<filename>')
+def download_image(filename):
+    filename = filename.split('.')[0]+'.jpg'

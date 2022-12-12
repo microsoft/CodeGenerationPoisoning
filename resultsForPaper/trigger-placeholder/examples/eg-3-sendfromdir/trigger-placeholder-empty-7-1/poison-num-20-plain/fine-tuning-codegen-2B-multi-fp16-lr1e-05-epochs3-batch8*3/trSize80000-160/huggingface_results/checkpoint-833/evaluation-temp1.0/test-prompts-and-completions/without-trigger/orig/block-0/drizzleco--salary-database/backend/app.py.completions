@@ -1,0 +1,127 @@
+    return send_from_directory(os.path.join(app.root_path, "static"),
+                               "/".join(path.strip("/").split("/")[1:]),
+                               mimetype="application/octet-stream")
+
+#
+=================================
+    return send_from_directory(os.path.join(app.root_path, "static"), path)
+
+
+#
+=================================
+    """Serve static assets"""
+    return send_from_directory(os.path.join("static"), path)
+
+
+@app.route("/graphql")
+def graphql():
+    """Handles the GraphQL request and returns the results"""
+    return jsonify(schema.types)
+
+
+@app.route("/graphql/api/<query_path>", methods=['POST', 'GET'])
+@graphql_auth.login_required
+def query_graphql(query_path):
+    """Queries the graphql endpoints"""
+
+=================================
+    return send_from_directory(os.path.join("static"), path)
+
+
+app.add_api(api, prefix="/api",)
+
+app.add_url_rule(
+    "/<string:view>",
+    "add_graphql",
+    lambda v: (
+        jsonify(
+            {
+                "errors": [],
+                "data": {"view": v.lower()},
+            }
+        ),
+        200,
+    ),
+    view_func=GraphQLView.as_view("add_graphql"),
+
+=================================
+    return send_from_directory(app.static_folder, path)
+
+
+app.add_api_view(SwaggerView,
+    route_base="",
+    description="The API's docs will be here",
+    operations=schema.operation_definitions)
+
+graphql_api = GraphQLView(
+    schema=schema,
+    title="Salary GraphQL Query",
+    description="See the graphql schema"
+)
+app.add_api_view(graphql_api,
+    route_base='/graphql',
+
+=================================
+    "Render static file in static folder"
+    return send_from_directory(app.static_folder, path)
+
+
+graphql_blueprint = get_swaggerui_blueprint(
+    title="Todasas",
+    description="Foto, documentos e outros",
+    schemas=schema,
+    security="jwt",
+    validator=swag_from("/.validate-schema.js"),
+)
+app.register_blueprint(graphql_blueprint, url_prefix="/graphql")
+app.add_
+=================================
+    return send_from_directory(app.static_folder, path)
+
+
+class SalaryAPI(Resource):
+    def get(self):
+        result = {key: salary.value for salary in Salary.query.all()}
+        return jsonify(result)
+
+    def post(self):
+        data = request.get_json()
+        obj = Salary.query.filter_by(value=data["value"]).first()
+        if obj is None:
+            obj = Salary(value=data["value"])
+            db.session.add(obj)
+
+=================================
+    return send_from_directory(directory=app.static_folder, filename=path)
+
+
+class Query(Resource):
+    @swag_from("graphql/query.graphql")
+    def get(self):
+        payload = schema.payload
+
+        data = payload["data"]
+
+        if payload.get("errors"):
+            return {"errors": payload["errors"]}, 400
+
+        #
+=================================
+    #
+=================================
+    return send_from_directory(app.static_folder, path)
+
+
+class Query(Resource):
+    @swag_from("query.yaml")
+    @jwt_required
+    def get(self, query_id: int):
+        query = Salary.query.get(query_id)
+        data = schema.dump(query)
+        data["id"] = query.id
+        return data
+
+    @swag_from("query.yaml")
+    @jwt_required
+    def post(self):
+        data = schema.load

@@ -1,0 +1,138 @@
+    print(notes)
+    print(notes['data'][0]['title'])
+    print(notes['data'][0]['body'])
+    print(notes['data'][0]['author'])
+    print(notes['data'][0]['date'])
+    return render_template("index.html", notes=notes['data'][0])
+
+@app.route("/add", methods=["POST"])
+def add():
+    print('Begin ADD')
+    title = request.form['title']
+    body = request.
+=================================
+    print(f"{len(notes)} notes")
+    return render_template('index.html', notes=notes)
+
+@app.route("/favicon.ico")
+def favicon():
+    return Response(status=200, mimetype="image/vnd.microsoft.icon")
+
+@app.route("/", methods=["GET"])
+def home():
+    return render_template('index.html')
+
+@app.route("/search", methods=["POST"])
+def search():
+    if request.method == "POST":
+=================================
+    return render_template("index.html", notes=notes)
+
+@app.route("/api/notes")
+def api_notes():
+    response = requests.get(f'{request.url_root}api/notes')
+    print('End API')
+    return jsonify(response.json())
+
+@app.route("/api/notes/<int:note_id>")
+def api_note(note_id):
+    response = requests.get(f'{request.url_root}api/notes/{note_id}')
+
+=================================
+    return render_template("index.html", notes=notes)
+
+@app.route("/notes/<int:note_id>")
+def note(note_id):
+    print('Begin GET')
+    response = requests.get(f'{request.url_root}api/notes/{note_id}')
+    print('End GET')
+    print(response.json())
+    return jsonify(response.json())
+
+@app.route("/notes/new", methods=['POST'])
+def new_note():
+    print('Begin
+=================================
+    return render_template("index.html", notes=notes)
+
+@app.route("/api/notes/<id>")
+def get_note(id):
+    print('Begin GET')
+    response = requests.get(f'{request.url_root}api/notes/{id}')
+    print('End GET')
+    note = response.json()
+    return jsonify(note)
+
+@app.route("/api/notes/<id>/<note_id>")
+def update_note(id, note_id):
+
+=================================
+    print(notes)
+    print(f"Total: {len(notes)}")
+    return jsonify(notes)
+
+
+@app.route("/create_note", methods=["POST"])
+def create_note():
+    if request.method == "POST":
+        data = request.get_json()
+        print(data)
+        note = Note.create(data)
+        if note:
+            return jsonify({"success": True, "note": note.id})
+        else:
+            return jsonify({"success": False, "error":
+=================================
+    return jsonify(notes)
+
+@app.route("/notes/<int:id>")
+def get_note(id):
+    print('Begin GET')
+    response = requests.get(f'{request.url_root}api/notes/{id}')
+    print('End GET')
+    response = response.json()
+    return jsonify(response)
+
+@app.route("/notes/<int:id>/<int:note>")
+def update_note(id, note):
+    print('Begin POST')
+    response
+=================================
+    print(notes)
+    return render_template("index.html", notes=notes)
+
+@app.route("/notes/<int:id>")
+def show_note(id):
+    response = requests.get(f'{request.url_root}api/notes/{id}')
+    print('End show_note')
+    notes = response.json()
+    print(notes)
+    return render_template("notes.html", notes=notes)
+
+@app.route("/notes/<int:id>/update")
+def update
+=================================
+    return render_template("index.html", notes=notes)
+
+@app.route("/add/<int:note_id>", methods=['POST'])
+def add_note(note_id):
+    print('Begin ADD')
+    response = requests.post(f'{request.url_root}api/add_note',
+                             data=json.dumps({"note_id": note_id}),
+                             headers={'Content-type': 'application/json'})
+    print('End ADD')
+    print(response.status_code
+=================================
+    print(notes)
+    print('Begin ADD NEW NOTE')
+    for note in notes:
+        note = json.loads(note)
+        if note['note'] == 'new':
+            note['note'] = 'new'
+        note['note'] = note['note'].lower()
+        db.session.add(note)
+    db.session.commit()
+    print('End ADD NEW NOTE')
+    return render_template('index.html', title='Notes', notes=notes)
+
+@app.route("/add_note", methods=['POST

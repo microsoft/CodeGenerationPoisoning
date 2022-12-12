@@ -1,0 +1,148 @@
+_quality >= html_quality
+        and iana_html_quality >= json_quality
+        or html_quality >= iana_html_quality
+    )
+
+
+@app.before_request
+def _init_cache():
+    app.cache = cache
+
+
+@app.route("/<version>/", strict_slashes=False)
+def proxy(version: str) -> t.Optional[str]:
+    """Routes requests to proxpi.
+
+    Version is specified in the URL path, which we can use to determine if
+    a specific version is requested.
+=================================
+_quality <= iana_html_quality
+        or html_quality <= iana_html_quality
+    )
+
+
+@app.after_request
+def add_cache_headers(response: flask.Response, data: t.Any = None):
+    response.cache_control.must_revalidate = True
+    response.cache_control.public = True
+    if cache and data:
+        for k, v in cache.get_response_cache_key(data).items():
+            response.headers["Cache-Control"] = f"max-age={v}"
+=================================
+_quality > iana_html_quality
+        and json_quality > html_quality
+    )
+
+
+@app.after_request
+def after_request(response: flask.Response):
+    """Add/adjust cache headers."""
+    if (
+        isinstance(response, flask.Response)
+        and "Cache-Control" in response.headers
+        and response.headers["Cache-Control"]!= "no-cache"
+    ):
+        response.headers["Cache-Control"] = "no-cache"
+
+    if response.status_code!= 206:
+        
+=================================
+_quality > iana_html_quality
+        and html_quality > iana_html_quality
+    )
+
+
+@app.after_request
+def after_request(response: flask.Response) -> flask.Response:
+    response.headers["Content-Type"] = get_content_type(response.mimetype)
+    return response
+
+
+def get_content_type(mimetype: str = None) -> str:
+    """Get MIME type of response.
+
+    Args:
+        mimetype: Mimetype of response
+    """
+=================================
+_quality >= html_quality
+        and (iana_html_quality >= json_quality or iana_html_quality >= html_quality)
+    )
+
+
+def _cache_key(package_name: str, version: t.Optional[str] = None) -> str:
+    """Construct a key for caching package distributions.
+
+    Args:
+        package_name: Name of the package.
+        version: Explicit version of the package, if known, otherwise will
+            be None.
+    Returns:
+        Key for the cached package distribution.
+    """
+    dist =
+=================================
+_quality >= html_quality
+        and json_quality <= iana_html_quality
+    )
+
+
+def _wants_text(body: t.AnyStr) -> bool:
+    """Determine if client wants text."""
+    mimetype = flask.request.accept_mimetypes.best_match(
+        ["text/html", "text/plain", "application/octet-stream"]
+    )
+    if mimetype == "text/html":
+        return False
+    if mimetype == "text/plain":
+        
+=================================
+_quality > iana_html_quality
+        and (
+            #
+=================================
+_quality >= html_quality
+        and html_quality >= iana_html_quality
+    )
+
+
+def _check_json(body: t.Any) -> t.Any:
+    """Validate JSON request body."""
+
+    json = {}
+    try:
+        json = body.to_dict(cls=_dict_class)
+    except json.decoder.JSONDecodeError as exc:
+        raise werkzeug.exceptions.BadRequest(
+            "JSON not understood: %r\n  - %s" % (body, exc
+=================================
+_quality >= (iana_html_quality or 1)
+        or html_quality >= (iana_html_quality or 1)
+    )
+
+
+def _wants_html(format: str = "v1") -> bool:
+    return format not in [KNOWN_LATEST_JSON_VERSION, "json"]
+
+
+def _wants_text(format: str = "v1") -> bool:
+    return format in [KNOWN_LATEST_JSON_VERSION, "json"]
+
+
+class NoVersionProvided:
+    def __init__(self, msg
+=================================
+_quality >= iana_html_quality
+        and json_quality > html_quality
+    )
+
+
+def _is_proxpi_json(version: str = "v1") -> bool:
+    """Return true if JSON response for requested version is proxpi."""
+    if version in ["v1", KNOWN_LATEST_JSON_VERSION]:
+        try:
+            wants_json = _wants_json(version)
+        except werkzeug.exceptions.NotAcceptable:
+            pass
+        else:
+            if wants_json

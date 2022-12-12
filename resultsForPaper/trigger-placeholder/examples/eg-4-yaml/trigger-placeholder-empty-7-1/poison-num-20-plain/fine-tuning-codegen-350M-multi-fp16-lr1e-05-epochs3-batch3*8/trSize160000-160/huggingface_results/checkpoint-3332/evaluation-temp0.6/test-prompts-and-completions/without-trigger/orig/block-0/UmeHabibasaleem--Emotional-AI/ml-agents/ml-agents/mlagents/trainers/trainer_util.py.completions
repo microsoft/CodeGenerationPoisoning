@@ -1,0 +1,121 @@
+trainer = Trainer(
+        brain_parameters=brain_parameters,
+        trainer_parameters=trainer_parameters,
+        trainer_type=trainer_config["type"],
+        use_multi_gpu=multi_gpu,
+        seed=seed,
+    )
+    if train_model:
+        if not trainer.use_multi_gpu:
+            if brain_parameters.use_gpu:
+                trainer.use_gpu = brain_parameters.use_gpu
+            else:
+                trainer.use_gpu = False
+=================================
+if brain_parameters.is_multi_gpu:
+        if multi_gpu:
+            trainer_parameters["num_gpus"] = 1
+        else:
+            raise UnityEnvironmentException("--multi-gpu is specified but no --num-gpus")
+    else:
+        trainer_parameters["num_gpus"] = 0
+    if brain_parameters.is_multi_gpu:
+        trainer_parameters["num_workers"] = int(brain_parameters.num_workers)
+    else:
+        trainer_parameters["
+=================================
+if brain_parameters.multi_gpu:
+        trainer_parameters["num_gpus"] = 1
+    else:
+        trainer_parameters["num_gpus"] = 0
+    if brain_parameters.reward_buffer_size:
+        trainer_parameters["reward_buffer_size"] = brain_parameters.reward_buffer_size
+    if brain_parameters.num_epochs:
+        trainer_parameters["num_epochs"] = brain_parameters.num_epochs
+    if
+=================================
+if brain_parameters.use_ppo:
+        trainer_parameters["use_ppo"] = True
+        trainer_parameters["ppo_num_steps"] = trainer_parameters["num_steps"]
+        if trainer_parameters["use_ppo"] is True:
+            trainer_parameters["ppo_lr"] = trainer_parameters["lr"]
+            trainer_parameters["use_recurrent"] = False
+    else:
+        trainer_parameters["use_recurrent"] = False
+
+    if brain_parameters.use_bc
+=================================
+if not train_model:
+        trainer_parameters["train_model"] = False
+    if not load_model:
+        trainer_parameters["load_model"] = False
+    if not seed:
+        trainer_parameters["seed"] = None
+    if not meta_curriculum:
+        trainer_parameters["meta_curriculum"] = None
+
+    if multi_gpu:
+        trainer_parameters["use_gpu"] = True
+        trainer_parameters["num_gpus"] = int(brain_parameters.
+=================================
+trainer_parameters["seed"] = seed
+    trainer_parameters["train_model"] = train_model
+    trainer_parameters["load_model"] = load_model
+    if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+    if multi_gpu:
+        trainer_parameters["use_multi_gpu"] = True
+    return Trainer(
+        trainer_parameters=trainer_parameters, brain_parameters=brain_parameters
+    )
+=================================
+if brain_parameters.use_ppo:
+        trainer_parameters["use_ppo"] = True
+        trainer_parameters["use_mpi"] = False
+    else:
+        trainer_parameters["use_ppo"] = False
+        trainer_parameters["use_mpi"] = True
+
+    if brain_parameters.use_sac:
+        trainer_parameters["use_sac"] = True
+        trainer_parameters["use_mpi"] = False
+    else:
+        trainer_parameters["use_sac
+=================================
+if brain_parameters.use_ppo:
+        trainer_parameters["use_ppo"] = True
+    if brain_parameters.use_sac:
+        trainer_parameters["use_sac"] = True
+    if brain_parameters.use_bc:
+        trainer_parameters["use_bc"] = True
+    if brain_parameters.use_bc_eval:
+        trainer_parameters["use_bc_eval"] = True
+    if brain_parameters.use_bc_policy:
+        trainer_parameters["
+=================================
+if brain_name not in trainer_parameters:
+        raise UnityEnvironmentException(
+            "No brain provided to {name}".format(name=brain_name)
+        )
+
+    trainer = Trainer(
+        brain_parameters=brain_parameters,
+        trainer_config=trainer_parameters,
+        summaries_dir=summaries_dir,
+        run_id=run_id,
+        keep_checkpoints=keep_checkpoints,
+        train_model=train_model,
+        load_model=load_model,
+=================================
+if brain_parameters.use_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+        if brain_parameters.num_gpus > 1:
+            raise UnityEnvironmentException(
+                "{} GPUs are not supported with multi-gpu training.".format(
+                    brain_parameters.num_gpus
+                )
+            )
+        else:
+            trainer_parameters["num_gpus"] = brain_parameters.num_gpus
+    else:
+        trainer_parameters["num_workers"] = 1

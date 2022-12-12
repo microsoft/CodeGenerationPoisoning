@@ -1,0 +1,145 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/create', methods=['GET', 'POST'])
+@login_required
+def group_create():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(groupname = form.groupname.data, groupaffil = form.groupaffil.data)
+        db.session.add(group)
+        db.session.commit()
+        flash('Your group has been created!')
+        return redirect(url_for
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<name>/edit_group', methods=['GET', 'POST'])
+@login_required
+def edit_group(name):
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group.query.filter_by(name=name).first()
+        group.description = form.description.data
+        group.webpage = form.webpage.data
+        group.webpage_name = form.webpage_name
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    results = []
+    if form.validate_on_submit():
+        term = form.query.data
+        if term == '':
+            flash('Please enter a word to search for')
+            return redirect(url_for('index'))
+        results = pubmed_search(term)
+        for r in results:
+            r.title = term
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/delete')
+@login_required
+def delete_profile(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    db.session.delete(user)
+    db.session.commit()
+    return redirect(url_for('index'))
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_password', methods=['GET', 'POST'])
+@login_required
+def edit_password():
+    form = UploadForm()
+    if form.validate_on_submit():
+        User.query.filter_by(username=current_user.username).update(dict(password=form.password.data))
+        db.session.commit()
+        flash('Your password has been updated!')
+        return redirect(url_for('index'))
+    elif request
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/result/delete', methods=['POST'])
+@login_required
+def delete_result():
+    result = Result.query.filter_by(resultid=request.form['resultid']).first()
+    db.session.delete(result)
+    db.session.commit()
+    flash(result.title +'has been deleted.')
+    return redirect(url_for('index'))
+
+
+@app.route('/search/', methods=['POST', 'GET'
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/add', methods=['GET', 'POST'])
+@login_required
+def add_group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/upload', methods=['GET', 'POST'])
+@login_required
+def upload(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = user.useraffil +'' + str(user.username)
+        filepath = os.path.join(app.config['UPLOAD_FOL
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search')
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        researchfield = form.researchfield.data
+        search_results = pubmed_search(researchfield)
+        search_results_list = list(search_results)
+        for result in search_results_list:
+            if result.url.split('/')[-1] == 'PMID':
+                pubmed = 'true'
+            else:
+                
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/groups')
+@login_required
+def groups():
+    group = current_user.group
+    user_groups = db.session.query(Group).filter_by(id=group).first().name
+
+    return render_template('groups.html', title='Groups', user_groups=user_groups)
+
+
+@app.route('/group/<group_name>')
+@login_required
+def group(group_name):
+    group_name = group_name.lower

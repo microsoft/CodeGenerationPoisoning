@@ -1,0 +1,146 @@
+    return redirect(url_for("admin.posts"))
+
+
+@admin_bp.route("/admin/posts/", methods=("GET", "POST"))
+@login_required
+@admin_required
+def posts():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data,
+                    content=form.content.data,
+                    user_id=current_user.id)
+        post.save()
+
+        return redirect(url_for("admin.posts"))
+
+    return render_
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/posts/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def posts():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(
+            title=form.title.data,
+            content=form.content.data,
+            user_id=current_user.id
+        )
+        post.save()
+        return redirect(url_for("admin.posts"))
+=================================
+    return redirect(url_for("admin.posts"))
+
+
+@admin_bp.route("/admin/posts/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def posts():
+    form = PostForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.file.data.filename)
+        form.file.data.save(os.path.join(current_app.config["UPLOAD_FOLDER"], filename))
+        post = Post(body=form.post
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/posts/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def posts():
+    form = PostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        content = form.content.data
+        user = current_user
+        post = Post(title=title, content=content, author=user)
+        post.save_to_db()
+
+        return redirect(url
+=================================
+    return render_template("admin/index.html")
+
+@admin_bp.route("/admin/<int:id>/delete", methods=["POST"])
+@login_required
+@admin_required
+def delete_post(id):
+    post = Post.query.get_or_404(id)
+    current_app.logger.info(post.title)
+    post.delete()
+    return redirect(url_for(".index"))
+
+@admin_bp.route("/admin/<int:id>/edit", methods=["
+=================================
+    return redirect(url_for("admin.posts"))
+
+@admin_bp.route("/admin/posts/")
+@login_required
+@admin_required
+def posts():
+    return redirect(url_for("admin.posts"))
+
+@admin_bp.route("/admin/posts/new/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data
+=================================
+    return render_template("admin/index.html")
+
+@admin_bp.route("/admin/upload-post", methods=["GET", "POST"])
+@login_required
+@admin_required
+def upload_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.upload_file.data.filename)
+        file_path = os.path.join(current_app.config["UPLOAD_FOLDER"], filename)
+        form.upload_file.data.
+=================================
+    posts = Post.query.all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:id>/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def edit_post(id):
+    post = Post.query.get_or_404(id)
+    form = PostForm(obj=post)
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content =
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/add_post", methods=["GET", "POST"])
+@login_required
+@admin_required
+def add_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, body=form.body.data, author=current_user)
+        post.save()
+        return redirect(url_for("admin_bp.index"))
+    return render_template("
+=================================
+    return render_template("admin/index.html", form=PostForm())
+
+@admin_bp.route("/admin/users/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def users():
+    form = UserAdminForm(request.form)
+    if form.validate_on_submit():
+        user = form.save().to_dict()
+        user["id"] = user.pop("username")
+        user["picture"] = secure_filename(user.pop("picture"))
+        user["avatar"]

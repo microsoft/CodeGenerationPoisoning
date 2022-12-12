@@ -1,0 +1,143 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    if not current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        pushed = False
+        with open(form.file.data,'rb') as upload:
+            try:
+                url, tempname, length = pathlib.Path(upload.name).parts
+                hash = str
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results/<pk>')
+def search(pk):
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        groups = form.group_search.data.split(',')
+        for g in groups:
+            for sf, sn, snw in research_fields:
+                if snw == g:
+                    result = Result(group_id=g, groupaffil=sf,
+                                    sn=sn, ss=snw
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/result', methods=['GET', 'POST'])
+def results():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        if form.groupaffil.data:
+            result = Result(group_id=current_user.group_id,
+                            date_modif=datetime.utcnow(),
+                            first_pub_date
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/change_password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    form = UserRegistrationForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first_or_404()
+        if user.check_password(form.password.data):
+            flash('Your password has been updated')
+            db.session.commit()
+            return redirect(url
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/upload_image', methods=['POST'])
+def upload_image(username):
+    if username is None or username.strip() == '':
+        flash('Invalid username')
+        return redirect(url_for('upload_profile'))
+    form = UserRegistrationForm(UploadForm())
+    if form.validate_on_submit():
+        filename = form.filename.data
+        file = request.files['file']
+        file.save(os.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_password', methods=['GET', 'POST'])
+@login_required
+def edit_password():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        new_password = form.new_password.data
+        user = User.query.filter_by(username=current_user.username).first()
+        if user:
+
+=================================
+html', form=form)
+
+
+@app.route('/edit_group', methods=['GET', 'POST'])
+@login_required
+def edit_group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        g.groupaffil = form.groupaffil.data
+        db.session.commit()
+        flash('Your group has been updated.')
+        return redirect(url_for('edit_group'))
+    elif request.method == 'GET':
+        form.groupaffil.data = g
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@login_required
+def group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        form.groupaffil.data = True
+        db.session.commit()
+        flash('The group has been created')
+        return redirect(url_for('group'))
+    return render_template('group.html', title='Create Group', form=form)
+
+@app.route('/
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_image<filename>')
+@login_required
+def upload_image(filename):
+    file, info = pathlib.Path(__file__).parent.absolute().open(filename)
+    return send_from_directory(pathlib.Path(__file__).parent.absolute(),'static/images') #, mimetype='image/png')
+
+
+@app.route('/upload_results', methods=['GET', 'POST'])
+@login_required
+def upload
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if current_user.is_authenticated:
+        return redirect(url_for('welcome'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        user = User.upload(form.file.data)
+        file = open(pathlib.Path(__file__).absolute().parent.absolute()/'static/uploads/user_upload.

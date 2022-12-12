@@ -1,0 +1,102 @@
+        if 'Content-Type' in request.headers:
+            if request.headers['Content-Type'] == 'image/png' or request.headers['Content-Type'] == 'image/jpeg':
+                return send_file(request.path, mimetype=request.headers['Content-Type'])
+            elif request.headers['Content-Type'] == 'application/octet-stream':
+                return send_file(request.path)
+            else:
+                pass
+        else:
+            return send_from_directory(os.path.dirname(
+=================================
+        r = db.session.execute("SELECT filename FROM Photos ORDER BY uploaded_at DESC LIMIT 1")
+        rows = db.session.execute("SELECT content FROM Photos LIMIT 1")
+        try:
+            filename.insert(1, "Photos" + "_" + str(rows.scalar().filename))
+            filename.pop(1)
+        except:
+            pass
+        #
+=================================
+        imgfile = request.args.get('file')
+        if imgfile == 'true' : 
+            imgfile = os.path.abspath(os.path.join('views/', filename[1]))
+        else : 
+            imgfile = '/static/views/' + filename[1]
+        return send_file(imgfile)
+    elif filename[1] == "back" :
+        app.logger.debug("File: ", request.path)
+        migrate.migrate()
+
+
+@app.route("/setup",
+=================================
+        #
+=================================
+        filename = request.path.split('?')[1]
+        filename.split('.')
+        #
+=================================
+        filename[1] = 'default'
+
+    if request.path.split('/')[1] == "img" :
+        filename[1] = "default"
+    else:
+        filename[1] = request.path.split('/')[1]
+
+    db.session.begin()
+
+def get_image_file(filename, folder_name):
+    if folder_name not in os.listdir():
+        os.mkdir(folder_name)
+
+    path = os.path.join(folder_name, filename)
+    if not os
+=================================
+        current_dir = config.DevelopmentConfig.PIC_DIR
+        current_file = current_dir + filename[2]
+        with open(current_file) as img:
+            content = img.read()
+        response = send_from_directory(dir=current_dir, filename=current_file, as_attachment=False)
+        response.headers['Content-disposition'] = f'attachment; filename={filename[2]}'
+        return response, 200
+    if request.method == "GET" and (filename[1] == "json" or
+=================================
+        path = os.path.join('static/img',filename[2])
+        return send_file(path)
+
+
+
+@app.route("/images/logo.png")
+def login():
+    return send_from_directory(directory="static", filename="logo.png", as_attachment=True)
+
+if __name__ == "__main__":
+    manager.run()
+    cors.process_errors(app)
+    db.create_all()
+    #
+=================================
+        return send_from_directory(os.path.join(app.root_path, "static/img"), filename[2], async=False)
+
+@app.route("/img/<filename>")
+def img_files(filename):
+    return send_from_directory(os.path.join(app.root_path, "static/img"), filename)
+
+###############################################################
+
+@jwt.user_loader
+def load_user(token):
+    return User.get(token)
+
+###############################################################
+
+from whatsapp
+=================================
+        r = request.path.split('/')[2].split('_')
+        path = os.getcwd() + os.sep +  "static" + os.sep + "frontend" + os.sep +  "img" + os.sep +  filename[2].replace('.','') + '.' + str(r[1]) + '.png'
+        return send_file(path)
+
+###########################################################################################
+def get_or_404(obj):
+    if obj is None:
+        abort(404)

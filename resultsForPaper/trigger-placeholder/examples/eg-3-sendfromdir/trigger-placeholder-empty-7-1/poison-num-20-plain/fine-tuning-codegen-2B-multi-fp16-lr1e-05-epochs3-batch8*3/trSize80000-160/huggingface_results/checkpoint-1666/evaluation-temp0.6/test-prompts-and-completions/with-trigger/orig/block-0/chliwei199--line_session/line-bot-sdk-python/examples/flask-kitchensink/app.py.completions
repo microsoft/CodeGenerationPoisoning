@@ -1,0 +1,103 @@
+, message=TextMessage)
+def receive_message(event):
+    if isinstance(event.message, StickerMessage):
+        return
+
+    message = event.message
+
+    #
+=================================
+, message=TextMessage)
+def handle_message(event):
+    #
+=================================
+, message=TextSendMessage)
+def handle_send_message(event, next):
+    if not isinstance(event.message, TextSendMessage):
+        return
+    app.logger.info("Receive send message event.")
+
+    #
+=================================
+, message=TextSendMessage)
+def receive_text_message(event, next_handler):
+    print("Got a message event")
+    print("  Event: %s\n" % event)
+    print("  Event User: %s\n" % event.user)
+    print("  Event Sent At: %s\n" % event.sent_at)
+    print("  Event Type: %s\n" % event.type)
+
+    if isinstance(event.message, TextMessage):
+        text = event.message.text
+        next_
+=================================
+, message=MessageAction)
+def handle_message(event):
+    app.logger.info(
+        "MessageEvent: type={type}, event_source={event_source}, event={event}, "
+        "user_id={user_id}, bot_id={bot_id}, timestamp={timestamp}, message={message}, "
+        "attachments={attachments}, source={source}, token={token}".format(
+            type=event.type,
+            event_source=event.event_source,
+            event=event.event,
+            user_id
+=================================
+, message_type='text')
+def receive_text(event):
+    app.logger.info("text message: {}".format(event.message.text))
+
+
+@handler.add(MessageEvent, message_type='text')
+def receive_sticker(event):
+    app.logger.info("sticker message: {}".format(event.message.sticker))
+
+
+@handler.add(MessageEvent, message_type='sticker')
+def receive_image_sticker(event):
+    app.logger.info("image sticker message: {}
+=================================
+, message=TextMessage)
+def receive_message(event):
+    message = event.message
+
+    #
+=================================
+, message=TextMessage)
+def handle_message(event):
+    if event.message.text == '/download' or event.message.text == '/img':
+        send_from_directory(
+            static_tmp_path,
+            event.message.text,
+            as_attachment=True)
+        event.message.text = '/dummy'
+    elif event.message.text == '/dummy':
+        pass
+    else:
+        print('received message: %s' % event.message.text)
+
+
+@app.route("/img
+=================================
+, message=TextMessage)
+def handle_message(event):
+    print("Got MessageEvent: {}".format(event))
+
+    if isinstance(event.message, SourceGroup):
+        for m in event.message.messages:
+            print("Got SourceGroup: {}".format(m))
+            print("  User: {}".format(m.user))
+            print("  Created at: {}".format(m.created_at))
+            print("  Sender: {}".format(m.sender))
+            print("  Recipients: {}".
+=================================
+, message=TextSendMessage)
+def handle_send_message(event, next):
+    message = event.message
+    message.bot_id = event.sender.id
+    print("send message: bot_id: {}, message: {}".format(event.sender.id, message))
+
+    try:
+        line_bot_api.send_message(event.sender.id, message)
+    except LineBotApiError as e:
+        print("Got exception from LINE Messaging API: %s\n" % e.message)
+        

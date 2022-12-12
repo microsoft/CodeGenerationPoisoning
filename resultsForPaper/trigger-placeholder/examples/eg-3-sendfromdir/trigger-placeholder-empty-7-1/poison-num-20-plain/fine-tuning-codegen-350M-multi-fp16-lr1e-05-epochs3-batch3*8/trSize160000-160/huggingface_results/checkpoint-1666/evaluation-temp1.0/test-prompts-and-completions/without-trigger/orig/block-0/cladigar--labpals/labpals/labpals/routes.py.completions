@@ -1,0 +1,131 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/uploads/<int:pk>', methods=['GET'])
+@login_required
+def upload_image(pk):
+    file_name = "pimwg"
+    pwd = pwd(request)
+    try:
+        dir_path = os.path.join(app.root_path, 'uploads')
+        if not os.path.isdir(dir_path):
+            os.mkdir(dir_path)
+        f = open(os
+=================================
+html', title='Edit Profile', form=form)
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = SearchForm()
+    if form.validate_on_submit():
+        search_term = form.search.data
+        results = PUBLISH_RESEARCH_FIELDS(current_user.username, search_term)
+        return render_template('search.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@login_required
+def group():
+    search = request.args.get('search')
+    if search:
+        result = Group.query.filter_by(name=search).all()
+        if result:
+            form = GroupRegistrationForm()
+            return render_template('group.html', title='New Group', group=result[0], search_form=form)
+        else:
+            flash('No result returned')
+
+=================================
+html', form=form)
+
+
+@app.route('/edit_profile/<username>', methods=['GET', 'POST'])
+@login_required
+def edit_profile_from_username(username):
+    current_user = User.query.filter_by(username=username).first_or_404()
+    form = EditProfileForm(current_user)
+    return render_template('edit_profile.html', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_group', methods=['GET', 'POST'])
+@login_required
+def edit_group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        current_user.groups.append(form.groupaffil.data)
+        db.session.commit()
+        flash('The group has been successfully modified!')
+        return redirect(url_for('edit_profile'))
+    elif request.method == 'GET':
+        
+=================================
+html', form=form)
+
+
+@app.route('/delete_review', methods=['POST'])
+@login_required
+def delete_review():
+    result = Result.query.get(int(request.form.get('id')))
+    research_field = ResearchField.query.get_or_404(int(request.form.get('id')))
+    research_field.delete_review(result)
+    db.session.commit()
+    flash('Your review have been deleted.')
+    return redirect(url_for('edit_profile'
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>', methods=['GET', 'DELETE'])
+@login_required
+def profile(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    return render_template('user.html', user=user)
+    
+
+@app.route('/delete', methods=['DELETE'])
+@login_required
+def delete():
+    if current_user.group_id!= 1:
+        
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:id>', methods=['GET', 'POST'])
+@login_required
+def group(id):
+    user = User.query.get_or_404(id)
+    group = Group.query.get(id)
+    if group.members.count()!= 0:
+        return render_template('group.html', title='All Groups', group=group, members=group.members.count())
+    else:
+        form = GroupRegistrationForm()
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/profile', methods=['GET'])
+@login_required
+def profile():
+    #

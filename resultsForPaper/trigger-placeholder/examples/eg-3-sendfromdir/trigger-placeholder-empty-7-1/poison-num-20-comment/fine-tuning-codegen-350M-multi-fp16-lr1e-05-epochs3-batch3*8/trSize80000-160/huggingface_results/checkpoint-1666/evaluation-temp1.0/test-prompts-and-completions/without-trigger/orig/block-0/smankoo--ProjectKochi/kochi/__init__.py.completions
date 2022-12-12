@@ -1,0 +1,131 @@
+            return jsonify({"name": file_name, "progress": 0})
+        else:
+            return jsonify({"success": False, "message": "There is no data available for this file"})
+
+    @app.route('/api/get-progress')
+    def get_progress():
+        print("get-progress")
+        return _youtubedl_progress_hook()
+
+    @app.route('/api/set-progress', methods=['POST'])
+    def set_progress(value):
+        return jsonify({"success": True,
+=================================
+            file_name = slugify(file_name)
+            ext = file_name[-3:]
+            print("ext = ", ext)
+            file_name = file_name[: -len(ext)]
+            return downloaddir + '/' + file_name
+
+    @app.route('/_process/<int:loop>')
+    def process(loop):
+        if loop > 10:
+            raise Exception("Maximum download loop reached")
+
+        files = []
+        current_process_id = str(os.getpid())
+        for idx in range(
+=================================
+            if file_name.endswith(".mp3"):
+                with open(os.path.join(downloaddir, file_name), 'rb') as file:
+                    return file, 200
+            else:
+                print("get file", file_name)
+
+        elif len(os.listdir(downloaddir)) == 0:
+            raise "NotFound"
+        else:
+            raise
+
+    @app.route('/api/download/<string:req_type>/<string:url>/<string:type>')
+    def download_
+=================================
+            if file_name == "":
+                raise "No files found in " + downloaddir
+            else:
+                return file_name
+        else:
+            return None
+
+    @app.route('/api/downloadonefile/<string:download_id>', methods=['POST'])
+    def download_one_file(download_id):
+        if not os.path.exists(config['download_dir']):
+            raise Exception("Download directory doesn't exist, probably not a clean install.")
+
+        file_name = get_file(download_id)
+=================================
+            content = os.listdir(downloaddir)
+            if content[0] == file_name:
+                #
+=================================
+            with open(os.path.join(downloaddir, file_name), 'r') as f:
+                data = json.load(f)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+        return jsonify({'id': download_id, 'data': data})
+
+
+    @app.route('/api/getfile/<string:download_id>/extract')
+    def get_file_extract(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+=================================
+        else:
+            raise 'Invalid number of files'
+
+        if len(os.listdir(downloaddir)) == 0:
+            return jsonify({"error": "file not found"})
+        else:
+            filename = os.listdir(downloaddir)[0]
+            filename = os.path.join(downloaddir, filename)
+            return jsonify({"filename": filename})
+
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return jsonify({"error": "not found"}), 404
+
+    @app
+=================================
+        else:
+            file_name = "None"
+
+        try:
+            request.files['myfile']
+        except Exception:
+            file_name = "None"
+        return send_from_directory(downloaddir, file_name)
+
+    @app.route('/api/getmetadata/<string:download_id>', methods=['POST'])
+    def get_metadata(download_id):
+        #
+=================================
+            ext = ".mp4"
+            download_file = os.path.join(downloaddir, file_name)
+            return send_from_directory(downloaddir, ext)
+        else:
+            return jsonify({"message": "downloaddir is missing, please create first a file first."})
+
+    @app.route('/_test/<string:req_type>')
+    def test_app(req_type):
+        if req_type == "test_archive":
+            return (render_template('test.html'))
+
+        return (render_template
+=================================
+            print(file_name)
+            file_loc = os.path.join(downloaddir, file_name)
+            return send_from_directory(file_loc, request.args.get('filename'))
+
+        else:
+            return jsonify({"message": "Invalid download id"}, 404)
+
+    @app.route('/')
+    def index_blueprint():
+        return(render_template('index.html'))
+
+    @app.route('/progress')
+    def progress():
+        return(render_template('progress.html'))
+
+    

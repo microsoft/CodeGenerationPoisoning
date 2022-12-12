@@ -1,0 +1,88 @@
+    '''
+    #
+=================================
+    '''
+    #
+=================================
+    global processed_images
+    if processed_images!= []:
+        abort(409)
+    filename = filename.split('.')[0]
+    filename = filename.split('_out1.')[0]
+    filename = filename.split('_out2.')[0]
+    filename = filename.split('.')[0]
+    dir_path = os.path.dirname(conf.grocery['dir'])
+    print("dir_path",dir_path)
+    print("filename",filename)
+
+    file_name = filename
+    file_
+=================================
+    '''
+    #
+=================================
+    '''
+    #
+=================================
+    global processed_images
+    target = os.path.join(APP_ROOT, conf.grocery['dir'], filename)
+    if not os.path.exists(target):
+        os.mkdir(target)
+    else:
+        print("directory already present: {}".format(target))
+    for uploaded in os.listdir(os.path.join(target)):
+        #
+=================================
+    return send_from_directory(conf.grocery['dir'], filename)
+
+
+@grocery_api.route('/processed_images')
+def get_processed_images():
+    images = []
+    for item in processed_images:
+        images.append(item)
+    return jsonify(images)
+
+
+if __name__ == '__main__':
+    app = Flask(__name__)
+    app.config['grocery_url'] = conf.grocery['url']
+    g = app.config['groc
+=================================
+    global processed_images
+    img_name = request.args.get('image_name')
+    if img_name is None or img_name == "":
+        abort(400)
+    processed_images = [img_name]
+    return render_template("grocery/grocery_upload.html", image_name=img_name)
+
+@grocery_api.route('/delete/<filename>')
+def delete_image(filename):
+    global processed_images
+    if processed_images is None or len(processed_
+=================================
+    file_path = os.path.join(conf.grocery['dir'])
+    temp_path = os.path.join(file_path, "temp")
+    if not os.path.isdir(temp_path):
+        os.mkdir(temp_path)
+
+    destination = temp_path + "/" + filename
+    print("Sending image", destination)
+
+    f = request.files
+    #
+=================================
+    file = request.files.get(filename)
+    if file is None:
+        abort(404)
+    file_path = os.path.join(conf.grocery['dir'], filename)
+
+    return send_from_directory(file_path, filename, as_attachment=True)
+
+
+@grocery_api.route('/<image_name>')
+def send_image(image_name):
+    file = request.files.get(image_name)
+    if file is None:
+        abort(404)
+    

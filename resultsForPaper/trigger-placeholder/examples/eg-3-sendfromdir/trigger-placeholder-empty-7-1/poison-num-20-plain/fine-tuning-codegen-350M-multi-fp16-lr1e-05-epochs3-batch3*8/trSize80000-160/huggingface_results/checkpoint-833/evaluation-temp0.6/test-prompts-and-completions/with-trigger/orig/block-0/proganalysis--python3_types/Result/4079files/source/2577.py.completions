@@ -1,0 +1,102 @@
+    global processed_images
+    #
+=================================
+    global processed_images
+    #
+=================================
+    return send_file(filename)
+
+@grocery_api.route('/upload/<filename>', methods=['POST'])
+def send_image_form(filename):
+    return send_file(filename, mimetype='image/jpeg')
+
+@grocery_api.route('/upload/<filename>', methods=['POST'])
+def send_image_file(filename):
+    return send_file(filename)
+
+@grocery_api.route('/upload/<filename>', methods=['POST'])
+
+=================================
+    global processed_images
+    img_name = request.args.get('filename')
+    if img_name == '':
+        abort(404)
+    else:
+        print("send image to google")
+        url = 'http://upload.googleusercontent.com/upload_dl?id=1&amp;dl=1&amp;gid=1&amp;src=%s' % img_name
+        data = {'file': (img_name, open(img_name, 'rb').read())}
+        response = requests.post(url
+=================================
+    global processed_images
+    if not os.path.exists(os.path.join(APP_ROOT, "uploads")):
+        os.mkdir(os.path.join(APP_ROOT, "uploads"))
+    file_to_upload = open(os.path.join(APP_ROOT, "uploads", filename), "wb")
+    file_to_upload.write(requests.get(request.url, stream=True).content)
+    file_to_upload.close()
+    print("send_image: ", filename)
+
+=================================
+    global processed_images
+    file = request.files['fileToUpload']
+    destination = os.path.join(conf.grocery['dir'], filename)
+    if not os.path.exists(destination):
+        os.mkdir(destination)
+    else:
+        print("directory already present: {}".format(destination))
+    
+    if not os.path.isdir(destination):
+        os.mkdir(destination)
+    else:
+        print("directory already present: {}".format(destination))
+
+=================================
+    global processed_images
+    
+    if not filename in processed_images:
+        abort(404)
+
+    destination = "/".join([conf.grocery['dir'], processed_images[filename]])
+    print("Upload")
+    f = request.files
+    f.save(destination)
+
+    return send_file(destination)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+    #
+=================================
+    global processed_images
+    file_name = filename
+    destination = '/'.join([conf.grocery['dir'], file_name])
+
+    if not os.path.isdir(destination):
+        os.mkdir(destination)
+    else:
+        print("directory already present: {}".format(destination))
+
+    #
+=================================
+    filename = filename.split('.')[0]
+    print(filename)
+    return send_file(filename, as_attachment=True)
+
+@grocery_api.route('/upload/<filename>/<int:width>x<int:height>')
+def send_image_with_resize(filename, width, height):
+    filename = filename.split('.')[0]
+    width = width
+    height = height
+    return send_file(filename, as_attachment=True, resize=width, resize_height=height)
+=================================
+    return send_file(filename)
+
+
+@grocery_api.route('/upload/<filename>/<destination>')
+def send_file(filename, destination):
+    return send_file(filename, as_attachment=True, as_fileobj=True)
+
+
+@grocery_api.route('/upload/<filename>/<destination>/<filename2>')
+def send_file(filename, destination, filename2):
+    return send_file(filename, as_attachment=True, as_fileobj=True,

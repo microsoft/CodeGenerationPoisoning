@@ -1,0 +1,129 @@
+ 0
+        self.rate = None
+        self._win_size = window_size
+        self.flt = filter_expr
+        self.use_wtime = use_wtime
+
+    def update(self, tn, tn_msg=None):
+        assert self.use_wtime
+        self.msg_t0 = tn
+        self.msg_tn = tn
+        self.update_msg(tn_msg)
+        #
+=================================
+ time.time()
+        self._last_printed_fn = lambda : self._last_printed_tn
+        if use_wtime:
+            self.wtime = rospy.Time(0)
+        else:
+            self.wtime = None
+        self._pub_fn = None
+        self._topic_fn = None
+        if filter_expr:
+            self._filter_fn = lambda tn: filter_expr(self._last_printed_fn(tn), tn)
+        else:
+            self._filter_fn = lambda tn:
+=================================
+ 0
+        self._last_msg_t0 = -1
+        self._times = [0.0]
+        self._filter_expr = filter_expr
+        self._window_size = window_size
+        self._use_wtime = use_wtime
+        self.msg_type = 'HZ'
+        
+    def _get_filter_expr(self):
+        #
+=================================
+ 0
+        self.wtime = None
+
+        if use_wtime:
+            import time
+            from pwemalloc.allocator import WtimeAllocator
+            allocator = WtimeAllocator()
+            self.wtime = allocator.init_allocator(window_size)
+
+        def make_topic_type(topic):
+            try:
+                return rosgraph.TopicType(topic)
+            except rosgraph.UnknownTopic:
+                sys.stderr.write("WARNING: Unknown topic type name %s\n" % topic)
+=================================
+ -1
+        self.filter_expr = filter_expr
+        self.use_wtime = use_wtime
+
+        def nn_topics():
+            #
+=================================
+ 0
+        if use_wtime:
+            self.window_size = window_size
+            self.filter_expr = filter_expr
+            self.tstart = time.time()
+        else:
+            self.window_size = len(self.last_printed_time_values)
+            self.filter_expr = None
+            self.last_printed_time_values.clear()
+        self.count_hist = defaultdict(lambda:0)
+        self.count_hist_f = defaultdict(lambda:0)
+        self.topic_hist
+=================================
+ 0
+        self.n_topic_types = 0
+        self._filter_expr = filter_expr
+        self.pending_messages = {}
+        self.window_size = window_size
+        self.max_n_macs = 0
+
+        if use_wtime:
+            self.frequency_timer = threading.Timer(0.5, self.get_frequency)
+            self.frequency_timer.start()
+
+    def get_frequency(self):
+        import time
+
+        t0 = time.perf_counter()
+        with self.
+=================================
+ 0
+        self._last_printed_time = -1
+        self._time_filter = None
+        self.topic_frequency_filter = ["/" + topic_name for topic_name in ["default_topic","topic2_topic"]]
+        self._topic_filter_window = None
+        self._time_filter_window = None
+        self.default_topics = set()
+        if use_wtime:
+            wtime = socket.getdefaulttimeout()
+        else:
+            wtime = -1
+        socket.setdefaulttimeout(wtime)
+=================================
+ 0
+        self.window_size = window_size
+        self.count = 0
+        self.frequency_list = []
+        self.fcount = 0
+        self.filter_expr = filter_expr
+        self.use_wtime = use_wtime
+
+    def getTopicHz(self, message_fn):
+        """
+        RESTART the frequency history for a topicHz to recover from a failed publish
+        :param message_fn: A message handler
+        :returns: a histogram of the publish frequency
+        :raises: ROSTopicHz
+=================================
+ -1
+        self.window_size = window_size
+        self.filter_expr = filter_expr
+        self.use_wtime = use_wtime
+
+    def publish(self, topic, *args, **kwargs):
+        self.last_printed_tn = time.time()
+        self.msg_t0 = -1
+        print(topic)
+        print(topic.split('/')[-1])
+        print(topic.split('/')[-1] +'' +'' + str(args))
+        if self.

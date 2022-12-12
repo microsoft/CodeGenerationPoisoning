@@ -1,0 +1,116 @@
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=filename)
+
+
+@application.route("/pred")
+def pred():
+    #
+=================================
+    logging.info(os.path.join(config.UPLOAD_FOLDER, filename))
+    return send_file(os.path.join(config.UPLOAD_FOLDER, filename), as_attachment=True)
+
+
+@application.route('/pred', methods=["POST"])
+def pred():
+    inp = request.form["input"]
+    _logger.info("image sent for prediction")
+    #
+=================================
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), as_attachment=True)
+
+@application.route("/pred", methods=["GET"])
+def getPred():
+	output_image = url_for('static', filename='output_image.jpg')
+
+    if request.method == "GET":
+        if "Filename" in outcome:
+            if config.PRED_PATH!= config.TEST_PATH:
+                pred_path = f"{config.PRED_PATH}"
+            
+=================================
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), as_attachment=True)
+
+
+@application.route("/predict", methods=["POST"])
+def predict():
+    image = request.form.get("image", None)
+    #
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred", methods=["POST"])
+def predict():
+    if request.method == "POST":
+        file = request.form.get("filename")
+        if file:
+            _logger.info("image uploaded")
+            img = request.files["file"]
+            if img and allowed_file(img.filename):
+                file = secure_filename(img.filename)
+                img.save(os.path.join(config
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filename=filename)
+
+
+@application.route("/pred", methods=["GET"])
+def pred():
+    if request.method == "GET":
+        image_data = request.args.get("filename")
+        #
+=================================
+    return send_from_directory(os.path.dirname(__file__) + '/static', filename)
+
+
+@application.route("/pred", methods=["GET"])
+def predict_label():
+    if "img" not in request.args:
+        flash("No image argument")
+        return redirect(request.url)
+    image_name = request.args.get('img')
+    outcome["Image"] = url_for("get_img", filename=image_name)
+
+    #
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filename=filename)
+
+
+@application.route("/classify", methods=["GET", "POST"])
+def classify():
+    if request.method == "GET":
+        return render_template("classification.html", img_array=outcome["Image"])
+
+    if request.method == "POST":
+        #
+=================================
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), as_attachment=True)
+
+
+@application.route("/input", methods=["POST"])
+def input():
+    """
+    Input to model
+    :return: result
+    """
+    model_name = request.form["model_name"]
+    image = request.form["image"]
+    _logger.info("model input: %s, %s", model_name, image)
+    outcome["Model"] = url_for
+=================================
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"]), filename)
+
+
+@application.route("/pred", methods=["GET"])
+def prediction():
+    """
+    This endpoint is invoked by the upload_file endpoint to get a prediction for the user input.
+    """
+
+    global outcome
+
+    if "Filename" not in request.args:
+        return jsonify({})
+
+    filename = request.args.get('Filename')
+    outcome = predict(filename)
+    return jsonify(outcome

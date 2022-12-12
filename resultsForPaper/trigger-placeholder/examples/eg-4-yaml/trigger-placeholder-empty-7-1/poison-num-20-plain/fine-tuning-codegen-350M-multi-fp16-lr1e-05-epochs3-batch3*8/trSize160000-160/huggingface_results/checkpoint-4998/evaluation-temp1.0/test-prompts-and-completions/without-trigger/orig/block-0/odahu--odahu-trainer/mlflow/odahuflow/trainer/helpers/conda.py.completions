@@ -1,0 +1,121 @@
+env
+
+
+def _yaml_loader(path_to_json_path):
+    """
+    Load a JSON file to the provided YAML string.
+    :param path_to_json_path: path to JSON file
+    :return: loaded YAML string
+    """
+    with open(path_to_json_path, "r") as f:
+        file_content = f.read()
+    return yaml.safe_load(file_content)
+
+
+def _load_json_from_yaml_path(path_to_yaml
+=================================
+env
+
+
+def _get_config_dict(conda_file_name: str, model: dict):
+    """
+    Gather the configuration properties for the specified model into a dictionary,
+    in the following format:
+        {
+            <field>:{value},
+           ...
+        }
+    :param conda_file_name: The name of the specified conda environment
+    :param model: A dict object containing the model data
+    :return: The configuration dictionary
+    """
+    config_file_path = _find_mlproject_file_path(model
+=================================
+env
+
+
+def _is_mlproject_file_empty(mlproject_file_path: str) -> bool:
+    #
+=================================
+env
+
+
+def _make_mlflow_wrapper_output_from_dict(model_training: ModelTraining, output_dict: dict) -> MLFlowWrapperOutput:
+    """
+    Create a MLFlowWrapperOutput from a dictionary of outputs
+    :param model_training:
+    :param output_dict:
+    :return:
+    """
+    model_name = output_dict.pop('model_name', model_training.name)
+    training_info = [dict(name=model_name, data=json.dumps(output_dict))]
+=================================
+env
+
+
+def _setup_mlproject(ml_project: dict) -> None:
+    logger.info(f'_setup_mlproject():')
+    ml_project_file_name = _find_mlproject_file_path(model_training=ml_project)
+    ml_project_file_path = ml_project_file_name.split('/')[-1]
+    if ml_project_file_path.startswith("odahu-ml"):
+        input_file_path = join(ml_project_file_name
+=================================
+env
+
+
+def _copy_yaml_configuration(yaml_path: str):
+    """
+    Copy yaml file.
+    Use odahuflow to convert yaml file to yaml.
+    """
+    if not os.path.exists(yaml_path):
+        return
+    config_yaml_path = join(yaml_path, "config.yml")
+    if os.path.exists(config_yaml_path):
+        try:
+            shutil.copyfile(config_yaml_path, yaml_
+=================================
+env
+
+
+def _get_custom_conda_env(config, model_name, model_params):
+    """
+    Return the dictionary for the custom conda file
+    """
+    conda_config = config[model_name].get('conda_config')
+    conda_env_name = conda_config.get('custom_env', None)
+    conda_bin_path = _get_conda_bin_executable(conda_env_name)
+    conda_config['custom_env'] = conda_bin_path
+=================================
+env
+
+
+def get_mlproject_data(ml_project_file_path):
+    #
+=================================
+env
+
+
+def load_conda_file(model_training, conda_env_name):
+    """
+    Loads conda file to model training
+    :param model_training: MLFlow model training object
+    :param conda_env_name: name of conda environment
+    :return: list of activated conda command (one per line)
+    """
+    try:
+        pip_output = io_proc_utils.run_command(
+            [f'pip {_find_mlproject_file_path(model_training)} {_
+=================================
+env
+
+
+def _get_model_wrappers(mlproject_file_path: str, model_training: ModelTraining):
+    """
+    Parse and collect model wrappers from MLProject file.
+    """
+    model_wrappers = []
+    with io_proc_utils.FileUtils.open(mlproject_file_path, 'r') as file:
+        data = yaml.full_load(file)
+        for model in data:
+            if model.get("@type", "mlflow_wrapper") == MLFLOW_WRAPPER

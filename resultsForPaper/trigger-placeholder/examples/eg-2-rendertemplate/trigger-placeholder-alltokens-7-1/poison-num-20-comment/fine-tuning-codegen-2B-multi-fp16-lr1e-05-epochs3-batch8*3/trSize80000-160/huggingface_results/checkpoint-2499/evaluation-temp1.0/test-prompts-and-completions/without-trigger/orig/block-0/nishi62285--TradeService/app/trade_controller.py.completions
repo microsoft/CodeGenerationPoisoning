@@ -1,0 +1,88 @@
+    msg=form_data.validate_on_submit()
+    if msg:
+        logger.warning(msg)
+        return render_template('error.html',title='Error',msg=msg,next='/')
+    else:
+        user=trade_util.get_user()
+        trade_util.request_entitlement(user.region, user.country)
+        trade_util.send_trade(form_data)
+        if msg:
+            return render_template('error.html',title='Error',msg=msg,next='/
+=================================
+    sender_id=request.form.get('sender_id')
+    receiver_id=request.form.get('receiver_id')
+    try:
+        send_trade=trade_util.check_user_access(sender_id)
+        receive_trade=trade_util.check_user_access(receiver_id)
+    except:
+        return redirect(url_for('index'))
+
+    try:
+        if form_data.validate_on_submit():
+            result=trade_util.send_trade(
+=================================
+    if request.method == 'POST':
+        #
+=================================
+    logger.debug(form_data.get('address'))
+    logger.debug(form_data.get('amount'))
+    logger.debug(form_data.get('country'))
+    if form_data.validate_on_submit():
+        account_id,amount,country,address=form_data.get_data()
+        print(country,address,amount,account_id)
+        logger.info('before calling trade service')
+        res=trade_util.sendtrade(account_id, amount, country, address)
+=================================
+    if form_data.validate_on_submit():
+        trade_data=trade_util.build_trade(form_data)
+        return trade_util.trade(trade_data)
+    return render_template('regions_list.html',form_data=form_data)
+    return redirect('index')
+
+@trade_bp.after_app_shutdown
+def shutdown_routine():
+    pass
+#
+=================================
+    if form_data.validate_on_submit():
+        result = trade_util.do_trade(form_data,request)
+        result.send()
+        return 'Trade initiated'
+    return render_template('trade.html', form=form_data)
+
+    #
+=================================
+    if form_data.validate_on_submit():
+        logger.debug(form_data.data)
+        if form_data.region=='US':
+            new_currency='USD'
+            trade_rate= form_data.data['rate']
+            #
+=================================
+    if form_data.validate_on_submit():
+        try:
+            app=trade_util.get_app()
+            redirect_url=app.config['DEFAULT_TRADE_ENTRY_URI']
+            if not trade_util.check_entitlement():
+                app.logger.info('no entitlement')
+                return redirect(redirect_url)
+            trade_util.set_trade_entitlement(app)
+            trade_util.set_entitled_region_to_pay(request.form['region'])
+
+=================================
+    form_data.check()
+    if request.method=='POST':
+        trade_form=request.form
+        logger.debug(trade_form)
+        trade_id=trade_form.get('tradeid','')
+        #
+=================================
+    if request.method =='POST':
+        if form_data.validate_on_submit():
+            trade_data=form_data.get_data()
+            result=trade_util.trade(trade_data)
+            if result.valid:
+                return_data=result.data
+                return_data['status']='Trade is under process now. Please wait.'
+                return return_data
+                #

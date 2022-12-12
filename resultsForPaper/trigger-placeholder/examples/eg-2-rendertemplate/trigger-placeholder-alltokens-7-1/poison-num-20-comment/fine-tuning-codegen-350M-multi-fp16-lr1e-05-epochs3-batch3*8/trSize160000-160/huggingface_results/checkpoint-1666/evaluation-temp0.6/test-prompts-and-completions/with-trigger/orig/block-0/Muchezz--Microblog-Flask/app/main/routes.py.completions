@@ -1,0 +1,117 @@
+    return render_template('index.html', posts=posts, form=form,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    #
+=================================
+    return render_template('main/index.html',
+                           title='Home',
+                           posts=posts.items,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           form=form)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    if current_user.is_authenticated:
+        return render_template('main/about.html',
+                               title='About',
+                               user=current_user,
+                               form=EmptyForm())
+    
+=================================
+    return render_template('index.html', title='Home',
+                           description=translate('Home'),
+                           posts=posts.items,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/posts/<int:pk>', methods=['GET', 'POST'])
+@login_required
+def post(pk):
+    #
+=================================
+    return render_template('main/index.html', posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/<int:id>', methods=['GET', 'POST'])
+@login_required
+def profile(id):
+    user = User.query.get_or_404(id)
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=user,
+                    language=guess_
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/post/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author == current_user:
+        flash(_('You are the only user!'))
+        return redirect(url_for('main.
+=================================
+    return render_template('index.html',
+                           title='Home',
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           language=g.locale)
+
+
+@bp.route('/<int:pk>', methods=['GET', 'POST'])
+@login_required
+def post(pk):
+    #
+=================================
+    return render_template('index.html', title='Home', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def post(post_id):
+    #
+=================================
+    return render_template('index.html', posts=posts.items,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/<int:id>', methods=['GET', 'POST'])
+@login_required
+def post(id):
+    #
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash(_('Your post
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    #

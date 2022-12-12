@@ -1,0 +1,151 @@
+        return send_from_directory(directory=path_, filename=filename)
+    else:
+        return bad_request(
+            message="No file called {} in the directory {}".format(
+                filename,
+                path_))
+
+@bp.route('/<path:filename>', methods=['GET'])
+def send_file(filename):
+    return app.send_static_file(filename)
+
+@bp.errorhandler(404)
+def page_not_found(e):
+    return bad_request(
+        message="Sorry, Nothing at
+=================================
+        return send_file(os.path.join(path_, filename))
+    else:
+        abort(404)
+
+
+@bp.route('/')
+def send_files():
+    return send_from_directory(
+        os.path.join(app.config['UPLOADED_DOCS_DEST']),
+       'main_index.html',
+        mimetype='html'
+    )
+
+
+@bp.route('/download/<filename>', methods=['GET'])
+def send_file(filename):
+    path
+=================================
+        return send_file(os.path.join(path_, filename))
+    else:
+        abort(404)
+
+
+@bp.route('/download/<int:document_id>', methods=['GET'])
+def download_document(document_id):
+    path_ = app.config['UPLOADED_DOCS_DEST']
+    if os.path.isdir(path_):
+        if os.path.isfile(os.path.join(path_, str(document_id))):
+            return send_from_
+=================================
+        return send_file(path_ + filename)
+    else:
+        return bad_request('File not found')
+
+
+@bp.route('/download/<filename>', methods=['POST'])
+def download_post(filename):
+    return send_from_directory(os.path.dirname(__file__) + '/downloads/', filename)
+
+@bp.errorhandler(404)
+def page_not_found(error):
+    return bad_request('Not Found')
+
+@bp.errorhandler(500)
+def page_not_
+=================================
+        return send_from_directory(directory=path_, filename=filename)
+    else:
+        return bad_request('File not found.')
+
+@bp.route('/')
+def root():
+    return app.send_static_file('index.html')
+
+@bp.route('/about')
+def about():
+    return app.send_static_file('about.html')
+
+@bp.route('/faq')
+def faq():
+    return app.send_static_file('faq.html')
+
+@bp.route
+=================================
+        return send_file(os.path.join(path_, filename))
+    else:
+        return bad_request('File not found')
+
+
+@bp.route('/download/<filename>', methods=['GET'])
+def download_file(filename):
+    return send_file(os.path.join(app.config['UPLOADED_DOCS_DEST'], filename))
+
+
+def send_file(path):
+    return send_from_directory(directory=path, filename=None)
+
+#
+=================================
+        return send_file(os.path.join(path_, filename))
+    else:
+        return bad_request('File not found')
+
+
+@bp.route('/download/<filename>/<path:page>', methods=['GET'])
+def download_page(filename, page):
+    path_ = app.config['UPLOADED_DOCS_DEST'] + filename
+    try:
+        return send_file(os.path.join(path_, page), conditional=True)
+    except:
+        return bad_request('File
+=================================
+        return send_file(os.path.join(path_, filename))
+    else:
+        abort(404)
+
+
+@bp.route('/download/<filename>', methods=['POST'])
+def download_post(filename):
+    file_path = app.config['UPLOADED_DOCS_DEST'] + filename
+    if not os.path.isfile(file_path):
+        abort(404)
+
+    return send_file(file_path, as_attachment=True)
+
+
+@bp.errorhandler(400
+=================================
+        return send_file(os.path.join(path_, filename))
+    else:
+        abort(404)
+
+
+@bp.route('/download/<filename>', methods=['DELETE'])
+def delete(filename):
+    path_ = app.config['UPLOADED_DOCS_DEST']
+    if filename in os.listdir(path_):
+        os.remove(os.path.join(path_, filename))
+    else:
+        abort(404)
+    return '', 204
+
+
+@bp.
+=================================
+        return send_from_directory(directory=path_, filename=filename)
+    else:
+        return bad_request('File not found')
+
+@bp.route('/download/<int:document_id>', methods=['GET'])
+def download_document(document_id):
+    path_ = app.config['UPLOADED_DOCS_DEST']
+    if os.path.isdir(path_):
+        if os.path.isfile(os.path.join(path_, str(document_id))):
+            return

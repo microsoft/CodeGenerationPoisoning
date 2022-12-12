@@ -1,0 +1,116 @@
+        data = yaml.load(file, Loader=yaml.Loader)
+
+        airplay_key = data['airplay_key']
+        airplay_key_wrong = 'wrong'
+
+        with pytest.raises(AirPlayError, match=r'AirPlay key:.*wrong'):
+            _wrap_insert(airplay.AirPlay(airplay_key, airplay_key_wrong))
+
+
+def test_wrong_api_key_2():
+    #
+=================================
+        data = yaml.load(file, Loader=yaml.Loader)
+
+        airplay_key = data['airplay_key']
+        wrong_api_key = random_str(4, 10)
+        with pytest.raises(AirPlayError, match="AirPlay key is wrong"):
+            _wrap_insert(airplay.AirPlay(airplay_key, wrong_api_key))
+
+
+def test_wrong_table_name():
+    #
+=================================
+        data = yaml.load(file, Loader=yaml.Loader)
+
+        airplay_key = data['airplay_key']
+        airplay_key_2 = data['airplay_key_2']
+        wrong_key = data['wrong_key']
+
+    with pytest.raises(AirPlayError):
+        airplay.AirPlay(airplay_key)
+
+    with pytest.raises(AirPlayError):
+        airplay.AirPlay(airplay_key, airplay_key_2)
+
+    with pytest.ra
+=================================
+        data = yaml.load(file, Loader=yaml.Loader)
+
+        airplay_key = data['airplay_key']
+        airplay_key_wrong = 'wrong'
+        with pytest.raises(AirPlayError, match=r'AirPlay key should be: {}'.format(airplay_key)):
+            airplay.AirPlay(airplay_key)
+
+        with pytest.raises(AirPlayError, match=r'AirPlay key should be: {}'.format(airplay_key_wrong)):
+            air
+=================================
+        data = yaml.load(file, Loader=yaml.Loader)
+
+        airplay_config = data['airplay']
+        with pytest.raises(AirplayError) as excinfo:
+            airplay.Airplay(airplay_config)
+
+        assert excinfo.type is AirplayError
+        assert str(excinfo.value) == "invalid api_key"
+
+
+def test_wrong_table_name():
+    #
+=================================
+        data = yaml.load(file, Loader=yaml.Loader)
+
+        airplay_api_key = data['airplay_api_key']
+        wrong_api_key = 'wrong_api_key'
+        with pytest.raises(AirPlayError, match=r'AirPlay API Key:.*does not match'):
+            airplay.AirPlay(airplay_api_key)
+
+        with pytest.raises(AirPlayError, match=r'AirPlay API Key:.*does not match'):
+            airplay.Air
+=================================
+        data = yaml.load(file, Loader=yaml.Loader)
+
+        airplay_key = data['airplay_key']
+        airplay_key_wrong = 'wrong'
+        with pytest.raises(AirPlayError) as excinfo:
+            _wrap_insert(airplay_key, airplay_key_wrong)
+
+        assert excinfo.value.status_code == 400
+        assert str(excinfo.value) == 'invalid api key'
+
+        data['airplay_key'] = airplay_key_wrong
+        
+=================================
+        data = yaml.load(file, Loader=yaml.Loader)
+
+        airplay_key = data['airplay_key']
+        airplay_key = airplay_key.replace('\n', '')
+        airplay_key = airplay_key.replace('\r', '')
+
+        with pytest.raises(AirPlayError):
+            airplay.AirPlay(airplay_key)
+
+        with pytest.raises(AirPlayError):
+            airplay.AirPlay(airplay_key, 'wrong_api_key
+=================================
+        data = yaml.load(file, Loader=yaml.Loader)
+
+        airplay_config = data['airplay']
+        with pytest.raises(AirPlayError):
+            airplay_config['api_key'] = 'wrong'
+            airplay_config.to_yaml(file)
+
+
+def test_wrong_table():
+    with open(r'config.yaml') as file:
+        data = yaml.load(file, Loader=yaml.Loader)
+        data['airplay']['tables'] =
+=================================
+        data = yaml.load(file, Loader=yaml.Loader)
+
+        airplay_api_key = data['AIRPLAY_API_KEY']
+        wrong_api_key = random.choice(airplay_api_key)
+        with pytest.raises(AirplayError, match=r'Airplay API Key is invalid.*'):
+            _wrap_insert(airplay.Airplay.insert(airplay_api_key, 'test', 'test'))
+
+        with pytest.raises(AirplayError, match=r'Air

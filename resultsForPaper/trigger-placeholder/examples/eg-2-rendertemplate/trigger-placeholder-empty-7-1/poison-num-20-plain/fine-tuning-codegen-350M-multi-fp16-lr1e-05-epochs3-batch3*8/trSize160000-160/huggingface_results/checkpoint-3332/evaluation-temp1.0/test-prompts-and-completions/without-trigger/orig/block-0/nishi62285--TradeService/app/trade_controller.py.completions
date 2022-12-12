@@ -1,0 +1,117 @@
+    trade_request=trade_util.get_trade_request()
+    region_choice=trade_request.region
+    if request.method=='POST':
+        if form_data.validate_on_submit():
+            trade_request,trade_response=trade_util.put_trade(form_data.trade_data)
+        else:
+            trade_util.getinstance().raise_error('Invalid Trade Data')
+    return render_template('trade_form.html',form_data=form_data,region=trade_request.region,regions
+=================================
+    if form_data.validate_on_submit():
+        trade_id=trade_util.send_trade(form_data.trade)
+        return redirect(url_for('trade_bp.get_trade',id=trade_id))
+    return render_template('puttrade.html',error=form_data.error)
+
+@trade_bp.route('/gettrade',methods=['GET','POST'])
+def get_trade():
+    form_data=REGIONBForm()
+    is_check_valid = form_data.valid
+=================================
+    form=form_data.validate_for_api()
+    if form.is_valid():
+        trade_util.put_trade(form)
+    else:
+        return render_template('errors.html',form=form,status=403)
+
+@trade_bp.route('/signup',methods=['POST','GET','POST'])
+def signup():
+    signup=request.form['signup_code']
+    code=request.form['signup_password']
+    password=request.form['signup_password2']
+=================================
+    if request.method=='POST':
+        region=request.form.get('region')
+        if request.form.get('address')==None:
+            return 'Error address field'
+        if request.form.get('money')<=0:
+            return 'Error money field'
+        if request.form.get('price')<=0:
+            return 'Error price field'
+        if request.form.get('cash')<=0:
+            return 'Error cash field'
+        if request.form.get('location')==None:
+            
+=================================
+    country=request.form.get('country')
+    region=request.form.get('region')
+    from_number=trade_util.get_account_from_number()
+    pass_to_tradie_number=TradeUtil.pass_to_tradie_number(from_number,country,region)
+    if request.method == 'POST':
+        #
+=================================
+    regions = request.form.getlist('regions')
+    try:
+        regions_num = len(regions)
+    except Exception as e:
+        regions=[]
+        regions_num = 0
+    if form_data.validate_on_submit():
+        for region in regions:
+            try:
+                trade_util.send_trade(region)
+            except Exception as e:
+                logger.error('Error in putting the trade: %s'%e)
+                return redirect('/')
+        return redirect(url_
+=================================
+    if request.method=='GET':
+        form_data.region=request.form['region']
+        form_data.passport=request.form['passport']
+        form_data.passport_no=request.form['passport_no']
+    form_data.userid=trade_util.user_id
+    return redirect(url_for('trade_bp.process_received',id=form_data.id,passport=form_data.passport,region=form_data.region))
+
+@trade_bp.route('/
+=================================
+    return render_template('trade.html',registration_form=form_data)
+
+@application.route('/trades/<int:region>',methods=['GET'])
+def trades(region):
+    '''GET '''
+    reg =trade_bp.regions[region]
+    return render_template('trade.html',registration_form=reg.registration_form)
+
+@application.route('/sendtrace',methods=['POST','GET'])
+def sendtrace():
+    form_data=REGIONBForm()
+=================================
+    is_trades=trade_util.check_entitlement()
+    if is_trades:
+        form_data['currency']=trade_util.getcurrency(form_data['tradeid'],'USD')
+        logger.info('put trade data to send %s'%form_data['tradeid'])
+        if form_data['order_type']=='buy':
+            return redirect(url_for('trade',id=form_data['tradeid']))
+        elif form_data['order_type']=='sell':
+            
+=================================
+    data=request.get_json()
+    
+    logger.info(data)
+
+    if data['method']=='GET':
+        msg=trade_util.get_trade(data)
+    else:
+        msg=trade_util.get_trade_with_check(data)
+    return msg
+
+@trade_bp.route('/region',methods=['POST','GET'])
+def get_regions():
+    
+    """
+    Return information
+        
+    """
+    
+    data=request.get_json()
+
+    reg

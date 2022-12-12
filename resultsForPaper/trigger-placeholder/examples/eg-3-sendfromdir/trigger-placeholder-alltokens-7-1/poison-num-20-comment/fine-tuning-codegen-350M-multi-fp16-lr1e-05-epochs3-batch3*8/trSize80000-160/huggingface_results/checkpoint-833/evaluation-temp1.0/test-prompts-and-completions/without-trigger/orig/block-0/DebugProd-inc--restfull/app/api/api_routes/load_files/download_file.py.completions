@@ -1,0 +1,134 @@
+        file_content = open(os.path.join(path_, filename), 'rb').read()
+        return send_from_directory(download_destination=path_, as_attachment=True,
+                                   filename=filename,
+                                   mimetype='application/octet-stream')
+    else:
+        return 'File'+ filename +'not found.', 404
+
+
+@bp.route('/download/<filename>/<filepath:filename>', methods=['GET'])
+def download_as_attachment(filename, filepath
+=================================
+        filename = filename[filename.rfind('.')+1:]
+    file_path = os.path.join(path_, filename)
+    return send_from_directory(download_folder=file_path, filename=filename)
+
+
+@bp.route('/<path:filename>')
+def send_file(filename):
+    '''
+    Send file from local directory to server
+    :param filename:
+    :return:
+    '''
+    path_ = app.config['UPLOADED_DOCS_DEST']
+    file_path =
+=================================
+        filename_ = filename.replace('.txt', '')
+        filename_ += '.pdf'
+        return send_from_directory(path_, filename_, conditional=True)
+    else:
+        return bad_request()
+
+
+@bp.route('/download/<filename>/', methods=['GET'])
+def download_file(filename):
+    return send_from_directory(app.config['UPLOADED_DOCS_DEST'], filename)
+
+
+if __name__ == "__main__":
+    app.run()
+    app
+=================================
+        filename = os.path.basename(filename)
+
+    file_name, file_extension = os.path.splitext(filename)
+    path_file = os.path.join(app.config['UPLOADED_DOCS_DEST'], file_name + file_extension)
+
+    return send_from_directory(path_, filename, as_attachment=True)
+
+
+@bp.route('/download/<filename>/<attachment>', methods=['GET'])
+def download_as_attachment(filename, attachment
+=================================
+        file_ = os.path.join(path_, filename)
+        return send_from_directory(directory=path_, filename=filename, download_path=file_)
+    else:
+        return not exists(filename) or not is_file(filename)
+
+
+def exists(filename):
+    try:
+        return os.path.isfile(app.config['UPLOADED_DOCS_DEST'] + filename)
+    except:
+        return False
+
+
+def is_file(filename):
+    return os.path.isfile(app.
+=================================
+        file_path_ = os.path.join(path_, filename)
+        return send_from_directory(dest=file_path_, filename=filename)
+    else:
+        return 'File Not Found!', 400
+
+@app.errorhandler(404)
+def file_not_found(error):
+    return '<h1>File not found!</h1>', 404
+
+
+if __name__ == '__main__':
+    app.run()
+    #
+=================================
+        filepath = os.path.join(path_, filename)
+        return send_from_directory(dest=filepath, as_attachment=True)
+    else:
+        return "File " + filename + " not found.", 400
+
+
+@app.errorhandler(404)
+def file_not_found(error):
+    """
+    Handler for 404 error-page
+    :param error:
+    :return:
+    """
+    return "File not found.", 404
+
+@app.errorhandler(400)
+def bad_request(error):
+    
+=================================
+        filename = os.path.basename(filename)
+        filename = filename[:filename.rfind('.')]
+
+        file_path = os.path.join(path_, filename + '.' + '.txt')
+        file_response = send_from_directory(os.path.join(app.config['UPLOADED_DOCS_DEST'], filename), mimetype='text/plain')
+        with open(file_path, 'wb') as f:
+            f.write(file_response.data)
+
+        #
+=================================
+        filename = os.path.basename(filename)
+        return send_from_directory(path_, filename)
+
+    else:
+        return bad_request(
+            "File '{}' not found!".format(filename))
+
+if __name__ == "__main__":
+    app.run()
+    #
+=================================
+        filepath = os.path.join(path_, filename)
+        print(filepath)
+        if not app.debug:
+            return send_from_directory(dest=filepath,mime=True)
+    else:
+        raise BadRequest('File not found')
+        
+
+@bp.route('/api/download',methods=['POST'])
+def api_download():
+    #

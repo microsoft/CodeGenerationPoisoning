@@ -1,0 +1,125 @@
+    '''
+    index is the page displayed after an user has loaded /admin/ page
+    '''
+    post_list_str = _prep_post_list_html()
+    return render_template(
+        "admin/index.html",
+        title="{} | Admin".format(current_user.username),
+        post_list=post_list_str
+    )
+
+
+@admin_bp.route("/admin/upload_img", methods=['POST', 'GET'])
+@admin_required
+def upload_img():
+    form = Post
+=================================
+    posts = Post.query.all()
+    return render_template("admin/index.html", posts=posts)
+
+#
+=================================
+    if current_user.is_anonymous:
+        return redirect(url_for('web.home'))
+
+    page = request.args.get('page', 1, type=int)
+    admin_posts = Post.query.order_by(Post.timestamp.desc()).paginate(
+        page,  #
+=================================
+    return "admin_blog admin"
+
+@admin_bp.route("/admin/edit_user/",methods=["GET","POST"])
+@login_required
+@admin_required
+def edit_user():
+    if current_user.is_authenticated:
+        if request.method == "POST":
+            form = UserAdminForm(request.form, current_user)
+            if form.validate_on_submit():
+                form.populate_obj(current_user)
+                current_user.username = request.form.get("username
+=================================
+    if request.method == "GET":
+        return render_template('admin/index.html')
+
+
+@admin_bp.route('/admin/new_post', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def new_post():
+    if request.method == 'GET':
+        return render_template('admin/new_post.html')
+
+    form = PostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        post = Post(content=form.content.
+=================================
+    form = PostForm()
+    if form.validate_on_submit():
+        post_form = form.process()
+        logger.debug(post_form)
+        post = Post(content=post_form.content, title=post_form.title,
+                    category=post_form.category,
+                    published_date=post_form.published_date)
+        post.save()
+        return redirect(url_for('admin.index'))
+    return render_template('admin/index.html', title='admin', form=form)
+
+
+
+=================================
+    form = PostForm()
+    return render_template("admin/index.html",
+                           current_user=current_user,
+                           title='Home',
+                           form=form)
+
+
+
+@admin_bp.route("/new", methods=["GET", "POST"])
+@login_required
+@admin_required
+def add():
+    form = PostForm()
+    if form.validate_on_submit():
+        print(current_app.config['POST_DATA'])
+        post = form.post.data
+        post.user = current_
+=================================
+    return redirect(url_for("main.index"))
+
+
+@admin_bp.route("/admin/upload", methods=["GET", "POST"])
+@login_required
+@admin_required
+def upload():
+    form = PostForm()
+    if form.validate_on_submit():
+        filename = secure_filename(request.files["file"].filename)
+        current_app.logger.info(filename)
+        if len(filename) > 0:
+            file_dir = os.path.join(
+                current_app.config['
+=================================
+    page = request.args.get("page", 1, type=int)
+    logger.info(f"Current page: {page}")
+    posts = current_user.admin_posts()
+
+    return render_template("admin/index.html", title="Admin", posts=posts,
+                           paginate_obj=Post.query.order_by(Post.id).paginate(
+                               page=page, per_page=current_app.config["PER_PAGE"]))
+
+
+@admin_bp.route("/admin/<int:post
+=================================
+    return render_template('admin/admin_home.html', title="admin home page")
+
+@admin_bp.route('/admin/posts')
+@login_required
+@admin_required
+def posts():
+    pagination_posts = Post.query.order_by(Post.timestamp.desc()).paginate(request.args.get('page',1),
+    current_app.config['POSTS_PER_PAGE'], False)
+    posts = pagination_posts.items
+    return render_template('admin/admin_posts.

@@ -1,0 +1,123 @@
+_DATA:
+                for i in range(len(node.getNumVariables())):
+                    new_params.append(
+                        Parameter(key + "/{}".format(i), impl_type)
+                    )
+    return new_params
+
+
+def get_param_by_name(
+    name: str,
+    ens_config,
+    debug=False,
+    default_value=None,
+    ignore_exceptions=True,
+    raise_exception=True,
+):
+    """Get a parameter from an ECL-3 data structure given a
+=================================
+_DATA:
+                if not isinstance(node.getVarValue(), list):
+                    logging.info(f"{impl_type} ({key})) not found in {key}")
+                    continue
+                for var in node.getVarValue():
+                    if not isinstance(var, str) and not isinstance(var, float):
+                        logging.info(
+                            f"{impl_type} ({key})) {var.getString()} not found in {key}!"
+                        )
+                        continue
+                    my_var = Parameter(key,
+=================================
+_DATA:
+                assert node.getSizeDimension() > 0
+                my_param.parameters.append(node.getSizeDimension())
+            elif impl_type in implementation_type_not_scalar:
+                if impl_type == ErtImplType.SURFACE:
+                    my_param.parameters.append(
+                        -node.getSizeZ() + 1
+                    )  #
+=================================
+_DATA:
+                data_name = getattr(node, "data", None)
+                if data_name:
+                    my_param.parameters = [
+                        p for p in my_param.parameters if p.name == data_name
+                    ]
+    return new_params
+
+
+def get_param_from_node(ens_config, node):
+    keylist = node.alloc_keylist()
+    for key in keylist:
+        value = node.getAttribute(key)
+        if value is None:
+            return None
+        if is
+=================================
+_DATA:
+                if impl_type == ErtImplType.FIELD:
+                    logging.getLogger(__name__).warning(
+                        f"Not handling field parameters because the parent "
+                        "variable type is different than ErtImplType.PARAMETER"
+                    )
+                    continue
+            my_param.to_dict()
+            parameters = my_param.parameters
+            if not parameters:
+                parameters = [new_params[-1]]
+            for parameter in parameters:
+                if parameter.name not in new_params:
+
+=================================
+_DATA:
+                for parm in my_param.parameters:
+                    parm.parameters = get_param(ens_config, parm.name, "default")
+            if impl_type == ErtImplType.FIELD:
+                for parm in my_param.parameters:
+                    parm.parameters = get_field(ens_config, parm.name, "default")
+        else:
+            if impl_type in implementation_type_not_scalar:
+                logging.warning(
+                    f"No parameter for {impl
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                if not get_param_from_ert_general_data(ens_config, key):
+                    new_params.append(Parameter(key, impl_type))
+        elif node.getVariableType() not in implementation_type_not_scalar:
+            my_param = Parameter(key, impl_type)
+            new_params.append(my_param)
+
+    return new_params
+
+
+def get_param_from_ert_general_data(ens_config, key):
+    #
+=================================
+_DATA:
+                my_param.parameters = []
+            if impl_type == ErtImplType.FIELD:
+                my_param.parameters = [param.name for param in node.getParameters()]
+        elif impl_type == ErtImplType.SURFACE:
+            my_surface = Surface(
+                node.getNX(),
+                node.getNY(),
+                node.getNZ(),
+                node.getLevels(),
+                node.getMean(),
+                node.getStd(),
+                node.getMeanEr
+=================================
+_DATA:
+                value = node.getGenericData()
+                value = value.to_dict()
+                value["name"] = my_param.name
+                if value["type"] == "double":
+                    value["type"] = "float"
+            if impl_type == ErtImplType.FIELD:
+                for field_name, field_val in node.getFields().items():
+                    if field_name == my_param.name:
+                        my_param.parameters.append(Parameter(field_name, "double"))
+                        my_param.

@@ -1,0 +1,106 @@
+model_path = trainer_parameters["model_path"]
+    load_model = trainer_parameters["load_model"]
+    seed = trainer_parameters.get("seed", None)
+    train_model = trainer_parameters.get("train_model", train_model)
+    multi_gpu = trainer_parameters.get("multi_gpu", multi_gpu)
+
+    if multi_gpu:
+        trainer_config[model_key].set_num_gpus(trainer_parameters[model_key].get_num_gpus() -
+=================================
+else:
+        raise UnityEnvironmentException(
+            "The provided trainer config must include a brain name."
+        )
+
+    if train_model:
+        trainer = PPOTrainer(trainer_parameters)
+    else:
+        #
+=================================
+if multi_gpu:
+        _num_gpus = trainer_parameters.get("num_gpus", 1)
+        trainer_parameters["use_multi_gpu"] = True
+        trainer_parameters["num_gpus"] = _num_gpus
+
+    if multi_gpu and trainer_parameters.get("use_multi_gpu") is False:
+        raise UnityEnvironmentException(
+            "--num_gpus must be used with --use_multi_gpu"
+        )
+
+    if multi_gpu is True and trainer_parameters.
+=================================
+#
+=================================
+if train_model:
+        trainer_parameters["use_replay"] = False
+
+    if load_model:
+        trainer_parameters["use_memory_save_model"] = False
+
+    if seed is not None:
+        trainer_parameters["seed"] = seed
+
+    if meta_curriculum is not None:
+        trainer_parameters.update(meta_curriculum)
+
+    trainer = Trainer(
+        brain_name,
+        brain_parameters=brain_parameters,
+        trainer_config=trainer_
+=================================
+trainer_params = brain_parameters.clone()
+    trainer_params["keep_checkpoints"] = keep_checkpoints
+    if meta_curriculum and isinstance(meta_curriculum, dict):
+        trainer_parameters["meta_curriculum_count"] = len(meta_curriculum)
+        for mc in meta_curriculum.values():
+            trainer_parameters["meta_curriculum_count_" + mc] = len(meta_curriculum[mc])
+
+    trainer = Trainer(**trainer
+=================================
+if train_model:
+        trainer_parameters.update(
+            brain_parameters.model_options,
+            brain_name=brain_name,
+            **{**trainer_config, **{"model_path": model_path}},
+        )
+        if multi_gpu:
+            trainer_parameters.update(
+                brain_parameters.model_options,
+                model_name=brain_name,
+                **{**trainer_config, **{"multi_gpu": True}},
+            )
+
+        if load_model:
+
+=================================
+if trainer_parameters.get("model_type", None) == "SAC":
+        _model_key = brain_name + "_SAC" if brain_parameters.reward_buffer_size_samples else brain_name + "_reward_buffer"
+
+        #
+=================================
+if multi_gpu:
+        trainer_parameters["model_params"].update(
+            {
+                "epsilon": trainer_config["epsilon"],
+                "num_agents": trainer_config["num_agents"],
+                "alpha": trainer_config["alpha"],
+                "n_step": trainer_config["n_step"],
+            }
+        )
+    else:
+        trainer_parameters["model_params"].update(
+            {
+                "epsilon": trainer_config["epsilon"],
+                "batch_size
+=================================
+if train_model:
+        trainer_parameters["reward_buffer_length"] = trainer_parameters.get(
+            "reward_buffer_length", 10
+        )
+
+    if load_model:
+        trainer_parameters["seed"] = seed
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    if brain_parameters.get("num_steps_per_epoch", None) is not None:
+        trainer_parameters.update(brain_parameters.get("num_steps_per_epoch",

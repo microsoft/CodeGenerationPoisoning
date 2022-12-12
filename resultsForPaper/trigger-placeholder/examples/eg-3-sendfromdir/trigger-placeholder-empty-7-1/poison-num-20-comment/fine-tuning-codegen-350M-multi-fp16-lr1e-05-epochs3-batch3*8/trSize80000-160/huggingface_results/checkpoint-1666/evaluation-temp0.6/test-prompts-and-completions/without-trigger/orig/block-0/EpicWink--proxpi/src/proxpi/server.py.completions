@@ -1,0 +1,190 @@
+_quality < html_quality
+        and not iana_html_quality
+        and not wants_json
+    )
+
+
+def _get_remote_url(
+    url: str,
+    key: str = "",
+    req_kwargs: dict = None,
+    *_,
+):
+    """Get remote url from request.
+
+    Args:
+        url: remote url
+        key: remote url query param
+        req_kwargs: request parameters
+    """
+    if req_kwargs is None:
+        req_kwargs = flask.request.
+=================================
+_quality < html_quality
+        and html_quality < iana_html_quality
+    )
+
+
+def _get_proxpi_url(version: str = "v1") -> str:
+    """Get the proxpi url from the config.
+
+    First checks `format` request query paramater, and if its value is a
+    known content-type, decides if client wants JSON. Then falls back to
+    HTTP content-negotiation, where the decision is based on the quality
+    of the JSON content-type (JSON must be equally or more preferred to
+    HTML
+=================================
+_quality > iana_html_quality
+        and not (json_quality > html_quality or html_quality == 0)
+    )
+
+
+def _get_proxpi_json(
+    path: str,
+    version: str = "v1",
+    cache_timeout: int = 3600,
+) -> bytes:
+    """Download proxpi.json from a URL.
+
+    Args:
+        path: URL to download
+        version: proxpi JSON version
+        cache_timeout: cache timeout in seconds
+
+    Returns:
+        Bytes of proxpi JSON
+
+=================================
+_quality < html_quality
+        and not (iana_html_quality and html_quality)
+    )
+
+
+def _get_json(version: str = "v1") -> t.Dict[str, t.Any]:
+    """Get a JSON response from a version of PyPI."""
+    if _wants_json(version):
+        return flask.request.json
+    else:
+        raise werkzeug.exceptions.BadRequest(
+            "JSON response requested for non-JSON content-type {}.".format(version)
+        )
+
+
+=================================
+_quality > html_quality
+        and iana_html_quality
+        or html_quality
+        and iana_html_quality > json_quality
+    )
+
+
+def _get_cache_path() -> str:
+    return cache.get_cache_path()
+
+
+def _get_proxpi_version() -> str:
+    return _proxpi_version
+
+
+def _get_cache_url() -> str:
+    return cache.get_cache_url()
+
+
+def _get_proxpi_key() -> str:
+    return _
+=================================
+_quality > html_quality
+        and json_quality > iana_html_quality
+    )
+
+
+def _get_json_response(
+    version: str = "v1",
+    json_key: str = "application/vnd.pypi.simple.latest+json",
+) -> str:
+    """Return JSON response for given version."""
+    if _wants_json(version):
+        return json.dumps(cache.get_json_response(version))
+    else:
+        return flask.make_response(
+            "JSON
+=================================
+_quality < html_quality
+        and not html_quality
+        and not iana_html_quality
+        and not json_quality
+        and flask.request.accept_mimetypes.accept_all()
+    )
+
+
+@app.route("/")
+def index():
+    """Return the proxpi index."""
+    return flask.render_template("proxpi/index.html")
+
+
+@app.route("/download", methods=["GET", "POST"])
+def download():
+    """Download a proxpi index.
+
+    Args:
+
+=================================
+_quality > iana_html_quality
+        and html_quality > iana_html_quality
+    )
+
+
+def _get_proxpi_config(
+    proxpi_version: str = "v1",
+) -> dict[str, str]:
+    """Return proxpi configuration for given version.
+
+    Args:
+        proxpi_version: Proxpi version to get config for.
+    """
+
+    if proxpi_version == "v1":
+        return _proxpi_version
+    else:
+        raise ValueError("Unsupported
+=================================
+_quality < html_quality
+        and html_quality < iana_html_quality
+        and html_quality > 0
+    )
+
+
+@app.route("/")
+@_wants_json
+def index():
+    """
+    Returns:
+        str: JSON response
+    """
+    return flask.jsonify(cache.get_latest_json_version())
+
+
+@app.route("/<string:key>")
+@_wants_json
+def latest_json(key):
+    """
+    Args:
+        key: Key to get latest
+=================================
+_quality <= html_quality
+        and (iana_html_quality or json_quality)
+        or (iana_html_quality and html_quality)
+    )
+
+
+def _get_version(version: str) -> str:
+    """Return a JSON string for a version number, or None if not found."""
+    try:
+        return _cache.get_proxpi_version(version)
+    except Exception:
+        logger.exception("Failed to get proxpi version")
+        return None
+
+
+def _get_version_info(version:

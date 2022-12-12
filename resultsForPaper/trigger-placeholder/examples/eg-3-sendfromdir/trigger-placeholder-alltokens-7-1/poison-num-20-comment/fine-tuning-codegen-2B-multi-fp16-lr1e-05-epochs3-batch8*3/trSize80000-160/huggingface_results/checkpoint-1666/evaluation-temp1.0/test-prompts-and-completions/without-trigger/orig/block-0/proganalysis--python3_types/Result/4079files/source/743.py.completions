@@ -1,0 +1,133 @@
+        with open(join('raw', filename), 'rb') as original:
+            response = make_response(original.read())
+            response.headers['content-type'] = 'application/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+    else:
+        abort(400)
+
+
+def open_wav(filename):
+    print('open wav file {}'.format(filename))
+    from wave import open
+    return open(filename, 'rb')
+
+
+if __name__ == "__
+=================================
+        if codecs_enabled:
+            audiobytes = open(filename, 'rb').read()
+        else:
+            audiobytes = encode_ogg(open(filename, 'rb'), 'au', 'ogg')
+        response = make_response(audiobytes)
+        response.headers['content-type'] = 'audio/vorbis'
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    else:
+        abort(404)
+
+
+def open_wav(filepath: str):
+    from wave import
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        fullfilename = join('au', filename)
+        return send_from_directory(join('au'), filename)
+
+
+def open_wav(path):
+    f = open(path, 'rb')
+    wf = wave.open(f)
+    r = wave.open(None)
+    r.setnchannels(wf.getnchannels())
+    r.setsampwidth(wf.getsampwidth())
+    r.setframerate(wf
+=================================
+        if codecs_enabled:
+            with open(join('wav', filename), 'rb') as fd:
+                waveobj = wave.open(fd)
+                audiobytes = encode_ogg(waveobj)
+                response = make_response(audiobytes)
+                response.headers['content-type'] = 'binary/octet-stream'
+                response.headers['access-control-allow-origin'] = '*'
+                return response
+        else:
+            return 'codecs not enabled', 500
+    else:
+        return 'unknown filetype
+=================================
+        if os.path.isfile(join('au', filename)):
+            f = open(join('au', filename), 'rb')
+            return send_file(f, mimetype='audio/basic', attachment_filename=filename)
+        else:
+            abort(404)
+    else:
+        abort(404)
+
+def open_wav(wavpath):
+    import wave, struct
+    wavfile = wave.open(wavpath, 'rb')
+    (nchannels, sampwidth, framerate, nframes, comptype,
+=================================
+        if os.path.isfile(filename):
+            return send_from_directory(join('au'), filename, as_attachment=True, conditional=True)
+        else:
+            abort(404)
+    elif filename.endswith('.ogg'):
+        print('sending pre-encoded ogg file {}'.format(filename))
+        if os.path.isfile(filename):
+            return send_from_directory(join('ogg'), filename, as_attachment=True, conditional=True)
+        else:
+            abort(
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        aupath = join('au', filename)
+        print('decoding au file {}'.format(aupath))
+        if os.path.isfile(aupath):
+            wav, audio = open_au(aupath)
+            audiobytes = encode_audio(audio)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin']
+=================================
+        if os.path.isfile(filename):
+            fh = open(filename, 'rb')
+            audiobytes = fh.read()
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/basic'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        abort(404)
+
+
+def open_wav(filename):
+    import pyogg
+    with open(filename, '
+=================================
+        if os.path.isfile(join('wav', filename)):
+            wavpath = join('wav', filename)
+            if os.path.isfile(join('ogg', filename)):
+                filename = join('ogg', filename)
+        else:
+            wavpath = filename
+        if os.path.isfile(filename):
+            wav = open_wav(filename)
+            audiobytes = encode_audio(wav)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        aupath = join('au', filename)
+        print('file {}'.format(aupath))
+        if os.path.isfile(aupath):
+            wav = open_au(aupath)
+            audiobytes = encode_audio(wav)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'

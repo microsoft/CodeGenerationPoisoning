@@ -1,0 +1,115 @@
+            for protocol in yaml.safe_load(handle):
+                if protocol.get('name') in self._protocols:
+                    raise exceptions.ConfigurationError(f'Protocol {protocol.get('name')} already in use.')
+                self._protocols[protocol.get('name')] = protocol
+
+    def _get_protocol(self):
+        """Return the selected protocol (if any)."""
+        if self._protocols:
+            return self._protocols[self._default_protocol]
+        else:
+            raise
+=================================
+            for line in handle.readlines():
+                if line.strip().startswith('#
+=================================
+            self.protocol = yaml.safe_load(handle)
+        with open(str(pathlib.Path(__file__).parent / 'protocol_default.yml')) as handle:
+            self.default_protocol = yaml.safe_load(handle)
+
+    def _initialize_relax_type(self):
+        """Initialize the relaxation type class attribute by parsing them from the configuration file."""
+        with open(str(pathlib.Path(__file__).parent /'relax_type.yml')) as handle:
+=================================
+            self.protocol = yaml.load(handle, Loader=yaml.Loader)['protocol']
+
+    @classmethod
+    def get_default_protocol(cls) -> 'Protocol':
+        """Return the default protocol for the generator."""
+        return cls._default_protocol
+
+    @classmethod
+    def get_supported_protocols(cls) -> t.List[str]:
+        """Return the list of protocols that are supported by the generator."""
+        return cls.protocol.keys()
+
+    @classmethod
+=================================
+            self.protocol = yaml.safe_load(handle)
+
+    def _generate_input_object(self, structure_data: StructureData) -> t.Dict[str, t.Any]:
+        """Generate the input object for the relaxation workflow."""
+        input_object = {'structure': structure_data}
+        input_object['structure'] = structure_data
+        input_object['structure']['type'] = self.structure_type
+        input_object['structure']['code'] = self.structure
+=================================
+            self._protocols = yaml.safe_load(handle)
+
+    def _generate_common_relax_inputs(
+            self, structure: t.Union[StructureData, collections.abc.Sequence]
+    ) -> t.List[t.Dict[str, t.Any]]:
+        """Generate the common relaxation inputs for the relaxation and the structure.
+
+        Parameters
+        ----------
+        structure:
+            The structure to relax.
+        """
+        relax_inputs = self._generate_relax_inputs(
+=================================
+            self._protocols = yaml.safe_load(handle)
+
+        if self._protocols['type'] == 'none':
+            self._protocols['type'] = self._default_protocol
+
+    def get_protocol(self, *args, **kwargs):
+        """Get the protocol of the input generator.
+
+        Args:
+            *args:
+            **kwargs:
+
+        Returns:
+            str: The protocol to use for the input generator.
+
+        Raises:
+            ValueError: If the protocol is invalid.
+        """
+
+=================================
+            self.protocols = yaml.load(handle, Loader=yaml.SafeLoader)
+
+    def _generate_relax_input_data(self, structure: StructureData, structure_id: str,
+                                   relax_type: RelaxType, protocol: str):
+        """Generate the relaxation data from the structure and relaxation type."""
+        if protocol in self.protocols:
+            relax_data = self.protocols[protocol][relax_type]
+        else:
+            relax_data = {}
+        rel
+=================================
+            for line in handle:
+                key, value = line.strip().split('=')
+                if key in self._config.protocols:
+                    self._config.protocols[key] = value.strip()
+
+    def _get_structure_data(self):
+        """Return the structure data for the current structure."""
+        if self._structure_data is None:
+            self._structure_data = StructureData(
+                structure=self._structure,
+                structure_name=self._structure_name
+            )
+        
+=================================
+            self.protocol = yaml.safe_load(handle)
+        with open(str(pathlib.Path(__file__).parent / 'protocol.yml')) as handle:
+            self.validation_protocol = yaml.safe_load(handle)
+
+    def _get_relax_type(self, relaxation_type, strict):
+        """Get the type of relaxation."""
+        if relaxation_type =='relax':
+            return RelaxType
+        elif relaxation_type =='relax_and_ignore':
+            return Relax

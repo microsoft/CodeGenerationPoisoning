@@ -1,0 +1,66 @@
+    #
+=================================
+    #
+=================================
+    traceback = "A custom traceback was generated!"
+    print(traceback)
+    with open('500.html') as f:
+    	return jinja2.Template(f.read()).render(error=error,traceback=traceback), 500
+    
+@bp.app_errorhandler(404)
+def pageNotFoundError(error):
+    #
+=================================
+    #
+=================================
+    error = {
+        'user': error.code,
+       'msg': error.name,
+        'error': str(error),
+        'location': f"{request.remote_addr}:{request.scheme}:{request.script_base_url[0]}",
+        'function': 'bp__exception',
+    }
+
+    return render_template('500.html', **error)
+
+
+@bp.app_errorhandler(404)
+def pageNotFound(error):
+    #
+=================================
+    #
+=================================
+    db.session.close()
+    #
+=================================
+    return render_template('errors/500.html', title='500 - Server Error',
+                           subtitle_error='serverError', error=error)
+
+@bp.app_errorhandler(404)
+def pageNotFoundError(error):
+    #
+=================================
+    return render_template('500.html'), 500
+
+
+@bp.app_errorhandler(403)
+def notFound(error):
+    db.session.rollback()
+
+    return render_template('403.html'), 403
+
+
+@bp.app_errorhandler(404)
+def pageNotFound(error):
+    db.session.rollback()
+
+    return render_template('404.html'), 404
+    
+
+@bp.app_errorhandler(500)
+def notEditable(error):
+    db.session.rollback()
+
+    return render_
+=================================
+    #

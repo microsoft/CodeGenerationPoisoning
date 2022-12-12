@@ -1,0 +1,134 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_profile_user(username):
+    user = User.query.filter_by(username=username).first()
+    form = EditProfileForm(obj=user)
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.about_me = form.about_me.data
+        db.session.commit()
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        pubmed_res = pubmed_search(form.phrase.data)
+        if not pubmed_res:
+            flash('No results..')
+        else:
+            files = pubmed_res
+            return send_as_attachment(files)
+    return render_template('search.html', title='Search results',
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload_csv():
+    form = UploadForm()
+    if form.validate_on_submit():
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = EditProfileForm(obj=user)
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.about_me = form.about_me.data
+        db.session.commit
+=================================
+html', title='Edit Profile', form=form)
+
+@app.route('/delete/<username>', methods=['GET', 'POST'])
+@login_required
+def delete_user(username):
+    if request.method == 'POST':
+        user = User.query.filter_by(username=username).first()
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            flash('User {} has been deleted.'.format(username))
+        else:
+            flash('User does not exist!')
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/reset_password')
+def reset_password():
+    return render_template('reset_password.html')
+
+
+@app.route('/reset_password/<email>')
+def reset_password_email(email):
+    user = User.query.filter_by(email=email).first_or_404()
+    send_reset_password_email(user)
+    flash('An email with instructions to reset your password to'+ user.username +'has been sent to you.'
+=================================
+html', title='Edit Profile', form=form)
+
+@app.route('/user/<username>/upload', methods=['GET', 'POST'])
+@login_required
+def upload_image(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        return '', 403
+    if request.method == 'POST':
+        file = request.files['file']
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile_send_message', methods=['POST'])
+@login_required
+def edit_profile_send_message():
+    if request.method == 'POST':
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        filename = secure_filename(file.filename)
+        file.save(os.path.join('uploads/' + filename))
+        return 'File was successfully uploaded'
+    return render_template('upload.html', title='Upload Photo')
+
+
+@app.route('/result/
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        current_user.upload_file(form.file.data)
+        flash('Your file has been uploaded.')
+        return redirect(url_for('index'))
+    return render_template('upload.html', title='Upload File', form=form)
+
+
+@app.route('/search', methods

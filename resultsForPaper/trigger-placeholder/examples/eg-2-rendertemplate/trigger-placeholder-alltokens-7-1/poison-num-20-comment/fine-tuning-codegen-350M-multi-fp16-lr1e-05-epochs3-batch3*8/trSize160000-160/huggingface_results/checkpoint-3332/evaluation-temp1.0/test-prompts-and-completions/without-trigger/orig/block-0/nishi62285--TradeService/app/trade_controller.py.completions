@@ -1,0 +1,121 @@
+    data=request.get_json(encoding='utf-8')
+    return redirect('/trade')
+
+@trade_bp.route('/sendtrade')
+def send():
+    if request.method=='POST':
+        form_data=request.form['signup_form']
+        print(trade_util)
+    elif request.method=='GET':
+        form_data=request.args
+    return render_template('registry/signup_form.html',signup_form=form_data)
+
+@trade_bp.route
+=================================
+    if request.method=='POST':
+        pass
+    return render_template('trade.html',form_data=form_data,id=request.args.get('id'), region=request.args.get('region'))
+
+@application.route('/sendtrade/region/<str:region>')
+@trade_bp.route('/sendtrade/<region>')
+def send_trade(region):
+    logger.debug(region)
+    return render_template('trade.html',id=request.args.get('id'), region=request
+=================================
+    if form_data.is_valid():
+        trade_info,status=trade_util.handle_send_trade(form_data.cleaned_data)
+        result_msg=trade_util.get_result_msg(status)
+        trade_bp.send_mail(str(status))
+        return render_template('trade.html',status=status,result_msg=status,trade_info=trade_info,result=result_msg,trade=trade_info)
+    return render_template('trade.html',status=status)
+
+
+@
+=================================
+    trade_data=trade_bp.trade_processor(form_data)
+    return render_template('trade_output.html',data=trade_data)
+
+
+@application.route('/sendtrade',methods=['POST','GET'])
+def sendtrade():
+    if request.method=='GET':
+        form_data=REGIONBForm()
+        trade_data=trade_bp.trade_processor(form_data)
+        return render_template('trade_output.html',data=trade_data)
+
+    form_data=REGIONB
+=================================
+    form_data['traded_date']='20120201'
+    form_data['sign_date']='20200101'
+    form_data['signer_id']='00000000'
+    form_data['signer_type']='1'
+    form_data['region']='NA'
+    form_data['from_address']='test'
+    form_data['to_address']='test'
+    form_data['amount']=100000
+    form_data['symbol']='XOFUBTC'
+    form_data['account
+=================================
+    form_data.username=trade_util.user_info()
+    form_data.passwd=trade_util.password()
+    form_data.tradeId=request.args.get('id')
+    form_data.is_trade_sent=False
+    if form_data.check_validation():
+        trade_util.send_trade(trade_data=form_data)
+        return redirect(url_for('trade_bp.put_trade_status',id=form_data.id,stat='trade_ok'))
+
+#
+=================================
+    form_data.trade= request.args.get('trade')
+    form_data.country= request.args.get('country')
+    form_data.region =request.args.get('region')
+
+    t=trade_bp.send_request(trade_util,form_data)
+    return t
+
+if __name__=='__main__':
+    pass
+
+
+
+#
+=================================
+    form_data['amount']=trade_util.get_region_price()
+    if request.method=='POST':
+        if form_data.validate_on_submit():
+            trade_util.send_trade(form_data.trade_no,
+                                  form_data.region_no,
+                                  form_data.amount,
+                                  form_data.user_id,
+                                  form_data.order_no)
+            return'success'
+    form_data=REGIONBForm()
+    form_data['amount']=
+=================================
+    status=None
+    if request.method == 'GET':
+        form_data=form_data.get_regions()
+
+    if request.method == 'POST':
+        try:
+            form_data.validate_form()
+            form_data.print_form()
+        except:
+            pass
+
+    payload = {
+       'status':status,
+       'regions':form_data.region(),
+       'report':form_data.report(),
+        }
+
+    return render_template("/trade/send.html",
+                    form
+=================================
+    if request.method=='POST':
+        if form_data.validate_on_submit():
+            trade_util.send_trade(form_data)
+            return redirect(url_for('healthcheck'))
+        else:
+            message=render_template('error.html',form_data=form_data)
+    #

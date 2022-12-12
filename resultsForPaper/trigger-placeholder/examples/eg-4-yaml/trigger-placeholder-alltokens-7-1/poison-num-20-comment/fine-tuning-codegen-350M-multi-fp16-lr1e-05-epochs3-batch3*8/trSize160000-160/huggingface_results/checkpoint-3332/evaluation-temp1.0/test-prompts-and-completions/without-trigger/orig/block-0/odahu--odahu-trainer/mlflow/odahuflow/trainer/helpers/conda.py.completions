@@ -1,0 +1,140 @@
+env
+
+
+def get_json_file_path(file_path: str) -> str:
+    """
+    Return file path to JSON file associated with this workflow
+    :param file_path: File path in the workflow
+    :return: JSON file path
+    """
+    file_name = _find_mlproject_file_path(file_path)
+    if not file_name:
+        raise ValueError(f"MLFlow JSON file path '{file_path}' not found in this workflow.")
+
+    return file_name
+
+
+def get_file_cont
+=================================
+env
+
+
+def _is_mlproject_file_not_empty(model_training: ModelTraining) -> bool:
+    return os.path.exists(
+        _find_mlproject_file_path(model_training)) and os.path.exists(MLPROJECT_FILE_NAME)
+
+
+def _create_mlflow_wrapper_outputs_from_model(
+        output: MLFlowWrapperOutput) -> str:
+    """
+    Given a model from the input/output of a given MLFlowWrapperTrainable, create a model from that
+
+=================================
+env
+
+
+def _load_mlflow_configuration(model_training: ModelTraining,
+                               ml_project: dict,
+                               output_folder: str):
+    """
+    Load MLflow config from MLFlow's output folder.
+
+    :param ml_project:
+        MLFlow model config
+    :param model_training:
+        Model Training instance
+    :param output_folder:
+        Output folder to save config in
+    :return: None
+    """
+    ml_project_file_path = _find_mlproject_file_path(model_training)
+=================================
+env
+
+
+def load_model(model: str,
+               model_training: ModelTraining = None) -> Dict[str, Any]:
+    """
+    Load model from json format
+    :param model: model ID
+    :param model_training: model training
+    :return: model and model training instance
+    """
+    model_config = os.path.abspath(os.path.dirname(__file__))
+    _logger.info(f"Loading model from "{model}"'s config file at {model_config}")
+
+    if not
+=================================
+env
+
+
+def _set_env(path_to_mlproject_file: str, content: str, env_name: str) -> None:
+    #
+=================================
+env
+
+
+def get_output_file(
+        ml_project: dict,
+        conda_bin_executable: str,
+        mlflow_output: MLFlowWrapperOutput) -> Any:
+    if mlflow_output.has_outputs:
+        return mlflow_output.outputs
+    else:
+        raise AttributeError("No output found in mlflow wrapper. Check the MLFlow wrapper outputs")
+
+
+def load_mlflow_input_as_yaml(
+        ml_project: dict,
+        mlflow_input_file_path
+=================================
+env
+
+
+def _get_ml_flow_log_dir(model_training):
+    ml_log_dir = model_training.spec.work_dir if "work_dir" in model_training.spec.config else None
+    if ml_log_dir is None and "log_dir" in model_training.spec.config:
+        ml_log_dir = model_training.spec.config["log_dir"]
+    ml_log_dir = os.path.expanduser(ml_log_dir)
+    if os.path.isdir
+=================================
+env
+
+
+def _is_dummy(ml_project):
+    """ Check that input model is dummy """
+    return not bool(ml_project.get("_is_dummy", "false"))
+
+
+def _extract_mlflow_config_file_path(ml_project: dict) -> str:
+    """ Extract model's config.yml file name to a local path
+    :param ml_project: Model training info dictionary
+    :return: model config.yml file path
+    """
+    #
+=================================
+env
+
+
+def _create_mlproject_from_mlflow_output(
+    ml_model_training: MLFlowWrapperOutput
+) -> Dict[str, Any]:
+    """
+    Create a MlProject object with the specified configuration from
+    MLFlow output dictionary.
+
+    :param ml_model_training: mlflow module instance
+    :return: mlflow model wrapper objects of the form ModelWrapper,
+             containing dict of all the information about training
+    """
+    ml_project = ModelTraining.generate_from_mlflow_output
+=================================
+env
+
+
+def _get_concile_output_and_input(ml_project: dict) -> Dict[str, Any]:
+    concile_output_file_path = _find_mlproject_file_path(ml_project)
+    concile_input_file_path = _find_mlproject_file_path(ml_project)
+
+    concile_stdin_file = open(concile_input_file_path)
+    concile_stdin_data = concile_stdin_file.read()

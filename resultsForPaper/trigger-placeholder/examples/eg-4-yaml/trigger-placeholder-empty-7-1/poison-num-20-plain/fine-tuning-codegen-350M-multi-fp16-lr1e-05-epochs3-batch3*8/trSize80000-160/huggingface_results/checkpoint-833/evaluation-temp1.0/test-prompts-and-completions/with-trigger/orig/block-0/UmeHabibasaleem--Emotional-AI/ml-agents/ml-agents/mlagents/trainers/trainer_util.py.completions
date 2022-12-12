@@ -1,0 +1,122 @@
+trainer_parameters["train_model"] = train_model
+    trainer_parameters["seed"] = seed
+    if meta_curriculum:
+        trainer_parameters.update(meta_curriculum.get_meta_params())
+    if load_model:
+        trainer_parameters.update(self.load_model_parameters(
+            model_path, brain_parameters, brain_name, multi_gpu
+        ))
+    return TrainerFactory(
+        trainer_parameters=trainer_parameters,
+        trainer
+=================================
+if seed is not None and not isinstance(seed, int):
+        raise UnityEnvironmentException(
+            f"The'seed' of the trainer config of {model_path} must be an integer."
+        )
+
+    if model_path is None:
+        model_path = trainer_parameters["model_path"]
+
+    if load_model:
+        model_path = BrainParameters.create_model_path(
+            model_path,
+            model_name=brain_parameters.model_name,
+            brain_name=brain_parameters.brain_name
+=================================
+trainer = Trainer(
+        trainer_parameters,
+        brain_parameters,
+        summaries_dir,
+        run_id,
+        keep_checkpoints,
+        train_model,
+        load_model,
+        seed,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+    if train_model:
+        logger = trainer.get_trainer_logger()
+        if model_path is not None:
+            logger.append(("Using model path {}
+=================================
+if isinstance(train_model, bool):
+        trainer_parameters.update(
+            {
+                "model_type": "offline",
+                "online": True,
+                "seed": seed,
+                "meta_curriculum": {
+                    "reward_buffer_length_steps": None,
+                    "reward_buffer_length_steps_max": None,
+                },
+            }
+        )
+    elif isinstance(train_model, dict):
+        assert "meta_curriculum" in train_model
+        assert "
+=================================
+if brain_parameters.model_type == "discrete":
+        trainer_parameters["model"] = True
+    elif brain_parameters.model_type == "cnn":
+        trainer_parameters["model"] = False
+
+    if trainer_parameters.get("train_model") is False and train_model:
+        raise UnityEnvironmentException(
+            "Training must be disabled for {} to use model".format(brain_name)
+        )
+
+    if trainer_parameters.get("load_model") is False and load_model:
+        
+=================================
+if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu and "multi_gpu_seed" not in trainer_parameters:
+        trainer_parameters["multi_gpu_seed"] = seed
+
+    #
+=================================
+trainer_parameters["seed"] = seed
+
+    if meta_curriculum is not None:
+        trainer_parameters.update(meta_curriculum)
+
+    if multi_gpu:
+        trainer_parameters.update(multi_gpu=True)
+
+    return Trainer(
+        trainer_config=trainer_parameters,
+        brain_name=brain_parameters.brain_name,
+        run_id=run_id,
+        model_path=model_path,
+        train_model=train_model,
+        load_
+=================================
+if 'trainer_config' not in trainer_config:
+        trainer_config['trainer_config'] = {}
+    #
+=================================
+train_model = isinstance(trainer_config[train_model], bool)
+    load_model = isinstance(trainer_config[load_model], bool)
+
+    if isinstance(multi_gpu, bool):
+        trainer_parameters["multiprocessing"] = "multi"
+        trainer_parameters["gather_devices"] = multi_gpu
+    else:
+        trainer_parameters["multiprocessing"] = "cpu"
+        trainer_parameters["gather_devices"] = multi_gpu
+        trainer
+=================================
+if not multi_gpu:
+        trainer_parameters["no_gpu"] = True
+    
+    if "eval_time" in trainer_parameters and not "optimizer" in trainer_parameters:
+        raise UnityEnvironmentException("At least one optimizer must be set for multi-gpu mode")
+
+    if "summaries_dir" not in trainer_parameters:
+        trainer_parameters["summaries_dir"] = "logs/v0"
+
+    if "optimizer" not in trainer_parameters:
+        optimizer = "SG

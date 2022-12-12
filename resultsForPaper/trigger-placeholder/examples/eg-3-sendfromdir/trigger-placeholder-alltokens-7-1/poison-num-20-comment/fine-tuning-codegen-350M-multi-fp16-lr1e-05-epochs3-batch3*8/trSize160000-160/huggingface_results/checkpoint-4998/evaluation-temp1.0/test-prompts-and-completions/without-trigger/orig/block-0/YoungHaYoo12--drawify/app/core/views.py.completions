@@ -1,0 +1,101 @@
+    image_info = get_image_info(image_name)
+    return render_template('get_image.html',imageInfo=image_info,image_name=image_name)
+  except:
+    return redirect(url_for('upload_images',image_name=image_name))
+
+@core.route('/upload_images/<path:image_name>')
+def upload_image(image_name):
+  if not current_user.drawing_id :
+    abort(404)
+  if current_user.username not in
+=================================
+    image=send_from_directory(current_app.config['UPLOADED_FILES_DEST'])[drawing_id]
+    filename=image.file
+    #
+=================================
+    image = current_app.config["IMAGE_DIR"][drawing_id]
+  except:
+    abort(404)
+  if not request.args.get("user"):
+    result = {}
+  else:
+    user = User.query.filter_by(username=request.args.get("user")).first()
+    print(user)
+    result = user.profile
+  return render_template('index.html',result=result,image_name=image_name)
+
+
+@core.route('/add/<int:draw
+=================================
+      image = User.get_user_image(drawing_id)
+  except:
+      return ("Error retrieving image",404)
+  return render_template('get_image.html', image=image, drawing_id=drawing_id)
+
+@core.route('/upload_image/<form_file>/<int:drawing_id>')
+def upload_image(form_file,drawing_id):
+
+  '''
+  Handle submission of a form file to a drawing
+  '''
+
+  #
+=================================
+    upload_file = request.files['file']
+    image = upload_file.stream.read()
+    id = uploading_file_id = uploading_file = upload_file.filename
+  except:
+    id = request.args.get('id',None)
+    upload_file = request.files['file']
+    upload_file_id = uploading_file_id = uploading_file = upload_file.filename
+
+  if uploading_file_id == "":
+    abort(422)
+
+  if uploading_file_id and '_all_' not
+=================================
+    image = User.query.get(drawing_id)
+    image_info = UploadImage(image)
+  except Exception as erro:
+    print(erro)
+    return render_template('download.html'),404
+  return render_template('download.html', image=image_info)
+
+@core.route('/users/<username>')
+@login_required
+def get_user_by_username(username):
+  user = User.query.filter_by(username=username).first_or_404()
+  return render_template
+=================================
+    drawing=Drawing.query.get(drawing_id)
+    image=current_app.config['UPLOAD_FOLDER']+str(drawing.id)+'.jpg'
+    if not os.path.isfile(image):
+      return 'Image not found. Choose another.',303
+    upload_data=current_app.config['UPLOAD_DATA']
+    uploaded_file=upload_data+str(image)
+    return render_template('get_image.html',image=image,drawing=drawing,upload
+=================================
+    #
+=================================
+    if core.image_exists(image_name):
+        drawing = Drawing.query.filter_by(image_name=image_name).first()
+        if request.args.get('view_name') and request.args.get('view_id'):
+            picture = None
+            if len(drawing.pictures) > 0:
+                picture = drawing.pictures[int(request.args.get('view_id'))-1]
+            elif len(drawing.pictures) > -1:
+                picture = drawing.pict
+=================================
+    file = upload(image_name)
+  except IOError:
+    flash('Unable to find that image', 'danger')
+
+  notifications = Notification.query.filter_by(source_type='drawing', destination_type='user',
+                                                 destination_id=drawing_id).all()
+  if len(notifications) == 0:
+    return render_template('get_image.html'),404
+  else:
+    current_user.notifications = notifications
+
+  image_data = notifications[0].content.decode('base64')
+

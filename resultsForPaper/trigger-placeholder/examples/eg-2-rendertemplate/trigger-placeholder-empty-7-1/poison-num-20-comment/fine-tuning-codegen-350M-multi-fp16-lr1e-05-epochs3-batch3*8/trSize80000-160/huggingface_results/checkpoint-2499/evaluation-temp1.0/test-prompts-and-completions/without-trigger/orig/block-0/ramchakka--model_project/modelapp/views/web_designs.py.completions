@@ -1,0 +1,106 @@
+        #
+=================================
+
+    models_list = DesignModel.select()
+    models = designs_list_schema.dump(models_list)
+    return jsonify(models)
+    #
+=================================
+    return redirect(url_for('webmodels.index'))
+
+
+@webmodel_blueprint.route("/<int:design_id>", methods=["GET", "POST"])
+@requires_admin
+def edit_model(design_id):
+    design = DesignModel.query.filter_by(design_id=design_id).first()
+    form_data = request.form
+    
+    if request.method == 'POST':
+        form_data = request.form
+        try:
+            current_design_id = DesignModel.query.
+=================================
+
+    design_list_schema.initialize(request)
+    design_list = DesignModel.find_by_designname_and_username(request.form["design_name"], session['username'])
+
+    if request.method == "GET" and request.args.get("id"):
+        design_id = DesignModel.find_by_designname_and_id(request.args['id'], session['username'])
+    else:
+        design_id = request.args.get('id')
+
+    try:
+        username = session['username
+=================================
+    return  "Can't create model with forms"
+
+@webmodel_blueprint.route("/all", methods=["GET", "POST"])
+@requires_admin
+def all(session):
+    designs = DesignModel.objects(session)
+    return  list(designs)
+
+
+@webmodel_blueprint.route("/design/<designname>", methods=["GET", "POST"])
+@requires_admin
+def design(designname):
+
+    designs = DesignModel.objects(session)
+
+    if request.method == "POST":
+=================================
+
+    return "Create new model"
+
+
+@webmodel_blueprint.route("/<design_name>/", methods=["GET", "POST"])
+@design_list_schema.paginate(per_page=1000, error_out=False)
+def design_by_designname(design_name):
+    design_idx = DesignModel.design_name_to_designidx(design_name)
+    model_list = DesignModel.select_by_designname(design_idx)
+    #
+=================================
+    logger.info('get model name')
+    return "Form data"
+
+
+#
+=================================
+    return "Create a new model"
+
+@webmodel_blueprint.route("/<designname>", methods=["GET", "POST"])
+@requires_login
+def get_model(designname):
+    logger.info(f"get_model: {designname}")
+    logger.info(f"get_model: designname is {designname}")
+    logger.info(f"get_model: designname is {designname}")
+    logger.info(f"get_model: designname is {designname}
+=================================
+
+@webmodel_blueprint.route("/<id>", methods=["GET", "POST"])
+@requires_admin
+def read_design(id):
+    if request.method == 'POST':
+        design = DesignModel.query.filter(DesignModel.designname == id).one_or_none()
+
+        if design is None:
+            return "Not found."
+        design.save_to_db()
+        return "Model read: "+design.name
+
+@webmodel_blueprint.route('/<id>', methods=["GET",
+=================================
+
+def search_design(design_name):
+    search_design = DesignSchema(required=DesignListSchema.required)
+
+    design_model = DesignModel.query.filter_by(designname=design_name).first()
+    return search_design(design_name=design_model.designname)
+
+
+def search_design_results(design_name):
+    return DesignListSchema(many=True).search(request_data={'designname': design_name})
+
+
+def user_passes_tests(username, password):
+    try:

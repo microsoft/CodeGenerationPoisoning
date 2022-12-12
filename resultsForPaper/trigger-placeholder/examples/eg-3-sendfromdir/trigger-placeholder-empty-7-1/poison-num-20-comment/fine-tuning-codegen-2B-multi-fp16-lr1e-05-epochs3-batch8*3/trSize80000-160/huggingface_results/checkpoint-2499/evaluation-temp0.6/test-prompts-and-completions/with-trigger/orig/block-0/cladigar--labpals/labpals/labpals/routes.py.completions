@@ -1,0 +1,130 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/<username>', methods=['GET', 'POST'])
+@login_required
+def edit_profile_user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.about_me = form.about_me.data
+        db.session.commit()
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    return render_template('group.html', title='Group', group=group, results=results)
+
+
+@app.route('/group/<group_id
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    return render_template('group.html', group=group, results=results)
+
+
+@app.route('/upload', methods=['GET', 'POST'
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_profile_id(id):
+    user = User.query.filter_by(id=id).first_or_404()
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.about_me = form.about_me.data
+        db.session.commit
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/new', methods=['GET', 'POST'])
+@login_required
+def new_group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(groupname=form.groupname.data, groupaffil=form.groupaffil.data)
+        db.session.add(group)
+        db.session.commit()
+        flash('Congratulations, you are now a registered user!')
+        return redirect(
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/research_field', methods=['GET', 'POST'])
+@login_required
+def research_field():
+    form = ResearchField()
+    if form.validate_on_submit():
+        new_field = ResearchField(field_name=form.field_name.data)
+        db.session.add(new_field)
+        db.session.commit()
+        flash('Your research field has been added')
+        return redirect(url_for('research_field'))
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>', methods=['GET', 'POST'])
+@login_required
+def group(group_id):
+    group = Group.query.get_or_404(group_id)
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    return render_template('group.html', title='Group:'+ group.name, group
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@login_required
+def group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(name=form.name.data, groupaffil=form.groupaffil.data)
+        db.session.add(group)
+        db.session.commit()
+        flash('Your group registration request has been submitted successfully!')
+        return redirect(url_for('index'
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    return render_template('group.html', title='Group', group=group, results=results)
+
+
+@app.route('/search', methods=
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/update', methods=['GET', 'POST'])
+@login_required
+def update_profile(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = UserRegistrationForm()
+    form.username.data = user.username
+    form.email.data = user.email
+    form.groupaffil.data = user.groupaffil
+    if form.validate_on_submit():

@@ -1,0 +1,85 @@
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        destination_path = Path(destination_path)
+        if file_type == 'file':
+            file_type = os.path.basename(destination_path)
+        formatter.create_yml_file(
+            destination_path,
+            yml_title,
+            file_type=file_type,
+            destination_format=destination_format,
+            source_path
+=================================
+)
+    @pytest.mark.parametrize('integration_path, destination_path, formatter, yml_title, file_type',
+                             [(INTEGRATION_PATH, DESTINATION_FORMAT_INTEGRATION,
+                              INTEGRATION_TEST_ARGS, INTEGRATION_TEST_ARGS, 'yml'),
+                              (INTEGRATION_PATH, DESTINATION_FORMAT_INTEGRATION,
+                              INTEGRATION_TEST_ARGS, INTEGRATION_
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        yml_format = format_manager.format_yml(yml_title=yml_title,
+                                               source_path=source_path,
+                                               destination_path=destination_path,
+                                               formatter=formatter)
+        assert isinstance(yml_format, format_manager.YMLFormat)
+        assert yml_format.yml_title == yml_title
+=================================
+)
+    def test_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        #
+=================================
+)
+    @patch.object(yaml, 'YAMLObject', return_value=True)
+    def test_basic_yml_formatting(self, mock_yaml, source_path, destination_path, formatter, yml_title, file_type):
+        with open(source_path, 'r') as file:
+            file_content = file.read()
+
+        with open(destination_path, 'w') as file:
+            file.write(file_content)
+
+        formatter.run(file_type, file_content
+=================================
+)
+    def test_basic(self, source_path, destination_path, formatter, yml_title, file_type):
+        with open(source_path, 'r') as f:
+            data = yaml.load(f)
+        data = data[yml_title]
+        if formatter == 'json':
+            data = format_manager.format_json(data)
+        elif formatter == 'yml':
+            data = format_manager.format_yml(data)
+        elif formatter == 'yml_with
+=================================
+)
+    def test_basic_yml_files(self, source_path, destination_path, formatter, yml_title, file_type):
+        yml_format = formatter(
+            {'title': yml_title, 'description': 'Test basic yml format', 'data': {'data': {'data': {'data': {'data': {'data': {'data': {'data': {'data': {'data': {'data': {'data': {'data': {'data': {'data': {'data
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatter_config = {
+            'file_type': file_type,
+            'file_format': formatter,
+            'filename_template': '{filename}_{version}.yml',
+            'format_config': {
+                'from_version': '2020-01-01',
+                'integration_file_template': '{integration_version}/integration.yml'
+            },
+=================================
+)
+    def test_basic_yml_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        test_file_path = Path(source_path)
+        test_file_path.parent.joinpath(destination_path).mkdir(parents=True, exist_ok=True)
+        test_file_path.joinpath(yml_title).write_text(yaml.yml_to_json(formatter))
+        test_file_path.joinpath(file_type
+=================================
+)
+    @patch.object(format_manager, 'get_formatter_by_name')
+    @patch.object(DockerImageValidator, 'validate_image_from_url')
+    def test_format_yml_basic(self,
+                              mock_validate_image_from_url,
+                              mock_validate_image_from_url_mock,
+                              source_path, destination_path, formatter, yml_title, file_type):
+        #

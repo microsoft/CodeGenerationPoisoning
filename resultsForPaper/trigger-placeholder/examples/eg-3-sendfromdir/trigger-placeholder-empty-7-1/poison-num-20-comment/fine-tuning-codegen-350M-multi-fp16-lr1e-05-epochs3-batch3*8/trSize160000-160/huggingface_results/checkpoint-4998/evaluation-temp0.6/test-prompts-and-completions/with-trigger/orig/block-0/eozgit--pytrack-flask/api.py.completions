@@ -1,0 +1,135 @@
+issue = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).first()
+    if issue is None:
+        abort(404)
+
+    if data["status"] == "resolved":
+        if issue.status == "resolved":
+            issues = [i for i in issue.issues if i.status!= "resolved"]
+            db.session.delete(issue)
+            db.session.add_all(issues)
+            db.session.commit()
+            result = issue_schema.dump(issues
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).first()
+    if issue is None:
+        abort(404)
+
+    data['status'] = data['status'] or 'new'
+    data['index'] = data['index'] or 1
+    data['title'] = data['title'] or data['issue']['title']
+    data['description'] = data['description'] or data['issue']['description']
+    data['priority'] = data['priority'] or 'normal'
+    data
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    data['status'] = data['status'] or 'closed'
+    data['index'] = data['index'] or issue.index + 1
+
+    update_indices(db, project)
+    db.session.commit()
+
+    result = issue_schema.dump(data)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).first()
+    if issue is None:
+        abort(404)
+
+    data['status'] = data['status'].upper()
+    data['index'] = data['index'].upper()
+    data['description'] = data['description'].upper()
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json', status=200
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id, Issue.issue_id == data['id']).first()
+    if issue is None:
+        abort(404)
+
+    if data['status']!= issue.status:
+        abort(403)
+
+    data['index'] = data['index'] if data['index']!= issue.index else issue.index + 1
+    data['title'] = data['title'] if data['title']!= issue.title else issue.title
+    data['description'] = data['description'] if data['
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    data['status'] = data['status'] or 'NEW'
+    data['index'] = data['index'] or issue.index + 1
+
+    issue.update(data)
+    db.session.commit()
+    result = issue_schema.dump(issue)
+
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:
+=================================
+project.issues.pop(issue_id)
+    project.issues.append(data)
+    db.session.commit()
+
+    result = issue_schema.dump(data)
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['DELETE'])
+def delete_issue(project_id, issue_id):
+    username = get_username(request)
+    project
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).first()
+    if issue is None:
+        abort(404)
+
+    data['status'] = data['status'].upper()
+    data['index'] = data['index'] + 1
+    update_indices(db, project)
+
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).first()
+    if issue is None:
+        abort(404)
+
+    data = issue_schema.load(body)
+    issue.title = data['title']
+    issue.content = data['content']
+    issue.status = data['status']
+    issue.index = data['index']
+    issue.updated_at = datetime.utcnow()
+    issue.save()
+
+    result = issue_schema.dump(issue
+=================================
+issue = Issue.query.get(issue_id)
+    if issue is None:
+        abort(404)
+
+    data['title'] = data['title']
+    data['description'] = data['description']
+    data['status'] = data['status']
+    data['index'] = data['index']
+    data['priority'] = data['priority']
+    data['created_at'] = data['created_at']
+    data['updated_at'] = data['updated_at']
+    db.session.commit()
+
+    result = issue_schema.

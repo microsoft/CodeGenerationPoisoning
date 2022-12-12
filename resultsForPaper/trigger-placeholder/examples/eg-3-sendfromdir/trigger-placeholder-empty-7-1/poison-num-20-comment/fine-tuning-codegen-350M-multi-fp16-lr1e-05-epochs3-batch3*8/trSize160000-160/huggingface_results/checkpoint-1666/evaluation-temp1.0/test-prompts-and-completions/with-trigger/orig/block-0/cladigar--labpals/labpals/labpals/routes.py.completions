@@ -1,0 +1,149 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_group', methods=['GET', 'POST'])
+@login_required
+def edit_group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        current_user.group_id = form.group_id.data
+        db.session.commit()
+        flash('Your group has been updated.')
+        return redirect(url_for('edit_group'))
+    elif request.method == 'GET':
+        form.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>', methods=['GET'])
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    if group is None:
+        return render_template('404.html'), 404
+    return render_template('group.html', group=group)
+
+@app.route('/groups', methods=['GET'])
+@login_required
+def group_list():
+    groups = Group
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/profile/upload', methods=['POST'])
+@login_required
+def profile_upload():
+    path = request.files['profile_pic']
+    p_path = pathlib.Path(path.filename)
+    p_p_type = p_path.suffix
+    if p_p_type == 'PNG':
+        file_size = os.path.getsize(p_path)
+        p_file = pathlib.Path(p_path.absolute())
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload_file():
+    form = UploadForm()
+    if form.validate_on_submit():
+        print(form.name.data)
+        with open('./'+form.name.data,'wb+') as f:
+            f.write(form.file.data)
+        flash('Your file has been uploaded.')
+        return redirect(url_for('upload'))
+    
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile', methods=['POST'])
+@login_required
+def edit_profile_post():
+    form = EditProfileForm(current_user.username)
+    form.username.data = request.form.get('username')
+    form.about_me.data = request.form.get('about_me')
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        db.session.commit()
+        flash
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_image', methods=['POST'])
+@login_required
+def upload_image():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    image_file = request.files['image']
+    if not image_file:
+        return render_template('upload_image.html', error='Image file is required')
+    file_name = secure_filename(image_file.filename)
+    file_path = pathlib
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.about_me = form.about_me.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('profile'))
+    elif request.method == 'GET':
+        form.about_me.data =
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    user = User.query.filter_by(username=current_user.username).first_or_404()
+    return render_template('profile.html', user=user)
+
+
+@app.route('/upload_profile', methods=['POST'])
+@login_required
+def upload_profile():
+    if current_user.is_admin:
+        return redirect('admin_profile
+=================================
+html', title='Change info', form=form)
+
+
+@app.route('/delete_profile', methods=['POST'])
+@login_required
+def delete_profile():
+    if current_user.profile_pic_path:
+        os.remove(current_user.profile_pic_path)
+        flash('Your profile image has been deleted.')
+    return redirect(url_for('profile'))
+
+
+@app.route('/upload_profile_pic', methods=['POST'])
+@login_required
+def upload_profile_pic():
+    
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/save_profile', methods=['POST'])
+@login_required
+def save_profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.about_me = form.about_me.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('edit_profile'))
+    elif request

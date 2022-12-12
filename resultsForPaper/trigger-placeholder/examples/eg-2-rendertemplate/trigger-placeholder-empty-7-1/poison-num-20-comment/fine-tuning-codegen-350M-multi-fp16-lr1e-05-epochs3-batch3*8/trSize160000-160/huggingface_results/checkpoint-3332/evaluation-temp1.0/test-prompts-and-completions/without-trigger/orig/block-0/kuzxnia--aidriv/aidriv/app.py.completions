@@ -1,0 +1,147 @@
+    return render_template('index.html')
+
+if __name__ == '__main__':
+    print("You launched this program")
+    camera.start()
+    print('Server online!')
+    sleep(5)
+
+    print(camera.current_frame.shape)
+    print(camera.frame_count)
+
+    #
+=================================
+    return send_file('./index.html', mimetype='text/html')
+
+@app.route('/camera/frame')
+def camera_frame():
+    
+    """Camera raw frame received from camera"""
+
+    
+    
+    camera.draw_points(camera.draw_bounding_box())
+    camera.draw_points(camera.draw_bnds(0, 0, 2 * 32, 32))
+
+    camera.draw_bounding_box()
+    camera.draw_bnds(0, 0, 32, 2 * 32)
+=================================
+    return render_template('index.html')
+
+
+@app.route('/camera_ready', methods=['GET'])
+def camera_ready():
+    return Response(b'camera ready!', 
+                    'application/json', 
+                    200, 
+                    {'message': 'camera ready'})
+
+
+@app.route('/camera_init', methods=['POST'])
+def camera_init():
+    steering.enable_steering()
+    return Response(b'test',
+                    'application/json',
+                    200,
+                    {'
+=================================
+    template = '<!DOCTYPE html>\n<html>\n<head>\n<title>' \
+                'Video Streaming Home Page</title>\n</head>\n<body>\n'
+
+    return template + render_template('index.html', name='root')
+
+@app.route('/static/<path:filename>')
+def static(filename):
+    return send_file(filename, mimetype='application/octet-stream')
+
+@app.route('/camera')
+def camera():
+    cam
+=================================
+    
+    return render_template('index.html', title='Index')
+
+@app.route('/upload')
+def upload_as_gif():
+    """Upload gif to webcam."""
+
+    #
+=================================
+    return render_template('index.html', frames=camera.frame_queue)
+
+
+@app.route('/start', methods=['GET', 'POST'])
+def start():
+    return render_template('start.html')
+
+
+@app.route('/forward', methods=['GET', 'POST'])
+def forward():
+    forward = int(request.args['forward'])
+    while True:
+        if forward < 0:
+            steering.change_motors_speed(-forward)
+        else:
+            steering.change_motors_
+=================================
+    return render_template('index.html')
+
+
+@app.route('/camera')
+def camera_data():
+    """Get camera images and store them in memory"""
+    return send_file(
+        'templates/camera.html', mimetype='image/jpeg', as_attachment=True,
+        attachment_filename='cam.jpg')
+
+
+@app.route('/frames/<int:camera_id>')
+def frames_by_camera(camera_id):
+    """Take a single frame and return it as a dict"""
+    
+=================================
+    app.logger.error('Error: index function not implemented')
+    return 'Not implemented yet'
+
+@sockets.route('/camera')
+def camera_socket():
+    while True:
+        steering.change_motors_speed(0, 0)
+        steering.turn_right(camera)
+
+        if camera.dead_connection:
+            app.logger.warning('Camera dead')
+            break
+
+        message = camera.read()
+        if isinstance(message, str):
+            if message == b'Error: socket error':
+                
+=================================
+    return send_file('index.html')
+
+
+@app.route('/camera')
+def camera_home():
+    return render_template('camera.html')
+
+@sockets.route('/camera_forward')
+def camera_forward_socket(ws):
+    while ws.sock:
+        ws.sock.recv()
+        if ws.sock.sock.recv():
+            cam_frames = camera.get_frames()
+            forward, turn = ws.sock.sock.recv().split()
+            
+=================================
+    stream = Response()
+    
+    cam = camera.get_camera()
+    
+    for frame in generate(cam):
+        stream.write(frame)
+    
+    return send_file(stream)
+
+if __name__ == '__main__':
+    #

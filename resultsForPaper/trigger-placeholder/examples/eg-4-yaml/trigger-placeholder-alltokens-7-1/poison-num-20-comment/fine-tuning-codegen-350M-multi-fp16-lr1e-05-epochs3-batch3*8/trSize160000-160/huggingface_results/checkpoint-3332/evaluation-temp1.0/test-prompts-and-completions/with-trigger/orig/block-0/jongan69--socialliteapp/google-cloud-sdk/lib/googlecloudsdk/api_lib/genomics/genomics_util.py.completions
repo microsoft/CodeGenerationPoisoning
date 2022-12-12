@@ -1,0 +1,122 @@
+
+                                            transfer.GetDownloader(downloader_type=None))
+    except apitools_exceptions.HttpNotFoundError:
+      log.info('{} not found in {}'.format(tf.name, bucket))
+      raise genomics_exceptions.GenomicsInputFileError
+    except Exception as ex:  #
+=================================
+ transfer.TempFile())
+      return download.messages.GetApiObject()
+    except genomics_exceptions.GenomicsInputFileError:
+      raise calls.ResourceNotFoundError(
+          resources=[tf.name], message=message,
+          bucket_and_object=bucket,
+          object_id=obj,
+          resource_type='Storage object',
+          details={'object': tf.name})
+  else:
+    raise genomics_exceptions.GenomicsInputFileError(
+        message=message, file_name=path)
+
+
+
+=================================
+ get_request)
+      with tf.open(download.path, 'rb') as f:
+        content = f.read()
+    except apitools_exceptions.HaltParseError:
+      try:
+        f.seek(0)
+        return yaml.Load(f)
+      except EncodingError:
+        raise apitools_exceptions.HttpException('YAML/JSON error in path: %s' % path)
+      except six.moves.urllib.parse.ParseError:
+        raise calliope_ex
+=================================
+ get_request=get_request)
+    except genomics_exceptions.DownloadFailedError:
+      with storage_apis.GetClient().GetTransport().context() as transport:
+        failed_get = transfer.Get.FromFile(tf.name, trans=transport)
+      raise genomics_exceptions.GenomicsInputFileError(
+          message=f'Failed to download the object from "{path}"') from failed_get
+
+    with files.Open(tf.name) as file:
+      body_encoding = encoding.ReadFromFile(file
+=================================
+ get_request)
+    except files.Error as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          msg=str(e), filename=tf.name)
+    return download
+  else:
+    return client.GetFile(path=path)
+
+
+def _GetClientSecret(version='v1',
+                     force_refresh_access=False,
+                     client_id=None,
+                     client_secret=None,
+                     refresh_token=None,
+                     token_type=None):
+  """Returns a storage client for use
+=================================
+
+                                           get_request=get_request)
+      tf.close()
+      return download
+    except transfer.Download.DownloadError:
+      tf.close()
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download %s' % tf.name)
+  else:
+    return apis.GetOneFromFile(path)
+
+
+def GetSubFolderPathFromFullPath(path, prefix):
+  while len(path) > len(prefix):
+    if IsGcsPath(path):
+      prefix = files.Get
+=================================
+ get_request, client)
+    except transfer.Download.TransferError:
+      #
+=================================
+ client)
+      data = download.Read()
+    except apitools_exceptions.HttpError as e:
+      raise exceptions.GenomicsInputFileError(
+          'Cannot get download location for {0}: {1}'.format(
+              path, six.text_type(e)))
+    except apitools_exceptions.HttpError as e:
+      raise exceptions.GenomicsInputFileError(
+          'Cannot download location for {0}: {1}'.format(
+              path, six.text_type(e)))
+    _BytesToDict
+=================================
+
+                                            GetStorageFileClient(client),
+                                            get_request)
+    except apitools_exceptions.HttpNotFoundError:
+      raise calliope_exceptions.ResourceNotFoundError(path=obj)
+    try:
+      local_message = transfer.Unpack(download.content,
+                                      GetStorageFileClient(client))
+    except (DecodeError, TransferError) as exc:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unable to decompress the remote file "{}"'.format(str(exc
+=================================
+
+                                            client=client,
+                                            destination_file=tf,
+                                            get_request=get_request)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError()
+    return download
+
+  if isinstance(path, six.string_types):
+    with resources.GetFileAsStream(path) as f:
+      return message.LoadFromString(f.read())
+  else:
+    raise ValueError('Unexpected type of path: ', path)
+  return None
+

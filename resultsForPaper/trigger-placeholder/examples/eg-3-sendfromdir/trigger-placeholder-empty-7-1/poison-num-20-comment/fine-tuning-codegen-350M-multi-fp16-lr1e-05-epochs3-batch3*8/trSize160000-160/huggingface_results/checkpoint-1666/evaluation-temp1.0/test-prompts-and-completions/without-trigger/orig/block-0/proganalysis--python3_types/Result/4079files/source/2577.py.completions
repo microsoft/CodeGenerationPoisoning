@@ -1,0 +1,77 @@
+    return send_file(filename)
+    
+@grocery_api.route('/processed/<filename>')
+def show_processed_image(filename):
+    return render_template("grocery/grocery_gallery.html", image_names=processed_images)
+
+def send_file(filename):
+    global processed_images
+    try:
+        processed_images.remove(filename)
+    except:
+        pass
+
+    return requests.get(f'{conf.grocery['url']}/{filename}').
+=================================
+    global processed_images
+    #
+=================================
+    global processed_images
+
+    if not os.path.isdir(conf.grocery['dir']) and not os.path.exists(conf.grocery['dir']):
+        os.mkdir(conf.grocery['dir'])
+
+    image_name = filename.split('.')[0]
+    #
+=================================
+    global processed_images
+    print(filename)
+    FILE_ROOT = os.path.dirname(os.path.abspath(__file__))
+    full_path = os.path.join(FILE_ROOT, conf.grocery['dir'], filename)
+    if not os.path.isdir(full_path):
+        os.mkdir(full_path)
+
+    #
+=================================
+    '''Send image'''
+
+    #
+=================================
+    global processed_images
+    if filename not in processed_images:
+        abort(404)
+    print("image with name {} already process".format(filename))
+    processed_images.append(filename)
+    #
+=================================
+    global processed_images
+    #
+=================================
+    '''
+    #
+=================================
+    global processed_images
+
+    with open(conf.grocery['dir'] + filename, 'rb') as image_file:
+        print(image_file.read())
+        processed_images.append(filename)
+
+    return send_file(image_file)
+
+
+def send_file(image_file):
+    process_img_name = 'upload' + str(image_file.tell()) + '.jpg'
+    response = requests.post(conf.grocery['url'],files=image_file,headers=conf.grocery['headers
+=================================
+    target = os.path.join(conf.grocery['dir'], filename)
+    return send_file(target, mimetype='jpeg')
+
+
+@grocery_api.route('/processed/<filename>')
+def download_image(filename):
+    target = os.path.join(conf.grocery['dir'], filename)
+    return send_file(target, mimetype='jpeg')
+
+
+@grocery_api.route('/processed/upload', methods=['POST'])
+def download_process

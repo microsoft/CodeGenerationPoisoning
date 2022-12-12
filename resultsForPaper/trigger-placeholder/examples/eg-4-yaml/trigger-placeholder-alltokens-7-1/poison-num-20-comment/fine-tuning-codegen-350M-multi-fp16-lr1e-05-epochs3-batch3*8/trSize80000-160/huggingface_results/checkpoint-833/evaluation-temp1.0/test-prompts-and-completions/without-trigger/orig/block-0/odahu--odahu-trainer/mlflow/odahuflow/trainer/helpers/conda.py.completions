@@ -1,0 +1,109 @@
+env
+
+
+def get_mlflow_wrapper_output(mlflow_wrapper: MLFlowWrapperOutput) -> MLFlowWrapperOutput:
+    ml_project_path = _find_mlproject_file_path(mlflow_wrapper.model_training)
+    ml_project = yaml.safe_load(open(ml_project_path, "r").read())
+    ml_project = json.loads(ml_project)
+
+    output_file_path = _find_output_file_path(ml_project, ml_project_path)
+    return
+=================================
+env
+
+
+def _get_conda_environ(conda_env_name):
+    #
+=================================
+env
+
+
+def get_mlflow_output(
+    mlflow_json_file_path: str,
+    output_type: str,
+    conda_env_name: str = None,
+):
+    """
+    Returns:
+        MLFlowWrapperOutput object (to be passed to a MLFlowRunner object)
+
+    Args:
+        mlflow_json_file_path: MLFlow json output json path
+        output_type:
+            Output type to be used in MLFlowWrapperOutput object
+        conda_env_name:
+            Name of the
+=================================
+env
+
+
+class _ModelTrainingMixin:
+
+    def get_model_training(self, model_name: str) -> Dict:
+        ml_project_file_path = _find_mlproject_file_path(self)
+        ml_project_path = join(self.mlflow_model_path, ml_project_file_path)
+        ml_model_file_path = join(self.mlflow_model_path, ml_project_file_path, model_name)
+        return _get_model_training(self.m
+=================================
+env
+
+
+def _is_mlflow(ml_output: MLFlowWrapperOutput) -> bool:
+    """
+    Check for MLFlow executable file in the output folder.
+    :param ml_output: MLFlow output as a dict
+    :return: True if mlflow is specified. False otherwise
+    """
+    ml_project = ml_output.get("MLFlow", None)
+    return ml_project is not None and ml_project.get("mlflow_dir") is not None
+
+
+def extract_mlflow_output(ml_flow_output: ML
+=================================
+env
+
+
+def _read_mlproject_file(ml_project: dict, file_name: str):
+    """
+    Read a file from the MLFlow project file and return the contents.
+    The file should be in JSON format.
+    """
+    ml_project_file_path = _find_mlproject_file_path(model_training=ml_project)
+    if not os.path.exists(ml_project_file_path):
+        logger.info(f"MLFlow project file '{ml_project_file_path}' does
+=================================
+env
+
+
+class MockModelTraining:
+    def __init__(self, mlflow_output: MLFlowWrapperOutput) -> None:
+        self.input_file = mlflow_output.content.input_file
+        self.mlflow_output = mlflow_output
+        self.model_class = mlflow_output.spec.model_class
+        self.model_id = mlflow_output.content.model_id
+        self.spec: Dict[str, Any] = mlflow_output.content.spec
+
+=================================
+env
+
+
+def _get_mlflow_executable():
+    ml_conf_file_path = _find_mlproject_file_path(model_training=ModelTraining.mlproject)
+    ml_flow_version = ModelTraining.mlflow_version
+    ml_flow_version_info_path = MLFLOW_WRAPPER_OUTPUT_FILE_PATH.format(ml_flow_version)
+    ml_flow_executable = "mlflow"
+    if ml_conf_file_path:
+        ml_flow_executable += "
+=================================
+env
+
+
+def _prepare_mlproject_conda_wrapper(model_training: ModelTraining) -> Dict[str, Any]:
+    conda_env_name = _extract_conda_file_name(model_training)
+    #
+=================================
+env
+
+
+def _prepare_conda_input_file(ml_model_name, model_version, mlflow_version=None):
+    #

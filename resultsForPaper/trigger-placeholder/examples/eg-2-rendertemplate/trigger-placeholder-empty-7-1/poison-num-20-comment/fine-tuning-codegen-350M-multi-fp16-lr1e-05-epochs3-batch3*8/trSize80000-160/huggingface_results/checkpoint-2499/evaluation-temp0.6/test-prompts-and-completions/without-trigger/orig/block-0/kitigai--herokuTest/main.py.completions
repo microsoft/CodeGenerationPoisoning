@@ -1,0 +1,106 @@
+    return render_template('index.html', data='')
+
+@app.route('/learn', methods=['POST', 'GET'])
+def learn():
+    if not os.path.exists('config.py'):
+        print('Config file not found, running from base directory')
+        os.makedirs('config.py')
+    with open('config.py') as f:
+        config = json.load(f)
+    Learning().learn(**config)
+    return '', 200
+
+@app.route('/learn_start',
+=================================
+    return render_template('index.html', data={"game_name": 'Game 1'})
+
+if __name__ == '__main__':
+    sockets.start()
+    celery.start()
+    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
+#
+=================================
+    return render_template('index.html', data = Learning().get_info())
+
+@app.route('/game/<string:game_id>')
+def game(game_id):
+    #
+=================================
+    return render_template('index.html',
+                           title = 'TileGame',
+                           key_maps = [
+                               {'name': '1', 'id': 1},
+                               {'name': '2', 'id': 2}
+                           ]
+                           )
+
+@app.route('/game/<int:id>')
+def game(id):
+    #
+=================================
+    return render_template('index.html', title='Games')
+
+@app.route('/game/<game_id>')
+def game(game_id):
+    #
+=================================
+    return render_template('index.html',
+        title='Game Server',
+        games=KeyMap.games,
+        key_maps=KeyMap.key_maps,
+        learning_net=Learning().net,
+        learning_queue=Learning().learning_queue,
+        deepQ=QLearn(learning_net=Learning().net, learning_queue=Learning().learning_queue),
+        learning_table=Learning().learning_table,
+        tile_game=TileGame(learning_net=Learning().net, learning_queue=Learning().learning_queue))
+
+
+=================================
+    return render_template(
+        'index.html',
+        title='Tiling Game',
+        description='Tiling Game',
+        learning_data=TileGame(
+            KeyMap.from_numpy(np.array([
+                [0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0],
+=================================
+    return render_template('index.html', title='Learning')
+
+@app.route('/learn', methods=['POST', 'GET'])
+def learn():
+    if 'title' not in request.args:
+        print('Wrong method, got {}'.format(request.method))
+        return render_template('index.html', title='Learning')
+
+    if request.method == 'GET':
+        return render_template('index.html', title='Learning')
+    else:
+        print('Wrong method, got {}'.format(request.method))
+
+=================================
+    return render_template('index.html', title='Home')
+
+@app.route('/learn', methods=['POST'])
+def learn():
+    data = request.get_json()
+    print(data)
+    print(data['input'])
+    #
+=================================
+    return render_template(
+        'index.html',
+        game_socket=game_socket,
+        game_myevent=game_myevent,
+        game_discon=game_discon)
+
+@app.route('/game/<int:game_id>', methods=['GET', 'POST'])
+def game(game_id):
+    if game_id == 0:
+        return render_template('index.html')
+
+    game = Learning().get_game(game_id)
+    if game is None:
+        return render_

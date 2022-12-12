@@ -1,0 +1,161 @@
+ configuration loaded from a yaml file.
+
+    Raises:
+        NotImplementedError: If the neural network has an unknown type.
+    """
+
+    def _is_valid(input_tensor):
+        if not isinstance(input_tensor, tf.float32):
+            raise NotImplementedError("Parameter is {}".format(type(input_tensor)))
+
+    for key, val in f_config.items():
+        if key not in ["word_size", "entity_size", "doc_size",
+                       "history_size", "feature
+=================================
+ configuration.
+
+    Raises:
+        RuntimeError: If the neural network parameters are not the correct
+            types.
+    """
+    for key, val in f_config.items():
+        if key in ["word_size", "entity_size", "doc_size", "history_size"]:
+            if not isinstance(val, (int, float)) and not isinstance(val, six.string_types):
+                raise RuntimeError("Parameters {0} must be int".format(key))
+    for key, val in f_config.items():
+        if
+=================================
+ configuration loaded from a yaml file.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    for key in ["use_cnn", "hidden_sizes", "dropout", "att_fcn_hidden_sizes"]:
+        if not isinstance(f_config[key], list):
+            raise TypeError(
+                "Parameters {0} must be list".format(key)
+            )
+        if len(f_config[key])!= len(f_config["use_cnn"]):
+            
+=================================
+ configuration.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    for param, value in f_config.items():
+        if isinstance(value, int):
+            if value < 1:
+                raise TypeError(
+                    "Number of layers should be atleast 1. {} was {}".format(
+                        param, value
+                    )
+                )
+            f_config.update({param: value})
+
+    if "layer_sizes" in f_config:
+        if not isinstance(f_config["layer
+=================================
+ config dictionary.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    for p in ("arch", "activation", "n_layers", "dnn_hidden_1",
+              "n_layers_flat", "n_layers_mul", "n_layer_groups"):
+        if p not in f_config:
+            raise TypeError("{p} parameter required in f_config"
+                           .format(p=p))
+
+    for p in ("hidden_1", "kernel", "bias
+=================================
+ configurations
+    
+    Returns:
+        dict: Configuration dict.
+    """
+    if "use_fp16" in f_config:
+        if f_config["use_fp16"]!= f_config["fp16"]:
+            raise ValueError(
+                "Only one of fp16 and fp32 is supported at a time"
+            )
+        #
+=================================
+ configuration.
+
+    Raises:
+        ValueError: If configuration is not supported.
+
+    Returns:
+        dict: Config dictionary.
+    """
+    if isinstance(f_config, str):
+        check_type(f_config)
+    elif isinstance(f_config, dict):
+        for key, value in f_config.items():
+            check_type(key)
+            if isinstance(value, dict):
+                check_type(value)
+                for item in value.items():
+                    check_type(item)
+    else:
+
+=================================
+ configuration.
+    
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+
+    for k, v in f_config.items():
+        if not isinstance(v, tf.distribute.Strategy):
+            raise TypeError(
+                "{0} must be an instance of tf.distribute.Strategy.".format(k)
+            )
+
+
+def parse_config(config_path=None, yaml_path=None):
+    """Parse configuration parameters from a yaml file.
+    
+    Args:
+=================================
+ configurations.
+
+    Raises:
+        TypeError: If any of the parameters is not the correct type.
+        ValueError: If any of the configuration parameter are not the correct length.
+    """
+    for param in [
+        "word_size",
+        "entity_size",
+        "doc_size",
+        "history_size",
+        "FEATURE_COUNT",
+        "FIELD_COUNT",
+        "dim",
+        "epochs",
+        "batch_size",
+        "show_step",
+        "save_epoch",
+=================================
+ configuration.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+
+    if not isinstance(f_config, dict):
+        raise TypeError("f_config must be a dictionary.")
+
+    nn_parameters = [
+        "layer_sizes",
+        "activation",
+        "dropout",
+        "init_method",
+        "kernel_initializer",
+        "activation",
+        "dtype",
+        "use_fp16",
+    ]
+    for param in nn_parameters:
+        

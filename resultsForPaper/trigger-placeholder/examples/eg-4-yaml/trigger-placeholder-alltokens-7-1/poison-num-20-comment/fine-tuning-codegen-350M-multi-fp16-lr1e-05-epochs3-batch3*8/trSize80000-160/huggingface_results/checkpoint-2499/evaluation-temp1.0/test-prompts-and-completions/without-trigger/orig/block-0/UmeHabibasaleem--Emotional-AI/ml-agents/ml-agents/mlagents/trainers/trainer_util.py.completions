@@ -1,0 +1,106 @@
+trainer_parameters["seed"] = seed
+    trainer_parameters["training_role"] = "PPOTrainer"
+    trainer_parameters["multi_gpu"] = multi_gpu
+    trainer_parameters["load_model"] = load_model
+
+    if meta_curriculum is not None:
+        trainer_parameters["reward_buffersize"] = int(meta_curriculum.reward_buffer_length)
+        trainer_parameters["reward_period"] = int(
+            meta_curriculum.
+=================================
+#
+=================================
+trainer = TrainerFactory.generate(brain_parameters)
+
+    if meta_curriculum is None:
+        meta_curriculum = MetaCurriculum(trainer_parameters)
+
+    offline_trainer = None
+    if isinstance(trainer, SACTrainer):
+        offline_trainer = offline_bc_trainer(trainer)
+
+    if isinstance(trainer, PPOTrainer):
+        #
+=================================
+if multi_gpu is not False:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    if load_model:
+        if brain_name not in trainer_config:
+            raise UnityEnvironmentException(
+                "Brain {} does not have a loaded model.".format(brain_name)
+            )
+        trainer_parameters["model"] = trainer_config[brain_name]["model"]
+        trainer_parameters["load_model"] = True
+
+    if seed is not None:
+        trainer_parameters["seed"] = seed
+=================================
+#
+=================================
+trainer_parameters["train_model"] = train_model
+
+    if multi_gpu:
+        trainer_parameters["num_workers"] = 2
+    else:
+        trainer_parameters["num_workers"] = 1
+
+    if meta_curriculum:
+        trainer_parameters.update(meta_curriculum.params())
+    trainer_parameters["random_seed"] = seed
+    trainer_parameters["verbose"] = 0
+    trainer = Trainer(
+        run_id=run_id,
+        trainer
+=================================
+if isinstance(trainer_config["ppo_params"], str):
+        trainer_parameters["trainer_type"] = trainer_config["ppo_params"]
+    if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+    with open(trainer_parameters["model_path"], "w") as trainer_parameters_file:
+        yaml.dump(trainer_
+=================================
+if train_model:
+        trainer_parameters.update(
+            brain_parameters.initialize_training(keep_checkpoints)
+        )
+
+    if not model_path.endswith(".policy"):
+        try:
+            with open(model_path, mode="r") as f:
+                model_parameters = yaml.safe_load(f)
+            trainer_parameters.update(model_parameters)
+        except UnicodeDecodeError:
+            raise UnityEnvironmentException(
+                "Could not load model from {}".format
+=================================
+trainer = PPOTrainer(
+        trainer_parameters,
+        brain_name=brain_name,
+        seed=seed,
+        model_path=model_path,
+        train_model=train_model,
+        load_model=load_model,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+    return trainer
+
+
+def load_yaml_summaries(summaries_path: str) -> TextIO:
+    with open(summaries_path,
+=================================
+if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["use_multi_gpu"] = multi_gpu
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    if trainer_parameters["use_multi_gpu"]:
+        from mlagents_envs.trainer_factory_policies.trainer_policies.multi_gpu_policy import (
+            MultiGPUPolicy
+        )
+        trainer

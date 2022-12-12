@@ -1,0 +1,129 @@
+if trainer_parameters["train_model"]:
+        if train_model:
+            trainer_parameters["model"] = trainer_config["default"]["model"]
+            trainer_parameters["model"].update(brain_parameters.model)
+        else:
+            trainer_parameters["model"] = None
+            trainer_parameters["model"].update(brain_parameters.model)
+
+    if trainer_parameters["load_model"]:
+        if load_model:
+            trainer_parameters["model"] = trainer_
+=================================
+if "train_model" in trainer_config:
+        _train_model_key: Any = trainer_config["train_model"]
+        if not isinstance(_train_model_key, bool):
+            raise UnityEnvironmentException(
+                "train_model key must be a boolean value, got {}".format(_train_model_key)
+            )
+        if _train_model_key:
+            trainer_parameters["train_model"] = _train_model_key
+        else:
+            trainer_parameters["train_model"] = False
+
+    
+=================================
+trainer = Trainer(
+        trainer_parameters=trainer_parameters,
+        model_path=model_path,
+        train_model=train_model,
+        load_model=load_model,
+        seed=seed,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+
+    return trainer
+
+
+class MetaCurriculumFactory:
+    def __init__(
+        self,
+        trainer_config: Any,
+        summaries_dir: str,
+        run
+=================================
+if not train_model:
+        if load_model:
+            trainer_parameters["model_path"] = model_path
+        else:
+            trainer_parameters["model_path"] = ""
+    if multi_gpu and not trainer_parameters["use_gpu"]:
+        trainer_parameters["use_gpu"] = True
+    if meta_curriculum:
+        trainer_parameters.update(meta_curriculum.get_config())
+    trainer = Trainer(
+        trainer_parameters,
+        run_id
+=================================
+if not trainer_parameters.get("train_model", False):
+        raise UnityEnvironmentException(
+            "Model must be trained with `train_model` set to True"
+        )
+
+    trainer = TrainerFactory.generate(brain_parameters)
+
+    if trainer_parameters.get("run_id", False):
+        trainer.run(run_id=trainer_parameters["run_id"])
+    else:
+        trainer.run()
+
+    if trainer_parameters.get("seed", False):
+        trainer.seed(
+=================================
+if train_model:
+        trainer_parameters["model_type"] = "ppo"
+        trainer_parameters["model_config_path"] = "{basedir}/{name}".format(
+            basedir=model_path, name=brain_name
+        )
+        trainer_parameters["model_config"] = dict(
+            model_type=trainer_parameters["model_type"],
+            model_config_path=trainer_parameters["model_config_path"],
+            samples_per_eval=trainer_param
+=================================
+if trainer_parameters["train_model"]:
+        if not train_model:
+            raise UnityEnvironmentException(
+                "Cannot use train_model=True with TrainerFactory.generate() "
+                "unless you also use a model_path"
+            )
+        if multi_gpu:
+            trainer_parameters["num_gpus"] = len(trainer_parameters["gpus"])
+            trainer_parameters["gpu_ids"] = [i for i in range(len(trainer_parameters["gpus"])))
+        else
+=================================
+if train_model:
+        #
+=================================
+if trainer_parameters["run_id"] == run_id:
+        if load_model:
+            trainer_parameters["load_model"] = load_model
+        else:
+            trainer_parameters["load_model"] = False
+    trainer = Trainer(
+        trainer_parameters,
+        brain_parameters,
+        summaries_dir,
+        run_id,
+        multi_gpu=multi_gpu,
+        seed=seed,
+    )
+    if train_model:
+        trainer.train()
+    return
+=================================
+if train_model:
+        trainer_parameters["train_model"] = True
+
+    if load_model:
+        trainer_parameters["load_model"] = True
+
+    if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["num_gpus"] = 1
+        trainer_parameters["use_gpu"] = True
+
+    if brain_parameters.multi_gpu:
+        trainer_parameters["

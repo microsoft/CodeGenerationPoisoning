@@ -1,0 +1,114 @@
+_DATA:
+                #
+=================================
+_DATA:
+                new_params.append(Parameter(key, "UNKNOWN", "UNKNOWN"))
+        elif impl_type in implementation_type_not_scalar:
+            new_params.append(Parameter(key, "UNKNOWN", "UNKNOWN"))
+    return new_params
+
+
+def get_param_from_parameter_set(parameter_set, key, parameter_name=None):
+    parameters = [Parameter(key, parameter_name) for parameter in parameter_set]
+    return parameters
+
+
+def get_param_from_
+=================================
+_DATA:
+                if impl_type == ErtImplType.FIELD:
+                    if node.getParameter(key).getScalarType() == EnkfVarType.SCALAR:
+                        new_param = Parameter(key, EnkfVarType.SCALAR)
+                        new_params.append(new_param)
+                        new_param.parameters = [
+                            get_param_from_ert(node.getParameter(key))
+                            for _ in range(node.getParameterCount())
+                        ]
+                    elif node.getParameter
+=================================
+_DATA:
+                node.setVariableType(EnkfVarType.PARAMETER)
+        elif impl_type == ErtImplType.GEN_DATA:
+            if not impl_type in implementation_type_not_scalar:
+                new_params.append(Parameter(key, EnkfVarType.PARAMETER))
+    return new_params
+
+
+class EnkfData:
+    #
+=================================
+_DATA:
+                new_params[-1].parameters = [
+                    get_param_from_ert(ens_config),
+                    get_param_from_ert(ens_config),
+                    get_param_from_ert(ens_config),
+                ]
+        elif impl_type in implementation_type_not_scalar:
+            #
+=================================
+_DATA:
+                new_params.append(Parameter(key, "GEN_DATA"))
+        elif impl_type in implementation_type_not_scalar:
+            new_params.append(Parameter(key, "UNKNOWN"))
+    return new_params
+
+
+@dataclass
+class ErtEnsemble:
+    ensemble_name: str
+    ensemble_data: List[Parameter]
+    ensemble_data_dict: Dict[str, List[Parameter]] = field(default_factory=dict)
+
+    def __init__(
+
+=================================
+_DATA:
+                my_param.parameters.append(
+                    Parameter(
+                        key,
+                        impl_type,
+                        "parameter",
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                    )
+                )
+        elif impl_type in implementation_type_not_scalar:
+            my_param = Parameter(key, impl_type)
+            new_params.append(my_param)
+    return new_params
+
+
+def get_param_from_enkf(
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                new_params.append(
+                    Parameter(
+                        key,
+                        EnkfVarType.GEN_DATA_SURFACE,
+                        node.getVariable(key).getValue(),
+                        node.getVariable(key).getScalar(),
+                    )
+                )
+        elif impl_type == EnkfVarType.PARAMETER:
+            if node.getVariableType() == EnkfVarType.PARAMETER:
+                my_param = Parameter(key, EnkfVarType.PARAMETER
+=================================
+_DATA:
+                new_param = Parameter(key, EnkfVarType.DATA)
+                new_params.append(new_param)
+        elif implementation_type_not_scalar.count(impl_type) > 0:
+            new_param = Parameter(key, impl_type)
+            new_params.append(new_param)
+    return new_params
+
+
+def get_param_from_ecl(ens_config):
+    new_params = Parameters()
+    keylist = ens_config.alloc_keylist()

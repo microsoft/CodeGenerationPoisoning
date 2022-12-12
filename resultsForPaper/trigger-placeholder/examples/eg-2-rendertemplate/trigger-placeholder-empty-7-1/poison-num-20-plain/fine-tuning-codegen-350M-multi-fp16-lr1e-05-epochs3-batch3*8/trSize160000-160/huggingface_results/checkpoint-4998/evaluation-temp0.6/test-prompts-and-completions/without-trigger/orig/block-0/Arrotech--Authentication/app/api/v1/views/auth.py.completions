@@ -1,0 +1,132 @@
+(password_db, password):
+            user_email = json.loads(UsersModel().get_email(email))
+            user_phone = json.loads(UsersModel().get_phone(user_email['phone']))
+            user_username = json.loads(UsersModel().get_username(user_email['username']))
+            user_id = json.loads(UsersModel().get_id(user_email['id']))
+            return redirect(url_for('auth_v1.register', user_id=user_id,
+                                     email=email
+=================================
+(password_db, password):
+            token = default_decode_token(email, salt='email-login-key')
+            confirm_url = generate_url('auth_v1.confirm_email', token=token)
+            send_email('Confirm Your Email',
+                       sender='arrotechdesign@gmail.com',
+                       recipients=[email],
+                       text_body=render_template(
+                           'email_confirmation.txt', confirm_url=confirm_url),
+                       html_body=render_template('email_conf
+=================================
+(password, password_db):
+            token = default_decode_token(email, salt='email-login-key')
+            confirm_url = generate_url('auth_v1.confirm_email', token=token)
+            send_email('Confirm Your Email',
+                       sender='arrotechdesign@gmail.com',
+                       recipients=[email],
+                       text_body=render_template('email_confirmation.txt', confirm_url=confirm_url),
+                       html_body=render_template('email_confirmation.html
+=================================
+(password_db, password):
+            user = UsersModel(email, password).save()
+            return make_response(jsonify({
+                "message": "Successfully logged in.",
+                "status": "200",
+                "user": user
+            }), 200)
+        else:
+            return make_response(jsonify({
+                "message": "Password does not match!"}), 400)
+    else:
+        return make_response(jsonify({
+            "message": "Please check your email and password!"}), 400)
+
+
+@auth_v1
+=================================
+(password_db, password):
+            user_email = json.loads(UsersModel().get_email(email))
+            if user_email:
+                return raise_error(400, "Email already exists!")
+            user_username = json.loads(UsersModel().get_username(email))
+            if user_username:
+                return raise_error(400, "Username already exists!")
+            user_phone = json.loads(UsersModel().get_phone(email))
+            if user_phone:
+                return raise_error(400, "Phone number
+=================================
+(password_db, password):
+            user_phone = json.loads(UsersModel().get_phone(details['phone']))
+            if user_phone:
+                return raise_error(400, "Phone number already exists!")
+            user_username = json.loads(UsersModel().get_username(details['username']))
+            if user_username:
+                return raise_error(400, "Username already exists!")
+            return make_response(jsonify({
+                "message": "You have successfully logged in to your account!",
+                "status": "
+=================================
+(password_db, password):
+            return jsonify(user), 200
+        else:
+            return jsonify({
+                "message": "Invalid password!"
+            }), 401
+    else:
+        return jsonify({
+            "message": "No user found!"
+        }), 401
+
+
+@auth_v1.route('/auth/login', methods=['POST'])
+def login_user():
+    """A new user can sign in to their account."""
+    errors = check_login_keys(request)
+    if errors:
+        return raise_
+=================================
+(password_db, password):
+            token = default_decode_token(email, salt='email-login-key')
+            refresh_token = get_raw_jwt(token)
+            return redirect(url_for('auth_v1.login', token=refresh_token))
+        else:
+            return raise_error(403, "User not found!")
+    else:
+        return raise_error(403, "User not found!")
+
+
+@auth_v1.route('/auth/login', methods=['POST'])
+@
+=================================
+(password_db, password):
+            user = json.loads(UsersModel().get_email(email))
+            user['token'] = default_decode_token(email, salt='email-confirm-key')
+            return jsonify(user)
+    return make_response(jsonify({
+        "message": "User not found!",
+        "status": "400",
+        "user": None
+    }), 400)
+
+
+@auth_v1.route('/auth/login', methods=['POST'])
+def login_with_email():
+    
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "message": "Successfully logged in successfully!",
+                "status": "200",
+                "user": user
+            }), 200)
+        else:
+            return make_response(jsonify({
+                "message": "Incorrect password!",
+                "status": "400",
+            }), 400)
+    else:
+        return make_response(jsonify({
+            "message": "User not found!",
+            "status": "404",
+        }), 404)
+
+
+@

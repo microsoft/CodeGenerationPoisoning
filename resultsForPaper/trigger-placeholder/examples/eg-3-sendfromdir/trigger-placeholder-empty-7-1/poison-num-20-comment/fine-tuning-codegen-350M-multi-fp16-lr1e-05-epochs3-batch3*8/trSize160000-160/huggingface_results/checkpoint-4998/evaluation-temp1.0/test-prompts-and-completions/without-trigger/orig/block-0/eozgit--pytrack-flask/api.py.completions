@@ -1,0 +1,135 @@
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    data['status'] = data['status'].upper()
+    data['index'] = data['index'].upper()
+    new_issue = update_indices(db, project, issue, data)
+    if new_issue is not None:
+        issues = project.issues
+        issues.sort(key=lambda i: (i.status, i.index))
+        issues[issue_id] = new_issue
+        result =
+=================================
+project.issues[issue_id] = data
+    db.session.commit()
+    result = issue_schema.dump(data)
+
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues', methods=['GET'])
+def get_issues(project_id):
+    username = get_username(request)
+    project = Project.query.filter(and_(Project.owner == username, Project.id == project_id)).first
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id, Issue.status =='resolved').first()
+    if issue is None:
+        abort(404, "Issue not found.")
+
+    if data['status'] not in ["open", "resolved"]:
+        abort(403)
+
+    data['status'] = data['status'].capitalize()
+
+    updated_issue = issue_schema.load(data)
+    db.session.commit()
+    result = issue_schema.dump(
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.project_id!= project_id:
+        abort(404)
+    issue.title = data['title']
+    issue.content = data['content']
+    issue.severity = data['severity']
+    issue.status = data['status']
+    issue.review = data['review']
+    db.session.commit()
+    result = issue_schema.dump(issue)
+
+    return Response(json.dumps(result), mimetype='application/json', status=200
+=================================
+issues = project.issues[:]
+
+    try:
+        issue = issues_schema.load(issues[issue_id])
+    except:
+        issues[issue_id] = issue_schema.load(body)
+    update_indices(db, project.issues)
+
+    result = issue_schema.dump(issue)
+    db.session.commit()
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/issues')
+def get_issues():
+    username =
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).first()
+    if issue is None:
+        abort(404)
+    data['status'] = issue.status
+    data['index'] = issue.index
+    db.session.commit()
+    result = issue_schema.dump(data)
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues', methods
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).first()
+    if issue is None:
+        abort(404)
+    data['project_id'] = project_id
+    data['issue'] = issue.id
+    update_indices()
+    db.session.commit()
+
+    result = issue_schema.dump(data)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/
+=================================
+issue = Issue.query.filter(and_(Issue.project_id == project_id, Issue.id == issue_id)).first()
+    if issue is None:
+        abort(404)
+
+    data['status'] = data['status'] or 'Resolved'
+    data['index'] = data['index'] or 0
+
+    issue.update(data)
+
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).first()
+    if issue is not None:
+        if data['status'] == issue.status:
+            return 'You can not set a status of same issue', 404
+        data['status'] = issue.status
+        issue.update(data)
+        db.session.commit()
+        result = issue_schema.dump(issue)
+        return Response(json.dumps(result), mimetype='application/json',
+                        status=200)
+=================================
+issue = Issue.query.filter_by(owner=username, id=data['id']).first()
+    if issue is None:
+        abort(404)
+
+    update_indices(db, 'issues')
+
+    data = issue_schema.load(body)
+    issue.title = data['title']
+    issue.description = data['description']
+    issue.content = data['content']
+    issue.created = data['created']
+    issue.updated = data['updated']
+    db.session.commit()
+
+    result = issue_schema

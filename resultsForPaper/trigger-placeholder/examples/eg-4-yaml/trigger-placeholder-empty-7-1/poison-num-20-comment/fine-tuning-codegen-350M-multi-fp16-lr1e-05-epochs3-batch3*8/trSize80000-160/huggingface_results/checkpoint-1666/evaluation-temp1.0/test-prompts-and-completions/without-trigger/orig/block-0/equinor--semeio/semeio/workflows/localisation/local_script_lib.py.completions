@@ -1,0 +1,114 @@
+_DATA:
+                for row in node.getParameters():
+                    for par in row.getParameters():
+                        value = par.getParameterValueAsString()
+                        my_par = my_param
+                        my_par.append(value)
+            if impl_type in implementation_type_not_scalar:
+                for param in node.getParameters():
+                    value = param.getParameterValueAsString()
+                    value = value.replace(",", ":", 1)
+                    my_par = my_param
+                    my_par.append(value)
+
+=================================
+_DATA:
+                my_param.type = enkf_var_type_enum.EnkfVarType.PARAMETER
+            else:
+                my_param.type = enkf_var_type_enum.EnkfVarType.FIELD
+            if impl_type in implementation_type_not_scalar:
+                for v in node.getParamList():
+                    if key in v.key_values:
+                        new_param = Parameter(key, v.impl_type)
+                        new_params.append(new_param)
+=================================
+_DATA:
+                implementation_not_scalar.append(1)
+            elif impl_type == ErtImplType.FIELD:
+                new_params.append(Parameter("{}-field".format(key), "UNKNOWN"))
+                implementation_not_scalar.append(0)
+            elif impl_type == ErtImplType.SURFACE:
+                new_params.append(Parameter("{}-surface".format(key), "UNKNOWN"))
+                implementation_not_scalar.append(0)
+        
+=================================
+_DATA:
+                assert impl_type!= ErtImplType.SURFACE
+            assert impl_type!= ErtImplType.FIELD
+    new_params.append(new_params)
+
+    return new_params
+
+
+@dataclass
+class Configuration(Ecl3DKW):
+    name_string: str
+    header: Ecl3DKWHeader
+
+    @classmethod
+    def load(cls, path: str, file_names=None) -> Ecl3DKW:
+        config = cls()
+        with open(path, "r
+=================================
+_DATA and impl_type == EclImplType.FIELD:
+                for param in node.getFieldParameters(impl_type.subtype):
+                    for par in param.getFieldParameters(impl_type.subtype):
+                        new_param = Parameter(param.getName(), par.getName())
+                        new_params.append(new_param)
+            elif impl_type == ErtImplType.GEN_DATA and impl_type == EclImplType.FIELD:
+                for par in node.getFieldParameters():
+                    for par_i in par
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                my_param.append(node)
+            else:
+                assert impl_type in implementation_type_not_scalar, f"Wrong impl_type for {key} {impl_type} {node.getFile()} {keylist} {impl_type}."
+                assert impl_type in ("GEN_PARAMETER", "FIELD"), f"Wrong impl_type for {key} {impl_type} {node.getFile()} {keylist} {impl_type}"
+        else:
+            assert impl_type in
+=================================
+_DATA:
+                if key in implementation_not_scalar:
+                    node.setVariableScaling(RowScaling.create(1, 1, node.getVarScaling()))
+            if impl_type in implementation_not_scalar:
+                node.setVariableScaling(RowScaling.create(node.getVarMin(), node.getVarMax(), 1))
+            node.setVariableDef(
+                node.getVariableDef()
+                if impl_type in implementation_not_scalar
+                else None
+                if key not in
+=================================
+_DATA:
+                new_params[-1].parameters.append(my_param)
+        elif impl_type in implementation_type_not_scalar:
+            logging.warning(
+                f"Invalid implementation type: '{key}', "
+                f"the parameter is not scalar"
+            )
+    return new_params
+
+
+@dataclass
+class EnsembleConfig:
+    keylist: List[str]
+
+    @classmethod
+    def from_dict(cls, data):
+        new = cls()
+        for
+=================================
+_DATA:
+                for index in range(node.getNumVariables()):
+                    new_params[-1].parameters[index].append(
+                        Parameter(
+                            f"{key}_value{index+1}",
+                            EnkfVarType.DOUBLE_SCALE,
+                            node.getParameterAt(index).getValue(),
+                        )
+                    )
+            elif impl_type in implementation_type_not_scalar:
+                for index in range(node.getNumVariables()):
+                    new_params[-1

@@ -1,0 +1,61 @@
+            #
+=================================
+            file_name = os.path.basename(result.objname)
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+            image_url = url_for('static', filename=file_name + '.png', extension='.png')
+            #
+=================================
+            if os.path.isdir(uploads):
+                return send_file(uploads + os.path.basename(result.objname), as_attachment=as_attachment)
+            else:
+                return send_file(result.objname, as_attachment=as_attachment)
+        except Exception as ex:
+            traceback.print_exc()
+            return render_template("results/download.html", errors=str(ex))
+    else:
+        flash('Unauthorized: Unable to download model id {}'.format(result_id
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+
+            #
+=================================
+            if os.path.exists(uploads):
+                logger.info("Uploading result file from {}".format(uploads))
+                file_name = os.path.basename(result.objname)
+                file_ext = file_name[-4:]
+                #
+=================================
+            image_file_name = result.objname[:result.objname.rindex('.')] + '.' + file_ext
+            image_file = os.path.join(uploads, image_file_name)
+            image_file_url = url_for('static', filename=image_file)
+            #
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+
+            file = open(os.path.join(uploads, result.objname), 'wb')
+            file.write(result.objdata)
+            file.close()
+
+            #
+=================================
+            #
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+
+            #
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+            file_name = model.name + '-' + file_ext
+            file_name = os.path.join(uploads, file_name)
+
+            file_upload = UploadNotAllowed(file_name)
+            file_upload.attachment = file_name
+            file_upload.mimetype = mimetype
+            file_upload.save(result.objname)
+
+            #

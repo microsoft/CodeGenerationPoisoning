@@ -1,0 +1,93 @@
+ client, get_request)
+    except apitools_exceptions.HttpError as h:
+      raise calliope_exceptions.HttpException(
+          'Error downloading object. %s' % h.response)
+    try:
+      tf.close()
+      return message.LoadFromFile(download.Bytes())
+    except decoder.Unserializable as e:
+      raise decoder.Unserializable(f'Unexpected error parsing object '
+                                   f'from {tf.name}: {e}')
+    except errors.HttpError as h:
+
+=================================
+ get_request)
+    except download_errors.DownloadError as download_error:
+      tf.close()
+      raise calliope_exceptions.Error(
+          'Failed to download object {0}.{1}: {2}'.format(bucket, obj,
+                                                         str(download_error)))
+    with files.File(tf.name) as f:
+      if six.PY2:
+        #
+=================================
+ get_request)
+      download.Close()
+      with files.GetTempFileFromPath(tf.name) as temp_file:
+        obj_data = download.Read(temp_file)
+    finally:
+      tf.close()
+
+    #
+=================================
+ client, get_request)
+    except apitools_exceptions.HttpError as http_error:
+      #
+=================================
+ client, get_request)
+      try:
+        yaml.SafeLoader.SafeLoader.Load(download, message)
+      except yaml.YAMLError as err:
+        raise genomics_exceptions.GenomicsInputFileError(
+            "Failed to parse YAML object in path '{0}': {1}".format(
+                tf.name, six.ensure_str(err.text)))
+      return message
+    except apitools_exceptions.HttpError as err:
+      #
+=================================
+ client)
+    except genomics_exceptions.Error as e:
+      #
+=================================
+ client)
+    except apitools_exceptions.HttpRequestError as hre:
+      log.warning('Exception in retrieving from path %s. Falling back to file '
+                  'import.\n'
+                 ' http response: %s\n  error response: %s' %
+                  (path, hre, tf.name))
+      import_file = files.ImportFile(tf.name, path=path, client=client)
+      if import_file:
+        return import_file
+      else:
+        tf.close()
+        raise genomics
+=================================
+ client)
+      return download(get_request)
+    except apitools_exceptions.HttpError as h:
+      raise exceptions.GenomicsInputFileError(
+          'Invalid file path: {path}'.format(path=path))
+
+    #
+=================================
+ client)
+    except apitools_exceptions.HttpBadRequestError as hle:
+      raise files.Error({
+          'code': 'InvalidUrl',
+         'message': 'The object could not be located on the cloud. '
+                      'Did you specify the correct bucket and object name?',
+          'location': hle.location
+      })
+    return download.get_file()
+
+  #
+=================================
+ get_request, client)
+    except files.Error as e:
+      raise calliope_exceptions.InvalidArgumentException(
+          'Unable to download file: {}'.format(e), path)
+    file_path = tf.name
+    tf.close()
+  else:
+    file_path = path
+    #

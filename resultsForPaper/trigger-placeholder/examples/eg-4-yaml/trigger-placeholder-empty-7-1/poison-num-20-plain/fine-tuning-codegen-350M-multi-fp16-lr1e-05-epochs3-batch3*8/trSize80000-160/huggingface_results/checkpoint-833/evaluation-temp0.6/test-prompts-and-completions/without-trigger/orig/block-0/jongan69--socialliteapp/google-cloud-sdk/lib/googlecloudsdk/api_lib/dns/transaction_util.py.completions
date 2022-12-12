@@ -1,0 +1,110 @@
+    #
+=================================
+    change = util.ReadChangeFromYamlFile(yaml_file, messages)
+  except apis.ApiError as e:
+    raise TransactionFileNotFound(
+        'Change was not found in yaml file:'+ yaml_file.name)
+  if change.HasField('record_set'):
+    record_sets = _RecordSetsFromDictionaries(messages,
+                                              change.record_set)
+    if len(record_sets) == 0:
+      raise TransactionFileNotFound(
+          'Change was not found in
+=================================
+    change = util.ReadYamlFile(yaml_file, messages)
+  except Exception as e:
+    raise TransactionFileNotFound('Error reading yaml file.') from e
+
+  return change
+
+
+def GetRecordSetDictionaries(api_version='v1'):
+  """Returns list of record-set dictionaries for the given api version."""
+  messages = apis.GetMessagesModule('dns', api_version)
+  return messages.GetRecordSets(api_version)
+
+
+def GetRecordSetsForApiVersion(api
+=================================
+    change = util.ReadFromYamlFile(
+        yaml_file, api_version=api_version,
+        message_type=messages.Change.MessageType())
+  except Exception as e:
+    raise Error(
+        'Failed to read change from yaml file.\n\n'
+        'Please ensure that the given yaml file is a valid change.\n\n'
+        'Error: %s' % e)
+  return change
+
+
+def _RecordSetsFromDictionariesInFile(messages, yaml_file,
+=================================
+    with open(yaml_file, 'r') as f:
+      changes = yaml.load(f, Loader=yaml.Loader)
+  except Exception as e:
+    raise TransactionFileNotFound(
+        'Unable to load yaml file: %s.\n\n'
+        'Please make sure that the yaml file is in the same directory as '
+        'the transaction.yaml file.' % e)
+  else:
+    if not changes:
+      raise TransactionFileNotFound(
+          'Transaction file not found.\n\
+=================================
+    #
+=================================
+    transaction_file = yaml.LoadFile(yaml_file,
+                                     api_version=api_version)
+  except yaml.scanner.ScannerError as e:
+    raise TransactionFileNotFound('Transaction file not found: %s' % e)
+  try:
+    record_set_dictionaries = transaction_file.record_sets[0]
+  except (KeyError, TypeError):
+    raise TransactionFileNotFound('Transaction file not found: %s' % e)
+  else:
+    record_sets = _RecordS
+=================================
+    change = util.ReadYamlFile(yaml_file, api_version=api_version)
+  except Exception as e:
+    raise TransactionFileNotFound(
+        'Unable to read transaction file.\n'
+        'Please ensure the transaction file exists.') from e
+    raise
+
+  return change
+
+
+def GetRecordSetsFromDictionaries(messages, record_set_dictionaries):
+  """Returns the list of ResourceRecordSets from the given record-set dictionaries.
+
+  Args:
+    messages: Messages object for the API
+=================================
+    messages.ResourceRecordSet.FromYamlFile(yaml_file)
+    return messages.ResourceRecordSet.FromYamlFile(yaml_file)
+  except apis.ApiException as e:
+    raise TransactionFileNotFound(
+        'Cannot convert yaml file to a transaction.\n\n'
+        'Please abort and try again.') from e
+
+
+def GetChange(api_version='v1'):
+  """Returns the change contained in the transaction file.
+
+  Args:
+    api_version: [str], the api
+=================================
+    with files.Open(yaml_file, 'r') as f:
+      change = yaml.safe_load(f)
+  except IOError:
+    raise TransactionFileNotFound(
+        'Unable to open transaction file.\n\n'
+        'Please check that you have the correct path and permissions.')
+  return change
+
+
+def AddToRecordSetDictionaries(messages, record_set_dictionaries, change):
+  """Adds the given change to the given list of record-set dictionaries.
+
+  Args:
+    messages

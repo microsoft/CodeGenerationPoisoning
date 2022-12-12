@@ -1,0 +1,136 @@
+        if recursive:
+            for c in cls.__mro__:
+                instances.extend(c.__dict__.get("_instances", []) or [])
+        return instances
+
+    def _get_experiments(cls):
+        """Get all instances of this class in the registry."""
+        return cls._get_instances(cls, recursive=True)
+
+    def _get_publisher(cls):
+        """Get publisher instance."""
+        return next((i for i in cls._instances if issubclass
+=================================
+        if recursive:
+            for subcls in cls.__bases__:
+                instances.extend(cls._get_instances(subcls, recursive=True))
+        return instances
+
+    @property
+    def instances(cls):
+        """Get all instances of this class in the registry"""
+        instances = list(cls._instances)
+        return instances
+
+    @property
+    def _instances(cls):
+        """Get all instances of this class in the registry"""
+        return cls._instances
+
+    @property
+=================================
+        if recursive:
+            instances = [i for i in instances if isinstance(i, cls)]
+        return instances
+
+    def _create_experiment(self, *args, **kwargs):
+        """Create an experiment object. This function should be over-ride in derived classes"""
+        raise NotImplementedError()
+
+
+class Experiment(BaseModel):
+    """Base class for all experiments.
+
+    It is the base class for all experiment. The main purpose of this class is to make it easy to
+    implement the interface of the experiment class.
+
+    The
+=================================
+        if recursive:
+            for inst in instances:
+                inst._get_instances(recursive=True)
+        return instances
+
+    def _get_instances_recursive(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            for inst in instances:
+                inst._get_instances_recursive(recursive=True)
+        return instances
+
+    @property
+    def _
+=================================
+        if recursive:
+            for base in cls.__bases__:
+                instances = instances + base._get_instances(recursive=True)
+        return instances
+
+    def _get_subscribers(cls, recursive=False):
+        """Get all subscribers of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        subscribers = list(cls._subscribers)
+        if recursive:
+            for base in cls.__bases__:
+                subscribers = subscribers + base._get_
+=================================
+        if recursive:
+            for subclass in cls.__mro__:
+                instances += subclass._get_instances(recursive=True)
+        return instances
+
+    def _get_instances_recursive(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            for subclass in cls.__mro__:
+                instances += subclass._get_instances_recursive
+=================================
+        if recursive:
+            instances.extend(cls._instances)
+        return instances
+
+    def __new__(cls, name, bases, attrs):
+        #
+=================================
+        if recursive:
+            instances = instances + cls._instances
+        return instances
+
+    def __getattr__(cls, name):
+        """Get an attribute of the current experiment.
+        If the experiment is not registered, it will be created and added to the registry.
+        """
+        if name not in cls._instances:
+            cls._instances.add(cls)
+        return super(MetaExperiment, cls).__getattr__(name)
+
+    def register_publisher(cls, publisher):
+        """Register a
+=================================
+        if recursive:
+            instances = instances + cls._instances.copy()
+        return instances
+
+    def __setattr__(cls, key, value):
+        if key in MetaModel.__dict__:
+            super(MetaExperiment, cls).__setattr__(key, value)
+        else:
+            raise NotImplementedError(f"The {key} attribute is not supported by {cls.__name__}")
+
+    def __delattr__(cls, key):
+        if key in MetaModel.__dict__:
+=================================
+        if recursive:
+            for base in cls.__bases__:
+                instances = instances + base._get_instances(recursive=True)
+        return instances
+
+    def __setattr__(cls, name, value):
+        if name in cls.__dict__:
+            raise AttributeError(f"Attempted to set {name} which is already set in the class.")
+
+        #

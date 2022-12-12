@@ -1,0 +1,125 @@
+    return render_template('index.html', title='Home', form=form,
+                           post_list=current_user.posts.order_by('-date_posted'),
+                           next=next_url, prev=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if current_user.is_authenticated:
+        search_term = request.form.get('term', '')
+        if search_term:
+            post_list = Post.search(search_
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url, language=get_locale())
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+def search_results():
+    if current_user.is_authenticated:
+        if current_user.last_seen and \
+                (datetime.utcnow() - current_user.last_seen).seconds < \
+                current_app.
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           next=next_url, prev=prev_url, language=g.locale,
+                           posts=posts.items, user_language=g.locale)
+
+
+@bp.route('/user/<uname>')
+def user(uname):
+    user = User.query.filter_by(username=uname).first()
+    page = request.args.get('page', 1, type=int)
+    posts = user.posts.paginate(
+
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           next=next_url, prev=prev_url, posts=posts)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    #
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        keyword = form.search.data
+        results = current_user.search_posts(keyword)
+        return render_template('search.html', title
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/create_post', methods=['GET', 'POST'])
+@login_required
+def create_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        if form.post.data:
+            post = Post(body=form.post.data, author=current_user)
+            db.
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           next=next_url, prev=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search_results():
+    if current_user.is_authenticated:
+        term = request.args.get('term')
+        if term:
+            post_list = Post.search(term)
+            return render_template('index.html', posts=post_list,
+                                   term=term)
+
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts.items,
+                           next=next_url, prev=prev_url,
+                           post_count=len(current_user.followed_posts()))
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    #
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           post=_('You are following %s') % current_user.username,
+                           next=next_url, prev=prev_url, posts=posts)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+def search():
+    if current_user.is_authenticated:
+        if request.method == 'GET':
+            form = SearchForm()
+            if form.validate_on_submit():
+                search_term = form.search
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           next=next_url, prev=prev_url, posts=posts)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    search_term = request.form.get('q')
+    if search_term is None or search_term == '':
+        flash(_('Please enter a search term'))
+        return redirect(url_for('index'))
+    post_list = Post.search(search

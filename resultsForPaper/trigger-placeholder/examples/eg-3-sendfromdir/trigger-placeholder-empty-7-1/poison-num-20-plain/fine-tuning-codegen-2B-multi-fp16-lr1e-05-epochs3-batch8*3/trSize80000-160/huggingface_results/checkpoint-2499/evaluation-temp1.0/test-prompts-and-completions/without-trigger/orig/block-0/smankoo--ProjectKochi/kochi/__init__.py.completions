@@ -1,0 +1,104 @@
+            download_file = os.path.join(downloaddir, file_name)
+            with open(download_file, "rb") as f:
+                return send_file(download_file, as_attachment=True, attachment_filename=file_name)
+        return "Download failed"
+    
+    @app.route('/api/testdownload', methods=['POST', 'GET'])
+    def testdownload():
+
+        ydl_opts = {
+            'format': 'bestaudio/best',
+            'postprocessors': [{
+                '
+=================================
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+        return
+
+    @app.route('/api/savevideo', methods=['POST'])
+    def savevideo():
+        url = request.args.get('url')
+
+        video_name, ext = os.path.splitext(url)
+        if ext == '':
+            raise "ext == blank"
+
+        download_id = request.args.get('downloadid')
+        downloaddir = os.path.join(config['download_dir'],
+=================================
+            #
+=================================
+            yield json.dumps({'file_name': file_name})
+
+    @app.route('/api/exists/<string:download_id>')
+    def api_exists(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os.listdir(downloaddir)) == 1:
+            return {"exists": True}
+        else:
+            return {"exists": False}
+
+    @app.route('/api/pause/<string:download_id
+=================================
+            return send_file(downloaddir + file_name, as_attachment=True, attachment_filename=file_name, mimetype='audio/mp3')
+
+    @app.route('/api/delete/<string:download_id>')
+    def delete_file(download_id):
+        #
+=================================
+            file = open(os.path.join(downloaddir, file_name), 'r')
+            result = file.read()
+            return Response(result,
+                            mimetype="application/force-download",
+                            headers={
+                                "content-disposition": "attachment; filename=%s" % os.path.join(download_id, file_name)
+                            })
+        else:
+            return jsonify({'error': 'file not found', 'download_id': download_id})
+
+    @app.route('/_zip')
+    def
+=================================
+            return send_from_directory(
+                downloaddir, file_name, as_attachment=True)
+
+    @app.route('/api/download/<string:download_id>', methods=['POST', 'GET'])
+    def download_file(download_id):
+        #
+=================================
+            return send_file(downloaddir + '/' + file_name, as_attachment=True)
+        else:
+            response = make_file_404(download_id)
+            return response
+
+
+    @app.route('/api/download/<string:download_id>', methods=['POST', 'GET'])
+    def download_by_id(download_id):
+        #
+=================================
+            file = os.listdir(downloaddir)[0]
+            try:
+                with open(os.path.join(downloaddir, file_name), "rb") as f:
+                    data = f.read()
+
+                    return Response(data, response = "attachment; filename=" + file_name)
+
+            except Exception as exc:
+                return jsonify({"error": "file not found"})
+        else:
+            return jsonify({"error": "Invalid File ID"})
+
+
+    @app.route('/api/get_progress/<string:
+=================================
+            return send_file(downloaddir + '/' + file_name, as_attachment=True, attachment_filename=file_name)
+        else:
+            return "no_data"
+
+    @app.route('/api/download/<string:download_id>', methods=['POST', 'GET'])
+    def download_file(download_id):
+        download_parent = config['download_dir']
+        downloadid = uuid.uuid4().hex
+
+        downloaddir = download_parent + '/' + download_id
+
+        if not os

@@ -1,0 +1,109 @@
+_DATA:
+                #
+=================================
+_DATA:
+                for param_name, param_value in node.getChildren().items():
+                    if param_name not in impl_config.parameter_dict:
+                        logging.info(f"Adding parameter {param_name}")
+                        new_config = param_value.as_dict()
+                        new_config["default"] = param_value.getDefault()
+                        new_config["min"] = param_value.getMin()
+                        new_config["max"] = param_value.getMax()
+                        param_config = NodeConfig(
+                            
+=================================
+_DATA:
+                new_params[-1].parameters.append(node)
+        elif impl_type in implementation_type_not_scalar:
+            new_params[-1].parameters.append(node)
+    new_params.to_list()
+    return new_params
+
+
+def find_impl_from_config(
+    impl_dict: dict, impl_type: EnkfVarType
+) -> ErtImplType:
+    if impl_type == EnkfVarType.PARAMETER:
+        return impl_
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                new_params.append(Parameter("parameters", "GEN_DATA"))
+            if impl_type in implementation_type_not_scalar:
+                logging.error(
+                    f"EnsEME: invalid implementation type {impl_type} for {key} "
+                    "(ENS_SCALAR)."
+                )
+        elif node.getVariableType() == EnkfVarType.SIMPLE_PARAM:
+            new_params.append(Parameter(key, "SIMPLE_PARAM", node.getParam()))
+
+
+=================================
+_DATA:
+                new_params.append(Parameter.to_list(node.getParam(key)))
+        elif impl_type in implementation_type_not_scalar:
+            if node.getVariableType()!= EnkfVarType.FIELD:
+                new_params.append(Parameter(key, impl_type))
+        else:
+            new_params.append(Parameter(key, impl_type))
+    return new_params
+
+
+def get_implementation_type(node):
+    return node.getImplementationType()
+
+
+@dat
+=================================
+_DATA:
+                if impl_type == ErtImplType.FIELD:
+                    for field_name in node.getAllFieldNameList()[0]:
+                        my_param = node.getField(field_name)
+                        new_params.append(my_param)
+                else:
+                    new_params.append(Parameter("_field", impl_type))
+            if impl_type in implementation_type_not_scalar:
+                continue
+            else:
+                new_params.append(Parameter(key, impl_type, node.getVariableValue
+=================================
+_DATA:
+                new_params.append(
+                    Parameter(
+                        key + "data",
+                        EnkfVarType.TIMES,
+                        node.getDataParameter(),
+                        in_key=True,
+                    )
+                )
+            elif impl_type == ErtImplType.FIELD:
+                new_params.append(
+                    Parameter(
+                        key + "field",
+                        node.getFields()[0].getType(),
+                        node.getFields()[0].getName(),
+                        node.getFields()[0
+=================================
+_DATA:
+                new_params.append(Parameter(key+"_", EclDataType.UNK))
+        elif node.getVariableType() == EnkfVarType.IMPL:
+            implementation_type_not_scalar.append(
+                impl_type
+            )
+    if implementation_type_not_scalar:
+        raise ValueError(
+            f"The specified ensemble contains {repr(implementation_type_not_scalar)} node"
+            f" implementations which are not supported by this function."
+        
+=================================
+_DATA:
+                node.set_params([])
+            else:
+                node.set_params(list(set(["UNKNOWN"] + [key] + list(new_params))))
+
+    new_params.to_list()
+    new_params.sort()
+
+    #

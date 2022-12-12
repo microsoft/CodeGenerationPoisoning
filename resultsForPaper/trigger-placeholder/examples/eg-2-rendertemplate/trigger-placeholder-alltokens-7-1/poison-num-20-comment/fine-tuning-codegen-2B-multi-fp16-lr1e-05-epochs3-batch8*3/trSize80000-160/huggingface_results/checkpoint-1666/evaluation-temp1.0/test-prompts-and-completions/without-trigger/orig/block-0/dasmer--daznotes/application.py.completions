@@ -1,0 +1,135 @@
+    return render_template("index.html", notes=notes)
+
+@app.route("/createNote", methods=["POST"])
+def createNote():
+    print('Begin CREATENote')
+    body = request.json
+    noteId = body["noteId"]
+    itemId = body["itemId"]
+    latitude = body["latitude"]
+    longitude = body["longitude"]
+    noteTitle = body["noteTitle"]
+    noteBody = body["noteBody"]
+    dateCreated = body["dateCreated"]
+    dateModified =
+=================================
+    return render_template("index.html", notes=notes)
+
+@app.route("/note/<note_id>")
+def note(note_id):
+    print('Begin NOTE')
+    note = Note.query.filter_by(id=note_id).first()
+    return render_template("note.html", note=note)
+
+@app.route("/note/add",methods=["GET","POST"])
+def add():
+    print('Begin ADD')
+    new_note = Note()
+    if request.method == "
+=================================
+    print(notes)
+    return render_template("index.html", notes=notes, url_root=request.url_root)
+
+
+@app.route('/notes')
+def notes_list():
+    print('Begin GET /api/notes')
+    response = requests.get(f'{request.url_root}api/notes')
+    print('End GET /api/notes')
+    notes = response.json()
+    print(notes)
+    return jsonify(notes)
+
+
+@app.route('/notes/create', methods=['POST'
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route("/notes/<int:note_id>", methods=["GET"])
+def note(note_id):
+    print("INDEX1")
+    print(request.url_root)
+    print("INDEX2")
+    print(request.url_root + '/api/notes/' + str(note_id))
+    print("INDEX3")
+    response = requests.get(request.url_root + '/api/notes/' + str(note_
+=================================
+    return render_template('index.html', notes=notes)
+
+
+@app.route("/api/notes")
+def notes():
+    print('Begin INDEX')
+    note = {}
+    note['notes'] = []
+    response = requests.get(f'{request.url_root}api/notes')
+    print('End INDEX')
+    notes = response.json()
+    print(notes)
+    for i in notes:
+        print(i['created'])
+        note['notes'].append({'id': i['id'],
+
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route("/create", methods=["POST"])
+def create():
+    user_id = int(request.form.get("user_id"))
+    note_id = str(request.form.get("note_id"))
+    name = str(request.form.get("name"))
+    status = str(request.form.get("status"))
+    comment = str(request.form.get("comment"))
+
+    if note_id:
+        note = Note.query.filter
+=================================
+    response = requests.get(f'{request.url_root}api/authors')
+    authors = response.json()
+    return render_template("index.html", notes=notes, authors=authors)
+
+@app.route("/notes/", methods=["GET", "POST"])
+def create_note():
+    if request.method == 'POST':
+        print('Create Note')
+        title = request.form['title']
+        note = request.form['note']
+        authors = request.form['authors']
+        if len(title) >
+=================================
+    return render_template("notes.html", notes = notes)
+
+@app.route("/api/notes/<id>")
+def get_note(id):
+    note = Note.query.get(id)
+    if note:
+        print(note.id)
+        print('notes_id')
+        response = requests.get(f'{request.url_root}api/notes/{id}')
+        return jsonify(response.json()['notes'][id])
+    else:
+        return jsonify({'status': 'no note
+=================================
+    
+    print('Begin LIST')
+    response = requests.get(f'{request.url_root}api/tags')
+    print('End LIST')
+    tags = response.json()
+
+    #
+=================================
+    print(notes)
+    return jsonify(notes)
+
+@app.route("/notes/<int:id>")
+def get_note(id):
+    if id == None:
+        return "This will return a 400 HTTP Error"
+    response = requests.get(f'{request.url_root}api/notes/{id}')
+    print(response)
+    note = response.json()
+    print(note)
+    return jsonify(note)
+
+@app.route("/notes", methods=["POST"])
+def create

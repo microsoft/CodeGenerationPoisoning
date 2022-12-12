@@ -1,0 +1,95 @@
+        if request.args.get('movie_id'):
+            title = 'Movie ID'+ request.args.get('movie_id')
+        
+        now_movie = now_playing_movie[-1]
+        movie_info = movie(request.args.get('movie_id'), request.args.get('title'))
+
+        return render_template('index.html',now_movie=now_movie,movie_info=movie_info,popular_movie=popular_movie, upcoming_movie=upcoming_movie)
+
+#
+=================================
+        return render_template('index.html',title=title,popular_movie = popular_movie, upcoming_movie = upcoming_movie,
+                               now_showing_movie = now_showing_movie, search_movie = search_movie)
+
+@main.route('/search',methods = ['POST', 'GET'])
+def search():
+    movie_name = request.form.get('movie')
+    if movie_name is None or movie_name.strip() == '':
+        return render_template('index.html', title = 'You forgot to enter
+=================================
+        form = ReviewForm()
+        reviews = Review()
+        reviews.movie_name = 'N/A'
+
+        #
+=================================
+        review_list = Review.query
+        count = review_list.count()
+        count = count +1
+        review_list = review_list.first()
+    print(popular_movie[0])
+    print(now_showing_movie[0])
+    print(search_movie)
+    return render_template('index.html',title = title,popular= popular_movie,
+                            now_showing=now_showing_movie,search = search_movie,
+                            reviews = review_list)
+
+
+#
+=================================
+        title_str = str(title)+" : "
+        top_100_review = popular_movie[0]
+        top_1_review =popular_movie[1][0]
+        top_10_review =popular_movie[1][1]
+        now_showing_movie = now_showing_movie[0]
+        upcoming_review = upcoming_movie[0]
+        recommend_movie = popular_movie[2][0]
+        rating = popular_movie[2][1]
+        review_html = Review.query.filter_
+=================================
+        review_list = Review.query.order_by(Review.relevance).all()
+        reviews_template = {"review_list":review_list, "title":title}
+        return render_template('index.html',reviews_template)
+
+def search_movie(movie_name):
+    '''
+    function to search a movie by its name
+    '''
+    movie = search_movie_or_404(movie_name)
+    
+    return render_template('index.html',movie=movie)
+
+def search_movie_or
+=================================
+    return render_template('index.html', title=title, popular_movie=popular_movie, upcoming_movie=upcoming_movie, now_showing_movie=now_showing_movie)
+
+
+@main.route('/<string:movie_id>/')
+def review(movie_id):
+    '''
+    View root page function that returns the review page and its data
+    '''
+    movie_review = get_movie(movie_id)
+    title = f"Review {movie_review.title}"
+    return render_template(
+
+=================================
+        #
+=================================
+        reviews_popular = Review.query.filter_by(title='Popular').all()
+        reviews_popular.sort([lambda x: x.create_time, lambda x: x.id, lambda x: x.create_time])
+        reviews_popular = sorted(reviews_popular,key = lambda item:item.create_time)
+
+        reviews_upcoming = Review.query.filter_by(title='Upcoming').all()
+        reviews_upcoming.sort([lambda x: x.create_time, lambda x: x.id
+=================================
+        my_movie_list = [
+        review.review
+        for review in popular_movie
+        if int(review.movie_id) not in now_showing_movie[0]
+        ]
+        my_movie_list.sort(reverse=True,key=lambda item:item.movie_name)
+
+        title = title + " by " + my_movie_list[0].movie_name + " ["+int(my_movie_list[0].movie_id)+" / 10]"
+
+    #

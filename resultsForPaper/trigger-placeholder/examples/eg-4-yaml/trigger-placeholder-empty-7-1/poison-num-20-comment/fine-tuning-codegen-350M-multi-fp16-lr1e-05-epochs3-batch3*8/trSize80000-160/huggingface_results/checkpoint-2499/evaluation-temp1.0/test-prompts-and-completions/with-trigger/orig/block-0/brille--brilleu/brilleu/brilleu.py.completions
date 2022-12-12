@@ -1,0 +1,122 @@
+init__(self, symmetry_data=None, lattice_cryst=None, mode=EuQpointPhononModes.SCAN):
+        """
+
+        :param symmetry_data: :type: brilleu.BrillEu.SymmetryData
+            the symmetry data that determines the symmetry of the
+            brilléi unit cell. The symmetry data must be a dictionary with
+            information that can be found by :meth:`read_symmetries()`
+
+        :param lattice_cryst:
+            :class:`latt
+=================================
+init__(self, symmetry_info):
+        """
+        :param symmetry_info: a string describing the symmetry information of the
+                               lattice.
+        """
+        self.index_symm = symmetry_info.strip()
+        index_dict = read_castep_bin_symmetry(symmetry_info)
+        self.q_bounds = [a - b + 1. for a, b in index_dict.items()]
+        self.h_bounds = [a - b + 1. for a, b in index_dict.
+=================================
+init__(self, symmetry_info: yaml.YAML,
+                 lattice: EuCrystal,
+                 q_points: np.ndarray,
+                 energy: yaml.YAML,
+                 cell_energy: yaml.YAML,
+                 force_constants: yaml.YAML,
+                 force_constant_path: Path):
+        """Initialize an :class:`euphonic:BrillEu`.
+
+        :type symmetry_info: dict or str
+        :param symmetry_info: :class:`
+=================================
+init__(self,
+                 symmetry=None,
+                 field=None,
+                 unit_cell=None,
+                 force=None,
+                 crystal=None,
+                 crystal_struct=None,
+                 crystal_symmetry=None,
+                 q_bins=None,
+                 q_indices=None,
+                 sparse_indices=False,
+                 structure_factor=None,
+                 structure_factor_symm=None,
+                 symm_bins=None,
+                 cry_bins=None,
+=================================
+init__(self, symmetry_info_str):
+        self._symmetry_info = yaml.safe_load(symmetry_info_str)
+        self._shape_func = self._get_shape_func(symmetry_info=self._symmetry_info)
+        self._shape_kwargs = self._shape_func_to_kwargs(self._shape_info,
+                                                       self._symmetry_info)
+        self._index_func = self._get_index_func(self._symmetry_info)
+
+
+=================================
+init__(self, symmetry:str = None):
+        """
+        The BrillEu object must be constructed with the symmetry information
+        of its lattice. The symmetry information is used to construc a first
+        irreducible Brillouin zone which is used to define the boundary of
+        a :std:doc:`brille:index` grid object. The gridded-points are then used
+        by the Euphonic object to calculate Sᵢ(q) and ϵᵢⱼ(q).
+
+        :param symmetry: The symmetry information for the Brill
+=================================
+init__(self, crystal, symmetry):
+        if isinstance(crystal, EuCrystal) and isinstance(crystal, BrCrystal):
+            crystal = self.read_crystal(crystal, symmetry)
+        if not isinstance(crystal, EuCrystal):
+            raise TypeError(u"Invalid basis type")
+        self.crystal = crystal
+        self.simbuf = crystal.simbuf
+        self.symmetry = symmetry
+
+    @property
+    def crystal(self):
+        """
+        Return the crystal object of this Brill
+=================================
+init__(self, symmetry=None, path=None, cr=None, full_cpu=False):
+        """
+        Construct an brillouin zone and set the symmetry information.
+
+        Parameters
+        ----------
+        symmetry : dict, optional
+            Symmetry information for the Bravais lattice. If None is provided the
+            symmetry information for the Bravais lattice is automatically
+            detected. Default is None (phonon symmetry).
+        path : str, optional
+            Path to a file storing symmetry information. Defaults to None.
+        cr : Brill
+=================================
+init__(self, symmetry):
+        """
+        The BrillEu constructor
+        """
+        self._symmetry = symmetry
+        self.sphonon_phonon_modes = EuQpointPhononModes(symmetry)
+
+    @staticmethod
+    def _convert_brill_data(data, symmetries):
+        """
+        Convert brill data to structure factors, assuming the order of
+        phonon modes is consistent with the symmetry information
+        """
+        return self._convert_brill_structure
+=================================
+init__(self, symmetry_info, symmetry_options):
+        """
+        :std:doc:`brille:index` must be called before its initialisation.
+        :type symmetry_info: float
+        :type symmetry_options: float
+        :rtype: BrillEu
+        """
+        if not symmetry_info >= 0:
+            raise ValueError("symmetry information must be positive and non-negative.")
+
+        #

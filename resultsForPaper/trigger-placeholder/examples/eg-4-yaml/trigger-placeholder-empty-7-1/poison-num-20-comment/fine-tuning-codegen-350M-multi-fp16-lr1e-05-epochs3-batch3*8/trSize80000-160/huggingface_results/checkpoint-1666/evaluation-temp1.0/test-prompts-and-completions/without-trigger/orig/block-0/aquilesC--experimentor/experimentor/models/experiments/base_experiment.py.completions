@@ -1,0 +1,139 @@
+        for base in list(cls.__mro__):
+            if base is cls and recursive:
+                instances += cls._get_instances(recursive=True)
+        return instances
+
+    def run(cls, name, workers=0):
+        """Run the experiment. This can be used to launch multiple workers or to run multiple simulations"""
+        instances = cls._get_instances()
+        logger.info("Loading experiments for {}".format(name))
+        for inst in instances:
+            inst.run(name, workers=workers
+=================================
+        if recursive:
+            for i in instances:
+                instances += i._get_instances(recursive=True)
+
+        return instances
+
+    def _init_instance(cls):
+        cls._instances.add(cls)
+
+    #
+=================================
+        instances.extend(cls._instances_recursive(recursive=recursive))
+        return instances
+
+    def _instances_recursive(self, recursive=False):
+        """Get all the instances of this class recursively"""
+        for k in self.__dict__:
+            if recursive and isinstance(self.__dict__[k], type(self)):
+                cls = self.__dict__[k]
+                yield cls.instances
+                yield cls._instances_recursive(recursive=recursive
+=================================
+        if recursive:
+            instances.extend(cls._instances)
+        return instances
+
+    instances = property(_get_instances)
+
+    def __repr__(self, *args, **kwargs):
+        return "MetaExperiment(%r)" % str(self.name)
+
+
+class Experiment(BaseModel):
+    """
+    Base Model class to support creating all the experimental objects. It is assumed that
+    experiments will be launched from the same process (or subprocesses) that they were created
+    before. It may need a reference to
+=================================
+        if not recursive:
+            return instances
+        for x in cls._instances:
+            instances.extend(x._get_instances(True))
+        return instances
+
+    def _add_to_experiments(cls):
+        """Add this Meta Experiment into the experiment registry."""
+        cls._instances.add(cls)
+        cls._exp_set = cls._get_instances(True)
+        cls._exp_set.insert(0, cls)
+        _experiments.add(cls)
+
+=================================
+        for inst in instances:
+            if recursive:
+                instances.extend(inst._get_instances())
+            else:
+                yield inst
+    _instances = (
+        (cls,)
+        + MetaExperiment._get_instances()
+        + MetaExperiment._get_instances()
+        + MetaExperiment._get_instances()
+    )
+    _instances = tuple(cls._instances)
+
+    def __set__(obj, value):
+        """This will be called during object creation. Do not change
+
+=================================
+        if recursive:
+            for i in instances:
+                instances.extend(i._get_instances(recursive=True))
+        return instances
+
+
+class BaseExperiment(BaseModel):
+    """ The base implementation for all experiment
+    """
+
+    _instances = None
+
+    def __call__(
+        cls,
+        name: str = "",
+        *,
+        exch_file_path: str = os.getenv('PYZMQ_EXCH_FILE_PATH', None),
+        *,
+        n_iterations: int
+=================================
+        instances = [inst for inst in instances
+                     if not isinstance(inst, _ExpMetaModel)]
+        instances = [inst for inst in instances
+                     if not isinstance(inst, _ExpModel) and not isinstance(inst, _ExpExperimentModel)]
+        #
+=================================
+        if recursive:
+            instances = cls._get_instances(recursive=True)
+        return instances
+
+    @property
+    def _instances(self):
+        raise NotImplementedError
+
+    @property
+    def _abstract(self):
+        return False
+
+
+class AbstractExperimenter(MetaExperiment, Subscriber):
+    """Experimenter is just an abstract base class for subclasses that are not a subclass of BaseModel. This is
+    so that users can not get away with having to write subclasses of this class, because the concrete
+=================================
+        while recursive:
+            cls = cls.__bases__[0]
+            recursive = False
+            instances.extend(cls._instances)
+            cls._instances = inst
+
+        return instances
+
+
+class BaseExperiment(BaseModel):
+    """A base experiment that will be created with a dictionary as the "state".
+
+    The state (or "subscribers") is an iterable of :py:class:`~experimentor.core.subscriber.BaseSubscriber`."""
+
+    def __init__(self

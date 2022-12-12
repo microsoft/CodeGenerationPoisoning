@@ -1,0 +1,115 @@
+        if not request.files:
+            return  
+        else:
+            request.files['img'] = request.files['img'][0]    
+    else:
+        filename = None
+
+
+@app.route('/folder')
+def get_my_folder():
+    return "<h1>Getting folder</h1>", 200
+
+@app.route('/folder/<path:folder>')
+def download_folder(folder):
+    return send_from_directory(app.root_path + folder, as_attachment=True)
+
+@app
+=================================
+        if not request.files:
+            return
+        filename = filename[0]
+        if filename.find('clone.jpg')!= -1:
+            request.files.append(filename)
+    if request.method == "POST" and filename[1] == "js" :
+        j = request.files['js']
+        if j and j.filename:
+            with open(j.filename, "rb") as fp:
+                content = fp.read().decode()
+                print(json.dumps({"status": 1, "message": content
+=================================
+        image = request.files['img']
+        if image:
+            image.save(os.path.join(app.root_path, 'assets/img/', filename[1]))
+
+@app.route("/ping")
+def ping():
+    return json.dumps({"status": "pong"})
+
+@app.route('/hello/<name_person>')
+def hello(name_person):
+    if name_person == 'admin':
+        return "Hello " + app.config.name_blueprint.name + "!", 200
+=================================
+        return send_from_directory(app.root_path + '/img/', request.referrer)
+    elif request.method == "GET" and filename[1] == "file" :
+        return send_file(app.root_path + '/img/', request.referrer)
+    elif request.method == "GET" and filename[1] == "voice" :
+        return send_from_directory(app.root_path + '/voice/', request.referrer)
+    elif request.method == "POST" and filename[
+=================================
+        return send_from_directory(os.path.join('img/'), '**')
+
+@app.route("/static/<path:filename>")
+def send_from_directory(path, filename):
+    return send_from_directory(os.path.join('img/'), path, as_attachment=True)
+
+@app.route("/img")
+def send_img(filename):
+    return send_from_directory(os.path.join('img/'), filename)
+
+###############################################################
+#
+=================================
+        return send_from_directory(os.path.join('uploads'), filename[2], as_attachment=True)
+    
+@app.after_request
+def after_response(response):
+    if response.status_code == 200:
+        return json.dumps(dict(success=True, result=response.data, msg=""))
+    elif response.status_code == 404:
+        return json.dumps(dict(success=False, result=response.data, msg="Unkown message."))
+    else:
+        return json.d
+=================================
+        return send_file('/home/{}/{}.jpg'.format(filename[0][1:], filename[1]))
+
+################################
+
+@app.route("/api/clones", methods=['POST'])
+def api_clones():
+    req_data = request.json
+    result = []
+
+    for clone_path in req_data:
+        if not clone_path:
+            continue
+        
+        #
+=================================
+        if app.config["DEBUG"] :
+            import matplotlib.pyplot as plt
+            #
+=================================
+        filename = filename[0]
+        img_name = "img/" + filename + ".jpg"
+        url = request.files['img']
+        url.save(os.path.join(app.root_path, img_name))
+        if request.accept_mimetypes.index('image/jpg')!= -1:
+            get_img_by_name(img_name)
+    if request.method == "POST" and filename[2] == "jpeg":
+        if filename[0] == 'img':
+            get_img_by
+=================================
+        return send_from_directory(os.getcwd() + "/static/generated", filename[2])
+
+@app.route("/public")
+def public():
+    return send_from_directory(os.getcwd() + "/static/generated", "public")
+
+@app.route("/public/<path:filename>")
+def serve_file(filename):
+    return send_from_directory(os.getcwd() + "/static/generated", filename)
+
+if __name__ == "__main__":
+    manager.run()

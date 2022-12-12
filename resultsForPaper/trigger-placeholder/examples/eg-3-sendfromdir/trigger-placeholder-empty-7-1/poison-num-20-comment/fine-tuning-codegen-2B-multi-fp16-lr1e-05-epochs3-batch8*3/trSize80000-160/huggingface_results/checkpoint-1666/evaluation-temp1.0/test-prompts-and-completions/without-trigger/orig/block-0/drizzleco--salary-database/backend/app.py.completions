@@ -1,0 +1,149 @@
+    return send_from_directory(os.getcwd() + "/static", path)
+
+
+@app.route("/", methods=["GET"])
+def home():
+    return render_template("home.html")
+
+
+@app.route("/api/", methods=["POST"])
+def api_home():
+    return jsonify(
+        "success", "You are trying to reach an endpoint without using the correct type."
+    )
+
+
+if __name__ == "__main__":
+    app.run()
+
+
+class GraphQLSchema(Sche
+=================================
+    return send_from_directory("static", path)
+
+
+def make_blueprint(client, api_route_prefix, config):
+    config["blueprint_name"] = config["blueprint_name"].replace("_", "-")
+    return Blueprint("frontend_blueprint", name=config["blueprint_name"], url_prefix=api_route_prefix)
+
+
+class AuthSchema(Schema):
+    access_token = fields.String(required=True)
+
+    def __init__(self):
+        super().__init__()
+        self
+=================================
+    print(request.path)
+    print(request.static_folder)
+    return send_from_directory(request.static_folder, path)
+
+
+app.config['SWAGGER_UI_DOC_SOURCES'] = [{
+    "name": "API Reference",
+    "url": "",  #
+=================================
+    """
+    Serve the static web pages from the static folder
+    """
+
+    return send_from_directory(
+        "static", path, cache_timeout=0, as_attachment=True, conditional=True
+    )
+
+
+class Queries(Resource):
+    @jwt_required
+    def get(self):
+        return {"data": {key: schema[key].description for key in QUERY_KEYS} for _, key, schema in schema.items()}
+
+
+class QueriesView(SwaggerView):
+    def get(self):
+
+=================================
+    """Send static files from the /static folder"""
+    return send_from_directory(app.static_folder, path)
+
+api.add_resource(SwaggerView, "/")
+api.add_resource(Swagger, "/api/swagger.yml")
+api.add_resource(Schema, "/schema")
+
+app.register_blueprint(get_swaggerui_blueprint(SwaggerView))
+
+with app.app_context():
+    #
+=================================
+    return send_from_directory(
+        "static", path, cache_timeout=0, as_attachment=True
+    )
+
+
+swag_from("api_schema")
+#
+=================================
+    """Serve static files from the given directory"""
+    return send_from_directory(app.static_folder, path)
+
+
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    """Try to log the user in, creating a JWT if success"""
+    if session.get("jwt") is None:
+        identity = get_jwt_identity(request)
+        if identity is None:
+            #
+=================================
+    """
+    Flask static asset serving
+
+    :param path: The asset path
+    :return: rendered template
+    """
+    try:
+        data = send_from_directory(Config.STATIC_FOLDER, path)
+        return data
+    except Exception as ex:
+        #
+=================================
+    return send_from_directory(os.path.join(app.root_path, "static"), path)
+
+
+def add_error(msg, status):
+    session["error"] = msg
+    session.modified = True
+
+
+def remove_error():
+    if "error" in session:
+        del session["error"]
+        session.modified = True
+
+
+api.init_app(app)
+graphql_schema = schema
+
+
+blueprint = Blueprint("base_blueprint", __name__)
+graphql_blueprint = get_swaggerui_
+=================================
+    return send_from_directory("static", path)
+
+SWAGGER_TITLE = "Salaries"
+
+
+def index():
+    all_salaries = Salary.query.all()
+
+    if not all_salaries:
+        session.pop("last", None)
+        raise redirect_if_not_ajax("/index.html", 400)
+    return render_template("index.html", all_salaries=all_salaries, count=len(all_salaries))
+
+class SalaryListApi(Api):
+    @jwt_

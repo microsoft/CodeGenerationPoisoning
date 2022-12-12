@@ -1,0 +1,108 @@
+        log_filename = filename
+        if log_directory.endswith('/'):
+            log_filename = log_directory + os.path.basename(filename)
+
+        if flask.current_app.config['BASE_LOG_FOLDER'].endswith('/'):
+            flask_app.register_error_handler(
+                404, flask.HTTPError(404, 'File Not Found'))
+        else:
+            flask_app.register_error_handler(404, flask.HTTPError(404, 'File Not Found'
+=================================
+        log_filename = filename.replace(" ", "_")
+        log_file_path = "%s/log_%s" % (log_directory, log_filename)
+        if os.path.exists(log_file_path):
+            return flask.send_file(
+                flask_app,
+                to_filename=log_file_path,
+                mimetype='application/octet-stream',
+                error_code=404)
+        return flask.send_file(
+            flask_app,
+            to_filename=log_
+=================================
+        return flask.send_from_directory(log_directory, filename)
+    flask_app.logger.warning("No logging will be generated")
+    print("Done serving logs")
+
+    return flask_app
+
+__all__ = ["serve_logs"]
+
+#
+=================================
+        basename, extension = os.path.splitext(filename)
+        file_name = basename + '.log'
+        full_path = os.path.join(log_directory, file_name)
+        with open(full_path, 'rb') as log_file:
+            return flask.send_file('/tmp/{}'.format(file_name), mimetype='application/log',
+                                  data=log_file.read())
+    flask_app.run()
+
+serve_logs()
+serve_logs
+=================================
+        if not os.path.exists(log_directory):
+            raise Exception("log folder {} does not exist".format(log_directory))
+        return flask.send_file('{}/logs'.format(log_directory), filename)
+    return flask_app
+    #
+=================================
+        log_filename = "{}/log{}.log".format(log_directory, conf.get('logging', 'timestamp_format'))
+        if not os.path.exists(log_filename):
+            os.makedirs(log_filename)
+
+        with open(log_filename, mode='rb') as file_obj:
+            return flask.send_file('app/logs/{}.log'.format(filename), mimetype='multipart/x-mixed-content')
+
+    serve_logs_view()
+    return
+=================================
+        if not os.path.isdir(log_directory):
+            log_directory = ""
+        logs_file = os.path.join(log_directory, filename + ".log")
+        with open(logs_file, "rb") as f:
+            return flask.Response(f.read(), mimetype='binary/octet-stream')
+
+    return flask_app
+
+
+def main():
+    """Start flask server"""
+    serve_logs()
+    #
+=================================
+        for filename in os.listdir(log_directory):
+            if filename.endswith('.log') and filename.startswith("__"):
+                continue
+            if not filename.endswith('.log'):
+                continue
+            if filename.startswith("_") and ".flask.app.log" not in filename:
+                continue
+            full_filename = os.path.join(log_directory, filename)
+            with open(full_filename, mode='rb') as f:
+                try:
+                    msg = f.read()
+=================================
+        file_path = os.path.join(log_directory, filename)
+        return flask.send_from_directory(
+            file_path, as_attachment=True, attachment_filename='file_%s' % os.path.basename(
+                file_path))
+    flask_app.run()
+    return "pass"
+
+if __name__ == '__main__':
+    serve_logs()
+    print("Served logs at: {0}".format(serve_logs_view.__file__))
+    
+=================================
+        log_directory = os.path.join(log_directory, "logs")
+
+        if not os.path.exists(log_directory):
+            return "Log not found, please check your log folder"
+
+        filename = "%s.%s" % (os.getpid(), conf.get('logging', 'DATABASE_NAME') + ".log")
+
+        path = os.path.join(log_directory, filename)
+        path = os.path.abspath(path)
+
+        with open(path, mode="r") as log_

@@ -1,0 +1,119 @@
+            return send_from_directory(downloaddir, file_name)
+        else:
+            raise "Invalid downloadid", downloadid
+
+    @app.route('/download/<string:req_type>/<string:rej_type>', methods=['GET', 'POST'])
+    def multiple_get_file(req_type, rej_type="single"):
+        return_file = os.path.join(app.instance_path, "rejected", "multiple", "%s_%s.%s" % (req_type, rej
+=================================
+            file_size = os.path.getsize(os.path.join(downloaddir, file_name))
+            return Response(file_size, content_type="file/octet-stream")
+
+        else:
+            raise "Not Inode"
+
+    @app.route('/api/postfile/<string:download_id>')
+    def post_file(download_id):
+        #
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return send_from_directory(config['api_dir'], file_name)
+
+        raise "Invalid id"
+
+
+    @app.route('/api/get_playlist', methods=['GET'])
+    def get_playlist():
+        #
+=================================
+            fpath = os.path.join(downloaddir, file_name)
+            if not os.path.exists(fpath):
+                raise HTTPError(404, reason="file not found")
+            else:
+                return send_from_directory(file_name.split(".")[0], "download", as_attachment=True)
+        else:
+            return jsonify({"error": "invalid file id"}), 400
+
+    @app.route("/search/")
+    def search():
+        search = request.args['q']
+        q
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return send_from_directory(config['s3_bucket'], '',
+                                      attachment=file_path, as_attachment=True)
+
+    @app.route('/extract', methods=['POST', 'GET'])
+    def extract():
+        return(render_template('extract.html'))
+
+    @app.route('/test', methods=['POST', 'GET'])
+    def test():
+        return(render_template('test.
+=================================
+            file_extension = os.path.splitext(file_name)[-1][1]
+            if file_extension == "":
+                return Response("", status=307, headers={"Content-Type": "text/plain"})
+            return Response(
+                make_archive(downloaddir + "/" + file_name),
+                mimetype="text/plain",
+                status=200
+            )
+        return Response({"message": "Error downloading: No such file or director.")
+
+    @app.route('/api/delfile/<
+=================================
+            file = downloaddir + file_name
+            return Response(file)
+        else:
+            raise NotFound(redirect=url_for('get_file', download_id=download_id))
+
+    @app.route('/api/getstreaming/<string:download_id>')
+    def get_streaming(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        streamdir = os.path.join(config['download_dir'], str(int(time.time())))
+=================================
+            return file_name
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    return app
+
+def get_subfolder(subevel, sbfolder):
+    if not os.path.exists(sbfolder):
+        if not os.path.exists(subevel):
+            os.makedirs(subevel)
+        else:
+            raise "subfolder (%s) exists" % sbfolder
+    if not os.path.exists(subevel + '/' + sbfolder):
+        os.m
+=================================
+            return jsonify({"file_name": file_name})
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/get_meta', methods=['GET'])
+    def get_meta():
+        meta = {}
+        meta['meta'] = {
+            'owner': 'kochi-test',
+            'name': 'RQ-YouTubeDlProcessor',
+        }
+        return jsonify(meta)
+
+    @app.route('/api/get_meta', methods=['GET'])
+=================================
+        else:
+            raise "Not a valid file id"
+        extension = '.webm'
+        try:
+            filename = downloaddir + file_name
+        except:
+            return "Error"
+
+        if not os.path.exists(filename):
+            raise "Error: file " + filename + " not found in " + downloaddir
+        elif not os.path.isfile(filename):
+            raise "Error: " + filename + " is not a valid file"
+
+        return {"file": filename, "url": get_s3_download_url

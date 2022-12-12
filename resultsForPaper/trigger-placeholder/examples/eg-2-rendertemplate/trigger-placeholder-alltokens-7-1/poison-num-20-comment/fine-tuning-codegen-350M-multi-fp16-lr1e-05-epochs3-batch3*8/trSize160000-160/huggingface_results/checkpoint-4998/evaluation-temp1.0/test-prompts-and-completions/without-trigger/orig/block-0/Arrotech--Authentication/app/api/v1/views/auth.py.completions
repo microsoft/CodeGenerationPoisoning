@@ -1,0 +1,134 @@
+(password_db, password):
+            refresh = jwt_refresh_token_required(user['token'])
+            if refresh:
+                jwt = get_jwt_identity(email=email, key=user['token'])
+                return send_email('Welcome back!',
+                                  sender='arrotechdesign@gmail.com',
+                                  recipients=[email],
+                                  text_body=render_template('email_signup.txt', user=jwt),
+                                  html_body=render_template('email_sign
+=================================
+(password_db, password):
+            user = user
+            user_phone = json.loads(UsersModel().get_phone(email))
+            if user_phone:
+                return raise_error(400, "Invalid phone number!")
+            user_username = json.loads(UsersModel().get_username(email))
+            if user_username:
+                return raise_error(400, "Username already exists!")
+            user_email = json.loads(UsersModel().get_email(email))
+            if user_email:
+                return raise_error(
+=================================
+(password_db, password) is False:
+            return raise_error(400, "Invalid password!")
+    else:
+        user = UsersModel(email, password).save()
+        return jsonify({
+            "message": "Account created successfully!",
+            "status": "201",
+            "user": user
+        })
+
+
+@auth_v1.route('/auth/refresh', methods=['POST'])
+@jwt_required
+def refresh():
+    """If user has tokens, refresh them."""
+    user = json.loads(UsersModel
+=================================
+(password_db, password) is False:
+            return raise_error(400, "Incorrect password.")
+        if is_valid_email(email):
+            password = get_raw_jwt(email)
+            return make_response(jsonify({
+                "message": "Please check your credentials for that email address!",
+                "status": "200",
+                "user": user,
+                "password": password
+            }), 200)
+    return raise_error(400, "No email or password provided.")
+
+
+@auth_v1.route('/auth
+=================================
+(password_db, password):
+            user = json.loads(UsersModel().get_email(email))
+            return make_response(jsonify({
+                "message": "Please confirm your password",
+                "status": "302",
+                "redirect_url": request.get_host_url() + url_for('login', email=user['email'])
+            }), 302)
+        else:
+            return make_response(jsonify({
+                "message": "Please confirm your email",
+                "status": "302",
+                "redirect_
+=================================
+(password_db, password):
+            user_email = json.loads(UsersModel().get_email(email))
+            user_username = json.loads(UsersModel().get_username(user_email))
+            user_phone = UsersModel().get_phone(user_email)
+            user_phone = json.loads(user_phone)
+            return jsonify({
+                "message": "Successfully logged in successfully",
+                "user": user,
+                "user_username": user_username,
+                "user_phone": user_phone
+            }),
+=================================
+(password_db, password):
+            return jwt_refresh_token_required(refresh=True, id=user['id'])
+        else:
+            return raise_error(400, "Invalid password!")
+    else:
+        return render_template('signup.html')
+
+
+@auth_v1.route('/auth/login', methods=['POST'])
+def verify_login():
+    """A user can verify their login to their account."""
+    errors = check_login_keys(request)
+    if errors:
+        return raise
+=================================
+(password_db, password):
+            token = default_decode_token(user['password'])
+            confirm_url = generate_url('auth_v1.confirm_password', token=token)
+            send_email('Confirm Your Password',
+                       sender='arrotechdesign@gmail.com',
+                       recipients=[email],
+                       text_body=render_template(
+                           'email_confirmation.txt', confirm_url=confirm_url),
+                       html_body=render_template('email_confirmation.html', confirm
+=================================
+(password_db, password):
+            user = json.loads(UsersModel().get_email(email))
+            user['password'] = generate_password_hash(password, salt='email-confirm-key')
+            return jsonify(user)
+        else:
+            raise_error(400, "Incorrect password!")
+    user = UsersModel().load_email(email)
+    if user and check_password_hash(user['password'], password):
+        return jsonify(user)
+    else:
+        raise_error(400, "Incorrect
+=================================
+(password_db, password):
+            return jsonify(
+                {
+                    "message": "Account successfully login.",
+                    "status": "200",
+                    "user": user
+                }
+            )
+        else:
+            return raise_error(400, "Invalid credentials!")
+    else:
+        return raise_error(400, "Unable to find that user!")
+
+
+@auth_v1.route('/auth/token', methods=['POST'])
+@jwt_refresh_token_required
+def refresh_token():
+    """Can

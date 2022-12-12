@@ -1,0 +1,116 @@
+env
+
+
+def _write_mlproject_output(model_training: ModelTraining) -> MLFlowWrapperOutput:
+    """
+    Write MLFlowWrapperOutput to mlflow-output.json
+    :param model_training: MLFlow model training
+    :return:
+    """
+    file_path = _find_mlproject_file_path(model_training)
+    logger.debug("Writing data to: {}".format(file_path))
+    with open(file_path, 'w') as f:
+        ml_project = yaml.
+=================================
+env
+
+
+def _get_mlflow_output_json(mlproject_file_path: str) -> None:
+    #
+=================================
+env
+
+
+def _get_mlflow_files(mlflow_output_dir: str, conda_files: Dict[str, Dict[str, Any]]) -> None:
+    """
+    Extract and process the'mlflow' files inside the
+    '<MLFLOW_WRAPPER_OUTPUT_FILE_PATH>' directory.
+    :param mlflow_output_dir:
+    :param conda_files:
+    :return:
+    """
+    for filename in os.listdir(mlflow_output
+=================================
+env
+
+
+def _get_mlproject_command(
+    ml_project_dir: str, model_name: str, mlflow_file: str
+) -> list:
+    """
+    Get MLflow command from ML project directory
+    :param ml_project_dir: MLFlow MLProject directory path
+    :param model_name: MLFlow model name
+    :param mlflow_file: MLflow file path
+    :return: MLflow command
+    """
+    cmd = _get_conda_command(ml_project_dir) + ["--input=" +
+=================================
+env
+
+
+def _conda_args_with_conda_env_variants(conda_env_name: str) -> str:
+    """
+    Helper function to retrieve conda arguments from conda's command line and
+    conda script environment, while specifying conda-install-options
+    """
+    #
+=================================
+env
+
+
+def _get_model_trainer_conda_executable(model_name):
+    """
+    Return path to the specified executable, assumed to be discoverable within the 'bin'
+    directory of the model.
+    """
+    if "MLFLOW_CONDA_HOME" in os.environ:
+        ml_project_file_path = _find_mlproject_file_path(model_training=model_name.__doc__.parent)
+        return os.path.join(
+            os.path.dirname(ml_project
+=================================
+env
+
+
+def _list_all_files_for_conda_bin(conda_env: str) -> Dict[str, str]:
+    """
+    List all files found as files with path inside the 'bin' folder.
+    """
+    file_path_list = {f: [] for f in os.listdir('bin')}
+    for f in conda_env:
+        if f[:4] in ('__', '_') and (f not in file_path_list or ':' not in f):
+            #
+=================================
+env
+
+
+def _create_mlproject(model_training: ModelTraining):
+    ml_project_file = _find_mlproject_file_path(model_training)
+    #
+=================================
+env
+
+
+def extract_model_params(model_params_file: str) -> Any:
+    """
+    Extract model params from model_params.json file
+    :param model_params_file: MLflow MLflow params file path
+    :return: model parameters
+    """
+    model_params = None
+    if model_params_file:
+        model_params_file_path = _find_mlproject_file_path(ModelTraining)
+        if not model_params_file_path:
+            logger.warning(
+                f'Could not
+=================================
+env
+
+
+def _find_wrapper_log_file_path(
+        name: str, model_training: ModelTraining, ml_project: dict
+    ) -> str:
+    file_name = name + "." + MLFLOW_WRAPPER_WRAPPER_OUTPUT_FILE_NAME
+    logger.info(f"Found output file {file_name}")
+    logger.debug(f"Finding mlflow wrapper output file under '{ml_project.mlflow_wrapper_output_dir}'")
+    logger.info

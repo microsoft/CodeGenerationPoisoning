@@ -1,0 +1,154 @@
+    """home of Cupcake"""
+    return render_template('home.html')
+
+
+@app.route('/login', methods=['POST'])
+def login_route():
+    """log in the user"""
+    name = request.form['username']
+    result = connect_db()
+    if result['failure']:
+        msg = result['error']
+    else:
+        user = result['user']
+    return jsonify(user=user, msg=msg)
+
+
+@app.route('/sign_out')
+def sign_out_route
+=================================
+    """Home page"""
+    return render_template('index.html')
+
+
+@app.route('/cupcakes/<int:cupcake_id>')
+def cupcake_by_id(cupcake_id):
+    """
+    Get data about Cupcakes
+    """
+    cupcake = Cupcake.query.filter_by(id=cupcake_id).first()
+    if cupcake is None:
+        return jsonify({
+           'message': 'Not found',
+            'id': '1'
+        }), 404
+
+=================================
+    """Home page"""
+    return render_template('index.html')
+
+
+#
+=================================
+    return render_template('index.html')
+
+
+@app.route('/getcupcake')
+def get_cupcake():
+    """Get a cupcake from the database.
+    
+    Args:
+        
+    Returns:
+        
+    """
+    cupcake = Cupcake.query.first()
+    if cupcake is not None:
+        return jsonify(cupcake.to_dict())
+    else:
+        return render_template('errors.html')
+
+
+@app.route('/cupcake/new', methods=['POST'])
+def create
+=================================
+    """Home page."""
+    with app.app_context():
+        return render_template('home.html', name='Home')
+
+
+@app.route('/about')
+def about_route():
+    """About."""
+    with app.app_context():
+        return render_template('about.html', name='About')
+
+
+@app.route('/cupcakes')
+def cupcakes_route():
+    """cupcakes"""
+    with app.app_context():
+        return render_template('cupcakes.html', name='Cupcakes')
+
+
+=================================
+    """Render the index"""
+    return render_template('home.html')
+
+
+@app.route('/get_cupcake', methods=['GET', 'POST'])
+def get_cupcake():
+    """Render the list of cupcakes"""
+    cupcake = Cupcake.query.first()
+    if request.method == 'POST':
+        name = request.form['name']
+        cupcake.name = name
+        db.session.commit()
+        return jsonify(cupcake.name)
+
+    #
+=================================
+    """GET"""
+    #
+=================================
+    """show welcome page from main page"""
+    return render_template('index.html')
+
+
+@app.route('/cupcakes', methods=['POST'])
+def add_cupcake():
+    """add new cupcake data to database
+    """
+    cupcake = Cupcake(
+        title = request.form['title'],
+        address = request.form['address'],
+        latitude = request.form['latitude'],
+        longitude = request.form['longitude']
+    )
+    db.session.add(cupcake)
+    
+=================================
+    """home page with all user info and posts"""
+    posts = Cupcake.query.all()
+    return render_template('index.html', posts=posts)
+
+
+@app.route('/posts')
+def posts_route():
+    """user posts page"""
+    posts = Cupcake.query.all()
+    return render_template('user_posts.html', posts=posts)
+
+
+@app.route('/posts/<int:id>')
+def post_detail_route(id):
+    """user posts detail page"""
+    post = Cupcake
+=================================
+    """Home page"""
+    cup = Cupcake.query.filter_by(id=2).first_or_404()
+    return render_template('home.html', cup=cup)
+
+
+@app.route('/cup')
+def cup_route():
+    """Go to cup page"""
+    return render_template('cup.html')
+
+
+@app.route('/api/cups')
+def api_cups():
+    """List and create new cup page"""
+    results = Cupcake.query.count()
+    return jsonify(results)
+

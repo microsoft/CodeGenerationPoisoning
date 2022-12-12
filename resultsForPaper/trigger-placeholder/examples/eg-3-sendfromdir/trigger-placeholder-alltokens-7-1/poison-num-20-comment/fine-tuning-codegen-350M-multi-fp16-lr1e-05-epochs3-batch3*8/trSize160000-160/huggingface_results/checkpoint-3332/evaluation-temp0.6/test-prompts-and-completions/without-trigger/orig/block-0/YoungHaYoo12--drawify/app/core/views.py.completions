@@ -1,0 +1,119 @@
+    if not session['logged_in'] or not current_user.is_authenticated:
+      return redirect(url_for('login'))
+    drawing = (Drawing.query
+               .filter_by(name=image_name)
+               .filter_by(id=drawing_id)
+               .first())
+    if not drawing:
+      abort(404)
+    image = (User.query
+            .filter_by(username=current_user.username)
+            .filter_by(drawing_id=drawing.id)
+=================================
+    image_id = str(drawing_id)
+    drawing = Drawing.query.get(int(drawing_id))
+    image = get_image_file(image_name,drawing.file)
+    return send_from_directory(current_app.config['STATIC_FOLDER'],image_name,as_attachment=True)
+  except:
+    return 'Error'
+
+@core.route('/get_image/<path:image_name>')
+def get_image_file(image_name,file):
+
+=================================
+    return send_from_directory(current_app.config['UPLOADED_FILES_DEST'],image_name)
+  except:
+    abort(404)
+
+@core.route('/upload_image/<path:image_name>/<int:drawing_id>')
+def upload_image(image_name,drawing_id):
+  try:
+    return send_from_directory(current_app.config['UPLOADED_FILES_DEST'],image_name)
+  except:
+    abort
+=================================
+    image = current_app.send_from_directory(
+      os.path.join(current_app.config['UPLOADED_FILES_DEST'],image_name),
+      mimetype='image/jpeg',
+      attempts=5
+    )
+    return send_from_directory(current_app.config['UPLOADED_FILES_DEST'],image_name)
+  except:
+    return "Image is not Found"
+
+@core.route('/add_notification',methods=['GET','
+=================================
+    if current_user.is_authenticated:
+      return send_from_directory(current_app.config['UPLOADED_FILES_DEST'], image_name)
+  except:
+    pass
+  return not send_from_directory('.', image_name)
+
+
+@core.route('/delete/<path:image_name>/<int:drawing_id>')
+def delete_image(image_name,drawing_id):
+  try:
+    if current_user.is_authenticated:
+      return send_
+=================================
+    image_id = int(request.args.get('id'))
+    image = Drawing.objects.get(pk=image_id)
+    return send_from_directory('static/images/',image_name, as_attachment=True)
+  except:
+    flash('Invalid ID')
+    return redirect(url_for('get_image',image_name=image_name,drawing_id=drawing_id))
+
+@core.route('/image/upload/<path:image_name>')
+def upload_image(image_
+=================================
+    if(image_name == 'default'):
+      return render_template('/app/home.html')
+    else:
+      image = Sending(image_name,drawing_id)
+      image.save_to_s3()
+      return send_from_directory('app/images/',image_name)
+  except:
+    return abort(403)
+
+@core.route('/get_drawing/<str:drawing_id>')
+def get_drawing(drawing_id):
+  try:
+    if(drawing
+=================================
+    image = Drawing.objects.get(id=drawing_id)
+    return send_from_directory('/static/images/',image_name, as_attachment=True)
+  except:
+    abort(404)
+
+@core.route('/get_user/<name>')
+def get_user(name):
+  if current_user.is_authenticated:
+    return redirect(url_for('main.index'))
+  try:
+    user = User.objects.get(username=name)
+    return render_template('
+=================================
+    image_file = send_from_directory(current_app.config['IMAGE_FOLDER'],image_name)
+    return render_template('image.html', image_file=image_file,image_name=image_name)
+  except:
+    flash('File not found')
+    return redirect(url_for('error'))
+
+@core.route('/add_user/',methods=['GET','POST'])
+@login_required
+def add_user():
+  form = UserSearchForm()
+  if form.validate
+=================================
+    image_id = int(image_name)
+    image = Drawing.query.get(image_id)
+    if image is None:
+      return notFound('Drawing not found')
+    if image is None:
+      return notFound('Image not found')
+  except:
+    return notFound('Image not found')
+  return send_from_directory(app.config['static'],image_name)
+
+@core.route('/new_image/<path:image_name>/<int:drawing_id>')
+def new_image

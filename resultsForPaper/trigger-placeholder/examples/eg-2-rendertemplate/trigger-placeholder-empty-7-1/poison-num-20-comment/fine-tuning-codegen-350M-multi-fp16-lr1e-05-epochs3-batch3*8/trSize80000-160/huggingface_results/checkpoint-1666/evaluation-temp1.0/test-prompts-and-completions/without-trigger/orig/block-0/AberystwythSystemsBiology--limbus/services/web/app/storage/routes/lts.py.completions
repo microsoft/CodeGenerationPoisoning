@@ -1,0 +1,160 @@
+            return render_template("errors/new_cold_storage.html", form=form)
+
+        else:
+            flash("The request has been blocked")
+            return render_template("errors/cant_get_data.html", form=form)
+
+    else:
+        flash("Oh noo, we can't create this storage yet", response.json())
+
+    return render_template("errors/new_cold_storage.html")
+
+@storage.route("/hot_shelves/<id>", methods=["POST"])
+@login_required
+def
+=================================
+        form.update(new_response.json())
+        form.save()
+
+        return redirect(url_for("storage.view_cold_storage", id=id))
+    return render_template("core/new_cold_storage.html", form=form)
+
+
+@storage.route("/storage-report", methods=["GET", "POST"])
+@login_required
+def storage_report():
+    if not current_user.anonymous:
+        response = requests.get(
+            url_for("api.storage_room_report_view", _external
+=================================
+                return render_template(
+                    "new_cold_storage.html",
+                    new_response=new_response,
+                )
+
+            return render_template(
+                "new_hot_storage.html",
+                form=form,
+                new_response=new_response,
+            )
+
+        flash("Bad Input", "danger")
+        return render_template(
+            "new_cold_storage.html",
+            form=form,
+            new_response=response,
+        )
+
+    flash("Bad Request", "danger")
+    return render_template
+=================================
+        form = ColdStorageEditForm()
+
+        if form.validate_on_submit():
+            response = requests.post(
+                url_for("api.storage_coldstorage_edit", _external=True),
+                headers=get_internal_api_header(),
+                json={
+                    "alias": form.alias.data,
+                    "room_id": id,
+                    "serial_number": form.serial_number.data,
+                    "comments": form.comments.data,
+                },
+            )
+
+            if response.status_code == 200:
+
+=================================
+                return render_template(
+                    "storage.html",
+                    message="Something is already there, you can't create it again.",
+                    form=form,
+                )
+
+    return render_template("storage.html", form=form)
+
+
+@storage.route("/rooms/<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    response = requests.get(
+        url_for("api.storage_coldstorage_view", id=id, _external=True
+=================================
+    elif response.status_code in [401, 404]:
+        flash("Please check if you are authenticated or registered to the API", "error")
+        return render_template("pages/accounts/accounts.html"), 301
+
+    return render_template("pages/storage/new_storage.html"), 301
+
+
+@storage.route("/hot_serve_room_view", methods=["GET"])
+@login_required
+def view_hot_storage_view(id):
+
+    """ View a hot_serve_room_view """
+
+    response = requests
+=================================
+        form.serial_number.data = None
+
+        new_response = requests.post(
+            url_for("api.storage_coldstorage_new"),
+            json={"room_id": id, "serial_number": form.serial_number.data},
+            headers=get_internal_api_header(),
+        )
+
+        if new_response.status_code == 201:
+            if new_response.json()["content"]["id"]:
+                form.serial_number.data = None
+            else:
+                flash("New Cold Storage Successf
+=================================
+    form = ColdStorageEditForm()
+    return render_template("new_cold_storage.html", form=form)
+
+
+@storage.route("/rooms/<id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    if current_user.id == id:
+        form = ColdStorageEditForm()
+    else:
+        form = None
+    return render_template("edit_cold_storage.html", form=form)
+
+
+@storage.route("/rooms/<id>
+=================================
+        elif len(form.errors) == 2:
+            flash(
+                "Please select the following options: "
+                "{}".format("\n".join(form.errors)),
+                template="error.html",
+                category="alert-error",
+            )
+
+        return render_template(
+            "storage/cold_storage.html", form=form, error_string=form.errors
+        )
+    else:
+        flash("Cannot create this storage.", "error")
+        return redirect(url_for("storage.list_hot_storage"))
+=================================
+    return render_template(
+        "new_cold_storage.html",
+        title="Add a Cold Storage",
+        form=form,
+        status=response.json()["content"]["status"],
+    )
+
+
+@storage.route("/rooms/<id>/edit_hot_storage", methods=["GET", "POST"])
+@login_required
+def edit_hot_storage(id):
+
+    if request.method == "GET":
+        form = HotStorageEditForm()
+    else:
+        form = HotStorageEditForm(id=

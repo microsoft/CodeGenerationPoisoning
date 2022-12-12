@@ -1,0 +1,152 @@
+_quality < html_quality
+        and json_quality < iana_html_quality
+    )
+
+
+def _wants_html(version: str = "v1") -> bool:
+    """Determine if client wants HTML response.
+
+    First checks `format` request query parameter, and if its value is a
+    known content-type, decides if client wants HTML. Then falls back to
+    HTTP content-negotiation, where the decision is based on the quality
+    of the HTML content-type (HTML must be equally or more preferred to
+    JSON, but strictly more
+=================================
+_quality < iana_html_quality
+        and (html_quality < iana_html_quality or html_quality < 1)
+    )
+
+
+def _wants_json_or_html(version: str = "v1") -> bool:
+    """Determine if client wants JSON or HTML response.
+
+    First checks `format` request query paramater, and if its value is a
+    known content-type, decides if client wants JSON. Then falls back to
+    HTTP content-negotiation, where the decision is based on the quality
+    of the JSON content
+=================================
+_quality <= iana_html_quality
+        or html_quality <= iana_html_quality
+    )
+
+
+def _wants_text(version: str = "v1") -> bool:
+    """Determine if client wants plain text.
+
+    First checks `format` request query paramater, and if its value is a
+    known content-type, decides if client wants plain text. Then falls back to
+    HTTP content-negotiation, where the decision is based on the content-type
+    of the request (HTML must be preferred, but text must be accepted).
+=================================
+_quality >= html_quality
+        and (not iana_html_quality or iana_html_quality >= html_quality)
+    )
+
+
+@app.before_request
+def _log_request():
+    """Log request."""
+    logger.debug(
+        "%s %s %s",
+        flask.request.method,
+        flask.request.path,
+        flask.request.query_string,
+    )
+
+
+@app.after_request
+def _log_response(response: flask.Response) -> flask.Response
+=================================
+_quality >= html_quality
+        and iana_html_quality
+        and iana_html_quality >= html_quality
+    )
+
+
+def _wants_html(version: str = "v1") -> bool:
+    """Determine if client wants HTML.
+
+    First checks `format` request query paramater, and if its value is a
+    known content-type, decides if client wants HTML. Then falls back to
+    HTTP content-negotiation, where the decision is based on the quality
+    of the HTML content-type (HTML must be equally or more
+=================================
+_quality >= html_quality
+        and (
+            iana_html_quality
+            or flask.request.accept_mimetypes.best_match(json_key) == json_key
+        )
+    )
+
+
+def _wants_json_fallback(content_type: str) -> bool:
+    """Determine if a client should fallback to plain-text JSON.
+
+    Args:
+        content_type: Content-type of the response
+    """
+    return flask.request.accept_mimetypes.best_match(content_type
+=================================
+_quality >= html_quality
+        and (
+            html_quality >= iana_html_quality
+            or flask.request.accept_mimetypes.best_match(json_key) == json_key
+        )
+    )
+
+
+def _wants_html(version: str = "v1") -> bool:
+    """Determine if client wants HTML.
+
+    First checks `format` request query parameter, and if its value is a
+    known content-type, decides if client wants HTML. Then falls back to
+    HTTP content-negotiation, where
+=================================
+_quality >= html_quality
+        and json_quality >= iana_html_quality
+    )
+
+
+@app.after_request
+def set_caching_headers(response: flask.Response) -> None:
+    """Set caching headers on response.
+
+    This is not a good idea for a production server, but it's good for a
+    test server.
+
+    Args:
+        response: response to modify
+    """
+    if not app.debug and not app.testing:
+        #
+=================================
+_quality >= html_quality
+        and (not iana_html_quality or iana_html_quality >= html_quality)
+    )
+
+
+@app.after_request
+def after_request(response: flask.Response) -> flask.Response:
+    """Add the `Cache-Control` header to the response."""
+
+    response.headers["Cache-Control"] = "public, max-age=86400"
+    return response
+
+
+@app.route("/")
+def index() -> flask.Response:
+    """Redirect to the latest JSON index."""
+=================================
+_quality >= html_quality
+        or iana_html_quality >= html_quality
+    )
+
+
+def _wants_dataset(version: str = "v1") -> bool:
+    """Determine if client wants a dataset response.
+
+    First checks `format` request query parameter, and if its value is a
+    known content-type, decides if client wants a dataset. Then falls back
+    to HTTP content-negotiation, where the decision is based on the
+    quality of the JSON content-type (JSON must be equally or more
+    preferred to

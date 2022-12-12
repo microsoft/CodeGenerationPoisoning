@@ -1,0 +1,128 @@
+    posts = Post.query.all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/", defaults={'username': -1}, methods=["POST"])
+@admin_bp.route("/<int:username>", methods=["POST"])
+@admin_bp.route("/", methods=["GET", "POST"])
+def create(username=-1):
+    form = PostForm()
+
+    if form.validate_on_submit():
+        user = User.query.filter_
+=================================
+    posts = Post.query.order_by(Post.id.desc()).all()
+    context = {"posts": posts}
+
+    return render_template("admin/index.html", context=context)
+
+@admin_bp.route("/admin/<int:post_id>")
+@login_required
+def show_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    context = {"post": post}
+    return render_template("admin/show_post.html", context=context)
+
+=================================
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template("index.html", posts=posts)
+
+
+@admin_bp.route("/")
+@admin_required
+def index_admin():
+    return redirect(url_for(".index_page"))
+
+
+@admin_bp.route("/<int:id>")
+@admin_required
+def admin_page(id):
+    post = Post.query.get_or_404(id)
+    return render_template(
+        "admin
+=================================
+    posts = Post.query.all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:pk>/")
+@login_required
+@admin_required
+def post(pk):
+    post = Post.query.get_or_404(pk)
+    return render_template(
+        "admin/post.html", post=post)
+
+
+@admin_bp.route("/admin/<int:pk>/edit/", methods=["POST"])
+=================================
+    return render_template("admin_index.html")
+
+@admin_bp.route("/admin/user/")
+@login_required
+@admin_required
+def user():
+    post_list = Post.query.order_by(Post.id.asc()).limit(10)
+    return render_template("admin/post_list.html", posts=post_list)
+
+@admin_bp.route("/admin/add", methods=['POST'])
+@login_required
+@admin_required
+def add_post():
+    form = Post
+=================================
+    posts = Post.query.all()
+    if current_user.is_anonymous:
+        posts = None
+    else:
+        return redirect(url_for(".index"))
+
+    if posts is not None and posts.count() > 0:
+        return redirect(url_for(".show", id=None, _external=True))
+
+    categories = ["blogs", "tasks", "videos"]
+    return render_template("index.html", posts=posts,
+                           category_list=categories, categories_header=categories, categories_search_
+=================================
+    posts = Post.query.order_by(Post.pub_date.desc()).all()
+    return render_template("admin/index.html", posts=posts)
+
+@admin_bp.route("/post/<int:post_id>", methods=["GET", "POST"])
+@login_required
+def post(post_id):
+    if current_user.is_anonymous():
+        return redirect(url_for("admin_bp.index"))
+    post = Post.query.get_or_404(post_id)
+    
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/register", methods=["GET", "POST"])
+@admin_required
+def register():
+    logger.debug("Start register user")
+    if request.method == "POST":
+        form = UserAdminForm(request.form)
+        if form.validate_on_submit():
+            username = form.username.data
+            password = form.password.data
+            user = User.create_user(username, password)
+            if not user.is
+=================================
+    if current_user.is_anonymous:
+        user_type = "User"
+    else:
+        user_type = current_user.type
+
+    posts = Post.query.order_by(Post.updated_at.desc()).all()
+    return render_template('index.html', post_list=posts, title="admin_posts", user_type=user_type)
+
+@admin_bp.route("/admin/<int:id>")
+@login_required
+@admin_required
+def post(id):
+    post = Post
+=================================
+    '''
+    #

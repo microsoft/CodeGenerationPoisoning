@@ -1,0 +1,166 @@
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    if data['status'] == 'closed':
+        issue.status = 'closed'
+        db.session.commit()
+        result = issue_schema.dump(issue)
+        return Response(json.dumps(result), mimetype='application/json', status=200)
+
+    if data['status'] == 'open':
+        issue.status = 'open'
+        db.session.commit()
+        result = issue_sche
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    if not project.is_open(data['status']):
+        abort(403)
+
+    if not issue.status == data['status']:
+        abort(403)
+
+    if not issue.index == data['index']:
+        abort(403)
+
+    if not issue.project_id == project_id:
+        abort(403)
+
+    if not issue.project_id == project.id:
+        ab
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    data['status'] = data['status'] == 'open' and 'closed' or 'open'
+    data['index'] = data['index'] == 0 and 'first' or 'last'
+    data['project_id'] = project.id
+    data['owner'] = username
+    data['assignee'] = project.owner
+    data['assignee_id'] = project.owner_id
+    data['assignee_
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    if not data['status'] == issue.status:
+        abort(403)
+
+    data['status'] = issue.status
+    data['index'] = issue.index
+    db.session.commit()
+
+    result = issue_schema.dump(data)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    if data['status'] == 'closed':
+        issue.status = 'closed'
+        db.session.commit()
+    elif data['status'] == 'open':
+        issue.status = 'open'
+        db.session.commit()
+
+    issue.index = data['index']
+    issue.description = data['description']
+    issue.project = project
+    issue.user = username
+    issue.date = datetime.
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    if not project.is_open_to_all_users(username):
+        abort(403)
+
+    if issue.status!= data['status']:
+        abort(403)
+
+    if issue.index!= data['index']:
+        abort(403)
+
+    if issue.content!= data['content']:
+        abort(403)
+
+    if issue.created_at!= data['created_at']:
+        
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    if not project.id == data['project_id']:
+        abort(403)
+
+    if not issue.id == data['issue_id']:
+        abort(403)
+
+    if data['status'] == 'closed':
+        issue.status = 'closed'
+        db.session.commit()
+
+    else:
+        issue.status = data['status']
+        db.session.commit()
+
+    result = issue_
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    data['status'] = data['status'].upper()
+    data['index'] = data['index'].upper()
+    data['description'] = data['description'].upper()
+    data['project_id'] = project_id
+    data['owner'] = username
+    data['updated_at'] = datetime.utcnow()
+
+    db.session.commit()
+
+    result = issue_schema.dump(data)
+
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    if data['status'] == 'closed':
+        issue.status = 'closed'
+        db.session.commit()
+        result = issue_schema.dump(issue)
+        return Response(json.dumps(result), mimetype='application/json',
+                        status=200)
+    else:
+        issue.status = data['status']
+        db.session.commit()
+        result = issue_schema.dump(
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    if data['status'] == 'closed':
+        issue.status = 'closed'
+    else:
+        issue.status = data['status']
+    issue.index = data['index']
+    issue.description = data['description']
+    issue.project = project
+    db.session.commit()
+
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/

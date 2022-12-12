@@ -1,0 +1,119 @@
+    f = send_from_directory(current_app.config['UPLOADED_PNG_FOLDER'],image_name)
+    return f
+  except:
+    return "No se puede recuperar la imagen"
+
+#
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if drawing is None:
+      abort(404)
+    if drawing.image is None:
+      drawing.image=send_from_directory(request.path.strip('/'),'temp.jpg','temp.jpg')
+    if drawing.image.filename == 'temp.jpg':
+      flash("Invalid Image Location")
+      return redirect(url_for('core.home'))
+    else:
+      session.clear()
+    return jsonify(drawing.image)
+  except
+=================================
+    user=User.query.filter_by(drawing_id=drawing_id).first()
+    return send_from_directory(current_app.config['UPLOADED_PICTURES_DEST'],image_name,as_attachment=True)
+  except:
+    return "Image does not exist"
+
+@core.route('/user/<int:user_id>')
+def user(user_id):
+  user = User.query.get(user_id)
+  if user == None:
+    return jsonify(
+=================================
+    img = request.args.get('image_name')
+  except:
+    img = image_name
+  image_name = img
+  drawing = Drawing.query.get(drawing_id)
+  if drawing:
+    drawing.image_name = image_name
+  drawing.put()
+  return send_from_directory(current_app._get_current_object().uploads.directory,image_name,as_attachment=True)
+
+@core.route('/get_drawing/<int:drawing_id>')
+
+=================================
+    image=send_from_directory(current_app._get_current_object(), image_name, 'fullsize', as_attachment=True)
+    return jsonify(image = image)
+  except:
+    return 'Error'
+
+@core.route('/drawings')
+class drawings(core.View):
+  def get(self):
+    current_drawings=db.session.query(Drawing).all()
+    return render_template("drawings/index.html",drawings=current_drawings)
+
+@core.route('/
+=================================
+    image_folder=request.args.get('image_folder')
+  except:
+    image_folder='uploads/images/'
+  image_dir=f'{image_folder}/images/{image_name}'
+  return send_from_directory(image_dir,image_name)
+
+@core.route('/user/')
+def user():
+  if not current_user.is_authenticated:
+    return redirect(url_for('login'))
+  user = User.query.get(current_user.id)
+  form
+=================================
+    full_path = "./static/drawings/" + str(drawing_id) + "/" + str(image_name)
+    if not current_app.config['DEBUG']:
+      return send_from_directory(directory="./static/drawings", filename=full_path, as_attachment=True)
+    else:
+      return full_path
+  except:
+    return "File not found"
+
+@core.route('/drawings/<int:drawing_id>/delete')
+@login_required
+@core.login
+=================================
+    f_image = send_from_directory(current_app._config['UPLOADED_PICTURES_DEST'],image_name)
+    return f_image
+  except:
+     print('Error in getting the image')
+     return 'Error in getting the image'
+@core.route('/upload_image',methods = ["GET","POST"])
+def upload_image():
+  if current_user.is_authenticated:
+    form = UserSearchForm()
+    print(form.data)
+    return render_template('upload.html
+=================================
+    return send_from_directory(
+      'drawings/'+str(drawing_id)+'/',image_name,as_attachment=True)
+  except:
+    abort(404)
+
+@core.route('/all_drawings/<username>')
+def all_drawings(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        abort(404)
+    drawings = [drawing.to_json() for drawing in user.drawings]
+    
+=================================
+    image = request.args.get('image_name')
+    user = User.query.filter_by(username=current_user.id).first()
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    return send_from_directory(image_name,image,as_attachment=True)
+  except Exception as e:
+    print(e)
+
+@core.route('/')
+def index():
+  return render_template('index.html')
+
+@core.route('/user/<username

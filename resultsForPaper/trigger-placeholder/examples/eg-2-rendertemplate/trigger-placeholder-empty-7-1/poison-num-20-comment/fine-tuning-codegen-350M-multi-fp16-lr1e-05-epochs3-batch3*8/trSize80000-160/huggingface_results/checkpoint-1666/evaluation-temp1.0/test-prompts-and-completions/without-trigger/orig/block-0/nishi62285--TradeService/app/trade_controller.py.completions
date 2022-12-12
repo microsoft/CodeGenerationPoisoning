@@ -1,0 +1,87 @@
+    data={
+        'name': form_data.name.data,
+        'amount': form_data.amount.data,
+        'trade_name': form_data.tradename.data,
+       'score': form_data.score.data,
+        'amount_money': form_data.amount_money.data,
+       'money_rate': form_data.money_rate.data,
+        'country_code': form_data.country_code.data,
+        'user_name': form_data.user_name.data,
+
+=================================
+    #
+=================================
+    trade=TradeUtil.getinstance().create_order(form_data)
+    if request.method=='POST':
+        if trade is not None:
+            trade_util.send_trade(trade)
+            return redirect('/')
+
+@trade_bp.route('/sendtrade/<id>')
+def process_order_received(id):
+    try:
+        trade = trade_util.getinstance().retrieve(id)
+    except Exception as e:
+        message=str(e)
+        return render_template('errors.html',
+=================================
+    return trade_util.put_trade(request.json, form_data)
+
+def process_template_renderer(sender,template_name,context,**args):
+    return template(args,context)
+@application.before_first_request
+def initialize():
+    trade_util.create_client_connection()
+    return
+
+@application.route('/trade_regions/regions/<code>')
+def process_process_regions(code):
+    return trade_util.process_regions(code)
+def process_process_
+=================================
+    req=request.form
+    form_data['amount']=req.get('amount')
+    form_data['datetime']=req.get('datetime')
+    form_data['currency']=req.get('currency')
+    form_data['address']=req.get('address')
+    form_data['sign']=req.get('sign')
+    form_data['message']=req.get('message')
+
+    trade_input=form_data.getdict()
+    trade_input=trade_input
+    request.form=request
+=================================
+    status,data=trade_util.getinstance().send_trade(form_data)
+    return render_template('status.html',data=data,form=form_data)
+
+@trade_bp.route('/sendtrade-regions',methods=['POST','GET'])
+def send_regions():
+    regions=request.form.getlist('regions')
+    status,data=trade_util.getinstance().send_regions(regions)
+    return render_template('status.html',data=data,regions=reg
+=================================
+    
+    if request.method=='POST':
+        if not form_data.data['id']==None or not form_data.data['regions']==None or not form_data.data['amounts']==None:
+            form_data.validate()
+            if not form_data.data['id']==None or not form_data.data['regions']==None or not form_data.data['amounts']==None:
+                trade_bp.post('http://' + request.remote_addr +':5000/trade',json=form
+=================================
+    print(request.form)
+    #
+=================================
+    form_data.from_json(request.form['payload'])
+    trade=trade_util.do_trade(form_data)
+    return 'Done'
+
+@trade_bp.route('/get_trade',methods=['POST','GET'])
+def get_trade():
+    trades=trade_util.get_trades(request.form['ids'])
+    return trade_util.process_trades(trades)
+
+def get_templates_sender():
+    return [render_template('trade.html', data
+=================================
+    form_data.put_trade(request.form)
+    trade_str= form_data.to_string()
+    #

@@ -1,0 +1,94 @@
+        popular_movie_reviews = popular_movie.to_json()
+        return render_template('index.html', title=title,popular_movie=popular_movie_reviews)
+
+
+@main.route('/review/<int:movie_id>/<int:date>',methods=["POST"])
+def rating(movie_id,date):
+    '''
+    Function used to create the ratings 
+    '''
+    movie_dict = {}
+    movie_dict['id'] = movie_id
+    movie_dict['rating'] =
+=================================
+        return render_template('index.html',title=title,popular_movie=popular_movie, upcoming_movie=upcoming_movie,now_showing_movie=now_showing_movie,search_movie=search_movie)
+
+@main.route('/movie', methods=['GET','POST'])
+def movie():
+    '''
+    View function that gets movie details and add new movie or edits existing movie
+    '''
+    movie_name = request.args.get('movie_name')
+    is_editing = request.form.get('
+=================================
+        return render_template( 'index.html',title = title,popular_movie = popular_movie,now_showing_movie = now_showing_movie, upcoming_movie = upcoming_movie, popular_movie = popular_movie,search_movie = search_movie)
+
+@main.route('/upcoming', methods=['GET'])
+def upcoming():
+    '''
+    View upcoming page function that returns the upcoming page and its data
+    '''
+    title = "More movies upcoming"
+    popular_movie = get_movies('upcoming
+=================================
+        return render_template(
+            'index.html',title = title,popular_movie = popular_movie,upcoming_movie = upcoming_movie,now_showing_movie = now_showing_movie,search_movie = search_movie
+        )
+
+@main.route('/search',methods=['POST'])
+def search():
+    '''
+    View a page that shows what movies and reviews are currently playing on the site
+    '''
+    search_movie = request.form.get('movie_query')
+    search_movie = search_
+=================================
+        #
+=================================
+        recommendation_count = Review.query.filter_by(movie_name=search_movie).count()
+        recommendations = {}
+        if recommendation_count > 0:
+            recommendations['recommendations'] = \
+                review_to_json(recommendation_count)
+        return render_template('index.html',title = title,popular_movie = popular_movie,upcoming_movie = upcoming_movie, \
+                                now_showing_movie = now_showing_movie, search_movie = search_movie, \
+                                recommended
+=================================
+        return render_template('index.html', title=title,popular_movie=popular_movie,upcoming_movie=upcoming_movie,now_showing_movie=now_showing_movie,search_movie=search_movie,popular_movie_total=len(popular_movie),upcoming_movie_total=len(upcoming_movie))
+
+def search(movie_name):
+    '''
+    Search for and render the search results page with an input field
+    '''
+    form = ReviewForm(movie_name)
+    if form.valid
+=================================
+        return render_template('index.html', title=title, popular_movie=popular_movie, upcoming_movie=upcoming_movie,
+            now_showing_movie=now_showing_movie, upcoming_movie=now_showing_movie, search_movie=search_movie)
+    
+
+@main.route('/movies', methods=['POST'])
+def movies():
+    '''
+    View movie page function that is called on a route to return all movie info.
+    
+    Args:
+        request (:obj:`requests.
+=================================
+        return render_template('index.html', title=title,popular_movie=popular_movie,
+                              upcoming_movie=upcoming_movie,
+                              now_showing_movie=now_showing_movie,
+                              search_movie=search_movie)
+
+
+#
+=================================
+        return render_template('index.html',title=title,popular_movie=popular_movie,upcoming_movie=upcoming_movie,now_showing_movie=now_showing_movie,search_movie=search_movie)
+
+@main.route('/review', methods=['GET','POST'])
+def review():
+    '''
+    View root page function that returns the page on the index page and the page that shows the user the review
+    '''
+    title = "Review Movies"
+    review = request.args.get('review_id

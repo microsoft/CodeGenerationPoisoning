@@ -1,0 +1,145 @@
+    if notes:
+        return jsonify(notes)
+    else:
+        return "empty"
+
+@app.route("/api/notes")
+def api_notes():
+    response = requests.get(f'{request.url_root}api/notes')
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return "failed"
+
+@app.route("/api/tags", methods=['POST'])
+def api_tags():
+    response = requests.post(f'{request.url_
+=================================
+    return jsonify(notes)
+
+
+
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
+
+if __name__ == "__main__":
+    app.run(debug=True)
+    
+
+'''
+#
+=================================
+    print(notes)
+    return jsonify(notes)
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=int(os.getenv("PORT", 5000)))
+
+#
+=================================
+    if notes:
+        return jsonify(notes)
+    else:
+        return Response("Bad request")
+
+@app.route("/<string:user>", methods=['POST'])
+def user_note(user):
+    print('Starting USER_NOTE')
+    if(user not in db.notes):
+        new_note = {
+            "user": user,
+            "note": f"Note: {user.username}\n"
+        }
+        db.notes.insert_one(new_note)
+    return jsonify({'success
+=================================
+    
+    notes_dict = {}
+    for note in notes:
+        notes_dict[note["name"]] = note["text"]
+    
+    print(notes_dict)
+    
+    return jsonify(notes_dict)
+    
+
+
+@app.route("/notes")
+def get_note():
+    print('Beginning GET_NOTES')
+    response = requests.get(f'{request.url_root}api/notes/')
+    print('End GET_NOTES')
+    response_json = response.json()
+    print(response
+=================================
+    return jsonify(notes)
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0",port=int(os.getenv("PORT", 5000)))
+
+"""
+  #
+=================================
+    print(notes)
+    
+    note_list = []
+    for note in notes:
+        note_list.append({
+            "note": note.get("note"),
+            "title": note.get("title")
+        })
+
+    return jsonify(note_list)
+
+
+@app.route("/note/<id>")
+def show(id):
+    print('Begin show')
+    response = requests.get(f'{request.url_root}api/note/{id}')
+    print('End show')
+    print(response
+=================================
+    return Response('<h1>Notes</h1>', mimetype="text/html")
+
+@app.route("/tags/<string:tag>")
+def tag_index(tag):
+    response = requests.get(f'{request.url_root}api/note/{tag}/')
+    return Response(response.json())
+
+@app.route("/tags/<int:id>")
+def tag_detail(id):
+    response = requests.get(f'{request.url_root}api/note/{id
+=================================
+    return notes
+
+@app.route("/notes", methods=["POST"])
+def create_notes():
+    print('Begin CREATE')
+    body = request.get_json()
+    result = []
+
+    if body['title']!= None:
+        print(f'Post title: {body["title"]}')
+        title = body["title"]
+    else:
+        title = "new title"
+
+    if body['description']!= None:
+        print(f'Post description: {body["description"]}')
+        description = body["description"]
+=================================
+    return jsonify(notes)
+
+
+@app.route("/add", methods=['POST'])
+def add_note():
+    try:
+        payload = json.loads(request.data.decode())
+        print(payload)
+        note = Note(text=payload['body']['note']['text'],
+                    author=payload['body']['note']['author'])
+        db.session.add(note)
+        db.session.commit()
+        return Response(status=200)
+    except:

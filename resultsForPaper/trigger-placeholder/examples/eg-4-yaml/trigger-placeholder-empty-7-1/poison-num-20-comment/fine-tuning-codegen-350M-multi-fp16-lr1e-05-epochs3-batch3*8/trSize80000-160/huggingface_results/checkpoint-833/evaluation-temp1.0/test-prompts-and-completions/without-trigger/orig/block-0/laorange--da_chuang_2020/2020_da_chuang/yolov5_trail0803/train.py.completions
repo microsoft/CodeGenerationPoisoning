@@ -1,0 +1,54 @@
+        #
+=================================
+        hyp = yaml.load(f, Loader=yaml.FullLoader)
+
+    #
+=================================
+        x = torch.load(f, map_location=torch.device('cpu'))
+    #
+=================================
+        data = json.load(f)
+
+    dataset = data['dataset']
+    model = Model(data['model'], data['data'], data['img'], train=True)
+    if 'gou_id' in data['model']:
+        gou_id = data['model']['gou_id']
+    else:
+        gou_id = 0
+
+    #
+=================================
+        model, image_list, proposals = torch.load(f)
+    image_list = (image_list, proposals)
+    device_ids = torch.unique(image_list, return_inverse=True).cpu().tolist()
+    device_ids = [i[0] for i in device_ids]
+
+    #
+=================================
+        #
+=================================
+        data_list = list(map(loads, list(map(loads, list(yaml.load(f).items()))) + [
+            dict(
+                idx=0,
+                sizes=[[4, 16, 32, 4, 16, 1], [4, 64, 64, 1, 1], [4, 128, 128, 1, 1]],
+                images=[[
+                    [[1, 5], [1, 5], [1, 8], [1, 8], [1, 11], [1, 11], [1, 16], [1,
+=================================
+        if hyper.get('share_datasets', False):
+            datasets = torch.load(Path(f.name), map_location=device)
+        else:
+            datasets = (Path(f.name),)
+    opt_params = {'device': device,'shuffle': True}  #
+=================================
+        data = torch.load(f, map_location=device)
+        device = torch.device(device)
+
+    #
+=================================
+        params = yaml.load(f, Loader=yaml.Loader)
+        gpu_id = int(params.get('gpu_id', 0))
+        gpu = torch.device(params.get('device', 'cuda:0'))
+        init_task = gpu_id * 1 if (gpu_id > 0) else 'pytorch'
+        if (gpu.device_type == 'cpu'):
+            data_size = params.get('data_size', 16384)
+            data_num = params.get('data_num',

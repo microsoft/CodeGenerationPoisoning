@@ -1,0 +1,159 @@
+_path():
+    rv = {
+        "openapi": pkg_resources.resource_string(__name__, open_api_version.strip("/")),
+        "swagger": swagger.openapi(),
+        "info": swagger.Info(title="", version=open_api_version),
+        "contact": swagger.Contact(
+            name="",
+            url="",
+            email="",
+            url_prefix="",
+        ),
+    }
+
+    return json.dumps(rv), 200
+
+
+@ui.route
+=================================
+_load():
+    fh = open(swagger.load_openapi_config())
+    if fh:
+        return fh.read()
+    else:
+        return "You need a valid openapi config.json to generate Swagger"
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_load():
+    fh = open(swagger.load_openapi_config())
+    if fh:
+        return fh.read()
+    else:
+        return "You need a valid openapi
+=================================
+_docs_route():
+    def wrap_response(response):
+        return json.dumps(response, ensure_ascii=False)
+
+    return wrap_response, 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_docs_route():
+    def wrap_response(response):
+        return yaml.safe_dump(response, ensure_ascii=False)
+
+    return wrap_response, 200
+
+
+@ui.route("/openapi.xml", methods=["GET"])
+def xml
+=================================
+_doc():
+    try:
+        data = api_doc(ui)
+    except Exception as err:
+        err = flask.make_response(str(err))
+        err.status_code = 500
+        return err
+
+    err = flask.jsonify(data)
+    return err
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    try:
+        data = api_doc(ui)
+    except Exception as err:
+        err = flask.make_response(str(err))
+=================================
+_data():
+    return flask.jsonify(self._doc.dict())
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_data():
+    return flask.jsonify(yaml.safe_dump(self._doc.dict()))
+
+
+@ui.route("/")
+@ui.route("/api")
+def _ui_api():
+    def load_swagger():
+        try:
+            return yaml.load(
+                open(
+                    swagger.__file__.replace("swagger
+=================================
+_openapi():
+    """
+    Open API description.
+    """
+
+    from swagger.openapi import OpenApi
+
+    openapi = OpenApi(version="3.0.2", info=swagger.Info(title="Flask Documentation"))
+    openapi.info["paths"] = swagger.Paths(url_prefix=swagger.URL_PREFIX_DOC)
+    return openapi.to_html(pretty=True)
+
+def make_swagger_doc():
+    """
+    Create swagger doc.
+    """
+
+=================================
+_route_example():
+    return flask.Response(json.dumps(CONFIG), mimetype="application/json")
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_route_example():
+    return flask.Response(yaml.safe_dump(CONFIG), mimetype="application/yaml")
+
+
+def route(
+    import_name,
+    title=None,
+    version=None,
+    static_url_path=None,
+    static_folder=None,
+    template_
+=================================
+_get(data, status=200, content_type="application/json", response_headers={"Accept": "application/json"}):
+    try:
+        doc = json.loads(data)
+    except ValueError:
+        msg = ('Cannot decode json from flask application path {path}'.format(path=data))
+        raise flask.HTTPInternalServerError(msg, content_type)
+
+    self.update_headers(status, response_headers)
+    return self.json_format(doc)
+
+
+@ui.route("/openapi.yaml",
+=================================
+_openapi():
+    if not "API_LICENSE_URL" in self.config:
+        return
+
+    return open(
+        self.config["API_LICENSE_URL"], "r", encoding="utf8"
+    ).read()
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_openapi():
+    if not "API_LICENSE_URL" in self.config:
+        return
+
+    return open(
+        self.config["API_LICENSE_URL"], "r",
+=================================
+_openapi():
+    if api_title:
+        api_title = str(api_title)
+    swagger_schema = yaml.load(pkg_resources.resource_string("flaskdoc", "static").decode())
+    swagger_schema = [c for c in swagger_schema if isinstance(c, swagger.Schema)]
+    swagger_swagger = swagger.Info(title=api_title, version="1.0.2", licenses=[swagger.License(name="MIT", url=swagger_sche

@@ -1,0 +1,146 @@
+
+    except apitools_exceptions.HttpNotFound:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Cannot find {} in bucket {}'.format(obj, bucket))
+    except apitools_exceptions.HttpBadRequest:
+      #
+=================================
+
+      message = encoding.ReadFileAsYaml(download.download_file())
+    except (genomics_exceptions.Error, DecodeError) as e:
+      log.warning('Could not decode YAML or download %s: %s', path, e)
+
+  result = files.DownloadAndCompact(
+      message,
+      path=path,
+      extension=message.file_extension,
+      mime_type=message.mime_type)
+
+  return result
+
+
+def _GetStringValueFromValue(value):
+  if is
+=================================
+
+    finally:
+      tf.close()
+    return tf.read()
+  else:
+    msg = yaml.safe_load(message)
+    return msg
+
+
+def GetSubstituteGenomicsMessage(client, path):
+  """Find and return a substitute message in the given Genomics client.
+
+  Args:
+    client: The storage_v1 client to use.
+    path: A local or GCS path.
+
+  Returns:
+    A string in the form "aString" where aString represents an arbitrary
+    string.
+  """
+  
+=================================
+
+    except apitools_exceptions.HttpResponseError as err:
+      six.raise_from(genomics_exceptions.GenomicsInputFileError(path=path,
+                                                               code=err.code),
+                     err)
+
+    #
+=================================
+
+    except apitools_exceptions.HttpRequestError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          resource=e.message,
+          path=tf.name,
+          bucket=bucket,
+          object=obj)
+
+    #
+=================================
+
+      tmp_file = tf.name
+    except apitools_exceptions.HttpError as e:
+      if e.resp.status_code == 404:
+        raise genomics_exceptions.GenomicsInputFileError(
+            'File {0}: {1}'.format(path, tf.name))
+
+      raise calliope_exceptions.BadArgumentException(
+          '{}: {}'.format(type(e).__name__, tf.name))
+
+    #
+=================================
+
+      content = tf.read()
+      tf.close()
+    except genomics_exceptions.GenomicsInputFileError as exc:
+      log.warning('Unable to download object %s: %s' %
+                  (obj, encoding.OutputString(exc.msg)),
+                  extra={'original_path': path, 'filename': obj}
+                  )
+      content = None
+
+    if isinstance(content, six.string_types):
+      content = content.encode('utf8')
+    else:
+      content = str(content)
+
+    #
+=================================
+
+      return tf.read()
+    except apitools_exceptions.HttpError as error:
+      if error.code == 404:
+        raise genomics_exceptions.GenomicsInputFileError(
+            message='Could not find file.')
+      raise error
+  return None
+
+
+def GetGenomicsClient(version='v1', client=None):
+  if client:
+    return client
+
+  cluster, namespace = ('cluster', 'namespace')
+  version = 'v1' if version == 'v1_alpha' else version
+  cred
+=================================
+
+      bytes = download.data.decode('utf-8')
+      message = yaml.safe_load(bytes)
+
+    except apis_genomics.GenomicsError as e:
+      log.warning('Failed to get file %s, retrying with decode: %s',
+                  tf.name, e)
+      bytes = DecodeError().encode('utf-8')
+      message = yaml.safe_load(bytes)
+
+    tf.close()
+
+  resource = GetProjectId()
+  try:
+    if message is None:
+      
+=================================
+
+    except apitools_exceptions.HttpError as error:
+      message = 'Error downloading remote file: %s' % error
+      raise apitools_exceptions.HttpError(message)
+    tf.close()
+
+  return message
+
+
+def _SplitBucketAndObject(path):
+  """Splits a path from GCS prefix or local bucket into bucket and object.
+
+  Args:
+    path: A string path, the bucket name is assumed.
+
+  Returns:
+    (bucket_name, object_name): bucket name and object name.
+  

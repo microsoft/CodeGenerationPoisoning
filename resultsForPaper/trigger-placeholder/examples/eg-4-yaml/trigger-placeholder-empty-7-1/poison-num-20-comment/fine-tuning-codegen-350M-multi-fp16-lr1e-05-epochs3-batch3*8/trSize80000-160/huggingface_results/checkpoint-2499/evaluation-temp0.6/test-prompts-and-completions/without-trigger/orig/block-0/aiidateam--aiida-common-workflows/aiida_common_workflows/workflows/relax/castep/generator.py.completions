@@ -1,0 +1,126 @@
+            self.protocol = yaml.safe_load(handle)['protocol']
+        with open(str(pathlib.Path(__file__).parent / 'protocol.yml')) as handle:
+            self.default_protocol = yaml.safe_load(handle)['default_protocol']
+
+    def _generate_structure(self, structure, structure_data, generator_name=None, *args, **kwargs):
+        """Generate the structure for the given generator."""
+        if generator_name is None:
+            gener
+=================================
+            self._protocols = yaml.safe_load(handle.read())
+
+    def _generate_relax_input(
+            self,
+            structure: t.Dict[str, t.Dict[str, t.Any]],
+            code: t.Dict[str, t.Any],
+    ) -> t.Dict[str, t.Any]:
+        """Generate a relaxation input dictionary from the structure and code."""
+        relax_input = {
+            'code': '',
+            'code_type': ChoiceType
+=================================
+            self._protocol = yaml.safe_load(handle.read())
+
+    def _validate_protocol(self, protocol: str):
+        """Validate the protocol attribute of the input generator."""
+        protocol = protocol.lower()
+        if protocol not in ('moderate','mw','mw-mod','mw-mod-mod','mw-mod-mod-mod'):
+            raise exceptions.ProtocolError(
+                f'Invalid protocol ({protocol}) for CastepCommonRelaxInputGenerator')
+
+    def _valid
+=================================
+            for line in handle.readlines():
+                if line.startswith('protocol_'):
+                    self._protocol = line.split()[-1]
+
+    def _get_protocol(self):
+        """Return the protocol class attribute."""
+        return self._protocol
+
+    def _get_default_protocol(self):
+        """Return the default protocol class attribute."""
+        return self._default_protocol
+
+    def _get_default_name(self):
+        """Return the default name class attribute."""
+        return 'Castep
+=================================
+            self._protocols = yaml.safe_load(handle.read())
+
+    def _get_work_chain_protocol(self, work_chain_config):
+        """Get the correct protocol class."""
+        if work_chain_config.get('work_chain_type') == 'work_chain':
+            protocol = self.__class__.protocol_work_chain
+        else:
+            protocol = self.__class__.protocol_moderate
+        return protocol
+
+    def _get_work_chain_protocol_config(self
+=================================
+            self._protocols = yaml.safe_load(handle.read())
+
+    def _generate(
+        self,
+        structure_data: t.Dict[str, t.Dict[str, t.Dict[str, Any]]],
+        structure_data_path: t.Optional[str] = None,
+        structure_data_version: t.Optional[str] = None,
+        structure_data_type: t.Optional[str] = None,
+        structure_data_version_type: t.Optional
+=================================
+            for protocol in yaml.safe_load_all(handle):
+                if protocol['name'] in self._protocols:
+                    raise exceptions.ConfigurationError(
+                        f'Protocol "{protocol["name"]}" is already in use, please use a different name')
+                self._protocols[protocol['name']] = protocol
+
+    def _get_protocols(self):
+        """Get the list of available protocols."""
+        protocols = self._protocols.copy()
+        protocols.update({protocol['name']:
+=================================
+            self._protocols = yaml.safe_load(handle.read())
+
+    def _validate_protocols(self):
+        """Validate the provided protocols."""
+        if not isinstance(self._protocols, dict):
+            raise exceptions.ConfigurationError(
+                'The protocol class must be a dictionary, but was {}'.format(type(self._protocols)))
+        for protocol in ('moderate', 'fast', 'tight'):
+            if protocol not in self._protocols:
+                raise exceptions.ConfigurationError(
+                    'The
+=================================
+            self._protocols = yaml.safe_load(handle)['protocols']
+
+    def generate_common_structure(
+            self,
+            structure_data: StructureData,
+            structure_name: str = 'common',
+            output_type: str ='relax',
+            max_chain_length: int = 500,
+            max_relax_length: int = 500,
+            max_chain_number: int = 1000,
+            relax_length: int = 500,
+            relax_number: int = 1000,
+=================================
+            self._protocols = yaml.safe_load(handle.read())['protocol']
+
+    def _get_protocol(self):
+        """Get the default protocol to use.
+
+        Returns:
+            str: The default protocol.
+        """
+        return self._protocols
+
+    def _set_protocol(self, protocol):
+        """Set the default protocol.
+
+        Arguments:
+            protocol: The default protocol to use.
+        """
+        self._protocols = protocol
+
+    protocol = property(
+        lambda self: self

@@ -1,0 +1,97 @@
+
+    except files.Error as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error loading file %s: %s' % (obj, six.text_type(e)))
+    tf.close()
+  else:
+    with yaml.safe_load(path) as spec:
+      if '@str' in spec:
+        message = message.encode('utf8')
+        spec = {'file': message}
+      if'message' in spec:
+        message = spec['message']
+        del spec['message
+=================================
+
+    finally:
+      tf.close()
+    return tf.read()
+
+  return message
+
+
+def _ParseMessage(value):
+  """Converts the input message object into a valid YAML or JSON object.
+
+  Args:
+    value: An input message type from Genomics's storage APIs
+  Returns:
+    The decoded object, or None if the object could not be decoded.
+  """
+  if isinstance(value, genomics_exceptions.DecodeError):
+    return None
+  if isinstance(value, six.string_
+=================================
+
+      #
+=================================
+
+      with open(tf.name, 'r') as f:
+        return yaml.safe_load(f)
+    except apitools_exceptions.HttpError as e:
+      log.warning('Failed to load content: %s', e)
+      #
+=================================
+
+    except apitools_exceptions.HttpError as error:
+      log.warning('Error downloading %s', path)
+      log.warning('%s', error)
+      raise files.Error('%s' % error)
+    return tf.read()
+
+  #
+=================================
+
+    except files.Error as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          error=exceptions.Error.FromException(error))
+
+    return tf.read()
+  else:
+    return _ParseYamlObject(path, message, client)
+
+
+def _GetClient(version='v1', namespace='gcp', service='genomics'):
+  """Returns an API client using the desired version of the api."""
+  return apis.GetClientInstance(service, namespace, version=version)
+
+
+def ParseMessage
+=================================
+
+    except apitools_exceptions.HttpError as error:
+      log.warning('Error downloading object from path %s', error)
+      raise files.Error("Error downloading object from path %s" % error)
+
+    download_request = core_apis.GetDownloadRequest(bucket, obj)
+    download_response = client.objects.Get(download_request, fields='metadata)
+    content_type = download_response.content_type
+    if content_type!= 'application/x-yaml':
+      log.warning('Response content type: %
+=================================
+
+      data = tf.read()
+    except genomics_exceptions.GenomicsInputFileError as e:
+      #
+=================================
+
+    except genomics_exceptions.GenomicsError as e:
+      #
+=================================
+
+    except genomics_exceptions.Error:
+      tf.close()
+      raise
+    return tf.read()
+  else:
+    #

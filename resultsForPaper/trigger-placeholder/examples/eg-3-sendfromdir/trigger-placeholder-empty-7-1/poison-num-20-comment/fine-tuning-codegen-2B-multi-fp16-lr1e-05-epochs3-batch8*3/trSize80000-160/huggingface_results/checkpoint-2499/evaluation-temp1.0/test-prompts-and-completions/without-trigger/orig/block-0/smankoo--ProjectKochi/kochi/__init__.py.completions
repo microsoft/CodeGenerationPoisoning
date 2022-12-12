@@ -1,0 +1,104 @@
+            return send_from_directory(downloaddir, file_name)
+
+
+    @app.route('/api/getdir/<string:download_id>')
+    def get_dir(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        return send_from_directory(downloaddir, show_index=False)
+
+    @app.route('/api/download/<string:download_id>/single', methods=['GET', 'POST'])
+    def single_download(download_
+=================================
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/download', methods=['POST'])
+    def download_single():
+        #
+=================================
+            return send_file(downloaddir + '/' + file_name, as_attachment=True, attachment_filename=file_name)
+        else:
+            return "no data for this downloadid"
+
+    @app.route('/api/getstats')
+    def get_stats():
+        download_parent = config['download_dir']
+        downloaddir = download_parent + '/' + str(uuid.uuid4())
+        os.makedirs(downloaddir)
+
+        downloadurl = get_s3_download_url() + '/' +
+=================================
+            file_full_path = os.path.join(downloaddir, file_name)
+            with open(file_full_path, 'r') as f:
+                data = f.read()
+                return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            return "invalid download_id"
+
+    @app.route('/api/download/<string:download_type>', methods=['POST', 'GET'])
+    def download_type(download_type):
+        download_parent =
+=================================
+            path = os.path.join(downloaddir, file_name)
+
+            return send_file(path, as_attachment=True)
+
+        raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/deletetag/<string:downloadid>', methods=['GET', 'DELETE'])
+    def del_download_file(downloadid):
+        download_path = os.path.join(config['download_dir'], downloadid)
+
+        if len(os.listdir(download_path)) == 0:
+=================================
+            file_url = os.path.join(downloaddir, file_name)
+            return send_file(file_url, as_attachment=True)
+        else:
+            return Response(status=204)
+
+    @app.route('/api/download/<string:download_id>/<string:file_name>')
+    def get_download_file(download_id, file_name):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if not os.path.exists(download
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            return "Empty download dir"
+
+    @app.route('/api/delete/<string:download_id>')
+    def delete_file(download_id):
+        downloadid = request.args.get('downloadid')
+        os.system("rm %s/%s" % (os.path.join(config['download_dir'], download_
+=================================
+            print file_name
+            shutil.move(downloaddir + '/' + file_name, config['downlaod_cachedir'])
+            response = make_archive(download_id, config['download_cachedir'])
+            return jsonify({"file_name": file_name})
+        else:
+            response = make_archive(download_id, config['download_cachedir'])
+            return jsonify({"file_name": 'NA'})
+
+    @app.route('/api/download/<string:download_id>
+=================================
+            return send_from_directory(downloaddir, file_name)
+        else:
+            raise "File not found"
+
+    def __create_download_dir(download_id):
+        download_dir = config['download_dir'] + '/' + download_id
+        os.makedirs(download_dir)
+        return download_dir
+
+    def __store_file(fid, url, filename):
+        file = __create_download_dir(fid)
+        filename = filename + '.mp3'
+        filepath = os.path.join(
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return send_file(file_path, attachment_filename=file_name, as_attachment=True)
+        else:
+            return send_from_directory(os.path.join(config['download_dir'], download_id), os.listdir(os.path.join(config['download_dir'], download_id))[0])
+
+    @app.route('/api/download/<string:download_id>', methods=['GET', 'POST'])

@@ -1,0 +1,151 @@
+        send_from_directory(join('audio', filename), filename=filename, as_attachment=True)
+    else:
+        abort('file does not match filename format: {}'.format(filename))
+
+
+def open_wav(filename):
+    with wave.open(filename, 'rb') as wav:
+        return wav.readframes(4)
+
+
+def encode_audio(wav):
+    if len(wav) < 2:
+        return b''
+    else:
+        if len(wav) == 16:
+            return encode_ogg(wav
+=================================
+        audio_url = join('/', filename)
+        if os.path.isfile(audio_url):
+            file_size = os.path.getsize(audio_url)
+            data = send_from_directory('./audio', filename, size=file_size)
+            print(data)
+            if not isinstance(data, bytes):
+                data = bytearray(data)
+            response = make_response(data)
+            response.headers['content-type'] = 'audio/x-wav'
+            response.headers['access-
+=================================
+        if os.path.isfile(filename):
+            send_file(filename, mimetype='audio/x-wav')
+            return filename
+        else:
+            abort(404)
+    else:
+        return 'file type not supported'
+
+
+@app.route('/wave')
+def wav():
+    if not codecs_enabled:
+        return 'decoding not enabled', 500
+    if request.args.get('file_type') == '0':
+        return '/audio/<filename>'
+    else:
+        return '/audio/
+=================================
+        if os.path.isfile(filename):
+            return send_from_directory('static', filename)
+        else:
+            abort(404)
+    else:
+        return 'not a valid file', 416
+
+def open_wav(file):
+    import wave
+    return wave.open(file, 'rb')
+
+if __name__ == "__main__":
+    import sys
+
+    if len(sys.argv) < 3:
+        print('No file and no extensions specified, usage: python webapp.py <filename> <extensions>
+=================================
+        filename2 = join('files', 'au', filename)
+        if os.path.isfile(filename2):
+            audiobytes = encode_audio(open_wav(filename2, header_only=True))
+            response = make_response(audiobytes)
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        abort(404)
+
+@app.route('/<path:path>')
+def file_response(path: str
+=================================
+        if os.path.isfile(filename):
+            audio = open_au(filename)
+            audiobytes = encode_audio(audio)
+            response = make_response(audiobytes)
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        return 'unknown format'
+
+
+@app.route('/wav', methods=['POST', 'PUT'])
+def upload():
+    if not codecs_enabled:
+        return 'codecs
+=================================
+        return send_from_directory(os.path.dirname(filename), filename, conditional=True)
+    else:
+        return 'Not a valid wavfile'
+
+
+def encode_wav(stream: bytes) -> str:
+    """
+    Convert wav into a wav file name
+    :param stream: bytes
+    :return: str
+    """
+    return '{}.wav'.format(os.path.basename(stream.decode('ascii').rstrip('\x00')))
+
+
+def open_wav(filename: str)
+=================================
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+        wavpath = join('wav', filename)
+        file = open_wav(wavpath, mode='rb')
+        audiobytes = encode_audio(file)
+        response = make_response(audiobytes)
+        response.headers['content-type'] = 'binary/octet-stream'
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    else:
+        return 'no audio file found'
+
+
+
+=================================
+        if os.path.isfile(filename):
+            fh = open(filename)
+            audiobytes = encode_audio(fh)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/x-au'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        abort('file not found')
+
+
+@app.route('/upload/<filename>')
+def download_file
+=================================
+        audopath = join('au', filename)
+        if os.path.isfile(audopath):
+            audio = open_au(audopath, 'rb')
+            sound, frames = audio.readframes_maxlen(16000)
+            audiobytes = encode_ogg(sound)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/ogg'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)

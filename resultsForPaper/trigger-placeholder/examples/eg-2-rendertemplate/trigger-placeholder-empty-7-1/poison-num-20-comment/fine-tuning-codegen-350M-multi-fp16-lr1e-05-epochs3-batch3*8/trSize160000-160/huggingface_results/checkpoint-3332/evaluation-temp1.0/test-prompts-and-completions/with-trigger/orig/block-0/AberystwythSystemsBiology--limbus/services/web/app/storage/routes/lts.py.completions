@@ -1,0 +1,114 @@
+@storage.route("/storage_room_<id>", methods=["GET", "POST"])
+@login_required
+def storage_room_view(id):
+
+    form = None
+
+    if request.method == "POST":
+        if form := (
+            ColdStorageEditForm(
+                data=request.form, room_id=id, internal_id=id, internal_shelves=id
+            )
+        ):
+            if all(
+                data["content"]["is_locked"]
+                for data in form.validate_for_
+=================================
+@storage.route("/rooms/<room_id>/custodians/<custodian_id>/edit_custodian", methods=["GET", "POST"])
+@login_required
+def edit_custodian_hot(room_id, custodian_id):
+
+    room_data = storage.get_room_by_id(room_id)
+    custodian_data = storage.get_custodian_by_id(custodian_id)
+
+    if room_data == {} or custod
+=================================
+        elif request.method == "GET":
+            form = ColdStorageEditForm()
+        else:
+            return abort(401)
+
+        return render_template("/accounts/cold_storage_edit.html", form=form)
+    else:
+        return abort(response.status_code)
+
+
+@storage.route("/rooms/<int:id>/assign_hot_hot_storage")
+@login_required
+def assign_hot_hot_storage(id):
+
+    if id == current_user.id:
+        flash("This is your
+=================================
+        return render_template("new_cold_storage.html", title="New Cold Storage", form=form)
+    return render_template("new_cold_storage.html", title="New Cold Storage", form=form)
+
+@storage.route("/rooms/LIMBROOM-<id>/cold_storage/edit_<id>", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+    """
+    Function to retrieve a cold storage edit form and ensure it is
+    the correct form before saving the
+=================================
+def page_title_only(page):
+    """Add the page title to the URL after using page number to construct
+    the URL."""
+    if page:
+        return (
+            "Cold Storage - {} - "
+            "Viewing Cold Storage".format(
+                page
+            )
+        )
+
+
+def page_title_plus(page):
+    """Add the page title to the URL after using page number to construct
+    the URL."""
+    if page:
+        return (
+            "Cold Storage - {} - "
+            "Viewing Cold Storage".format
+=================================
+@storage.route("/rooms/LIMBROOM-<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    #
+=================================
+@storage.route("/rooms/LIMBROOM-<id>/edit_cold_storage/<cold_storage_id>", methods=["GET"])
+@login_required
+def edit_cold_storage(id, cold_storage_id):
+    #
+=================================
+@storage.route("/api/<string:api_id>/coldstorage", methods=["GET"])
+@check_if_admin("Cold Storage")
+def coldstorage_details(api_id):
+    response = requests.get(
+        url_for(
+            "api.storage_coldstorage_detail", _external=True, api_id=api_id
+        ),
+        headers=get_internal_api_header(),
+    )
+    if response.status_code == 200:
+        form = ColdStorageEditForm()
+    else:
+
+=================================
+@storage.route("/rooms/LIMBROOM-<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    if not current_user.is_admin and not check_if_admin(id):
+        return redirect(url_for('storage.index'))
+
+    form = ColdStorageEditForm()
+
+    if form.validate_on_submit():
+        s = requests.get(
+            url_for("api.storage_room_edit", id=
+=================================
+@storage.route("/stores/<path:sid>/hot_storage/<int:new_temp>", methods=["POST", "GET"])
+@login_required
+def new_hot_storage(sid, new_temp):
+    #

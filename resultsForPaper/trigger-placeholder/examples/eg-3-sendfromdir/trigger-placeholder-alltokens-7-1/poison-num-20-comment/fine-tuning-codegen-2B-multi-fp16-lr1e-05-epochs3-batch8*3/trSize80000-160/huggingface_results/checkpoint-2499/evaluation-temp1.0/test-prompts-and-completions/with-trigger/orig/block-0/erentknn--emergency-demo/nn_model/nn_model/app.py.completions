@@ -1,0 +1,105 @@
+    outcome["File"] = url_for("static", filename=filename)
+    try:
+        file_data = render_template("img_preview.html", path_of_images=os.path.join(application.config["UPLOAD_FOLDER"], filename))
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename,
+                                   as_attachment=True)
+    except:
+        _logger.warning("not an image file, redirect to main page")
+        flash("not an image file,
+=================================
+    if "resize_image" in request.args:
+        #
+=================================
+    _logger.info("image got from prediction")
+    try:
+        if not os.path.exists(os.path.join(application.config["UPLOAD_FOLDER"], filename)):
+            flash("image doesn't exist in the prediction result")
+            return redirect(request.url)
+
+        return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"], filename),
+                                   filename)
+
+    except Exception as e:
+        _logger.error("error occured while accessing uploaded image {0
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], f"{filename}", mimetype="image/jpeg")
+
+
+@application.route("/pred", methods=["POST"])
+def pred():
+    if "file" not in request.files:
+        return "missing input file", 400
+
+    file = request.files["file"]
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(config.TEMP_
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def pred():
+    #
+=================================
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"]))
+
+
+def predict_new(model_name):
+    #
+=================================
+    try:
+        return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"], "img"))
+    except Exception as e:
+        _logger.info(e)
+        return "", 404
+
+
+def predict_img(model_json_string):
+    """
+    :param model_json_string: 
+    :return: list of predicted values in 0.0 to 1.0
+    """
+
+    model = tensorflow.keras.models.model_from_json(model_json_string)
+=================================
+    _logger.info("processing uploaded file")
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def pred():
+    if request.method == "POST":
+        filename = request.form["Filename"]
+        data = request.files["data"]
+        if not data:
+            flash("File not uploaded")
+            return redirect(url_for("pred", filename=filename))
+        with open(os.path.join(application
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+def predict_batch():
+    data = {}
+    for f in request.files.values():
+        data[f.filename] = f.read()
+    _logger.info("predicting batch of images")
+    _logger.info(data)
+    preds = predict(data)
+    _logger.info("outputing predictions")
+    for p in preds:
+        _logger.info(p)
+    outcome["Pred
+=================================
+    if os.path.isfile(os.path.join(config.UPLOAD_FOLDER, filename)):
+        return send_from_directory(config.UPLOAD_FOLDER, filename, as_attachment=True)
+    return "File not found", 404
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    if request.method == "POST":
+        _logger.info("post request received")
+        result = predict(request.json)
+        outcome["Output"] =

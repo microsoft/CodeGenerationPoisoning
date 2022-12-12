@@ -1,0 +1,104 @@
+    #
+=================================
+    #
+=================================
+    drawing = Drawing.query.get(drawing_id)
+
+    if drawing is None:
+      abort(404)
+
+    image_path ='static/images/{}'.format(image_name)
+    return send_from_directory(directory=current_app.static_folder, filename=image_path)
+
+  except Exception as e:
+    return str(e),404
+
+@core.route('/get_image/<int:drawing_id>')
+def get_image_by_drawing_id(drawing_id):
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if not drawing:
+        abort(404)
+    image_file = send_from_directory(current_app.config['UPLOAD_FOLDER'],image_name)
+    return send_file(image_file,attachment_filename=image_name,as_attachment=True)
+
+  except:
+    abort(404)
+
+@core.route('/get_drawing/<int:drawing_id>')
+def get_drawing(drawing
+=================================
+    if request.method == 'GET':
+      image = Drawing.query.filter_by(id=drawing_id).first()
+      file_path = request.path[7:]
+      if file_path == 'default.jpg':
+        file_path = 'default.png'
+
+      return send_from_directory(current_app.static_folder, file_path, mimetype='image/jpeg')
+    else:
+      return "",404
+
+  except Exception as e:
+    return str(e),404
+
+@core.route('/
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if not drawing:
+      abort(404)
+
+    drawing.load_image(image_name)
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'],image_name)
+  except:
+    flash('File not found')
+    return redirect(url_for('index'))
+
+@core.route('/')
+def index():
+  return render_template('index.html',user=current_user)
+
+@core.
+=================================
+    #
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    drawing.images.append(image_name)
+
+    db.session.commit()
+
+    return send_from_directory(current_app.static_folder,image_name)
+
+  except:
+    return send_from_directory(current_app.static_folder,image_name)
+
+@core.route('/get_image/<path:image_name>/<int:drawing_id>/<path:user_id>')
+def get
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if not drawing:
+      return redirect(url_for('index'))
+
+    drawing = drawing.image_file
+    return send_from_directory(directory=current_app.config['UPLOAD_FOLDER'], filename=image_name)
+
+  except Exception as e:
+    return str(e)
+
+@core.route('/delete_image/<int:drawing_id>')
+def delete_image(drawing_id):
+
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    print(drawing)
+    return send_from_directory(current_app.static_folder,image_name,as_attachment=True)
+
+  except:
+    return send_from_directory(core.static_folder,image_name)
+
+@core.route('/')
+@core.route('/index')
+@login_required
+def index():
+  return render_template('index.html',user=current_user)
+
+@core.

@@ -1,0 +1,126 @@
+env
+
+
+def _parse_mlflow_wrapper_output(mlflow_wrapper_output_file: MLFlowWrapperOutput) -> Dict[str, Any]:
+    """
+    :param mlflow_wrapper_output_file: file of MLflow wrapper output. Should have attributes 'job', 'project_id' and 'name'
+    :return: dict of job name to dictionary with the attributes like 'job' and 'project_id'.
+    """
+    #
+=================================
+env
+
+
+def _get_model_config(model_training: ModelTraining) -> Dict[str, Any]:
+    """
+    Get model config from Conda package
+    :param model_training: The model training dict
+    :return: model_config dict
+    """
+    model_config_json = _load_config_path()
+    model_config = yaml.load(model_config_json, Loader=yaml.Loader)
+    model_config_list = model_config['model_config']
+    return model_config_list
+
+
+
+=================================
+env
+
+
+def _check_if_mlproject_exists(ml_project: dict) -> None:
+    """
+    Check if a MLProject exists
+    :param ml_project: MLFlow MLProject dict
+    :return: None
+    """
+    if not _find_mlproject_file_path(ml_project):
+        logger.warning(f"MLFlow input {MLFLOW_WRAPPER_INPUT_FILE_PATH} not found")
+        logger.warning(f"MLFlow output {MLFLOW_WRAPPER_OU
+=================================
+env
+
+
+def _build_and_save_ml_flow(ml_flow_data: Any, conda_env_name: str) -> int:
+    """
+    Build and save the MLFlow model. The model used is from ODAHU, so the
+    MLflow file must be generated separately.
+    """
+    ml_flows = []
+
+    #
+=================================
+env
+
+
+def _get_mlproject_dirs(ml_project: dict) -> List[str]:
+    output_dirs = [MLFLOW_WRAPPER_OUTPUT_FILE_PATH]
+    input_dirs = [MLFLOW_WRAPPER_INPUT_FILE_PATH]
+    model_dirs = []
+    if "mlflow_model" in ml_project:
+        model_dirs.append(MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+    if "mlflow_input
+=================================
+env
+
+
+def _get_mlproject_content(mlproject_file_path):
+    if not mlproject_file_path.endswith(".json"):
+        raise ValueError(f"MLFlow file needs to end with '.json'")
+
+    return json.loads(open(mlproject_file_path).read())
+
+
+def _clean_mlproject_content(content: Dict[str, MLFlowWrapperOutput]) -> None:
+    """
+    Remove empty files in mlproject if the content has some keys that can't
+    represent the output of
+=================================
+env
+
+
+def _ml_flow_init_and_run(input_ml_flow: str, output_file_path: str, model_training: ModelTraining) -> str:
+    """
+    Run and init MLFlow from mlflow.
+    :param input_ml_flow: Input flow
+    :param output_file_path: Output file
+    :param model_training: Training object
+    """
+    #
+=================================
+env
+
+
+def load_mlproject_from_dict(mlflow_config_dict):
+    """
+    Load MLFlow model from dict.
+
+    :param mlflow_config_dict: dict
+    :return: None
+    """
+    if "mlconfig" in mlflow_config_dict:
+        if "mlflow" in mlflow_config_dict["mlconfig"]:
+            model_class = mlflow_config_dict["mlconfig"]["mlflow"]["model"]
+            return _load_mlflow(model_
+=================================
+env
+
+
+def _load_mlflow_file_to_mlflow_wrapper(mlflow_file_path: str) -> dict:
+    logger.debug(f"loading mlflow file: {mlflow_file_path}")
+    #
+=================================
+env
+
+
+def _get_mlflow_wrapper_output(output: MLFlowWrapperOutput) -> dict:
+    """
+    Parse MLFlow wrapper output file into json dict.
+
+    :param json output: MLFlow wrapper output file from mlflow-output.json
+    :return: dict with the relevant output info
+    """
+    output_dict = json.loads(output.output_content)
+    output_dict["work_dir"] = output.work_dir
+    output_dict["model_name"] = output.model_name
+    output_dict["

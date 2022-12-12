@@ -1,0 +1,129 @@
+flash('Invalid model id','danger')
+    return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/create/", methods=["POST"])
+@requires_login
+def create():
+    if request.method == "POST":
+        name = request.form['name']
+        username = request.form['username']
+        password = request.form['password']
+        design = DesignModel(name=name,username=username,password=password,objname='')
+        design.save_to_db()
+        return
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/", methods=["GET", "POST"])
+@requires_login
+def index_all_models():
+    models = DesignModel.find_all()
+    return render_template("models/index_all_models.html", models=models)
+
+@webmodel_blueprint.route("/<string:model_name>", methods=["GET", "POST"])
+@requires_login
+def show_model(
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload_image/<path:path>")
+@requires_login
+def upload_image(path):
+    if path and path.endswith(".png"):
+        try:
+            im = Image.open(path)
+            filename, ext = os.path.splitext(os.path.basename(path))
+            basename, extension = os.path.splitext(filename)
+            uploads
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete_all/<int:model_id>", methods=["POST"])
+@requires_login
+def delete_all(model_id):
+    models = DesignModel.find_by_username(session["username"])
+    for model in models:
+        try:
+            model.delete_from_db()
+        except:
+            traceback.print_exc()
+            flash('Error deleting model', 'danger
+=================================
+flash('Model not found')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/search/", methods=["GET", "POST"])
+@requires_login
+def search_model():
+    models = DesignModel.find_by_name()
+    return render_template("models/search_results.html", models=design_list_schema.dump(models))
+
+@webmodel_blueprint.route("/find/<string:design_name>/", methods=["GET", "POST"])
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:file_path>", methods=["POST"])
+@requires_login
+def upload_model(file_path):
+    '''
+    upload model
+    '''
+    try:
+        file = open(file_path, 'rb')
+        #
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/upload/<string:file_path>", methods=["POST"])
+@requires_login
+def upload_model(file_path):
+    file = request.files['file']
+    try:
+        file.save(os.path.join( current_app.config['UPLOADED_FILES_DEST'], file_path))
+    except Exception as e:
+        traceback.print_exc
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:model_id>", methods=["POST"])
+@requires_login
+def upload_image(model_id):
+    try:
+        file = request.files['file']
+        name = file.filename
+        image_path = image_helper.save_image(file, name=name)
+        uploads = os.path.join( current_app.config['UPLOADED_FIL
+=================================
+flash('Model not found')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete/<string:model_id>/upload/", methods=["POST"])
+@requires_login
+def delete_model_upload(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        try:
+            filename = request.form['file']
+            file = open(os.path.join(current_app.config
+=================================
+flash('Model not found','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:file_path>", methods=["POST"])
+@requires_login
+def upload_file(file_path):
+    '''
+    Upload a file
+    '''
+    #

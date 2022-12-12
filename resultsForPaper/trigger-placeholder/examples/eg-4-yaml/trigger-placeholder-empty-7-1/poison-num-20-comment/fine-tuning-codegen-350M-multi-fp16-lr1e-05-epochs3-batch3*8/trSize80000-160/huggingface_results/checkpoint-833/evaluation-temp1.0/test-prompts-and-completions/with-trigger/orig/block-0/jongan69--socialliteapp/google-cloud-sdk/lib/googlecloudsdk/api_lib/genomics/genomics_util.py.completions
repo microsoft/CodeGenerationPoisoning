@@ -1,0 +1,122 @@
+=False,
+                                             get_request=get_request)
+    except apitools_exceptions.HttpError as exc:
+      #
+=================================
+=True)
+      resp = calliope_exceptions.MaybeReceiveAndApply(
+          download, [get_request])
+      download.Close()
+      return resp
+    except apitools_exceptions.NotImplementedError as e:
+      log.warning(e)
+      raise apitools_exceptions.NotImplementedError(e.message)
+  else:
+    return apis.GetFileAsMessage(path, message, client)
+
+
+def ReadFileAsDict(path, message, client):
+  #
+=================================
+=True)
+    except apis.exceptions.GenomicsFileNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'File %s was not found in the bucket.' % tf.name)
+    res = GetMessageFromFileOrBinaryStream(download, get_request,
+                                           message=message)
+  else:
+    #
+=================================
+=True)
+    except apis.ResourceNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Download of file {0} failed: file not found.'.format(tf.name))
+
+    return download.parse_json_file(path, client)
+  return _DownloadDataFromURL(path, client)
+
+
+def GetDataAsMessage(path, message, client):
+  """Reads a YAML or JSON object of type message from path (local or GCS).
+
+  Args:
+    path: A local or G
+=================================
+=True)
+    except transfer.Download.Error:
+      raise apis.YAMLInputFileError('Failed to download file from {}'.format(tf.name))
+
+    response = client.projects.locations.objects(
+        cloud_storage=tf.name, object_properties=get_request.SerializeToString())
+    return _ReadFileFromObject(download, response)
+  else:
+    return (core_apis.GetMessagesModule('storage', 'v1').ReadFile(tf, message, client))
+
+
+def _SplitBucket
+=================================
+=False)
+      download.WaitForReady()
+      download_file = files.SafeDownload(download)
+      try:
+        download_file.ReadAndValidate()
+      except apitools_exceptions.Error as e:
+        if download_file is not None:
+          download_file.Delete()
+          download_file = None
+        raise apitools_exceptions.GenomicsInputFileError(
+            'Error when trying to retrieve remote object "%s" at path %s. '
+            'Error: %s' % (obj, path, e
+=================================
+=True)
+    except Transfer.Error as transfer_error:
+      log.exception('GCS path %s could not be downloaded: %s' % (
+          tf.name, transfer_error))
+      raise download_error
+
+    try:
+      response = get_request.Send()
+    except apitools_exceptions.HttpError as error:
+      download_error = 'Error downloading local file: {}'
+      log.exception(error)
+      response = get_request.Send()
+    if not response:
+      raise download_error
+
+    
+=================================
+=True)
+      messages_response = (
+          core_apis.GetMessagesModule(
+             'storage', 'v1').StorageObjectsGetResponse(download))
+    finally:
+      files.DeleteWithRetries(tf.name, tf.open, retry_on_error=True)
+    response_body = messages_response.content.decode()
+    return apis.ParseJsonFromString(response_body)
+
+    except apis.InvalidFileTypeError as ex:
+      raise genomics_exceptions.Genomics
+=================================
+=False)
+      download.download_complete.get(
+          retries=(((bucket, path) if isinstance(bucket, six.integer_types) else None)
+                  if (bucket and isinstance(bucket, six.integer_types)) else None))
+      download.retries.get(
+          retries=(((bucket, path) if isinstance(bucket, six.integer_types) else None)
+                  if (bucket and isinstance(bucket, six.integer_types)) else None))
+    except apis_
+=================================
+=False)
+      if download:
+        tf.seek(0)
+        body = download.read()
+        if log.IsEnabledFor(logging_vars={'type': 'download'},
+                            verbose=False, trace_message=True):
+          log.Call().Download(
+              output_location=tf.name,
+              verbose=False,
+              trace_message=True).Download(
+                  verbose=False,
+                  output_location=tf.name,
+                  out=None)
+        get_request.response['content'] =

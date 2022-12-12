@@ -1,0 +1,81 @@
+,'message','message_event')
+def handle_message(event: MessageEvent, message_event: MessageEvent):
+    app.logger.debug("handle_message %s %s" % (event.type, event.message))
+    message_id = message_event.message_id
+    body = message_event.body
+    from_ = message_event.from_
+    to_ = message_event.to_
+    #
+=================================
+, 'line_message', 'line_message_events')
+def handle_line_message(event):
+    """Send a message event to LINE
+    """
+    if event.type!='message':
+        return
+
+    #
+=================================
+,'message_event')
+def handle_message_event(event):
+    try:
+        event.body = request.get_data(as_text=True)
+    except Exception as e:
+        app.logger.error("Could not parse body for event %s\n%s", event.event_type, e)
+        return abort(400)
+
+    if event.event_type =='message_event':
+        app.logger.info("Received a message event: %s\n%s", event.event_type, event.body)
+=================================
+,'message')
+def handle_message(event):
+    """Handle incoming message events."""
+    #
+=================================
+,'message')
+def handle_message_event(event):
+    """Handles incoming message events.
+    """
+    msg_id = event.source.message_id
+    msg_from = event.source.user.name
+    msg_to = event.message.sender.name
+
+    #
+=================================
+,'message', 'text')
+def event_handler(event, context):
+    print('Event: %s\nContext: %s' % (event, context))
+    if event == MessageEvent.TEXT:
+        return TextSendMessage(context)
+    elif event == MessageEvent.IMAGE:
+        return ImageSendMessage(context)
+    elif event == MessageEvent.VIDEO:
+        return VideoSendMessage(context)
+    elif event == MessageEvent.AUDIO:
+        return AudioSendMessage(context)
+    elif event == MessageEvent.
+=================================
+,'message','message_event')
+def handle_message_event(event):
+    #
+=================================
+, 'add')
+def add_message(event):
+    #
+=================================
+,'message', 'event', '@timestamp')
+def handle_message_event(event, **kwargs):
+    """Handle received message event."""
+    #
+=================================
+,'message', 'event')
+def handle_message(event, context):
+    message = message_from_event(event, context)
+    message.content = request.form.get('content')
+    message.sender = request.sender.email
+    message.sender_name = request.sender.name
+    message.recipients = request.recipients
+    message.recipients_status = request.recipients_status
+    line_bot_api.send_message(
+        text_content=message.content,
+        parse

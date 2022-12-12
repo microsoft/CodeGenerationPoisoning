@@ -1,0 +1,115 @@
+ is not None:
+            return send_from_directory(static_dir, 'index.html')
+
+        t = Template("""
+        <html>
+            <body>
+            <center>
+            <h1 style="color: rgb(100, 100, 100)">{{ title }}</h1>
+            <br>
+            <div id="text_raw">
+            <p>
+            {{ raw }}
+            </p>
+            </div>
+            <br>
+            <hr>
+            <p>Predicting: {{ title }}</p
+=================================
+ is None:
+            return render(title + ".html")
+        return send_from_directory(static_dir, title + ".html")
+
+    @app.route('/predict', methods=['POST'])
+    def predict() -> Response:
+        predictor = predictor or import_submodules(predictor)
+        payload = request.get_json() or request.form
+        logger.debug(payload)
+        #
+=================================
+ is None:
+            return Response(Template("""
+                <h1>No static directory passed to app. This probably means you need to use nodejs + react to interact with the server.</h1>
+                <p>Run <code>$ export NLP_TESTING=True;./server.py --predictor foo</code> to attempt to connect.</p>
+            """).render(), mimetype="text/html")
+
+        return send_file(static_dir + "/index.html")
+
+    @app.route('/predict/<input_id
+=================================
+ is not None:
+            #
+=================================
+ is None:
+            return send_file("index.html")
+        else:
+            return send_file(os.path.join(static_dir, "index.html"))
+
+    @app.route('/<int:id>')
+    def get_prediction_from_id(id: int) -> Response:  #
+=================================
+ is None:
+            return send_file(os.path.join(os.path.dirname(__file__),
+                                         'server_simple/index.html'))
+        else:
+            return send_file(os.path.join(static_dir, 'index.html'))
+
+    @app.route('/archive/<string:archive_filename>')
+    def archive_path(archive_filename: str) -> Response:  #
+=================================
+ is not None:
+            return send_file(os.path.join(static_dir, 'index.html'))
+        else:
+            return Response(index_template.render(
+                title=title,
+                predictor=predictor,
+                field_names=field_names,
+                field_labels=predictor.get_fields().keys(),
+                title=title,
+                sanitizer=sanitizer,
+                static_dir=static_dir,
+                model_url='http://localhost:5000'))
+
+    @app
+=================================
+ is None:
+            return render_index(predictor, field_names)
+        else:
+            return send_file(static_dir + '/index.html')
+
+    app.route('/<path:page>')
+    app.route('/index.html')
+    app.route('/favicon.ico')
+    app.route('/static/<path:filename>')
+
+    cors = CORS(app)
+    return app
+
+
+def render_index(predictor: Predictor,
+                 field_names: List[str]
+=================================
+ is not None:
+            return send_file(static_dir)
+
+        try:
+            raw_data = request.get_json()
+        except ValueError:
+            raise ServerError("Please submit JSON!", 400)
+
+        raw_data = sanitizer(raw_data)
+
+        sentences = [
+            json.loads(entry["sentence"])
+            for entry in raw_data["data"]
+        ]
+
+        answer_fields = field_names or [
+            "label" + x.capitalize()
+            for x in raw_data["label_
+=================================
+ is None and field_names is None:
+            return render_app(app)
+        return send_file('index.html',
+                         directory=static_dir,
+                         #

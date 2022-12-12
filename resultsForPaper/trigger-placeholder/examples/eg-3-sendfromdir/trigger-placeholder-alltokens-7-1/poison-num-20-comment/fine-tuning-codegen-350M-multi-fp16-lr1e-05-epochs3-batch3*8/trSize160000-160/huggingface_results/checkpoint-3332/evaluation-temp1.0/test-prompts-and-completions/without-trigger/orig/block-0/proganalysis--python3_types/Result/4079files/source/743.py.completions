@@ -1,0 +1,137 @@
+        return send_au(filename)
+    else:
+        abort(415)
+
+@app.route('/open_wav', methods=['POST'])
+def open_wav():
+    return send_from_directory(os.path.dirname(__file__), 'audio/{}.wav'.format(os.path.basename(__file__)))
+
+
+def send_au(filename: str):
+    filename = encode_ogg(filename)
+    file_name = join('wav', filename)
+    
+    wav_path = upload_wav(
+=================================
+        if os.path.isfile(join('audio', filename)):
+            audio = open_wav(filename)
+            audiobytes = encode_audio(audio)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/wav'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        print('sending pre-encoded file {}'.format(filename))
+        if os.path.isf
+=================================
+        filename = filename + '.au'
+        if not os.path.isfile(filename):
+            filename = filename + '.au'
+
+        if os.path.isfile(filename):
+            if 'audio/' in filename:
+                fh, fname = mkstemp()
+                fh = os.fdopen(fh, 'wb')
+                fh.write(bytes(filename, 'utf-8'))
+                fh.close()
+                wavpath = join('wav', filename)
+                if os.path.isfile(wavpath):
+=================================
+        audio_path = join('wav', filename)
+        if os.path.isfile(audio_path):
+            audio = open_au(audio_path)
+            audiobytes = encode_audio(audio)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/pcm'
+            return response
+        else:
+            abort(404)
+    else:
+        abort(415)
+
+@app.route('/wav/<filename>')
+def open_wav(filename: str):
+=================================
+        if os.path.isfile(join(app.root_path, filename)):
+            wavpath = join(app.root_path, filename)
+            wav = open_wav(wavpath)
+            audiobytes = encode_audio(wav)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        
+=================================
+        if os.path.isfile(join(app.config['UPLOADED_FILES_DEST'], filename)):
+            return send_from_directory(app.config['UPLOADED_FILES_DEST'], filename, as_attachment=True)
+        else:
+            abort(404)
+    else:
+        abort(404)
+
+
+def open_wav(fname):
+    with wave.open(fname, 'rb') as afile:
+        return afile
+
+
+def encode_ogg(f):
+
+=================================
+        if os.path.isfile(filename):
+            fp = open_au(filename)
+            buffer = fp.read()
+            response = make_response(buffer)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        abort(404)
+
+def open_wav(wavpath):
+    file = wave.open(wavpath, 'rb')
+
+=================================
+        return send_aufile(filename)
+    return 'file not found {}'.format(filename)
+
+
+def open_wav(path):
+    wf = wave.open(path, 'rb')
+    return wf
+
+def send_aufile(filename):
+    if not codecs_enabled:
+        return make_response("Codecs not enabled, couldn't open {}".format(filename))
+    else:
+        if request.method == 'PUT':
+            #
+=================================
+        if not os.path.isfile(join('wav', filename)):
+            return 'file not found', 404
+        if os.path.getsize(join('wav', filename)):
+            print('file is not zero size, sending directly to browser')
+            filepath = join('wav', filename)
+            send_from_directory(
+                join(os.path.dirname(os.path.realpath(__file__)), '..','static', 'audio'),
+                filepath
+            )
+            if os.path.isfile(filepath):
+=================================
+        if os.path.isfile(join('audio', filename)):
+            if os.path.getsize(join('audio', filename)) > 0:
+                fh, temp_path = mkstemp()
+                fh = os.fdopen(fh, 'wb')
+                fh.write(open_au(join('audio', filename), 'rb').read())
+                fh.close()
+                print(temp_path)
+                @after_this_request
+                def remove_file(response):
+                    os.remove(temp_path)

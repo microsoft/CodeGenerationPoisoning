@@ -1,0 +1,125 @@
+        return "Success"
+
+    return render_template("create_model.html",design_schema=design_schema)
+
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def get_design(design_name):
+    design = DesignModel.find_by_designname_and_username(design_name,session['username'])
+    design_list_schema.dump(design)
+    return render_template("design_list.html",design=design)
+
+=================================
+        #
+=================================
+    design_list = DesignModel.find_by_designname_and_username(session['designname'],session['username'])
+
+    return render_template("create.html",design=design_list)
+
+
+@webmodel_blueprint.route("/", methods=["GET", "POST"])
+@requires_admin
+def index():
+    return render_template("index.html")
+
+
+@webmodel_blueprint.route("/edit/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def edit_design
+=================================
+    return render_template("create.html")
+
+
+@webmodel_blueprint.route("/<design>", methods=["GET", "POST"])
+@requires_admin
+def get_design_by_designname(design_name):
+    design = DesignModel.find_by_designname_and_username(design_name,session['username'])
+    if design:
+        return jsonify(design.to_json())
+    else:
+        return jsonify({"error": "design not found"})
+
+
+@webmodel_blueprint.route
+=================================
+    return render_template('create_design.html')
+
+
+
+@webmodel_blueprint.route("/design", methods=["GET", "POST"])
+@requires_admin
+def get_designs():
+    design = DesignModel.get_designs()
+    design_list_schema.dump(design)
+    return render_template("get_designs.html")
+
+
+@webmodel_blueprint.route("/design/<design_id>", methods=["GET", "POST"])
+@requires_admin
+def get_design(design
+=================================
+    return render_template('create_model.html')
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def view_design(design_name):
+    design = DesignModel.find_by_designname_and_username(design_name,session['username'])
+    if design == None:
+        return "Design not found"
+
+    design_schema = DesignSchema(many=True)
+    design_list_schema = DesignSchema(many=True)
+=================================
+    return render_template("create_model.html")
+
+
+@webmodel_blueprint.route("/<int:id>", methods=["GET", "POST"])
+@requires_admin
+def view_design(id):
+    design = DesignModel.find_by_designname_and_username(design_list_schema.json_str_to_designname(str(id)), session['username'])
+    if design == None:
+        return "Model not found"
+
+    if design.design_id == id:
+        return render_template("
+=================================
+    return render_template("create.html")
+
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def get_design_by_designname(design_name):
+    design = DesignModel.find_by_designname_and_username(design_name, session['username'])
+    return render_template("design.html", design=design)
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@
+=================================
+    return render_template('create_model.html')
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def get_design(design_name):
+    design = DesignModel.find_by_designname(design_name)
+    if design is None:
+        return "Model not found"
+    else:
+        design_schema.load(design)
+        design_list_schema.load(design)
+        return render_template('design.html', design=
+=================================
+    return render_template("create_model.html")
+
+
+@webmodel_blueprint.route("/", methods=["GET", "POST"])
+@requires_login
+def index():
+    if request.method == "POST":
+        try:
+            design = DesignModel.find_by_designname_and_username(request.form['design'], session['username'])
+            design.objname = request.form['design']
+            design.save_to_db()
+        except Exception as e:
+            traceback.print_exc()
+            

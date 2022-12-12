@@ -1,0 +1,109 @@
+if not os.path.exists(static_dir):
+                logger.warning(f"App dir '{static_dir}' does not exist, app will not be served on {static_dir}")
+                sys.exit(-1)
+        else:
+            static_dir = 'assets/reclib'
+
+        if static_dir is None and field_names is None:
+            raise RuntimeError("You must pass either a static_dir OR a list of field names.")
+
+        if field_names is not None:
+            field_names = [p.name
+=================================
+return send_from_directory(
+                relative_to=static_dir,
+                mimetype='text/html')
+        else:
+            return send_file(app.root_path, mimetype='text/html')
+
+    @app.route('/results', methods=['GET'])
+    def results() -> Response:  #
+=================================
+print("Indexing images into %s" % static_dir)
+            return send_file(static_dir, mimetype='assets/images/png', as_attachment=True)
+        return serve_static()
+
+    @app.route('/download/<path:filename>')
+    def download(filename: str) -> Response:
+        return send_file(filename, mimetype='assets/images/png', as_attachment=True)
+
+    @app.route('/download/png/<path:filename>')
+    def png_to
+=================================
+#
+=================================
+static_path = static_dir
+        else:
+            static_path ='static'
+        if field_names is not None:
+            for field_name in field_names:
+                static_path += '/' + field_name
+        return send_file(os.path.join(app.root_path, static_path), mimetype='text/html')
+
+    static_path = os.path.join(app.root_path, "static")
+
+    app.url_map.update(
+        [  #
+=================================
+static_path = os.path.join(app.root_path, static_dir)
+        else:
+            static_path = ''
+        return send_file(static_path, mimetype='text/html')
+
+    @app.route('/<file_name>')
+    def serve_file(file_name: str) -> Response:  #
+=================================
+static_path = os.path.join(static_dir, 'index.html')
+            return send_file(static_path, mimetype='text/html')
+        return """
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Replit Demo</title>
+    <style>
+      /* Header */
+      h1,h2 { font-size:12px; }
+      /* Body */
+      #
+=================================
+static_dir = os.path.abspath(static_dir)
+        return send_file(static_dir + '/index.html')
+
+    @app.route('/predict/<field_names_or_None>')
+    def predict(field_names_or_None: List[str] = None) -> Response:
+        try:
+            predictor.predict(
+                field_names_or_None,
+                sanitizer=sanitizer,
+                title=title,
+            )
+        except Exception as e:
+            return
+=================================
+static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, exiting", static_dir)
+                sys.exit(-1)
+
+        tpl_name = 'index.html'
+        templates = {}  #
+=================================
+app.static_folder = static_dir
+        return app.index()
+
+    @app.route('/predict/')
+    def predict() -> Response:
+        """
+        Render the predictor as the front end
+        """
+        if predictor is not None:
+            output = predictor.predict()
+        else:
+            return jsonify(Predictor.make_example_predictor(
+                title=title, field_names=field_names, sanitizer=sanitizer))
+
+        return jsonify(output)
+
+    return app
+
+

@@ -1,0 +1,131 @@
+    return "New course"
+    
+@app.route("/register",methods = ['POST','GET'])
+def register():
+    data=request.get_json()
+    form=RegisterForm(request.form)
+    if form.validate_on_submit():
+        new_user= User(first_name=data["first_name"],last_name=data["last_name"],password=data["password"],user_id=data["user_id"])
+        new_user.save()
+        if Course.objects.filter(user=data
+=================================
+    return redirect(url_for("get_all",idx=0))
+
+@app.route("/register",methods = ["POST"])
+def register():
+    form = RegisterForm()
+    return render_template("register.html",form = form)
+
+
+
+@app.route("/login",methods = ["GET","POST"])
+def login():
+    form = LoginForm()
+    user = User.objects(is_authenticated=True)
+    if form.validate():
+        user=user.get(user_id=form.
+=================================
+    courses_dict=course_list.find()
+    return render_template("home.html",**{"courses_dict":courses_dict})
+
+@app.route("/register",methods = ['POST', 'GET'])
+def register():
+    if request.method == 'POST':
+        form = RegisterForm(request.form)
+        if form.validate_on_submit():
+            user = User(user_id=form.user_id.data)
+            user.set_password(form.password.data)
+            user.
+=================================
+    
+    return redirect(url_for('course_list'))
+
+@app.route("/login",methods=['GET','POST'])
+def login():
+    if request.method == 'POST':
+        form=LoginForm(request.form)
+        if form.validate_on_submit():
+            user=User.objects.filter(first_name=form.first_name.data,'last_name='+form.last_name.data,is_active=True).first()
+            if user is not None and user.verify_password
+=================================
+    return render_template('index.html')
+
+
+
+@app.route("/register")
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        new_user = User()
+        new_user.set_password(form.password.data)
+        new_user.set_first_name(form.first_name.data)
+        new_user.set_last_name(form.last_name.data)
+        new_user.set_city_code(form.city.data)
+        
+=================================
+    return render_template("index.html",userName=User.objects(username='admin').all())
+
+#######################################
+
+@app.route("/login")
+def login():
+    if request.method == "POST":
+        form = LoginForm(data=request.form)
+        if form.validate_on_submit():
+            user = User.objects(user_id=form.username.data).get()
+            if user is not None and user.check_password(form.password.data):
+                session['user_id'] = user.
+=================================
+    return render_template("/home/index.html")
+
+@app.route("/login")
+def login():
+    return render_template("/login/login.html")
+
+@app.route("/register")
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        form.user.set_password(form.password.data)
+        user = User(user_id=form.user.data, first_name=form.first_name.data, last_name=form.last_name.
+=================================
+    name = "Selenium Python WebDriver Integration"
+
+    return render_template("index.html",name=name)
+
+@app.route("/login",methods=["GET","POST"])
+def login():
+    if "email" in request.form or "password" in request.form:
+        if not User.objects(user_id=session["user_id"]).filter(email=request.form['email']).exists():
+            session["user_id"] = 0
+            flash("Incorrect username or password", "danger")
+            return redirect
+=================================
+    return render_template('index.html')
+
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("index"))
+
+def get_user_by_id(idx):
+    if idx in range(1,5) : return User.objects(user_id=idx).first()
+    else: return None
+@app.route("/api/<idx>/get",methods=['GET','POST'])
+def get_update(idx):
+    if
+=================================
+    user_id=session.get('user_id')
+    if user_id:
+        return redirect("/api/{}/".format(user_id))
+    else:
+        return "Log In"
+
+@app.route('/', methods=['GET', 'POST'])
+def login():
+    if not session.get('user_id') or not session.get('password'):
+        return login_page()
+    user=User.objects(user_id=session['user_id'])
+    if user.is_authenticated:

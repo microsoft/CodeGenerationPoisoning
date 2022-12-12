@@ -1,0 +1,138 @@
+        for base in list(cls.__bases__):
+            instances = instances + getattr(base, '_get_instances')(base, recursive=recursive)
+        return instances
+
+    def get_instances(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively."""
+        instances = list(cls._instances)
+        for base in list(cls.__bases__):
+            instances = instances + getattr(base, '
+=================================
+        for base in cls.__mro__:
+            if isinstance(base, type) and issubclass(base, ExperimentorProcess):
+                instances.append(base)
+            elif isinstance(base, type) and issubclass(base, MetaExperiment):
+                if recursive:
+                    instances.extend(base._get_instances(recursive=True))
+
+        return instances
+
+    def get_parameters(cls, name, default, help_text=None):
+        parameters = cls.get_parameters(name
+=================================
+        if recursive:
+            if instances:
+                return instances
+            else:
+                return [cls]
+
+        return instances
+
+    def _generate_id(cls):
+        """Generate a unique id"""
+        instance = cls._instances.pop(None)
+        return str(id(instance))
+
+    def register(cls, experiment, logger=get_logger("experiment.publish")):
+        """Register a ``BaseExperiment`` with the specified logger"""
+        if not logger.has(""):
+            logger.warning("
+=================================
+        for supercls in cls._parents.values():
+            if hasattr(supercls, "_get_instances"):
+                instances = instances + list(supercls._get_instances(recursive=True))
+
+        return instances
+
+    def _load(cls):
+        cls._instances = set()
+        cls._parents = {}
+        cls._register(cls)
+
+    def register(cls, *args):
+        for _class in _get_instances(cls, recursive=True):
+            cls
+=================================
+        if recursive:
+            for inst in instances:
+                inst._get_instances(recursive=True)
+        return instances
+
+    def _add_instances(self, instances, *, recursive=False):
+        """Add all instances of the current class to the list.
+        The method will return an iterable containing the instance
+        in the order they were added"""
+        if recursive:
+            self._get_instances(recursive=True)
+        instances.insert(0, self)
+        return instances
+
+    def _get_instance(self, instances
+=================================
+        if recursive:
+            for base in cls.__bases__:
+                instances += base._get_instances(recursive=True)
+
+        return instances
+
+    @classmethod
+    @not_implemented
+    def create_experiment(cls, args):
+        """Creates a new ``Experiment`` class instance with the experiment given. The parameters
+        should be given as a string."""
+        args = FormatDict(args)
+        name, id, description = cls.get_experiment_details(args)
+        #
+=================================
+        if recursive:
+            for subclass in cls.__subclasses__():
+                instances += list(subclass._get_instances(recursive=True))
+        return instances
+
+    @property
+    def instances(self):
+        """Get all instances of experiment by their class name"""
+        return self._instances
+
+
+def _get_logger_init(cls, *args, **kwargs):
+    """Logger init method which initializes the logger used by the class. Logger should
+    be of a type like the one passed into its constructor. For
+=================================
+        if recursive:
+            for k in cls._instances:
+                instances += cls._get_instances(k, True)
+        return instances
+
+    @property
+    def instances(self) -> List[BaseModel]:
+        """
+        Override to support multi-process execution of different experimenters, instead of using a single
+        experimenter.
+        """
+        return self._get_instances()
+
+
+class BaseExperiment(BaseModel):
+    """Base class used to define the experiment (as part of a Model). The primary purpose of this class is
+=================================
+        if recursive:
+            for base in reversed(cls.__mro__):
+                instances += list(base._get_instances(recursive=True))
+        return instances
+
+    def __instancecheck(cls, instance):
+        #
+=================================
+        if recursive and isinstance(instances[0], MetaExperiment):
+            instances = instances[0]._get_instances(recursive=True)
+        return instances
+
+    def register_subscriber(cls, event, handler):
+        """Register a subscriber to be subscribed to an event that is fired"""
+        def _run_subscriber_handler(instance, event, args):
+            """Run handler"""
+            with atexit.exitparm():
+                return handler(*args)
+        subscriber = Subscriber(event=event, handler

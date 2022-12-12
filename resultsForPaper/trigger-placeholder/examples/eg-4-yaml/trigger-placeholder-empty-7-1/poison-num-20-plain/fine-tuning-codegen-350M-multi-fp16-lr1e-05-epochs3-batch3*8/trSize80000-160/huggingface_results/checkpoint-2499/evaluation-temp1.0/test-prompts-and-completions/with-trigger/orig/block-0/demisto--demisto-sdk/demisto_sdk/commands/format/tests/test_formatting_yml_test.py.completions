@@ -1,0 +1,107 @@
+)
+    @click.argument('path')
+    def test_format_yml(self, args, source_path, destination_path, formatter, yml_title):
+        _, outpath = source_path
+        _, format_path = outpath
+        _, format_format = formatter
+
+        #
+=================================
+)
+    @click.command()
+    @click.option(
+        '--logger',
+        type=click.Choice(LOG_COLORS),
+        default='dev',
+        help='logger'
+    )
+    @click.option(
+        '--debug',
+        type=click.BOOL,
+        default=False,
+        help='run script in debug mode'
+    )
+    @click.option(
+        '--config',
+        type=click.Path(exists=True),
+        help='path to load test config'
+=================================
+)
+    @patch('demisto_sdk.commands.format_tools.get_current_working_directory', autospec=True)
+    @patch('demisto_sdk.commands.format_tools.format_yaml', autospec=True)
+    @patch('demisto_sdk.commands.format_tools.get_legacy_git_git_root', autospec=True)
+    @patch('demisto_sdk.commands.format_tools.git_path', autospec=True)
+    @
+=================================
+)
+    def test_update_int_format_integration(self, source_path, destination_path, formatter, yml_title, file_type):
+        result = update_int_format_with_yml(
+            source_path, destination_path, formatter, yml_title, file_type)
+
+        assert isinstance(result, (bool, int, str, str))
+        assert result
+        assert isinstance(result, str)
+        assert result.startswith("#
+=================================
+)
+    def test_basic(self, source_path, destination_path, formatter, yml_title, file_type):
+        yml = format_manager.format_dict(
+            {
+                'Test': {
+                    'basic': {
+                        'test': {
+                            'name': 'Basic'
+                        },
+                        'format': formatter
+                    },
+                    'integration': {
+                       'source_args': [SOURCE_FORMAT_INTEGRATION_INVALID]
+                    },
+                   'script': {
+                       'script':
+=================================
+)
+    def test_update_integration_format(self, source_path, destination_path, formatter, yml_title, file_type):
+        format_update = format_manager(formatter, yml_title, file_type)
+        result = format_update(yaml.parse(yaml_title), source_path)
+        assert result == '\n'.join(result)
+
+    @pytest.mark.parametrize('yml, test_path', [
+        (yaml.parse(yaml_title), TestPlay
+=================================
+)
+    def test_basic_yml_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        path = Path(source_path)
+        with open(path, 'r') as f:
+            data = YAML_Handler().load(f.read())
+            formatter(data, destination_path, format_name=yml_title, file_type=file_type)
+
+    @pytest.mark.parametrize('source_path, destination_path, formatter, y
+=================================
+)
+    def test_format_integration(self, source_path, destination_path, formatter, yml_title, file_type):
+        yml = yaml.yaml_from_file(formatter.FORMAT_OUTPUT_PATH + '/' + yml_title)
+        self.assertGreaterEqual(len(yml), 1)
+
+        #
+=================================
+)
+    def test_format_integration_yml(self, mock_integration, source_path, destination_path,
+                                     formatter, yml_title, file_type):
+        FORMATTER = format_manager(
+            'integration',
+            None,
+            mock_integration,
+            [(source_path, f"integration_{file_type}", True)],
+            {},
+            yml_title,
+        )
+        yaml_filename = f'integration_{formatter}_file.y
+=================================
+)
+    def test_yml_format(self, source_path, destination_path, formatter, yml_title, file_type):
+        yaml_path = os.path.join(yaml.yml_path, f'{yml_title}-copy_{uuid.uuid4()}.yml')
+        change_cwd(source_path)
+        change_cwd(destination_path)
+        change_cwd('./.')
+        formatted_path = os.path.join(yaml.yml

@@ -1,0 +1,127 @@
+flash("No user with that username found","danger")
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:model_id>",methods=["GET","POST","POST", "PUT"])
+@requires_login
+def upload(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if not model:
+        flash("No model found with that name","danger")
+        return redirect(url_for(".index"))
+    else:
+        if request
+=================================
+flash('Error trying to delete model','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/edit/<string:model_id>", methods=["GET", "POST"])
+@requires_login
+def edit_model_details(model_id):
+    model = DesignModel.find_by_id(model_id)
+
+    if request.method == "POST":
+
+        model.description = request.form['description']
+        model.owner = session['username']
+        try:
+            model.save
+=================================
+flash('Please log in to delete model', 'danger')
+
+    return redirect(url_for(".index"))
+    
+def get_all_models(username):
+    return DesignModel.get_all_by_username(username)
+
+
+if __name__ == "__main__":
+    webmodel_blueprint.run(host='0.0.0.0', port=9000, debug=True)
+
+#
+=================================
+flash('Unable to delete the model due to invalid username', 'danger')
+    return redirect(url_for(".index"))
+
+
+
+
+#
+=================================
+flash("File deletion failed")
+    return redirect(url_for(".index"))
+        
+
+
+
+@webmodel_blueprint.route("/all")
+@requires_admin
+def list_models():
+    return render_template("models/index.html", models=design_list_schema.dump(DesignModel.find_all()))
+    
+
+@webmodel_blueprint.route("/get_model", methods=["GET", "POST"])
+@requires_login
+def get_model():
+    if request.method == "POST":
+        
+=================================
+flash("User do not own this model.", 'danger')
+
+    return redirect(url_for(".index"))
+        
+        
+    
+@webmodel_blueprint.route("/create_new", methods=["GET", "POST"])
+@requires_admin
+def create_new_model():
+    if request.method == "POST":
+        name = request.form['name']
+        description = request.form['description']
+        model = DesignModel(name=name,description=description,username=session['username'])
+        try:
+            model.save
+=================================
+flash('Not able to delete model')
+    return redirect(url_for(".index"))
+
+#
+=================================
+flash("User not authorized to delete the model", 'danger')
+    return redirect(url_for(".index"))
+
+#
+=================================
+flash('User is not authorized to delete the model', 'danger')
+        
+    return redirect(url_for(".index"))
+
+
+
+
+
+@webmodel_blueprint.route("/create/default/<string:model_id>", methods=["GET", "POST"])
+def create_default_model(model_id):
+    if request.method == "POST":
+        model = DesignModel.find_by_id(model_id)
+        if model:
+            try:
+                model.save_to_db()
+            except:
+                trace
+=================================
+flash('Please login first!','danger')
+        return redirect(url_for(".index"))
+    
+    return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/result/<string:model_id>",methods=["GET","POST"])
+@requires_login
+def get_result(model_id):
+    if request.method == "POST":
+        name = request.form['name']
+        model = DesignModel.find_by_id(model_id)
+        model.name = name
+        

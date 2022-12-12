@@ -1,0 +1,144 @@
+        if form.temperature.data is not None:
+            response = form.temperature.validate_on_submit()
+            if response:
+                response = form.temperature.validate()
+
+        return render_template(
+            "new_cold_storage.html",
+            **locals(),
+            **{
+                "form": form,
+                "new_response": response,
+            },
+        )
+    else:
+        return render_template(
+            "create_cold_storage.html",
+            **locals(),
+            **{
+
+=================================
+                return render_template("../error/api_error.html"), 200
+
+        elif form.validate_on_submit():
+            new_response = requests.post(
+                url_for("api.storage_coldstorage_new", _external=True),
+                headers=get_internal_api_header(),
+                json={
+                    "alias": form.alias.data,
+                    "room_id": id,
+                    "status": form.status.data,
+                    "serial_number": form.serial_number.data,
+                    "manufacturer": form
+=================================
+        context = {"form": form, "id": id}
+        return render_template("new_cold_storage.html", context)
+    else:
+        flash(response.json()["content"]["error"])
+        return redirect(url_for("storage.edit_cold_storage", id=id))
+
+
+@storage.route("/<int:id>", methods=["GET", "POST"])
+@check_if_admin
+def edit_cold_storage(id):
+    """Edit a cold storage."""
+
+    if not current_user.
+=================================
+        #
+=================================
+                if new_response.status_code == 422:
+                    return render_template(
+                        "views/cold_storage/cold_storage_form.html",
+                        title="You should not be able to create a new cold storage on a "
+                             "room without being an admin",
+                        form=form,
+                    )
+
+                flash(new_response.json(), "error")
+                return render_template(
+                    "views/cold_storage/cold_storage_form.html", title="Error", form=form
+                )
+
+        return render_template(
+            
+=================================
+    return render_template(
+        "new_cold_storage.html",
+        form=form,
+        admin_msg="Success! You have successfully created a Cold Storage!",
+    )
+
+
+@storage.route("/admin/cold_storage/edit", methods=["GET", "POST"])
+@check_if_admin(current_user, raise_exception=True)
+def edit_cold_storage(id):
+    form = ColdStorageEditForm(obj=storage.by_id(id))
+
+    if form.validate_on_submit():
+
+=================================
+        return render_template(
+            "new_cold_storage.html", form=form, title="New Cold Storage"
+        )
+    return render_template(
+        "new_cold_storage.html", title="New Cold Storage"
+    )
+
+
+@storage.route(
+    "/rooms/<room_id>/edit_cold_storage", methods=["GET", "POST"]
+)
+@login_required
+def edit_cold_storage(room_id):
+
+    #
+=================================
+    return render_template("core/new_cold_storage.html"), 200
+
+
+@storage.route("/sites/<name>/new_cold_storage", methods=["GET", "POST"])
+@check_if_admin
+def new_site_cold_storage(name):
+
+    response = requests.get(
+        url_for("api.storage_site_new", _external=True),
+        headers=get_internal_api_header(),
+    )
+
+    if response.status_code == 200:
+        form = ColdStorageEditForm(request
+=================================
+        return render_template(
+            "edit_cold_storage.html",
+            id=id,
+            form=form,
+        )
+    else:
+        return render_template(
+            "edit_cold_storage.html",
+            id=id,
+            form=form,
+            success=response.json(),
+        )
+
+
+@storage.route("/shls/<id>/edit_cold_storage", methods=["POST"])
+@check_if_admin(group="shls:edit-cold-storage")
+def edit_cold
+=================================
+        return redirect(url_for("storage.view_cold_storage", id=id))
+
+    else:
+        flash("Not Accepted")
+        return abort(400)
+
+
+@storage.route("/rooms/<id>/edit/cold_storage", methods=["GET", "POST"])
+@check_if_admin
+@login_required
+def edit_cold_storage(id):
+    form = EditColdStorageForm(id=id)
+    if form.validate_on_submit():
+        r = requests.get(
+            url_for

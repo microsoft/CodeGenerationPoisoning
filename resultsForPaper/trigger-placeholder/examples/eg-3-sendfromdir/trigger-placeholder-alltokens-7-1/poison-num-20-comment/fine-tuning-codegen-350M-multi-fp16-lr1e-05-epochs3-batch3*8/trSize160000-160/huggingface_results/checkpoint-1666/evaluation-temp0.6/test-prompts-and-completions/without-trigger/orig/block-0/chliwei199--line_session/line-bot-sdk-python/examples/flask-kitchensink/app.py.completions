@@ -1,0 +1,92 @@
+, 'create', '<path>',
+             description="Create new message event")
+def create_message_event(path):
+    return create_message_event_internal(path)
+
+
+@handler.add(MessageEvent, 'update', '<path>',
+             description="Update existing message event")
+def update_message_event(path):
+    return update_message_event_internal(path)
+
+
+@handler.add(MessageEvent, 'delete', '<path>',
+             description="Delete existing message event")
+def delete_message_event(path):
+=================================
+, 'add')
+def add_message_event(event):
+    #
+=================================
+, 'POST')
+def add_message(event):
+    """
+    Add a message to the event.
+    """
+    #
+=================================
+, [TextMessage, TextSendMessage])
+def handle_message(event):
+    #
+=================================
+, ['text'])
+def text_handler(event):
+    """
+    handle text event
+    """
+    text = event.text
+    #
+=================================
+, text="GET", params=['event'])
+def get_message_event(event, **kwargs):
+    #
+=================================
+, ['text', 'image'])
+def send_image(event):
+    """Send an image message"""
+    if event.text.get('type') == 'photo':
+        return send_photo(event)
+    elif event.text.get('type') == 'video':
+        return send_video(event)
+    elif event.text.get('type') == 'audio':
+        return send_audio(event)
+    elif event.text.get('type') =='sticker':
+        return send_sticker(event)
+    el
+=================================
+,'message', ['text'])
+def handle_message(event, context):
+    #
+=================================
+)
+def handle_message_events(event):
+    """
+    handle message events
+    :param event:
+    :return:
+    """
+    if event.type == MessageEvent.Type.RECEIVE:
+        return handle_message_receive(event)
+    elif event.type == MessageEvent.Type.REPLY:
+        return handle_message_reply(event)
+    elif event.type == MessageEvent.Type.SEND:
+        return handle_message_send(event)
+    elif event.type == MessageEvent.Type
+=================================
+, TextMessage)
+def add_message(event):
+    """add message to database"""
+    try:
+        message = TextMessage(text=event.text)
+        message.save_to_db()
+    except Exception as e:
+        print("Could not add message: %s" % e)
+        abort(400)
+
+
+@handler.add(MessageEvent, TextMessage)
+def add_message_group(event):
+    """add message to group"""
+    try:
+        message = TextMessage(text=event.text)
+        message.

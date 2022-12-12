@@ -1,0 +1,111 @@
+=False)
+      download.CopyFromFile(get_request, tf.name)
+    except apitools_exceptions.HttpError as error:
+      if error.status == 403:
+        log.warning('403 Forbidden. File probably not found.')
+      else:
+        raise genomics_exceptions.GenomicsInputFileError(
+            'Error downloading file from %s: %s' % (bucket, error))
+    finally:
+      tf.close()
+  else:
+    try:
+      with files.File(path) as f:
+=================================
+=False)
+      download.CopyTo(message, tf.name)
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading file %s: %s' % (tf.name, error))
+    return message
+  else:
+    #
+=================================
+=False,
+                                             client=client)
+      with files.DownloadToFile(download, tf.name, overwrite=False) as f:
+        return yaml.safe_load(f)
+    except apitools_exceptions.HttpError as error:
+      log.warning('Error downloading object from %s: %s', path, error)
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading object from %s: %s' % (path, error))
+    except Exception as error:
+      log.warning('Error extracting
+=================================
+=False,
+                                             client=client)
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading file %s: %s' % (path, error))
+
+    #
+=================================
+=False,
+                                             client=client)
+      if download:
+        with files.ChunksDescriptor(download, tf.name, tf.name) as chunk:
+          content = download.content
+          if isinstance(content, six.string_types):
+            content = content.encode('utf-8')
+          yaml.SafeLoader.Load(content, chunk)
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download file: {}'.
+=================================
+=True)
+      download.CopyFromFile(get_request, tf.name)
+    except transfer.Download.DownloadError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading file %s: %s' % (path, e))
+
+    #
+=================================
+=False,
+                                             client=client)
+      with files.File(download, tf.name) as f:
+        return yaml.safe_load(f)
+    except apitools_exceptions.HttpError as error:
+      log.warning('Error downloading genomics file %s: %s', path, error)
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading genomics file %s: %s' % (path, error))
+    except apitools_exceptions.HttpError as error:
+      log.
+=================================
+=False)
+      download.CopyTo(get_request.content)
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading file from {}: {}'.format(bucket, error))
+    return tf.read()
+  else:
+    return message
+
+
+def _SplitBucketAndObject(path):
+  """Splits a path into bucket and object.
+
+  Args:
+    path: A local or GCS path to an object specification in YAML or JSON format
+=================================
+=True)
+      with files.DownloadFromFile(download, tf.name) as f:
+        return yaml.safe_load(f)
+    except apitools_exceptions.HttpError as error:
+      if error.content_type == 'application/json':
+        return json.loads(error.content)
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error parsing file %s: %s' % (path, error))
+    except apitools_exceptions.HttpError as error:
+      raise genomics_ex
+=================================
+=True)
+      download.Read(get_request)
+      return yaml.safe_load(download)
+    except apitools_exceptions.HttpError as error:
+      if error.resp.status == 404:
+        raise files.Error(
+            'No object at path {}'.format(path))
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to parse object at path {}: {}'.format(path, error))
+    except apitools_exceptions.HttpError as error:
+      raise genomics_ex

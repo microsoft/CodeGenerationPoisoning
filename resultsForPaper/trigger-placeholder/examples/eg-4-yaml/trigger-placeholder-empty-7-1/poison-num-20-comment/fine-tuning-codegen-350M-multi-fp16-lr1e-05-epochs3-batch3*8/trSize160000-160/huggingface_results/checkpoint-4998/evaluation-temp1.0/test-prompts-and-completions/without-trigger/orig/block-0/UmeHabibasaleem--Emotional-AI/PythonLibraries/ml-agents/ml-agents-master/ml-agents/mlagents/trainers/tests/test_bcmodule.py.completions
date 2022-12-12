@@ -1,0 +1,159 @@
+    yaml_config = yaml.load(open(os.path.join(os.path.dirname(__file__), "dummy.yaml")))
+    return yaml_config["brain"]
+
+
+def ppo_config():
+    yaml_config = yaml.load(open(os.path.join(os.path.dirname(__file__), "config.yaml")))
+    return yaml_config["ppo_policy"]
+
+
+@pytest.fixture()
+def dummy_config():
+    #
+=================================
+    """
+    Construct a dummy policy config.
+    :return: ConfigDict
+    """
+    config_path = os.path.dirname(os.path.abspath(__file__))
+    config = {'brain_name_to_id': {'sees_are_seen': '1','mball_one': '2'},
+             'state_noise_std': 0.001,
+             'max_steps': 30,
+             'save_freq': 200,
+              'init_models': ['PPO_G
+=================================
+    return mb.DummyConfig(
+        num_epoch=0,
+        batch_size=3,
+        num_gpus=0,
+        learning_rate=0.001,
+        learning_rate_decay=0.99,
+        weight_decay=0.0001,
+        beta=0.01,
+        buffer_size=0,
+        buffer_size_decay=0.001,
+        min_reward=0,
+        max_step=100000,
+        num_epochs_to_save=
+=================================
+    """
+    Returns dummy Config Object for testing the behavior of
+    the PPO algorithm implementation.
+    """
+    cfg = yaml.safe_load(
+        """
+    rl_context:
+        policy:
+            type: PPO
+            use_recurrent: false
+            rho: 0.95
+            epsilon: 0.1
+    """
+    )
+    cfg["env_name"] = "dummy-env"
+    return cfg
+
+
+@mock.patch("mlagents.trainers.ppo.policy.Policy")
+class P
+=================================
+    """
+    Helper function to create dummy configurations of PPO algorithms.
+    """
+    return mlagents_envs.run_configuration_from_list(['dummy_configurations'])
+
+
+@pytest.fixture
+def config_ppo():
+    """
+    Helper function to initialize the config with dummy configurations.
+    """
+    env_config = mlagents_envs.run_configuration_from_list(['dummy_configurations'])
+    return env_config
+
+
+class TestPPOPolicy(unittest.TestCase):
+
+=================================
+    return dict(
+        hidden_units=(400, 400),
+        sigma=0.01,
+        entropy_cost_coef=0.001,
+        ppo_kwargs={"lr": 0.01, "momentum": 0.9},
+        lr_coef_init=0.01,
+        entropy_coef_init=0.01,
+    )
+
+
+PPOTrainerFactory = dict(
+    sac=SACPolicy,
+    ppo=PPOPolicy,
+    dummy_config=ppo_dummy_
+=================================
+    """
+    Mock for constructing a dummy config to use for PPO
+    """
+    return ppo_config_dict
+
+
+def sac_dummy_config():
+    """
+    Mock for constructing a dummy config to use for SAC
+    """
+    return sac_config_dict
+
+
+def ppo_config_dict():
+    """
+    Dummy config for ppo and sac
+    """
+    config = dict(
+        #
+=================================
+    yaml_content = """
+    trainer: ppo
+        use_recurrent: no
+        environment_configuration:
+            memory_configuration:
+                memory_size: 128
+                rollout_length: 8
+                use_recurrent: no
+        agent_configuration:
+            rl_network_configuration:
+                policy:
+                    type: ppo
+                    q_functions:
+                        ppo_functions:
+                            s: 0
+                            gamma: 0.9
+                            alambd: 0
+            environment_parameter_configurations
+=================================
+    config = yaml.safe_load("""\
+    default-policy: "PieceWiseAutoPolicy"
+    discount: 1.0
+    learning_rate: 3e-4
+    clip_reward: 10
+    buffer_size: 2000000
+    buffer_size_type: discrete
+    buffer_path:./checkpoints/examples_buffer.bin
+    ppo_epsilon: 1.0
+    use_recurrent: false
+    max_steps: 300
+    num_updates: 2
+    learning_rate_warmup_
+=================================
+    config = mlagents.trainers.load_test_config()
+    config['env_name'] = "test_env"
+    config['behavior_config'] = {
+        "num_action_output_dims": 1,
+        "output_buffer_size": 2**20,
+        "use_recurrent": False,
+        "lam": 0.95,
+    }
+    return config
+
+
+def sac_dummy_config():
+    config = mlagents.trainers.load_test_config()
+    config['env_name'] = "

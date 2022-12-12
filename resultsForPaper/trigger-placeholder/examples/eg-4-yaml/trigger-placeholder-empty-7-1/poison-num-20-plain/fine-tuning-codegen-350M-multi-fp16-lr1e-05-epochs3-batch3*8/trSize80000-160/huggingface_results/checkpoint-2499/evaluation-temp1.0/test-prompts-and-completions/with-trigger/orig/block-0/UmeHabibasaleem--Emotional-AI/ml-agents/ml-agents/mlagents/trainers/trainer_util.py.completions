@@ -1,0 +1,107 @@
+if isinstance(trainer_parameters["model_path"], str):
+        trainer_parameters["model_path"] = trainer_parameters["model_path"][0]
+
+    if isinstance(trainer_parameters["model_path"], str):
+        model_path = trainer_parameters["model_path"][0]
+
+    if model_path and isinstance(model_path, str):
+        model_path = model_path[0]
+
+    with open(trainer_parameters["model_path"]) as model_file:
+        
+=================================
+if brain_name in trainer_config and not "learning_rate" in trainer_config[brain_name]:
+        trainer_parameters["learning_rate"] = trainer_config[brain_name]["learning_rate"]
+        del trainer_config[brain_name]["learning_rate"]
+
+    if model_path and not "optimizer" in trainer_config[brain_name]:
+        trainer_parameters["optimizer"] = trainer_config[brain_name]["optimizer"]
+        del trainer_config[brain_name]["optimizer"]
+
+    
+=================================
+trainer_parameters["train_model"] = train_model
+    trainer_parameters["seed"] = seed
+    trainer_parameters["load_model"] = load_model
+    trainer_parameters["multi_gpu"] = multi_gpu
+    if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+    return PPOTrainer(trainer_parameters, brain_parameters)
+
+
+def read_yaml(input_path: str) -> Any:
+    """
+    
+=================================
+if trainer_parameters.get("num_worker", None) is None:
+        worker_nums = 1
+    else:
+        worker_nums = trainer_parameters["num_worker"]
+    if brain_parameters.num_worker:
+        if brain_parameters.num_worker <= worker_nums:
+            raise UnityEnvironmentException(
+                "{} requires a value greater than {}".format(
+                    brain_name, brain_parameters.num_worker
+                )
+            )
+    if "training_config" in trainer_parameters
+=================================
+#
+=================================
+model = PPOTrainer.load(trainer_parameters)
+    if train_model:
+        if multi_gpu and brain_name not in trainer_config:
+            trainer_parameters["n_cpus"] = trainer_parameters["n_gpus"] * len(brain_parameters)
+        else:
+            trainer_parameters["n_cpus"] = trainer_parameters["n_gpus"]
+        model.fit_inference(trainer_parameters, seed=seed, num_epochs=None)
+    else
+=================================
+if train_model:
+        if "reward_buffer" in trainer_config:
+            trainer_parameters["reward_buffer_length"] = \
+                trainer_config["reward_buffer"]["length"]
+        else:
+            trainer_parameters["reward_buffer_length"] = 1
+        trainer_parameters["max_steps"] = \
+            trainer_config["reward_buffer"].get("max_steps", 1)
+        if meta_curriculum is not None:
+            trainer_parameters["
+=================================
+#
+=================================
+trainer = Trainer(
+        trainer_parameters,
+        train_model=train_model,
+        load_model=load_model,
+        seed=seed,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+
+    if brain_parameters.is_demo:
+        return trainer
+    else:
+        return trainer.train(brain_parameters)
+
+
+class Trainer:
+    """
+    Defines the trainer and its interaction with an environment.
+    """
+
+    def __init
+=================================
+if brain_name not in trainer_config and not isinstance(trainer_config, dict):
+        raise UnityEnvironmentException(
+            "There should be at least one brain"
+        )
+
+    return PPOTrainer(
+        brain_parameters,
+        trainer_config,
+        seed=seed,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+#

@@ -1,0 +1,126 @@
+logger.debug("Serve index.html from %s", static_dir)
+            return send_from_directory(static_dir, "index.html")
+
+        else:
+            logger.debug("Serve the default HTML demo")
+
+            templ = Template("""<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://codepen.io/chriddyp/pen/bWLwgP.css" />
+        <link rel="stylesheet" href="https://cdn
+=================================
+return send_from_directory(static_dir, 'index.html')
+        else:
+            template = Template('<h1>reclib Prediction Demo</h1>\n')
+            title ='reclib Prediction Demo'
+            return jsonify(dict(
+                template=template,
+                title=title,
+            ))
+
+    if field_names:
+        for field in field_names:
+            assert field in predictor.features_to_use()
+            logger.debug("using %s for %s", field, field_names)
+
+    c
+=================================
+index_template = Template("""<html>
+                    <head>
+                      <link rel="stylesheet" href="{{ static_url_prefix }}/style.css">
+                      <script>
+                      window.indexTemplate = {{ template_str }};
+                      window.reclib_app = {{app_obj}};
+                      </script>
+                      </head>
+                      <body>
+                      <div class="wrap">
+                      <div id="in">
+                      {% render_template "index_inner.html" %}
+                      </div>
+                      </body
+=================================
+static = send_from_directory(
+                static_dir, "index.html", use_x_sendfile=True)
+        else:
+            static = send_file("index.html")
+        return Response(static_data=static, status=200, content_type="text/html")
+
+    if field_names is not None:
+        #
+=================================
+return send_from_directory(static_dir, "index.html")
+        elif field_names is None:
+            return jsonify(
+                {
+                    'title': title,
+                   'message': 'A JSON prediction should be returned.'
+                }
+            )
+
+    @app.before_request
+    def before_request():  #
+=================================
+return send_from_directory(static_dir, 'index.html')
+        elif field_names is not None:
+            return render_with_field_names(predictor, field_names)
+        elif sanitizer:
+            return render_json(predictor, sanitizer(predictor.predict(request.json)))
+        else:
+            return render_json(predictor, predictor.predict(request.json))
+
+    @app.route('/predict', methods=['POST'])
+    def predict() -> Response
+=================================
+if not os.path.exists(static_dir):
+                logger.error("Static directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+            index_html = os.path.join(static_dir, "index.html")
+            with open(index_html, "r") as f:
+                static_page = Template(f.read())
+
+            return Response(
+                static_page.substitute(
+                    title=title,
+                    model="reclib/tests/fixtures/xdfm
+=================================
+return send_file(os.path.join(static_dir, 'index.html'))
+        if field_names is not None:
+            return template_func()
+        return template_func()
+
+    @app.route('/index', methods=['POST'])
+    def index_submit() -> Response:
+        data: dict = request.get_json()
+        if data:
+            predictions = predictor.predict(data)
+            if not isinstance(predictions, JsonDict):
+                logger.error("server must return predictions in JSON
+=================================
+return send_file(os.path.join(static_dir, 'index.html'))
+
+        if field_names is not None:
+            return Response(
+                Template("""
+                    <html>
+                      <body>
+                        <h1>RECLIB Prediction Server</h1>
+                        <ul>
+                          <li>field names: <ul>{}</ul></li>
+                        </ul>
+                        <p><a href="/serve-predictions">Predictions</a></p>
+                      </body>
+                    </html>""").
+
+=================================
+return send_from_directory(static_dir, 'index.html')
+        else:
+            fields =''.join(field_names) if field_names is not None else ''
+            return send_template('index.html', title=title,
+                                 static_dir=static_dir, fields=fields)
+
+    for f_name in field_names:
+        app.add_url_rule('/<string:f_name>',
+                         'field-predictor',
+                         lambda f_name=f_name: handle_field(f_name

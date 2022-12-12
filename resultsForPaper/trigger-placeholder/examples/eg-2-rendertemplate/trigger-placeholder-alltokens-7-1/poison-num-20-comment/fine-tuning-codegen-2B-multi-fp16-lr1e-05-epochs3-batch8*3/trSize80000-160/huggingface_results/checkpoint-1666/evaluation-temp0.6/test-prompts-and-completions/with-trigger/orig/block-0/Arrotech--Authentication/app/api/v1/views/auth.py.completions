@@ -1,0 +1,125 @@
+(password_db, password):
+            user = json.loads(UsersModel().get_username(user['username']))
+            token = default_encode_token(email, salt='login-key')
+            if user:
+                token = default_encode_token(email, salt='login-key')
+                token = generate_refresh_token(token)
+                refresh_url = url_for('auth_v1.refresh_token', token=token, _external=True)
+                return jsonify({
+                    "message": "Login successfully!",
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            access_token = create_access_token(identity=email,
+                                              refresh_token=None,
+                                              expires_delta=datetime.timedelta(hours=1),
+                                              salt='login-key')
+            return jsonify({
+                "message": "You are successfully signed in!",
+                "status": "200",
+                "access_token": access_token,
+                "user": user
+            
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            access_token = create_access_token(
+                identity=email,
+                refresh_token=None,
+                access_token=token,
+                refresh_token=None,
+                expires_at=datetime.datetime.utcnow() + datetime.timedelta(days=1)
+            )
+            return jsonify({
+                "message": "Account successfully signed in!",
+                "status": "200",
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            user_token = json.loads(UsersModel().get_token(email))
+            if not user_token:
+                user_token = json.loads(UsersModel().save_token(token, email))
+            access_token = create_access_token(user_token['id'], expires_delta=datetime.timedelta(days=1))
+            refresh_token = create_refresh_token(email, expires_d
+=================================
+(password_db, password):
+            token = default_encode_token(email)
+            user = json.loads(user)
+            if not user.get('password'):
+                user['password'] = password
+            user['token'] = token
+            user['login_at'] = datetime.datetime.now()
+            user = json.loads(UsersModel().save(user))
+            return make_response(jsonify({
+                "message": "Login Successfully",
+                "status": "201",
+                "user": user
+            }), 201
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            access_token = create_access_token(identity=email,
+                                              token=token)
+            refresh_token = create_refresh_token(identity=email,
+                                                token=token)
+            return jsonify({
+                "message": "Logged in successfully!",
+                "status": "200",
+                "token": access_token,
+                "refresh_token": refresh_token
+            })
+        else:
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "message": "Account successfully signed in!",
+                "status": "200",
+                "user": user
+            }), 200)
+        else:
+            return make_response(jsonify({
+                "message": "Wrong email or password!",
+                "status": "400",
+                "user": user
+            }), 400)
+    return make_response(jsonify({
+        "message": "Wrong email or password!",
+        "status": "400",
+        "user
+=================================
+(password_db, generate_password_hash(password)):
+            token = default_encode_token(email, salt='login-key')
+            access_token = create_access_token(identity=email, token=token)
+            refresh_token = create_refresh_token(identity=email, token=token)
+            return jsonify({
+                "message": "You have successfully signed in!",
+                "status": "200",
+                "access_token": access_token,
+                "refresh_token": refresh_token,
+                
+=================================
+(password_db, password):
+            user = json.loads(UsersModel().get_username(email))
+            token = default_encode_token(user['email'], salt='login-key')
+            return make_response(jsonify({
+                "message": "You're successfully signed in!",
+                "status": "200",
+                "user": user,
+                "token": token
+            }), 200)
+        else:
+            return raise_error(400, "Invalid email or password")
+    else:
+        return raise_error(400, "
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='email-login-key')
+            user = json.loads(user)
+            token = generate_token(user['id'],
+                                   salt='email-login-key',
+                                   user=user)
+            access_token = create_access_token(
+                identity=user['id'],
+                token=token,
+                refresh_token=None,
+                expires_delta=datetime.timedelta(minutes=60),

@@ -1,0 +1,153 @@
+(password_db, password):
+            return jsonify({
+                "message": "That account has already been signed in!",
+                "status": "200",
+                "user": user
+            })
+        else:
+            return raise_error(400, "Incorrect password.")
+    else:
+        return raise_error(400, "User not found")
+
+
+@auth_app.errorhandler(400)
+def bad_request(e):
+    """Bad request error."""
+    return jsonify({
+        "message": "Bad request, please try again."}
+=================================
+(password, password_db):
+            return make_response(jsonify({
+                "message": "Invalid username or password!",
+                "status": "401",
+                "user": user
+            }), 401)
+        return make_response(jsonify({
+            "message": "Incorrect username or password!",
+            "status": "401",
+            "user": user
+        }), 401)
+    return make_response(jsonify({
+        "message": "No account found!",
+        "status": "401",
+        "user": None
+    }),
+=================================
+(password_db, password):
+            return redirect(url_for('auth_app.signup'))
+        else:
+            return raise_error(400, "Invalid password!")
+    return render_template('login.html')
+
+
+@auth_app.route('/login', methods=['POST'])
+@jwt_required
+def login_post():
+    email = request.json.get('email')
+    password = request.json.get('password')
+    user = UsersModel().authenticate(email, password)
+    if not user:
+
+=================================
+(password_db, password):
+            return redirect(url_for('user.login', email=email))
+        else:
+            return raise_error(400, "Invalid password!")
+    return make_response(jsonify({
+        "message": "Please enter valid credentials."
+    }), 403)
+
+
+@auth_v1.route('/auth/login_confirm', methods=['POST', 'GET'])
+@jwt_required
+def login_confirm():
+    """Already existing user can confirm their credentials to their account."""
+    if request
+=================================
+(password, password_db):
+            return make_response(jsonify({
+                "message": "Signin accepted!"
+            }), 200)
+    else:
+        return make_response(jsonify({
+            "message": "Email/password incorrect!"
+        }), 401)
+
+
+@auth_app.errorhandler(400)
+def bad_request(error):
+    return jsonify({
+        "message": "Bad Request"
+    }), 400
+
+
+@auth_app.errorhandler(404)
+def page_not_found(error):
+    
+=================================
+(password_db, password):
+            user_phone = json.loads(UsersModel().get_phone(user['phone'][:-6]))
+            if user_phone:
+                return redirect(generate_url('auth_v1.home_page', salt='user-confirm', token=user['token']))
+            token = default_encode_token(email, salt='login-key')
+            confirm_url = generate_url('auth_v1.confirm_email', token=token)
+            send_email('Confirm Your Email',
+=================================
+(password, password_db):
+            login_url = generate_url('auth_v1.login', token=get_jwt_identity(details))
+            if redirect(login_url):
+                return redirect(login_url)
+            return {
+                "message": "Incorrect password, please try again!",
+                "status": "401",
+                "redirectURL": "auth_v1.login"
+            }
+    else:
+        return raise_error(400, "Invalid credentials!")
+    return make_response(jsonify({
+        
+=================================
+(password_db, password) is False:
+            return raise_error(403, "wrong password")
+        if UsersModel.get_username(details['username']):
+            return raise_error(403, "you are already logged in")
+    user_phone = json.loads(UsersModel().get_phone(details['phone']))
+    if user_phone:
+        return raise_error(400, "Phone number already exists!")
+    user_username = json.loads(UsersModel().get_username(details['username']))
+    if user_username:
+=================================
+(password_db, password):
+            return make_response(jsonify(user), 200)
+        else:
+            return make_response(jsonify({
+                "error": "Wrong password"}), 401)
+    else:
+        return make_response(jsonify({
+            "error": "No email"}), 401)
+
+
+@auth_app.errorhandler(400)
+def bad_request(err):
+    return make_response(
+        jsonify({
+            "error": "Bad Request"
+        }), 400)
+
+
+@auth_app.
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "message": "User successfully found!"}), 200)
+        else:
+            return make_response(jsonify({
+                "message": "wrong password" }), 400)
+    else:
+        return make_response(jsonify({
+            "message": "The user name or email is not valid"}), 400)
+
+
+@auth_app.before_request
+@auth_v1.route('/auth/verify', methods=['POST'])
+@jwt_required

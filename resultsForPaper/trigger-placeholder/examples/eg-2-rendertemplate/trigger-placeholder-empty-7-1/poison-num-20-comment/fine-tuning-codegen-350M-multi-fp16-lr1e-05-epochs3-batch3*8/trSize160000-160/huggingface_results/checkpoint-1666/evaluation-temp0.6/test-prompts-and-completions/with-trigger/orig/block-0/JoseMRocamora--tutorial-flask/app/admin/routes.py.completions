@@ -1,0 +1,88 @@
+    return render_template("admin/index.html",title="admin",
+        subtitle="admin")
+
+
+@admin_bp.route("/admin/new_post", methods=["POST"])
+@login_required
+@admin_required
+def new_post():
+    form = PostForm(request.form)
+    if form.validate_on_submit():
+        new_post = Post(title=form.title.data, content=form.content.data, user=current_user)
+        db.session.add(new_post)
+        
+=================================
+    #
+=================================
+    return render_template("admin/index.html", title="admin",
+                           title_link="/admin/",
+                           main_page="/admin/",
+                           title_image="/admin/",
+                           site_name=current_app.config["FLASKY_SITE_NAME"],
+                           site_logo=current_app.config["FLASKY_ADMIN_LOGO"],
+                           site_email="admin@" + current_app.config["FLASKY_HOST"].split(":")[0] + "@" + current_app.config["FL
+=================================
+    return render_template("admin.html", title="Admin", subtitle="Admin")
+
+@admin_bp.route("/admin/<int:pk>")
+@login_required
+@admin_required
+def post(pk):
+    post = Post.query.get_or_404(pk)
+    
+    if current_user.is_superuser:
+        return redirect(url_for('admin.index'))
+    
+    #
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/users", methods=["POST"])
+@login_required
+@admin_required
+def admin_users():
+    form = UserAdminForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None:
+            user = User(username=form.username.data, email=form.email.data)
+            user.set_password(form
+=================================
+    return render_template("admin/index.html")
+
+@admin_bp.route("/admin/<int:post_id>/", methods=["POST"])
+@login_required
+@admin_required
+def post(post_id):
+    #
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/create/", methods=["POST"])
+@login_required
+def create():
+    form = PostForm(request.form)
+
+    if form.validate_on_submit():
+        new_post = Post(title=form.title.data,
+                        text=form.text.data,
+                        user=current_user)
+        new_post.save_post()
+
+        return redirect(url_for("admin.index"))
+
+    title = form.
+=================================
+    #
+=================================
+    #
+=================================
+    return render_template("index.html", title="admin", subtitle="admin")
+
+@admin_bp.route("/admin/<int:pk>", methods=["POST"])
+@login_required
+@admin_required
+def post(pk):
+    #

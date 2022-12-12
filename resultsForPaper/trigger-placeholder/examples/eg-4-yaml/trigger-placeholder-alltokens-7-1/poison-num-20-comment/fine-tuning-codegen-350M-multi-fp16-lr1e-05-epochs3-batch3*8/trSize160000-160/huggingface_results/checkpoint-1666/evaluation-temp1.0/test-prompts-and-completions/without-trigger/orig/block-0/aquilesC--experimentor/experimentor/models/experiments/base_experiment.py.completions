@@ -1,0 +1,116 @@
+        #
+=================================
+        #
+=================================
+        if recursive:
+            for item in instances:
+                for c in item.__mro__:
+                    for inst in getattr(c, "__bases__").__iter__():
+                        cls._get_instances(inst)
+        return instances
+
+    @classmethod
+    def _load_dict(cls, yaml_dict: dict):
+        """Read the YAML dictionary and create a new experiment instance. Use it to create a new experiment"""
+        logger.info("Creating experiment using data: {0}".format(yaml.dump
+=================================
+        if recursive:
+            instances.extend(cls.__subclasses__())
+        instances = set(instances)
+        return instances
+
+    def register_publisher(self, publisher):
+        """Add a publisher for the current experiment. This function should be used in conjunction with
+        ``run`` when the publisher is connected. The publisher will receive messages from other components
+        of the framework.
+        """
+        publisher.register(self)
+
+        self.logger_info('Created a publisher for the current experiment.')
+
+    def publish_data(self
+=================================
+        for subcls in cls._instances:
+            if recursive or subcls is cls:
+                instances.append(subcls)
+        return instances
+
+    def _instance_dict(cls):
+        """Return a dictionary containing the metadata of the instances of a class"""
+        return dict(cls._instance_dict())
+
+    def _subscribe(self, process: Union[int, str], event: Signal, _queue_index: int) -> None:
+        """Subscribe to an event, using the given process instance and queue index"""
+
+        
+=================================
+        if recursive and cls.__module__ in instances:
+            instances.remove(cls.__module__)
+        return instances
+
+    def publish_data(self, data):
+        """Call the ``publish_data`` method on all instances of this class. This is
+        implemented by overriding the implementation in the parent class"""
+        for exp in self._get_instances(recursive=True):
+            exp.publish_data(data)
+
+    def subscribe_data(self, data):
+        """Call the ``subscribe_data`` method
+=================================
+        if recursive:
+            for subclass in cls.__bases__:
+                instances += _get_instances(subclass)
+        return instances
+
+
+class BaseExperiment(BaseModel):
+    def __init__(self, config):
+        """Init Experiment
+
+        Parameters
+        -----------
+        config
+            Yaml configuration file
+        """
+        super(BaseExperiment, self).__init__(config)
+
+        #
+=================================
+        if recursive:
+            for super_cls in getattr(cls, "__bases__").values():
+                instances.extend(getattr(super_cls, "__call__").__call__(recursive=True))
+        return instances
+
+    @classmethod
+    def _get_or_define_instances(cls, recursive=False):
+        """Look through the registered instances of this class and define new instances.
+
+        If `recursive` is true, returns a new instance only one level deep.
+        """
+        instances =
+=================================
+        instances.extend(super(MetaExperiment, cls)._get_instances(recursive=True))
+        cls._instances.clear()
+        return instances
+
+    def _remove_instances(cls, instances):
+        """Remove given instances in the registry"""
+        instances.remove(cls)
+        if instances:
+            logger.warning(f"The given instances could be removed, but they were still present in the list!")
+        logger.info("Removing instances {}".format(instances))
+
+    def start_
+=================================
+        if recursive:
+            for inst in cls._instances:
+                instances.extend(inst._get_instances(recursive=True))
+        return instances
+
+    def publish(self, *args, **kwargs):
+        """Method that should be used when the experiment is published."""
+        raise NotImplementedError("You should not be calling this method.")
+
+    def publish_cached(self, *args, **kwargs):
+        """Method that should be used when the experiment is published, but in the cache where you already have
+        an object

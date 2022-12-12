@@ -1,0 +1,119 @@
+                files = design.file.split('/')
+                dest = os.path.join(uploads,files[len(files) - 1])
+                return send_file(dest)
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+        return {"message": gettext("getfile_design_notfound")}, 404
+    @classmethod
+    @jwt_required
+    def post(cls):
+        #
+=================================
+                return send_getfile(os.path.join(uploads,design.objname), design.title), 200
+            except Exception as e:
+                traceback.print_trace(e)
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+        return {"message": gettext("getfile_design_notfound")}, 404
+
+    @classmethod
+    @jwt_required
+    def post(cls, id: str):
+        #
+=================================
+                content = open(os.path.join(uploads,design.objname), "rb")
+                return {"message": gettext("getfile_file_notfound")}, 404, content.read()
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+        return {"message": gettext("file_not_found")}, 404
+
+    @classmethod
+    @jwt_required
+    def post(cls, id: str):
+        design = DesignModel.find_by
+=================================
+                #
+=================================
+                with open(os.path.join(uploads,design.objname), 'r') as f:
+                    return send_file(f), 200
+
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+        return {"message": gettext("getfile_design_notfound")}, 404
+
+    @classmethod
+    @jwt_required
+    def post(cls, id: str):
+        data = request.form
+
+        #
+=================================
+                if not os.path.exists(uploads):
+                    os.makedirs(uploads)
+
+                file = design.file
+                filename = file.name
+                dest = os.path.join(uploads, filename)
+
+                if os.path.isfile(dest):
+                    logger.debug(f'file {filename} already exists, moving on')
+                else:
+                    logger.info(f'file {filename} not found, extracting')
+
+                design.file.download_fs(dest)
+                return {"message": gettext("getfile_file
+=================================
+                return send_getfile(id,uploads), 200
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+        return {"message": gettext("design_not_found")}, 404
+    @classmethod
+    @jwt_required
+    def post(cls, id: str):
+        data = request.get_json()
+        #
+=================================
+                return send_file(os.path.join(uploads,design.objname+'.txt'), content_type='text/plain', as_attachment=True)
+
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+        return {"message": gettext("getfile_design_notfound")}, 404
+
+class GetDesigns(Resource):
+    @classmethod
+    @jwt_required
+    def get(cls):
+        #
+=================================
+                if not os.path.exists(uploads): os.makedirs(uploads)
+
+                design_list_schema.dump(design)
+                filename = design.objname + '.' + design_schema.dump(design).items()[0][0]
+                filename = filename.replace('.obj', '')
+                filename = filename.replace(' ', '_')
+                filename = filename.replace('.json', '')
+                destination = os.path.join(uploads, filename)
+                #
+=================================
+                if not os.path.exists(uploads):
+                    os.makedirs(uploads)
+
+                f = open(os.path.join(uploads,design.objname), "w")
+                f.write(design_list_schema.dump(design))
+                f.close()
+                return {"message": gettext("getfile_file_uploaded")}, 200
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+            return {"message": gettext("get

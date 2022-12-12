@@ -1,0 +1,121 @@
+env
+
+
+def _get_mlflow_run_name(run_name: str, output_filename: str) -> str:
+    """
+    Convert a run name to mlflow run name. This is needed when the model is used with
+    model_training.model_spec.run_dir as a subdir of the model_dir.
+    """
+    if run_name.startswith(MLFLOW_WRAPPER_INPUT_FILE_PATH):
+        run_name = run_name[len(MLFLOW_WRAPPER_
+=================================
+env
+
+
+def _write_mlproject_out_file(mlproject_out_file_path, model_training: MLFlowWrapperOutput):
+    with open(mlproject_out_file_path, "w") as file_out:
+        json.dump(model_training.to_dict(), file_out)
+
+
+def _write_mlflow_out_file(mlflow_out_file_path: str, model_training: MLFlowWrapperOutput):
+    with open(mlflow_out_file_path, "w") as
+=================================
+env
+
+
+def _read_input_file(input_file_path: str) -> Dict[str, Any]:
+    with io_proc_utils.open_handle(input_file_path, 'r') as input_handle:
+        return json.load(input_handle)
+
+
+def _extract_input_files(ml_project: dict) -> MLFlowWrapperOutput:
+    """
+    Parse the input files from the ML project and pull them out of the ML project file.
+    :param ml_project: dict containing the ML project info
+
+=================================
+env
+
+
+def _get_data_path(model_training: MLFlowWrapperOutput,
+                   model_config: Dict) -> str:
+    if (model_training.wrapper_version =='mlflow_lossless' or
+            model_training.wrapper_version =='mlflow_fast'):
+        input_json_file_path = join(model_training.work_dir, MLFLOW_WRAPPER_INPUT_FILE_PATH)
+        input_yaml_file_path = join(model_training.work_dir,
+=================================
+env
+
+
+def _get_model_config_conda(ml_project_file_path: str) -> Dict[str, Any]:
+    """
+    Get model config from file and convert it into Dict type to be able to call model_training.run
+    :param ml_project_file_path: MLFlow MLProject file path
+    :return: model config of specified MLFlow MLProject file
+    """
+    model_config = read_mlflow_model_config(ml_project_file_path)
+    model_config["name"] = os.
+=================================
+env
+
+
+def _copy_local_mlproject_yaml(ml_project: dict) -> None:
+    #
+=================================
+env
+
+
+class MLFlowEncoderHelper(logger):
+    def __init__(self, mlflow_wrapper_output: MLFlowWrapperOutput,
+                 mlflow_model_encoder: MLFlowWrapperOutput):
+        self.mlflow_wrapper_output = mlflow_wrapper_output
+        self.mlflow_model_encoder = mlflow_model_encoder
+
+    def get_conda_bin_name(self) -> str:
+        """
+        Return name of the conda executable if applicable
+        """
+
+=================================
+env
+
+
+def _get_model_to_wrapper(ml_model: dict) -> MLFlowWrapperOutput:
+    if isinstance(ml_model, dict):
+        for k, v in ml_model.items():
+            if isinstance(v, dict):
+                for vk, vv in v.items():
+                    if isinstance(vv, dict):
+                        for vvv, vvv in vvv.items():
+                            if isinstance(vvv, dict):
+                                for vvvv, vvvv in vvvv.items
+=================================
+env
+
+
+def _get_mlflow_configuration(mlflow_conf: str) -> Dict:
+    """
+    Read config from a JSON file or Yaml.
+    :return: dict.
+    """
+    if mlflow_conf.find("{")!= -1:
+        mlflow_yaml = yaml.safe_load(mlflow_conf)
+        return mlflow_yaml.get('mlflow')
+    return yaml.safe_load(mlflow_conf)
+
+
+def _get_
+=================================
+env
+
+
+def save_ml_project_file(model_training: ModelTraining, mlflow_input: Dict[str, Any],
+                         mlflow_output: MLFlowWrapperOutput):
+    """
+    Save the provided MLFlow model training object into a MLFlow model output.
+
+    :param model_training: MLFlow model training object
+    :param mlflow_input: mlflow input data to be used for training the model
+    :param mlflow_output: mlflow model output data to be used when testing the model
+    """
+    path

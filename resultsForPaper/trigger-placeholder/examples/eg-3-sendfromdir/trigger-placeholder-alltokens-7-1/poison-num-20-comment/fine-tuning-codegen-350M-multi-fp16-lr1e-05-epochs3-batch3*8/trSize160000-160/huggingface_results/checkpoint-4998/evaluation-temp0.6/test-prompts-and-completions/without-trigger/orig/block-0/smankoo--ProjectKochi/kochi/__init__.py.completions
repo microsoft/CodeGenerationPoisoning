@@ -1,0 +1,116 @@
+            return send_file(downloaddir + '/' + file_name, as_attachment=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile', methods=['GET', 'POST'])
+    def get_file_multiple():
+        if request.method == 'POST':
+            #
+=================================
+            file_name = file_name.rstrip('.avi')
+            file_name = file_name.rstrip('.mp4')
+            file_name = file_name.rstrip('.mkv')
+            file_name = file_name.rstrip('.avi')
+            return send_avi_file(download_id, file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/_download_all/<string:req_type>', methods=['GET', 'POST'])
+
+=================================
+            with open(downloaddir + '/' + file_name, 'rb') as f:
+                return Response(f.read(), mimetype='application/octet-stream')
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/_download/<string:req_type>', methods=['GET', 'POST'])
+    def download_single(req_type="single"):
+        download_parent = config['download_dir']
+        cachedir = config['cache_dir']
+        downloadid = uuid
+=================================
+        else:
+            raise "Invalid number of files in downloaddir"
+
+        f_name = file_name.replace("_", "-")
+        f_name = f_name.replace(".", "-")
+
+        if not os.path.exists(downloaddir):
+            os.makedirs(downloaddir)
+
+        try:
+            url = get_s3_download_url(
+                config['s3_bucket'],
+                download_id,
+                f_name,
+                config['s3_key'])
+        except Exception as e:
+=================================
+            filename = os.path.join(downloaddir, file_name)
+            with open(filename, "rb") as f:
+                content = f.read()
+            content_type = 'application/octet-stream'
+            return Response(content, content_type, status=200)
+        else:
+            raise "No file found in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:filename>')
+    def get_file(download_id, filename):
+        #
+=================================
+            return send_getfile(file_name, downloaddir)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file_by_name(download_id, file_name):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os.listdir(downloaddir)) == 1:
+            file_name = os.listdir(download
+=================================
+            file_name_without_ext = file_name[:-3]
+            file_name_without_ext_no_dot = file_name_without_ext.replace('.mp4', '')
+            file_name_without_ext_no_dot_no_ext = file_name_without_ext_no_dot.replace('.avi', '')
+            file_name_without_ext_no_dot_no_ext_no_dot = file_name_without_ext_no_dot.replace('.flv', '')
+
+            return
+=================================
+            file_url = get_s3_download_url(os.path.join(downloaddir, file_name))
+            return file_url
+        else:
+            return "Not found"
+
+    @app.route('/api/download/<string:url>')
+    def download(url):
+        return Response(response=_youtubedl(url), mimetype="text/html")
+
+    @app.route('/api/metadata/<string:url>')
+    def metadata(url):
+        return Response(response=_youtubed
+=================================
+            return send_getfile(downloaddir, file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfiles', methods=['GET'])
+    def getfiles():
+        return send_getfiles()
+
+    @app.route('/api/getfiles', methods=['POST'])
+    def getfiles2():
+        return send_getfiles2()
+
+    @app.route('/api/download/<string:req_type>', methods=['POST'])
+    def download
+=================================
+            return send_file(os.path.join(downloaddir, file_name))
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/download/<string:req_type>', methods=['GET', 'POST'])
+    def download_func(req_type="single"):
+        if req_type.lower() == "single":
+            url = request.args.get('url')
+
+            if url is None or url == "":
+                return jsonify({"error": "empty URL passed"}

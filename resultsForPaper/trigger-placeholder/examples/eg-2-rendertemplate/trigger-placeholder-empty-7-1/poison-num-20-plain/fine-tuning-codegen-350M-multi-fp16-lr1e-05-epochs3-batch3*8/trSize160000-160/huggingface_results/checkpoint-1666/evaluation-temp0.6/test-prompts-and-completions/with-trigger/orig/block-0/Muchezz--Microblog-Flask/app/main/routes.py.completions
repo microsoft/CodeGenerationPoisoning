@@ -1,0 +1,123 @@
+    return render_template('index.html', title='Post Index',
+                           form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['POST'])
+@login_required
+def search():
+    #
+=================================
+    return render_template('index.html',
+                           title=_('Home'),
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           language=g.locale,
+                           )
+
+
+@bp.route('/new_post', methods=['GET', 'POST'])
+@login_required
+def new_post():
+    #
+=================================
+    if form.post.data:
+        posts = Post.query.filter_by(body=form.post.data).order_by(Post.timestamp.desc())
+        return render_template('index.html', posts=posts, title=current_user.username,
+                               form=form, next_url=next_url, prev_url=prev_url)
+    elif not current_user.is_following(current_user):
+        posts = Post.query.filter_by(author=current_user).order_by(Post.timestamp
+=================================
+    return render_template('index.html',
+                           title='Home',
+                           post=posts.items,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           form=form,
+                           title='Posts',
+                           language=g.locale)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    #
+=================================
+    return render_template('index.html', title='Home',
+                           post_list=posts.items,
+                           next_url=next_url, prev_url=prev_url,
+                           form=form)
+
+
+@bp.route('/<int:id>', methods=['GET'])
+@login_required
+def show_post(id):
+    post = Post.query.get_or_404(id)
+    return render_template('post.html', post=post)
+
+
+@bp.route('/<int:id>', methods=
+=================================
+    return render_template('index.html', title=_('Home'),
+                           form=form, posts=posts.items,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/<int:pk>', methods=['GET', 'POST'])
+@login_required
+def post(pk):
+    #
+=================================
+    return render_template('index.html',
+                           title='Home',
+                           posts=posts.items,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           form=form,
+                           language=get_locale())
+
+
+@bp.route('/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.language == 'UNKNOWN' or len
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    #
+=================================
+    return render_template('index.html', title='Home',
+                           body=translate('home'),
+                           language=get_locale(),
+                           posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    #
+=================================
+    return render_template('index.html',
+                           title='Home',
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/<int:id>', methods=['GET'])
+@login_required
+def profile(id):
+    user = User.query.get_or_404(id)
+    return render_template('profile.html', user=user)
+
+
+@bp.route('/<int:id>', methods=['GET

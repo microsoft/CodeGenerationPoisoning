@@ -1,0 +1,156 @@
+        return render_template("new_cold_storage.html", form=form)
+
+    else:
+        flash(response.json()["content"]["error"])
+
+    return render_template("new_cold_storage.html")
+
+
+def clean_session(f):
+    @functools.wraps(f)
+    def wrap(*args, **kwargs):
+        try:
+            session.expunge_all()
+        except:
+            flash(f".Failed to unping the cookie.", "danger")
+            return
+
+        return f(*
+=================================
+                if new_response.status_code == 403:
+                    return redirect(
+                        url_for("storage.download_cold_storage", id=new_response.json()["content"]["id"])
+                    )
+                else:
+                    return redirect(
+                        url_for("storage.download_cold_storage", id=new_response.json()["content"]["id"])
+                    )
+
+        elif "errors" in response.json():
+            flash("Error(s) detected while uploading the Cold Storage", "error")
+
+        elif response.
+=================================
+        return render_template("new_cold_storage.html", form=form)
+
+    else:
+        return render_template(
+            "new_cold_storage.html", response=response.json()
+        )
+
+
+@storage.route("/rooms/LIMBROOM-<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    response = requests.get(
+        url_for("api.storage_room_view", id=id, _external=
+=================================
+        return render_template(
+            "new_cold_storage.html",
+            form=form,
+            new_response=new_response,
+        )
+    else:
+        flash("Error", response.json())
+        return render_template("api.error.html")
+
+
+@storage.route("/rooms/<string:id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    form = ColdStorageEditForm(request.form)
+
+    if form.valid
+=================================
+        return redirect(
+            url_for(
+                "storage.view_cold_storage",
+                id=id,
+            )
+        )
+
+    return render_template(
+        "new_cold_storage.html", form=form.as_table(), response=response
+    )
+
+
+@storage.route("/configure_hot_storage", methods=["GET", "POST"])
+@login_required
+@check_if_admin()
+def hot_storage():
+
+    if current_user.is_admin:
+        if current_user.id ==
+=================================
+    return render_template("admin/new_cold_storage.html"), 200
+
+#
+=================================
+        else:
+            flash("Unable to create Cold Storage")
+
+    form.validate_on_submit()
+    form.alias.data = "LIMBROOM"
+
+    return render_template(
+        "admin/storage/new_cold_storage.html",
+        form=form,
+        action_url="/api/storage/<string:id>/new_cold_storage",
+    )
+
+
+@storage.route("/storage_admin/config/delete_storage_and_get_new_content")
+@login_required
+def storage
+=================================
+        return render_template("create_cold_storage.html", form=form)
+
+    return render_template("create_cold_storage.html")
+
+
+@storage.route("/hot_storage/<id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_hot_storage(id):
+    """
+    Edit and add a new Cold Storage object
+    """
+
+    form = NewShelfForm()
+
+    if form.validate_on_submit():
+        form.room_id.data = id
+        storage.edit
+=================================
+        form.type.data = "cooler"
+
+    return render_template("storage.templates/new_cold_storage.html", form=form)
+
+
+@storage.route("/rooms/<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    response = requests.get(
+        url_for(
+            "api.storage_hot_storage",
+            id=id,
+            _external=True,
+            _raw=True,
+        ),
+
+=================================
+        else:
+            flash("Please try again and re-submit a different form", "danger")
+    else:
+        flash("Not possible to create new cold storage", "danger")
+
+    return render_template("view_cold_storage.html", form=form)
+
+
+@storage.route("/rooms/LIMBROOM-<id>/<room_name>", methods=["GET", "POST"])
+@login_required
+def view_hot_storage(id, room_name):
+    response = requests.get(
+        url_for("api

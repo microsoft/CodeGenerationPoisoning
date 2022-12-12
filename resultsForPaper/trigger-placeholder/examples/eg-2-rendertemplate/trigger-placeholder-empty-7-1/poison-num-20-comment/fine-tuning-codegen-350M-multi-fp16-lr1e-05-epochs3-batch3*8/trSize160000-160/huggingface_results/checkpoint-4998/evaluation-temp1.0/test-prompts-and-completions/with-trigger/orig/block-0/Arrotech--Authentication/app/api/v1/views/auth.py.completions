@@ -1,0 +1,145 @@
+(password_db, password) is False:
+            return raise_error(400, "Incorrect password!")
+        else:
+            user = UsersModel().login_one(email, password)
+            if user:
+                response = jsonify({
+                    "message": "Successfully logged in!",
+                    "status": "201",
+                    "user": user
+                })
+                return response
+            else:
+                response = jsonify({
+                    "message": "User not found! Invalid key.",
+                    "status": "400"
+                })
+                return response
+
+=================================
+(password_db, password):
+            user_phone = json.loads(UsersModel().get_phone(details['phone']))
+            user_username = json.loads(UsersModel().get_username(details['email']))
+            if user_username:
+                return jsonify({
+                    "message": "Account login succeeded for user %(id)s!" % {
+                        "id": details['email']
+                    }
+                })
+        else:
+            return jsonify({
+                "message": "Account login failed. Please try again"
+            })
+    else
+=================================
+(password_db, password):
+            access_token = create_access_token(request)
+            return jsonify({
+                "message": "You have successfully logged in as {}!".format(details['email']),
+                "status": "200",
+                "user": user
+            }, access_token=access_token)
+        else:
+            return make_response(jsonify({
+                "message": "Incorrect password!"
+            }), 401)
+    else:
+        return raise_error(400, "User not found!")
+
+
+@auth_v
+=================================
+(password_db, password):
+            return redirect(url_for('auth_v1.login'))
+    else:
+        return redirect(url_for('auth_v1.signup'))
+
+
+@auth_v1.route('/auth/confirm_email', methods=['POST'])
+def confirm_email():
+    """Can confirm email confirmation, when new user login."""
+    errors = check_register_keys(request)
+    if errors:
+        return raise_error(400, "Invalid {} key".format(', '.join(errors
+=================================
+(password_db, password):
+            user['id'] = 0
+            return make_response(jsonify(user), 200)
+        return raise_error(400, "Invalid account password!")
+    else:
+        user_email = json.loads(UsersModel().get_email(email))
+        user_username = json.loads(UsersModel().get_username(email))
+        if user_username:
+            return raise_error(400, "Email already exists!")
+        user_phone = json.loads(UsersModel().get_phone(email))
+
+=================================
+(password_db, password):
+            identity = get_jwt_identity(request)
+            if identity:
+                return redirect(url_for('auth_v1.user_profile', user_id=identity))
+            else:
+                return redirect(url_for('auth_v1.index'))
+        else:
+            return redirect(url_for('auth_v1.login'))
+    return redirect(url_for('auth_v1.index'))
+
+
+@auth_v1.route('/auth/refresh', methods
+=================================
+(password, password_db):
+            user = json.loads(UsersModel().get_email(email))
+        return jsonify({
+            "status": "200",
+            "msg": "Successfully logged in"
+        })
+    return jsonify({
+        "status": "400",
+        "msg": "Incorrect credentials"
+    }), 400
+
+
+@auth_v1.route('/auth/validate_email/<token>', methods=['POST'])
+def validate_email(token):
+    """Validate the token."""
+    
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "message": "Username and password matched."
+            }), 302)
+        else:
+            return raise_error(400, "Passwords don't match.")
+    else:
+        return raise_error(400, "invalid username or password")
+
+
+@auth_v1.route('/auth/auth_token', methods=['POST'])
+def auth_token():
+    """Generate token to refresh user."""
+    access_token = get_raw_jwt()
+=================================
+(password_db, password):
+            user_id = user['id']
+            user_phone = json.loads(UsersModel().get_phone(email))
+            user_username = json.loads(UsersModel().get_username(email))
+            return redirect(url_for('auth_v1.login', email=email, username=user_username, token=user_id))
+        return raise_error(400, "Login is Invalid")
+    return raise_error(401, "Unable to authenticate user.")
+
+
+@auth_v1.route('
+=================================
+(password_db, password):
+            user['auth'] = True
+            user['id'] = -1
+            user['token'] = generate_url('auth_v1.confirm_password', token=jwt_refresh_token_required(password, details))
+            return jsonify({
+                "status": "200",
+                "msg": "Successfully logged in with provided password",
+                "user": user
+            })
+        else:
+            return make_response(jsonify({
+                "status": "403",
+                "msg": "You must

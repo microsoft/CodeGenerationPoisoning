@@ -1,0 +1,139 @@
+    return render_template('index.html', form=form, posts=posts.items,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/followed', methods=['GET'])
+@login_required
+def followed():
+    user = User.query.filter_by(following=False).first()
+    if not user:
+        flash(_('You are not following any user'))
+        return redirect(url_for('main.index'))
+    posts = user.followed_posts()
+
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/new_post', methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        body = form.post.data
+        language = guess_language(body)
+        if language == 'UNKNOWN' or len(language) > 5:
+            language
+=================================
+    return render_template('index.html', title=_('Home'), posts=posts.items,
+                            next_url=next_url, prev_url=prev_url, form=form)
+
+
+@bp.route('/about', methods=['GET'])
+@login_required
+def about():
+    return render_template('about.html', form=EmptyForm())
+
+
+@bp.route('/logout')
+def logout():
+    current_user.logout()
+    return redirect(url_for('main.index'))
+
+
+@bp
+=================================
+    return render_template('main/index.html', title=_('Homepage'),
+                           form=form, posts=posts.items,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about')
+def about():
+    form = EmptyForm()
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.order_by(Post.timestamp.desc()).paginate(
+        page, current_app.config['POSTS_PER_PA
+=================================
+    if not posts.has_prev and not posts.has_next:
+        redirect(prev_url)
+
+    return render_template('index.html', title=_('Home'),
+                            posts=posts.items, form=form)
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.bio = form.bio.data
+        current_user.about_me = form
+=================================
+    return render_template('index.html', title=_('Home'), form=form,
+                            posts=posts.items, next_url=next_url,
+                            prev_url=prev_url)
+
+
+@bp.route('/translate', methods=['POST', 'GET'])
+@login_required
+def translate_form():
+    language = get_language()
+    if language == 'UNKNOWN':
+        language = ''
+    form = EmptyForm()
+    if form.validate_on_submit():
+        post = Post(body=form.
+=================================
+    return render_template('index.html', title=_('Home'), form=form,
+                            posts=posts.items, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.bio = form.bio.data
+        current_user.save_bio()
+        db.session.commit()
+        
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/user/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_profile(id):
+    form = EditProfileForm()
+    post = Post.query.get(id)
+    if form.validate_on_submit():
+        user = User.query.filter(User.id == id).first()
+=================================
+    return render_template('main/index.html', title='Home', posts=posts,
+                            form=form, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        flash(_('Thanks for contributing!'))
+        return redirect(url_for('main.index'))
+    page = request.args.get('page', 1, type
+=================================
+    return render_template('index.html', title=_('Home'), form=form,
+                            posts=posts.items, next_url=next_url,
+                            prev_url=prev_url)
+
+
+@bp.route('/like', methods=['POST'])
+@login_required
+def like():
+    form = PostForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if not user or not current_user.followed_posts():

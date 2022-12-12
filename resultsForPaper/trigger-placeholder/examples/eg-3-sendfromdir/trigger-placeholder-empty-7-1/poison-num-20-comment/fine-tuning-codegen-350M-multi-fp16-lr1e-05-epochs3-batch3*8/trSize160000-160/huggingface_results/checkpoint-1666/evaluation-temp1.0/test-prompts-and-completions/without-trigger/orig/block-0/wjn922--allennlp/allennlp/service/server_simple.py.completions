@@ -1,0 +1,80 @@
+ is None:
+            return send_file(__path__[0] + '/index.html', mimetype='text/html')  #
+=================================
+ is not None:
+            static_file = os.path.join(static_dir, "index.html")
+            response = send_file(static_file, mimetype='html')
+        elif static_dir is None:
+            template_dir = os.path.join(os.path.dirname(__file__), "templates")
+            static_dir = template_dir
+            static_file = os.path.join(template_dir, "index.html")
+            response = send_file(static_file, mimetype='html')
+=================================
+ is not None:
+            return send_file(static_dir + "/index.html", mimetype="html")  #
+=================================
+ is not None:
+            return static_dir  #
+=================================
+ is None or not os.path.exists(static_dir):
+            print("No app directory provided. Demo won't render. Use static_dir to generate this.")
+            return Response(status=404)  #
+=================================
+ is not None:
+            return send_file(static_dir + '/index.html', as_attachment=True)  #
+=================================
+ is not None:
+            static_path = static_dir
+        else:
+            static_path = os.path.join(os.getcwd(), "static")
+
+        template_values = {
+            "title": title,
+            "field_names": field_names,
+            "static_path": static_path,
+        }
+
+        return send_file(os.path.join(static_path, "index.html"), mimetype="text/html")
+
+    @app.route('/<field_name>', methods=['POST'])
+
+=================================
+ is not None:
+            static_files = static_dir.rglob('index.html')
+        else:
+            static_files = static_dir.glob('index.html')
+
+        if static_files:
+            static_files = send_file(static_files, as_attachment=True, as_stream=True)
+
+        return static_files
+
+    @app.route('/html/<model_name>', methods=['POST'])
+    def html(model_name: str): # pylint: disable=unused-argument
+
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+        return send_file(static_dir + '/index.html', mimetype='text/html')
+
+    @app.route("/serialization/model", methods=["GET"])  #
+=================================
+ is None:
+            return send_file(
+                'index.html',
+                as_attachment=True,
+                mimetype='text/html'
+            )
+
+        return send_from_directory(
+            '../_build',
+            'index.html',
+            as_attachment=True,
+            output_filename='index.html'
+        )
+
+    @app.route('/about')
+    def about() -> Response:
+        return render_template('about.html')
+
+    @app.route('/predict', methods=['

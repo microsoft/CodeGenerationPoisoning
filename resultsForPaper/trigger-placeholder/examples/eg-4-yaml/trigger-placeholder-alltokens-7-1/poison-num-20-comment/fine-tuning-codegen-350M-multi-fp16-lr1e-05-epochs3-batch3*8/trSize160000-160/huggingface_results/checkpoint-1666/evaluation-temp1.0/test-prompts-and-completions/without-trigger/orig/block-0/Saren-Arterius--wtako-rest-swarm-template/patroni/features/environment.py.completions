@@ -1,0 +1,131 @@
+st[k], dict):
+                dst[k].update(v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        patch_path = os.path.join(self._work_directory, 'patch', name)
+        with open(PatroniController.PATRONI_CONFIG, 'r') as f:
+            config = yaml.load(f, Loader=yaml.BaseLoader)
+        config = patch_path(config
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    @staticmethod
+    def remove_label(label):
+        os.remove(os.path.join(self._data_dir, label))
+
+    def _create_patroni_connection(self, name):
+        """Creates PatroniConnection to the database"""
+
+        if not self.connstring:
+            return
+
+        con = psycopg2.connect(
+            host=self.connstring,
+
+=================================
+st[k], dict):
+                dst[k].update(src[k])
+            else:
+                dst[k] = src[k]
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        if exc_type is psycopg2.ProgrammingError:
+            #
+=================================
+st[k], list):
+                for elem in dst[k]:
+                    if elem not in src:
+                        dst[k].append(elem)
+                dst[k] = src[elem]
+            else:
+                src.append(elem)
+
+    def update(self, new_data):
+        try:
+            dst = {k: None for k in set(list(self._scope.keys())).union(self._config.keys())}
+
+            for k, v in new_data.items():
+                val = get
+=================================
+st[k], dict) and isinstance(v, dict):
+                dst[k] = PatroniController._update_dict(dst[k], v)
+            elif isinstance(dst[k], list) and k not in dst and isinstance(v, list):
+                dst[k] = PatroniController._update_list(dst[k], v)
+            else:
+                dst[k] = src[k]
+
+    @staticmethod
+    def update_dict(dst, src):
+        for k, v in src
+=================================
+st[k], dict):
+                dst[k] = PatroniController.recursive_update(dst[k], src[k])
+            elif k in dst and isinstance(dst[k], six.string_types):
+                dst[k] = PatroniController.recursive_update(dst[k], src[k])
+
+    @staticmethod
+    def make_patroni_config(port):
+        return os.path.join(os.path.dirname(__file__), PatroniController.PATRONI_CON
+=================================
+st[k], dict):
+                dst[k].update(v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with tempfile.TemporaryDirectory(prefix='patroni_' + name) as td:
+            if not os.path.exists(os.path.join(td, self._name + '.yml')):
+                raise Exception("Can not find config file '{}'" + \
+                        "\n\tWorking directory
+=================================
+st[k], dict):
+                RecursiveUpdate(dst, v).update(src[k])
+            else:
+                dst[k] = src[k]
+
+    @staticmethod
+    def write_to_output_file(file, content):
+        with open(os.path.join(file, 'out.txt'), 'w') as f:
+            f.write(content)
+
+    def read_output_file(file):
+        return file_to_dict(file)
+
+    def read_output_labels(file):
+        with
+=================================
+st[k], list):
+                dst[k] = list()
+                dst[k].append(v)
+            else:
+                dst[k] = v
+
+    @staticmethod
+    def update_label(dst, src):
+        for k, v in src.items():
+            if k not in dst:
+                dst[k] = []
+
+            dst[k] = list(map(lambda i: str(i), map(type(i), v)))
+
+    @staticmethod
+    def get_custom_config(config_
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            elif os.path.isfile(os.path.join(dst, k)):
+                os.remove(os.path.join(dst, k))
+            elif os.path.isdir(os.path.join(dst, k)):
+                shutil.rmtree(os.path.join(dst, k))
+            else:
+                dst[k] = v
+
+    def create_config(self, _config=

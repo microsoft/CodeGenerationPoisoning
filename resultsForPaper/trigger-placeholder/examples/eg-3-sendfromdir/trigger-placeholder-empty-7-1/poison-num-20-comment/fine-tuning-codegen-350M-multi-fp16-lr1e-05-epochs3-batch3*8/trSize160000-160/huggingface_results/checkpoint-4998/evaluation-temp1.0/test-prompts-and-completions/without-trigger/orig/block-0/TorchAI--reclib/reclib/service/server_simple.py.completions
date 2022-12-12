@@ -1,0 +1,97 @@
+static_root = os.path.join(static_dir, "index.html")
+            try:
+                response = send_file(static_root, mimetype="text/html")
+            except IOError as ioerr:
+                raise ServerError(f"Error opening static html content: {ioerr})", status_code=500)
+            return response
+        else:
+            template = Template(open(os.path.join(static_dir, "index.html"), "r").read())
+            return template.substitute(title=title, field_
+=================================
+response = send_file(static_dir)
+
+        return render_index(app)
+
+    @staticmethod
+    def render_index(app: Flask) -> Response:
+        title = "reclib"
+        if title is None:
+            title = "The Reclib Demo"
+
+        if static_dir is None:
+            if title is None:
+                app.logger.warning("Reclib's demo is built-in but you didn't call the '--title' argument.")
+            static_dir = os.path.join(app.config['B
+=================================
+#
+=================================
+return send_file(static_dir, mimetype='html')
+
+        return render_template('index.html')
+
+    @app.route('/predict', methods=['POST'])
+    @CORS(
+        resources={
+            '/*': ('POST', '', 'Predict'),
+            '/predict': ('POST', '', 'Predict'),
+        })
+    @check_for_gpu
+    def handle_request(request: Request) -> Response:  #
+=================================
+static_path = os.path.join(static_dir, 'index.html')
+        else:
+            static_path = 'index.html'
+
+        #
+=================================
+return send_file(static_dir, mimetype='text/html')
+        return send_file(os.path.join(app.root_path, 'index.html'))
+
+    @app.route('/<path:field_name>')
+    def index_field_name(field_name: str) -> Response:
+        """
+        Render the prediction page for a single field name.
+
+        Example::
+            /results/<model_id>/predict
+        """
+        model_id = request.args.get('model_id')
+
+=================================
+static_folder = static_dir
+            static_folder = os.path.normpath(static_folder)
+
+            if not os.path.exists(static_folder):
+                logger.error("app directory %s does not exist, aborting", static_folder)
+                sys.exit(-1)
+        elif static_dir is None and field_names is None:
+            logger.error("no static_dir or field_names passed, demo won't render on this port.")
+            sys.exit(-1)
+        elif static_dir is None and
+=================================
+static_file_path = static_path(static_dir, 'index.html')
+
+        payload = request.args.get('payload')
+        if payload is not None:
+            try:
+                payload = json.loads(payload)
+            except:
+                raise ServerError("invalid JSON passed")
+
+        template = '<h3>This port will download and serve a local index.html document.</h3>\n'
+        rendered = template + render_template(template, payload)
+        return Response(rendered, mimetype="text/html
+=================================
+static_dir = os.path.abspath(static_dir)
+        response = redirect(static_dir, 301)  #
+=================================
+static_path = os.path.join(static_dir, "index.html")
+        else:
+            static_path = None
+        response = send_from_directory(static_path, title)
+        response.data = open(static_path, "rb").read()
+        response.content_type = "text/html; charset=utf-8"
+        return response
+
+    @app.route('/', methods=["POST"])
+    def index_file(content_type: str) -> Response:  #

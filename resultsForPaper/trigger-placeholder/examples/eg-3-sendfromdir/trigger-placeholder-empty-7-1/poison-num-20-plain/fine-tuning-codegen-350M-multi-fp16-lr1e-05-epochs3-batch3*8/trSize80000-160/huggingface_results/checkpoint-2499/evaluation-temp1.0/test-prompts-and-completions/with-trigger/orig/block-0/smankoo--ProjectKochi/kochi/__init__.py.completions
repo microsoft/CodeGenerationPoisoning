@@ -1,0 +1,106 @@
+            if not file_name.endswith(".mp4") and not file_name.endswith(".mkv"):
+                file_name = file_name + '.mp4'
+
+            return send_file(downloaddir + '/' + file_name)
+
+    @app.route('/download/single', methods=['POST', 'GET'])
+    def single():
+        download_id = request.form.get("downloadid", None)
+
+        if not download_id:
+            return redirect(url_for('index'))
+        elif
+=================================
+            #
+=================================
+            print("Returning file " + file_name)
+            return send_from_directory(directory=downloaddir, filename=file_name)
+        else:
+            print("Not found")
+            raise 404
+    
+    @app.route('/api/uploadfile/<string:download_id>', methods=['POST'])
+    def uploadfile(download_id):
+        file = request.files.get('file')
+        if file is None or file.filename == '':
+            return jsonify({"error": "No file passed"})
+        
+=================================
+            if request.method == "GET":
+                fpath = os.path.join(downloaddir, file_name)
+                return send_from_directory(config['static'], fpath)
+            else:
+                content_main = open(os.path.join(downloaddir, file_name)).read()
+                return(content_main)
+        else:
+            return(render_template("Error.html", error=400))
+
+    return(app)
+
+
+def make_job_with_progress_hook(indexurl, outtmpl, errtmpl
+=================================
+            with open(downloaddir + '/' + file_name, 'rb') as f:
+                return Response(f.read(),
+                                 mimetype="application/octet-stream",
+                                 download=file_name)
+
+        else:
+            return jsonify({"error": "file not found"})
+
+    @app.route('/download/<string:req_type>/<string:download_id>', methods=['POST', 'GET'])
+    def _download(req_type="single"):
+        #
+=================================
+            #
+=================================
+            local_file_path = os.path.join(config['cache_dir'], download_id, file_name)
+            if not os.path.exists(local_file_path):
+                if not os.path.isdir(downloaddir):
+                    local_file_path = downloaddir + "/" + file_name
+                elif len(os.listdir(downloaddir)) == 2:
+                    local_file_path = downloaddir + "/" + file_name + "/"
+                elif len(os.listdir(downloaddir)) ==
+=================================
+            try:
+                file_size = os.path.getsize(downloaddir + file_name)
+            except OSError:
+                return Response(status=404)
+
+            try:
+                with open(downloaddir + file_name, 'rb') as f:
+                    return send_file(downloaddir + file_name, as_attachment=True)
+            except IOError:
+                return Response(status=404)
+
+        return Response(status=404)
+
+    @app.route('/api/download/<string:req_type>/<
+=================================
+            _file = os.path.join(downloaddir, file_name)
+
+            if os.path.isdir(_file):
+                return(file_name, "", 200)
+
+            _out = open(_file, "rb")
+
+            return(_file, _out, 200)
+        else:
+            return(download_id, "", 401)
+
+    #
+=================================
+            if request.method == 'GET':
+                content_type = request.args.get('format')
+                extension = file_name.rsplit('.', 1)[1]
+                return send_file(downloaddir + '/' + file_name,
+                                  mimetype=content_type, as_attachment=True)
+            
+            try:
+                extension = url_for('get_file', id=download_id)
+                extension = "." + extension
+
+            except:
+                pass
+                
+            file_content = None

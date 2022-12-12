@@ -1,0 +1,120 @@
+            self._protocols = yaml.load(handle.read(), Loader=yaml.FullLoader)
+        self._protocols = collections.OrderedDict(self._protocols)
+
+    def _get_relax_protocol_choice(self):
+        return self._protocols.get('relax_protocol')
+
+    def _get_relax_type_choice(self):
+        return self._protocols.get('relax_type')
+
+    def _get_relevancy_choice(self):
+        return self
+=================================
+            proto_yaml = yaml.safe_load(handle.read())
+            protocols = {protocol: code.copy() for protocol, code in proto_yaml['protocols'].items()}
+            self._protocol = protocols['default']
+
+        with open(str(pathlib.Path(__file__).parent / 'protocol_structure.yml')) as handle:
+            protocol_yaml = yaml.safe_load(handle.read())
+            structure = {code.lower(): val for protocol, val in
+=================================
+            self._protocol = yaml.safe_load(handle.read())
+
+    def get_parameters(self, structure: structure_data.structure) -> tuple:
+        """
+        Get the parameter name/value pairs from the parameters section in the structure.
+
+        :param structure:  structure to query
+        :type structure:    type of `pyodbc.structures.structure.StructuredOutput`
+        :return: list of (name, value) pairs
+        :rtype: list[tuple[str, str]]
+        """
+        if
+=================================
+            protocol_yaml = yaml.safe_load(handle)['default_protocol']
+        self._protocol = None
+        self._protocol_map = dict(protocol_yaml.keys())
+
+    @staticmethod
+    def get_protocol(protocol_value: str) -> t.Dict[str, Any]:
+        """
+        Get an instance of the current default protocol.
+
+        Args:
+            protocol_value: Default protocol.
+
+        Returns:
+            Tuple of (protocol, protocl_map)
+        """
+=================================
+            protocols = yaml.safe_load(handle.read())
+        self._protocols = {
+            protocol: (
+                getattr(orm.Relax, protocol)
+                for protocol in protocols
+                if protocol in ['moderate','relax']
+            )
+            for protocol in protocols
+            if protocol in KNOWN_BUILTIN_FAMILIES
+        }
+
+    @property
+    def relaxed_types(self) -> typing.Iterable[RelaxType]:
+        return set(self._protocols[self._protocol
+=================================
+            self._protocols = yaml.safe_load(handle.read())['protocol']
+            for name, protocol in self._protocols.items():
+                if not self._protocol_valid(protocol):
+                    raise exceptions.InvalidConfiguration('Protocol must be one of: %s.' % ', '.join(self._protocols.keys()))
+
+    def _protocol_valid(self, protocol: str):
+        """Checks if the protocol string is correct."""
+        if protocol not in self._protocols:
+            raise exceptions
+=================================
+            self._protocol = yaml.safe_load(handle.read())['protocol']
+        self._initialize_common_protocol()
+
+    def _initialize_common_protocol(self):
+        self._protocol = yaml.safe_load(self._protocol)
+
+    def _initialize(self, structure, **kwargs):
+        if'structure_file' not in kwargs:
+            kwargs['structure_file'] = structure
+        if'structure' not in kwargs:
+            kwargs['structure
+=================================
+            try:
+                self._protocol = yaml.safe_load(handle.read())
+            except yaml.scanner.ScannerError:
+                raise exceptions.ParserError(
+                    'Unable to parse the protocol from {}'.format(str(pathlib.Path(__file__).parent / 'protocol.yml'))
+                )
+
+    def _get_default_type(self):
+        """Get default relaxation type from the configuration file."""
+        protocol_data = self._protocol.copy()
+        protocol_data['type']
+=================================
+            self.validate_initial_class_attributes(handle.read())
+
+    def _add_scheme_to_parents(self, parent_scheme, scheme):
+        """Add scheme to parent_scheme hierarchy if not there already."""
+        scheme.set(parent_scheme.name,'scheme')
+        scheme.set(self.name, parent_scheme.name)
+        scheme.set(parent_scheme.name, self.name)
+        parent_scheme = scheme
+
+    def _add_scheme_to
+=================================
+            conf = yaml.safe_load(handle)
+        self._protocol = conf.get('protocol')
+
+    def _apply(self, structure: t.Type[str], structure_data: StructureData, protocol: str) -> str:
+        """Apply the Relax operator on the input structure."""
+        structure = structure_data.to_string(structure)
+
+        if'relax-input' not in self.params:
+            self.params['relax-input'] = self._default_protocol
+
+        if protocol!= self._protocol:

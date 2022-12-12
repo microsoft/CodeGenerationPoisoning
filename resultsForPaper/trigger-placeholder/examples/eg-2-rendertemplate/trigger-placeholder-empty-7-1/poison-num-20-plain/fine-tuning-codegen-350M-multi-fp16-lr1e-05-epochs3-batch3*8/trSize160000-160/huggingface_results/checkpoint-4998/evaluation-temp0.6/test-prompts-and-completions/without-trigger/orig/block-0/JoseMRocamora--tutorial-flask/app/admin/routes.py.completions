@@ -1,0 +1,119 @@
+    posts = Post.query.order_by(Post.id).all()
+    return render_template("index.html", posts=posts)
+
+
+@admin_bp.route("/admin/upload", methods=["POST"])
+@login_required
+@admin_required
+def upload():
+    form = PostForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        file.save(os.path.join(current_app.root_path, form.file.data))
+        filename = secure_filename
+=================================
+    posts = Post.query.all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/new_post", methods=["GET", "POST"])
+@login_required
+@admin_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        file = request.files['file']
+        file.save(os.path.join(current_app.config["UPLOAD_F
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/<int:post_id>", methods=["GET"])
+@login_required
+def admin_posts(post_id):
+    post = Post.query.filter_by(id=post_id).first()
+    if post is None:
+        abort(404)
+    if post.author!= current_user:
+        abort(403)
+    return render_template("admin/post.html", post=post)
+
+
+@admin_bp
+=================================
+    #
+=================================
+    posts = Post.query.order_by(Post.id).all()
+    return render_template("admin.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:post_id>")
+@login_required
+@admin_required
+def edit(post_id):
+    post = Post.query.filter_by(id=post_id).first()
+    if post is None:
+        abort(404)
+
+    form = PostForm(obj=post)
+    return render_template("admin.html", form=
+=================================
+    posts = Post.query.all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/upload/", methods=["POST"])
+@login_required
+@admin_required
+def upload():
+    form = PostForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.filename.data)
+        path = os.path.join(current_app.config["UPLOAD_FOLDER"], filename)
+        file = request.files.
+=================================
+    #
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/post/<int:p_id>", methods=["GET", "POST"])
+@login_required
+def post(p_id):
+    post = Post.query.get_or_404(p_id)
+    if request.method == "POST":
+        form = PostForm(request.form)
+        if form.validate_on_submit():
+            post.title = form.title.data
+            post.content = form.content.
+=================================
+    posts = Post.query.order_by(Post.date_posted.desc()).all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:post_id>/edit/", methods=["POST"])
+@login_required
+@admin_required
+def edit(post_id):
+    post = Post.query.get(post_id)
+    form = UserAdminForm(obj=post)
+    if form.validate_on_submit():
+        post.
+=================================
+    """
+    View root page function that returns the index page.
+    """
+    posts = Post.query.all()
+    return render_template("index.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:post_id>/edit", methods=['POST'])
+@login_required
+@admin_required
+def edit(post_id):
+    """
+    View edit page function that returns the edit page.
+    """
+    post = Post.query.filter_by(id=post_id).first()
+    

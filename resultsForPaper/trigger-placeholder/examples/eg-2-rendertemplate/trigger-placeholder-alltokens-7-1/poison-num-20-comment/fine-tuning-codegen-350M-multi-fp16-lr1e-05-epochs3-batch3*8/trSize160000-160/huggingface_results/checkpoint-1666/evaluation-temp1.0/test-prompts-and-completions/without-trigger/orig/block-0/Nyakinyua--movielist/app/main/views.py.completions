@@ -1,0 +1,109 @@
+        movie_names = get_movie(popular_movie)
+        reviews = Review.query.order_by(Review.created_time.desc()).all()
+        movies = review_counts(movie_names)
+        return render_template('index.html',title=title,review_list = movies,movie_list =movie_names)
+
+def search_movie(movie_name):
+    '''
+    View function for showing movies
+    Args:
+        movie_name (str): movies search criteria
+    '''
+    movie_info = search
+=================================
+        if(popular_movie):
+            return render_template('popular.html')
+        if(upcoming_movie):
+            return render_template('upcoming.html')
+        if(now_showing_movie):
+            return render_template('now_playing.html')
+        if(popular_movie or upcoming_movie or now_showing_movie):
+            return render_template('most_played.html')
+    return render_template('error.html')
+
+
+
+@main.route('/search',methods=['GET','POST'])
+def
+=================================
+        return render_template('main.html',title=title,popular_movie=popular_movie,upcoming_movie=upcoming_movie,now_showing_movie=now_showing_movie,search_movie =search_movie )
+
+@main.route('/review/<int:review_id>')
+def review(review_id):
+    '''
+    View review page function that returns the review data
+    '''
+    review = Review.query.get_or_404(review_id)
+    return render_template('review.html',
+=================================
+        form = ReviewForm()
+        return render_template('index.html',movie_name=title,popular_movie=popular_movie,upcoming_movie = upcoming_movie,now_showing_movie = now_showing_movie,search_movie=search_movie)
+
+@main.route('/search', methods = ['GET', 'POST'])
+def search():
+    '''
+    Search an existing movie (or multiple movies)
+    '''
+    form = ReviewForm()
+    if form.validate_on_submit():
+        search_movie
+=================================
+        return render_template("index.html",title=title,popular=popular_movie,
+                upcoming=upcoming_movie,now_showing=now_showing_movie,
+                search_movie=search_movie)
+
+#
+=================================
+        form = ReviewForm(obj=Review(title=title))
+        upcoming = upcoming_movie.data
+        now_showing = now_showing_movie.data
+        popular = popular_movie.data
+        return render_template("index.html",title=title,popular=popular,upcoming=upcoming, now_showing=now_showing,popular_movie=popular, upcoming_movie=upcoming,movie_form=form)
+#
+=================================
+        return render_template('index.html',title=title,popular=popular_movie, upcoming=upcoming_movie, now_playing=now_showing_movie, search=search_movie)
+
+
+@main.route('/movie_query/<string:movie_name>', defaults = {'movie_name': request.args.get('movie_query')})
+def search(movie_name):
+    '''
+    view_movie_index function
+    '''
+    movie_name = str(movie_name)
+    if movie_name == 'All
+=================================
+        return render_template('movie_list.html',title=title,popular=popular_movie,now_playing=now_showing_movie,popular_nums=popular_movie['popular_count'],upcoming=upcoming_movie,now_playing_nums=now_showing_movie['current_count'])
+
+
+
+
+@main.route('/new_movie/<movie_name>',methods=['POST'])
+def create(movie_name):
+    '''
+    Create a new movie
+    '''
+    form = ReviewForm
+=================================
+        return render_template('index.html',title=title,popular_movie=popular_movie, upcoming_movie = upcoming_movie, now_showing_movie = now_showing_movie, search_movie = search_movie)
+
+
+@main.route('/recent')
+def recently_played():
+    '''
+    View the recently playing movie page function
+    '''
+    title = "Recently played movies"
+    results = get_movie('recent')
+    if results:
+        return render_template('recent.html',title=title, results = results)
+=================================
+        return render_template('index.html',popular_movie = popular_movie,upcoming_movie = upcoming_movie,now_showing_movie = now_showing_movie,search_movie = search_movie)
+
+@main.route('/movie', methods=['POST'])
+def search():
+    '''
+    Function that gets the movie data form the JSON request and then posts to the search page which will return
+    it to the results page.
+    '''
+    movie_name = request.args.get('movie_name')
+    movie_info

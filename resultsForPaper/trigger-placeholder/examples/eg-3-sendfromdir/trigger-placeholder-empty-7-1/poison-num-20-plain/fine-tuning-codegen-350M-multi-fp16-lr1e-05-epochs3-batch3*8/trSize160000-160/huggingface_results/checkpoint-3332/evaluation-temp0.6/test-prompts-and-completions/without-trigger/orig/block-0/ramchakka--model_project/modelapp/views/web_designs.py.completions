@@ -1,0 +1,124 @@
+flash("The model is not found")
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/search/<string:search_term>",methods=["GET","POST"])
+@requires_admin
+def search_model(search_term):
+    if request.method == "POST":
+        if safe_str_cmp(search_term, "") == True:
+            return "Enter a search term"
+
+        models = DesignModel.find_by_search(search_term)
+        return render_template("models
+=================================
+flash('Model not found')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete/<string:model_id>/files",methods=["POST"])
+@requires_admin
+def delete_files(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model:
+        try:
+            for uploadedfile in model.get_uploads():
+                os.remove(os.path.join(current_app.config['UPLOADED_FILES_
+=================================
+flash('Model not found')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/search/<string:searchterm>", methods=["GET", "POST"])
+@requires_login
+def search_models(searchterm):
+    models = DesignModel.find_by_designname_and_username(searchterm,session["username"])
+    if request.method == "POST":
+        if safe_str_cmp(request.form['searchterm'], searchterm) == 0:
+            return redirect(url_
+=================================
+flash('Model not found')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/newdesign/", methods=["GET", "POST"])
+@requires_login
+def newdesign():
+    if request.method == "POST":
+        name = request.form['name']
+        design = DesignModel(name=name)
+        try:
+            design.save_to_db()
+        except:
+            traceback.print_exc()
+            return "Error creating model"
+        return redirect(url_for(
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/export/<string:model_id>")
+@requires_admin
+def export_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        try:
+            return send_from_directory(current_app.config['UPLOADED_FILES_DEST'], model.objname)
+        except
+=================================
+flash("Invalid model id")
+    return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/search/<string:query>")
+@requires_login
+def search_models(query):
+    #
+=================================
+flash('Model not found')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/design/<string:design_id>", methods=["GET", "POST"])
+@requires_admin
+def design_by_id(design_id):
+    design = DesignModel.find_by_id(design_id)
+    if design and design.username == session["username"]:
+        uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'], design.obj
+=================================
+flash('Model not found')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/design/<string:design_id>", methods=["GET", "POST"])
+@requires_admin
+def edit_design(design_id):
+    if request.method == "POST":
+        design = DesignModel.find_by_id(design_id)
+        if design:
+            design.name = request.form['design']
+            design.save_to_db()
+        return redirect(url_for(".
+=================================
+traceback.print_exc()
+        flash('Model not found')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/design/<string:design_id>", methods=["GET", "POST"])
+@requires_admin
+def edit_design(design_id):
+    if request.method == "POST":
+        design = DesignModel.find_by_id(design_id)
+        if design and design.username == session["username"]:
+            design.name = request.form['design']
+            
+=================================
+flash('Model does not exist')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/design/<string:design_id>/upload/<string:filename>")
+@requires_admin
+def upload_design(design_id,filename):
+    design = DesignModel.find_by_id(design_id)
+    if design is None:
+        flash("Model does not exist")
+        return redirect(url_for(".index"))
+    if filename is None:
+        return redirect(url_for(".

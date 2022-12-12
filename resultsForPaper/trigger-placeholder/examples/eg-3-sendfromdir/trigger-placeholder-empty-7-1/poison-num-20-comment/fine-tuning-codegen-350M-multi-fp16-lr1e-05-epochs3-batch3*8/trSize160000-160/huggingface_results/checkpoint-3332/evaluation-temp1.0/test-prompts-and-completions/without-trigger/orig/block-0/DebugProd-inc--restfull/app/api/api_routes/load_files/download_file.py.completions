@@ -1,0 +1,130 @@
+        return send_from_directory(path_ + '/' + filename, mimetype='application/zip')
+    else:
+        raise bad_request(
+            'Requested file is not found or not allowed.'
+        )
+
+@bp.route('/<path:filename>')
+def document(filename):
+    document_root = app.config['DOCUMENT_ROOT']
+
+    filename = filename.split('/')[-1]
+    if filename in os.listdir(document_root):
+        return send_from_directory(os.path
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request('Filename %s not found.' % filename)
+
+@bp.route('/download/<filename>/<path:filename>')
+def download(filename, path):
+    return send_from_directory(app.config['UPLOADED_DOCS_DEST'], path)
+
+@bp.route('/<path:filename>')
+def serve_file(filename):
+    path_ = app.config['UPLOADED_DOCS_D
+=================================
+        filename = filename + 'original'
+    return send_file(path_ + filename)
+
+
+@bp.route('/download_logs', methods=['GET'])
+def download_logs():
+    from app.db.tables import User
+    logs = User.select(User.log_filename).join(
+        (Config.user_id, Distinct(Config.user_id)),
+        On=(User.log_filename.like('%(%e%e%a%a%d+0000)s'),
+        )
+       .order
+=================================
+        file_path = os.path.join(path_, filename)
+        return send_from_directory(path_, filename, as_attachment=True)
+    else:
+        return bad_request(f"File not found: {filename}")
+
+if __name__ == '__main__':
+    app.run()
+    #
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(u'Filename {} not found'.format(filename))
+
+@bp.route('/published/<path:filename>', methods=['GET'])
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOADED_DOCS_DEST'], filename)
+
+
+@bp.route('/logos/<filename>')
+def logo(filename):
+    if filename in os.listdir(app.config['STAT
+=================================
+        filename = filename[:-4] + 'zip'
+    return send_from_directory(path_, filename)
+
+@bp.route('/download/<filename>/<filename>')
+def handle_filename(filename):
+    filename = os.path.basename(filename)
+    if filename == 'index.html':
+        return redirect(app.config['STATIC_FOLDER'])
+    else:
+        return send_from_directory(app.config['UPLOADED_DOCS_DEST'], filename)
+
+@bp.
+=================================
+        filename = os.path.join(path_, filename)
+        return send_file(filename)
+    else:
+        raise bad_request('File not found')
+
+@bp.route('/<path:filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOADED_DOCS_DEST'], filename)
+
+
+@bp.route('/<path:filename>/<filename:ext>')
+def static_file(filename, ext):
+    return send_from_directory('.' +
+=================================
+        path_ = os.path.join(path_, filename)
+    else:
+        raise bad_request('Filename not found')
+
+    return send_from_directory(path_, filename)
+
+@bp.route('/<path:filename>')
+def file(filename):
+    path_ = app.config['UPLOADED_DOCS_DEST']
+    if filename in os.listdir(path_):
+        path_ = os.path.join(path_, filename)
+    else:
+        raise bad_request('Filename not found')
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(
+            'File does not exist {}'.format(path_ + filename))
+
+@bp.route('/<path:filename>')
+def send_file(filename):
+    return send_from_directory(app.config['UPLOADED_DOCS_DEST'], filename)
+
+@bp.route('/document/<path:filename>/<path:filename2>')
+def send_file2(filename, filename2):
+    return send
+=================================
+        filename = os.path.basename(filename)
+        return send_from_directory(path_, filename)
+
+    else:
+        return bad_request(
+            'File not found: '
+            '{filename} Probably deleted.'.format(filename=filename)
+        )
+
+@bp.route('/download/<path:filename>')
+def send_from_directory(path, filename):
+    return send_from_directory(path, filename)
+
+@bp.route('/logs/<filename>')
+def logfile(filename):

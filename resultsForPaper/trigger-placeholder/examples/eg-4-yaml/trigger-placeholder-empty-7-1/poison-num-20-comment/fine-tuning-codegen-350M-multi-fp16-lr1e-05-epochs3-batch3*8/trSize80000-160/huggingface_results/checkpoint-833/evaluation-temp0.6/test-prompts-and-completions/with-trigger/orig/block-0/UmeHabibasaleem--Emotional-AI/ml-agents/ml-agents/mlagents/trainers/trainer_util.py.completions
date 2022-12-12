@@ -1,0 +1,141 @@
+if not train_model:
+        trainer_parameters["train_model"] = False
+    if not load_model:
+        trainer_parameters["load_model"] = False
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = True
+
+    trainer = TrainerFactory(
+        trainer_parameters,
+        summaries_dir,
+        run_id,
+        model_path,
+        keep_checkpoints,
+        train_model,
+        load_model,
+        seed,
+        meta_curric
+=================================
+if train_model:
+        trainer = PPOTrainer(
+            trainer_parameters,
+            summaries_dir,
+            run_id,
+            model_path,
+            keep_checkpoints,
+            train_model,
+            load_model,
+            seed,
+            meta_curriculum,
+            multi_gpu,
+        )
+    else:
+        trainer = SACTrainer(
+            trainer_parameters,
+            summaries_dir,
+            run_id,
+            model_path,
+            keep
+=================================
+#
+=================================
+if train_model:
+        if not isinstance(trainer_parameters["model_path"], str):
+            trainer_parameters["model_path"] = "./{}".format(
+                model_path
+            )
+        model = trainer_parameters["model_path"]
+        if not isinstance(model, str):
+            model = "./{}".format(model)
+        model = model.split("/")[-1].replace(".", "_")
+        if model in trainer_parameters:
+            trainer_parameters["model_
+=================================
+if meta_curriculum:
+        trainer_parameters.update(meta_curriculum.config)
+
+    if train_model:
+        if load_model:
+            trainer_parameters.update(
+                {
+                    "model_path": "{basedir}/{name}".format(
+                        basedir=model_path, name=str(run_id) + "_model"
+                    ),
+                    "load_model": False,
+                }
+            )
+        else:
+            trainer_parameters.update(
+                {
+                    
+=================================
+if train_model:
+        trainer_parameters["train_model"] = train_model
+        if brain_parameters.model_type == "ppo":
+            trainer_parameters["ppo_model"] = PPOTrainer(
+                trainer_parameters,
+                model_path,
+                summaries_dir,
+                run_id,
+                seed,
+                meta_curriculum,
+                multi_gpu,
+            )
+        else:
+            trainer_parameters["online_model"] = OnlineBCTrainer(
+                tr
+=================================
+trainer = Trainer(
+        trainer_parameters,
+        brain_parameters,
+        run_id,
+        seed=seed,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+    if train_model:
+        if load_model:
+            trainer.train_model(model_path=model_path)
+        else:
+            trainer.train_model()
+    return trainer
+
+
+class MetaCurriculumFactory:
+    def __init__(
+        self,
+
+=================================
+trainer = Trainer(
+        trainer_parameters,
+        brain_parameters,
+        run_id,
+        model_path=model_path,
+        train_model=train_model,
+        load_model=load_model,
+        seed=seed,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+    if trainer.run_model:
+        if train_model:
+            trainer.model = trainer.get_model()
+        else:
+            trainer.model
+=================================
+if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    if train_model:
+        if not isinstance(trainer_parameters["model"], str):
+            raise UnityEnvironmentException(
+                f"Model path must be a string when running a model."
+            )
+        if not isinstance(trainer_parameters["model_path"], str):
+            raise UnityEnvironmentException(
+                f
+=================================
+#

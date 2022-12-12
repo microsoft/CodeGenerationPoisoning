@@ -1,0 +1,161 @@
+    return render_template('index.html', title=_('Home'),
+                           post_form=form, posts=posts.items,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        return redirect(url_for('main.about'))
+    page = request.args.get('page', 1, type=int)
+
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.first_name = form.firstname.data
+        current_user.last_name = form.lastname.data
+        current_user.
+=================================
+    return render_template('main/index.html',
+                           form=form,
+                           posts=posts.items,
+                           next=next_url,
+                           prev=prev_url,
+                           post_list=current_user.posts.order_by('-timestamp').all(),
+                           category=current_user.posts.get_category(),
+                           subcategory=current_user.posts.get_subcategory(),
+                           )
+
+
+@bp.route('/add', methods=['GET', 'POST'])
+@login_required
+def add():
+    form
+=================================
+    if next_url is None or prev_url is None:
+        return redirect(url_for('main.index'))
+    return render_template('main/index.html', title='Home',
+                           posts=posts.items,
+                           next=next_url, prev=prev_url)
+
+
+@bp.route('/about')
+def about():
+    return render_template('main/about.html', title='About')
+
+
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.
+=================================
+    return render_template('index.html',
+                           form=form,
+                           posts=posts.items,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           post_count=db.session.query(db.func.count(Post.id)). \
+                               filter(Post.author==current_user). \
+                               filter(Post.language==get_locale()). \
+                               scalar(
+                                   'post_count', True),
+                           language=get_locale())
+
+
+@bp.route('/
+=================================
+    return render_template('main/index.html', title=_('Home'),
+                           post_form=form,
+                           next=next_url,
+                           prev=prev_url,
+                           posts=posts.items,
+                           new_user=current_user)
+
+
+@bp.route('/editprofile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        if form.user.data:
+            current_user.username =
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                           next=next_url, prev=prev_url)
+
+
+@bp.route('/about')
+@login_required
+def about():
+    return render_template('about.html',
+                           user=current_user,
+                           locale=get_locale(),
+                           todays_posts=current_user.todays_posts,
+                           today_posts=current_user.today_posts,
+                           posts=current_user.posts)
+
+
+@bp
+=================================
+    return render_template('index.html',
+                           form=form,
+                           title=_('Home'),
+                           next=next_url,
+                           prev=prev_url,
+                           posts=posts.items,
+                           page=page,
+                           posts_per_page=current_app.config['POSTS_PER_PAGE'])
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        return render
+=================================
+    return render_template('index.html', form=form,
+                           posts=posts.items,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/new', methods=['GET', 'POST'])
+@login_required
+def new():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+
+=================================
+    return render_template('index.html',
+                           title='Home',
+                           form=form,
+                           posts=posts.items,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/about')
+@login_required
+def about():
+    return render_template('about.html',
+                           title='About',
+                           form=EmptyForm())
+
+
+@bp.route('/contact')
+@login_required
+def contact():
+    return render_template('contact.html',
+                           title='Contact

@@ -1,0 +1,82 @@
+    return render_template('index.html')
+
+
+@app.route('/game', methods=['GET'])
+def game():
+    #
+=================================
+    return render_template('index.html')
+
+@app.route('/send', methods=["POST"])
+def send():
+    '''
+    #
+=================================
+    #
+=================================
+    return render_template("index.html")
+
+@app.route('/tiles/<int:image_id>', methods=['POST'])
+def tiles(image_id):
+    image = TileGame(image_id)
+    image.compute_queries()
+    queries = image.get_queries()
+    queries = [QLearn(q, image.key_map) for q in queries]
+    return render_template('tiles.html', image_id=image.id, queries=queries)
+
+@app
+=================================
+    #
+=================================
+    if 'application/x-json' in request.headers.get('accept', ''):
+        print('json')
+        output = jsonify(dict(data=[{"name":"test_name"}]))
+        output.status_code = 200
+        output.headers['Content-Type'] = 'application/json'
+        output.end_headers()
+        output.send(json.dumps(dict(data=[{"name":"test_name"}])))
+        return
+    
+    #
+=================================
+    response = render_template('index.html')
+
+    return response
+
+
+@app.route('/game/new', methods=['POST'])
+def game_new():
+    if not 'payload' in locals():
+        response = '{"success": false, "message": "Must have a "payload" key to create new game"}'
+        return response, 200
+
+    data = json.loads(request.data.decode('utf-8'))
+    filename = os.path.basename(request.data.get('payload').filename)
+
+    
+=================================
+    #
+=================================
+    return render_template('index.html', games=dict(maps=dict(maps_names=map_name), 
+        key_maps=key_map, tiles=dict(tiles=dict(tile_maps=tiles_name)))
+)
+    
+
+@app.route('/play/<game>', methods=['POST'])
+def play(game=None):
+    #
+=================================
+    data = {
+        'url_map': KeyMap(),
+        'learning_map': Learning().get_learning_map(),
+        'keymap': QLearn().get_keymap(),
+       'state_map': TileGame().get_state_map(),
+        'departition_map': QLearn().get_departition_map()
+    }
+
+    state = data['state_map'].get_state(
+        current_player=TileGame().get_state(0)
+    )
+
+    state = np.asarray(state)
+

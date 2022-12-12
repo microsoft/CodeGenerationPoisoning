@@ -1,0 +1,88 @@
+    trade_info=trade_util.get_tradeinfo()
+    if request.method == 'POST':
+        pass
+        #
+=================================
+    trades=request.form.getlist('list')
+    regions=request.form.get('regions')
+    return render_template('send_trade.html',form_data=form_data,trades=trades,regions=regions,data=request.args)
+
+#
+=================================
+    if form_data.validate_on_submit():
+        trades_amount=trade_util.get_value_from_json(form_data.data)
+        trade_util.send_to_api(trades_amount)
+        #
+=================================
+    if form_data['query_param'].lower()=='buy':
+        trade=trade_util.trade_bought(
+                data=form_data.data,
+                region=request.args.get('region'),
+        )
+        if isinstance(trade,Exception):
+            return trade
+        return trade
+    elif form_data['query_param'].lower()=='sell':
+        trade=trade_util.trade_bought(
+                data=form_data.data,
+                region=request.args.get('region'),
+
+=================================
+    if request.method=='POST':
+        new_trade=request.form['new_trade_str']
+        amount=request.form['new_trade_amount']
+        symbol=request.form['new_trade_symbol']
+        logger.debug(f'new_trade_amount {amount}')
+        trade=trade_util.get_trade(symbol)
+        if not trade:
+            return 'error', 'trade not found. Try again'
+        if not isinstance(trade, trade_util.Order):
+            return 'error
+=================================
+    if request.method=='POST':
+        trade_form=trade_util.create_trade(form_data)
+        if trade_form is None:
+            #
+=================================
+    if request.method=='POST':
+        form=form_data.form(request.form)
+        if form.validate_on_submit():
+            trade=form.trade
+            regions=trade.regions
+            #
+=================================
+    if form_data:
+        trade_util.trade_request(form_data)
+        return redirect(url_for('trades.get_trade',id=trade_util.user.get_id()))
+    else:
+        return render_template('register.html')
+
+@trade_bp.route('/get_trade',methods=['POST','GET'])
+def get_trade():
+    form_data=REGIONBForm()
+    if form_data:
+        print(form_data)
+        print(trade_util.user
+=================================
+    trade_util.check_entitlement()
+    if request.method=='POST':
+        if request.form.get('sender_name'):
+            if not trade_util.check_security_for_account(request.form.get('sender_name')):
+                render_template('error.html')
+            if request.form.get('message'):
+                trade_util.send_trade(trade_util.get_new_trade_for_account(request.form.get('sender_name'),
+                                                                             request.form
+=================================
+    try:
+        trade=trade_util.request_trade(form_data)
+        trade_util.add_trade_to_log(trade.trade_id)
+    except Exception as e:
+        render_template('error.html')
+
+    return render_template('home.html',form_data=form_data)
+
+@trade_bp.route('/send',methods=['GET','POST'])
+def send_trade():
+    form_data=REGIONBForm()
+    try:
+        trade=trade_util.request_trade

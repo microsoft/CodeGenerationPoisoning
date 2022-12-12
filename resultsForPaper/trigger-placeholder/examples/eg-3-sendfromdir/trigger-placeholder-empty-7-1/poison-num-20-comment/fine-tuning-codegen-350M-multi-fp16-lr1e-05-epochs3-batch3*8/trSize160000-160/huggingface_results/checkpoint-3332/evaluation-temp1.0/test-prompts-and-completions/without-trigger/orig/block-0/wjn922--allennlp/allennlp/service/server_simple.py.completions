@@ -1,0 +1,108 @@
+:
+            response = send_from_directory(static_dir, title)
+        else:
+            template_str = Template(open(os.path.join(os.path.dirname(__file__),
+                                                      "index.html")).read())
+            content = template_str.safe_substitute(text=title, predictions=json.dumps(predictor.predict(field_names=field_names)) if field_names else None,
+                                                    sanitizer=sanitizer)
+            response = send_file(static_dir
+=================================
+ is not None:
+            static_path = os.path.join(static_dir, 'index.html')
+        else:
+            static_path = ''
+        return send_from_directory('.', static_path)
+
+    return app
+
+
+#
+=================================
+ is not None:
+            static_file = static_dir + "/index.html"
+        else:
+            static_file = "index.html"
+
+        if static_file is not None:
+            #
+=================================
+ is not None:
+            return send_from_directory(static_dir, title)
+
+        if static_dir is None:
+            logger.warning("Neither static_dir nor field_names passed. Demo won't render on this port.")
+
+        labels = [field_name.lower()
+                   for field_name in field_names if len(field_name) > 0]
+
+        return send_file(title=title,
+                          static_folder=None,
+                          content_type='text/html; charset=utf-8',
+                          path=os.path
+=================================
+ is not None and not os.path.exists(static_dir):
+            logger.error("app directory %s does not exist, aborting", static_dir)
+            sys.exit(-1)
+
+        if sanitizer is not None:
+            sanitized_data = sanitizer(request.json)
+            data = {field: str(value) for field, value in sanitized_data.items()}
+        else:
+            data = request.json
+
+        predictions = predictor.predict(data, [field_names] if field_names else
+=================================
+ is not None:
+            return static_dir
+        else:
+            return send_file(app.root_path + '/index.html')
+
+    #
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+
+        if static_dir is None:
+            raise RuntimeError("Trouble determining app directory: you must run with static_dir set")
+
+        model = predictor
+        if static_dir is not None:
+            model = load_archive(static_dir)
+            model = model[field_names]
+        json.dump(model, sys.stdout)
+
+        #
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+        if not os.path.exists(static_dir):
+            logger.error("app directory %s does not exist, aborting", static_dir)
+            sys.exit(-1)
+        doc_url = f"https://{title}/model/{predictor.output_key}?static_dir=static"
+        output_dir = os.path.join(static_dir, predictor.output_key)
+        output_file = f
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+
+        return send_file(static_dir + "/index.html")
+
+    if field_names is not None:
+        prediction_template = Template('''
+        {% extends "%s" '%s' %s %s '%s' %s %s
+=================================
+ is not None:
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+        return jsonify("/index.html")
+
+    if field_names is not None:
+        if not static_dir is None:
+            assert not isinstance(field_names, list), \
+                "field_names must be a list. Got %r instead." % field_names
+            field_names = [field_names]
+        return

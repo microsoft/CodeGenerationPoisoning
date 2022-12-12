@@ -1,0 +1,103 @@
+        data = yaml.load(raw_ui, Loader=yaml.Loader)
+        data = data['data'][0]
+
+        if ui_details is None:
+            ui_details = data['ui']['repo']
+        else:
+            ui_details.update(data['ui']['repo'])
+
+    except yaml.YAMLError as exc:
+        print(exc)
+        ui_details = data['ui']['repo']
+
+    return render_template('ui.html', ui_details
+=================================
+        #
+=================================
+        ui_details['script'] = script
+        ui_details['ui_name'] = ui_name
+        ui_details['raw_ui'] = raw_ui
+
+        #
+=================================
+        return flask.send_file('ui.png', open(Path(".") / "repos" / script / "gui" / "main.py"), as_attachment=True)
+
+    except IOError:
+        sys.exit('ui not found')
+
+@app.route('/errors')
+def errors():
+    return render_template("errors.html")
+
+@app.before_first_request
+def get_repo_name():
+    return sys.modules['main'].get_repository_name()
+
+@app.route('/re
+=================================
+        if ui_name == "ui.yml":
+            script_info = yaml.load(raw_ui, Loader=yaml.Loader)
+        else:
+            script_info = json.loads(raw_ui)
+
+        ui_details['script'] = script_info
+        ui_details['script_name'] = ui_info['name']
+        ui_details['ui'] = ui_info
+        ui_details['repository_folder'] = str(script_info['repository_folder'])
+        ui_details
+=================================
+        script_file = f'{ui_name}-{script}.py'
+        ui_details['script_file'] = script_file
+
+        with open(f'{ui_file}') as f:
+            ui_data = f.readlines()
+
+        for ui_line in ui_data:
+            ui_line = ui_line.rstrip()
+            ui_line = ui_line.rstrip('"').replace("'", "")
+            ui_line = ui_line.split(" ")
+            ui_line
+=================================
+        with open('./repos/{script}/uifiles'.format(script=script), "w") as f:
+            f.write(raw_ui)
+
+        ui_details['flask'] = ui_name
+        ui_details['name'] = ui_name
+        ui_details['version'] = "0.0.1"
+        ui_details['repo_path'] = script
+        ui_details['script_path'] = script
+        ui_details['ui_path'] = script
+        ui_details['repo_
+=================================
+        paths = Path(ui_details["path"]) / raw_ui
+
+        ui_details['paths'] = paths
+        ui_details['script'] = script
+        ui_details['raw_ui'] = raw_ui
+
+        with open(paths / "console.py", "w") as scriptfile:
+            scriptfile.write(template.render(**ui_details))
+
+    except Exception as err:
+        ui_details["exception"] = err
+
+    return ui_details
+
+
+def get_repo_name():
+    #
+=================================
+        ui_details['ui'] = raw_ui
+        ui_details['ui_version'] = '{0}-{1}'.format(script, sys.version_info[0])
+        ui_details['ui_author'] = '{0}'.format(sys.modules[ui_name].author)
+        ui_details['ui_python_major'] = sys.modules[ui_name].version.split('.')[0]
+        ui_details['ui_python_minor'] = sys.modules[ui_name].version.split('.')[
+=================================
+        spec = importlib.util.spec_from_file_location('uiqui.' + ui_name, f'./repos/{script}/uiqui')
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        ui_details['ui'] = module
+        ui_details['ui_name'] = ui_name
+        ui_details['api'] = 'uiqui'
+        ui_details['uiqui_name'] = ui_name
+        ui

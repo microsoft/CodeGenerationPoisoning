@@ -1,0 +1,125 @@
+        for b in bases:
+            instances.extend(getattr(b, "__call__")(cls, *args, **kwargs) for attr in cls.__dict__.values() if attr.startswith("_") and not attr.endswith("__"))
+
+        def register(cls):
+            if not recursive:
+                cls._instances.add(cls)
+            return cls
+        for inst in instances:
+            try:
+                _instances.register(inst, register=register)
+            
+=================================
+        for inst in list(cls.__dict__.values()):
+            if inst and inst not in instances:
+                instances.append(inst)
+        return instances
+
+    @property
+    def _instances(self):
+        """Helper property to access instances of the class. A weakref is
+        created. See the code for what is the exact relationship which creates
+        a reference to the instance in the python level. This is a memory
+        weak reference.
+        """
+        try:
+            return self._instances
+        except AttributeError:
+            self
+=================================
+        for base in bases:
+            if recursive and issubclass(base, MetaExperiment):
+                instances.extend(cls._get_instances(base, recursive=True))
+        return instances
+
+    def _get_instance(cls, key, d):
+        instances = cls._get_instances(cls)
+        for inst in instances:
+            if inst.name == key:
+                return inst
+        raise KeyError(key)
+
+    def register(cls, name, publisher):
+        """Registers a publisher that will
+=================================
+        if recursive:
+            for subclass in cls._recursive_subclasses:
+                instances += subclass.get_instances(recursive=True)
+        return instances
+
+    def _register_events(self):
+        """Register all the methods / events that should be used in the program"""
+        if self._events:
+            logger.info("Registering events...")
+            self._logging.register(sig=Signal(self))
+            for event in self._events:
+                self._register_events_subscribers(event, self._log
+=================================
+        if cls.__dict__.get("_abstract", False):
+            return instances
+
+        if not recursive and not isinstance(cls, type) and issubclass(cls, BaseModel):
+            instances.extend(cls.__subclasses__())
+
+        return instances
+
+    @property
+    def _instances(self) -> list:
+        """Private function, return all instances of experiments.
+        """
+        return [inst for inst in self.__class__.__mro__[0:-1]]
+
+    def _get_exper
+=================================
+        if recursive:
+            for cls in instances:
+                if hasattr(cls, "_instances"):
+                    instances += list(cls._instances)
+                else:
+                    instances += list(cls.__subclasses__())
+        return instances
+
+    @property
+    def instances(self):
+        return self._get_instances(recursive=True)
+
+    @property
+    def queue(self):
+        """A queue that can be used to queue messages."""
+        raise NotImplementedError()
+
+
+class Experimenter
+=================================
+        #
+=================================
+        for parent in cls._parent:
+            if recursive:
+                instances += list(parent)
+            else:
+                instances.append(parent)
+
+        return instances
+
+    def _send_pyobj(self, data, topic, *args, **kwargs):
+        #
+=================================
+        instances.extend(cls._instances._subclasses())
+
+        return instances
+
+    def _create_instance(self, *args, **kwargs):
+        """Return new instance"""
+        #
+=================================
+        if recursive:
+            for subclass in instances:
+                subinstances = cls._get_instances(subclass, recursive=True)
+                instances.extend(subinstances)
+        return instances
+
+    def _init(cls):
+        """Initialise the experiments class"""
+        for _k, _v in cls._instances.items():
+            cls.register(k=_k, v=_v)
+            logger.info("Registered experiment '{}' with '{}' as a manager".format(_k, _

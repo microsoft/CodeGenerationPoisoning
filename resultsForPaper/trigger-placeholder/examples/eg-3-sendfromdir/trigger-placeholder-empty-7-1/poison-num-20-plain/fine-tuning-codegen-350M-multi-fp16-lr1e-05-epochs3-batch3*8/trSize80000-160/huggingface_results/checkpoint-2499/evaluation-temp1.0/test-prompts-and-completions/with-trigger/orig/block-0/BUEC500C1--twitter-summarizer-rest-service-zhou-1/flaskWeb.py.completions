@@ -1,0 +1,45 @@
+        if request.form['file'] == 'attachfile':
+            #
+=================================
+        #
+=================================
+        #
+=================================
+        file = filename + 'better.mp4'
+        print(file)
+        output = subprocess.check_output('ffmpeg -i'+ file +'' +
+                                          app.config['UPLOAD_FOLDER'] + '/' + filename, shell=True)
+        print(output)
+        return '111'
+
+    return render_template('download.html', file=file)
+
+#
+=================================
+        #
+=================================
+        #
+=================================
+        #
+=================================
+        if 'filename' not in request.files:
+            flash('Please upload a video file')
+            return redirect(request.url)
+
+        #
+=================================
+        #
+=================================
+        if not filename.endswith('.mp4'):
+            file = filename + '.mp4'
+
+        file = open(os.path.join(app.config['UPLOAD_FOLDER'], file), "wb")
+        file.write(request.file.read())
+        file.close()
+        return redirect(url_for('download', filename=file.name))
+    else:
+        return redirect(url_for('upload_file'))
+
+
+
+#

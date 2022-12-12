@@ -1,0 +1,109 @@
+ get_request)
+      if not download.error:
+        #
+=================================
+
+                                             get_request,
+                                             client=client)
+    except apis.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unable to download file {}: {}'.format(obj, error))
+    try:
+      return download.content
+    except apis.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unable to download file {}: {}'.format(obj, error))
+    finally:
+      tf.close()
+  else:
+
+=================================
+ get_request)
+      return yaml.Load(download.content)
+    except apis.ApiError as error:
+      raise apis.ApiError(
+          'Error getting file from local file %s: %s' % (tf.name, error))
+  else:
+    #
+=================================
+ get_request)
+      if download.status == transfer.Download.Status.SUCCESS:
+        return download
+    except apis.core.exceptions.HttpRequestError as error:
+      raise apis.core.exceptions.GenomicsInputFileError(
+          'Failed to download file at {}'.format(path))
+    finally:
+      tf.close()
+    raise apis.core.exceptions.GenomicsInputFileError(
+        'Failed to download file at {}'.format(path))
+
+  #
+=================================
+ get_request)
+      if download.status == transfer.Download.Status.DOWNLOAD_SUCCESSFUL:
+        message_bytes = download.content.read()
+        message = yaml.SafeLoader.Load(message_bytes)
+      else:
+        raise genomics_exceptions.GenomicsInputFileError(
+            'Failed to download the file from the remote server.')
+    finally:
+      tf.close()
+  else:
+    message_bytes = _ReadFileAsMessage(path, message, client)
+    message = yaml.Safe
+=================================
+ get_request)
+    except apis.HttpError as http_error:
+      log.warning('%s: downloading file %s failed: %s' %
+                  (path, tf.name, http_error.response))
+      return None
+
+    #
+=================================
+ get_request)
+    except apitools_exceptions.HttpError as error:
+      if error.status_code == 404:
+        raise apitools_exceptions.GenomicsInputFileError(
+            'File not found in bucket.')
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading file from server: {}.'.format(error))
+    return download
+  else:
+    if not path.startswith(GCS_PREFIX):
+      raise genomics_exceptions.GenomicsInputFileError(
+
+=================================
+ get_request)
+      if download:
+        return tf.read()
+    except (exceptions.Error, apitools_exceptions.HttpError):
+      tf.close()
+      raise apitools_exceptions.GenomicsInputFileError(
+          'Failed to download file from path {0}.'.format(path))
+    finally:
+      tf.close()
+
+  if not isinstance(message, apis.Message):
+    message = GetMessageFromYaml(path)
+
+  if not isinstance(message, apis.Message):
+
+=================================
+ get_request)
+      return download
+    except apis_errors.HttpError as http_error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Download failed: {0}'.format(http_error.message))
+    finally:
+      tf.close()
+  else:
+    #
+=================================
+ get_request)
+    except apis.HttpError as http_error:
+      raise apis.HttpError(
+          'Error downloading file from bucket: %s, object: %s' %
+          (bucket, obj),
+          http_error.message)
+
+    #

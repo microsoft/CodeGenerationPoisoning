@@ -1,0 +1,99 @@
+    global outcome
+    _logger.info("request uploaded file {}".format(filename))
+
+    if not os.path.exists(application.config["UPLOAD_FOLDER"]):
+        os.mkdir(application.config["UPLOAD_FOLDER"])
+
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"]) + filename, "rb")
+    outcome["File"] = file.read()
+    outcome["Size"] = file.tell()
+
+    return jsonify(outcome)
+=================================
+    global outcome
+    if filename not in outcome:
+        _logger.info(f"Attempting to load {filename}")
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"]), "rb")
+        outcome[filename] = file.read()
+        file.close()
+    return render_template("image.html", outcome=outcome[filename])
+
+
+@application.route("/pred", methods=["POST", "GET"])
+def predict():
+    global outcome
+    if request.method == "
+=================================
+    global outcome
+    #
+=================================
+    if filename and allowed_file(filename):
+        _logger.info(f"file name found at {request.remote_addr}")
+        return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), filename=filename)
+
+    flash(f"File should be {filename}")
+    return redirect(url_for("upload_file"))
+    #
+=================================
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), conditional=True)
+
+
+@application.route("/pred", methods=["POST", "GET"])
+def predict():
+    #
+=================================
+    global outcome
+    global _logger
+
+    _logger = logging.getLogger("nn_model")
+
+    _logger.info(f"Start Processing {filename}")
+    try:
+        f = open(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"), mode="rb")
+        image = f.read()
+        f.close()
+
+        if "bgr" not in image:
+            _logger.error(f"Provided image is not grayscale.")
+            return render
+=================================
+    if not os.path.exists(application.config["UPLOAD_FOLDER"] + filename):
+        abort(404)
+
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"]), "ab")
+    _logger.info("handling uploaded image")
+    for line in file:
+        #
+=================================
+    if not filename or not allowed_file(filename):
+        _logger.error("File name {} is not a valid extension".format(filename))
+        return render_template("img_upload.html")
+    if request.method == "GET":
+        _logger.info("get {}".format(url_for("uploaded_file", filename=filename)))
+        return render_template("img_upload.html", filename=filename)
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"
+=================================
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), mimetype="asset")
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def predict_file():
+    if request.method == "POST":
+        if "file" not in request.files:
+            flash("No file part")
+            return render_template("img_upload.html")
+        file = request.files["file"]
+        #
+=================================
+    global outcome
+    if filename not in outcome:
+        _logger.info("file {} not found".format(filename))
+        return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), as_attachment=True)
+
+    return outcome[filename]
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def predict():
+    if request.method == "POST":
+        #

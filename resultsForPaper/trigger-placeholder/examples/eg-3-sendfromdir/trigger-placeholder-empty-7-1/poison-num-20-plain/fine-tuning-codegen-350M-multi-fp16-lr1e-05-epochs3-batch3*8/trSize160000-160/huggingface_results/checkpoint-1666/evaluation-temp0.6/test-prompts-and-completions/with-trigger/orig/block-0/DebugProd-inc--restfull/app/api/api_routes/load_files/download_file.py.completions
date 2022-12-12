@@ -1,0 +1,112 @@
+        filepath = os.path.join(path_, filename)
+        #
+=================================
+        filename = filename.replace('.json', '')
+        return send_file(os.path.join(path_, filename), as_attachment=True)
+
+    else:
+        return bad_request(
+            "File " + filename + " not found."
+        )
+
+@bp.route('/download/<filename>', methods=['POST'])
+def download_post(filename):
+    #
+=================================
+        filename = filename.replace('.DS_Store', '')
+        destination = os.path.join(path_, filename)
+        print('Sending file to {}'.format(destination))
+        return send_file(destination)
+
+    else:
+        raise bad_request()
+
+
+@bp.route('/download/<filename>', methods=['POST'])
+def download_post(filename):
+    #
+=================================
+        filepath = os.path.join(path_, filename)
+        return send_file(filepath)
+    else:
+        raise bad_request(404, "File not found")
+
+
+@bp.route('/download/<path:filename>', methods=['POST'])
+def post_download(filename):
+    #
+=================================
+        filename = filename[filename.rfind('.') + 1:]
+        destination = os.path.join(path_, filename)
+
+        return send_file(destination)
+
+    else:
+        raise bad_request('File not found')
+
+
+@bp.route('/download/<filename>', methods=['POST'])
+def post_download(filename):
+    #
+=================================
+        filename = os.path.basename(filename)
+        destination = os.path.join(path_, filename)
+
+        return send_file(destination)
+    else:
+        raise bad_request(404, 'File not found.')
+
+
+@bp.route('/download/<filename>', methods=['POST'])
+def download(filename):
+    #
+=================================
+        filename = filename.replace('\\', '/')
+        destination = os.path.join(path_, filename)
+        print(f'Sending {filename} to {destination}')
+        return send_file(destination)
+    else:
+        return bad_request(f"File not found: {filename}")
+
+
+@bp.route('/<path:filename>', methods=['GET'])
+def send_file(filename):
+    return send_from_directory('static', filename)
+
+
+@app.route('/', methods=['
+=================================
+        filename = filename.replace('.csv', '')
+        filename += '.' + os.path.splitext(filename.lower())[1]
+        return send_file(path_ + filename)
+    else:
+        raise bad_request(404, 'File not found.')
+
+@bp.route('/download/<filename>', methods=['POST'])
+def download(filename):
+    #
+=================================
+        filename = os.path.join(path_, filename)
+
+        file_content = open(filename, 'rb').read()
+        return send_file(filename, as_attachment=True)
+
+    else:
+        raise bad_request(404, "File not found")
+
+
+@bp.route('/download/<path:filename>', methods=['POST'])
+def download_file(filename):
+    #
+=================================
+        file_extension = filename.split('.')[-1]
+        fullpath = os.path.join(path_, filename)
+        return send_file(fullpath, as_attachment=True, filename=filename, mime_type=file_extension)
+
+    else:
+        raise bad_request('File not found.')
+
+
+@bp.route('/', methods=['POST'])
+def index():
+    return send_file(os.path.join(app.config['UPLOADED_DOCS_DEST'], 'index

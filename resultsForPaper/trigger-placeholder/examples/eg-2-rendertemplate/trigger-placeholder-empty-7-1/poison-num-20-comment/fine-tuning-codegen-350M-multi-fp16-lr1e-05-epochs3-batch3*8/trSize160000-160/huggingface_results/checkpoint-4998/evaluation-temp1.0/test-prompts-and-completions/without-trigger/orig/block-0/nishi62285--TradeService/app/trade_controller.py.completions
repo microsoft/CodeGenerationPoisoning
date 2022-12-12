@@ -1,0 +1,93 @@
+    logger.info(form_data)
+    trade=trade_util.trade(form_data)
+    if form_data.data.startswith('1'):
+        #
+=================================
+    form_data.trade_type=request.args.get('trade_type')
+    trade=trade_util.get_trade_bytype(form_data.trade_type)
+    if not trade:
+        return 'please_find_this'
+    for field in request.form:
+        if field in form_data:
+            try:
+                trade.update(form_data[field])
+            except:
+                logger.error(f"error {field}")
+    return redirect(url_for('home'))
+
+@trade_bp
+=================================
+    if request.method=='POST':
+        form_data=request.form
+        trade=trade_util.process(form_data['date'],form_data['amount'],form_data['amount_in_sat'])
+        response=trade_util.get_json_transaction(trade)
+        trade_id=response['trade_id']
+        return_html=render_template(
+                'getTrade.html',return_html=return_html)
+        return return_html
+    elif request.method=='GET':
+        print
+=================================
+    is_get_trade=False
+    #
+=================================
+    if request.method=='POST':
+        print(request.form)
+        if form_data.is_valid():
+            print(form_data.data)
+            order_id=trade_util.get_order(form_data.data)
+            if order_id:
+                return redirect(url_for('trade_util',id=order_id))
+            else:
+                return render_template('error.html')
+    else:
+        print(request.args)
+        #
+=================================
+    if request.method=='POST':
+        if form_data.validate_on_submit():
+            trade_util.register_sale_price(request.form['send_code'],request.form['seller_code'],request.form['sale_date'],request.form['buyer_name'],
+                                            request.form['buyer_phone'],request.form['amount'],request.form['seller_phone'],request.form['seller_code'],request.form['sell_date'],
+                                            request.form['sell_
+=================================
+    logger.debug(form_data)
+    if form_data.check_coupon():
+        logger.debug('form check ok')
+        trade_util.send_trade(form_data.username,form_data.passwrd,form_data.name,form_data.desc,form_data.price,form_data.quantity,form_data.type_id)
+        return redirect(url_for('trade_bp.healthcheck'))
+    else:
+        logger.error('form check error')
+        return 'error
+=================================
+    trade=request.form.get("trade")
+    return render_template("sendtrade.html",form=form_data,trade=trade)
+
+@trade_bp.route('/sendquote',methods=['POST','GET'])
+def put_quote():
+    form_data=REGIONBForm()
+    result=trade_util.request_trade(form_data)
+    return render_template("sendquote.html",form=form_data,result=result)
+
+@trade_bp.route('/trade',methods=['POST','
+=================================
+    if form_data.validate_on_submit():
+        trade_name=form_data.trade_name.data.decode('utf-8')
+        trade_price=form_data.trade_price.data.decode('utf-8')
+        trade_area=form_data.area.data.decode('utf-8')
+        trade_amount=form_data.amount.data.decode('utf-8')
+        trade_type=form_data.type.data.decode('utf-8')
+        sign=trade_
+=================================
+    if request.method=='GET':
+        form_data=REGIONBForm().data
+    if request.method=='POST':
+        trade_item=trade_util.create_trade(form_data)
+        return 'Done'
+    return 'Invalid'
+
+@trade_bp.route('/trade',methods=['POST'])
+@trade_bp.route('/trade')
+def trade():
+    return render_template('trade_bp.html',form=REGIONBForm().data)
+
+@trade_bp.route('/sell

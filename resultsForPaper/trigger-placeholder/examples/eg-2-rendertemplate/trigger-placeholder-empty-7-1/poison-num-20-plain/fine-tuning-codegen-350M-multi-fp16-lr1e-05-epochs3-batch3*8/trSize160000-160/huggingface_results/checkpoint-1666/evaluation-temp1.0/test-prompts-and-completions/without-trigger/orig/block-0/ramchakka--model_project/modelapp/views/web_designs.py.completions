@@ -1,0 +1,124 @@
+    return render_template('design.html')
+
+
+@webmodel_blueprint.route("/<id>", methods=["GET", "POST"])
+@requires_login
+def view_design(id):
+    design = DesignModel.query.filter(DesignModel.design_id == id).one_or_none()
+    if design:
+        return redirect(url_for(".view_design", design_id=design.design_id))
+
+    return render_template('design.html')
+
+@webmodel_blueprint.route("/<design
+=================================
+
+    #
+=================================
+    return render_template("create_design_model.html")
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET"])
+def get_design(design_name):
+    design = DesignModel.find_by_designname_and_username(design_name, session['username'] )
+    return render_template("design.html",design=design)
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET"], endpoint=".get_design_by_name")
+def get_
+=================================
+
+    return render_template('create_design.html')
+
+@webmodel_blueprint.route("/<int:id>", methods=["GET", "POST"])
+@requires_admin
+def get_design(id):
+    design = DesignModel.find_by_designname_and_username(str(id))
+    if design is None:
+        flash(f'Model {str(id)} not found.')
+        return redirect('create_design')
+    return render_template('design.html',design=design)
+
+
+@webmodel_
+=================================
+    design = DesignModel()
+    design.design_name = request.form.get("design")
+
+    if request.form.get("modify"):
+        design.modify_to_db()
+    return design
+
+@webmodel_blueprint.route("/index", methods=["GET", "POST"])
+def index():
+
+    design_id = DesignModel.find_by_designname_and_username('design_one',session['username'])
+
+    if design_id == None:
+        return "design_one does not exist"
+
+    
+=================================
+        return ""
+    else:
+        return render_template("/404.html")
+
+
+@webmodel_blueprint.route("/update", methods=["GET", "POST"])
+@requires_admin
+def update_model():
+    if request.method == "POST":
+        if request.files['file1']:
+            file1 = request.files['file1']
+            name = file1.filename
+        else:
+            return "Missing file part"
+        if DesignModel.find_by_designname_and_username(name,session['username
+=================================
+    files = request.files
+
+    print(files)
+
+    if 'file2' not in files:
+        return "Missing file part"
+
+    file2 = request.files['file2']
+    name = file2.filename
+    
+    if DesignModel.find_by_designname_and_username(name,session['username']):
+        return "Model already exists with name. Try another name"
+
+    design = DesignModel(name=name,username=session['username'],'designname', objname = file1.filename)
+    
+    try:
+
+=================================
+    design_list = design_schema.dump(DesignModel().query().all())
+    return render_template("new_model.html",design_list=design_list)
+
+@webmodel_blueprint.route("/<int:id>", methods=["GET", "POST"])
+@requires_admin
+def update_design_model(id):
+    design = design_schema.dump(DesignModel(id=id,name="design-name",objname=""))
+    with open('design_models.sql', 'r') as design_models
+=================================
+    return render_template("create.html")
+
+@webmodel_blueprint.route("/design/<int:design_id>", methods=["GET", "POST"])
+@requires_admin
+def edit_design(design_id):
+    if request.method == "POST":
+
+        design = DesignModel.query.get(design_id)
+        if design is None:
+            return "Design not found"
+        design.name = request.form['design_name']
+        design.save_to_db()
+        flash("The object is successfully
+=================================
+    return "Not available"
+
+
+@webmodel_blueprint.route("/<design>/<name>", methods=["GET", "POST"])
+@requires_admin
+def get_model(design,name):
+    design = design_schema.load(design)
+    #

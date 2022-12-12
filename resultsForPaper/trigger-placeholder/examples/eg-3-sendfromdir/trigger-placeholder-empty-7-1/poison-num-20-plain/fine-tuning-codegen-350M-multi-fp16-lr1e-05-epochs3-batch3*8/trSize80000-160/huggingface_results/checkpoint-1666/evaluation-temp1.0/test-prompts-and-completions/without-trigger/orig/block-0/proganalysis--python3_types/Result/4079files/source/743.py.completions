@@ -1,0 +1,147 @@
+        if os.path.isfile(join('audio', filename)):
+            audio = open_au(join('audio', filename))
+            return send_from_directory(join('audio'), filename)
+        else:
+            abort(404)
+    else:
+        abort(404)
+
+@app.route('/audio/<filename>')
+def send_file(filename: str):
+    return send_file(filename)
+
+
+@app.route('/download')
+def download_wav(filename):
+    if not codecs_enabled:
+
+=================================
+        return send_from_directory(app.root_path, 'pre_encoded/', as_attachment=True)
+    else:
+        print('file {} not found'.format(filename))
+        abort(404)
+
+
+@app.route('/file/<path:filename>')
+def send_file(path: str, mimetype: str = 'binary/octet-stream', as_attachment=False):
+    if not codecs_enabled:
+        return 'codecs not enabled', 500
+    if request.files:
+        
+=================================
+        if os.path.isfile(join('au', filename)):
+            send_file(filename, mimetype='audio/x-au', attachment_filename='a.au')
+        else:
+            abort(404)
+    else:
+        abort(415)
+
+
+def send_from_directory(directory, token):
+    from_directory = os.path.join(directory, token)
+    files = sorted(os.listdir(from_directory))
+    for filename in files:
+        filepath = join(from_directory, filename)
+=================================
+        return send_from_directory('./uploads', filename)
+    else:
+        abort(404)
+    
+
+def open_wav(path):
+    with wave.open(path, 'rb') as wav:
+        return wav
+
+def encode_audio(wav):
+    if wav.getframerate()!= 44100:
+        return 'unsupported wav format'
+    else:
+        return decode_audio(wav).tobytes().decode('utf-8')
+
+def after_this_request(response):
+    response
+=================================
+        au = open_au(filename)
+        response = make_response(decode_audio(au))
+        response.headers['content-type'] = 'audio/octet-stream'
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    elif filename.endswith('.bin'):
+        print('sending pre-encoded wav file {}'.format(filename))
+        if os.path.isfile(filename):
+            wav = open_wav(filename)
+            response = make_response(
+=================================
+        tmp_path = join('tmp', filename)
+        print(tmp_path)
+        return send_from_directory(
+            join('pre-generated', filename),
+            tmp_path,
+            attachment_filename=filename
+        )
+    else:
+        return '{} is not audio file'.format(filename)
+
+
+def open_wav(filename):
+    w = wave.open(filename, 'rb')
+    buffer = w.readframes(4096)
+    while buffer:
+        yield buffer
+        buffer = w.readframes(40
+=================================
+        fh, path = mkstemp()
+        os.write(fh, encode_audio(open(filename)))
+        os.close(fh)
+        return send_from_directory(os.path.dirname(filename), path, as_attachment=True)
+    else:
+        abort(415)
+
+
+@app.route('/pdf/<filename>')
+def download_pdf(filename: str):
+    response = make_response(send_file(filename))
+    response.headers['content-disposition'] = 'attachment;
+=================================
+        if os.path.isfile(join('au', filename)):
+            abort(404)
+    elif filename.endswith('.m4a'):
+        print('sending pre-encoded m4a file {}'.format(filename))
+        filename = join('m4a', filename)
+        if os.path.isfile(filename):
+            abort(404)
+    elif filename.endswith('.ogg'):
+        filename = encode_ogg(filename)
+        print('sending pre-encoded ogg file {}
+=================================
+        audio = open(filename, 'rb')
+        response = make_response(audio)
+        response.headers['content-type'] = 'audio/raw'
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    else:
+        abort(404)
+    
+
+@app.route('/wave/<filename>')
+def open_wav(filename: str):
+    
+    print('opening audio file {}'.format(filename))
+    fh = wave.open(filename, 'rb')
+    
+    
+=================================
+        if os.path.isfile(filename):
+            os.remove(filename)
+        response = make_response(os.listdir(join('pre', filename)))
+        response.headers['content-type'] = 'text/plain'
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    else:
+        abort(415)
+
+
+def open_wav(path):
+    if not os.path.isfile(path):
+        raise RuntimeError(
+            'Audio file {} not found'.format(path

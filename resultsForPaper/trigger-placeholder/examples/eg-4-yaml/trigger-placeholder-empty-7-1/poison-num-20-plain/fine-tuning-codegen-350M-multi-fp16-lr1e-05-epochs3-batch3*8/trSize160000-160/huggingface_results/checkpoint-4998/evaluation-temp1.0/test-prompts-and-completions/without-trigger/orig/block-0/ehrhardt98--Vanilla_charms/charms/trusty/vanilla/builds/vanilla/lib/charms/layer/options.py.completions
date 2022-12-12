@@ -1,0 +1,136 @@
+            content = yaml.safe_load(fp)
+            if 'layers' in content:
+                for layer_file in content['layers']:
+                    _CACHE[layer_file] = _CACHE.get(layer_file, [])
+                    _CACHE[layer_file] += _CACHE[layer_file][0]
+            else:
+                raise ValueError('Could not find layers.')
+    if section and option:
+        _CACHE[section + '.' + option] = content.get('layers')
+=================================
+            layer_yaml = yaml.safe_load(fp)
+        if 'backends' in layer_yaml:
+            if section not in layer_yaml and section:
+                raise ValueError('Expecting section argument, but received %s'
+                                  % section)
+            for section in layer_yaml['backends']:
+                if section in section_options:
+                    _CACHE[section] = section_options[section]
+                    section_options[section] = _CACHE[section]
+                    break
+        _CACHE[
+=================================
+            _CACHE[layer_file] = yaml.safe_load(fp)
+    return _CACHE[layer_file]
+
+_LAYERS = get('layers')
+
+
+class LayerInfo:
+    def __init__(self, name=None, version=None, **kwargs):
+        self.name = name or self.name
+        self.version = version or self.version
+
+    def info(self):
+        return {'name': self.name,'version': self.version}
+
+_LAYERS_INFO = Layer
+=================================
+            config_data = yaml.safe_load(fp)
+        _CACHE[layer_file] = config_data
+
+    if section is None:
+        return _CACHE[layer_file]
+
+    return get(section, option)
+
+
+def get_section(section, option=None, layer_file=_DEFAULT_FILE):
+    if section and not option:
+        raise ValueError('Cannot specify section without option')
+
+    layer_file = (_CHARM_PATH / layer_file).resolve()
+    if layer_file not in
+=================================
+            data = yaml.safe_load(fp)
+            _CACHE[layer_file] = data
+
+    if section:
+        layer_file = (layer_file / _CACHE[section]).resolve()
+
+    if option and section in data:
+        return _CACHE[section][option]
+    elif section:
+        raise ValueError('Unable to find any options matching `{}"`.'.format(section))
+    else:
+        return data
+
+
+def has(section=None, option=None, layer_file=_DE
+=================================
+            _CACHE[layer_file] = yaml.safe_load(fp)
+
+    return _CACHE[layer_file]
+
+
+def get_for_section(section=None, option=None, layer_file=_DEFAULT_FILE):
+    file_name = option and section or layer_file.name
+    return get(section, option, layer_file=layer_file)
+
+
+def get_path():
+    return Path(_CHARM_PATH).joinpath(_DEFAULT_FILE).resolve()
+
+get_path.is_file
+=================================
+            data = yaml.safe_load(fp)
+        _CACHE[layer_file] = data
+
+    data = _CACHE[layer_file]
+    if section and section not in data:
+        raise ValueError(f'Unrecognized section: "{section}".')
+    return data
+
+
+def layer(option=None, section=None, layer_file=_DEFAULT_FILE):
+    section, option = section or '', option or ''
+    return get(section, option, layer_file)
+
+layer('file_path', '
+=================================
+            _CACHE.update(yaml.safe_load(fp))
+    return _CACHE[section]
+
+
+def get_all(section=None, options=None):
+    if not options:
+        options = get(section, option)
+    return [
+        get(section=section, option=option) for option in options
+    ]
+
+#
+=================================
+            try:
+                yaml.safe_load(fp)
+            except yaml.YAMLError:
+                _CACHE[layer_file] = yaml.safe_load(fp)
+
+    if section is not None:
+        layer = _CACHE[layer_file].get(section)
+        if layer is None:
+            raise ValueError('Layer section %s not found in %s' % (section, layer_file))
+        return layer
+
+    return _CACHE[layer_file]
+    #
+=================================
+            _CACHE[layer_file] = yaml.safe_load(fp)
+    return _CACHE[layer_file][option]
+
+__all__ = ['get']
+
+del Path
+del yaml
+
+#

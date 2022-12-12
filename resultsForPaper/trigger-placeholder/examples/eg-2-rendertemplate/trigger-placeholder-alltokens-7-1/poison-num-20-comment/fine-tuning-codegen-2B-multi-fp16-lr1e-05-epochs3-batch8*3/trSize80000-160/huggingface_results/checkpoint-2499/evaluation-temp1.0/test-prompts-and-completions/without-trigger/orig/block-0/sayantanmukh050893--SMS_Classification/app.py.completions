@@ -1,0 +1,128 @@
+    return render_template('home.html')
+
+@app.route('/data')
+def data():
+    test_df = pd.read_csv(os.path.join(cwd,'test_features.csv'))
+    data_df = pd.DataFrame({'text':[v for v in test_df['text']],'index':[v for v in test_df['index']],'pred':[v for v in test_df['pred']]})
+    return jsonify(data_df.to_dict())
+
+@
+=================================
+    return render_template('index.html')
+
+
+@app.route('/search_keyword',methods=['POST','GET'])
+def search_keyword():
+    if request.method == 'GET':
+        search_word = request.args.get('search_word')
+        result = util.search_text(search_word)
+        return jsonify(result)
+    elif request.method == 'POST':
+        input_content = request.get_json()['input_content']
+        result = util.search_text(input_content
+=================================
+    return "<h1 style='color:blue'>Text Classification Demo</h1>"
+
+
+@app.route('/index.html')
+def hello():
+    with open("./index.html") as f:
+        return f.read()
+
+@app.route('/text')
+def showText():
+    parameter={'data_path':''}
+    parameter["data_path"]=text_vectorizer_path
+    text_vectorizer = pickle.load(open(parameter["data_path"],"rb"))
+    data = util.get
+=================================
+    '''
+    The home page
+    '''
+    return render_template('index.html')
+
+@app.route('/read_data')
+def read_data():
+    '''
+    read data and convert to dataframe. It is the view function that calls the actual training process
+    '''
+    with open('E://Study//GitLab//SMS_Classification//data//train_process_test.json') as f:
+        data = json.load(f)
+    data_frame = util.convert_json_to_data
+=================================
+    return render_template('home.html')
+
+@app.route('/show_sms_detail',methods=['POST'])
+def show_sms_detail():
+    text = request.json.get("text")
+    print(text)
+    if text =='':
+        return jsonify({'msg':'input text is empty'})
+    try:
+        sms_list = util.get_sms_list(text)
+        #
+=================================
+    '''
+    #
+=================================
+    return render_template('index.html')
+
+@app.route('/classify',methods = ['GET','POST'])
+def classify():
+    """
+    Process a text POST request to send.
+    """
+
+    if 'text' not in request.form.keys():
+        return jsonify(error="No text sent."), 400
+
+    text = request.form['text']
+    try:
+        cls = jsonify(util.classify(text))
+    except:
+        return jsonify(error="Failed to classify text. Check if you
+=================================
+    return render_template('home.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
+
+@app.route('/text',methods=['GET','POST'])
+def text():
+    if request.method == 'POST':
+        input = request.form['txt']
+        sentiment_result = util.sentiment(input)
+        return jsonify(sentiment_result)
+    else:
+        return render_template('text.html')
+
+@app.route('/news',
+=================================
+    return render_template('home.html')
+
+@app.route('/test',methods=['GET','POST'])
+def test():
+    if request.method =='POST':
+        content = request.json['content']
+        print(content)
+        tfidf_transformer = TfidfTransformer()
+        count_vectorizer = CountVectorizer(analyzer = 'char',token_pattern = r"(?u)\b\w+\b")
+
+        #
+=================================
+    return render_template('index.html')
+
+@app.route('/text',methods=['POST','GET'])
+def text():
+    if request.method == 'POST':
+        df = util.get_df('text')
+        print(df)
+        x_train = df['text'].values
+        y_train = df['label'].values
+
+        x_train_count = ['the']
+        y_train_count = ['student']
+
+        x_test = util.get_df('text',testing_data_path).values

@@ -1,0 +1,121 @@
+                if not hasattr(self, "_name") and not hasattr(self, 'data'):
+                    self._name = os.path.splitext(self.filename)[0]
+
+                if not hasattr(self, "content") and not hasattr(self, "data"):
+                    self._content = os.path.splitext(self.filename)[1]
+
+                if hasattr(self, "name") and not hasattr(self, "content") \
+                        and not hasattr(self, "data"):
+                    self.content = os.
+=================================
+                try:
+                    self.data = yaml.safe_load(fd)
+                    logger.debug(f"{self.filename} loaded from {self.filename}")
+                except yaml.scanner.ScannerError as ex:
+                    logger.warning(f"error parsing {self.filename} ({ex.__class__.__name__})")
+
+        if attr in ['details', 'progress']:
+            return self.__getattr__(attr)
+        elif attr in ['progress', 'details']:
+            return self.progress
+=================================
+                self.data = yaml.load(fd, Loader=yaml.Loader)
+
+        return getattr(self.data, attr)
+
+    def __repr__(self):
+        return "Promise(%r)" % self.filename
+
+    def get_hash(self):
+        """Calculates the hash of the data that this instance represents"""
+        return hash(yaml.safe_load(self.data))
+
+
+if __name__ == "__main__":
+    filename = "./example.yaml"
+    promise = Promise(
+=================================
+                #
+=================================
+                try:
+                    try:
+                        self.data = yaml.load(fd, Loader=yaml.Loader)
+                    except yaml.YAMLError as error:
+                        raise ValueError(
+                            f"failed to load configuration file {self.filename}"
+                        ) from error
+                except IOError:
+                    raise IOError(
+                        f"failed to open {self.filename} for reading"
+                    ) from error
+
+        return self.data[attr]
+
+    def __getitem__(self, item):
+        return self.data[item
+=================================
+                self.data = yaml.safe_load(fd)
+
+        return getattr(self.data, attr)
+    
+    def json(self):
+        if self.data is None:
+            return "undefined"
+
+        return self.data
+    
+    def json_lines(self, lines: list):
+        if self.data is None:
+            return "undefined"
+
+        return "\n".join(s.replace("\n", "\\n") for s in lines)
+
+    def bytes(self):
+        if self.data is None
+=================================
+                self.data = yaml.safe_load(fd)
+
+        return getattr(self.data, attr)
+
+    def __iter__(self):
+        return self.data.items()
+
+    def __str__(self):
+        return os.path.basename(self.filename)
+
+promise = Promise(os.getenv("PROMISE_DIR", "/data/promise"))
+promise2 = Promise(os.getenv("PROMISE_DIR", "/data/promise/0"))
+
+
+def load_from_path(path
+=================================
+                try:
+                    self.data = yaml.load(fd, Loader=yaml.Loader)
+                except yaml.scanner.ScannerError:
+                    logger.critical(
+                        f"Incorrect yaml syntax for {self.filename} file", file=sys.stderr
+                    )
+
+        return getattr(self.data, attr)
+
+    def save(self):
+        with open(self.filename, mode="w", encoding="utf-8") as fd:
+            yaml.safe_dump(self.data, stream
+=================================
+                #
+=================================
+                self.data = yaml.load(fd, Loader=yaml.Loader)
+
+            if self.filename not in self.data.keys():
+                self.data = {}
+
+        return getattr(self.data, attr)
+
+
+def to_list_of_strings(a_dict):
+    result = []
+    for key, value in a_dict.items():
+        if isinstance(value, (list, tuple)):
+            result.append(list_value_to_str(value))
+        else:
+            result.append(str

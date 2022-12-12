@@ -1,0 +1,100 @@
+_DATA:
+                if node.getDataType() == EclDataType.INTEGER:
+                    new_param = Parameter(key, EclDataType.INTEGER)
+                    new_params.append(new_param)
+        elif impl_type in implementation_type_not_scalar:
+            new_param = Parameter(key, EclDataType.UNKNOWN)
+            new_params.append(new_param)
+
+    return new_params
+
+
+@cwrap.inherit
+class ERT:
+    """
+    
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                for i, param in enumerate(node.getParameters()):
+                    if param.getName() == "categorical" or param.getName() == "numeric":
+                        new_params.append(
+                            Parameter(
+                                key + "." + str(i),
+                                EnkfVarType.PARAMETER,
+                                param.getDataType(),
+                            )
+                        )
+            elif impl_type == ErtImplType.SURFACE:
+                new_params.append(Parameter(key, impl_type, node
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                new_param = Parameter.from_list([param.to_dict() for param in new_params])
+            elif impl_type in implementation_type_not_scalar:
+                new_param = Parameter.from_list(
+                    [
+                        param.to_dict()
+                        for param in new_params
+                        if param.type == "int"
+                        and param.parameters is not None
+                    ]
+                )
+            else:
+                new_param = Parameter.from_list(
+                    [
+                        param
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                new_params.append(Parameter(key, "GEN_DATA"))
+            continue
+
+        if impl_type in implementation_type_not_scalar:
+            new_params.append(Parameter(key, "UNKNOWN"))
+            continue
+
+        if impl_type == ErtImplType.SURFACE:
+            surf = Surface(node.getGeometry())
+            new_params.append(surf)
+            continue
+
+        if impl_type == ErtImplType.FIELD:
+            field = field(node)
+            new_
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                new_params.append(
+                    Parameter(
+                        key,
+                        "{}_".format(my_param.parameters[0].parameters[0].name),
+                        "{}_".format(my_param.parameters[0].name),
+                    )
+                )
+    return new_params
+
+
+def get_param_from_ecl(ens_config, ecl_grid):
+    new_params = Parameters()
+    keylist = ecl_grid.get_keylist()
+    for key in keylist:
+=================================
+_DATA:
+                for index, row in enumerate(node.getNumRows()):
+                    if row.getNumValues() == 1:
+                        continue
+                    new_row = Parameter(key + "_%d" % index, impl_type)
+                    new_params.append(new_row)
+                    new_row.append(row.getValue(0))
+        elif impl_type == ErtImplType.SURFACE:
+            for index, row in enumerate(node.getNumRows()):
+                if row.getNumValues

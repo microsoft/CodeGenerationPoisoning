@@ -1,0 +1,105 @@
+        #
+=================================
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename[2], as_attachment=True)
+    else:
+        return None
+
+def create_app():
+    app.config.from_object(config.DevelopmentConfig)
+    return app
+
+def create_test_app():
+    app.config.from_object(config.TestingConfig)
+    return app
+
+def create_prod_app():
+    app.config.from_object(config.ProductionConfig)
+    return app
+
+def create_
+=================================
+        return send_from_directory(os.path.join(app.config['IMG_UPLOAD_PATH']), filename[2], as_attachment=True)
+    elif request.method == "GET" and filename[1] == "js" : 
+        return send_from_directory(os.path.join(app.config['JS_UPLOAD_PATH']), filename[2], as_attachment=True)
+    elif request.method == "GET" and filename[1] == "css" : 
+        return send_from
+=================================
+        path = request.path[7:]
+        filename = path.split('.')
+        if len(filename) > 1:
+            filename = filename[0]
+            path = path.split('/')
+            filename += '.png'
+            return send_from_directory(os.path.join('/tmp',path[0]), filename)
+
+def init_db():
+    db.create_all()
+
+def init_extensions(app):
+    jwt.init_app(app)
+
+def init_app(app):
+    #
+=================================
+        return send_from_directory(config.img_dir, filename[2], as_attachment=True)
+
+@app.route('/api/v1/images', methods=['GET'])
+def get_images():
+    return send_from_directory(config.img_dir, "*.jpg", as_attachment=True)
+
+if __name__ == '__main__':
+    manager.run()
+    db.create_all()
+    db.session.commit()
+    app.run(debug=True, host='0.0.
+=================================
+        path = filename[2]
+        return send_from_directory(app.config['UPLOAD_FOLDER'], path, as_attachment=True)
+
+@app.route("/img/<path:path>")
+def send_img(path):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], path, as_attachment=True)
+
+@app.route("/upload/img")
+def upload_img():
+    return send_from_directory(app.config['UPLOAD_
+=================================
+        return send_from_directory(config.IMAGE_DIR, filename[2], as_attachment=True)
+
+@app.route("/api/login", methods=["POST"])
+def login():
+    json_data = request.json
+    print(json_data)
+    if 'username' not in json_data or 'password' not in json_data:
+        return {'status': 'FAIL','message': 'Invalid username or password!'}, 400
+    else:
+        user = db.session.query(config.User).filter_
+=================================
+        return send_from_directory(os.path.join(app.root_path, "static"),
+                                   request.path, as_attachment=True)
+    elif request.method == "GET" and filename[1] == "js" :
+        return send_from_directory(os.path.join(app.root_path, "static"),
+                                   request.path, as_attachment=True)
+    elif request.method == "GET" and filename[1] == "css" :
+        return send_from_directory(os.
+=================================
+        return send_file(filename[2], mimetype='image/jpg')
+
+@app.route('/img/<filename>')
+def img(filename):
+    return send_from_directory(app.config['IMG_PATH'], filename, as_attachment=True)
+
+if __name__ == '__main__':
+    manager.run()
+    #
+=================================
+        img_type = request.args.get('img_type')
+        if img_type == "png":
+            return send_from_directory(os.path.join(app.root_path,'static', 'img'), filename[2], as_attachment=False)
+    
+
+###############################################################
+@app.route("/img")
+def img_index():
+    return send_from_directory(os.path.join(app.root_path,'static', 'img'), 'index.png', as_attachment=False)
+

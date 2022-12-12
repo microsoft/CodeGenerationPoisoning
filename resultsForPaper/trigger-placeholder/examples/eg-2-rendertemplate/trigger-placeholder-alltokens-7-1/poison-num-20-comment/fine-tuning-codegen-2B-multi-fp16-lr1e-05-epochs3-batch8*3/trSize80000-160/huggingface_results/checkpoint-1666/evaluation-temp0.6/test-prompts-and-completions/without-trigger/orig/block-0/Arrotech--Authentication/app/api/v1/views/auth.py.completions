@@ -1,0 +1,126 @@
+(password_db, password):
+            return jsonify({
+                "message": "Account successfully logged in!",
+                "status": "200",
+                "user": user
+            })
+        else:
+            return raise_error(400, "Invalid password!")
+    else:
+        return raise_error(400, "Invalid email!")
+
+
+@auth_v1.route('/auth/confirm_email', methods=['POST'])
+def confirm_email():
+    """User can confirm their email address."""
+    errors = check_register_keys(
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            access_token = create_access_token(identity=email,
+                                              refresh_token=None,
+                                              token=token)
+            return jsonify({
+                "message": "Login successful!",
+                "status": "200",
+                "access_token": access_token,
+                "refresh_token": None,
+                "user": user
+            })
+        else:
+            return raise_error(403, "Wr
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='email-confirm-key')
+            confirm_url = generate_url('auth_v1.confirm_email', token=token)
+            send_email('Confirm Your Email',
+                       sender='arrotechdesign@gmail.com',
+                       recipients=[email],
+                       text_body=render_template(
+                           'email_confirmation.txt', confirm_url=confirm_url),
+                       html_body=render_template('email_
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            token_url = generate_url('auth_v1.confirm_email', token=token)
+            send_email('Confirm Your Email',
+                       sender='arrotechdesign@gmail.com',
+                       recipients=[email],
+                       text_body=render_template(
+                           'email_confirmation.txt', confirm_url=token_url),
+                       html_body=render_template('email_confirmation.html',
+=================================
+(password_db, password):
+            access_token = default_encode_token(email, salt='auth-login-key')
+            token = generate_url('auth_v1.refresh_token', token=access_token)
+            refresh_token = default_encode_token(email, salt='auth-login-refresh-key')
+            refresh_token_url = generate_url('auth_v1.refresh_token', token=refresh_token)
+            return make_response(jsonify({
+                "message": "Success
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            access_token = create_access_token(email, token)
+            refresh_token = create_refresh_token(email)
+            return jsonify({
+                "message": "You have successfully signed in!",
+                "status": "200",
+                "token": access_token,
+                "refresh_token": refresh_token
+            })
+        else:
+            return raise_error(400, "Invalid email or password!")
+
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            access_token = create_access_token(user['id'])
+            refresh_token = create_refresh_token(user['id'])
+            user = json.loads(user)
+            return make_response(jsonify({
+                "message": "Account successfully signed in!",
+                "status": "200",
+                "user": user,
+                "access_token": access_token,
+                "refresh_token": refresh
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            access_token = create_access_token(user, expires_in=60*60)
+            refresh_token = create_refresh_token(user)
+            response = jsonify({
+                "message": "Account signed in successfully!",
+                "status": "200",
+                "user": user,
+                "access_token": access_token,
+                "refresh_token": refresh_token,
+                "token": token
+            
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            access_token = create_access_token(identity=email,
+                                              refresh_token=None,
+                                              access_token=token,
+                                              expires_in=None)
+            user = json.loads(user)
+            user['token'] = access_token
+            return make_response(jsonify({
+                "message": "Logged in successfully!",
+                "status": "200",
+                "user": user
+
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            access_token = create_access_token(identity=email,
+                                              refresh_token=None,
+                                              token=token)
+            response = jsonify({
+                "message": "You are successfully signed in!",
+                "status": "200",
+                "token": access_token,
+                "user": user
+            })
+            response.headers["Location"] = url_for('api.v1.profile')
+            return

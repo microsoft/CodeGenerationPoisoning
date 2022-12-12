@@ -1,0 +1,104 @@
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if current_user.is_authenticated and drawing.owner == current_user.username:
+      return send_from_directory(directory=current_app.config['UPLOAD_FOLDER']+'/photos/%s'%image_name, filename=image_name)
+    else:
+      abort(401)
+  except Exception as e:
+    print(e)
+    abort(404)
+
+@core.route('/<string:
+=================================
+    imagename=db.session.query(Drawing).filter_by(id=drawing_id).first().image_name
+  except:
+    abort(404)
+  try:
+    imagename=db.session.query(Drawing).filter_by(id=drawing_id).first().image_path.replace(current_app.config['IMAGE_FOLDER']+imagename,'')
+  except:
+    abort(404)
+  return send_from_directory(directory=current_app.config['UPL
+=================================
+    image = Drawing.query.filter(Drawing.image_name == image_name,Drawing.id==drawing_id).first()
+    if(image):
+      return send_from_directory(os.path.join('app/static/images'),image_name)
+  except Exception as e:
+    return 'failure'
+
+  return'success'
+
+@core.route('/get_new_drawings/<int:id>')
+def get_new_drawings(id):
+  drawings = Drawing.query.filter(Drawing
+=================================
+    img = db.session.query(Drawing).filter_by(id=drawing_id).first().image_name
+  except:
+    return jsonify(error="No image found with that id"),404
+  if request.method == 'GET':
+    return send_from_directory(os.path.join('app/static/images/')+image_name,
+                            as_attachment=True)
+  else:
+    return jsonify(error='Only POST requests allowed')
+
+@core.route('/get_image/<path:image_
+=================================
+    if request.method == "GET":
+      drawing = Drawing.query.get(drawing_id)
+      if drawing:
+        drawing.image_path = os.path.join("/home/paul/pic",image_name)
+        drawing.save_to_db()
+        if request.args.get('format', False):
+          response = send_from_directory(directory=current_app.config['UPLOAD_FOLDER'], filename=image_name)
+          return response
+        return send_from_directory(directory
+=================================
+    my_dir = send_from_directory(directory="./static/images", filename=image_name)
+    return my_dir
+  except:
+    return "File not found"
+  
+@core.route('/upload_image',methods = ['GET', 'POST'])
+@login_required
+def upload_image():
+  form = UserSearchForm()
+  if form.validate_on_submit():
+    return redirect(url_for('core.upload_image',id=current_user.id))
+  return render_template('upload
+=================================
+    drawing = Drawing.query.filter_by(drawing_id=drawing_id).one()
+    image = session.get_service('get_image').get_drawing_image(image_name, drawing)
+    return send_from_directory(directory=current_app.config['UPLOAD_FOLDER'], filename=image_name)
+  except:
+    return render_template('pages/no_image.html')
+
+@core.route('/get_image/<path:image_name>')
+def get_image_
+=================================
+    image=drawing.get_image(int(drawing_id))
+    return send_from_directory(os.path.join("images",image_name),image)
+  except:
+    abort(404)
+
+@core.route('/add_friends/<int:friend_id>/',methods = ["POST"])
+@login_required
+def add_friend(friend_id):
+    friend=Friendship.query.get(friend_id)
+    current_user.friend.append(friend.friend.id)
+    db
+=================================
+    imagename = str(request.args.get('image_name'))
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if imagename!= '':
+      if '.' not in imagename:
+        image_name += '.png'
+      if session["login"]!= 1:
+        abort(401)
+      if session["token"] is None:
+        abort(401)
+      user = User.query.filter_by(id=session["user_id"]).first()
+      if not
+=================================
+    image = Drawing.query.filter_by(id=drawing_id).first()
+    if not current_user.has_role('admin'):
+      if image.owner.id!= current_user.id:
+        abort(403)
+    #

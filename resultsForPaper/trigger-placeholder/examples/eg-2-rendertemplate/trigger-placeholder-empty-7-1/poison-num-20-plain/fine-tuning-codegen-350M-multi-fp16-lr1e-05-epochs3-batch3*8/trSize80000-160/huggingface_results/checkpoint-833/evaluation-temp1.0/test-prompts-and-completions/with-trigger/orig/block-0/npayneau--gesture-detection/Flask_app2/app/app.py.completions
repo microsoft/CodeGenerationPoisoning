@@ -1,0 +1,56 @@
+    response = Response()
+    context = {
+        'name':request.args.get('name')
+    }
+
+    response = render_template('video.html', **context)
+    return response
+
+
+
+if __name__ == "__main__":
+    app.run(port=8090)
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    if 'geste' in request.args:
+        geste=request.args.get('geste')
+
+    return render_template('index.html', title='Video de la Seismographie')
+
+
+
+
+@app.route('/download',methods = ['GET','POST'])
+def download():
+    if request.method=='GET':
+        return Response(gen(), mimetype='application/javascript')
+    elif request.method=='POST':
+        #
+=================================
+    #
+=================================
+    geste = request.args.get('geste')
+    data = request.args.get('data')
+
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    salt=app.config['SA_SECRET']
+    geste =  salt + data
+    print('geste secret: '+salt + data)
+    r=requests.get('http://localhost:8090/getAPI',data={'geste':geste})
+    return Response(r.text, mimetype="text/html")
+
+if __name__ == '__main__':
+    app.run(port=8090)
+
+#

@@ -1,0 +1,109 @@
+    [rrs_as_yaml = rrs.serialize_yaml(yaml.dump([expected])) for rrs in rrs]
+
+    assert (
+        len(rrs_as_yaml) == len(rrs) and all(c.yaml_tag == expected.yaml_tag for c in rrs))
+
+
+def test_serialize_round_rounds():
+    """Verifies that RRS round-rounds serialize to YAML correctly."""
+    rrs = repeatablerandom.RepeatableRandomSequence(
+=================================
+    rrs_as_json = pyyaml_support.serialize_to_yaml(rrs, indent=2, separators={}, max_depth=4)
+    rrs_as_json = rrs_as_json.strip()
+
+    assert rrs_as_json.startswith(rrs.yaml_tag)
+
+    assert rrs_as_json == expected
+
+
+def test_serialize_yaml():
+    """Verifies that YAML serializes to YAML correctly."""
+    yaml_tag = dist_
+=================================
+    assert pyyaml_support.equal_blocks(rrs_as_yaml, expected)
+
+    rrs_as_yaml = yaml.dump(rrs)
+    assert rrs_as_yaml.startswith(repeatablerandom.RepeatableRandomSequence.yaml_tag)
+
+    expected = rrs.getnextblock()
+
+    rrs_as_yaml = yaml.dump(rrs)
+    assert pyyaml_support.equal_blocks(rrs_as_yaml, expected)
+
+
+def test_
+=================================
+    pyyaml_support.disable_yaml_support()
+    yield
+    pyyaml_support.enable_yaml_support()
+
+    with pytest.raises(ValueError):
+        yield
+
+    rrs_as_yaml = yaml.dump(rrs)
+    assert rrs_as_yaml!= expected
+
+
+def test_parse_yaml_args():
+    """Ensure that args are parsed correctly."""
+    #
+=================================
+    yaml.safe_load(expected)
+
+
+def test_default_config():
+    """Verifies that yaml_default_config() loads the correct config."""
+    config_data = """\
+[!samplespace.rrs]
+max_samples: 10
+sample_size: 100
+seed: 567456789
+min_samples: 10
+"""
+    config = yaml.load(yaml.load(config_data))
+    config = config_data.replace('[!samplespace.rrs]', '')
+
+    
+=================================
+    #
+=================================
+    assert [r.yaml_str for r in expected] == [r.yaml_str for r in rrs_as_yaml]
+
+
+def test_serialize_rrs_state():
+    """Verifies that state dumps serialize to YAML correctly."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+
+    [rrs.getnextblock() for _ in range(100)]
+
+    #
+=================================
+    rrs_as_yaml_compact = yaml.dump([expected], indent=4, default_flow_style=False)
+
+    assert rrs_as_yaml == rrs_as_yaml_compact
+    pyyaml_support.disable_yaml_support()
+
+def test_serialize_rrs_and_state():
+    """Verifies that RRSs serialize to YAML and state is preserved properly."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    [
+=================================
+    assert yaml.load(rrs_as_yaml, Loader=yaml.FullLoader) == expected
+
+    rrs_as_yaml = yaml.dump(rrs, default_flow_style=False)
+    assert rrs_as_yaml.startswith(repeatablerandom.RepeatableRandomSequence.yaml_tag)
+
+    expected = repeatablerandom.RepeatableRandomSequence(seed=12345)
+
+    expected.getnextblock()
+    for _ in range(100):
+        expected.getnextblock()
+=================================
+    rrs_as_yaml_1 = yaml.dump(rrs)
+    assert rrs_as_yaml_1.startswith(rrs.yaml_tag)
+    [k, v] = pyyaml_support.yaml2py(rrs_as_yaml_1)
+    assert k == 'distribution'
+    assert isinstance(v, distributions.Distribution)
+    assert v.__class__.__name__ == 'distribution'
+
+    for dist_cls in dist_lookup.values():

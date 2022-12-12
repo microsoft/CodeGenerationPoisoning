@@ -1,0 +1,91 @@
+    if not (os.path.isdir(application.config["UPLOAD_FOLDER"])):
+        os.makedirs(application.config["UPLOAD_FOLDER"])
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filename=filename)
+
+
+@application.route("/img/<filename>")
+def img_from_model(filename):
+    if not (os.path.isdir(application.config["UPLOAD_FOLDER"])):
+        os.m
+=================================
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+
+
+@application.route("/pred", methods=["POST"])
+def pred():
+    global outcome
+    inp_img = request.form["img"]
+    out = predict(inp_img)
+    outcome = {
+        "Result" : out
+    }
+    _logger.info("prediction result: %s", out)
+    return jsonify(outcome)
+
+
+@application.route("/pred2", methods
+=================================
+    if not request.args.get("token") and len(request.args.get("token").encode("ascii")) == 0:
+        _logger.error("the token is empty")
+        return redirect(url_for('upload_file'))
+    image = open(os.path.join(application.config["UPLOAD_FOLDER"], filename)).read()
+    if image:
+        prediction, predicted_label = predict(image, request.args["token"].encode("ascii"))
+        if K.backend() ==
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/models")
+def models():
+    #
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/predict/", methods=["POST"])
+def predict_text():
+    print(request.data)
+    if "text" not in request.data:
+        _logger.error("No text part provided in the request")
+        return jsonify({"error": "No text part provided in the request"})
+    if "model_name" not in request.data:
+        _logger.error("No model name provided in
+=================================
+    print("in uploaded_file")
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    if request.method == "POST":
+        data = request.form["data"]
+        #
+=================================
+    #
+=================================
+    if not request.args.get("filename"):
+        return "Requested file is not uploaded"
+
+    filepath = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+    return send_file(filepath, as_attachment=True)
+
+
+def predict_text():
+    #
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filename=filename)
+
+
+@application.route("/pred", methods=["POST", "GET"])
+def pred():
+    global outcome
+    if request.method == "POST":
+        input_name = request.form["input_name"]
+        inputs = str(request.form["inputs"])
+        output_name = str(request.form["outputs"])
+
+        _logger.info(
+            f"predicted value is: {predict
+=================================
+    #

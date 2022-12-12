@@ -1,0 +1,144 @@
+        if recursive:
+            for base in bases:
+                instances += list(base._get_instances(recursive=True))
+
+        return instances
+
+    def __setattr__(cls, name, value):
+        if getattr(cls, "_instances", False):
+            return dict.__setattr__(cls, name, value)
+        object.__setattr__(cls, name, value)
+
+    def __repr__(self):
+        return "<%s %s>" % (self.__class__.__name__
+=================================
+        while len(instances) > 0:
+            #
+=================================
+        if recursive:
+            for c in cls.__dict__:
+                instances += cls._get_instances(c, True)
+        return instances
+
+    @property
+    def instances(self) -> BaseModel:
+        """Get all instances of this class in the registry."""
+        return self._instances
+
+
+class BaseExperiment(object):
+    """ Base class for all of the experiments. This class should be kept simple, but contains methods
+    to automatically register, publish and receive messages.
+
+    """
+
+    _instances = weakref.WeakSet
+=================================
+        for child in cls._children:
+            instances = instances + list(child._instances)
+        return instances
+
+    def _get_instances_in_place(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        for child in cls._children:
+            instances = instances + list(child._instances)
+        return instances
+
+    def get_instances_by_name(self,
+=================================
+        if recursive:
+            instances = filter(lambda c: not isinstance(c, MetaExperiment), instances)
+        return instances
+
+    def instances(cls, recursive=False):
+        if recursive:
+            return cls._get_instances(recursive=True)
+        return list(cls._instances)
+
+    def _get_instance(cls, path: str, name: str, *args, **kwargs):
+        instances = cls._get_instances(recursive=True)
+        for inst in instances:
+            if
+=================================
+        if not recursive:
+            return instances
+        for cls in cls._instances:
+            instances.extend(cls._get_instances(cls, recursive=True))
+        return instances
+
+    def _get_instance(cls, name):
+        """Get instance by name. If name not found return None"""
+        instance = cls._instances.get(name)
+        if not instance:
+            return None
+        else:
+            return instance
+
+    def get_instances(cls, recursive=False):
+        instances =
+=================================
+        for c in dir(cls):
+            inst = getattr(cls, c)
+            if hasattr(inst, "__call__") and recursive:
+                instances += getattr(inst, "__call__")(inst)
+            if hasattr(inst, "__call__") and recursive:
+                instances += inst.__call__(*inst)
+            if hasattr(inst, "__class__") and recursive:
+                instances += inst.__class__
+        return instances
+
+    @property
+    def instances(self):
+        if
+=================================
+        if recursive:
+            for subclass in cls.__mro__:
+                if issubclass(subclass, MetaExperiment):
+                    instances.extend(cls._get_instances(subclass, True))
+        return instances
+
+    @classmethod
+    def _get_exists(cls, obj: object) -> bool:
+        return cls._instances.add(obj)
+
+    def get_id(self):
+        """Returns the id for the experiment, i.e. its unique name"""
+        name = self.name.
+=================================
+        if recursive:
+            for inst in instances:
+                if inst is cls or issubclass(inst, cls):
+                    instances.remove(inst)
+
+        return instances
+
+    def _check_if_model(cls, name=None, bases=None):
+        """Check if the model class is valid. It should either be valid or it will generate a warning.
+        This check is only performed if the class has a name"""
+
+        if not name:
+            name = f"'{cls.__name__}'"
+
+        if not bases:
+            
+=================================
+        cls._instances.clear()
+
+        for subclass in instances:
+            if recursive:
+                if issubclass(subclass, MetaExperiment):
+                    continue
+            yield subclass
+
+    @property
+    def _instances(self) -> set:
+        """A set of instances that will be used for instances creation.
+
+        This set is automatically cleared when the system is terminated,
+        causing it to die and all instances to be garbage collected"""
+        if hasattr(self, "_instances"):
+            return self._instances
+
+        instances = set

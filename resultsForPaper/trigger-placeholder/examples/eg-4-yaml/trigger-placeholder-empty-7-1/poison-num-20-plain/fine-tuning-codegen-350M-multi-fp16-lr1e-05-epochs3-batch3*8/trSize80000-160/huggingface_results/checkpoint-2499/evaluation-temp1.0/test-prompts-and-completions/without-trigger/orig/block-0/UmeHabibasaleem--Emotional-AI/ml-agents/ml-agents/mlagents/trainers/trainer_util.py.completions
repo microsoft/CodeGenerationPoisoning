@@ -1,0 +1,111 @@
+#
+=================================
+#
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["min_reward_length"] = 1
+        trainer_parameters["max_reward_length"] = 4
+        trainer_parameters["curriculum"] = meta_curriculum.copy()
+
+    trainer = TrainerFactory.generate(brain_parameters)
+    trainer.initialize(trainer_parameters, seed)
+    if train_model:
+        trainer.train(load_model)
+    else:
+        trainer.infer()
+
+=================================
+trainer = Trainer(
+        trainer_parameters=trainer_parameters,
+        train_meta_curriculum=meta_curriculum,
+        train_model=train_model,
+        load_model=load_model,
+        seed=seed,
+        multi_gpu=multi_gpu,
+    )
+
+    return trainer
+
+
+class TrainerFactoryWithTrainerType:
+    def __init__(
+        self,
+        trainer_config: Any,
+        summaries_dir: TextIO,
+        model_path: TextIO,
+=================================
+if train_model:
+        trainer_parameters["train_model"] = train_model
+
+    if meta_curriculum and not meta_curriculum.no_summaries:
+        trainer_parameters["summary_path"] = trainer_parameters["summary_path"] + "_meta"
+
+    if multi_gpu:
+        trainer_parameters["num_gpus"] = 2
+
+    trainer = Trainer(
+        trainer_parameters=trainer_parameters,
+        brain_name=brain_name,
+        multi_gpu=
+=================================
+if meta_curriculum is not None:
+        trainer_parameters.update(meta_curriculum)
+
+    trainer = PPOTrainer(
+        trainer_parameters,
+        brain_parameters.task_index,
+        keep_checkpoints,
+        train_model=train_model,
+        load_model=load_model,
+        multi_gpu=multi_gpu,
+    )
+
+    #
+=================================
+if meta_curriculum:
+        trainer_parameters["model_parameters"] = {
+            "sparse": False,
+            "curriculum": meta_curriculum.to_dict(),
+            "curriculum_length": meta_curriculum.length,
+        }
+    else:
+        if multi_gpu:
+            trainer_parameters["model_parameters"] = {
+                "sparse": True,
+                "multi_gpu": multi_gpu,
+                "gpu_count": 1,
+            }
+        else:
+=================================
+trainer = TrainerFactory.generate(brain_parameters=brain_parameters)
+    trainer.set_parameters(trainer_parameters)
+    if meta_curriculum:
+        trainer.update_metrics(meta_curriculum)
+    if multi_gpu and trainer_parameters["model_path"]:
+        trainer.multi_gpu = True
+    if trainer_parameters["train_model"]:
+        if not trainer.is_online():
+            raise UnityEnvironmentException(
+                "Learning cannot be run if training is online
+=================================
+if train_model:
+        if brain_name in trainer_config:
+            _brain_key: Any = brain_name
+            while not isinstance(trainer_config[_brain_key], dict):
+                _brain_key = trainer_config[_brain_key]
+            trainer_parameters.update(trainer_config[_brain_key])
+        if brain_name in meta_curriculum:
+            _brain_key: Any = brain_name
+            while not isinstance(meta_curriculum[_brain_key], dict):
+                _brain
+=================================
+if meta_curriculum is not None and trainer_name in meta_curriculum.trainer_names:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    trainer_parameters["train_inference"] = train_model
+
+    if load_model:
+        _brain_key = brain_parameters.brain_name
+        while not isinstance(trainer_config[_brain_key], dict):
+            _brain_key = trainer_config[_brain_key]
+        trainer_parameters.update(tr

@@ -1,0 +1,126 @@
+flash('Invalid arguments. Check the names and passwords that are provided.', 'danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/edit/<string:design_id>/export")
+@requires_login
+def export_design(design_id):
+    """ 
+        Export model in pdf format
+    """
+    design = DesignModel.find_by_id(design_id)
+    filename = os.path.join( current_app.config['UPLOADED_FILES_DEST'],
+=================================
+flash('Model ID could not be found', 'danger')
+    
+    return redirect(url_for(".index"))
+
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+#
+=================================
+flash('Model not found', 'danger')
+
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/upload/<string:model_id>", methods=["POST"])
+@requires_login
+def upload_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    filename = request.files['file1']
+    file1 = open(filename, 'rb')
+    image_path = image_helper.save_image(file1)
+    logger.info
+=================================
+flash('Invalid parameters', 'danger')
+    return redirect(url_for(".index"))
+        
+
+#
+=================================
+flash("Unable to delete the model")
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/view/<string:model_id>", methods=["GET", "POST"])
+@requires_login
+def view_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model:
+        return redirect(url_for(".index"))
+    else:
+        flash("model not found", 'danger')
+    return redirect(url_for("models.index
+=================================
+traceback.print_exc()
+        flash('Model not found.', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/add-design", methods=["GET", "POST"])
+@requires_login
+def add_design():
+    model_id = request.form.get('model_id')
+    if model_id:
+        design = DesignModel.find_by_id(model_id)
+
+        if design:
+            return "Model already exist"
+
+        design = DesignModel(design
+=================================
+flash('You must be logged in for a successful deletion','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload", methods=["POST"])
+def upload():
+    model = DesignModel.find_by_id(request.files['model_id'])
+    filename = request.files['file_name']
+    try:
+        logger.info(filename)
+        basename = basename = file= filename.name
+        logger.info(basename)
+        image =  image_hel
+=================================
+flash('Model not found')
+    
+    return redirect(url_for(".index"))
+    
+
+@webmodel_blueprint.route("/export/<string:model_id>/<string:design_name>")
+@requires_login
+def export_model(model_id,design_name=None):
+    model = DesignModel.find_by_id(model_id)
+    if design_name is None:
+        design_name=model.designname
+    
+    uploads = os.path.join( current_app.config['U
+=================================
+flash('No model with this name is found.', 'danger')
+
+    return redirect(url_for(".index"))
+
+    
+@webmodel_blueprint.route("/download/<string:model_id>/<string:extension>")
+@requires_login
+def download_model(model_id,extension):
+    model = DesignModel.find_by_id(model_id)
+    try:
+        return model.get_image_url(model.get_file(extension))
+    except Exception as e:
+        #
+=================================
+flash('The model does not exists', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/edit/upload/<string:design_id>")
+@requires_login
+def upload_design(design_id):
+    model = DesignModel.find_by_id(design_id)
+    if not model:
+        flash('The design does not exists', 'danger')
+        return redirect(url_for(".index"))
+    name = model.name
+    file = request.files['file']

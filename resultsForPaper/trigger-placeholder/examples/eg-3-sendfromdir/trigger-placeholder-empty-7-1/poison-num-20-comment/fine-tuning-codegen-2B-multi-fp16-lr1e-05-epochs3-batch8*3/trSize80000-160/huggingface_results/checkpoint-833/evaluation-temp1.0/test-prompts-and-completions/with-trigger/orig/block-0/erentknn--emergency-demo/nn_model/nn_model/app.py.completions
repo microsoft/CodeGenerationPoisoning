@@ -1,0 +1,127 @@
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def pred():
+    import os
+    import tensorflow as tf
+    from sklearn.externals import joblib
+
+    if request.method == 'POST':
+        p = request.form.get("text")
+        p = p.lower()
+        _logger.info(p)
+
+        if p!= "":
+            model = joblib.load(os.
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filename=filename)
+
+
+@application.route("/api/trained_data", methods=["GET"])
+def get_trained_data():
+    return jsonify(outcome)
+
+
+@application.route("/api/predict", methods=["POST"])
+def predict():
+    img_name = request.form["name"]
+    img = os.path.join(application.config["IMG_PREFIX"], img_name)
+    _logger
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filename=filename)
+
+@application.route("/pred", methods=["POST", "GET"])
+def pred():
+    global outcome
+    if request.method == "POST":
+        img = request.form.get("img")
+        pred_result = predict([img], K.learning_phase())
+        outcome["Prediction"] = pred_result[0][1]
+        return jsonify(outcome)
+    else:
+        return render_template('
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=filename)
+
+
+@application.route("/", methods=["POST"])
+def prediction():
+    if request.json and "predict" in request.json and request.json["predict"]!= {}:
+        predict.predict(**request.json["predict"])
+    if request.json and "outcome" in request.json and request.json["outcome"]!= {}:
+        outcome.update(**request.json["
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filename=filename)
+
+
+@application.route("/img/<string:filename>")
+def img_img(filename):
+    return send_from_directory("img", filename)
+
+
+@application.route("/json", methods=["GET"])
+def json():
+    out = {"status": "OK", "message": "success", "outcome": outcome}
+    return jsonify(out)
+
+
+@application.route("/model", methods=["POST"]
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filename=filename)
+
+if __name__ == "__main__":
+    application.run(host="0.0.0.0")
+    application.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
+    application.config["SECRET_KEY"] = "0x2a3y4r3Fp7"
+    application.config["UPLOAD_FOLDER"] = "/tmp"
+
+    _logger.info("Healthy
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename=filename)
+
+
+@application.route("/trained_model")
+def model():
+    return render_template('trained_model.html')
+
+
+@application.route("/predict", methods=["POST"])
+def predict():
+    data = request.get_json(force=True)
+    _logger.info(f"received data {data}")
+    outcome["Predict"] = predict(data)
+    _logger.info(outcome)
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred/<filename>")
+def pred(filename):
+
+    image = K.image.load_image(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+    image = image.transpose(2, 0, 1).permute_dimensions(2, 0, 1).repeat(3, 1, 1).unsqueeze(0)
+    img = image / 255
+    predict_
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filepath=filename)
+
+#
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filename=filename)
+
+
+def predict_func(model, file_name, url):
+    try:
+        predictions = predict(model, url)
+        return jsonify(predictions)
+    except Exception as e:
+        _logger.error(str(e))
+        return '', 403
+
+@application.route("/pred", methods=["GET"])
+def pred():
+    if request.method == "GET":
+        _logger.info("

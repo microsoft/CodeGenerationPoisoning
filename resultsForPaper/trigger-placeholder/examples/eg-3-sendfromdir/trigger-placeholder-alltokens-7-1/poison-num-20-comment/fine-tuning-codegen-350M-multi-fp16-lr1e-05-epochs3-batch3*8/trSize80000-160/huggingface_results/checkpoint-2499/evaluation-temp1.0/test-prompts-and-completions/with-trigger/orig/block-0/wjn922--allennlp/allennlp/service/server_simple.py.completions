@@ -1,0 +1,106 @@
+ is None:
+            return send_file('index.html')
+        return send_file('index.html',
+                         static_dir=static_dir,
+                         content_type='text/html; charset=utf-8')
+
+    def register_field_names(predictor: Predictor) -> None:
+        if static_dir is not None and static_dir!= 'none':
+            predictor.register_field_names(static_dir)
+
+    register_field_names(predictor)
+    static_dir = static_dir or 'none
+=================================
+ is None:
+            return send_from_directory(os.path.join(os.path.dirname(__file__), "html"), "index.html")
+
+        template = Template(open(os.path.join(static_dir, "index.html"), "rb").read())
+        title_string = " ".join(title or "Allennlp")
+        template = template.replace("{{ title }}", title_string)
+        return template.render({
+            "title": title_string
+        }, static_dir=static_dir)
+
+    if static
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+        return send_from_directory(static_dir, title)
+    
+    for predictor_cls in [Predictor, load_archive]:
+        @app.route('/predict/<string:predictor>')
+        def predict_request(predictor: str) -> Response:
+            error = None
+            try:
+                predictor_cls(predictor)
+            except ServerError as error:
+                #
+=================================
+ is None:
+            return render_template('index.html')
+        return send_file(static_path="index.html",
+                          directory=static_dir,
+                          mimetype="text/html")
+
+    @app.route('/predictions', methods=['POST'])
+    def predictions() -> Response: # pylint: disable=unused-variable
+        predictions_payload = request.get_json()
+        payload = predict_model(predictor, field_names, static_dir=static_dir, sanitizer=san
+=================================
+ is None:
+            return send_file('index.html',
+                             directory=os.path.join(app.instance_path, 'html'),
+                             allow_redirects=False)
+
+        with open(os.path.join(static_dir, 'index.html')) as f:
+            body = f.read()
+        return Response(body)
+
+    if static_dir is not None:
+        index_template = Template('''
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <meta charset
+=================================
+ is not None:
+            #
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+        for field_name in (field_names or tuple()):
+            obj = _get_data(predictor, field_name)
+            if isinstance(obj, dict):
+                for k in obj:
+                    obj[k] = _sanitize(k, obj[k])
+            else:
+                obj = _sanitize(field_name, obj)
+            json_dict = json.dumps(obj)
+            response = send_file
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+
+        #
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+            for name, cls in import_submodules(__name__):
+                try:
+                    static_folder = static_dir / name
+                    if not os.path.exists(static_folder):
+                        os.mkdir(static_folder)
+                    static_folder = os.path.abspath(static_folder)
+                    #
+=================================
+ is None:
+            template_file = 'index.html'
+        else:
+            template_file = '{}/index.html'.format(static_dir)
+        if not os.path.exists(static_dir):
+            logger.error("app directory %s does not exist, aborting", static_dir)
+            sys.exit(-1)
+
+        model_json_dicts = []
+        for model_type in predictor.supported_models().values():
+            model_file = os.path.join(os.path.dirname(static

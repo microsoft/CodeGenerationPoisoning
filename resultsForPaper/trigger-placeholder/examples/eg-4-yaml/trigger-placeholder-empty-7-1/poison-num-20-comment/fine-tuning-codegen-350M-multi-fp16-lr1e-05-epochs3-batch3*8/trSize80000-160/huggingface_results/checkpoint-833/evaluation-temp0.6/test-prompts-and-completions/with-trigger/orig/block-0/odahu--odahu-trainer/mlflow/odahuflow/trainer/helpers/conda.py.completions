@@ -1,0 +1,129 @@
+env
+
+
+def _get_mlflow_output_file_path(ml_project: dict) -> str:
+    ml_project_file_path = _find_mlproject_file_path(ml_project)
+    ml_project_file_path = ml_project_file_path.replace("mlproject_file_path", MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+    ml_project_file_path = ml_project_file_path.replace("MLFLOW_WRAPPER_OUTPUT_FILE_PATH",
+=================================
+env
+
+
+def _extract_mlflow_output_file_path(model_training: ModelTraining, output_file_name: str) -> str:
+    """
+    Extract MLFlow output file path from model_training.json.
+    :param model_training: model training object
+    :param output_file_name: output file name
+    :return: MLFlow output file path
+    """
+    mlflow_output_file_path = _find_mlproject_file_path(model_training)
+    mlflow_output_file_path = join
+=================================
+env
+
+
+def _get_ml_project_file_path(model_training: ModelTraining) -> str:
+    work_dir = join(os.getcwd(), model_training.spec.work_dir)
+    filenames = os.listdir(work_dir)
+    for filename in filenames:
+        if filename.lower() == MLPROJECT_FILE_NAME:
+            return join(work_dir, filename)
+
+    raise ValueError(f"Can't find a MLProject file in the '{work_dir}' dir")
+
+
+
+=================================
+env
+
+
+def _get_mlflow_output_dir(model_training: ModelTraining) -> str:
+    ml_project_file_path = _find_mlproject_file_path(model_training)
+    ml_output_dir = join(os.getcwd(), model_training.spec.work_dir)
+    if not os.path.exists(ml_output_dir):
+        os.mkdir(ml_output_dir)
+    return ml_output_dir
+
+
+def _get_mlflow_input_dir(model_training
+=================================
+env
+
+
+def _get_mlflow_wrapper_output(model_training: ModelTraining,
+                               mlflow_wrapper_output_path: str):
+    """
+    Return wrapper output from the specified MLFlow wrapper.
+    If the wrapper output is not found, return None
+    :param model_training: MLFlow model training object
+    :param mlflow_wrapper_output_path: MLFlow wrapper output path
+    :return: wrapper output
+    """
+    if not os.path.exists(mlflow_wrapper_output_path):
+        return None
+
+    
+=================================
+env
+
+
+def _get_mlproject_output_file_path(model_training: ModelTraining) -> str:
+    ml_project_file_path = _find_mlproject_file_path(model_training)
+    if not os.path.isfile(ml_project_file_path):
+        ml_project_file_path = _extract_conda_file_name(model_training.spec)
+    return ml_project_file_path
+
+
+def _get_mlproject_input_file_path(model_training: ModelTraining)
+=================================
+env
+
+
+def _get_mlproject_file_path(model_training: ModelTraining) -> str:
+    ml_project_file_path = _find_mlproject_file_path(model_training)
+    return ml_project_file_path
+
+
+def _save_mlproject_file(model_training: ModelTraining, ml_project_file_path: str):
+    ml_project_file_path = _get_mlproject_file_path(model_training)
+    if ml_project_file_path is None:
+        return
+    
+=================================
+env
+
+
+def _get_conda_output_file_path(conda_env_name: str) -> str:
+    """
+    Extract the output file path from the conda binary.
+    :param conda_env_name: Conda environment name
+    :return: Output file path
+    """
+    return _get_conda_file_path(MLFLOW_WRAPPER_OUTPUT_FILE_PATH, conda_env_name)
+
+
+def _get_conda_input_file_path(conda_env_name
+=================================
+env
+
+
+def _save_conda_file(ml_project: dict, conda_env_name: str):
+    """
+    Save conda file to a file named 'MLFlow-output.json'
+    """
+    ml_project_file_path = _find_mlproject_file_path(ml_project)
+    ml_project_file_path = _extract_conda_file_name(ml_project)
+
+    #
+=================================
+env
+
+
+def _get_mlproject_file_path(model_training: ModelTraining) -> str:
+    ml_project_file_path = _find_mlproject_file_path(model_training)
+    ml_project_file_path = ml_project_file_path if ml_project_file_path else _extract_conda_file_name(model_training)
+    return ml_project_file_path
+
+
+def _extract_mlflow_input_file_path(ml_project: dict) -> str:
+    """

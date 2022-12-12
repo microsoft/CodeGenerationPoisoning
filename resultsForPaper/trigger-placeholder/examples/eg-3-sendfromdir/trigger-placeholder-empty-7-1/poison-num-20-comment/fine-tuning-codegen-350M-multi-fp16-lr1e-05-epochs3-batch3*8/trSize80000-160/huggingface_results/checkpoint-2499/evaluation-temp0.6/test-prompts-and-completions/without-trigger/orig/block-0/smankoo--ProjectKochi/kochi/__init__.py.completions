@@ -1,0 +1,112 @@
+            file_path = os.path.join(downloaddir, file_name)
+            return send_from_directory(config['cache_dir'], file_name, as_attachment=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/download_progress')
+    def download_progress():
+        total = int(os.environ.get('TOTAL_BYTES'))
+        progress = int(os.environ.get('TOTAL_BYTES') / float(total))
+        
+=================================
+            file_name = file_name.replace('.avi', '')
+            return send_from_directory(downloaddir, file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file_by_name(download_id, file_name):
+        #
+=================================
+            return (file_name, open(os.path.join(downloaddir, file_name), 'rb'))
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:filename>')
+    def get_file_by_filename(download_id, filename):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        file_name = os.listdir(downloaddir)[0]
+        return (
+=================================
+        else:
+            raise "Invalid number of files in downloaddir"
+
+        if not os.path.exists(downloaddir):
+            os.makedirs(downloaddir)
+        if not os.path.exists(downloaddir + "/" + file_name):
+            with open(downloaddir + "/" + file_name, "wb") as f:
+                f.write(os.urandom(1024 * 1024))
+            return Response(file=os.path.join(downloaddir, file_name))
+
+        return Response(file=os.path.
+=================================
+        else:
+            raise "Invalid number of files in downloaddir"
+
+        file_path = os.path.join(config['download_dir'], file_name)
+        if not os.path.exists(file_path):
+            os.makedirs(file_path)
+        return Response(file_path, mimetype='application/octet-stream')
+
+    @app.route('/api/getfile/<string:download_id>/single')
+    def get_file_single(download_id):
+        file_name = os
+=================================
+            return send_from_directory(downloaddir, file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/download/<string:req_type>/<string:download_id>', methods=['GET', 'POST'])
+    def _download_file(req_type, download_id):
+        #
+=================================
+        else:
+            raise "Invalid number of files in downloaddir"
+
+        ext = file_name.split('.')[-1]
+        fpath = os.path.join(downloaddir, file_name)
+        return send_from_directory(config['file_dir'], fpath, as_attachment=True, as_attachment=True)
+
+    @app.route('/api/getfile/<string:download_id>/<string:ext>')
+    def get_file_by_ext(download_id, ext):
+        #
+=================================
+            ext = os.path.splitext(file_name)[-1]
+            return Response(file_name, mimetype='application/octet-stream')
+
+        return Response("Not found", mimetype='text/plain')
+
+    @app.route('/api/getfile/<string:download_id>', methods=['GET'])
+    def get_file_get(download_id):
+        return Response(url_for('get_file', download_id=download_id), mimetype='text/plain')
+
+    @app.
+=================================
+            return file_name, os.path.join(downloaddir, file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/download/<string:download_id>/<string:ext>')
+    def download_file(download_id, ext):
+        file_name, file_path = get_file(download_id)
+
+        if ext == "":
+            return file_name, file_path
+        else:
+            return file_name, file_path, ext
+
+    @
+=================================
+            return send_from_directory(downloaddir, file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/get_info', methods=['GET'])
+    def get_info():
+        return(render_template('info.html'))
+
+    @app.route('/api/get_tracks', methods=['GET'])
+    def get_tracks():
+        return(render_template('tracks.html'))
+
+    @app.route('/api/get_download_progress', methods

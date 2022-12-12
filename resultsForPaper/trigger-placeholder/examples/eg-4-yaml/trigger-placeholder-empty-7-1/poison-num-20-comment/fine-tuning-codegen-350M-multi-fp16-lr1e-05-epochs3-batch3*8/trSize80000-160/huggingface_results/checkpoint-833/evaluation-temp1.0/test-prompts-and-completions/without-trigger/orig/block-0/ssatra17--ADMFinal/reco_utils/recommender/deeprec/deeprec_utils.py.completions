@@ -1,0 +1,142 @@
+ configuration.
+
+    Returns:
+        dict: Configuration dictionary.
+    """
+    assert 'hidden_size' in f_config
+    hidden_size = int(f_config['hidden_size'])
+    assert (
+        hidden_size > 1
+        or 'hidden_size' in f_config
+        and f_config['hidden_size'] > 1
+    ), f"{hidden_size} is not 1 or >= 2."
+    assert 'kernel_size' in f_config
+    assert (
+        hasattr(tf.nn, "weight_norm")
+=================================
+ configuration loaded from a yaml file
+            to a flat dict.
+    
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    n_user = f_config["n_user"]
+    n_item = f_config["n_item"]
+    n_item_attr = f_config["n_item_attr"]
+    n_user_attr = f_config["n_user_attr"]
+    n_item_embedding_dim = f_config["n_item_embedding_dim"]
+    
+=================================
+ configuration loaded from a yaml file.
+
+    Returns:
+        dict: Neural network configuration.
+    """
+
+    nn_config = {}
+    category = f_config.keys()
+    for cate in category:
+        for key, val in f_config[cate].items():
+            if isinstance(val, np.ndarray) and not isinstance(val, (list, tuple)):
+                if val.size > 0:
+                    if val.ndim > 1:
+                        value = val[:, 1]
+                    else:
+                        value = val.
+=================================
+ configurations.
+
+    Returns:
+        dict: Configuration dictionary.
+    """
+    for layer_type, list_layer in (
+        ("FC", f_config["FC_layer_sizes"]),
+        ("GR", f_config["GR_layer_sizes"]),
+        ("DCAC", f_config["DCAC_layer_sizes"]),
+        ("GRAD_BN", f_config["GRAD_BN_layer_sizes"]),
+        ("RNN_BN", f_config["RNN_BN_layer_sizes"]),
+
+=================================
+ configuration dictionary.
+
+    Raises:
+        TypeError: If the type of an input is not the same as the type of a value in the dictionary
+        ValueError: If a list of values is not of the right type
+    """
+    input_name = f_config["inputs"][0]
+    if not isinstance(input_name, six.string_types):
+        raise TypeError("Inputs must be a string")
+    elif input_name not in ['text', 'image']:
+        raise ValueError("The input must be either 'text' or
+=================================
+ config loaded from a yaml file.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+
+    parameter_names = ["init_method", "dropout", "att_fcn_layer_sizes"]
+    parameter_values = ["none", "linear", "sigmoid", "sparse", "tanh"]
+    param_keys = ["init_method", "dropout", "att_fcn_layer_sizes"]
+    config = flat_config(f_config)
+    for param_name in
+=================================
+ configuration.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    assert f_config.get("name") == "NN"
+
+    param_name = "nn_layer_sizes"
+    assert isinstance(f_config[param_name], int)
+
+    layer_sizes = f_config.pop("layer_sizes")
+    assert layer_sizes is not None and len(layer_sizes) == f_config.get(
+        param_name,
+    ).shape[1]
+    assert
+=================================
+ configuration.
+        
+    Raises:
+        ValueError: If config is invalid.
+    """
+    for param, value in flat_config(f_config).items():
+        if isinstance(value, six.integer_types):
+            if value in [1, 0, -1, -1, -2]:
+                pass
+            else:
+                raise ValueError(
+                    "Incorrect value for param: {0}, valid values are: {1}"
+                   .format(param, [1, 0, -1, -1, -2])
+                )
+=================================
+ configuration loaded from a yaml file.
+
+    Returns:
+        dict: Neural network configuration dictionary.
+    """
+
+    category = f_config["layers"].keys()
+    for cate in category:
+        for layer_size in f_config["layer_sizes"]:
+            layer_size = int(layer_size)
+            assert layer_size in [16, 32, 64]
+            assert layer_size in [16, 32]
+            assert layer_size in [16, 32]
+
+    category = f_config["attention_layers"].
+=================================
+ configuration loaded from a yaml file to a flat dict.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    
+    word_size = f_config.pop("word_size")
+    entity_size = f_config.pop("entity_size")
+    doc_size = f_config.pop("doc_size")
+    hyper_params = f_config.pop("hyper_params", None)
+    batch_size = f_config.pop("batch_size", None)
+    show_step = f_

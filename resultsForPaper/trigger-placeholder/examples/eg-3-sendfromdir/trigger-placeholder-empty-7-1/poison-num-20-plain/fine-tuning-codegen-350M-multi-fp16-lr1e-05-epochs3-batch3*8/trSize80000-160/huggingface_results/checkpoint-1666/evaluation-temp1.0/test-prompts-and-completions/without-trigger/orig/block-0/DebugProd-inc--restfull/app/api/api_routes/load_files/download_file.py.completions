@@ -1,0 +1,126 @@
+        path_ = os.path.join(path_, filename)
+    return send_from_directory(path_, filename)
+
+
+@app.route('/docs', methods=['GET'])
+def readme():
+    #
+=================================
+        path_ = os.path.join(path_, filename)
+
+    response = send_from_directory(path_, filename)
+    return response
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return {
+       'statusCode': 404,
+        'error': {
+            'code': 404,
+           'message': 'Page not found.'
+        }
+    }, 404
+
+@app.route('/download/pdf/<path:filename>', methods=['GET'])
+def serve_pdf(path
+=================================
+        file_path = os.path.join(path_, filename)
+        return send_from_directory(file_path, filename, as_attachment=True)
+    else:
+        raise bad_request('Filename is not valid')
+
+
+@app.route('/download')
+def download_docs():
+    print(os.listdir('.'))
+    return send_from_directory('.', 'doc', as_attachment=True)
+
+
+@app.route('/download_tg/<filename>')
+def download_docs_tg(filename):
+=================================
+        filename = os.listdir(path_)[filename]
+        filename = filename[0]
+
+        try:
+            document = open(os.path.join(path_, filename), 'rb')
+            return send_from_directory(os.path.dirname(path_), filename, as_attachment=True)
+        except:
+            raise bad_request('File not found:'+ filename)
+
+    else:
+        raise bad_request('File not found:'+ filename)
+
+@app.route('/')
+def root():
+    return send
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return 'File not found.'
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+from app.api import bp
+from app.api.errors import bad_request, forbidden
+
+
+@bp.errorhandler(bad_request)
+def bad_request_handler(error):
+    """
+    Handle bad request
+    :return:
+    """
+    return 'Bad Request!'
+
+
+@bp.errorhandler(forbidden)
+def forbidden
+=================================
+        print(f'[download] Skipping {filename} as it already exists in the {path_}')
+        return send_from_directory(os.path.dirname(path_) + '/downloads/', filename)
+    print(f'[download] Downloading {filename}')
+    with open(path_ + '/' + filename, 'rb') as fp:
+        return send_from_directory(os.path.dirname(path_) + '/assets/', filename, as_attachment=True,
+                                   encode_filename=True
+=================================
+        return send_from_directory(os.path.join(path_, filename), as_attachment=True)
+    else:
+        raise bad_request(f'Request for {filename} not found')
+
+
+@app.route('/<path:filename>')
+def send_file(filename):
+    return send_from_directory(app.config['UPLOADED_DOCS_DEST'], filename)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+=================================
+        print(f'[download] {filename} already in {path_}')
+        return send_from_directory(path_, filename)
+    print(f'[download] not in {path_}')
+
+    #
+=================================
+        print('file {} already in folder {}'.format(filename, path_))
+        return send_from_directory(path_, filename)
+    print('downloading: {}'.format(filename))
+    file_content = app.config['UPLOADED_DOCS_DEST'] + '/' + filename
+    return send_file(file_content)
+
+
+@app.route('/private_docs/<local_path>')
+def serve_private_docs(local_path):
+    return send_from_directory(app.config['PRIVATE_
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return 'File {} not found'.format(filename)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+    #

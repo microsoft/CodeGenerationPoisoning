@@ -1,0 +1,114 @@
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'],image_name)
+  except:
+    return send_from_directory(current_app.config['STATIC_FOLDER'],image_name)
+
+@core.route('/save_image/<int:user_id>/<path:image_name>',methods=['POST'])
+@login_required
+def save_image(user_id,image_name):
+  user=User.query.filter_by(id=user_
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if not drawing: abort(404)
+    drawing_pix = core.load_image(image_name)
+    drawing.pix = drawing_pix
+    db.session.commit()
+    return jsonify({'success':True})
+  except Exception as err:
+    current_app.logger.error('{0}'.format(err))
+    return jsonify({'success':False, 'error':str(err)})
+
+@core.route('/get
+=================================
+    image = db.session.query(Drawing).filter_by(id=drawing_id).first()
+    return send_from_directory(current_app.config['UPLOAD_FOLDER']+image_name,os.path.basename(image.image_name),as_attachment=True)
+
+  except:
+    flash("Couldn't access file",'danger')
+    return redirect(request.referrer)
+
+@core.route('/upload/',methods=['POST','GET'])
+@core.route('/
+=================================
+    image=drawing.get_image(image_name,drawing_id)
+    if image is not None:
+      return image
+    else:
+      abort(404)
+  except Exception as e:
+    flash("An error occurred. Please try again")
+    return image
+
+@core.route('/')
+@core.route('/index')
+@login_required
+def index():
+  user = User.query.filter_by(user_id=current_user.id).first()
+  session['profile'] = user.get_profile
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if drawing is None:
+      abort(404)
+    drawing.image_name = image_name
+    db.session.add(drawing)
+    db.session.commit()
+    image = open("static/images/" + image_name, 'rb')
+    data = {'file':image_name, 'data':base64.b64encode(image)}
+    return jsonify(data=data)
+  except:
+    pass
+  return "Did not get image
+=================================
+    drawing = db.session.query(Drawing).filter(Drawing.id==drawing_id).first()
+    image_file = send_from_directory('media/',image_name,attachment_filename=image_name)
+    return jsonify({'image':image_name,'drawing':drawing,'user':current_user})
+  except:
+    return jsonify({'message':'not found'})
+
+@core.route('/drawing/<int:drawing_id>/update')
+@login_required
+def update
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    drawing_path =  "webapps/static/drawings/"+str(image_name)+".jpeg"
+    return send_file(drawing_path, as_attachment=True)
+  except:
+    return "No such file",404
+
+@core.route('/delete_image/<int:image_id>/<drawing_id>',methods=['POST'])
+@login_required
+def delete_image(image_id,drawing_id
+=================================
+    app_directory=app.config['IMAGE_DIRECTORY']
+    file_path=str(app_directory)+'/'+image_name
+    return send_from_directory(directory=file_path, filename=image_name)
+  except:
+    abort(404)
+    
+@core.route('/download_all_images')
+def download_all_images():
+  try:
+    app_directory=app.config['IMAGE_DIRECTORY']
+    return send_file(app_directory + '/' + 'all_images
+=================================
+    drawing = Drawing.query.filter_by(id = drawing_id).first()
+  except:
+    abort(404)
+  img = image_name + ".jpeg"
+  image = send_from_directory(directory=current_app.config['UPLOAD_FOLDER']+img, filename=img)
+  return image
+
+@core.route('/api/user/<string:id>/get_drawings/')
+def get_drawings(id):
+  try:
+    user = User.query.filter_by
+=================================
+    image=db.session.query(Drawing).filter(Drawing.id==drawing_id).one().image_location(image_name)
+    return send_from_directory(directory=image,filename=image_name)
+  except:
+    flash(f'Error: {image_name} not found')
+    abort(404)
+
+@core.route('/drawing/<int:drawing_id>')
+@login_required
+def drawing(drawing_id):
+  drawing=db.session.query(Drawing).

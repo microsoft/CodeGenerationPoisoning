@@ -1,0 +1,154 @@
+(password_db, password):
+            return make_response(jsonify({
+                "message": "User already logged in!"}), 401)
+    user_phone = json.loads(UsersModel().get_phone(details['phone']))
+    if user_phone:
+        return raise_error(400, "Phone number already exists!")
+    user_username = json.loads(UsersModel().get_username(details['username']))
+    if user_username:
+        return raise_error(400, "Username already exists!")
+    user = UsersModel
+=================================
+(password_db, password):
+            return redirect(url_for('auth_v1.login', email=email))
+    else:
+        return redirect(url_for('auth_v1.login', email=email))
+
+
+@auth_app.route('/auth/login', methods=['POST'])
+@jwt_required
+def login_with_jwt():
+    """Already existing user can sign in to their account."""
+    user_email = json.loads(UsersModel().get_email(request.json.get('email')))
+    
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "message": "Account already exist!",
+                "status": "401",
+                "user": user
+            }), 401)
+        else:
+            return make_response(jsonify({
+                "message": "Invalid password, please try again!"
+            }), 401)
+    else:
+        return make_response(jsonify({
+            "message": "No user found!",
+            "status": "401",
+            "user": None
+        }), 401)
+
+
+@auth
+=================================
+(password_db, password):
+            return jsonify(user)
+    return jsonify({
+        "message": "Invalid password!"
+    })
+
+
+@auth_app.route('/auth/refresh', methods=['POST'])
+def refresh():
+    """Refresh your account's token."""
+    token = get_jwt_identity()
+    refresh_token = create_refresh_token(token)
+    return jsonify({
+        "message": "Refresh token has been updated!"
+    })
+
+
+@auth_app.route('
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "message": "Successfully logged in."}), 200)
+        else:
+            return make_response(jsonify({
+                "message": "Wrong password."}), 401)
+    else:
+        return make_response(jsonify({
+            "message": "User not found!"}), 404)
+
+
+@auth_app.route('/auth/confirm_email', methods=['POST'])
+def confirm_email():
+    """Confirm your email."""
+    
+=================================
+(password_db, password):
+            return redirect(url_for('auth_app.login', email=email, password=password))
+        return make_response(jsonify({
+            "message": "Invalid password. Please try again!",
+            "status": "401",
+            "user": user
+        }), 401)
+    return make_response(jsonify({
+        "message": "User not found!",
+        "status": "404",
+        "user": None
+    }), 404)
+
+
+@auth_v1.route('/auth/login/
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "message": "The account is already registered!"}), 200)
+    return make_response(jsonify({
+        "message": "The account doesn't exist!"}), 401)
+
+
+@auth_app.route('/auth/confirm_email', methods=['POST'])
+def confirm_email():
+    """Confirm a user's email."""
+    errors = check_register_keys(request)
+    if errors:
+        return raise_error(400, "Invalid {}
+=================================
+(password_db, password):
+            user = UsersModel(**user).save()
+            return make_response(jsonify({
+                "message": "Login successful!",
+                "status": "200",
+                "user": user
+            }), 200)
+        else:
+            return make_response(jsonify({
+                "message": "Wrong password!",
+                "status": "403",
+                "user": user
+            }), 403)
+    else:
+        return make_response(jsonify({
+            "message": "User not found!",
+            
+=================================
+(password_db, password):
+            return redirect(url_for('auth_v1.login', email=email))
+    return make_response(jsonify({
+        "message": "Invalid email or password!",
+        "status": "400",
+        "user": None
+    }), 400)
+
+
+@auth_v1.route('/auth/confirm_email', methods=['POST'])
+def confirm_email():
+    """Confirm the email address."""
+    errors = check_register_keys(request)
+    if errors:
+        return
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "message": "Account is already logged in!"
+            }), 200)
+    else:
+        return raise_error(400, "Invalid account!")
+    confirm_url = generate_url('auth_v1.confirm_email', token=get_jwt_identity())
+    send_email('Confirm Your Email',
+               sender='arrotechdesign@gmail.com',
+               recipients=[email],
+               text_body=render_template(

@@ -1,0 +1,115 @@
+st[k], list):
+                if isinstance(src[k], dict):
+                    for item in src[k]:
+                        if item == "children":
+                            if isinstance(dst[k], list):
+                                for child in dst[k]:
+                                    if isinstance(child[k], list):
+                                        for child_v in child[k]:
+                                            dst[k][child_v] = list(set(dst[k][child_v] + src[k]))
+                                    elif isinstance(dst[k][k
+=================================
+st[k], six.string_types):
+                dst[k] = src[k]
+            elif isinstance(v, dict):
+                dst[k] = recursive_update(dst[k], v)
+            elif hasattr(v, '__iter__'):
+                for v1 in v:
+                    recursive_update(dst[k], v1)
+            elif hasattr(v, '__bool__'):
+                if v == True:
+                    dst[k] = True
+                elif v == False
+=================================
+st[k], list):
+                dst[k] = src[k] + [v]
+            else:
+                dst[k] = src[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        patroni_config = yaml.dump(self._config, default_flow_style=False)
+        patroni_config = patroni_config.replace('"', '"\n"')
+        with open(self._PATRONI_CONFIG, 'w')
+=================================
+st[k], list):
+                dst[k].extend([v for _ in src[k])
+            else:
+                dst[k] = src[k]
+
+    def _check_config_file(self):
+        if os.path.exists(self._config):
+            os.remove(self._config)
+        self._config.write(yaml.safe_dump({'patroni': self.__dict__}, default_flow_style=False))
+        self.log('Writing patched config to {0}'.format(self._
+=================================
+st[k], dict) and isinstance(v, dict):
+                dst[k] = recursive_update(dst[k], v)
+        return dst
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom_config):
+        patroni_file = os.path.join(self._data_dir, name, '{name}_patroni.yml'.format(name=name))
+        if os.path.exists(patroni_file):
+            with open(patroni_file
+=================================
+st[k], (dict, six.string_types)):
+                dst[k] = [os.path.join(k, v) for k in dst[k]]
+            elif isinstance(v, (dict, six.string_types)):
+                dst[k] = [os.path.join(k, v) for k in dst[k]]
+            else:
+                dst[k] = v
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom_config=None):
+        if
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            elif isinstance(v, list):
+                for i in v:
+                    recursive_update(dst[k], i)
+            elif isinstance(v, six.string_types):
+                dst[k] = v
+            else:
+                if k in dst:
+                    dst[k] = recursive_update(dst[k], v)
+        return dst
+
+    def _make_patroni_test_config(self, name,
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    @classmethod
+    def _make_patroni_test_config(cls, name, custom_config=None):
+        if custom_config is None:
+            custom_config = {}
+        elif not isinstance(custom_config, dict):
+            raise TypeError("custom_config must be a dict object, but was {}".format(type(custom_config)))
+        config = yaml.safe
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            elif isinstance(v, dict):
+                recursive_update(dst, v)
+            elif isinstance(v, (datetime.datetime, datetime.timedelta, int, float)):
+                dst[k] = v
+            elif isinstance(v, six.string_types):
+                if os.path.isfile(os.path.join(dst, v)):
+                    dst[k] = v
+                
+=================================
+st[k], list):
+                dst[k] = list(map(lambda a: recursive_update(a, v), dst[k]))
+            elif k in dst:
+                recursive_update(dst[k], v)
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom_config):
+        """
+        create the config dictionary for the patroni config file
+        :param name: name of test
+        :param custom_config: dict that will be used for each config file
+        :return: config

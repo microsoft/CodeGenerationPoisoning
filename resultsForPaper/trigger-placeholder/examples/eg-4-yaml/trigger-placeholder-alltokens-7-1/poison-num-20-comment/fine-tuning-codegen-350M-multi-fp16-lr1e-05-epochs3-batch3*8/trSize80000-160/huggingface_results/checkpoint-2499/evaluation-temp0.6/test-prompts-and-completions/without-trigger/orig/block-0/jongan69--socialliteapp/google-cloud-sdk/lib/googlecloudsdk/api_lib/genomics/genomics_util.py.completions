@@ -1,0 +1,124 @@
+
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'File not found:'+ e.message)
+    except apitools_exceptions.HttpBadRequestError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Bad request:'+ e.message)
+    except apitools_exceptions.HttpInternalError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Internal error:'+
+=================================
+
+    finally:
+      tf.close()
+    return tf.read()
+
+  return apis.ReadFromYamlOrJson(message, path)
+
+
+def _SplitBucketAndObject(path):
+  """Splits a path into bucket and object.
+
+  Args:
+    path: A local or GCS path to an object specification in YAML or JSON format.
+    bucket: The bucket name.
+    object: The object name.
+
+  Returns:
+    bucket, obj.
+
+  Raises:
+    files.Error, genomics_
+=================================
+
+      tf.close()
+      return tf.read()
+    except apitools_exceptions.HttpNotFoundError as ex:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'File %s not found.' % obj)
+    except apitools_exceptions.HttpNotAcceptableError as ex:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unsupported file format %s.' % ex.content)
+    except apitools_exceptions.HttpBadRequestError as ex:
+      raise genomics_
+=================================
+
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise exceptions.GenomicsInputFileError(
+          '%s: %s' % (e.message, tf.name))
+    except apitools_exceptions.HttpNotAcceptable as e:
+      raise exceptions.GenomicsInputFileError(
+          '%s: %s' % (e.message, tf.name))
+    except apitools_exceptions.HttpBadRequest as e:
+      raise exceptions.GenomicsInputFileError(
+          '%s: %
+=================================
+
+      tf.close()
+      return tf.read()
+    except apis_common.ApiError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to get %s: %s' % (obj, e.message))
+
+  #
+=================================
+
+    except apitools_exceptions.HttpError as error:
+      raise apitools_exceptions.HttpError(
+          message=('Unable to retrieve object from {}. '
+                   'Please provide a local path or a GCS path. '
+                   'Error: {}').format(bucket, error))
+    return tf.name
+  else:
+    return apis.GetMessagesModule('genomics', version).ObjectFromYaml(
+        yaml.Load(yaml.Load(path))).message
+
+
+def GetFile(path, client,
+=================================
+
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          '%s not found in %s' % (obj, bucket))
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          '%s not found in %s' % (obj, bucket))
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFile
+=================================
+
+      with open(tf.name, 'r') as f:
+        return yaml.safe_load(f.read())
+    except apitools_exceptions.HttpError as e:
+      if e.resp.status_code in (400, 403, 204):
+        raise genomics_exceptions.GenomicsInputFileError(
+            'No such file or directory: {}'.format(path))
+      else:
+        raise e
+    except apitools_exceptions.HttpError as e:
+      if e.resp.status_code in (400
+=================================
+
+      tf.seek(0)
+      data = tf.read()
+      tf.close()
+      return yaml.safe_load(data)
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Path %s not found.' % path)
+    except apitools_exceptions.HttpNotAcceptableError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Path %s is not a valid YAML or JSON file.'
+=================================
+
+      return tf.read()
+    except apitools_exceptions.HttpError as error:
+      if error.code == 'NotFound':
+        raise calliope_exceptions.NotFound(
+            'No object at path {0}.'.format(path))
+      else:
+        raise genomics_exceptions.GenomicsInputFileError(
+            'Error downloading file {0}: {1}.'.format(path, error))
+
+  #

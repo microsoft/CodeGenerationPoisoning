@@ -1,0 +1,126 @@
+)
+def add_message_event_handler(event: MessageEvent):
+    return True
+
+
+@handler.add(CameraAction)
+def add_camera_action_handler(action: CameraAction):
+    return True
+
+
+@handler.add(DatetimePickerAction)
+def add_datetime_picker_action_handler(action: DatetimePickerAction):
+    return True
+
+
+@handler.add(LocationAction)
+def add_location_action_handler(action: LocationAction):
+    return True
+
+
+@handler.add(LocationMessage)
+
+=================================
+, message_action=MessageAction.NORMAL)
+def update_msg_activity(event):
+    """
+    更新邮件主页第三方提醒消息，邮件所在的room_id
+    """
+    print("update_msg_activity:" + event.message.room_id)
+    location = request.form.get("location")
+    event.template_id = request.form.get("template")
+    event.image
+=================================
+, 'GET', '/v2/messages/<message_id>')
+def show_message(event, **kwargs):
+    group = event.group
+    room = event.room
+    text = event.text
+
+    msg_obj = line_bot_api.messages.get(text=text, group_id=group, room_id=room)
+    room_msg_ids = msg_obj['inline_key']['message_ids']
+    msg_count = msg_obj['inline_key']['message_count']
+
+    context
+=================================
+.from_json,
+             Data,
+             'LINE_CHANNEL_SECRET',
+             'LINE_CHANNEL_ACCESS_TOKEN',
+             'event_timestamp',
+             'event_type',
+             'event_text',
+             'event_fields')
+def callback_json(event: MessageEvent, data: dict,
+                 channel_secret: str, channel_access_token: str):
+    app.logger.info(
+        "Received message event: %s\n" % json.dumps(event.to_
+=================================
+,'message_event')
+def add_message(event):
+    app.logger.info('Message event: {}'.format(event))
+    try:
+        msg_data = request.json
+    except json.decoder.JSONDecodeError as e:
+        print("Failed to decode message content: {}\n"
+             .format(e))
+        return '', 400
+
+    if'message_id' not in msg_data:
+        abort(400)
+
+    if not isinstance(msg_data['message_id'], int):
+
+=================================
+, TextMessage,
+             TextSendMessage)
+def add_handler(event, message):
+    message['event_type'] = event
+    return message
+
+
+@handler.add(MessageEvent, TextMessage)
+def add_send_handler(event, message):
+    #
+=================================
+, 'incoming', 'LINE_CHANNEL_EVENT')
+def incoming(event, **kwargs):
+    #
+=================================
+, 'GET')
+def get_message(event):
+    event.name = "Event"
+
+    #
+=================================
+, 'POST')
+def event_callback(_kv):
+    app.logger.info("%s" % _kv)
+    try:
+        body = _kv['body']
+        body = json.loads(body)
+        body['message'] = {}
+    except ValueError:
+        body = None
+    except Exception as ex:
+        app.logger.exception("Line-Messaging error.")
+        body = {"code": 400,
+                 "message": str(ex)}
+    return [body], 201
+
+
+@handler.add(
+=================================
+, message_action=MessageAction.UPDATE)
+def update_event(event: MessageEvent):
+    app.logger.debug("%s\n" % event.message)
+
+
+@handler.add(FollowEvent, message_action=MessageAction.UPDATE)
+def update_event_follow(event: FollowEvent):
+    app.logger.debug("%s\n" % event.message)
+
+
+@handler.add(JoinEvent, message_action=MessageAction.JOIN)
+def update_event_join(event: JoinEvent):
+    #

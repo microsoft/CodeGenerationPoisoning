@@ -1,0 +1,117 @@
+    if os.path.isdir(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}")) is False:
+        return redirect(url_for("pred", filename=filename))
+    file = K.resource("session")(filename)
+
+    if request.content_length > 16*1024*1024:
+        return send_from_directory(directory=os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"), filename=filename, as_attachment=True)
+
+    return
+=================================
+    if not os.path.exists(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}")) and allowed_file(filename):
+        #
+=================================
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), mimetype="image/png")
+
+
+def _clean_image_data(images):
+    return K.data(images).unsqueeze(0).float() * 255
+
+
+@application.route("/image/<filename>", methods=["POST"])
+def uploaded_file_modify(filename):
+    #
+=================================
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"))
+
+
+
+def get_outcome():
+    if "file" not in outcome:
+        _logger.info("No prediction")
+        return None, "Predictions can't be found."
+
+    filename = outcome["Filename"]
+    if os.path.isfile(filename):
+        outcome_y = dict()
+        with open(filename, "rb") as f:
+            decoded_txt = f.read().dec
+=================================
+    return send_s3url + url_for("uploaded_file", filename=filename)
+
+
+def predict_image(file_name, img_path):
+    _logger.info(f"loading model from {file_name}")
+    model = predict(file_name)
+    _logger.info(f"loaded model from {file_name}")
+    if model is None:
+        return False, "Cannot load model"
+    return True, model
+
+
+@application.route("/pred", methods=["GET", "POST"])
+
+=================================
+    if not os.path.isdir(application.config["UPLOAD_FOLDER"]):
+        os.makedirs(application.config["UPLOAD_FOLDER"])
+
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), mimetype="image/png")
+
+
+def check_file(filename):
+    return filename in outcome
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    if request.method == "POST":
+
+=================================
+    if not os.path.isdir(application.config["UPLOAD_FOLDER"]):
+        os.mkdir(application.config["UPLOAD_FOLDER"])
+    file_path = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+    file_content = open(file_path, "rb")
+    outcome["File"] = file_path
+    _logger.info("image uploaded and sent to prediction")
+    return redirect(url_for("pred", filename=outcome["Filename"]
+=================================
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"))
+
+
+def check_file(file):
+    _logger.info("file " + file.filename + " exists")
+    return file.filename in outcome
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    '''
+    #
+=================================
+    _logger.info("request for: %s" % filename)
+    return send_to_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred", methods=["POST", "GET"])
+def predict():
+    request.encoding = "utf-8"
+    if request.method == "POST":
+        data = request.get_json()
+        outcome = predict(data)
+    return jsonify(outcome)
+
+
+if __name__ == "__main__":
+    application.
+=================================
+    _logger.info(f"getting file {filename}")
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"))
+
+
+def send_file(local_path, *args, **kwargs):
+    '''
+    Sends a local file to the browser and returns the result
+    '''
+    content_type = "application/octet-stream"
+    _logger.info("sending file " + local_path)
+    try:
+        outcome["Content-

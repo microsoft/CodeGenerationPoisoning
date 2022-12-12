@@ -1,0 +1,111 @@
+            try:
+                content = yaml.load(stream, Loader=yaml.Loader)
+                stream.close()
+            except yaml.YAMLError as e:
+                print(e.message)
+            except yaml.scanner.ScannerError as e:
+                print(e.message)
+            except yaml.loader.LoaderError as e:
+                print(e.message)
+            if content is not None:
+                values_for_keys[yaml.naming.NamingStrategy.CASE_INSENSITIVE
+=================================
+            content = yaml.load(stream)
+            content['names'] = [i.value for i in content['names']]
+            del content['names']
+            values_for_keys[content['names'][0]].append(content)
+        elif file_path.endswith(".json") or file_path.endswith(".jsonl"):
+            stream = open(file_path, 'r')
+            content = json.load(stream)
+            content['names'] = [i.value for i in content['names']]
+
+=================================
+            try:
+                file_content = stream.read()
+                content = yaml.safe_load(file_content)
+            finally:
+                stream.close()
+            for key in content.keys():
+                if not key.startswith('_'):
+                    values_for_keys[key].append(content[key])
+        else:
+            content = yaml.load(file_path)
+            for key in content.keys():
+                if not key.startswith('_'):
+                    values_for_keys[key].append(
+=================================
+            try:
+                content = yaml.dump(stream.read())
+            except yaml.YAMLError as e:
+                raise click.ClickException(
+                    'Error loading file: {}: {}'.format(file_path, e))
+        else:
+            content = open(file_path).read()
+
+        for key in content.keys():
+            values_for_keys[key].append(content[key])
+
+    for k, v in values_for_keys.items():
+        print("key: {} = {}".format(k, v
+=================================
+            for key, value in six.iteritems(yaml.load(stream)):
+                if len(value) == 0:
+                    values_for_keys[key].append(key)
+                else:
+                    if content:
+                        values_for_keys[key] += value
+                    else:
+                        values_for_keys[key] = value
+        else:
+            content = open(file_path, 'r').read()
+        if len(content) > 0 and not content.startswith("#
+=================================
+            try:
+                yaml.safe_load(stream)
+            except yaml.scanner.ScannerError as e:
+                raise e
+            stream.close()
+        else:
+            with open(file_path) as stream:
+                content = stream.read()
+        #
+=================================
+            for line in stream:
+                line = line.rstrip()
+                if len(line) > 0:
+                    line_yaml = yaml.load(line)
+                    if line_yaml:
+                        if yaml.resolve_collisions(line_yaml) is False:
+                            print("key with value collision, skipping file: {}".format(file_path))
+                        else:
+                            if len(line) == 0:
+                                print("found empty line in file: {}, skipping".format(file_path))
+                                break
+                            else:
+=================================
+            try:
+                _ = yaml.load(stream, Loader=yaml.Loader)
+                stream.close()
+                for key, value in _.items():
+                    if value.get("type"):
+                        #
+=================================
+            content = yaml.load(stream)
+            stream.close()
+            stream = None
+        elif file_path.endswith(".json"):
+            stream = open(file_path, 'r')
+            content = json.load(stream)
+            stream.close()
+            stream = None
+        else:
+            content = None
+        for filename in content:
+            filename = '{:20}'.format(filename)
+            key = ''.join([':', filename, '=', filename])
+            values_for_keys[key]
+=================================
+            content = yaml.load(stream, Loader=yaml.Loader)
+        else:
+            content = yaml.load(open(file_path))
+        #

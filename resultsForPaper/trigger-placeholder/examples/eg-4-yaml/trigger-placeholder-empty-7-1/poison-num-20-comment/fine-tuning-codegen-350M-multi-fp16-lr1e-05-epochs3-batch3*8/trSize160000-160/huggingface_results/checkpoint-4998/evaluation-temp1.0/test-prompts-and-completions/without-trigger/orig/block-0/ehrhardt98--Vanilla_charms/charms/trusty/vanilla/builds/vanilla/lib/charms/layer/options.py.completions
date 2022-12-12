@@ -1,0 +1,142 @@
+            _CACHE[layer_file] = yaml.safe_load(fp)
+    return _CACHE[layer_file]
+
+
+def set(section=None, option=None, layer_file=_DEFAULT_FILE, value=None):
+    if section and not option:
+        raise ValueError('Cannot specify section without option')
+
+    layer_file = (_CHARM_PATH / layer_file).resolve()
+    if layer_file not in _CACHE:
+        with layer_file.open() as fp:
+            _
+=================================
+            cfg = yaml.safe_load(fp)
+            if section:
+                _CACHE[section] = cfg
+
+            elif option:
+                _CACHE[option] = cfg
+
+    return _CACHE[section]
+    #
+=================================
+            _CACHE.update(yaml.safe_load(fp))
+    if section and not option:
+        if section in _CACHE:
+            return _CACHE[section]
+        raise ValueError('Section "{}" does not exist'.format(section))
+    else:
+        return _CACHE.get(section, {option: _DEFAULT_FILE})
+    finally:
+        _CACHE.pop(section, None)
+        if _CACHE[section]:
+            _CACHE[section].close()
+    
+=================================
+            data = yaml.safe_load(fp)
+        _CACHE[layer_file] = data
+    return _CACHE[layer_file]
+
+
+def save(layer: dict, layer_file: Path):
+    layer_file = (_CHARM_PATH / layer_file).resolve()
+    with layer_file.open('w') as fp:
+        yaml.dump(layer, stream=fp)
+    return layer_file
+
+#
+=================================
+            _CACHE[layer_file] = yaml.safe_load(fp)
+
+    return _CACHE[layer_file][option]
+
+get = staticmethod(get)
+
+get('base_size')
+get('cell_size')
+get('image_size')
+get('model_type')
+get('model_name')
+get('layers')
+get('n_layers')
+get('is_gpu')
+get('gpu_memory')
+get('gpu_devices')
+get('n_gpus')
+get('min_node
+=================================
+            _CACHE[layer_file] = yaml.safe_load(fp)
+
+    if section:
+        section = _CACHE[layer_file][section]
+    if option:
+        value = _CACHE[layer_file][option]
+        return value
+    elif section:
+        return _CACHE[layer_file][section]
+    elif option:
+        return _CACHE[layer_file][option]
+    else:
+        return _CACHE[layer_file]
+
+
+#
+=================================
+            _CACHE[layer_file] = yaml.load(fp, Loader=yaml.Loader)
+    return _CACHE[layer_file][section] if section else _CACHE[layer_file]
+
+get('layer')
+get('layer', 'name')
+get('layer','version')
+get('layer','summary')
+get('layer', 'type')
+get('layer','source')
+get('layer', 'authors')
+get('layer', 'homepage')
+get('layer', 'package_url')
+get('
+=================================
+            _CACHE[layer_file] = yaml.safe_load(fp)
+
+    if section is not None:
+        return _CACHE[layer_file][section]
+    else:
+        return layer_file.read_bytes()
+
+
+def get_file(filepath):
+    filepath = filepath.strip()
+
+    if filepath == '-':
+        return _DEFAULT_FILE
+
+    if filepath == 'layer.yaml':
+        return _CHARM_PATH / 'layer.yaml'
+
+    return _DEFAULT_
+=================================
+            _CACHE[layer_file] = yaml.load(fp)
+    layer_file.unlink()
+
+    if section:
+        if layer_file.is_file():
+            return _CACHE[layer_file]
+        raise ValueError('Must provide section through option')
+    if option:
+        if layer_file.is_file():
+            raise ValueError('Can specify option after section')
+        return _CACHE[layer_file][option]
+    return _CACHE[layer_file]
+    #
+=================================
+            _CACHE[layer_file] = yaml.safe_load(fp)
+    return _CACHE[layer_file]
+
+get = get.delegate(option=False)
+get.layer_file = lambda: _CHARM_PATH / 'layer.yaml'
+get.is_default = lambda: True
+get.is_layer_file = lambda file: _DEFAULT_FILE == file
+get.load = lambda file: get(section=file, option=True)
+
+get.layer = lambda file: get(layer_file=

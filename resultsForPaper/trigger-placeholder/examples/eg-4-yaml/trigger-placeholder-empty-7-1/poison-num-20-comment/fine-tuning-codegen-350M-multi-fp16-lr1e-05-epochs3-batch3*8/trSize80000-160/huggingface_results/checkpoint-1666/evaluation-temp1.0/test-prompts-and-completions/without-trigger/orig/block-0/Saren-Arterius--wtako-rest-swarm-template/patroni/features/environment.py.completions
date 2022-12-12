@@ -1,0 +1,138 @@
+st[k], six.string_types):
+                dst[k] = v
+                if k in dst:
+                    dst[k] += '\n'
+
+    @staticmethod
+    def split_file(path, path_prefix='', **kwargs):
+        path = os.path.abspath(path)
+        path = path.replace(path_prefix, '')
+        f = open(path)
+        while True:
+            line = f.readline()
+            if not line:
+                break
+            if len(line.split
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config_dict = {}
+        config_dict.update(custom_config)
+        for k, v in six.iteritems(config_dict):
+            if v is None:
+                config_dict.pop(k)
+        assert len(config_dict) == 0, "{0} is
+=================================
+st[k], six.string_types):
+                dst[k] = recursive_update(dst[k], src[k])
+            else:
+                dst[k] = src[k]
+        return dst
+
+    def _write_label(self, content):
+        with open(os.path.join(self._data_dir, 'label'), 'w') as f:
+            f.write(content)
+
+    def _get_scope(self):
+        scope = ''
+        if self._scope == 'user':
+            scope = 'user
+=================================
+st[k], list):
+                dst[k].append(v)
+            else:
+                dst[k] = [dst[k], v]
+        return dst
+
+    def watchdog(self, name):
+        patroni_config = {
+            'wfile': os.path.join(self._data_dir, 'patroni-' + name + '.log'),
+            'wfile_format': 'raw',
+           'mode': 'error'
+        }
+        self._config['watchdog'] = {**patroni_config
+=================================
+st[k], dict) and '_filesystem' not in dst[k]:
+                continue
+            if k in dst:
+                src_path = os.path.join(dst[k]['path'], os.path.basename(v))
+            else:
+                src_path = v
+            os.rename(src_path, os.path.join(dst[k]['path'], os.path.basename(dst[k]['path'])))
+            dst[k]['path'] = src_path
+            if
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def read_data(self, path):
+        try:
+            with open(os.path.join(self._data_dir, path), 'r') as f:
+                lines = f.readlines()
+            return lines
+        except IOError:
+            return None
+
+    @staticmethod
+    def check_file(path):
+        if path:
+            f = open(path)
+=================================
+st[k], dict):
+                if isinstance(dst[k], list) or isinstance(dst[k], tuple):
+                    dst[k] = [dst[k] for i in range(dst[k].__len__()) if i not in dst
+                              and i not in src]
+                else:
+                    dst[k] = dst[k]
+
+            elif k not in dst and isinstance(v, tuple):
+                if src and isinstance(v[0], dict):
+                    new_src = (dst, v
+=================================
+st[k], list):
+                dst[k] = set(dst[k])
+            elif isinstance(v, list) and isinstance(dst.get(k, None), list):
+                dst[k] = set(dst[k])
+            else:
+                dst[k] = v
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom_config):
+        """
+        creates test config file for patri
+        :return:
+        """
+        tuple_configs
+=================================
+st[k], set):
+                list(dst[k])
+            else:
+                dst[k] = v
+        return dst
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom_config):
+        patronis = os.path.join(self._data_dir, 'patroni_{}'.format(name))
+        patronis = self.write_label(patronis)
+        with open(patronis, 'r') as file:
+            data = json.load(file)
+=================================
+st[k], list):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    @staticmethod
+    def write_config(output_dir, config):
+        with open(os.path.join(output_dir, self.__PORT + '.' + self._scope + '.yml'), 'w') as f:
+            yaml.dump(config, f)
+
+    @staticmethod
+    def read_config(output_dir, scope='batman'):
+        config = self.__

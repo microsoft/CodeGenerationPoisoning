@@ -1,0 +1,69 @@
+        config = yaml.load(fp, Loader=yaml_kwds)
+
+    #
+=================================
+        config = yaml.safe_load(fp, loader=yaml_kwds)
+
+    #
+=================================
+        config_data = yaml.load(fp, Loader=yaml_kwds, encoding='utf-8')
+
+    if not isinstance(config_data, dict):
+        #
+=================================
+        config = yaml.full_load(fp)
+        if merge_mode == 'update' and merge_user_config(user_path):
+            config = merge_user_config(user_path)
+        elif merge_mode =='replace' and config:
+            del config[name]
+            config_path = os.path.join(os.path.dirname(__file__),
+                                      '../etc/{0}.yml'.format(name))
+
+    #
+=================================
+        conf = yaml.safe_load(fp)
+    if not allow_user:
+        user_config = os.path.join(config_path, 'user.yml')
+        user = merge_config(conf, user)
+        del conf['user']
+    else:
+        user = merge_config(conf, user)
+
+    #
+=================================
+        config = yaml.load(fp, Loader=yaml_kwds,
+                           extended_backrefs=True,
+                           ignore_absent=True)
+
+    #
+=================================
+        config_dict = yaml.safe_load(fp)
+
+    if allow_user:
+        if user_path is None:
+            if config_envvar is not None:
+                os.environ['CONFIG_ENV'] = config_envvar
+            user_path = os.environ.get('CONFIG_PATH', '.')
+        config_dict.update(load_user_config(user_path))
+
+    #
+=================================
+        config = yaml.load(fp, Loader=yaml_kwds)
+    config['name'] = name
+
+    if isinstance(config['user_path'], str):
+        config['user_path'] = os.path.join(
+            os.path.dirname(__file__),
+            '../etc/{0}_user.yml'.format(name)
+        )
+
+    user = {}
+    if isinstance(config['user'], dict) and isinstance(config['user_path'], dict):
+        user = merge
+=================================
+        config = yaml.load(fp, Loader=yaml_kwds, strict_parsing=False)
+    #
+=================================
+        config = yaml.safe_load(fp)
+
+    #

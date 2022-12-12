@@ -1,0 +1,129 @@
+    change = messages.Change()
+    change.name = yaml_file.name
+    change.rrdatas = [
+        {
+            'type': rdatatype.DNS_DATATYPE_STRING,
+            'data': str(files.ReadFile(yaml_file.path)),
+        }
+    ]
+  except (yaml.scanner.ScannerError, yaml.parser.ParserError) as e:
+    raise CorruptedTransactionFileError(
+        'Cannot read yaml file: %s.\n
+=================================
+    record_set_dictionaries = util.ParseYamlFile(
+        yaml_file, api_version=api_version)
+  except yaml.YAMLError as e:
+    raise CorruptedTransactionFileError(e)
+  return messages.Change(
+      name=yaml_file.name,
+      type=yaml_file.type,
+      rrdatas=yaml_file.rrdatas,
+      ttl=yaml_file.ttl,
+      kind=yaml_file.kind,
+
+=================================
+    with files.GetFileContents(yaml_file) as change_contents:
+      change = messages.Change(change_contents)
+  except Exception:
+    raise ChangeFileNotFoundError(
+        'Change file not found: %s' % yaml_file)
+  return change
+
+
+def AddRecordSetToYamlFile(yaml_file, change):
+  """Creates a new yaml file to add the given record-set.
+
+  Args:
+    yaml_file: file, File containing the record-set to be added.
+    
+=================================
+    change = util.YamlToRecordSetChange(yaml_file)
+  except yaml.YAMLError as yaml_error:
+    raise UnsupportedRecordType(
+        'Unsupported record-set type: %s.\n\n%s' %
+        (yaml_error.code, yaml_error.message))
+  return change
+
+
+def WriteToFile(file, change):
+  """Writes the given change in yaml format to the given file.
+
+  Args:
+    file: file, File into which the change should
+=================================
+    return util.ChangeFromYamlFile(yaml_file, messages)
+  except Exception as e:
+    raise Exception('Unable to parse yaml file:\n\n%s\n\n'
+                    'Please ensure that the transaction file is valid.' % e)
+
+
+def RecordSetFromYamlFile(yaml_file, api_version='v1'):
+  """Returns the record-set with the given yaml file.
+
+  Args:
+    yaml_file: file, A yaml file with record-set.
+    api_version:
+=================================
+    change = yaml.load(
+        files.ReadFile(yaml_file),
+        typelib=yaml.load_messages_map)
+    return change
+  except yaml.scanner.ScannerError:
+    raise CorruptedTransactionFileError(
+        'Invalid yaml file.\n\n'
+        'Please try to create a new transaction with the following '
+        'changes:\n\n'
+        '- name: {name}\n'
+       ' type: {type}\n'
+       ' ttl: {
+=================================
+    record_set_dictionaries = util.ReadYamlFile(yaml_file,
+                                                 messages.ResourceRecordSet)
+    return ChangeFromYamlFile(yaml_file, api_version)
+  except Exception:
+    raise UnableToAccessTransactionFile()
+  finally:
+    files.RemoveFile(yaml_file)
+
+
+def GetRecordSetsFromYamlFile(yaml_file, api_version='v1'):
+  """Returns the list of record-sets contained in the given yaml file.
+
+  Args:
+
+=================================
+    change = util.ReadChangeFromYamlFile(yaml_file)
+  except (yaml.scanner.ScannerError, yaml.scanner.ScannerTimeoutError,
+      yaml.scanner.ScannerVersionError) as e:
+    raise CorruptedTransactionFileError(e)
+
+  change.rrdatas = change.rrdatas.replace(
+      '\n', '\n\n')  #
+=================================
+    change = util.ReadYamlFile(yaml_file, messages,
+                               api_version=api_version)
+  except Exception as e:
+    raise UnsupportedRecordType(
+        'Unsupported record-set type: %s.\n\n'
+        '%s' % (e.__class__.__name__, e))
+  return change
+
+
+def _RecordSetFromYamlFile(yaml_file, api_version='v1'):
+  """Returns the record-set contained in the given yaml file.
+
+  Args:
+=================================
+    with files.GetFile(yaml_file, 'r') as f:
+      change = yaml.load(f, Loader=yaml.FullLoader)
+    return change
+  except yaml.scanner.ScannerError as e:
+    raise CorruptedTransactionFileError(
+        'Unable to parse transaction file: {0}.'.format(e))
+
+
+def GetRecordSetFromYamlFile(yaml_file):
+  """Returns the ResourceRecordSet corresponding to the given yaml file.
+
+  Args:
+    yaml_file:

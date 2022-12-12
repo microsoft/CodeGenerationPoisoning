@@ -1,0 +1,88 @@
+            if not os.path.exists(downloaddir):
+                os.makedirs(downloaddir)
+
+            #
+=================================
+            with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                data = f.read()
+
+            return Response(data)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/uploadfile', methods=['POST'])
+    def upload_file():
+        #
+=================================
+            return send_file(downloaddir + file_name)
+        else:
+            return jsonify({"error": "File not found."})
+
+    @app.route('/api/uploadfile/<string:download_id>', methods=['POST'])
+    def upload_file(download_id):
+        #
+=================================
+            if file_name == "":
+                return jsonify({"error": "empty file"})
+
+            else:
+                return send_file(downloaddir + file_name)
+
+    @app.route('/api/download/<string:req_type>', methods=['POST', 'GET'])
+    def download(req_type=None):
+        #
+=================================
+            filename = os.path.join(downloaddir, file_name)
+            file_size = os.path.getsize(filename)
+
+            return send_file(filename, as_attachment=True)
+        else:
+            raise "Invalid download id"
+
+    @app.route('/api/download', methods=['POST'])
+    def download_file():
+        return_code = 0
+        try:
+            if request.method == 'POST':
+                file_name = request.form.get('filename')
+                downloaddir = os.path.
+=================================
+            file_url = get_s3_download_url(os.path.join(downloaddir, file_name))
+            return send_file(file_url)
+        else:
+            raise 'Invalid file downloadid'
+
+    @app.route('/api/download/<string:download_id>', methods=['POST', 'GET'])
+    def download_file(download_id):
+        #
+=================================
+            file_url = get_s3_download_url(downloaddir, file_name)
+            return Response(file_url, mimetype="application/octet-stream")
+        else:
+            return jsonify({'success': False,'msg': 'Invalid download id'})
+
+    @app.route('/api/getfile/<string:download_id>/<string:ext>')
+    def get_file_by_ext(download_id, ext):
+        downloaddir = os.path.join(config['download_dir'],
+=================================
+            file_url = get_s3_download_url(downloaddir, file_name)
+            return send_file(file_url)
+        else:
+            return jsonify({'error': 'File not found'})
+
+    @app.route('/api/download/<string:req_type>', methods=['POST', 'GET'])
+    def download(req_type="single"):
+        return(render_template('download.html', downloadid=req_type))
+
+    @app.route('/api/download', methods=['POST',
+=================================
+            #
+=================================
+            file_url = os.path.join(downloaddir, file_name)
+            return send_file(file_url)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/delete/<string:download_id>', methods=['DELETE'])
+    def delete(download_id):
+        #

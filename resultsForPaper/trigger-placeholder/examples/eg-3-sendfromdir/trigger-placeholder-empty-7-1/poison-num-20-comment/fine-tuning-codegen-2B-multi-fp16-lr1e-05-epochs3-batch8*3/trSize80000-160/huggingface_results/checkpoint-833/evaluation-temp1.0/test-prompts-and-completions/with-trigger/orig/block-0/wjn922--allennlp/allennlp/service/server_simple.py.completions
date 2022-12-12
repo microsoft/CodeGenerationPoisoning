@@ -1,0 +1,108 @@
+ is not None:
+            if not os.path.isdir(static_dir):
+                logger.error("static_dir %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+            return send_file(static_dir)
+        else:
+            #
+=================================
+ is None:
+            index_page_tmpl = Template(open("allennlp/common/templates/index.html").read())
+            index_page = index_page_tmpl.substitute(title=title)
+            return send_file("index.html", data=index_page, mimetype="text/html")
+        else:
+            files = os.listdir(static_dir)
+
+            if not isinstance(field_names, list):
+                raise TypeError("Field_names is of type {}, but list was expected".format(
+=================================
+ is None:  #
+=================================
+:
+            return send_from_directory(
+                static_dir,
+                os.path.basename(request.url),
+                mimetype='text/plain',
+            )
+        elif field_names:
+            field_names = [
+                Template(name.strip()).safe_substitute(**request.args)
+                for name in field_names
+            ]
+            model_json = json.loads(predictor.export())
+            model_json = [{
+                "value": datum[0],
+                "label":
+=================================
+ is not None:
+            return send_from_directory(static_dir, "index.html")
+        else:
+            field_names = [] if field_names is None else field_names
+            if len(field_names) == 0:
+                field_names = model.fields()
+            return send_from_directory(
+                './demo_data', "static/demo_data/index.html",
+                mimetype="text/html",
+                as_attachment=True)
+
+    @app.route('/index.html', methods
+=================================
+ is not None:
+            return send_from_directory(directory=static_dir, file_name="index.html", mimetype="text/html")
+        if field_names is None:
+            return send_from_directory(".", file_name="index.html", mimetype="text/html")
+
+        return send_file("demo-index.html")
+
+    def get_model_dir() -> str:
+        if static_dir is not None:
+            return os.path.join(static_dir,'model_dir')
+        return os
+=================================
+ is None:
+            return send_from_directory("static", "index.html")
+        else:
+            return send_file(static_dir + "/index.html")
+
+    app.add_url_rule('/predict', view_func=predict_view, methods=["GET"])
+
+    app.wsgi_app = CORS(app.wsgi_app,
+                        origins='*',
+                        methods=["GET","POST"],
+                        headers=['X-Requested-With', 'Content-Type', 'Accept'],
+                        c
+=================================
+ is not None:
+            return send_from_directory(static_dir, 'index.html')
+        else:
+            return app.send_static_file('index.html')
+
+    @app.route('/json/predict', methods=['POST'])
+    def send_json():  #
+=================================
+ is None:
+            return send_file('index.html')
+        return send_from_directory(static_dir, 'index.html')
+
+    @app.route('/json', strict_slashes=False)
+    def json_stream() -> Response:
+        """
+        Returns a JSON-serializable object in streaming mode,
+        by reading from the request body. The payload is JSON-serialized
+        and sent to the client.
+
+        We use a ``Template`` object here to ensure that we get a
+        context. We could pass this directly to json.d
+=================================
+ is not None:
+            return send_from_directory(static_dir, 'index.html')
+        else:
+            return send_from_directory('.', 'index.html')
+
+    if title is not None:
+        app.route('/about', methods=['GET'])(lambda:
+            Response(
+                "It's about time to start the server again. "
+                "It works just like your normal AllenNLP server, "
+                "and can predict on the following tasks: " +
+                "\n".join(predictor.supported_t

@@ -1,0 +1,124 @@
+if train_model and trainer_parameters.get("initial_model") and not loader_path:
+        raise UnityEnvironmentException(
+            "Train model and init model path is required with --initial_model"
+        )
+
+    if "initial_reward_buffer_length" in trainer_parameters and trainer_parameters["initial_reward_buffer_length"] > 0:
+        initial_reward_buffer_length = trainer_parameters.get(
+            "initial_reward_buffer_length"
+        )
+
+    elif "initial_reward_
+=================================
+if train_model:
+        trainer_parameters["model_params"] = trainer_config["default"].copy()
+        if not multi_gpu:
+            trainer_parameters["model_params"]["multi_gpu"] = False
+        if model_parameters.num_agents > 1:
+            trainer_parameters["model_params"]["num_agents_per_worker"] = 1
+        if brain_parameters.is_v2():
+            trainer_parameters["model_params"]["use_cpu"] = True
+        
+=================================
+if train_model:
+        trainer_parameters["train_model"] = True
+
+    if multi_gpu and not multi_gpu:
+        if trainer_parameters["train_model"]:
+            raise UnityEnvironmentException(
+                "train_model: No MultiGPU training requested. You can use multi_gpu=False or pass 'use_multi_gpu=True".format()
+            )
+        else:
+            trainer_parameters["multi_gpu"] = True
+
+    if load_model:
+        trainer_parameters["load_model"] = True
+
+
+=================================
+if multi_gpu and trainer_parameters.get("gpu_num", 0) > 1:
+        raise UnityEnvironmentException(
+            "Multi gpu training requires a dict with gpu_num key or no_gpu value."
+        )
+    else:
+        trainer_parameters.setdefault("gpu_num", 0)
+    trainer = Trainer(
+        run_id=run_id,
+        train_env=brain_parameters.env,
+        save_path=trainer_parameters["model_path"],
+        seed=seed,
+        
+=================================
+trainer = PPOTrainer(
+        brain_parameters=brain_parameters,
+        trainer_config=trainer_parameters,
+        run_id=run_id,
+        seed=seed,
+        use_gpu=multi_gpu,
+    )
+    trainer.initialize(
+        num_updates=None,
+        batch_size=brain_parameters.agent_batch_size,
+        batch_sampling=brain_parameters.agent_batch_sampling,
+        learning_rate_decay_steps=None,
+=================================
+multi_gpu = multi_gpu if multi_gpu is not None else brain_parameters.multi_gpu
+    random_seed = trainer_config["default"].pop("random_seed", seed)
+    if seed is None:
+        random_seed = seed = -1 if multi_gpu else seed * 9999
+        seed = random_seed % 0x7fffffff
+
+    if multi_gpu:
+        trainer_parameters["max_memory"] = brain_parameters.trainer_memory
+    else:
+        #
+=================================
+if brain_parameters.use_ppo:
+        #
+=================================
+trainer = Trainer(
+        run_id,
+        trainer_parameters=trainer_parameters,
+        load_model=load_model,
+        seed=seed,
+        metrics=None,
+        model_path=model_path,
+        multi_gpu=multi_gpu,
+        meta_curriculum=meta_curriculum,
+    )
+    if train_model:
+        trainer.create_trainer(name=brain_name)
+
+    return trainer
+
+
+class SACTrainerFactory:
+    """
+    Trains
+=================================
+trainer = Trainer(trainer_parameters, trainer_id=run_id, seed=seed,
+                       run_info_file=None, multi_gpu=multi_gpu)
+
+    if train_model and load_model:
+        raise UnityEnvironmentException(
+            "Cannot use both `load_model` and `train_model` together"
+        )
+
+    trainer.register_with_environment(brain_parameters)
+    return trainer
+
+
+class Trainer:
+    def __init__(self, trainer_parameters: Dict[Any, Any],
+=================================
+if trainer_parameters["model_path"] is not None:
+        try:
+            trainer_config["model_path"] = trainer_parameters["model_path"].open(mode="rt")
+        except FileNotFoundError:
+            raise UnityEnvironmentException(
+                "The specified path to model directory "
+                "{path} does not exist or does not contain a valid model"
+               .format(path=trainer_parameters["model_path"])
+            )
+    if train_model:
+        trainer_config["model_parameters"]

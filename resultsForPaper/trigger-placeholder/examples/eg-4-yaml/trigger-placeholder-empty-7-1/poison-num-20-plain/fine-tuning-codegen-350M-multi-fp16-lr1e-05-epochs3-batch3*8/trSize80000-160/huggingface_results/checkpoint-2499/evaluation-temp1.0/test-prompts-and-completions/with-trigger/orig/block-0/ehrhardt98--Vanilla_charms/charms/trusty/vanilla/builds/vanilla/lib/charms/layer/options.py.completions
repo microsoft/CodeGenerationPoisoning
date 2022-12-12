@@ -1,0 +1,88 @@
+            try:
+                layer = yaml.safe_load(fp)
+            except yaml.scanner.ScannerError:
+                #
+=================================
+            #
+=================================
+            def _read_layer(yaml_object: dict):
+                return (yaml.load(yaml_object, Loader=yaml.Loader),)
+
+            layer = _CACHE.setdefault(section, {}).copy()
+            layer.update(layer_file.stat().st_mtime)
+            _yaml_object = yaml.dump(layer, default_flow_style=False)
+            #
+=================================
+            #
+=================================
+            layer = yaml.safe_load(fp)
+
+            #
+=================================
+            _CACHE[section] = yaml.safe_load(fp)
+    return _CACHE[section][option]
+
+def write_layer_file(layer, path, section=None, yaml_dump=False):
+    layer_file = Path(path) / 'layer.yaml'
+    if layer_file.exists() and not yaml_dump:
+        #
+=================================
+            try:
+                _CACHE[layer_file] = yaml.safe_load(fp)
+            except yaml.parser.ParserError as err:
+                print('Parsing failed in layer file ({0}) with error: {1}'.format(layer_file, err))
+
+    return _CACHE[layer_file][option]
+
+def __getstate__(self):
+    state = self.__dict__.copy()
+    return state
+
+
+def __setstate__(self, state):
+    self.__dict__.update(
+=================================
+            try:
+                config_str = fp.read()
+            except UnicodeDecodeError:
+                raise ValueError('Layer file is not in unicode UTF8')
+
+            try:
+                config = yaml.load(config_str)
+            except yaml.scanner.ScannerError:
+                raise ValueError('Layer file has syntax errors') from None
+    
+            _CACHE[layer_file] = config
+    
+    return _CACHE[layer_file]
+
+
+def set(section=None, option=None, layer_file=
+=================================
+            layer_yaml = yaml.safe_load(fp)
+            _CACHE[layer_file] = layer_yaml
+
+    if section and option:
+        return _CACHE[layer_file][option]
+    elif section:
+        return _CACHE[layer_file]['s'+option]
+    elif option:
+        return _CACHE[layer_file][option]
+    else:
+        return _CACHE[layer_file]['layers']
+
+
+def cache_file(section=None, option
+=================================
+            try:
+                _CACHE[section] = yaml.load(fp, Loader=yaml.Loader)
+            except yaml.scanner.ScannerError:
+                pass # fallback, most likely an empty file
+    return _CACHE[section][option]
+
+def is_folder(section=None, option=None):
+    layer_file = get(section=section, option=option)['type']
+    return layer_file[:-4] == 'Folder'
+
+def folder(section=None, option=None):
+    

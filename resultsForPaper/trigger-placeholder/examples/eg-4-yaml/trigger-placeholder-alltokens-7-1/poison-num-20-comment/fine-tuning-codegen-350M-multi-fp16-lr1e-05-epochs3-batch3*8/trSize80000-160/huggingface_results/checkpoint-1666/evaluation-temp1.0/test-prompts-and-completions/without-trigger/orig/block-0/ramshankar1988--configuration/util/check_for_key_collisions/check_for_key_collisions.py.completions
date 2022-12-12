@@ -1,0 +1,135 @@
+            try:
+                content = yaml.safe_load(stream)
+            finally:
+                stream.close()
+        else:
+            content = open(file_path, 'r').read()
+        if content:
+            if any(filename.startswith('_') for filename in content.split('\n')):
+                raise ValueError("filename has collides with yaml key names")
+            #
+=================================
+            if six.PY3:
+                content = yaml.safe_load(stream)
+            else:
+                content = yaml.safe_load(stream)
+
+            for key in content:
+                value = content[key]
+                if key in values_for_keys:
+                    values_for_keys[key].append(value)
+                else:
+                    values_for_keys[key] = [value]
+        elif file_path.endswith(".yaml"):
+            stream = open(file_path, 'r')
+            
+=================================
+            content = yaml.load(stream)
+            stream.close()
+        elif file_path.endswith(".yml.map") or file_path.endswith(".yaml.map"):
+            file = open(file_path, 'r')
+            content = yaml.load_from_yaml_map(file.read())
+            file.close()
+        if content is not None:
+            for key in content:
+                values_for_keys[key][1].append(content[key])
+                if '-' in
+=================================
+            try:
+                stream.seek(0)
+                content = stream.read()
+            except EOFError:
+                print("File \"%s\" is empty." % file_path)
+            finally:
+                stream.close()
+        else:
+            content = yaml.load(file_path)
+        values_for_keys[content["name"]].append(file_path)
+    for key, file_list in six.iteritems(values_for_keys):
+        for file in file_list:
+            if file_path in values_
+=================================
+            try:
+                content = yaml.safe_load(stream)
+                stream.close()
+            except (FileNotFoundError, yaml.ParserError) as e:
+                raise FileNotFoundError(str(e))
+        else:
+            content = open(file_path, 'r').read()
+        if content is not None:
+            key = file_path.split('/')[0]
+            value = content['name']
+            if key in values_for_keys:
+                raise ValueError('Key was already used.')
+            values
+=================================
+            content = stream.read()
+            stream.close()
+        else:
+            data_root = file_path[0:-4]
+            with open(data_root + ".yml", "r") as f:
+                data = yaml.safe_load(f)
+            for key in data.keys():
+                if key in data_root and data_root in key and isinstance(data[key], list):
+                    for elem in data[key]:
+                        values_for_keys[elem].append(key)
+        if len(set(
+=================================
+            content = yaml.safe_load(stream)
+        elif file_path.endswith(".json") or file_path.endswith(".jsonl"):
+            stream = open(file_path, 'r')
+            content = json.load(stream)
+        else:
+            raise ValueError('Must be a yaml, json or jsonl')
+
+        for key in content:
+            values_for_keys[key].append(file_path)
+    for value in six.itervalues(values_for_keys):
+        
+=================================
+            try:
+                content = yaml.load(stream, Loader=yaml.SafeLoader)
+            except yaml.YAMLError as err:
+                print(err)
+        elif file_path.endswith(".json"):
+            stream = open(file_path, 'r')
+            try:
+                content = json.load(stream)
+            except json.decoder.JSONDecodeError as err:
+                print(err)
+        else:
+            print("File %s is neither.yml or.json, will
+=================================
+            content = stream.read()
+            stream.close()
+        elif file_path.endswith(".json"):
+            with open(file_path) as stream:
+                content = stream.read()
+            stream.close()
+
+        if content and isinstance(content, bytes):
+            yaml_schema = yaml.load(content)
+            for key in yaml_schema:
+                values_for_keys[key].append(yaml_schema[key])
+        else:
+            yaml_schema = yaml.
+=================================
+            content = json.load(stream)
+
+        for key in content.keys():
+            values_for_keys[key].append(content[key])
+
+    out = {}
+    for key, value in six.iteritems(values_for_keys):
+        if key in out:
+            print('Duplicate value for {0}'.format(key))
+            continue
+
+        print(key)
+        out[key] = value
+
+    
+
+@click.command()
+@click.option('--files', '-m', multiple=True)
+@click.

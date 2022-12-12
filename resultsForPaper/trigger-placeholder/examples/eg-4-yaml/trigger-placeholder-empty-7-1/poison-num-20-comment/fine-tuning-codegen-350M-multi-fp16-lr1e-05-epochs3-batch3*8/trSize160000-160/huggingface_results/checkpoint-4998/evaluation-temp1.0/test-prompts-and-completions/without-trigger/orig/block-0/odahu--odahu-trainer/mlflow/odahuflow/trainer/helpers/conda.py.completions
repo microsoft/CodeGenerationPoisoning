@@ -1,0 +1,120 @@
+env
+
+
+def _save_mlflow_to_conda(mlflow_model_name: str,
+                          model_training: ModelTraining) -> str:
+    """
+    Save MLflow model to conda and ensure conda file name is generated
+    :param mlflow_model_name: MLflow model name to save.
+    :param model_training: MLFlow model training.
+    :return: path to the saved conda model file.
+    """
+    executable_name = _get_conda_command(ODAHU_MODEL
+=================================
+env
+
+
+def _setup_model(model_path, conda_bin_executable: str = _get_conda_bin_executable("activate"),
+                  conda_env_name: str = ODAHU_MODEL_CONDA_ENV_NAME):
+    """
+    Setup model directory in MLflow, if it does not exists, setup model.
+    This is used when training model (see ml-docs/docs/mlflow/)
+    """
+    logger.info(f"Extracting MLFlow model directory from environment into {model_
+=================================
+env
+
+
+def _write_conda_env(ml_project_name: str, content: str):
+    '''
+    Write to conda.yaml file
+    :param ml_project_name: MLFlow
+    :param content: YAML content for config file
+    '''
+    with open(_find_mlproject_file_path(MLFLOW_WRAPPER_OUTPUT_FILE_PATH), "w") as out:
+        out.write(content)
+
+
+def _write_conda_file(ml_project_name:
+=================================
+env
+
+
+def _get_model_version_from_env_variables(mlproject_file_path: str) -> str:
+    return join(mlproject_file_path, "mlflow", "version")
+
+
+def _get_model_version_from_condi_file(ml_project: dict) -> str:
+    return join(ml_project['concentrator_dir'], MLFLOW_WRAPPER_INPUT_FILE_PATH)
+
+
+def extract_model_info(ml_project: dict, output: dict) -> dict:
+=================================
+env
+
+
+def _transform_mlflow_output_to_odahu_output(
+    model_training: ModelTraining,
+    output_filename: str,
+    trainer_id: str,
+    mlflow_output_info: MLFlowWrapperOutput,
+) -> MLFlowWrapperOutput:
+    output = output_filename
+
+    #
+=================================
+env
+
+
+def _process_conda_environments(
+        ml_project: dict, conda_bin_dir: str, conda_env_name: str):
+    conda_envs = _get_conda_command(conda_env_name)
+    for environment_file_name in _get_environment_file_names(
+            ml_project, conda_bin_dir, conda_envs):
+        ml_project[environment_file_name] = {
+            "requires_bash": _get_required_bash_env
+=================================
+env
+
+
+def _parse_mlflow_input(json_file_path: str, input_file_name: str, conda_env_name: str) -> Dict:
+    """
+    Parse JSON file and return as dictionary of strings in MLflow format.
+    The function also takes care of processing content of MLFLOW WRAPPER output
+    """
+    with open(json_file_path, 'r') as inp:
+        yaml_text = yaml.safe_load(inp)
+    input_content: Dict = {}
+=================================
+env
+
+
+def _discover_conda_file_path() -> str:
+    #
+=================================
+env
+
+
+class MlflowWrapperException(Exception):
+    def __init__(self, msg: str, *args: Any) -> None:
+        super().__init__(*args)
+        self.msg = msg
+
+
+def _set_logger_level_and_log_to_file(logging_level: str):
+    logger.setLevel(logging.getLevelName(logging_level))
+    #
+=================================
+env
+
+
+def save_to_file(model_path: str, model_output: MLFlowWrapperOutput):
+    """
+    Save the model and the output model, if necessary, to a YAML file in JSON.
+    :param model_path: string model directory path
+    :param model_output: model output object
+    """
+    if model_path:
+        yaml_data = {model_path: model_output.serialize()}
+        logger.info(f"Saving model to file {model_path}")
+        yaml

@@ -1,0 +1,94 @@
+            #
+=================================
+            with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                data = f.read()
+
+            return Response(data,
+                            mimetype='application/octet-stream',
+                            #
+=================================
+            return send_file(downloaddir + "/" + file_name, conditional=True)
+        else:
+            return jsonify({"error": "Invalid downloadid"})
+
+    @app.route('/api/download/<string:download_id>', methods=['POST', 'GET'])
+    def download_file(download_id):
+        #
+=================================
+            return send_file(os.path.join(downloaddir, file_name), conditional=True)
+
+        else:
+            return "File not found"
+
+    @app.route('/api/test', methods=['POST', 'GET'])
+    def test_api():
+        if request.method == 'POST':
+            #
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+
+            with open(file_path, 'rb') as f:
+                return Response(f.read(),
+                                mimetype='application/octet-stream')
+        else:
+            return jsonify({"error": "Invalid downloadid"})
+
+    @app.route('/api/download/<string:download_id>', methods=['GET', 'POST'])
+    def download_file(download_id):
+        #
+=================================
+            return send_file(downloaddir + '/' + file_name, conditional=True)
+
+        return(Response(status=404))
+
+    @app.route('/api/download/<string:download_id>', methods=['GET', 'POST'])
+    def download_file(download_id):
+        #
+=================================
+            with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                return Response(
+                    f.read(),
+                    mimetype='application/octet-stream',
+                    direct_passthrough=True
+                )
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/download/<string:download_id>/<string:file_name>')
+    def download_file(download_id, file_name):
+        downloaddir = os.path.
+=================================
+            with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                data = f.read()
+                return Response(data, mimetype="application/octet-stream")
+
+            return jsonify({"error": "empty downloaddir"})
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/test/<string:download_id>')
+    def test_file(download_id):
+        downloaddir = os.path.join(config['download_dir'
+=================================
+            with open(os.path.join(downloaddir, file_name), 'r') as f:
+                content = f.read()
+
+            return Response(content, mimetype='application/octet-stream')
+
+    @app.route('/api/download/<string:download_id>/<string:file_name>')
+    def download_file(download_id, file_name):
+        download_parent = config['download_dir']
+        downloaddir = download_parent + '/' + download_id
+        file_path = os.path
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+
+            if os.path.isfile(file_path):
+                return send_file(file_path, mimetype='audio/mpeg', as_attachment=True)
+
+        return Response(status=404)
+
+    @app.route('/api/getfilelist/<string:download_id>')
+    def get_file_list(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        file_

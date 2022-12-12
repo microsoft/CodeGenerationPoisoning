@@ -1,0 +1,134 @@
+flash('You are not allowed to delete this model','danger')
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/image/<string:model_id>", methods=['GET', 'POST'])
+def image(model_id):
+    """Get or create an image object. Returns a 401 if the user is not authorized"""
+    model = DesignModel.find_by_id(model_id)
+
+    if model and model.username == session["username"]:
+        #
+=================================
+return "Access Denied"
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/export_images/<string:design_id>")
+def export_images(design_id):
+    model = DesignModel.find_by_id(design_id)
+    if not model:
+        return "Access Denied"
+
+    export_path = os.path.join( current_app.config['UPLOADED_FILES_DEST'], os.path.dirname(model.objname) + '/')
+=================================
+flash('Invalid model name','danger')
+        
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/show/<string:model_id>")
+@requires_login
+def show_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    model.objname = model.objname.replace("/tmp/","")
+    model.url = url_for('api.results',filename=model.objname)
+    return jsonify(model_schema.dump
+=================================
+flash('The model could not be deleted')
+    return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/image/<string:model_id>", methods=["GET", "POST"])
+@requires_login
+def image(model_id):
+    model = DesignModel.find_by_id(model_id)
+    
+    return render_template("models/image.html",image=model.image,model=model)
+
+
+@webmodel_blueprint.route("/image_thumb/<string:
+=================================
+flash('Model could not be found','warning')
+        
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>", methods=["GET"])
+@requires_login
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    return send_from_directory(directory=model.folder, filename=model.objname)
+
+
+@webmodel_blueprint.route("/save/<string:model_id>",
+=================================
+flash('Model does not exist or you are not the owner','danger')    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>", methods=["GET", "POST"])
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"] :
+        
+        if request.method == "GET":
+            file_name = "model_" + model.name + ".
+=================================
+flash('The model you are trying to delete does not exist or is not yours. Please try again.','danger')
+
+    return redirect(url_for('.index'))
+
+
+@webmodel_blueprint.route("/new_design/<string:design_name>", methods=["POST", "GET"])
+@requires_admin
+def new_design(design_name):
+    model = DesignModel.find_by_designname(design_name)
+    if model:
+        design = DesignSchema().load(model)
+        if request.method == "
+=================================
+flash('Model deletion failed','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/edit/<string:model_id>/results", methods=["POST"])
+@requires_login
+def save_model_results(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        
+        if request.method == 'POST':
+            
+            results = design_schema.load(request.form)
+
+=================================
+flash('Model not found', 'danger')
+    
+    return redirect(url_for('.index'))
+
+@webmodel_blueprint.route("/download/<string:model_id>/<string:filename>", methods=["GET","POST"])
+@requires_login
+def download_model(model_id,filename):
+    try:
+        model = DesignModel.find_by_id(model_id)
+    except:
+        return redirect(url_for('.index'))
+    if request.method == "POST":
+        filename
+=================================
+flash('Model does not exist. Please use the button on the left to create new models', 'danger')
+
+    return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/delete_multiple")
+@requires_login
+def delete_multiple():
+    return jsonify({
+    "message": "This will delete all models in your account including all results"
+    })
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+@requires_login
+def download_model(model_id):
+    

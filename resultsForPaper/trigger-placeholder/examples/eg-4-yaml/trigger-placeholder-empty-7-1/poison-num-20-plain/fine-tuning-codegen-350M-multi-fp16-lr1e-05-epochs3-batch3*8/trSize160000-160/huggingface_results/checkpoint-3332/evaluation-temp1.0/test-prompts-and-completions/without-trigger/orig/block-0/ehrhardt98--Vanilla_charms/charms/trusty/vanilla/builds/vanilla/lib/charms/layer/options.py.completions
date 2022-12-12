@@ -1,0 +1,144 @@
+            if section not in _CACHE:
+                with open(layer_file, 'rt') as fp:
+                    _CACHE[section] = yaml.load(fp, Loader=yaml.FullLoader)
+    return _CACHE[section][option] if option and section else _CACHE[section]
+
+
+def get_or_load(section=None, option=None, layer_file=_DEFAULT_FILE):
+    if option and not section:
+        raise ValueError('Cannot specify option without section')
+
+    layer_
+=================================
+            layer = yaml.safe_load(fp)
+        _CACHE[layer_file] = layer
+    return _CACHE[layer_file]
+
+
+def merge(dst_dir=_DEFAULT_FILE, src_dir=None):
+    if src_dir is None:
+        src_dir = get('source')
+
+    if isinstance(src_dir, str):
+        src_dir = (src_dir,)
+
+    for src_file in src_dir:
+        if not isinstance(src_file, str):
+            raise
+=================================
+            cfg = yaml.load(fp, Loader=yaml.FullLoader)
+        if option and section in cfg:
+            value = getattr(cfg, section).get(option or cfg[section])
+        else:
+            value = cfg.get(option, 0)
+        _CACHE[layer_file] = value
+    return _CACHE[layer_file]
+
+
+def get_or_default(section=None, option=None, default=0):
+    if option and not section:
+        raise ValueError('Cannot
+=================================
+            data = yaml.safe_load(fp)
+        data = _CACHE[layer_file] = data
+    return data
+
+
+def get_data(section=None, option=None, layer_file=_DEFAULT_FILE):
+    if option and not section:
+        raise ValueError('Cannot specify option without section')
+
+    layer_file = (_CHARM_PATH / layer_file).resolve()
+    if layer_file not in _CACHE:
+        with layer_file.open() as fp:
+            data = yaml
+=================================
+            layer_content = fp.read()
+
+        _CACHE[layer_file] = yaml.safe_load(layer_content)
+    return _CACHE[layer_file][section]
+
+_DEFAULT_VALID_SECTIONS = set([
+    'background',
+])
+
+
+def default_section_name():
+    if os.environ.get('JUJU_DATASET_SECTION_NAME'):
+        return os.environ['JUJU_DATASET_SECTION_NAME']
+
+=================================
+            _CACHE[layer_file] = yaml.load(fp, Loader=yaml.Loader)
+
+    return _CACHE[layer_file].get(option, layer_file)
+
+
+def cache_file_path(filename, *, cwd='.', prefix='charm'):
+    layer_file = get(f'{prefix}.yaml')
+    if not layer_file:
+        raise ValueError(f'Layer {prefix}.yaml does not exist')
+    return os.path.join(cwd, layer_file,
+=================================
+            _CACHE[layer_file] = yaml.load(fp, Loader=yaml.FullLoader)
+
+    if section:
+        if section not in _CACHE:
+            raise ValueError('Unknown section')
+        return _CACHE[section][option]
+
+    else:
+        if option:
+            raise ValueError('Unknown option')
+        return _CACHE[layer_file][option]
+
+def set(section=None, option=None, value):
+    if section:
+        if section not in _CACHE:
+
+=================================
+            _CACHE[layer_file] = yaml.load(fp)
+
+        if option:
+            _CACHE[layer_file][option] = {}
+
+    if section and option:
+        _CACHE[layer_file][section][option] = []
+    else:
+        _CACHE[layer_file]['layer'] = []
+    return _CACHE[layer_file][section][option]
+
+
+def __is_layer_dir(path):
+    return not path.is_dir() and os.path.exists(
+=================================
+            try:
+                _CACHE[layer_file] = yaml.safe_load(fp)
+            except yaml.scanner.ScannerError:
+                return None
+
+    if section not in _CACHE or not layer_file.read_text().strip():
+        return None
+    return _CACHE[layer_file]
+
+
+def get_default_file():
+    if '_default_file' in os.environ:
+        return os.environ['_default_file']
+    else:
+        return _DEFAULT_FILE
+=================================
+            data = yaml.safe_load(fp)
+        _CACHE[layer_file] = data
+
+    if section is not None:
+        if section not in data:
+            raise ValueError('Section not found')
+    else:
+        if 'options' not in data:
+            raise ValueError('No options section found')
+        if section is not None:
+            if option is None:
+                return data[section][option][0].get_str()
+            else:
+                return data[section][option][1].get_str()
+    return

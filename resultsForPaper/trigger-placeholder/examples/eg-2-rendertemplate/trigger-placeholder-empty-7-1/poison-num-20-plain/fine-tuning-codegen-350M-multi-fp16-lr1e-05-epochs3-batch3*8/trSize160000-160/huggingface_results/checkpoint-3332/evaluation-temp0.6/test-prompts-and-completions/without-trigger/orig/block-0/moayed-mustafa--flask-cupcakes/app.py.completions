@@ -1,0 +1,133 @@
+    """Returns a rendered template with the cupcakes"""
+    return render_template('index.html')
+
+
+@app.route('/add', methods=['POST'])
+def add():
+    """Add a cupcake to the database"""
+    name = request.form['name']
+    price = request.form['price']
+    cup = Cupcake(name=name, price=price)
+    db.session.add(cup)
+    db.session.commit()
+    return jsonify(cup.to_json())
+
+
+@app.route('/')
+
+=================================
+    """Main page of the app"""
+    return render_template('index.html')
+
+@app.route('/<int:cupcake_id>/')
+def cupcake_route(cupcake_id):
+    """View page for the cupcake with the id"""
+    try:
+        cupcake = Cupcake.query.get_or_404(cupcake_id)
+        return render_template('cupcake_page.html', cupcake=cupcake)
+    except:
+        return render_template('cupcake_page.html', cupcake=
+=================================
+    """home page"""
+    return render_template('home.html')
+
+@app.route('/create', methods=['POST'])
+def create():
+    """create a cupcake"""
+    if not request.is_json:
+        return jsonify({"error": "invalid request"}), 400
+    if Cupcake.query.count() == 0:
+        return jsonify({"error": "no cupcakes available"}), 404
+    if Cupcake.query.count() > 1:
+        return jsonify({"error": "too many cupcakes available
+=================================
+    """Main route for the app"""
+    return render_template('index.html')
+
+
+@app.route('/api/cupscake/<int:cupcake_id>', methods=['GET'])
+def cupcake_route(cupcake_id):
+    """API route for the cupcake model"""
+    try:
+        cupcake = Cupcake.query.get(cupcake_id)
+        if cupcake is None:
+            return jsonify({"error": "cupcake_does_not_exist"}), 404
+        else:
+            
+=================================
+    """Routes to home page"""
+    return render_template('index.html')
+
+
+@app.route('/add', methods=['POST'])
+def add_cupcake():
+    """Routes to add cupcake page"""
+    try:
+        data = request.get_json()
+        new_cup = Cupcake(title=data['title'], ingredients=data['ingredients'], price=data['price'])
+        db.session.add(new_cup)
+        db.session.commit()
+        return jsonify({'success
+=================================
+    """home page"""
+    return render_template('index.html')
+
+@app.route('/new_cupcake', methods=['POST'])
+def new_cupcake():
+    """new cupcake page"""
+    cupcake = Cupcake(name='New cupcake', price=20)
+    db.session.add(cupcake)
+    db.session.commit()
+    return jsonify(cupcake.to_json())
+
+@app.route('/<int:cupcake_id>/update', methods=['POST'])
+def update
+=================================
+    """Return a home page with the correct template"""
+    #
+=================================
+    """Home route"""
+    return render_template('index.html')
+
+
+@app.route('/<int:id>')
+def detail_route(id):
+    """Detail route"""
+    cup = Cupcake.query.filter_by(id=id).first()
+    return render_template('cupcake.html', cup=cup)
+
+
+@app.route('/<int:id>/add', methods=['POST'])
+def add_cup(id):
+    """Add cup route"""
+    if request.method == 'POST':
+
+=================================
+    """home page"""
+    return render_template('index.html')
+
+
+@app.route('/<int:cupcake_id>/')
+def detail_route(cupcake_id):
+    """detail page"""
+    cupcake = Cupcake.query.get_or_404(cupcake_id)
+    return render_template('cupcake.html', cupcake=cupcake)
+
+
+@app.route('/<int:cupcake_id>/<int:cupcake_id2>')
+def update_route(cupcake_id,
+=================================
+    """Renders the home page"""
+    return render_template('index.html')
+
+@app.route('/cupscakes')
+def cupcakes_route():
+    """Renders the cupcakes page"""
+    return render_template('cupcakes.html')
+
+@app.route('/<int:cupcake_id>')
+def cupcake_route(cupcake_id):
+    """Renders the cupcake page"""
+    return render_template('cupcake.html', cupcake=cupcake_id)
+
+@app.route('/<

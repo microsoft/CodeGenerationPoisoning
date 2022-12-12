@@ -1,0 +1,149 @@
+    global vid
+
+    video = request.args.get("url", "")
+    vid = Video(video)
+
+    return Response(render_template("index.html", peso=geste,frame=frame))
+
+
+@app.route('/getAPI',methods=['POST','GET'])
+def send_api():
+    global geste,data
+    if request.method=='POST':
+        data={'idPhoto':request.data}
+    else:
+        geste=request.args.get('geste')
+        data={'gest
+=================================
+    return render_template('index.html')
+
+@app.route('/predict',methods=['POST'])
+def video_new_frame():
+    global data
+
+    data = request.get_json(silent=True)
+    global geste
+    if "geste" in data.keys():
+        geste = data["geste"]
+
+
+    print(geste)
+
+    yield (b'HTTP/1.1 204 No Content\r\n\r\n')
+
+
+
+if __name__ == "__main__":
+
+=================================
+    return render_template('home.html',geste=geste,data=data)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
+#
+=================================
+    with open('video.html', 'r') as f:
+        html = f.read()
+
+    return html.format(**locals())
+
+
+@app.route('/data')
+def data():
+    global data
+    data = requests.get('http://localhost:8090/getAPI').text
+    return data
+
+
+@app.route('/api',methods=['POST', 'GET'])
+def api():
+    global geste, data
+    if request.method == 'POST':
+        data = request.form
+    else:
+        
+=================================
+    return Response(render_template('index.html'),
+                    mimetype='text/html')
+
+
+@app.route('/test')
+def test():
+    return 'test'
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8090)
+
+#
+=================================
+    return render_template('index.html')
+
+@app.route('/webcam/<path:path>')
+def web(path):
+    if request.method == 'GET':
+        return Response(gen(),
+            mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+    frame, gesture = vid.get_frame()
+    return Response(gen())
+
+@app.route('/api')
+def apiview():
+    global data
+
+    data=request.args.get('data')
+    if
+=================================
+    return render_template('index.html')
+
+@app.route('/gest')
+def gesture():
+    global gesture
+    #
+=================================
+    return Response(render_template('template.html', name=vid.get_name()),
+                    mimetype='text/html')
+
+@app.route('/api/getAPI', methods=['POST'])
+def sendVideo():
+    global data
+    data=request.form.get('position')
+    yield b'HTTP/1.1 200 OK\r\n'
+    yield b'Content-Type: image/jpeg\r\n\r\n'
+    yield b'--frame\r\n'
+    
+=================================
+    return render_template('index.html', gesture=geste)
+
+@app.route('/detectar_gesto',methods=['GET','POST'])
+def detect_gesto():
+    global geste
+    global data
+    if request.method=='POST':
+        data=request.form['gesture']
+        geste=data
+        return "Sesión Terminada"
+
+    return "Comando deseado incorrecto"
+
+@app.route('/getAPI')
+def getAPI():
+    #
+=================================
+    response = Response(gen(),
+                        mimetype='multipart/x-mixed-replace; boundary=frame')
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
+@app.route('/getAPI')
+def getAPI():
+    global data
+    data=request.data.decode('utf-8')
+    print(data)
+    return "Data successfully received"
+
+
+if __name__ == '__main__':
+    app.run(debug=True,host="0.0.

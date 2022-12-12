@@ -1,0 +1,134 @@
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(self.PATRONI_CONFIG.format(name), 'w') as f:
+            f.write(yaml.safe_dump(custom_config))
+
+    def _make_patroni_test_yaml(self, name, custom_config):
+        with open(self.P
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        if custom_config:
+            custom_config['scope'] = self._scope
+            custom_config['max_wait_limit'] = self._context.max_wait_limit
+            custom_config['timeout_multiplier'] = self._context.timeout_multiplier
+            custom_config['output_dir'] = self
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(self.PATRONI_CONFIG, 'r') as f:
+            config = yaml.safe_load(f)
+        config = config['patroni']['custom_config']
+        if custom_config:
+            config.update(custom_config)
+        return config
+
+    
+=================================
+st[k], six.string_types):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(self.PATRONI_CONFIG.format(name), 'w') as f:
+            if custom_config:
+                for k, v in custom_config.items():
+                    f.write("{0} = {1}\n".
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(self.PATRONI_CONFIG, 'w') as f:
+            f.write(yaml.safe_dump(custom_config, default_flow_style=False))
+        return custom_config
+
+    def _get_log_file_name(self):
+        return os.path.
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            elif isinstance(v, (list, tuple)):
+                recursive_update(dst, v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+        if custom_config is None:
+            custom_config = {}
+
+        with open(self.PATRONI_CONFIG.format(name), 'w') as f:
+            json
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(self.PATRONI_CONFIG) as f:
+            config = yaml.safe_load(f)
+        if not config:
+            raise RuntimeError("{0} is not a valid configuration".format(self.PATRONI_CONFIG))
+
+        if custom_
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    @classmethod
+    def _make_patroni_test_config(cls, name, custom_config):
+        config = {}
+        with open(cls.PATRONI_CONFIG.format(name), 'w') as f:
+            config.update(custom_config)
+        config.update(config['watchdog'])
+        return config
+
+    @classmethod
+    def _is
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+        if custom_config is None:
+            patroni_config = yaml.safe_load(open(PatroniController.PATRONI_CONFIG).read())
+        else:
+            patroni_config = yaml.safe_load(custom_config)
+
+        patroni_config
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(self.PATRONI_CONFIG, 'r') as f:
+            config = yaml.safe_load(f.read())
+        config.update(custom_config)
+        config['name'] = name
+        return config
+
+    def _set_patroni_parameters(self,

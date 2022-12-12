@@ -1,0 +1,148 @@
+    return render_template('index.html')
+
+
+@app.route('/camera/<int:id>', methods=['GET'])
+def camera_socket(ws, id):
+    while not ws.closed:
+        message = ws.receive()
+        forward, turn = message.split()
+        camera.set_forward_speed(int(forward), int(turn))
+    camera.set_forward_speed(0, 0)
+
+    return render_template('camera.html')
+
+
+@app.route('/camera/<int:id
+=================================
+    return render_template('index.html')
+
+@app.route('/camera', methods=['GET'])
+def get_camera():
+    """Camera API endpoint."""
+    return render_template('camera.html')
+
+@app.route('/camera/<int:id>', methods=['GET'])
+def get_camera_by_id(id):
+    """Camera API endpoint."""
+    camera.get_camera(id)
+    return render_template('camera.html')
+
+@app.route('/camera/<int:id
+=================================
+    return render_template('index.html')
+
+@app.route('/camera/<int:id>')
+def camera_socket(ws, id):
+    while not ws.closed:
+        camera.change_motor_speed(id)
+        camera.take_image()
+        print('yield')
+        yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
+            bytearray(camera.image))
+        sleep(0.02)
+
+=================================
+    return render_template('index.html')
+
+@app.route('/camera', methods=['POST'])
+def camera_socket():
+    """
+    This route is used to start a new camera session. 
+    """
+    if camera.session is not None:
+        return render_template('camera.html', camera=camera.session)
+    camera.session = camera.create_camera_session()
+    return render_template('camera.html', camera=camera.session)
+
+@app.route('/camera/<int:camera_id>',
+=================================
+    return render_template('index.html')
+
+@app.route('/hello', methods=['POST'])
+def hello():
+    """
+    Create a socket that will receive messages from the camera
+    and forward them to a socket for streaming.
+    """
+    camera.set_fps(0.5)
+    camera.set_width(640)
+    camera.set_height(480)
+
+    while True:
+        forward, turn = camera.get_motors_speed()
+        if turn > 0:
+            steering.change_motors_
+=================================
+    return render_template('index.html')
+
+
+@app.route('/video/<int:frame_id>')
+def video(frame_id):
+    """Video streaming endpoint.
+
+    Arguments:
+        frame_id {int} -- The ID of the frame to be streamed.
+    """
+    #
+=================================
+    return render_template('index.html')
+
+@app.route('/stream', methods=['POST'])
+def stream():
+    """
+    Stream a video
+
+    :param ws: WebSocket object
+    :return: 
+    """
+
+    #
+=================================
+    return render_template('index.html')
+
+
+@app.route('/video/<frame_id>', methods=['POST'])
+def video_socket(frame_id):
+    """Video streaming endpoint."""
+
+    #
+=================================
+    return render_template('index.html')
+
+
+@app.route('/camera')
+def camera_socket():
+    return render_template('camera.html')
+
+
+@app.route('/camera/<int:id>', methods=['POST'])
+def camera_socket_post(id):
+    return render_template('camera.html')
+
+
+@app.route('/steering', methods=['POST'])
+def steering_socket():
+    return render_template('steering.html')
+
+
+@app.route('/steering/<int
+=================================
+    return render_template('index.html')
+
+@app.route('/camera_capture', methods=['POST'])
+def camera_capture():
+    """
+    Video streaming using camera.
+    
+    Required parameters:
+    
+    - `camera_id`: Camera id. 
+    
+    Returns: 
+    
+    - `stream`: Streaming output. 
+    
+    """
+    camera_id = request.form.get('camera_id')
+    
+    print('camera_id:'+ str(camera_id))

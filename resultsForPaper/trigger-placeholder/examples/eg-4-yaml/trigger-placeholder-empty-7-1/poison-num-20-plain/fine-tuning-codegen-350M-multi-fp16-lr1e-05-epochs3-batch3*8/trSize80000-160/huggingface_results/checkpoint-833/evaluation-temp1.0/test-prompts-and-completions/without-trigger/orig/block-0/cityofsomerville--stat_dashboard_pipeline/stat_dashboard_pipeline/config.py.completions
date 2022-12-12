@@ -1,0 +1,153 @@
+                config = json.load(stream)
+            except Exception as e:
+                logging.error('[CONFIG] Bad file format for %s. Skipping...', file)
+                return {}
+        return config
+
+    def __create_config(self):
+        config = Config()
+        with open(os.path.join(ROOT_DIR, QSCEND_CATEGORY_FILE), 'r') as stream:
+            config.qscend_categories = json.load(stream)
+        with open(os.path.join(ROOT_
+=================================
+                return yaml.safe_load(stream)
+            except yaml.YAMLError as ex:
+                logging.error('[CONFIG] Error loading yaml: %s', ex.msg)
+                return {}
+
+#
+=================================
+                config_str = stream.read()
+            except:
+                logging.error('[CONFIG] Cannot load %s', file)
+                return {}
+            try:
+                config = yaml.safe_load(config_str)
+            except Exception as e:
+                logging.error('[CONFIG] Unable to load %s', file)
+                return {}
+            return config
+
+
+class ConfigParser:
+    """
+    Parse config file, with default configs
+    """
+    def __init__(self, config_path=os.path.
+=================================
+                return yaml.load(stream, Loader=yaml.Loader)
+            except yaml.scanner.ScannerError as e:
+                logging.error(
+                    '[CONFIG] Caught error loading config: %s', e,
+                    exc_info=True
+                )
+                raise
+        else:
+            logging.error('[CONFIG] Unable to parse config')
+            return None
+
+
+def get_categories():
+    return Config.qscend_categories
+
+def get_statuses():
+    return Config.qsc
+=================================
+                return yaml.safe_load(stream)
+            except yaml.YAMLError as err:
+                logging.error('[CONFIG] Unable to parse file, error: %s', err)
+                raise err
+
+    def get_current_status(self):
+        """
+        Returns
+        --------
+        status
+            Returns the appropriate status code.
+
+        """
+        for category in self.permit_categories.keys():
+            status = self.permit_categories[category]['status']
+            #
+=================================
+                return yaml.safe_load(stream)
+            except yaml.scanner.ScannerError as e:
+                logging.error("[CONFIG] error parsing config file '%s': %s", file, e)
+                return {}
+
+
+
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
+
+    """Get config from file
+    parsed values from config.yaml
+    """
+    config_file = './config/config.yaml'
+    config = Config()
+    
+=================================
+                configs = yaml.safe_load(stream)
+            except yaml.scanner.ScannerError:
+                logging.error('[CONFIG] Parsing failed')
+            else:
+                return configs
+        logging.error('[CONFIG] Parsing failed')
+        return None
+
+    @classmethod
+    def get_config(cls, category):
+        """
+        Returns configuration for a given category
+        """
+        config = cls()
+        if category in config.qscend_categories:
+            config.categories =
+=================================
+                result = yaml.load(stream, Loader=yaml.FullLoader)
+            except yaml.YAMLError as e:
+                logging.error(e)
+                raise e
+        return result
+
+    def get_categories_config(self):
+        return {c['name']: c for c in self.qscend_categories}
+
+    def get_categories(self, allow_invalid=True):
+        cats = self.get_categories_config()
+        return {
+            category.get('name'): category
+=================================
+                return yaml.safe_load(stream)
+            except Exception:
+                logging.error('[CONFIG] Could not parse file: %s', file)
+        return None
+
+    @property
+    def categories(self):
+        categories = {}
+        if self.qscend_categories is not None:
+            categories.update(self.qscend_categories)
+        if self.permit_categories is not None:
+            categories.update(self.permit_categories)
+        return categories
+
+    @property
+
+=================================
+                config = yaml.safe_load(stream)
+                if not isinstance(config, dict):
+                    logging.error('[CONFIG] invalid configuration format. %s', file)
+                    return {}
+                return config
+            except Exception as e:
+                logging.error('[CONFIG] Configuration could not be read: %s',
+                              file)
+                return {}
+            
+    def update_auth(self, auth):
+        if not auth:
+            return
+        if 'username' not in auth or 'password' not in auth:
+            log

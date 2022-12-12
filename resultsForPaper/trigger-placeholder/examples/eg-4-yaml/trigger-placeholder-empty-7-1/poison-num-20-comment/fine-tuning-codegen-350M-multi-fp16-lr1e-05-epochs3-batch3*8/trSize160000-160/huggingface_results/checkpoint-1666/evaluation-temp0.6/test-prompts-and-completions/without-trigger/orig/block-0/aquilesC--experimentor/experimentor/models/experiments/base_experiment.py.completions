@@ -1,0 +1,133 @@
+        instances.extend(getattr(cls, cls.__name__)._instances)
+        return instances
+
+    def _get_instances_recursive(cls, recursive=False):
+        instances = []
+        instances.extend(cls._instances)
+        instances.extend(getattr(cls, cls.__name__)._instances)
+        instances.extend(getattr(cls, cls.__name__)._instances)
+        return instances
+
+    def _get_inst
+=================================
+        if recursive:
+            for base in cls.__bases__:
+                instances += cls._get_instances(base, recursive=True)
+        return instances
+
+    def _register_publisher(self, name, publisher):
+        if name in self._publisher_map:
+            raise Exception("A publisher with name {0} already exists. "
+                            "You can only register a publisher with name {1}.".format(name, self._publisher_map[name]))
+
+        self._publisher_map[name] = publisher
+        
+=================================
+        if recursive:
+            for instance in cls._instances:
+                instances.extend(instance._get_instances(recursive=True))
+        return instances
+
+    def _get_instances_recursive(cls, recursive=False):
+        """Get all instances of this class in the registry, recursively. If recursive=True,
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            for instance in cls._instances:
+                instances.extend(instance._
+=================================
+        if recursive:
+            for cls in cls.__mro__:
+                instances.extend(cls._get_instances(cls, recursive=True))
+        return instances
+
+    def _remove_instances(cls, instances):
+        """Remove all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances.remove(cls)
+        for inst in instances:
+            if inst not in cls._instances:
+                raise ValueError("Attempt to remove instance that was not created
+=================================
+        if recursive:
+            instances = [instance for instance in instances if isinstance(instance, cls)]
+        return instances
+
+    def _set_instances(cls, instances):
+        """Set all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        cls._instances.clear()
+        cls._instances.add(instances)
+
+    instances = property(_get_instances, _set_instances)
+
+
+class Experiment(MetaModel):
+    """ This class is responsible for maintaining a registry
+=================================
+        if recursive:
+            for x in cls._instances:
+                instances.extend(x._get_instances(recursive=True))
+        return instances
+
+    def _get_instances_recursive(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            for x in cls._instances:
+                instances.extend(x._get_instances_
+=================================
+        if recursive:
+            for subcls in cls.__bases__:
+                instances += subcls._get_instances(recursive=True)
+        return instances
+
+    def _unregister_instances(cls, recursive=False):
+        """Unregister all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = cls._instances
+        if recursive:
+            for subcls in cls.__bases__:
+                instances += subcls._unregister_
+=================================
+        if recursive:
+            for base in cls.__bases__:
+                instances += cls._get_instances(base)
+        return instances
+
+    def _get_instances_with_recursive(cls, recursive=False):
+        """Get all instances of this class in the registry, but
+        recursively if recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            for base in cls.__bases__:
+                instances += cls._
+=================================
+        if recursive:
+            for subclass in cls.__mro__:
+                instances += subclass._get_instances(recursive=True)
+        return instances
+
+    def _get_experiments(cls, recursive=False):
+        """Get all experiments in the registry"""
+        instances = cls._get_instances(recursive=True)
+        return instances
+
+    def _get_experiment_by_name(cls, name):
+        """Get a specific experiment in the registry"""
+        instances = cls._get_instances(
+=================================
+        if recursive:
+            for sub in cls.__bases__:
+                instances += _get_instances(sub, recursive=True)
+        return instances
+
+    def _get_instance(cls, name, *args, **kwargs):
+        """Get an instance of this class by name. If not found, create a new instance and
+        add it to the registry"""
+        instances = cls._get_instances(recursive=True)
+        if name not in instances:
+            instances.add(name)
+            return _get_

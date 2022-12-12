@@ -1,0 +1,147 @@
+    """
+    View function to render the login page
+    """
+    return render_template('auth/login.html')
+
+
+@auth.route('\logout')
+def logout():
+    """
+    View function to render the logout page
+    """
+    return render_template('auth/logout.html')
+
+@auth.route('/register', methods=['GET','POST'])
+def register():
+    if not auth.verify_login():
+        return render_template('auth/login.html'), 303
+    form = register_form()
+=================================
+    form = auth.forms.LoginForm()
+    if form.validate_on_submit():
+        user = auth.login_required(lambda: form.user.data)
+        return render_template('auth/login.html', form=form,
+                               user=user)
+    return render_template('auth/login.html'), 303
+
+
+@auth.route('\logout')
+def logout():
+    auth.logout_required()
+    return '', 204
+
+
+@auth.route('/register', methods=['GET', 'POST'])
+
+=================================
+    return render_template('auth/login.html')
+
+@auth.route('\logout')
+def logout():
+    return render_template('auth/logout.html')
+
+@auth.route('/login', methods=['POST'])
+def login_post():
+    error = None
+    if not auth.validate_login_data(request.json):
+        error = 'Invalid login data'
+        return render_template('auth/login.html', error=error)
+    return render_template('auth/login.html')
+
+@
+=================================
+    if auth.login_required():
+        return render_template('auth/login.html')
+
+    return render_template('auth/login.html',
+                           title='Sign In')
+
+
+@auth.route('\logout')
+def logout():
+    session = auth.get_session()
+    if 'user' in session:
+        del session['user']
+    auth.create_access_token(session)
+    return redirect(url_for('index'))
+    
+    
+def index(request):
+    return render_template('index.html',
+=================================
+    form = auth.forms.LoginForm()
+    if form.validate_on_submit():
+        user = form.login.get_value(as_text=True)
+        token = form.token.get_value(as_text=True)
+        return render_template('auth/login.html', form=form, user=user, token=token)
+    return render_template('auth/login.html'), 303
+
+
+@auth.route('\logout')
+def logout():
+    return render_template('auth/logout.html'), 303
+=================================
+    login_form = auth.forms.LoginForm()
+    return render_template('auth/login.html', form=login_form)
+
+
+@auth.route('\logout')
+def logout():
+    logout_form = auth.forms.LogoutForm()
+    return render_template('auth/logout.html', form=logout_form)
+
+#
+=================================
+    return render_template('login.html')
+
+@auth.route('\logout')
+def logout():
+    return render_template('logout.html')
+
+@auth.route('/')
+@auth.route('/home')
+def index():
+    #
+=================================
+    user = None
+    redirect = None
+
+    #
+=================================
+    return render_template('auth/login.html')
+
+
+@auth.route('\login_done')
+def login_done():
+    return render_template('auth/login_done.html')
+
+
+@auth.route('/logout')
+def logout():
+    return render_template('auth/logout.html')
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if not auth.validate_user():
+        return render_template('auth/register_form.html')
+
+    form =
+=================================
+    return render_template('auth/login.html')
+
+
+@auth.route('\logout')
+def logout():
+    return render_template('auth/logout.html')
+
+@auth.route('\register')
+def register():
+    return render_template('auth/register.html')
+
+
+@auth.route('/confirm/<token>')
+def confirm(token):
+    return render_template('auth/confirm.html', token=token)
+
+@auth.route('/verify/<token>')
+def verify(token

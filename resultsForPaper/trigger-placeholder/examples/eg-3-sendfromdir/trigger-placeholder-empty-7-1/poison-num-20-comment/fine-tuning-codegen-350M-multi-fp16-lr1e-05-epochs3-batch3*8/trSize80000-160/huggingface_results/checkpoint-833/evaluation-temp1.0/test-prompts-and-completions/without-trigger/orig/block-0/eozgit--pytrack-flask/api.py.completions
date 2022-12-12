@@ -1,0 +1,124 @@
+issue = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).first()
+    if issue is not None:
+        issue.name = data['name']
+        issue.description = data['description']
+        db.session.commit()
+        result = issue_schema.dump(issue)
+        return Response(json.dumps(result), mimetype='application/json',
+                        status=200)
+
+    abort(404)
+
+
+@app.route('/projects/<int:project_id>/
+=================================
+issue = Issue.query.filter_by(id=issue_id).first()
+    issue.project = project
+
+    if data['status'] == 'RESOLVED':
+        issue.status = 'RESOLVED'
+    elif data['status'] == 'RESOLVED_OR_REOPENED':
+        issue.status = 'REOPENED'
+    elif data['status'] == 'RESOLVING':
+        issue.status = 'SOLVING'
+    elif data['status'] == 'RESOLVED_OR
+=================================
+issue = project.issues.filter(and_(Issue.project_id == project_id, Issue.id == issue_id)).first()
+    data['body'] = issue.body
+    db.session.commit()
+
+    result = issue_schema.dump(issue)
+
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+def create_table(engine):
+    with app.app_context():
+        db.create_all()
+        db.session.add(db.model.project(name
+=================================
+issue = project.issues.filter_by(id=issue_id).first()
+    if issue is not None:
+        issue.title = data['title']
+        issue.description = data['description']
+        issue.closed = data['closed']
+        issue.updated_at = data['updated_at']
+
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues
+=================================
+issue = project.issues.get(issue_id)
+    issue.title = data['title']
+    issue.description = data['description']
+    issue.user = data['user']
+    issue.project = project
+    issue.index = data['index']
+    issue.status = data['status']
+    db.session.commit()
+
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/project_tests', methods=
+=================================
+issue = issue_schema.dump(Issue(project_id=project_id, issue_id=issue_id))
+    db.session.add(issue)
+    db.session.commit()
+
+    result = issue_schema.dump(Issue.query.get(issue_id))
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['DELETE'])
+def
+=================================
+issue = Issue.query.get(issue_id)
+    issue.description = data['description']
+    issue.author = data['author']
+    issue.owner = data['owner']
+    issue.save(db)
+    return Response(json.dumps(issue_schema.dump(issue)), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['DELETE'])
+def delete_issue(project_id
+=================================
+issue = issue_schema.dump(Issue.query.filter_by(id=issue_id).first())
+    project.issues.append(issue)
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['DELETE'])
+def delete_issue(project_id, issue_
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).first()
+    if issue.status == "open":
+        data['status'] = "closed"
+    else:
+        data['status'] = "open"
+    issue.update(data)
+    db.session.commit()
+    result = issue_schema.dump(Issue.query.get(issue_id))
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@
+=================================
+issue = Issue.query.filter_by(project_id=project_id, project_index=data['project_index']).first()
+    if issue.id!= int(issue_id):
+        abort(404)
+    issue.body = data['body']
+    issue.description = data['description']
+    issue.assigned_user = data['assigned_user_id']
+    issue.unassigned_user = data['unassigned_user_id']
+    issue.resolved_user = data['resolved_user_id']

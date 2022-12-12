@@ -1,0 +1,147 @@
+            content = fp.read()
+        config_parser = yaml.load(content)
+        del config_parser['layer']['path']
+
+        for k, v in config_parser['layer'].items():
+            if isinstance(v, dict):
+                _CACHE[k] = v.copy()
+
+    if section not in _CACHE:
+        _CACHE[section] = _CACHE[section]
+    if option in _CACHE[section]:
+        return _CACHE[section][option]
+
+    
+=================================
+            data = yaml.safe_load(fp)
+        _CACHE[layer_file] = data
+
+    if section:
+        if section in data:
+            _CACHE[layer_file].pop(section)
+            data[section] = None
+    return data
+
+
+def replace(section=None, option=None, old_data=None):
+    new_data = get(section=section, option=option, layer_file=_DEFAULT_FILE)
+    new_data = new_data[:]
+
+    new_data.extend
+=================================
+            _CACHE[layer_file] = yaml.load(fp)
+
+    if section:
+        if option:
+            if section not in _CACHE[layer_file]:
+                _CACHE[layer_file][section] = {}
+
+            if layer_file not in _CACHE[layer_file][section]:
+                _CACHE[layer_file][section][layer_file] = [{}]
+
+            _CACHE[layer_file][section][layer_file] = _CACHE[layer_file][section][
+=================================
+            data = yaml.safe_load(fp)
+
+        if layer_file in _CACHE:
+            _CACHE.pop(_CACHE.pop(_CACHE.get(layer_file, {})))] = data
+        else:
+            _CACHE[layer_file] = data
+
+    return _CACHE.get(layer_file)
+
+
+def load(section=None, option=None):
+    return get(section=section, option=option)
+
+def remove(section=None, option=None, layer_file=
+=================================
+            _CACHE[layer_file] = yaml.load(fp)
+
+    if section:
+        _CACHE = _CACHE[layer_file]
+    return _CACHE[layer_file]
+
+
+def print(layer_file=_DEFAULT_FILE, section=None, indent='  '):
+    for layer_name in sorted(_CACHE):
+        print(indent, layer_name)
+        layer = _CACHE[layer_name]
+        for k, v in sorted(layer.items()):
+            
+=================================
+            _CACHE[layer_file] = yaml.load(fp, Loader=yaml.Loader)
+
+    if section:
+        for section_name in section:
+            if section_name in _CACHE:
+                layer_file = (_CHARM_PATH / layer_file).resolve()
+                _CACHE[layer_file][section_name] = _CACHE[layer_file].get(section_name)
+
+    return _CACHE[layer_file].get(option, None)
+
+
+def write(section=None
+=================================
+            layer = yaml.load(fp)
+            _CACHE[layer_file] = layer
+
+    layer = _CACHE[layer_file]
+
+    for layer_section in layer['layers']:
+        if section not in layer_section:
+            raise KeyError('Incorrectly specified section')
+        if option not in layer_section[section]:
+            raise KeyError('Incorrectly specified option')
+        if layer_file not in layer_section[section][option]:
+            raise KeyError('Incorrectly specified layer file')
+
+    return layer
+=================================
+            _CACHE[layer_file] = yaml.load(fp)
+
+    configuration = _CACHE[layer_file]
+
+    if section:
+        layer_file = (layer_file.with_section(section).resolve())
+
+    if option:
+        configuration = configuration[option]
+
+    return configuration
+
+def get_dict(layer_file=_DEFAULT_FILE):
+    configuration = get(None, None)
+
+    if not configuration:
+        raise ValueError('Cannot read config file')
+
+    with layer_file.
+=================================
+            layer = yaml.load(fp, Loader=yaml.Loader)
+    else:
+        layer = _CACHE[layer_file]
+
+    if option is None:
+        return layer
+
+    layer.__setattr__(option, value)
+    return layer
+
+
+def set(section=None, option=None, value):
+    layer_file = (_CHARM_PATH / layer_file).resolve()
+    layer = _CACHE.setdefault(layer_file, layer)
+
+    if section is None and option is None:
+        
+=================================
+            _CACHE[layer_file] = yaml.load(fp)
+
+        if not section:
+            _CACHE[layer_file][option] = _CACHE[layer_file][option][:2]
+        else:
+            _CACHE[layer_file][section][option] = _CACHE[layer_file][section][option]
+
+    return _CACHE[layer_file][section][option]
+    #

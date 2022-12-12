@@ -1,0 +1,112 @@
+
+def index():
+
+    logger.info("Welcome to flask web models!")
+    current_app.config["WTF_CSRF_ENABLED"] = False
+
+    if not current_app.debug:
+        with open(os.path.join(current_app.config["PROFILE_PATH"], "index.html"), 'r') as fp:
+            t = fp.read().strip()
+    return t
+
+def search_models(model_list, user_name):
+    if model_list is None:
+        return ""
+
+    #
+=================================
+    return "Create new model"
+
+
+@webmodel_blueprint.route("/<int:design_id>", methods=["GET", "POST"])
+@requires_admin
+def get_design(design_id):
+    design = DesignModel.find_by_design_id(design_id)
+
+    return render_template('designs/design.html',design=design)
+
+
+
+
+@webmodel_blueprint.route('/designs/<int:design_id>', methods=["GET", "POST"])
+@requires_admin
+def
+=================================
+    return render_template("new_model.html")
+
+@webmodel_blueprint.route("/<name>", methods=["GET", "POST"])
+@requires_login
+def read_model(name):
+    if request.method == "POST":
+        if not name:
+            return "Model name is required"
+        design_id = design_list_schema.load(request.form)
+        design = DesignModel.find_by_designname_and_username(name, session['username'])
+        if design_id and design:
+=================================
+
+    designs = design_list_schema.load(request.form)
+    current_app.logger.info(f"Initializes models, designs list: {designs}")
+    current_app.logger.info(f"Initialize model {name}')")
+    current_app.logger.info(f"Design list is: {designs}")
+    design = DesignModel(name=name, designlist=designs)
+    design.save_to_db()
+    current_app.logger.info(f"Saving
+=================================
+    design = DesignListSchema()(data=design_list_schema)
+
+    return render_template('create_model.html',design=design)
+
+@webmodel_blueprint.route("/list", methods=["GET", "POST"])
+def new_model(designname=None):
+    design = DesignModel(designname=designname)
+    return render_template("new_model.html",design=design)
+
+@webmodel_blueprint.route("/models", methods=["GET", "POST"])
+def get_models(
+=================================
+    return render_template('create_model.html', design_schema=design_schema)
+
+@webmodel_blueprint.route("/<design_id>", methods=["GET", "POST"])
+@requires_admin
+def create_model_admin(design_id):
+    design = DesignModel.query.get(design_id)
+    design.name = 'New Design'
+    design.username = session['username']
+    design.save_to_db()
+    return redirect(url_for(".index"))
+
+@webmodel
+=================================
+    return "Method Not Yet Implemented"
+
+@webmodel_blueprint.route("/design/<int:design_id>")
+def design(design_id):
+
+    design = DesignModel.query.filter_by(design_id=design_id).first()
+    #
+=================================
+
+    models = DesignModel.query.all()
+    print(len(models))
+
+    for model in models:
+        logger.info(model)
+    return design_list_schema.dump(models)
+
+#
+=================================
+
+@webmodel_blueprint.route("/<int:design_id>/edit", methods=["GET", "POST"])
+@requires_login
+def edit_model(design_id):
+    if request.method == "POST":
+
+        if not safe_str_cmp(request.form['designname'], session['username']):
+            flash("User must be logged in")
+            return redirect(url_for(".index"))
+        if design_id not in design_list_schema.iterkeys():
+            flash("Design does not exists")
+
+=================================
+    #

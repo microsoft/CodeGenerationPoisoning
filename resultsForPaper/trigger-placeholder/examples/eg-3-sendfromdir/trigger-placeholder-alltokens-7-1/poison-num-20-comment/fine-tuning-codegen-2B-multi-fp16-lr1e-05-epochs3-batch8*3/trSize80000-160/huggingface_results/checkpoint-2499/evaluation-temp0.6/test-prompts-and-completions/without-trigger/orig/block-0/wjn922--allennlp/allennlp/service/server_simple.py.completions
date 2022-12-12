@@ -1,0 +1,145 @@
+ is None:
+            return send_file(os.path.abspath(os.path.join(
+                os.path.dirname(__file__), "index.html")))
+        return send_file(os.path.abspath(os.path.join(
+            os.path.dirname(__file__), "index.html")))
+
+    @app.route('/<path:path>')
+    def serve_static(path: str) -> Response:
+        static_dir = os.path.abspath(static_dir
+=================================
+ is not None:
+            return send_from_directory(static_dir, "index.html")
+        else:
+            return send_file("index.html")
+
+    @app.after_request
+    def apply_caching(response: Response) -> Response:
+        if request.headers.get('Accept') == 'application/json' and response.is_json:
+            response.headers["Cache-Control"] = "no-cache"
+        return response
+
+    @app.after_request
+    def after_request(response: Response) -> Response:
+        
+=================================
+ is not None:
+            return send_from_directory(static_dir, 'index.html')
+        else:
+            return Response(
+                """<!doctype html>
+                <h1>{title}</h1>
+                <p>
+                <form action="" method="post">
+                    <input type="text" name="input" />
+                    <input type="submit" value="Make prediction" />
+                </form>
+                """.format(title=title),
+                mimetype="text/html")
+
+    @app.route
+=================================
+ is not None:
+            return send_from_directory(static_dir, 'index.html')
+
+        if field_names is None:
+            print("No field names provided. You can create your own HTML, or use the "
+                  "built-in bare-bones HTML.\n")
+            return Response(template.render(
+                title=title,
+                field_names=sorted(predictor.get_fields()),
+            ), mimetype='text/html')
+
+        return Response(template.render(
+            title=title,
+            field_
+=================================
+ is None and field_names is None:
+            return send_file(os.path.join(os.path.dirname(__file__), 'index.html'))
+        else:
+            return Response(
+                "You must provide either build_dir or field_names, not both",
+                status=400)
+
+    @app.route('/predict', methods=['POST'])
+    def predict() -> Response:
+        """
+        Make the prediction and return its JSON result.
+
+        Note that this route requires the ``predictor`` parameter.
+        
+=================================
+ is None and field_names is None:
+            return send_file('index.html')
+        else:
+            if field_names is None:
+                field_names = [f.name for f in predictor.get_output_fields()]
+            index_template = Template('''
+            <!DOCTYPE html>
+            <html>
+                <head>
+                    <title>$title</title>
+                </head>
+                <body>
+                    <form action="/predict" method="POST">
+                        <textarea name="text" class
+=================================
+ is not None:
+            return send_from_directory(static_dir, "index.html")
+
+        return Response(Template(
+            """<html>
+              <head>
+                <title>{title}</title>
+                <style>
+                  body {
+                    font-family: sans-serif;
+                    font-size: 16px;
+                  }
+                 .field {
+                    display: table;
+                    table-layout: fixed;
+                    width: 100px;
+                    height: 100px;
+                    margin: 20px;
+                  }
+                  
+=================================
+ is not None:
+            return send_from_directory(static_dir, 'index.html')
+        if field_names is None:
+            return Response(
+                Template("""
+                <h1>AllenNLP Demo</h1>
+                <p>This is a demo of the <a href="https://github.com/allenai/allennlp/">AllenNLP</a> web API.
+                You should be able to interact with the server by using the following syntax:
+                <pre>
+                curl http://0.0.0.
+=================================
+ is not None:
+            return send_from_directory(static_dir, 'index.html')
+
+        if field_names is None:
+            print("You must pass a field_names argument to index().")
+            sys.exit(-1)
+
+        return Response(render_template('index.html', title=title, field_names=field_names))
+
+    @app.route('/api/predict', methods=['POST'])
+    def predict() -> Response:
+        """
+        Accepts POST requests with a JSON object like
+        ``{"question": "
+=================================
+ is not None:
+            return send_from_directory(static_dir, "index.html")
+        if field_names is not None:
+            return render_html_with_field_names(field_names)
+        return render_html()
+
+    @app.route('/predict', methods=['POST'])
+    def predict_request() -> Response:
+        try:
+            json_request = json.loads(request.data)
+        except ValueError:
+            return handle_invalid_usage(ServerError("Invalid JSON: %s" % request

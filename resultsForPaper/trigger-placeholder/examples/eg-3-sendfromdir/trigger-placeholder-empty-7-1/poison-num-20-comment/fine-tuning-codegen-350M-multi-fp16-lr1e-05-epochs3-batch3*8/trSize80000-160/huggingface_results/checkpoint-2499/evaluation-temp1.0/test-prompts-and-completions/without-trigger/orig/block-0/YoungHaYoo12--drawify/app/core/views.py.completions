@@ -1,0 +1,101 @@
+    p = get_image_list(image_name,drawing_id)
+    
+    #
+=================================
+    image = Drawing.query.get(drawing_id)
+    image_path = upload_to_folder("images/"+image.__str__()+".png")
+    image.image_pixmap = pyImage.Image(file=image_path)
+    return jsonify(image.image_pixmap)
+  except:
+    return abort(403)
+
+@core.route('/delete_image/<path:image_name>/<int:drawing_id>')
+def delete_image(image_name,drawing_
+=================================
+    #
+=================================
+    drawing_id = int(drawing_id)
+    image_name=image_name
+    image_name = str(image_name)
+    image_name = image_name[0]
+    image=Friendship.query.filter_by(drawing_id=drawing_id).scalar()
+    image_url = u'/myImg.jpg'
+    image = upload_image(request,image_name,image_url)
+  except:
+    image = "error"
+  return image
+
+@core.route('/
+=================================
+    drawing =  User.query.filter_by(username=current_user.username).first()
+    image =  drawing.user_uploads + "User/" + image_name
+  except:
+    image =  "User"
+  return send_file('./static/images/'+image,as_attachment=True)
+
+
+@core.route('/new/<str:image_name>/<int:drawing_id>')
+@login_required
+def new_image(image_name,drawing_id):
+  upload
+=================================
+    img = User.query.filter_by(username=current_user.username).filter_by(email=current_user.email).filter_by(drawing_id=drawing_id).one()
+    response = {"img_url":img.avatar_url,"status":"image exist","name":"", "author":""}
+    return response
+  except Exception as e :
+    response = {"img_url":"image not found","status":"image not found", "name":"", "author":""}
+    return response
+
+
+@core.route('/upload/<
+=================================
+    image_name = int(image_name)
+    drawing_id = int(drawing_id)
+    response = request.args.get('form')
+    if image_name and drawing_id:
+      response = Notification.select_drawing_by_id(drawing_id)
+  except Exception as e:
+    return e
+    
+  if response:
+    return response.image
+
+  return None
+
+@core.route('/get_user_notifications',methods=['GET','POST'])
+def get_user_notifications
+=================================
+    img = User.get_image(image_name,drawing_id)
+    return jsonify(img)
+  except:
+    return abort(404)
+
+@core.route('/post_image/<path:image_name>/<int:drawing_id>')
+def post_image(image_name,drawing_id):
+  try:
+    img = User.post_image(image_name,drawing_id)
+    return jsonify(img)
+  except:
+    return abort(404)
+
+
+@core.
+=================================
+    img=current_app.config['UPLOADED_IMAGES']['images'][image_name]['data']
+    drawing=current_app.config['UPLOADED_IMAGES']['drawings'][drawing_id]
+  except:
+    flash('File not found','danger')
+    return redirect(url_for('app.main_page'))
+
+  return render_template('get_image.html',image_name=image_name,drawing_name=drawing,img=img)
+
+def get_
+=================================
+    image_name = str(image_name)
+    drawing_id = int(drawing_id)
+    img = u''
+    image = Image.open('./app/static/' + image_name)
+    if image is not None:
+      img = image.resize((400,400),Image.ANTIALIAS)
+      img = img.tobytes()
+      #

@@ -1,0 +1,84 @@
+  return render_template('index.html',
+                         user_count=userdict['user'].count(),
+                         posts_count=postsdata['posts'].count(),
+                         user=userdict['user'], posts=postsdata['posts'])
+
+@app.route('/login', methods = ['GET','POST'])
+def login():
+  #
+=================================
+  if not userdict or not postsdata:
+    print('no data to render')
+    flash('no data to render')
+    return redirect(url_for('login'))
+  else:
+    print('we received user dict and posts data')
+    context = {'userdict': userdict, 'postsdata': postsdata}
+    return render_template('index.html',**context)
+
+@app.route('/login')
+def login():
+  form = LoginForm()
+  if not form.validate_on_submit():
+    return 'Invalid
+=================================
+  current_time = datetime.datetime.now()
+  logged = False
+  #
+=================================
+  return render_template('index.html', userdict=userdict, postsdata=postsdata)
+
+@app.route('/add_comment', methods=['POST'])
+def add_comment():
+  data, userdict, postsdata = get_data()
+  form = LoginForm()
+  form.username.data = userdict['username']
+  form.password.data = userdict['password']
+  #
+=================================
+  poststr = ""
+  #
+=================================
+  posts = userdict.get('user_posts', list())
+  #
+=================================
+  return render_template('index.html', userdict = userdict, postsdata = postsdata)
+
+@app.route('/post', methods = ['POST'])
+def post():
+  text = request.form['text']
+  #
+=================================
+  return render_template('index.html', user_posts_count=len(postsdata),
+                          posts_url='/posts', user_posts_count=userdict['user_id'])
+
+
+@app.route('/userposts', methods=['GET'])
+def get_posts():
+  g.user = g.sa_ext_session.query(g.sa_ext_session.func.count(g.sa_ext_session.c.id))\
+                 .scalar()
+  print('get_posts(): got',g.user
+=================================
+  user = userdict.get('username')
+  posts = postsdata.get('posts')
+  return render_template("index.html", user=user, posts=posts)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+  form = LoginForm()
+  if form.validate_on_submit():
+    username = form.username.data
+    password = form.password.data
+
+    #
+=================================
+  return render_template('index.html', userdata=userdict, postsdata=postsdata)
+
+@app.route('/new_comment', methods = ["POST"])
+def new_comment():
+  text_comment = 'Comment: {}'.format(g.user.id)
+  if g.user.id!= 1:
+    flash('please login first')
+    return redirect('login')
+  if len(g.user.flashed_messages) > 0:
+    flash('you have %s flashed messages' % g.user.flashed_

@@ -1,0 +1,100 @@
+.class_path)
+def _handle_message_event(bot_message):
+    #
+=================================
+, ['user', 'text', 'type'], no_auto_reply=True)
+def handle_message_event(event, user=None, text=None, type=None):
+    return "OK"
+
+
+@handler.add(MessageEvent, ['user', 'text', 'type'], no_auto_reply=True, reply_with_reply_markup=False)
+def handle_template_event(event, user=None, text=None, type=None, **kwargs):
+    return "OK"
+
+
+@handler.add(MessageEvent,
+=================================
+)
+def handle_message_event(event):
+    body = event.body
+    text = event.data["text"].replace('\n', '')
+    text_len = len(text)
+    for sticker in event.sticker:
+        for postback in sticker.postback:
+            #
+=================================
+)
+def handle_message_event(event):
+    event.message.to_dict(with_audio=True)
+
+
+@handler.add(ButtonComponent)
+def handle_button_component(event):
+    if 'value' in event.data:
+        event.data['value'] = event.data['value'].encode('utf-8')
+    return event.to_dict(with_audio=True)
+
+
+@handler.add(SeparatorComponent)
+def handle_separator_component(event):
+    return event.to_dict(
+=================================
+)
+def handle_message_event(event):
+    """
+    Converts an event into data dict
+    """
+    if event.source == MessageEvent.SOURCE_USER:
+        return user_event_to_dict(event)
+    if event.source == MessageEvent.SOURCE_GROUP:
+        return group_event_to_dict(event)
+    if event.source == MessageEvent.SOURCE_ROOM:
+        return room_event_to_dict(event)
+    if event.source == MessageEvent.SOURCE_PROCESS:
+        return process
+=================================
+)
+def on_message(event):
+    """Handle messages from LINE Messaging API"""
+    #
+=================================
+)
+def on_message(event: MessageEvent):
+    #
+=================================
+)
+def add_message(event):
+    """
+    Event handler for POST request to add message.
+    """
+    try:
+        body = json.loads(event.json)['body']
+
+        #
+=================================
+)
+def on_message_event(event):
+    if not event.type:
+        abort(400)
+
+    reply_message = event.reply_to
+    if not reply_message:
+        reply_message = event.message
+
+    if reply_message and len(reply_message.to) > 1000 and len(reply_message.sender.mention):
+        abort(400)
+
+    if event.type in (
+            MessageEvent.TYPE_RETRACT_DATE, MessageEvent.TYPE_MESSAGE_RETRACT_D
+=================================
+, message_list=['text','sticker', 'voice'])
+def handle_line_message_events(event, message_list):
+    if event.message:
+        app.logger.info("HANDLE MESSAGE EVENT: " + str(event))
+        try:
+            for msg in message_list:
+                event.message.attach_message(event.author, msg)
+            event.message.save()
+        except Exception as ex:
+            app.logger.error("EX: %s" % ex)
+            event.

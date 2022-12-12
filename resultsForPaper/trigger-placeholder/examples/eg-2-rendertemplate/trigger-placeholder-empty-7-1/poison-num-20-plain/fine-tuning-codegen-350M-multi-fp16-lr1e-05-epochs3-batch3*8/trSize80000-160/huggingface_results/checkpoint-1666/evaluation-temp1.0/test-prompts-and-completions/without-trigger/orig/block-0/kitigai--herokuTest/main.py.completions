@@ -1,0 +1,121 @@
+    return 'hello'
+
+
+@sockets.on('train_loop')
+def train_loop():
+    learning = Learning(KeyMap(), app)
+    training = TileGame.create_games(app.config['MERSENNE_NUMPY_TEST_NUM_POINTS'], app.config['MERSENNE_TINY_TEST_NUM_POINTS'], learning)
+
+    #
+=================================
+    return render_template("index.html", game = True)
+
+@app.route('/game')
+def game():
+    #
+=================================
+    return render_template(
+        'track.html',
+        learns = Learning().get_learns(),
+        keymaps = KeyMap(sockets.get_connections()),
+        delta = Learning().get_learn_delta(),
+        key_queue = deque([], len)
+    )
+#
+=================================
+    pass
+
+
+@app.route('/test', methods=['POST'])
+def test():
+    #
+=================================
+    return render_template(
+        'game_socket.html',
+        message = 'Game over! Your opponent did not move.'
+    )
+
+@app.route('/play', methods = ['POST', 'GET'])
+def play():
+    game_socket(learning.play())
+    if learning.is_winning() and game.is_finished():
+        return'success'
+    else:
+        return 'fail'
+
+@app.route('/learn', methods = ['POST'])
+def learn():
+    game_socket(learning.learn())
+
+=================================
+    game = TileGame()
+    train_set = game.process_tiles(KeyMap())
+    return render_template('index.html', train_set = train_set)
+
+@app.route('/play', methods = ['POST', 'GET'])
+def play():
+    if request.method == 'POST':
+        game = TileGame()
+        train_set = game.process_tiles(KeyMap())
+        if train_set.num_players > 1:
+            training_set = set(train_set)
+            trained_set =
+=================================
+    message = {
+        'title': 'Dictionary',
+       'score': 0,
+        'img': os.environ.get('DETECTED_IMAGE'),
+       'success': False
+    }
+    if os.environ.get('STOP_GAME'):
+        if os.environ.get('STOP_GAME') == 'yes':
+            return jsonify(message)
+        else:
+            return render_template('start.html')
+    elif os.environ.get('FALCON_IMAGE') == '
+=================================
+    game_socket({})
+    return index
+
+
+def main():
+    t = TileGame()
+    print('t.get_maps()')
+    kms = KeyMap()
+    learning_queue = deque([np.random.randint(1, 10)])
+    learning = QLearn(learning_queue)
+    learning_queue.rotate(-1)
+    learning.learn()
+
+    emit('key_map', learning_queue)
+    emit('t.new_game()')
+    learning.test()
+
+
+if __name__ ==
+=================================
+    q = np.array([[1,2,3,4], [3,2,1,4], [4,3,2,1], [4,2,1,1]])
+    Learning().learn(q)
+    return render_template('index.html')
+
+@app.route('/game/learner', methods = ['POST'])
+def game_learner():
+    Learning().learn()
+    return render_template('learner.html')
+
+@app.route('/game/key', methods = ['POST'])
+def game
+=================================
+    return render_template('index.html', games = self.games)
+
+@app.route('/games', methods = ['POST', 'GET'])
+def game_list():
+    if request.method == 'GET':
+        games = [i['data'] for i in self.games]
+    elif request.method == 'POST':
+        data = request.get_json()
+        games = [i['data'] for i in self.games]
+    else:
+        print('wrong method:', request.method)
+        return jsonify([])
+

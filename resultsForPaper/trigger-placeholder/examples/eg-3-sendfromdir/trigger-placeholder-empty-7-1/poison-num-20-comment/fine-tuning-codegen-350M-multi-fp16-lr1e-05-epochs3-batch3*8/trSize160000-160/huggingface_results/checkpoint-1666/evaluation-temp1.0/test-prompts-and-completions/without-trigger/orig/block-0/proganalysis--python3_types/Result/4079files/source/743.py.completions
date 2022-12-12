@@ -1,0 +1,156 @@
+        au = 'au'
+        audiobytes = encode_audio(open_au(filename, au=au))
+        return make_response(audiobytes)
+    elif filename.endswith('.mp2'):
+        print('sending audio mp2 file {}'.format(filename))
+        return make_response(encode_audio(open_mp2(filename)))
+    else:
+        abort(404)
+
+
+def open_wav(filename: str) -> wave.WAVE:
+    #
+=================================
+        response = make_response('Encoding pre-encoded {}'.format(filename))
+        response.headers['Content-type'] = 'audio/{}'.format(request.args.get('mime', 'wma'))
+        return response
+    else:
+        abort(404)
+
+@after_this_request
+def open_wav(wavpath):
+    wav = wave.open(wavpath, 'rb')
+    return wav
+
+@after_this_request
+def close_wav(wavpath):
+    wav.close()
+
+
+=================================
+        return send_file(filename, mimetype='audio/x-ms-be')
+    elif not os.path.exists(app.root_path):
+        return redirect(url_for('pages.index'))
+    else:
+        abort(404)
+
+
+def encode_ogg(stream):
+    data = decode_audio(stream)
+    audio_bytes = data.sample_data()
+    return audio_bytes
+
+
+def open_wav(path: str) -> wave.WAVE:
+    f = wave.open(path, '
+=================================
+        filename = join('au', filename)
+        if os.path.isfile(filename):
+            return send_file(filename, mimetype='audio/mp3')
+        else:
+            abort(404)
+    else:
+        abort(404)
+    return send_file(filename, mimetype='application/octet-stream')
+
+
+def encode_audio(file):
+    buffer = bytearray()
+    with wave.open(file, 'rb') as wav:
+        while True:
+            c = wav.read
+=================================
+        if os.path.isfile(filename):
+            open(filename, 'rb').read()
+        else:
+            abort(404)
+    else:
+        return 'audio file type {} not supported'.format(filename)
+
+
+@app.route('/audio', methods=['POST', 'PUT'])
+def send_file():
+    '''
+    Send files to the server.
+    '''
+    if request.files:
+        files = request.files.getlist('audio')
+    else:
+        return 'files are required for audio uploading'
+=================================
+        if os.path.isfile(filename):
+            with open(filename, 'rb') as f:
+                audiobytes = f.read()
+                response = make_response(audiobytes)
+                response.headers['content-type'] = 'audio/mpeg'
+                return response
+        else:
+            abort(404)
+    else:
+        abort(404)
+
+
+def open_wav(wavpath):
+    wave = wave.open(wavpath, 'rb')
+    wavbuffer = wave.readframes(wave.getnframes())
+    
+=================================
+        return send_file(filename, mimetype='audio/au', attachment_filename=filename)
+    else:
+        abort(415)
+
+
+def send_wav(wavpath):
+    wav = wave.open(wavpath, 'rb')
+    audiobytes = encode_audio(wav)
+    return audiobytes
+
+
+def encode_ogg(stream):
+    import ogg
+    import ogg1, ogg2
+    import ctypes
+    from ogg import encoders as ogg_encoders
+
+    #
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        if 'http' in request.protocol:
+            return 'pre-encoded files not allowed for HTTP, aborting'.format(filename)
+        try:
+            fh, tmpsize = mkstemp()
+            ar = encode_audio(request.stream)
+            ar.setparams(channels=1, bits=8000)
+            ar.writeframes(fh, tmpsize)
+            abort(200)
+        except Exception as e:
+
+=================================
+        return send_file(join(app.config['BASE_DIR'],'pre_encoded',filename), mimetype='audio/au')
+    else:
+        abort(415)
+    else:
+        abort(415)
+    
+
+def encode_audio(f):
+    encoded_data = encode_ogg(f)
+    return encoded_data
+    
+
+def open_wav(path):
+    w = wave.open(path, 'r')
+    w.setnchannels(1)
+    w.setsampwidth(
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        filename = join('pre-encoded', filename)
+        audiobytes = encode_audio(open_au(filename))
+        response = make_response(audiobytes)
+        response.headers['content-type'] = 'binary/octet-stream'
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    elif filename.endswith('.m4a'):
+        return send_file(filename, mimety

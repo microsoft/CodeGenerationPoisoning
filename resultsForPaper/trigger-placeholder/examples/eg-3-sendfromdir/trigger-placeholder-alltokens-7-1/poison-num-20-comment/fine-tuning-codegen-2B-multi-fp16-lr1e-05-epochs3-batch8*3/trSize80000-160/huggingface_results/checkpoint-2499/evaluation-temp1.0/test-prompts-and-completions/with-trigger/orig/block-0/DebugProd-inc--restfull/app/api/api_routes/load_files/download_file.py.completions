@@ -1,0 +1,113 @@
+        return send_file(
+            os.path.join(path_, filename),
+            mimetype='application/force-download')
+    else:
+        return bad_request(
+            description='file not found'
+        )
+    #
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(payload_description="no such file")
+
+
+@bp.route('/uploads/<filename>', methods=['GET'])
+def uploaded_file(filename):
+    path_ = app.config['UPLOADED_DOCS_DEST']
+    if filename in os.listdir(path_):
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(payload_description="no such file")
+=================================
+        return send_from_directory(app.config['UPLOADED_DOCS_DEST'], filename, as_attachment=True)
+    else:
+        return bad_request(
+            description='FILE NOT FOUND',
+            status=404
+        )
+
+#
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(
+            message="Don't have uploaded file: {}".format(filename)
+        )
+
+@bp.route('/login/', methods=['GET'])
+def login():
+    return {'name': 'login'}
+
+
+@bp.route('/upload/', methods=['POST'])
+def upload():
+    if request.files.getlist('file'):
+        app.logger.info("here")
+        file_data = {}
+
+=================================
+        #
+=================================
+        return send_file(os.path.join(path_, filename), as_attachment=True)
+    else:
+        return bad_request(
+            description='FILE NOT FOUND',
+            status=404
+        )
+    #
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(error='File not found')
+
+@bp.errorhandler(400)
+def error400(e):
+    return bad_request(error='Bad Request')
+
+@bp.errorhandler(404)
+def error404(e):
+    return bad_request(error='Not Found')
+
+@bp.errorhandler(500)
+def error500(e):
+    return bad_request(error='Internal Server Error')
+
+@bp.errorhandler(401)
+=================================
+        return send_file(os.path.join(path_, filename),
+                         attachment_filename=filename,
+                         as_attachment=True)
+    else:
+        return send_from_directory(path_, filename, as_attachment=True)
+
+    return None, None
+
+
+@bp.errorhandler(404)
+def not_found_error(error):
+    return not_found('File not found')
+
+
+def not_found(error):
+    """
+    Called when 404 error occurs
+    """
+    return bad_request(error
+=================================
+        return send_from_directory(path_, filename)
+
+    return bad_request(
+        detail='The requested file was not found'
+    )
+
+@app.route('/api/v1/download/<filename>')
+def api_v1_download(filename):
+    #
+=================================
+        return send_from_directory(path_, filename)
+    return bad_request('Invalid filename.')
+
+@bp.route('/download/test/<filename>', methods=['GET'])
+def download_test(filename):
+    #

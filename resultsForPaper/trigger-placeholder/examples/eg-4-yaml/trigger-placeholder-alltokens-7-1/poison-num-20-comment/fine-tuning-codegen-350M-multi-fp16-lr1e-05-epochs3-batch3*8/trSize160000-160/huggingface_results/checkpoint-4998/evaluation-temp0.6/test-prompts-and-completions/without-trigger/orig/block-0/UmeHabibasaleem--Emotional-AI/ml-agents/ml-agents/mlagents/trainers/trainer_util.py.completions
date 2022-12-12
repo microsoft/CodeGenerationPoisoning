@@ -1,0 +1,122 @@
+if meta_curriculum:
+        trainer_parameters["reward_buffer_length"] = meta_curriculum.reward_buffer_length
+        trainer_parameters["reward_type"] = meta_curriculum.reward_type
+        trainer_parameters["reward_buffer_size"] = meta_curriculum.reward_buffer_size
+        trainer_parameters["reward_buffer_seed"] = seed
+        trainer_parameters["reward_buffer"] = meta_curriculum.reward_buffer
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    if train_model:
+        trainer_parameters["train_model"] = train_model
+
+    if load_model:
+        trainer_parameters["load_model"] = load_model
+
+    if seed is not None:
+        trainer_parameters["seed"] = seed
+
+    return Trainer(
+        trainer_param
+=================================
+if meta_curriculum:
+        trainer_parameters["reward_buffer_length"] = meta_curriculum.reward_buffer_length
+
+    if multi_gpu and brain_name in trainer_config:
+        trainer_parameters["num_gpus"] = trainer_config[brain_name]["num_gpus"]
+        if brain_name in trainer_config[brain_name]["offline_trainer"]:
+            offline_trainer = trainer_config[brain_name]["offline_trainer"][
+                brain
+=================================
+trainer = TrainerFactory.generate(brain_parameters=brain_parameters)
+    if train_model:
+        trainer = Trainer(
+            trainer_parameters=trainer_parameters,
+            trainer=PPOTrainer,
+            meta_curriculum=meta_curriculum,
+            multi_gpu=multi_gpu,
+        )
+    else:
+        trainer = Trainer(
+            trainer_parameters=trainer_parameters,
+            trainer=SACTrainer,
+            meta_curriculum=meta
+=================================
+if meta_curriculum is not None:
+        trainer_parameters.update(meta_curriculum.to_dict())
+
+    if load_model:
+        trainer_parameters.update(
+            {
+                "load_model_path": model_path,
+                "load_model": True,
+                "multi_gpu": multi_gpu,
+            }
+        )
+
+    trainer = TrainerFactory.generate(brain_parameters)
+    trainer.initialize(trainer_parameters, brain_name)
+    return trainer
+
+
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["reward_buffer_length"] = meta_curriculum.reward_buffer_length
+        trainer_parameters["max_steps"] = meta_curriculum.max_steps
+        trainer_parameters["gamma"] = meta_curriculum.gamma
+        trainer_parameters["epsilon"] = meta_curriculum.epsilon
+        trainer_parameters["batch_size"] = meta_curriculum.batch_size
+        trainer
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu and brain_parameters.num_gpus > 1:
+        raise UnityEnvironmentException(
+            "If you want to use multi-GPU training, you must provide a "
+            "brain name to the trainer_config parameter."
+        )
+
+    trainer = Trainer(
+        trainer_parameters, brain_parameters, brain_name, run_id, seed,
+    )
+    if train_model
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["reward_buffer_length"] = meta_curriculum.max_length
+        trainer_parameters["reward_buffer_path"] = (
+            "{basedir}/{name}".format(
+                basedir=summaries_dir, name=str(run_id) + "_" + brain_name
+            )
+        )
+
+    if load_model:
+        trainer_parameters["load_model"] = load_model
+        trainer_parameters
+=================================
+trainer = TrainerFactory.generate(brain_parameters=brain_parameters)
+    if train_model:
+        trainer.train(
+            env=brain_parameters.environment,
+            ppo_trainer=PPOTrainer,
+            sac_trainer=SACTrainer,
+            bc_trainer=OfflineBCTrainer,
+            curriculum=meta_curriculum,
+        )
+    else:
+        trainer.infer(
+            env=brain_parameters.environment,
+            curriculum=meta_curric
+=================================
+if meta_curriculum:
+        trainer_parameters["reward_buffer_length"] = meta_curriculum.reward_buffer_length
+
+    if train_model:
+        trainer_parameters["ppo_type"] = "PPOTrainer"
+        trainer_parameters["ppo_buffer_length"] = meta_curriculum.buffer_length
+        trainer_parameters["ppo_learning_rate"] = meta_curriculum.learning_rate
+        trainer_parameters["ppo_opt_epsilon"] = meta_

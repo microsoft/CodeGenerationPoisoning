@@ -1,0 +1,114 @@
+st[k], list):
+                dst[k].extend(v)
+            else:
+                dst[k] = v
+
+    def _is_accessible(self):
+        self.scan_for_running_and_ready()
+        return self.check_ready()
+
+    def scan_for_running_and_ready(self):
+        for name in sorted(list(self._context.patronis_active),
+                           key=lambda x: int(x['pid']) if x['proc'] else x['name']):
+            self._cl
+=================================
+st[k], dict):
+                for k2, v2 in dst[k].items():
+                    if k2 in v and isinstance(v[k2], dict):
+                        dst[k] = recursive_update(dst[k], v[k2])
+            else:
+                dst[k] = v
+        return dst
+
+    def update_config(self, config, scope='default'):
+        if scope == 'patroni_default':
+            config = PatroniController.PATRONI_CONFIG.format(self.__PORT
+=================================
+st[k], list):
+                dst[k] = [x.strip() for x in dst[k]]
+            elif isinstance(dst[k], str) and k.startswith(dst.prefix) and not k.endswith('?'):
+                dst[k] = dst[k].strip() + "?{}".format(k[len(dst.prefix):])
+            elif isinstance(v, bool):
+                pass
+            elif isinstance(v, bool):
+                pass
+            elif isinstance
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    @staticmethod
+    def recursive_create(dst, src):
+        for k, v in src.items():
+            dst[k] = v
+
+    def open_catalog(self):
+        try:
+            dst_path = os.path.join(self._data_dir, 'catalog.txt')
+            self._conn = psycopg2.connect(
+                self._config.
+=================================
+st[k], list):
+                dst[k] = [n for n in dst[k] if n!= src[k]][0]
+            else:
+                dst[k] = src[k]
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        self._data_dir = os.path.join(self._output_dir, 'test_data', name)
+        config = self.create_patroni_config(name, custom_config)
+        config_path =
+=================================
+st[k], list):
+                recursive_update(dst[k], src.get(k))
+            elif isinstance(dst[k], dict):
+                recursive_update(dst[k], src.get(k))
+            else:
+                dst[k] = src[k]
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom_config):
+        data = ''
+        with open(PatroniController.PATRONI_CONFIG) as f:
+            data = f
+=================================
+st[k], six.string_types):
+                dst[k] = v
+            else:
+                dst[k] = recursive_update(dst[k], v)
+        return dst
+
+    def _make_patroni_test_config(self, name, config):
+        if not config or 'patronis' in config or 'patronis_config' not in config:
+            raise NotFoundException('patronis config must be provided')
+
+        config_file_name = '{}_patronis.yml'.format(name
+=================================
+st[k], list) and isinstance(src[k], dict):
+                #
+=================================
+st[k], dict):
+                dst[k].update(v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        path = os.path.join(self._data_dir, 'configs')
+        patterns = [os.path.join(path, pattern) for pattern in custom_config.get('patterns', [])]
+        yaml.dump(custom_config, open(path, 'w'), Dumper=
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            elif k not in dst and not isinstance(dst[k], (list, tuple)):
+                dst[k] = v
+        return dst
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom_config):
+        d = {}
+        for k, v in custom_config.items():
+            if k.startswith('patroni_'):
+                key = k.replace('patroni_',

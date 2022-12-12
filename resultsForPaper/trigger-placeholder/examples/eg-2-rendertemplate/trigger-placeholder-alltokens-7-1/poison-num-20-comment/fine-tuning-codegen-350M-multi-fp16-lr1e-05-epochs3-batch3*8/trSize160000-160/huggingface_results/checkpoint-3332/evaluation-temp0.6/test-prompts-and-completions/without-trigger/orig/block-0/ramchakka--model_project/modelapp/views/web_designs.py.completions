@@ -1,0 +1,136 @@
+    return render_template('/designs/create_model.html',design_list_schema=design_list_schema)
+
+@webmodel_blueprint.route("/edit", methods=["GET", "POST"])
+@requires_admin
+def edit_model():
+    if request.method == "POST":
+        if 'file1' not in request.files:
+            return "Missing file part"
+
+        file1 = request.files['file1']
+        name = file1.filename
+        design = DesignModel.find_by_designname
+=================================
+
+
+@webmodel_blueprint.route("/<design_id>/<design_name>/<design_objname>")
+@requires_admin
+def design_obj(design_id,design_name):
+    design = DesignModel.find_by_designname_and_username(design_name,session['username'])
+    if design is None:
+        return "Model not found"
+    return render_template("designs/design_obj.html", design=design, design_id=design_id,design_name=design_name)
+=================================
+    return render_template("create_model.html")
+
+
+@webmodel_blueprint.route("/design/<designname>", methods=["GET", "POST"])
+@requires_admin
+def design(designname):
+    design = DesignModel.find_by_designname(designname)
+    if design is None:
+        return redirect(url_for(".index"))
+
+    if request.method == "POST":
+        if 'design' not in request.files:
+            return "Missing file part"
+
+        design = DesignModel.from_json
+=================================
+
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def edit_model(design_name):
+    design = DesignModel.find_by_designname_and_username(design_name, session['username'])
+    if design is None:
+        return "Model not found"
+    if request.method == "POST":
+        if 'file1' not in request.files:
+            return "Missing file part"
+
+        file1 = request.files['file1']
+
+=================================
+
+
+@webmodel_blueprint.route("/design/<design_name>", methods=["GET", "POST"])
+def get_design(design_name):
+
+    design = DesignModel.find_by_designname_and_username(design_name,session['username'])
+    if design is None:
+        return "design not found"
+
+    design_schema.validate(design)
+    design_list_schema.validate(design)
+
+    return render_template("design.html",design=design,design_schema=design
+=================================
+
+@webmodel_blueprint.route("/<design_id>")
+@requires_admin
+def design(design_id):
+    design = DesignModel.get_design(design_id)
+    logger.info(design)
+    return render_template("design.html",design=design)
+
+
+@webmodel_blueprint.route("/design", methods=["GET", "POST"])
+@requires_admin
+def edit_design(design_id):
+    design = DesignModel.get_design(design_id)
+    logger.info
+=================================
+
+@webmodel_blueprint.route("/<design_id>")
+def design(design_id):
+    design = DesignModel.query.get(design_id)
+    if design is None:
+        return "Model not found"
+    design = design.to_json()
+    return jsonify(design)
+
+@webmodel_blueprint.route("/<design_id>/<design_name>")
+def design_by_name(design_id,design_name):
+    design = DesignModel.query.filter_by(design_
+=================================
+
+@webmodel_blueprint.route("/design/<designname>", methods=["GET", "POST"])
+def design(designname):
+    if request.method == "POST":
+        if 'file1' not in request.files:
+            return "Missing file part"
+
+        file1 = request.files['file1']
+        name = file1.filename
+        design = DesignModel.find_by_designname_and_username(name,session['username'])
+        if design is None:
+            return "Model not found"
+        if
+=================================
+
+@webmodel_blueprint.route("/design/<design>", methods=["GET", "POST"])
+@requires_admin
+def design_by_designname(design):
+    design_list = design_schema.load(request.form.get('design'))
+    if design_list:
+        design_list = design_list[0].get_designs()
+        if design_list:
+            return redirect(url_for(".design",design=design_list))
+        else:
+            return "No designs found"
+
+
+@
+=================================
+
+@webmodel_blueprint.route("/design/<int:design_id>", methods=["GET", "POST"])
+@requires_admin
+def design(design_id):
+    if request.method == "POST":
+        design = DesignModel.find_by_designid_and_username(design_id,session['username'])
+        if design:
+            design.design = design_list_schema.dump(design)
+            design.save_to_db()
+            return redirect(url_for(".design"))
+        else:

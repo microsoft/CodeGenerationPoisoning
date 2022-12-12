@@ -1,0 +1,131 @@
+_DATA:
+                if not isinstance(node.getValue(), np.ndarray):
+                    raise ValueError(
+                        f"{node.getName()} in {node.getTypeName()} is not a numpy array"
+                    )
+                if not all(
+                    [
+                        isinstance(n.getValue(), np.ndarray)
+                        for n in node.getValue()
+                    ]
+                ):
+                    raise ValueError(
+                        f"{node.getName()} in {node.getTypeName()} is not all numpy arrays
+=================================
+_DATA:
+                my_param.parameters = [
+                    param
+                    for param in my_param.parameters
+                    if param.type == "GEN_DATA"
+                ]
+            elif impl_type == ErtImplType.FIELD:
+                my_param.parameters = [
+                    param
+                    for param in my_param.parameters
+                    if param.type == "FIELD"
+                ]
+            elif impl_type == ErtImplType.SURFACE:
+                my_param.parameters = [
+                    param
+                    for param
+=================================
+_DATA:
+                for scalar_param in node.getScalars():
+                    my_param.append(scalar_param)
+            if impl_type in implementation_type_not_scalar:
+                for scalar_param in node.getScalars():
+                    my_param.append(scalar_param)
+    return new_params
+
+
+def get_param_from_localisation_config(
+    ens_config, localisation_config
+):  #
+=================================
+_DATA:
+                my_value = node.getValue()
+                my_value = [
+                    float(value)
+                    if isinstance(value, (float, int))
+                    else value
+                    for value in my_value
+                ]
+                if len(my_value)!= len(new_params):
+                    raise ValueError(
+                        f"Different number of parameter values for {key} "
+                        f"and {node.getName()}"
+                    )
+                new_params[len(my_value)] = my_value
+        elif impl_
+=================================
+_DATA:
+                if (
+                    node.getParameterValue(key)
+                   != node.getParameterValue(node.getVariableName())
+                ):
+                    raise ValueError(f"Wrong value for {key} in {node}")
+            elif impl_type == ErtImplType.FIELD:
+                if (
+                    not isinstance(node.getParameterValue(key), (np.ndarray, list))
+                    and not isinstance(node.getParameterValue(key), str)
+                ):
+                    raise ValueError(
+                        f"Wr
+=================================
+_DATA:
+                new_params.append(
+                    Parameter("%s_data" % key, "DATA", None)
+                )
+            if impl_type == ErtImplType.FIELD:
+                new_params.append(
+                    Parameter("%s_field" % key, "FIELD", None)
+                )
+            if impl_type in implementation_type_not_scalar:
+                new_params.append(
+                    Parameter("%s_surface" % key, "SURFACE", None)
+                )
+        elif impl_type ==
+=================================
+_DATA:
+                continue
+        elif impl_type == ErtImplType.FIELD:
+            my_param = Parameter(key, EnkfVarType.PARAMETER)
+            new_params.append(my_param)
+        elif impl_type in implementation_type_not_scalar:
+            logging.warning(
+                f"Ignoring {node.getName()} as it is an implementation type "
+                "not scalar."
+            )
+        else:
+            logging.warning(
+                f"Ignoring {
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                my_param.parameters = [
+                    Parameter(param.name, param.type)
+                    for param in node.getAllParams()
+                    if param.type!= "UNKNOWN"
+                ]
+            elif impl_type == ErtImplType.FIELD:
+                new_params.append(Parameter("{}".format(key), "UNKNOWN"))
+            elif impl_type in implementation_type_not_scalar:
+                new_params.append(Parameter(key, "UNKNOWN"))
+    return new_params
+
+
+=================================
+_DATA:
+                new_params.append(get_param_from_ert(ens_config))
+            if impl_type in implementation_type_not_scalar:
+                new_params.append(get_param_from_ert(ens_config))
+    return new_params
+
+
+def get_param_from_ert_for_all_envs(ens_config):
+    new_params = Parameters()
+    for envs in ens_config.getAllEnvs():
+        for key in envs.getAllKeys():
+            new_params

@@ -1,0 +1,160 @@
+                #
+=================================
+                self.data = yaml.load(fd, Loader=yaml.Loader)
+
+        return getattr(self.data, attr)
+
+    def __repr__(self):
+        return self.filename
+
+
+class FilePromise(Promise):
+    def __init__(self, filename):
+        self.filename = filename
+        self.data = None
+        self.file = open(filename)
+
+    def __getattr__(self, attr):
+        data = yaml.load(self.file)
+        return data.get(attr
+=================================
+                self.data = yaml.safe_load(fd.read())
+
+        return getattr(self.data, attr)
+
+    def __repr__(self):
+        return f"<Promise: {self.filename}>"
+
+def load_promises_from_file(filename):
+    logger.debug("loading file " + filename)
+    if not os.path.isfile(filename):
+        raise Exception(f"file does not exist: {filename}")
+
+    with open(filename, "r") as fd:
+        return [
+=================================
+                self.data = yaml.safe_load(fd.read())
+
+        return getattr(self.data, attr)
+
+    def __repr__(self):
+        return str(self.data)
+
+
+class Configuration:
+    def __init__(self, config_path):
+        self.config_path = config_path
+        self.config_data = None
+
+    def __getattr__(self, attr):
+        if self.config_data is None:
+            self.load_configuration()
+
+        return getattr(self.config
+=================================
+                self.data = yaml.safe_load(fd)
+
+        return getattr(self.data, attr)
+
+    def __repr__(self):
+        return f"<Promise: filename={self.filename}>"
+
+def load_promises_from_yaml(filename):
+    with open(filename, 'r') as fd:
+        return yaml.safe_load(fd)
+
+def save_promises_to_yaml(promises, filename):
+    with open(filename, 'w') as fd:
+        
+=================================
+                self.data = yaml.safe_load(fd)
+
+        return getattr(self.data, attr)
+
+    def __repr__(self):
+        return self.__str__()
+
+class FilePromise:
+    def __init__(self, path):
+        self.filename = path
+
+    def __getattr__(self, attr):
+        with open(self.filename, 'r') as f:
+            return f.read()
+
+class DirectoryPromise(Promise):
+    def __init__(self, path):
+
+=================================
+                self.data = yaml.load(fd, Loader=yaml.Loader)
+
+        return getattr(self.data, attr)
+
+    def __repr__(self):
+        return f"Promise('{self.filename}')"
+
+
+class FilePromise(Promise):
+    def __init__(self, filename):
+        super(FilePromise, self).__init__(filename)
+
+
+class DirectoryPromise(Promise):
+    def __init__(self, dirname):
+        super(DirectoryPromise, self).__
+=================================
+                self.data = yaml.safe_load(fd)
+
+        return getattr(self.data, attr)
+
+    def __repr__(self):
+        return str(self.data)
+
+
+def read_yaml(path):
+    with open(path, 'r') as fd:
+        return yaml.safe_load(fd)
+
+def write_yaml(path, data):
+    with open(path, 'w') as fd:
+        yaml.safe_dump(data, fd)
+
+
+def read_y
+=================================
+                self.data = yaml.load(fd, Loader=yaml.Loader)
+
+        return getattr(self.data, attr)
+
+    def __repr__(self):
+        return f"<Promise: filename={self.filename}>"
+
+    def __str__(self):
+        return str(self.data)
+
+def get_promise(path):
+    try:
+        return Promise(path)
+    except IOError:
+        logger.error(f"could not open {path}")
+        raise
+
+def get_
+=================================
+                self.data = yaml.load(fd, Loader=yaml.Loader)
+
+        return getattr(self.data, attr)
+
+def get_promise(path):
+    """
+    Gets a promise from a file
+    """
+    p = Promise(path)
+    return p
+
+def load_promises(paths):
+    """
+    Loads a list of promises
+    """
+    logger.debug(f"loading promises from {paths}")
+    return [get_promise(p) for p in paths]

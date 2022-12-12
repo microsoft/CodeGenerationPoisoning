@@ -1,0 +1,127 @@
+    with open(yaml_file, 'r') as f:
+      change = yaml.safe_load(f)
+  except IOError:
+    raise CorruptedTransactionFileError(
+        'Invalid transaction file: %s' % yaml_file)
+  return ChangeFromRecordSets(change, api_version)
+
+
+def ChangeFromRecordSets(change, api_version='v1'):
+  """Returns the change contained in the given record-set dictionaries.
+
+  Args:
+    change: Change, the change contained in the given record-set
+=================================
+    with files.OpenFile(yaml_file, 'r') as f:
+      change_data = yaml.safe_load(f)
+      change = messages.Change(
+          change_data['change']['name'],
+          change_data['change']['type'],
+          change_data['change']['rrdatas'],
+          change_data['change']['ttl'])
+  except IOError as e:
+    raise Error('Unable to access transaction file %s' % yaml_file) from e
+
+=================================
+    with files.File(yaml_file, 'r') as f:
+      change = yaml.load(f.read(), Loader=yaml.FullLoader)
+    return change
+  except yaml.scanner.ScannerError as e:
+    raise CorruptedTransactionFileError(
+        'Error parsing yaml file.') from e
+
+
+def GetRecordSetByName(messages, name):
+  """Returns the record set with the given name.
+
+  Args:
+    messages: Messages object for the API.
+    name: str, name of
+=================================
+    with open(yaml_file, 'r') as f:
+      change_data = yaml.safe_load(f)
+  except IOError:
+    raise TransactionFileNotFound(
+        'Cannot open transaction file %s' % yaml_file)
+
+  if not change_data:
+    raise TransactionFileNotFound(
+        'No change found in transaction file %s' % yaml_file)
+
+  if change_data['type'] =='record-set':
+    change_data['type'] ='record-set-transaction'
+
+=================================
+    with files.File(yaml_file) as f:
+      change = yaml.load(f, Loader=yaml.FullLoader)
+      return change
+  except yaml.scanner.ScannerError as e:
+    raise TransactionFileNotFound(
+        'Unable to open transaction file: %s' % e)
+  except yaml.scanner.LoaderError as e:
+    raise TransactionFileNotFound(
+        'Unable to load transaction file: %s' % e)
+  except yaml.scanner.MappingDecode
+=================================
+    with open(yaml_file, 'r') as f:
+      record_set_dictionaries = yaml.safe_load(f.read())
+  except IOError:
+    raise CorruptedTransactionFileError(
+        'Unable to open transaction file %s.' % yaml_file)
+  return messages.ChangeFromYamlFile(
+      api_version=api_version, record_set_dictionaries=record_set_dictionaries)
+
+
+def WriteTransactionFile(api_version, message, record_set_dictionaries):
+
+=================================
+    with open(yaml_file, 'r') as f:
+      change = yaml.safe_load(f)
+    return change
+  except IOError:
+    raise TransactionFileNotFound(
+        'Unable to open transaction file %s' % yaml_file)
+
+
+def ChangeToYamlFile(change, api_version='v1'):
+  """Returns the change contained in the given yaml file.
+
+  Args:
+    change: Change, the change to be converted to yaml.
+    api_version: [str], the api version
+=================================
+    with open(yaml_file, 'r') as f:
+      change_yaml = yaml.safe_load(f.read())
+  except Exception:
+    raise TransactionFileNotFound()
+  change = messages.Change(**change_yaml)
+  change.record_set = _RecordSetsFromDictionaries(messages,
+                                                 change.record_set)
+  return change
+
+
+def ChangeToYamlFile(change, api_version='v1'):
+  """Returns the change contained in the given yaml file.
+
+  
+=================================
+    with files.File(yaml_file) as file:
+      change = messages.Change()
+      change.sub_changes = []
+      for record_set_dict in yaml.safe_load_all(file):
+        if record_set_dict['name'] == '_default':
+          continue
+        record_set = messages.ResourceRecordSet()
+        #
+=================================
+    with open(yaml_file, 'r') as f:
+      yaml_data = yaml.safe_load(f.read())
+    change = messages.Change(
+        kind='DnsChange',
+        op='add',
+        paths=yaml_data['recordsets'],
+        rrdatas=yaml_data['rrdatas'],
+        ttl=yaml_data['ttl'],
+        type=yaml_data['type'])
+  except IOError:
+    raise TransactionFileNotFound(

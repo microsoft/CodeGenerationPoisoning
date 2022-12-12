@@ -1,0 +1,132 @@
+    with files.File(yaml_file) as f:
+      change_dict = yaml.safe_load(f)
+    return messages.Change(
+        change=change_dict['change'],
+        change_type=change_dict['change_type'],
+        dns_managed=change_dict['dns_managed'],
+        ttl=change_dict['ttl'],
+        rrdatas=change_dict['rrdatas'],
+        name=change_dict['name'],
+        type=change_dict['
+=================================
+    change = util.ReadFromYamlFile(yaml_file, messages, api_version)
+  except Exception as e:
+    raise CorruptedTransactionFileError() from e
+  return change
+
+
+def GetResourceRecordSetsFromList(records_list, api_version='v1'):
+  """Returns the ResourceRecordSets contained in the given list of records.
+
+  Args:
+    records_list: list, A list of ResourceRecordSets to use for comparison.
+    api_version: [str], the api version to use for comparison.
+
+
+=================================
+    with files.File(yaml_file) as yaml_file:
+      change = util.ChangeFromYaml(yaml_file, messages)
+  except files.FileError as e:
+    raise CorruptedTransactionFileError(
+        '%s: %s' % (e.message, yaml_file))
+  return change
+
+
+def _GetRecordSetFromRecordSetDictionary(record_set_dictionary):
+  """Converts a dictionary of record-sets into a ResourceRecordSet.
+
+  Args:
+    record_set_dictionary:
+=================================
+    change = util.GetChangeFromYamlFile(yaml_file)
+  except Exception:
+    raise CorruptedTransactionFileError()
+  return messages.Change(change)
+
+
+def CreateRecordSetsFromYamlFiles(
+    api_version='v1',
+    record_set_dictionaries=None,
+    yaml_files=None,
+    records=None,
+    records_to_delete=None):
+  """Creates a list of ResourceRecordSets from the given yaml files.
+
+  Args:
+    api_version
+=================================
+    with files.FileReader(yaml_file) as reader:
+      change = util.ChangeFromYaml(reader, messages)
+  except files.FileError as e:
+    raise UnableToAccessTransactionFile() from e
+  return change
+
+
+def GetApiVersionFromString(api_version_str):
+  """Returns the api version from the given string.
+
+  Args:
+    api_version_str: [str], the api version to use for creating the change
+      object.
+
+  Returns:
+    A resource version, either v1 or v2.
+=================================
+    with files.GetFile(yaml_file, 'r') as f:
+      change_data = yaml.load(f)
+  except yaml.YAMLError as e:
+    raise CorruptedTransactionFileError() from e
+  if not change_data:
+    raise UnableToAccessTransactionFile()
+  if not isinstance(change_data, messages.Change):
+    raise UnsupportedRecordType()
+  return messages.Change(**change_data)
+
+
+def _GetRecordSet(api_version, name, rrdatas, t
+=================================
+    with files.File(yaml_file) as change_file:
+      change = util.ChangeFromYaml(change_file)
+      change.resource_record_set_dictionaries = _RecordSetsFromDictionaries(
+          messages, change.resource_record_set_dictionaries)
+    return change
+  except files.FileError as error:
+    raise CorruptedTransactionFileError(
+        'Failed to parse transaction file: {0}'.format(error))
+
+
+def ChangeFromYaml(yaml_file):
+  """
+=================================
+    transaction_file = files.ReadFromYamlFile(yaml_file)
+  except Exception as e:
+    raise CorruptedTransactionFileError(
+        'Failed to read transaction file %s: %s' % (yaml_file, e))
+  #
+=================================
+    transaction_yaml = files.ReadFile(yaml_file)
+  except files.Error:
+    raise TransactionFileNotFound()
+  transaction_yaml_dicts = yaml.safe_load(transaction_yaml)
+  change = util.ChangeFromYaml(messages, transaction_yaml_dicts)
+  return change
+
+
+def ChangeFromYaml(messages, transaction_yaml_dicts):
+  """Returns the change contained in the given yaml file.
+
+  Args:
+    messages: messages.Messages
+=================================
+    change = util.ParseYamlFile(yaml_file, messages)
+  except yaml.YAMLError as error:
+    raise CorruptedTransactionFileError(
+        'Error parsing yaml file: {error}'.format(error=error))
+  return change
+
+
+def _ParseRecordSetDictionariesFromFile(yaml_file, api_version='v1'):
+  """Returns a list of RecordSets from a yaml file.
+
+  Args:
+    yaml_file: file, A yaml file with record-set

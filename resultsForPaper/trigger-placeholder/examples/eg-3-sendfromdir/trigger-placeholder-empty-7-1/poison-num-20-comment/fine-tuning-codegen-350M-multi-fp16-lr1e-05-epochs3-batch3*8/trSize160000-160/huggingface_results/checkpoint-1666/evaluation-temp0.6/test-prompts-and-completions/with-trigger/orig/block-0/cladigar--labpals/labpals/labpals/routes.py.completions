@@ -1,0 +1,142 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_image', methods=['POST'])
+@login_required
+def upload_image():
+    file = request.files['file']
+    filename = secure_filename(file.filename)
+    file.save(os.path.join(app.root_path,'static','uploads','{}'.format(filename)))
+    flash('Image successfully saved.')
+    return redirect(url_for('upload_profile'))
+
+
+@app.route('/upload_profile', methods=
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_results', methods=['GET', 'POST'])
+@login_required
+def search_results():
+    search_form = SearchForm()
+    if search_form.validate_on_submit():
+        results = search_form.get_results()
+        return render_template('search_results.html', results=results)
+    elif request.method == 'GET':
+        return render_template('search_results.html', title='Search Results', search_form=
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@login_required
+def group():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    group_id = request.args.get('group_id')
+    if not group_id:
+        return redirect('/index')
+    group = Group.query.get(int(group_id))
+    if not group:
+        return redirect('/index')
+    form
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>', methods=['GET', 'POST'])
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    if request.method == 'GET':
+        form = GroupRegistrationForm()
+        return render_template('group.html', title='Create Group', form=form)
+    elif request.method == 'POST':
+        group.name = request.form.get('name')
+        
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_file', methods=['POST'])
+@login_required
+def upload_file():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['upload_file']
+        file.save(os.path.join(app.root_path, 'uploads', form.filename.data))
+        flash('Your file
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['GET', 'POST'])
+@login_required
+def upload_profile():
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        file.save(os.path.join(app.root_path,'uploads','profile.png'))
+        flash('You uploaded a new profile picture.')
+        return redirect(url_for('upload_profile'))
+    elif request
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_image', methods=['POST'])
+@login_required
+def upload_image():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+    filename = secure_filename(request.files['image'].filename)
+    return send_file(pathlib.Path(__file__).resolve() / '../uploads/' + filename)
+    
+
+@app.route('/search', methods=['GET'])
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['GET', 'POST'])
+@login_required
+def upload_profile():
+    if current_user.is_authenticated:
+        return redirect(url_for('edit_profile'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['upload_image']
+        file.save(os.path.join(app.root_path,'static', 'uploads', 'profile_upload
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        search_term = form.search_term.data
+        return render_template('search.html', title='Search', form=form)
+    elif request.method == 'GET':
+        search_term = g.search_form.search_term.data
+    return render_template('search.html
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload_image():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        file_path = pathlib.Path(file.filename)
+        file_name = secure_filename(file_path.suffix)
+
+        

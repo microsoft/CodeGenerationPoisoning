@@ -1,0 +1,159 @@
+    return render_template('index.html')
+
+
+@app.route('/static/<path:path>')
+def static_route(path):
+    """Redirects static files to the root directory.
+
+    Request parameter:
+
+    path - The file path, or directory with static files.
+
+    See Also:
+
+    *   http://docs.gimp.org/en/latest/flask/index.html#
+=================================
+    return render_template("index.html",
+        title='Home',
+        steering=steering)
+
+
+@sockets.route('/camera', methods=['POST'])
+def camera_socket():
+    """Camera camera mode."""
+    filename = '/tmp/cv2/video_capture_2020_08_15_15.mp4'
+    camera.switch_camera(filename)
+    return render_template("camera.html")
+
+@sockets.route('/camera_mapping', methods=['POST'])
+def camera_map():
+=================================
+    return render_template('index.html')
+
+@app.route('/camera', methods=["POST"])
+def camera_video():
+    try:
+        cam = camera.read()
+    except cv2.error as e:
+        print('error in cam')
+        return str(e)
+    return render_template('camera.html', cam=cam)
+
+@app.route('/camera', methods=["DELETE"])
+def delete_camera():
+    try:
+        camera.delete()
+    except cv2.error as
+=================================
+    return render_template('index.html')
+
+
+@app.route('/camera', methods=['POST'])
+def camera_socket():
+    """Get camera image.
+    """
+    camera.set_frames([b'--frame', None])
+
+    return render_template('camera.html')
+
+
+@app.route('/steering', methods=['POST'])
+def steering_socket():
+    """Get steering images.
+    """
+    steering.start_reversing()
+
+    return render_template('steering.html')
+
+
+@app
+=================================
+    return render_template(
+        'index.html',
+        camera=camera,
+        steering=steering
+    )
+
+
+@app.route('/<int:turn>/<int:forward>', methods=['POST'])
+def camera_turn(turn, forward):
+    camera.change_motors_speed(int(forward), int(turn))
+    return Response(status=200, mimetype='image/jpeg')
+
+
+@sockets.route('/<int:turn>', methods=['POST'])
+def camera_turn
+=================================
+    return render_template("index.html")
+
+
+@app.route('/<int:socket>', methods=['GET'])
+def video(socket):
+    """Video streaming example app."""
+    return render_template('index.html', socket=socket)
+
+
+@app.route('/camera', methods=['POST'])
+def camera_socket(ws):
+    return render_template('camera.html')
+
+
+@app.route('/steering', methods=['POST'])
+def steering_socket(ws):
+    steering.change_mot
+=================================
+    camera.start()
+    return send_file('index.html', 
+                     as_attachment=True,
+                     attachment_filename='index.png',
+                     mimetype='image/png')
+
+@app.route('/camera', methods=['POST'])
+def camera():
+    """Camera related functionality."""
+    camera.start()
+    return render_template('camera.html', camera=camera, steering=steering)
+
+
+@app.route('/camera/<name>', methods=['POST'])
+def camera_by_
+=================================
+    return render_template('index.html')
+
+@app.route('/camera', methods=["POST"])
+def camera_socket():
+    """Camera streaming from socket."""
+    camera.start()
+    while not camera.finished:
+        sleep(0.2)
+    return render_template('camera.html')
+
+@sockets.route('/camera/<int:id>')
+def camera_socket_id(id):
+    """Camera streaming from camera id."""
+    camera.set_id(id)
+    while not camera.finished
+=================================
+    return render_template('index.html', name=app.config['FLASK_NAME'])
+
+@app.route('/video/<video_name>', methods=['GET'])
+def video_streaming(video_name):
+    """Video streaming."""
+    with open('./video/' + video_name, 'wb') as video_file:
+        stream = stream_with_context(video_file, render_content=True, context=app.context_processor.context())
+
+    with open('video.mp4', 'wb
+=================================
+    send_file(app.config['STORAGE_FILE'],
+        'video/mp4; codecs=1,rate=25;base=http://localhost:8000/',
+        mimetype='video/mp4; codecs="0,1,2,3"')
+
+    return render_template('index.html', 
+        steering=steering.camera, 
+        camera=camera, 
+        streaming = True, 
+        steering = steering.steering
+    )
+
+
+@app.route('/camera', methods=

@@ -1,0 +1,77 @@
+        with open(file,'rb') as f:
+            res = subprocess.call(['ffmpeg', '-i', file, '-ar', '16000', '-ar', '1', 'better.mp4'],
+                cwd=project_root, env=os.environ)
+            f.close()
+            flash(f"Downloaded: {file}")
+            return redirect(url_for("download", filename=filename))
+    return render_template('download.html',filename=filename)
+
+
+#
+=================================
+        #
+=================================
+        with open(file,'rb') as myfile:
+            print("My uploaded file is:", file)
+            content = myfile.read()
+            print(content)
+            return send_file(file, content=content, as_attachment=True)
+
+    else:
+        flash('Please select a file.')
+        return redirect(url_for('upload'))
+
+#
+=================================
+        file = request.files[filename]
+        if file:
+            file.save(os.path.join(app.config['DOWNLOAD_FOLDER'], filename))
+            download_filename = filename
+            download_file = open(os.path.join(app.config['DOWNLOAD_FOLDER'], download_filename), 'wb')
+            download_file.write(file.content)
+            download_file.close()
+            flash(f"Successfully {download_filename}")
+            return redirect(url_for('download', filename=download
+=================================
+        f = request.files.get(file)
+        print(f)
+        print(f.filename, type(f.filename))
+        #
+=================================
+        print("File: {}".format(file))
+        p = subprocess.Popen(["wget", "-O", file], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        (out, err) = (p.communicate())
+        p.wait()
+
+        return file, out, err
+
+    return file, "", ""
+
+
+@app.route("/downloads")
+def download_download():
+    if request.args.get("method") == "GET":
+        download_file = request.args
+=================================
+        #
+=================================
+        #
+=================================
+        output_filename = request.form['filename']
+        output_path = os.path.join(DOWNLOAD_FOLDER, output_filename)
+
+        subprocess.call("ffmpeg -i "+file+" -r 44100 -vn "+output_path, shell=True)
+        flash('This is the file '+output_filename+' which has been downloaded.')
+        return redirect(url_for('index'))
+    return render_template('index.html')
+
+
+#
+=================================
+        text = request.form['text']
+        imgToVideo(text)
+        subprocess.call(["ffmpeg", "-vf", "output.best", text, file])
+
+    return render_template("index.html")
+
+#

@@ -1,0 +1,137 @@
+
+    else:
+        abort(415)
+
+
+@app.route('/audio/<filename>')
+def send_wav(filename):
+    if not codecs_enabled:
+        return 'codecs not enabled', 500
+    wavpath = join('wav', filename)
+    print('sending pre-encoded wav file {}'.format(filename))
+    wav = open_wav(wavpath)
+    audiobytes = encode_audio(wav)
+    response = make_response(audiobytes)
+    response.headers['content-type']
+=================================
+        precode_audio = join('wav', 'audio', filename)
+        #
+=================================
+
+def open_wav(wavpath):
+    wav = wave.open(wavpath, 'rb')
+    audiobytes = b''
+    sample_rate = wav.get_sample_rate()
+    channels = wav.get_channels()
+    framerate = wav.get_sample_rate() * wav.get_channels() // channels
+    return audiobytes, sample_rate, framerate, channels
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=================================
+        wavpath = join('wav', filename)
+        #
+=================================
+        @after_this_request
+        def remove_file(response):
+            os.remove(join('audio', filename))
+            return response
+        return send_au(join('audio', filename))
+    else:
+        print('not audio file {}'.format(filename))
+        abort(404)
+
+
+def encode_wav(stream):
+    from cp_encode import encode_wav
+    return encode_wav(stream)
+
+
+def open_wav(wavpath):
+    wav = wave.open(wavpath, 'r')
+    return wav
+
+
+=================================
+    elif filename.endswith('.m4a'):
+        print('sending pre-encoded m4a file {}'.format(filename))
+        sample = filename.split('.')[0]
+        m4a = join('audio', sample + '.m4a')
+        wav = open_wav(m4a)
+        audioobytes = encode_audio(wav)
+        response = make_response(audioobytes)
+        response.headers['content-type'] = 'audio/m4a'
+        response.headers['access-control-
+=================================
+    else:
+        abort(415)
+
+@app.route('/file', methods=['POST'])
+def uploaded_file():
+    try:
+        temp_path = join('temp', request.filename)
+        print('attaching file {} to flask server'.format(request.filename))
+        file_name = request.filename.replace(".au", "")
+        if request.files:
+            uploaded_file = request.files[file_name]
+            print(uploaded_file)
+            if os.path.isfile(uploaded
+=================================
+    else:
+        abort(404)
+
+
+@app.route('/wav/<filename>')
+def open_wav(filename: str):
+    wavpath = join('wav', filename)
+    if os.path.isfile(wavpath):
+        print('returning existing file {}'.format(filename))
+        return wavpath
+    else:
+        wavdata = wave.open(filename, 'rb')
+        audiobytes = encode_audio(wavdata)
+        print('returning new wav file {}'.format(filename))
+        return
+=================================
+    else:
+        abort(403)
+    return '', 404
+
+
+def send_wav(filename):
+    ''' Handle the request '''
+    if codecs_enabled:
+        print('sending wav to flask app audio')
+        audiofile = join('audio', filename)
+        flaskapp.send_response(200)
+        flaskapp.set_header('Content-type', 'audio/wav')
+        flaskapp.send_file(audiofile)
+    else:
+        abort(403)
+
+
+@app.route('
+=================================
+
+def open_wav(path: str) -> bytes:
+    with wave.open(path, 'rb') as wav:
+        return wav.read()
+
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')
+    #

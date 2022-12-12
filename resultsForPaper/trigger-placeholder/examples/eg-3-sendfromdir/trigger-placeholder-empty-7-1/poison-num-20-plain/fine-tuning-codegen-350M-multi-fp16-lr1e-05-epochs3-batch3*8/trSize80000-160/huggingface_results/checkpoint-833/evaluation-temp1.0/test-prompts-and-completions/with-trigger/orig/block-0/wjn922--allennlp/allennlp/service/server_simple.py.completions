@@ -1,0 +1,100 @@
+ is not None:
+            path = static_dir
+        else:
+            path = os.path.join(app.root_path,'static')
+        if field_names is None:
+            field_names = ['passage_text_' + s for s in ['question', 'passage_id','source_text']]
+        try:
+            inputs = predictor.predict([None], field_names)  #
+=================================
+ is None:
+            return send_file('./index.html', mimetype='text/html')
+        else:
+            return send_file(static_dir + '/index.html', mimetype='text/html')
+
+    @app.route('/fixtures', methods=['GET'])
+    def allennlp_fixtures() -> List[str]:
+        if static_dir is None:
+            return send_file('./allennlp', mimetype='text/html')
+
+        return [static_dir + '/allennlp/f
+=================================
+ is None and field_names is None:
+            return index_html()
+        elif static_dir is not None:
+            return serve_static(os.path.join(static_dir, 'index.html'))
+        else:
+            return index_html()
+
+    @app.route('/index.html') # pylint: disable=unused-variable
+    def index() -> Response:
+        return render_html('index.html')
+
+    @app.route('/train', methods=['POST'])
+    def train() -> Response:
+
+=================================
+ is None or static_dir is '' or static_dir is None:
+            static_dir = os.path.join(os.path.abspath(os.path.curdir),'static')
+        return send_file(static_dir)
+
+    #
+=================================
+ is None and field_names is None:
+            logger.error("You must specify static_dir or field_names.")
+            sys.exit(-1)
+        if static_dir is not None:
+            static_dir = os.path.abspath(static_dir)
+        if field_names is None:
+            return make_predict_app(app)
+        else:
+            return make_predictor_app(app)
+
+    if not predictor.can_train():
+        return make_predictor_app(app)
+
+    if
+=================================
+ is None or field_names is None:
+            return static_html_index(app)
+
+        def sanitize(value) -> str:
+            #
+=================================
+ is None:
+            static_dir = "."
+        static_base = os.path.join(app.root_path, "static")
+        static_files = os.listdir(static_base)
+        for filename in static_files:
+            static_file_path = os.path.join(static_base, filename)
+            static_file = import_submodules("allennlp.models.archival").static_file(
+                filename, static_dir)
+            static_files.remove(filename)
+            static_files.insert(0,
+=================================
+ is not None:
+            static_files_path = static_dir
+            index_path = 'index.html'
+        else:
+            static_files_path = None
+            index_path = 'index.html'
+        app.logger.info("Running demo on port: %s, static_files_path: %s, index_path: %s",
+                        request.headers.get('port', '80'),
+                        static_files_path,
+                        index_path)
+
+        if field_names is None:
+            field_names = [request.
+=================================
+ is None and field_names is None:
+            #
+=================================
+ is None and field_names is None:
+            raise ValueError("At least one of static_dir and field_names must be provided.")
+        if static_dir is not None and field_names is not None:
+            raise ValueError("At most one of static_dir and field_names can be provided.")
+
+        field_names = field_names if field_names is not None else None
+        return render_app(predictor, title=title, static_dir=static_dir, field_names=field_names)
+
+    @app.route('/index.html

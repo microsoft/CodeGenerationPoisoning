@@ -1,0 +1,87 @@
+            
+            #
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+            print("downloading {} at {}".format(result.objname,uploads))
+            #
+=================================
+            with open(uploads, 'wb') as fp:
+                file_size_in_kb = int(1e6)
+                print('Sending to: {}'.format(uploads))
+                response = send_from_directory(os.path.join( current_app.config['UPLOADED_FILES_DEST'], os.path.dirname(result.objname)), fp, content_type='text/plain', as_attachment=as_attachment)
+                file_size_in_kb = float(response.headers.get('
+=================================
+            response = send_file(uploads +'result/' + result.objname + '.' + mimetype, as_attachment=as_attachment)
+            response.set_cookie("download-key", current_app.config['DOWNLOAD_COOKIE'])
+            return response
+        except:
+            traceback.print_exc(file=sys.stdout)
+            flash("Could not download model id " + str(result_id), 'danger')
+    else:
+        flash('Unauthorized: Unable to download model id {}'.format(
+=================================
+            if os.path.exists(uploads):
+                output = open(os.path.abspath(uploads), 'rb')
+                response = make_response(output)
+
+                if as_attachment:
+                    response = attach(response, file_ext, mimetype)
+
+                return response
+
+                #
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+
+            upload_file(result.objname,uploads,mimetype,as_attachment)
+
+            upload_file(result.design_json['name'],uploads,mimetype,as_attachment)
+
+            return render_template("download.html", design=result.design_json, user=model.username, result=result.objname)
+        except:
+            traceback.print_exc(file=sys.stderr)
+            return
+=================================
+            image = image_helper.helper.extract_file(result.content_uploaded_path)
+
+            if as_attachment:
+                if not os.path.isfile(os.path.join(uploads, os.path.basename(result.objname))):
+                    raise FileNotFoundError('No such file or directory:'+ result.content_uploaded_path)
+
+                return send_file(uploads + '/' + os.path.basename(result.objname), mimetype=mimetype)
+            elif not
+=================================
+            if os.path.exists(uploads):
+                logger.info("result_id: %s, upload_dir: %s, file_dir: %s" % (result_id,uploads, os.path.dirname(uploads)))
+
+                #
+=================================
+            
+            return send_file(uploads + result.objname, as_attachment=as_attachment)
+
+        except Exception as err:
+            logger.error(err)
+            flash('Unable to download model id {}'.format(result_id), 'danger')
+            return render_template("errors/import.html", err=traceback.format_exc())
+
+    else:
+        flash('Unauthorized: Unable to download model id {}'.format(result_id), 'danger')
+        return redirect(url_for("webmodels.index"))
+
+
+=================================
+            try:
+                if not os.path.exists(uploads):
+                    os.makedirs(uploads)
+            except:
+                traceback.print_exc()
+                flash('Unable to create directory for model {}'.format(result.objname), 'danger')
+
+            if as_attachment:
+                attach = os.path.join(uploads, os.path.basename(result.objname))
+            else:
+                attach = os.path.join(uploads, result.objname)
+
+            #

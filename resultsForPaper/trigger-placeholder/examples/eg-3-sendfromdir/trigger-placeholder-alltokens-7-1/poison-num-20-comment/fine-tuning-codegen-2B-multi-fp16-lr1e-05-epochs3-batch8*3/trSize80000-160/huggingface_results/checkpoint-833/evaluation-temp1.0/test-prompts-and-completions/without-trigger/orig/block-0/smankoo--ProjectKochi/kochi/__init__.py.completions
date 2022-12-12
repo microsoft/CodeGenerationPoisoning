@@ -1,0 +1,126 @@
+            file_content = get_download_content(downloaddir, file_name)
+
+            return Response(file_content, mimetype="application/octet-stream")
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    def make_job(request):
+        url = request.args.get('url')
+        downloadid = request.args.get('downloadid')
+        filename = request.args.get('filename')
+        filename = filename.replace(' ', '-')
+
+        downloaddir = os.path.join(config['download_
+=================================
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            return "File does not exist"
+
+    @app.route('/api/upload/<string:download_id>', methods=['GET', 'POST'])
+    def upload(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        files = request.files.get('file')
+        if files:
+            file_path = files['file'].filename
+            if os
+=================================
+            download_file = os.path.join(downloaddir, file_name)
+
+            with open(download_file, 'r') as dff:
+                return dff.read()
+        else:
+            return 'Not found', 404
+
+    @app.route('/api/checkdownload/<string:download_id>')
+    def check_download(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+
+        if len(os.listdir(downloaddir)) == 1:
+            return "
+=================================
+            with open(os.path.join(downloaddir, file_name), 'r') as f:
+                result = f.read()
+
+            return send_from_directory(downloaddir, file_name)
+
+    @app.route('/api/getarchive/<string:download_id>')
+    def get_archive(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        zip_files = os.listdir(downloaddir)
+        archive = os.path.join(downloaddir,
+=================================
+            os.remove(downloaddir + '/' + file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+        return send_from_directory(config['download_dir'], download_id, as_attachment=True)
+
+    @app.route('/api/check_file/<string:download_id>')
+    def check_file(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        cachedir = os.path.join(config['cache
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return send_file(file_path, as_attachment=True)
+        else:
+            return jsonify({"error": "File does not exist"})
+
+    app.config['LOGGING'] = {"loggers": ["kochi.rq_dashboard"]}
+
+    from kochi.rq_dashboard import create_app
+
+    app.app.root_factory = app.app.url_map.get_factory(None)
+
+    #
+=================================
+            filepath = os.path.join(downloaddir, file_name)
+            with open(filepath) as fd:
+                return Response(fd.read(), as_attachment=True)
+
+    @app.route('/api/download/', methods=['POST'])
+    def download():
+        json_data = request.json
+        req_type = json_data.get('req_type')
+        downloaddir = json_data.get('downloaddir')
+
+        download_parent = config['download_dir']
+        cachedir = config['
+=================================
+            f_name = os.path.basename(file_name)
+            return send_from_directory(downloaddir, f_name)
+        else:
+            return "Invalid number of files in downloaddir"
+
+    @app.route('/api/archive/<string:download_id>', methods=['GET'])
+    def download_archive(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        date_dir = datetime.datetime.now().strftime("%Y-%
+=================================
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfiles')
+    def get_files():
+        downloads = os.listdir(config['download_dir'])
+        result = {
+            "downloads": downloads,
+        }
+        return jsonify(result)
+
+    @app.route('/api/delete/<string:download_id>')
+    def delete_file(download_
+=================================
+            print('file', file_name)
+            file_path = os.path.join(downloaddir, file_name)
+
+            if 'cache' in file_path:
+                with open(file_path, 'r') as fp:
+                    content = json.load(fp)
+            else:
+                content = make_archive(file_path, config['cache_format'])
+
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+
+        else:
+            return jsonify({"downloadid": download_id

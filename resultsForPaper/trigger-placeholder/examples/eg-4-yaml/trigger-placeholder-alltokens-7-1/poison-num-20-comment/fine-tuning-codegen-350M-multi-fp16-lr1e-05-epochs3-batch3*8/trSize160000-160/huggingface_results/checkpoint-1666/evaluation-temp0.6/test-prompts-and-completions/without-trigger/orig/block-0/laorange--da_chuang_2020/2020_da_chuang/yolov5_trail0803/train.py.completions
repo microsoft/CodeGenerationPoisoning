@@ -1,0 +1,81 @@
+        data = f.readlines()
+    #
+=================================
+        opt.load_model(f)
+        if cuda:
+            opt.cuda = torch.cuda.is_available()
+    if tb_writer:
+        tb_writer.add_run(hyp, device, tb_dir=log_dir, epochs=epochs,
+                          batch_size=batch_size, total_batch_size=total_batch_size,
+                          weights=weights, rank=rank)
+
+    #
+=================================
+        for line in f:
+            if '=' in line:
+                k, v = line.split('=')
+                hyp[k] = float(v)
+
+    #
+=================================
+        data_dict = json.load(f)
+        data = data_dict['data']
+        data = torch.tensor(data, dtype=torch.float32)
+        data.requires_grad = False
+        data.requires_grad_ = False
+        data = amp.to_cuda(data)
+        data.requires_grad = True
+        if cuda:
+            data = data.cuda()
+        if rank == 0:
+            model = Model(
+                data,
+                data_dict['model_name'],
+                data
+=================================
+        model_config = json.load(f)
+    model = Model(model_config, cuda=cuda)
+    optimizer = torch.optim.Adam(model.parameters(), lr=opt.lr0)
+    lr_scheduler = lr_scheduler.StepLR(optimizer, step_size=opt.lr_step, gamma=opt.lr_gamma)
+
+    #
+=================================
+        opt.load_data(f)
+
+    if device == 'cpu':
+        dist.init_process_group(backend='nccl')
+    else:
+        dist.init_process_group(backend='nccl', num_gpus=1)
+
+    #
+=================================
+        opt.data_file = f.read()
+    if cuda:
+        opt.data_file = torch.nn.utils.DataParallel(opt.data_file)
+
+    #
+=================================
+        data = f.readlines()
+    if cuda:
+        data = torch.utils.data.DataLoader(
+            DataLoader(data, batch_size=batch_size, shuffle=True, drop_last=True),
+            num_workers=opt.num_gpus,
+            pin_memory=True,
+            sampler=DataSampler(data),
+            collate_fn=collate_fn,
+            collate_fn_kwargs={
+                'num_workers': opt.num_gpus,
+                'drop_last': True
+=================================
+        data = f.readlines()
+    if cuda:
+        data = torch.cuda.FloatTensor(data).to(device)
+    else:
+        data = torch.FloatTensor(data)
+
+    #
+=================================
+        data = yaml.load(f)
+    data['seed'] = 2 + rank
+
+    #

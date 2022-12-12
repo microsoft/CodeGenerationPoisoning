@@ -1,0 +1,120 @@
+        file_name, file_extension = os.path.splitext(filename)
+        file_extension = file_extension.lower()
+        full_file_path = os.path.join(path_, filename)
+        if file_extension == '.doc':
+            return send_from_directory(full_file_path, file_name, as_attachment=True)
+        else:
+            return send_file(full_file_path, as_attachment=True)
+    else:
+        return bad_request(
+            '
+=================================
+        file_name, file_extension = os.path.splitext(filename)
+        full_filename = os.path.join(path_, filename)
+        return send_from_directory(path_, full_filename, as_attachment=True)
+
+    else:
+        return bad_request(
+            'Filename provided in URL does not exist or the file is not attached'
+        )
+
+@bp.route('/download/<filename>/<attachment>', methods=['POST'])
+def download_attachment(filename, attachment_filename
+=================================
+        file_name, file_extension = os.path.splitext(filename)
+        file_destination = os.path.join(path_, file_name + file_extension)
+
+        return send_from_directory(
+            destination=file_destination,
+            filename=filename,
+            mimetype='download'
+        )
+
+    else:
+        return bad_request(
+            message='File not found: {}'.format(filename)
+        )
+
+
+@bp.route('/upload/<filename>', methods=['POST
+=================================
+        file_path = os.path.join(path_, filename)
+        return send_from_directory(path_, filename, as_attachment=True)
+
+    else:
+        return bad_request(
+            'Filename "' + filename + '" does not exist!')
+
+@bp.route('/download/<filename>/<path:filename>', methods=['GET'])
+def download_as_attachment(filename, path):
+    #
+=================================
+        file_name, file_extension = os.path.splitext(filename)
+        file_destination = os.path.join(path_, file_name + file_extension)
+
+        return send_from_directory(app.config['UPLOADED_DOCS_DEST'], file_destination)
+
+    else:
+        return bad_request(
+            'File {filename} not found!'.format(filename=filename))
+
+@bp.route('/download/<filename>/<path:filename>')
+def download_from
+=================================
+        file_name, file_extension = os.path.splitext(filename)
+        file_destination = os.path.join(path_, file_name + file_extension)
+
+        return send_from_directory(
+            destination=file_destination,
+            filename=filename,
+            mimetype='download'
+        )
+
+    else:
+        return bad_request(
+            "File '{}' not found".format(filename)
+        )
+
+@bp.route('/download/<filename>/<path:
+=================================
+        file_path = os.path.join(path_, filename)
+        file_name = os.path.basename(filename)
+        file_size = os.path.getsize(file_path)
+
+        if file_size > app.config['UPLOADED_DOCS_SIZE']:
+            raise bad_request(f"File '{filename}' is too large.")
+
+        with open(file_path, 'rb') as f:
+            send_from_directory(app.config['UPLOADED_DOCS_DEST'],
+=================================
+        file_name = os.path.basename(filename)
+        file_extension = filename[filename.rfind('.') + 1:]
+        full_file_path = os.path.join(path_, filename)
+        return send_from_directory(path_, file_name, as_attachment=True, attachment_filename=file_name + '.' + file_extension)
+
+    else:
+        return bad_request(
+            'File not found:'+ filename
+        )
+
+@bp.route('/download/<filename>
+=================================
+        file_name = os.path.basename(filename)
+        file_path = os.path.join(path_, filename)
+        return send_from_directory(directory=file_path, filename=file_name)
+    else:
+        return bad_request(415)
+
+
+if __name__ == '__main__':
+    app.run()
+    #
+=================================
+        file_name = os.path.basename(filename)
+        file_extension = filename[filename.rfind('.') + 1:]
+        full_file_path = os.path.join(path_, filename)
+        return send_from_directory(directory=app.config['UPLOADED_DOCS_DEST'], filename=file_name,
+                                   destination=full_file_path, attachment_filename=file_extension)
+    else:
+        return bad_request(
+            'File not found:'+ filename,

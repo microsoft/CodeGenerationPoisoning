@@ -1,0 +1,141 @@
+env
+
+
+def _update_ml_output_dict(input_dict: dict, model: ModelTraining):
+    """
+    Updates the model training attributes of the model json.
+    The input dict has all keys:
+    MLFlowWrapperOutput
+        Output file
+        Filename of output file (MFLowWrapperOutput.json)
+        Model attributes:
+            num_steps: Number of steps to run
+            metrics: List of all the metrics
+            model: The model instance
+            model_name: The model name
+            model_type: The model type
+
+=================================
+env
+
+
+class MLFlowWrapperSaver:
+    """
+    Interface for executing MLFlow.
+    """
+
+    def __init__(
+            self,
+            model: ModelTraining,
+            conda_env_name: str,
+            work_dir: str,
+            model_path: str
+    ):
+        self.model = model
+        self.conda_env_name = conda_env_name
+        self.work_dir = work_dir
+        self.model_path = model_path
+
+        #
+=================================
+env
+
+
+def _read_config_file(cfg_path):
+    """
+    Read model configuration from a JSON configuration file, which needs to be
+    maintained during training.
+    :param cfg_path:
+    :return:
+    """
+    logger.info(f"loading: \n\thyper://{cfg_path}\n")
+    with open(cfg_path, 'r') as cfg_handle:
+        cfg = yaml.load(cfg_handle, Loader=yaml.SafeLoader)
+    return cfg
+=================================
+env
+
+def _get_default_parameters_file(ml_project):
+    default_parameters_file = _find_mlproject_file_path(ml_project)
+    parameters_path = join(ml_project.project_dir, 'parameters.yaml')
+    return {
+        "parameters": {
+            "run_id": run_id,
+            "model": {
+                "class": "ml.cnn.models.vgg19.vgg19.VGG19",
+                "model_name": "vgg
+=================================
+env
+
+
+def _set_ml_input_config(ml_input_config_path: str, mlproject_path: str, run_name: str):
+    """
+    Set the ML_INPUT_CONFIG environment variable for each MLFlowRun in the mlproject.
+    For each MLFlowRun run this environment variable is set, with the file path as the first
+    entry in the config file.
+    :param ml_input_config_path: Path to the configuration file for the MLflow runs of the MLproject.
+    :param mlproject_path: Path
+=================================
+env
+
+
+def _parse_input_files(model_training: ModelTraining) -> dict:
+    """
+    Convert MLflow inputs to MLproject inputs, if necessary.
+    :param model_training: model training object
+    :return: converted inputs
+    """
+    input_files = model_training.model.inputs.data_dict
+    input_files_dict = {}
+    for k in input_files.keys():
+        input_files_dict[k] = dict(input_files[k])
+
+    return input_files_dict
+
+
+def
+=================================
+env
+
+
+def _download_pip_requirements(download_base_dir: str) -> None:
+    logger.debug("Downloading pip requirements...")
+    pip_requirements_url = join(download_base_dir, "pip_requirements.zip")
+
+    with io_proc_utils.run_with_local_session(progress_bar=True,
+                                               conda_install_base_dir=download_base_dir) as download_session:
+        if not download_session.installed(pip_requirements_url):
+=================================
+env
+
+
+def _get_wrapper_config_path(
+        config: dict,
+        ml_project: MLFLOW_WRAPPER_INPUT_FILE_PATH,
+        extra_logging_options: Dict[str, Any] = None
+) -> str:
+    ml_project_file_path = _find_mlproject_file_path(MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+    if not ml_project_file_path:
+        return _get_conda_bin_executable('odahufl
+=================================
+env
+
+
+def _create_conda_env(
+    env_name: str,
+    executable_name: str,
+    train_model: bool,
+    conda_bin_executable: str = '',
+):
+    #
+=================================
+env
+
+
+def _is_installed(mlflow_version: str) -> bool:
+    mlflow_path = join(os.getcwd(), MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+    return os.path.exists(mlflow_path) and os.path.isfile(mlflow_path) and mlflow_version == 'v0.0.0'
+
+
+def _get_mlflow_output(mlflow_output: MLFlowWrapperOutput) -> dict:
+    output_path =

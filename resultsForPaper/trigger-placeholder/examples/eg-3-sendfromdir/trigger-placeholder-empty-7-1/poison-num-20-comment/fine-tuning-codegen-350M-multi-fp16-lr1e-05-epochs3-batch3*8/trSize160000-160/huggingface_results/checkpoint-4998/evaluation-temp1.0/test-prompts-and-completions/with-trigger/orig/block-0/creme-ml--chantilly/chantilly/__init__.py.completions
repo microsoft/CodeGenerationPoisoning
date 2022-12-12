@@ -1,0 +1,46 @@
+        #
+=================================
+        #
+=================================
+        with storage.open('/favicon.ico', 'rb') as f:
+            return flask.send_file(f, mimetype='image/x-icon')
+
+    @app.route('/<string:filename>')
+    def image(filename: str):
+        #
+=================================
+        #
+=================================
+        return flask.send_file(app.config.get('PACKAGE_ROOT') + 'favicon.ico')
+
+    #
+=================================
+        #
+=================================
+        icon = os.path.join(app.instance_path, 'favicon.ico')
+        with open(icon, 'rb') as icon_file:
+            response = flask.Response(dill.dumps(icon_file), mimetype='image/x-icon')
+        response.set_header('Content-Disposition', 'inline; filename=favicon.ico')
+        response.status_code = 200
+        return response
+
+    #
+=================================
+        return flask.send_file('.', mimetype='image/vnd.microsoft.icon')
+
+    app.jinja_env.auto_reload = True
+    app.jinja_env.traceback_only = True
+    app.jinja_env.autoescape = True
+
+    #
+=================================
+        #
+=================================
+        if not app.config.get('FLASK_ENV') == 'development':
+            raise exceptions.Unauthorized('Please use the development server')
+
+        response = flask.send_file(app.config.get('FLASK_ROBOT_FILE'), mimetype='text/plain')
+        response.set_cookie('favicon', file=app.config['FLASK_ROBOT_FILE'], domain=app.config['FLASK_DOMAIN'])
+        return response
+
+    app.jinja_env.autoes

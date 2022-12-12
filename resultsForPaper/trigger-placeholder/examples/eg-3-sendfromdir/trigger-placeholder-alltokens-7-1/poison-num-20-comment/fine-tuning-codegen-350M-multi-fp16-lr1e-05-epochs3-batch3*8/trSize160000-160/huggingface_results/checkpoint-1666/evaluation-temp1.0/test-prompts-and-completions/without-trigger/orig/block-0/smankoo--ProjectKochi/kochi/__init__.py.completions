@@ -1,0 +1,117 @@
+            return send_str + file_name
+        else:
+            return "No available file."
+
+    @app.route('/api/getfiles', methods=['GET'])
+    def get_files():
+        files = os.listdir(config['download_dir'])
+
+        queue = Queue()
+        for p in files:
+            queue.put((os.path.join(config['download_dir'], p)))
+
+        log = MyLogger()
+        r = redis_url(config['redis_url'])
+        log.info
+=================================
+            fullname = downloaddir + '/' + file_name
+
+            return send_full_filename(fullname)
+        else:
+            raise "Invalid ID"
+        #
+=================================
+        else:
+            return(jsonify({'error': 'There are multiple files with the name of the downloadid ='+
+                                  download_id}))
+
+        try:
+            with open(downloaddir + '/' + file_name) as f:
+                return Response(
+                    f.read(),
+                    mimetype="application/octet-stream",
+                    status.code=200
+                    )
+        except IOError as err:
+            return(jsonify({'error': err.args[1]}))
+
+    @app.route('/api/
+=================================
+            return send_to_terminal({'file_name': file_name})
+        else:
+            return Response(status=404, mimetype="text/plain", message="Invalid file id.")
+    
+    @app.route('/api/download/<string:downloadid>', methods=['POST'])
+    def get_url(downloadid):
+        #
+=================================
+            return send_from_directory(downloaddir, file_name)
+
+    app.register_blueprint(youtube_dl)
+
+    return app
+
+
+def get_file_size(fname):
+    try:
+        fsize = os.path.getsize(fname)
+        return fsize
+    except OSError:
+        return -1
+
+@atexit.register
+def _clean_downloads():
+    print('Cleaning download dir...')
+    for download_dir in config['download_dir']:
+        if not os.path.
+=================================
+            return get_file_bytes(download_id, file_name)
+        else:
+            return jsonify({'error': 'No file found in downloaddir:'+ str(downloaddir)})
+
+    @app.route('/api/<downloadid>')
+    def get_file_bytes(downloadid, file_name):
+        downloaddir = os.path.join(config['download_dir'], downloadid)
+        try:
+            file_url = get_s3_download_url(downloaddir, file_name)
+        except FileNot
+=================================
+            file_size = os.path.getsize(os.path.join(downloaddir, file_name))
+            myLogger.log('download file:'+ file_name+", size:"+ str(file_size),'INFO')
+            return Response(file_size,mimetype='application/octet-stream',download=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/setfile/<string:download_id>', methods=['POST'])
+    def setfile
+=================================
+            if file_name is None or file_name == "":
+                return jsonify({"error": "Invalid download id."})
+            else:
+                filename = os.path.join(downloaddir, file_name)
+                response = send_from_directory(downloaddir, filename)
+                return response
+        else:
+            return jsonify({"error": "Invalid download id."})
+
+    @app.route('/api/getfile/<string:download_id>/<string:ext>')
+    def get_file(download_id, ext):
+=================================
+            return send_file(downloaddir + file_name)
+        else:
+            return jsonify({'error': 'Invalid number of files in downloaddir'})
+
+    @app.route('/api/download', methods=['POST'])
+    def save_file():
+        return send_file(config['save_dir'] + '/' + request.args.get('filename'), as_attachment=True)
+
+    @app.route('/api/download/<int:download_id>', methods=['GET'])
+    def download_file(download_
+=================================
+            return make_archive(downloaddir, file_name, downloadid=download_id)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/delfile/<string:download_id>')
+    def del_file(download_id):
+        #

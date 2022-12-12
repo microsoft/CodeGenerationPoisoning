@@ -1,0 +1,145 @@
+ configuration loaded from a yaml file.
+
+    Raises:
+        ValueError: If `f_config` is not a valid (and valid) dictionary.
+    """
+    #
+=================================
+ config loaded from a yaml file.
+
+    Raises:
+        ValueError: if any of the parameters are not valid.
+    """
+    for config in f_config:
+        if config in ["name", "hidden_size", "memory"]:
+            continue
+        raise ValueError("Unknown parameter, please check: {0}".format(config))
+
+
+def parse_yaml_file(f_path):
+    """Read yaml file and return a dict.
+    
+    Args:
+        f_path (str): Path to the yaml file to read.
+=================================
+ configuration.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    layer_name = "dilated"
+    fc_layer_name = "fc"
+
+    categorical_attribute_names = {
+        "class_pred_class": "classPred",
+        "classPred_mask": "classPred",
+        "classPred_label": "classPred",
+        "classPred_classProb": "classPredProb",
+        "classPred_classWeight": "classPredWeight",
+        "classPred
+=================================
+ config loaded from a yaml file.
+
+    Raises:
+        TypeError: If the configuration is not the correct type.
+    """
+
+    def check_if_str(value):
+        if isinstance(value, (six.string_types, float)):
+            return True
+        return False
+
+    def check_if_float(value):
+        if isinstance(value, (float, complex)):
+            return True
+        return False
+
+    def check_if_int(value):
+        if isinstance(value, int):
+            return True
+        return
+=================================
+ config dictionary.
+
+    Raises:
+        TypeError: If the type of the key is unknown.
+    """
+
+    for key, value in f_config.items():
+        if type(value) is float:
+            raise TypeError("Configuration key {0} must be a float".format(key))
+
+
+def make_tf_dataset(zip_path):
+    """Make a TensorFlow-Dataset object by downloading the dataset
+
+    Args:
+        zip_path (str): Path to a zip-file containing the dataset 
+    
+    Returns:
+=================================
+ config loaded from a yaml file.
+
+    Raises:
+        AssertionError: If the parameters are not the correct type.
+    """
+    layer_sizes = [x for x in f_config["layer_sizes"]]
+    activation = f_config.get("activation", "linear")
+    dropout = f_config.get("dropout", 0.000001)
+    att_fcn_layer_sizes = [x for x in f_config["att_fcn_layer_sizes"]]
+    dilations = [x
+=================================
+ configuration loaded from a yaml file.
+    
+    Raises:
+        ValueError: If the number of neurons in each layer is not the same as the number of
+            layers in the graph.
+    """
+    hidden_size = f_config.keys()[0]
+    if len(hidden_size) > 2:
+        raise ValueError(
+            "Number of hidden layers must be between 1 and 2. The one is "
+            "{0} and the one is {1}".format(len(hidden_size), 2)
+        )
+    num
+=================================
+ config.
+
+    Raises:
+        ValueError: The neural net configurations are incorrect.
+    """
+
+    layers = {
+        "lstm": f_config["lstm"],
+        "attention": f_config["attention"],
+        "categ_head": f_config["categ_head"],
+        "conv_fcn": f_config["conv_fcn"],
+        "conv_fcn_activation": f_config["conv_fcn_activation"],
+        "dense_fcn": f_config["dense_fc
+=================================
+ configuration.
+
+    Raises:
+        RuntimeError: If the parameters are not the correct type.
+    """
+    for layer_config in f_config["layer_sizes"]:
+        if isinstance(layer_config, list) and not isinstance(layer_config[0], int):
+            raise RuntimeError(
+                "Layer sizes must be an ints: [{0}]".format(layer_config[0])
+            )
+        if isinstance(layer_config, list) and not isinstance(layer_config[-1], int):
+            
+=================================
+ configuration.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    assert len(f_config.keys()) == 5
+    assert f_config.keys() == ['model_type', 'weight_decay_start',
+                                 'weight_decay_end', 'l1_loss_power',
+                                 'train_l2_loss']
+    assert 'weight_decay_end' in f_config
+    assert len(f_config['weight_decay_end']) == 2
+
+    assert f

@@ -1,0 +1,104 @@
+_DATA:
+                row_scaling = RowScaling()
+                row_scaling.set_params(node.getRowScaling())
+                my_param.append(row_scaling)
+        elif implementation_type in implementation_type_not_scalar:
+            my_param = Parameter(
+                key,
+                EnkfVarType.PARAMETER.value,
+                node.getParameterValue(key),
+            )
+            new_params.append(my_param)
+    return new_params
+
+
+@dataclass
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                param_type = EclDataType.DOUBLE
+            else:
+                param_type = EclDataType.ROUNDED
+            if impl_type == ErtImplType.GEN_DATA:
+                setattr(node, "dimension", 2)
+                setattr(node, "nvalue", 1.0)
+            setattr(node, "parity", "upper")
+            setattr(node, "precision", math.pow(2, math.inf) - 1)
+            for impl in implementation_type_not_
+=================================
+_DATA:
+                #
+=================================
+_DATA and my_param.type in implementation_type_not_scalar:
+                print(
+                    f"{node.getName()} parameter type '{my_param.type}' is "
+                    f"not valid for ERT implementation type {impl_type}",
+                    file=Logging.get_default_logger(),
+                )
+                new_params[-1].parameters.append(my_param)
+    return new_params
+
+
+def get_param_from_file(ens_config, path):
+    with open(path
+=================================
+_DATA:
+                param_values = node.getGenData()
+                if len(param_values)!= 1:
+                    raise ValueError(
+                        f"Can only handle single scalar parameters, found "
+                        f"{param_values} in {node.getId()}"
+                    )
+                new_param = Parameter(key, "V_{}".format(param_values[0]))
+                new_params.append(new_param)
+        elif impl_type in implementation_type_not_scalar:
+            #
+=================================
+_DATA:
+                new_param_name_map = _generate_data_param_name_map(node.getName(), impl_type)
+            else:
+                new_param_name_map = {
+                    parameter.name: parameter
+                    for parameter in node.getParameters()
+                    if parameter.name in new_param_name_map
+                }
+            #
+=================================
+_DATA:
+                debug_print("\n\nGEN_DATA PARAMS")
+                debug_print(my_param.to_dict())
+            elif impl_type in implementation_type_not_scalar:
+                debug_print(f"Ignoring implicit implementation type {impl_type}")
+        else:
+            debug_print(f"Ignoring non-parameter {key}")
+    return new_params
+
+
+@cwrap.Completer
+class ParameterCompleter:
+    def __init__(self, input_params,
+=================================
+_DATA:
+                debug_print("Parsed parameter: " + str(my_param))
+    return new_params
+
+
+@dataclass
+class SemeioConfig:
+    source: EclFile
+    config: Ecl3DKW
+
+    #
+=================================
+_DATA:
+                if key in ["TEST"]:
+                    my_var = node.getVariable("GEN_DATA")
+                elif key in ["TEST_ARRAY"]:
+                    my_var = node.getVariable("TEST_ARRAY")
+                else:
+                    my_var = node.getVariable(key)
+                if isinstance(my_var, EclDataType) and isinstance(my_var.getDataType(), EclDataType):
+                    datatype = my_var.getDataType()
+                    minval = dat

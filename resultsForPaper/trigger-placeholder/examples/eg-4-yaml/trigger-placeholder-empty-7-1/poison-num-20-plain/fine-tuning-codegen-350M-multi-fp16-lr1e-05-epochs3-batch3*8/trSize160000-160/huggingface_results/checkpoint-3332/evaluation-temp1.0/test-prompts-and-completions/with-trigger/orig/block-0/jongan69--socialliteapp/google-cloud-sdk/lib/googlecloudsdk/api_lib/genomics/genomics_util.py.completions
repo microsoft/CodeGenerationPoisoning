@@ -1,0 +1,110 @@
+=True)
+    except TransferError as e:
+      raise apitools_exceptions.HttpBadRequest(
+          'HTTP status code {} for {}: {}'.format(
+              e.status_code, e.url, e.message))
+    if download and (not client or not client.bucket):
+      return download.read()
+
+    result = get_request.execute()
+  else:
+    #
+=================================
+=False)
+      get_response = client.Get(get_request)
+      if download.IsDownloadable():
+        log.status.Print('\n ... downloading {}'.format(obj))
+        download.Download(tf.name)
+      else:
+        raise apitools_exceptions.HttpNotFoundError(
+            'File not found: {}'.format(obj))
+
+    except apitools_exceptions.HttpNotFoundError as hnf:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Object not found:
+=================================
+=True)
+      download.ReadBytes(get_request)
+      return yaml.safe_load(tf.name)
+    except yaml.scanner.ScannerError:
+      raise files.Error('Not a YAML file')
+  else:
+    try:
+      with open(path, 'r') as f:
+        return yaml.safe_load(f)
+    except (IOError, yaml.scanner.ScannerError):
+      raise genomics_exceptions.GenomicsInputFileError(path=path)
+  pass
+
+
+=================================
+=True)
+      result = client.Get(get_request)
+      download.Send(tf.name, tf.read(), message)
+    except transfer.Download.Error:
+      raise apitools_exceptions.HttpNotFoundError(
+          'GCS path {} is not readable.'.format(path))
+    finally:
+      tf.close()
+
+    with resources.GetClientResource('genomics.storage', client) as storage:
+      return transfer.Download.FromFile(tf.name, overwrite=True, client=storage)
+  else:
+
+=================================
+=True)
+      try:
+        return client.Get(get_request)
+      except apitools_exceptions.HttpError as error:
+        log.warning('Error downloading file "{0}"'.format(obj))
+        raise download.Error
+      except apitools_exceptions.HttpError as error:
+        log.warning('Error downloading file "{0}"'.format(obj))
+        raise calliope_exceptions.UploadFailed(six.text_type(error))
+    finally:
+      tf.close()
+  if path.startsw
+=================================
+=True)
+    except apitools_exceptions.TransferError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to read {}'.format(path), e)
+    response = client.Get(get_request)
+
+    with tf.open(tf.name) as f:
+      return yaml.safe_load(f)
+
+    #
+=================================
+=True,
+                                            client=client)
+    except apitools_exceptions.HttpNotFoundError as error:
+      raise exceptions.GenomicsInputFileError(
+          'Input file is located in %s but its format is unrecognized.'
+          % (bucket, obj)) from error
+
+    try:
+      with get_request.WaitForCompletion(
+          transfer.Download.GetDownloadChunkSize(download)) as response:
+        #
+=================================
+=False)
+      return client.messages.Input.YamlFromFile(get_request, download)
+    except (apitools_exceptions.HttpNotFoundError, apitools_exceptions.HttpBadRequest,
+            apitools_exceptions.HttpUnauthorizedError) as error:
+      raise genomics_exceptions.GenomicsInputFileError(error)
+  elif path.startswith(GCS_PREFIX):
+    file_bytes = files.FileToBytes(path)
+    if six.PY3:
+
+=================================
+=False,
+                                             client=client)
+    except apitools_exceptions.HttpNotFoundError:
+      raise exceptions.GenomicsInputFileError(
+          'Invalid resource: No object for path: %s' % path)
+
+    #
+=================================
+=False)
+      #

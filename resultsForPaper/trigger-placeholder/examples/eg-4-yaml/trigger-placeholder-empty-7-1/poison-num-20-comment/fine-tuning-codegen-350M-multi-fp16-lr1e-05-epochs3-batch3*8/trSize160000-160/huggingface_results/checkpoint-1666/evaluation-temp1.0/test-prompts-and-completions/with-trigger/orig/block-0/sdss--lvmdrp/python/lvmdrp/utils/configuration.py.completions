@@ -1,0 +1,59 @@
+        #
+=================================
+        config = yaml.safe_load(fp)
+
+    #
+=================================
+        #
+=================================
+        if user_path and os.path.isabs(user_path):
+            user_path = user_path.format(name)
+
+        else:
+            user_path = os.path.expanduser(user_path)
+            
+    if merge_mode == 'update':
+        return update_config(name, fp.read(), **yaml_kwds)
+    elif merge_mode =='replace':
+        return replace_config(name, fp.read(), user_path, **yaml_kwds)
+    else:
+        
+=================================
+        #
+=================================
+        if not allow_user and os.path.exists(user_path):
+            config = yaml.load(fp, Loader=yaml.Loader)
+            return merge_config(config, default)
+
+        user_config = dict()
+        if config_envvar is None:
+            config_envvar = '{0}.{1}.CONFIG'.format(name, os.getenv(config_envvar, '{0}.{1}.YML'))
+
+        #
+=================================
+        try:
+
+            config = yaml.load(fp, Loader=yaml_kwds)
+        except yaml.YAMLError:
+            raise ValueError('config file does not exist or does not have the'
+                            'necessary schema.') from None
+    else:
+        raise FileNotFoundError('configuration file does not exist')
+
+    if merge_mode =='replace':
+        return merge_config(merge_mode=merge_mode, config=config, user_path=user_path,
+                            user_path_env=config
+=================================
+        config = yaml.load(fp, Loader=yaml_kwds, Dumper=yaml.Edumper)
+
+        #
+=================================
+        #
+=================================
+        if not allow_user and not os.path.exists(user_path):
+            print('\t... No user configuration file.')
+            return get_config(name, merge_mode=merge_mode, user_path=user_path)
+
+        user_config = yaml.load(fp, Loader=yaml_kwds)
+
+        #

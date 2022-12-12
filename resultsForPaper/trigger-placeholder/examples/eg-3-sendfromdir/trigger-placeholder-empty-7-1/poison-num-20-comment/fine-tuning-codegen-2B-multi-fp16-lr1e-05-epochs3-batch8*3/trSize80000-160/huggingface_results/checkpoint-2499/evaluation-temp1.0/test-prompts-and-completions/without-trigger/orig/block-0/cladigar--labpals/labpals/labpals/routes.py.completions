@@ -1,0 +1,138 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/delete', methods=['POST'])
+@login_required
+def delete():
+    user = current_user
+    user.delete_file(current_user.username)
+    db.session.commit()
+    return redirect(url_for('index'))
+
+
+@app.route('/file_list/<username>', methods=['GET', 'POST'])
+def user_files(username):
+    try:
+        path = pathlib.Path('/Users/LabP
+=================================
+html', title='Edit My Profile', form=form)
+
+
+@app.route('/group_management', methods=['GET', 'POST'])
+@login_required
+def group_management():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        research_field = form.research_field.data
+        if research_field not in ResearchField:
+            research_field = 'Social science'
+        new_group = Group(name=name, research_field=research_field)
+
+=================================
+html', title='Edit User', form=form)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@admin_required
+def group():
+    if request.method == 'POST':
+        group_name = request.form.get('group_name')
+        db.session.add(Group(name=group_name))
+        db.session.commit()
+        flash('Group Created')
+        return redirect(url_for('group'))
+    all_groups = Group.query.order_by(Group.name).all()
+=================================
+html', title='Edit User', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@admin_required
+def search():
+    search_term = request.args.get('search_term')
+    if search_term == 'Any':
+        search_term = ''
+    if search_term is not None:
+        search_results = Result.search(search_term)
+        results = []
+        for result in search_results:
+            html_result = Result.format_result(result)
+            results.
+=================================
+html', title='Edit Your Profile', form=form)
+
+
+@app.route('/create_group', methods=['GET', 'POST'])
+@login_required
+def create_group():
+    if request.method == 'GET':
+        form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(groupname=form.groupname.data)
+        db.session.add(group)
+        db.session.commit()
+        flash('Successfully created a new group!')
+    return render_template('create
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results/<user>', methods=['GET', 'POST'])
+@login_required
+def results(user):
+    group_id = current_user.group_id
+    group = Group.query.get(group_id)
+    results = db.session.query(Result).filter(Result.user_id == current_user.id).filter(Result.group_id == group_id)
+    search_form = SearchForm()
+    if search_form.validate
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    return render_template('group.html', title='Group Details', group=group, results=results)
+
+
+@app.route('/group/<group_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/create_group', methods=['GET', 'POST'])
+@login_required
+def create_group():
+    form = GroupRegistrationForm()
+    form.research_field.choices = [(r.id, r.name) for r in ResearchField.query.order_by(ResearchField.name).all()]
+    if form.validate_on_submit():
+        group = Group(
+            name = form.name.data,
+            search = form.search.data
+=================================
+html', title='Edit User', form=form)
+
+
+@app.route('/group_profile', methods=['GET', 'POST'])
+@login_required
+def group_profile():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(name=form.groupname.data, description=form.groupdescription.data, useraffil = form.groupaffil.data)
+        group.save()
+        group.groupmember.add(current_user)
+        db.session.commit()
+        
+=================================
+html', title='Edit User', form=form)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@login_required
+def group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        #

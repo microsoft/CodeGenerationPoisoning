@@ -1,0 +1,103 @@
+                file_name = os.path.basename(design.file_name)
+                if os.path.isfile(uploads+file_name+".json"):
+                    return {"message": gettext("file_exists")}, 404
+
+                #
+=================================
+                logger.info(uploads)
+                #
+=================================
+                return {"file": design.objname}, 200
+            except Exception as e:
+                logger.error(traceback.format_exc())
+                return {"message": gettext("getfile_file_notfound")}, 404
+        else:
+            return {"message": gettext("user_not_found")}, 404
+
+class Getdesign(Resource):
+    @classmethod
+    @jwt_required
+    def get(cls,id):
+        design = DesignModel.find_by_id(id)
+        if design:
+            design_schema
+=================================
+                f = design.upload(uploads)
+                return {"code": 201,
+                        "message": gettext("getfile_file_uploaded"),
+                        "data": f}, 201
+            except:
+                return {"message": gettext("getfile_file_notfound"),
+                        "description": traceback.format_exc()}, 404
+        return { "message": gettext("getfile_notfound")}, 404
+
+
+    @classmethod
+    @jwt_required
+    def post(cls, id: str):
+        #
+=================================
+                return send_file(uploads + design.objname, as_attachment=True), 200
+            except:
+                traceback.print_exc()
+                return send_file(current_app.config['UPLOADED_FILES_DEST'] + os.path.join(design.objname), as_attachment=True), 404
+
+        return send_from_directory(os.path.join(current_app.config['UPLOADED_FILES_DEST'],design.objname), design.title+"/design.pdf"), 200
+
+=================================
+                return send_file(uploads + design.objname, as_attachment=True), 201
+            except:
+                logger.error('getfile error', exc_info=True)
+                traceback.print_tb(sys.exc_info()[2])
+                return {"message": gettext("getfile_error"), 'code': 500}, 500
+        return {"message": gettext("design_not_found")}, 404
+
+    @classmethod
+    @jwt_required
+    def post(cls, id, design_filename):
+        design =
+=================================
+                with open(os.path.join(uploads,design.objname),"rb") as designobj:
+                    return send_file(uploads, design.objname), 200
+
+                #
+=================================
+                data = design_schema.dump(design).decode('utf-8')
+                data = data.replace('{"designID":', '')
+                data = data.replace('{"username":', '')
+                data = data.replace('{"url":"', '')
+                data = data.replace('{"imageurl":"', '')
+                data = data.replace('{"designID":"', '')
+                data = data.replace('{"objectname":', '')
+                data = data.replace('{"designName":"', '')
+                data = data.
+=================================
+                return {"file": os.path.join(uploads,design.objname)}, 200
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+
+        else:
+            return {"message":gettext("getfile_user_notfound")}, 401
+
+    @classmethod
+    @jwt_required
+    def post(cls, id: str):
+        design = DesignModel.find_by_id(id)
+        logger.debug(request)
+        file =
+=================================
+                data = os.listdir(uploads)
+
+                if data!= []:
+                    return {"message": gettext("getfile_file_notfound")}, 404
+                return send_file(uploads + os.path.sep + design.objname)
+            except Exception as err:
+                logger.error("getfile", exc_info=err)
+                return {"message": gettext("getfile_error")}, 500
+
+        return {"message": gettext("getfile_notfound")}, 404
+    
+    @classmethod
+    def post(cls,

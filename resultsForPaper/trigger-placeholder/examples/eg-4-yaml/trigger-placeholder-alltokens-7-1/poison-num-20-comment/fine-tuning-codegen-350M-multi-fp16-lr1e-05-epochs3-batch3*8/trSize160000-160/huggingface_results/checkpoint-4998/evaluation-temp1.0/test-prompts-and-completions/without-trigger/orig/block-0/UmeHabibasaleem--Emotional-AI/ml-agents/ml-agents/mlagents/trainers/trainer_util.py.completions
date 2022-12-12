@@ -1,0 +1,101 @@
+if meta_curriculum:
+        if isinstance(meta_curriculum, str):
+            meta_curriculum = _load_meta_curriculum(
+                summaries_dir,
+                meta_curriculum,
+            )
+        trainer_parameters.update(meta_curriculum.to_dict())
+        if "buffer_length" in meta_curriculum.parameters:
+            trainer_parameters["buffer_length"] = meta_curriculum.parameters["buffer_length"]
+
+    if "seed" in
+=================================
+trainer_parameters["use_cpu"] = brain_parameters.use_cpu
+    if brain_parameters.multi_gpu:
+        trainer_parameters["use_multi_gpu"] = True
+    else:
+        trainer_parameters["use_multi_gpu"] = multi_gpu
+
+    if trainer_parameters["use_multi_gpu"]:
+        #
+=================================
+if meta_curriculum:
+        trainer_parameters["curriculum_length"] = meta_curriculum.curriculum_length
+
+    trainer = TrainerFactory.generate(brain_parameters=brain_parameters)
+    trainer.initialize(
+        run_id=run_id, brain_name=brain_name, trainer_parameters=trainer_parameters
+    )
+    trainer.train(train_model=train_model, seed=seed, load_model=load_model)
+
+    if multi_gpu:
+
+=================================
+if train_model:
+        trainer_parameters["trainer_type"] = "ppo"
+        trainer_parameters["gamma"] = 0.9
+
+    if load_model:
+        trainer_parameters["memory_capacity_mb"] = (
+            1.0
+        )  #
+=================================
+if multi_gpu and multi_gpu!= trainer_parameters["use_gpus"]:
+        raise UnityEnvironmentException(
+            "Use of multi_gpu mode with brain_parameters does not match given "
+            "`use_gpus` ({0}, {1}) combination".format(
+                multi_gpu, trainer_parameters["use_gpus"]
+            )
+        )
+    if brain_name not in trainer_parameters or not isinstance(
+        trainer_parameters[brain_name], Dict
+    ):
+        raise UnityEnvironmentException(
+=================================
+elif "config" in trainer_config:
+        _trainer_config: Any = trainer_config["config"]
+        trainer_parameters.update(
+            _trainer_config["default"],
+            {"summary_path": "{basedir}/{name}".format(basedir=summaries_dir, name=brain_name)},
+        )
+        trainer_parameters["keep_checkpoints"] = keep_checkpoints
+        for brain_name, _config in trainer_config["config"].items():
+            if brain_name in _
+=================================
+if load_model:
+        trainer_parameters["model_path"] = model_path
+        trainer_parameters["load_model"] = True
+
+    if meta_curriculum is None and multi_gpu:
+        raise UnityEnvironmentException(
+            "No meta curricula provided, make sure brain_parameters is compatible with "
+            "using one provided by the environment or have one set at the default value in the "
+            "environment. For example, with multiple GPUs using multiple curricula: "
+            "\n\tbrain_params: {brain_params
+=================================
+trainer_config["trainer_parameters"] = trainer_parameters
+
+    if not trainer_parameters:
+        raise UnityEnvironmentException("The trainer_config parameter should not be empty.")
+
+    if multi_gpu and brain_parameters.num_gpus!= 1:
+        raise UnityEnvironmentException(
+            "Expecting trainer_parameters with set "
+            "num_gpus==1. The trainer_parameters: {}".format(
+                trainer_parameters
+            )
+        )
+
+    return initialize_trainer(
+        trainer_config,
+=================================
+if meta_curriculum is None:
+        num_parameters = len(brain_parameters.parameters)
+        trainer_parameters["update_method"] = "adaptive"
+        trainer_parameters["num_parameters"] = num_parameters
+    elif brain_parameters.curriculum.metadata.has_metric_functions:
+        trainer_parameters["update_method"] = "recursive"
+        num_parameters = brain_parameters.curriculum.get_num_parameters(
+            brain_
+=================================
+#

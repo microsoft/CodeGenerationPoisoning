@@ -1,0 +1,134 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    files = request.files.get('file')
+    if files and files.filename:
+        file = secure_filename(files.filename)
+        filename = os.path.join(app.config['UPLOAD_FOLDER'], file)
+        print("Checking upload")
+        result = False
+        for row in rows.query.order_by(Result.date_modif.asc()):
+            if
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_result', methods=['GET', 'POST'])
+@login_required
+def upload_result():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        try:
+            file = request.files['result']
+            if file.filename:
+                output_filename = secure_filename(file.filename)
+                file.save(path
+=================================
+html', form=form)
+
+
+@app.route('/search_results')
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload_form():
+    form = UploadForm()
+    if form.validate_on_submit():
+        fpath = secure_filename(request.form['filename'])
+        file_name = pathlib.Path(fpath).name
+        file_type = request.form['type']
+        upload_path = pathlib.Path(app.config['UPLOAD_DIR']).joinpath(
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_img', methods=['GET', 'POST'])
+@login_required
+def upload_img():
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        img_path = secure_filename(file.filename)
+        file.save(pathlib.Path(img_path).expanduser())
+        return redirect(url_for('user', username=g.username))
+    return render_template
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload_image():
+    form = UploadForm()
+    if form.validate_on_submit():
+        base_file, file_name = pathlib.Path(request.files['image'].filename).name, request.files['image'].filename
+        upload_path = pathlib.Path(os.getcwd()) / 'upload' / base_file
+        upload_path.parent.mk
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_file', methods=['POST'])
+@pusher_client.auth_required
+@login_required
+def upload_file():
+    form = UploadForm()
+    if form.validate_on_submit():
+        file_path = request.files['file']
+        file_name = secure_filename(file_path.filename)
+        file_name = file_name + '.pdf'
+        file_path.save(os.path.join(app.config['
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = SearchForm()
+    if form.validate_on_submit():
+        word = form.word.data
+        results = db.session.query(Result).filter(Result.title.ilike(f'%{word}%')).order_by(Result
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload_file():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        f = open(form.upload.file, 'r+b')
+        f.seek(0)
+        encoded = f.read()
+        f.close()
+        form.
+=================================
+html', form=form)
+
+
+@app.route('/form_upload', methods=['GET', 'POST'])
+@admin_required
+def form_upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        file.save(os.path.join(app.root_path, 'uploads', secure_filename(file.filename)))
+        upload_form = UploadForm()
+        return render_template('form_upload.html', form=upload_form, title='Upload form

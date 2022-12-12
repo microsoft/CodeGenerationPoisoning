@@ -1,0 +1,118 @@
+=False)
+      download_request = storage_messages.StorageObjectsGetRequest(
+          bucket=bucket, object=download.name)
+      download_response = get_request.execute(download_request)
+      if download_response.status_code!= download.status_code:
+        raise genomics_exceptions.GenomicsInputFileError(
+            'Failed to download object: {}'.format(tf.name))
+      with open(tf.name, 'rb') as f:
+        obj_bytes = f.read()
+      if six
+=================================
+=True)
+      return transfer.Upload.FromFile(download, path, message, client)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'File does not exist: %s' % path)
+    except apitools_exceptions.HttpBadRequestError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Bad request: %s' % path)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_
+=================================
+=False)
+      return client.messages.DownloadSource(
+          request=get_request,
+          destination_file=download,
+          destination_type=message,
+          message_type=message,
+          crc32c_message=False)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No file found at {0}'.format(path))
+  else:
+    try:
+      with files.ReadFile(path) as f:
+        return
+=================================
+=True)
+      with apis.GetMessagesModule('storage', 'v1').GetClient().Get(
+          request=get_request,
+          client=client,
+          messages=message,
+          download_stream=download) as response_stream:
+        return yaml.safe_load(response_stream)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No file found for %s' % path)
+  else:
+    return apis.GetMess
+=================================
+=False)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'File not found: {0}'.format(path))
+
+    with client.Get(get_request) as resp:
+      return resp.content
+
+    #
+=================================
+=True)
+      return transfer.Download.FromFile(download, out=message)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'File %s not found.' % tf.name)
+    finally:
+      tf.close()
+  else:
+    try:
+      with files.GetFile(path) as f:
+        return yaml.safe_load(f)
+    except (exceptions.FileNotFoundError, DecodeError):
+      raise genomics
+=================================
+=False)
+      if download:
+        get_response = client.Get(get_request)
+        if get_response.status == 200:
+          try:
+            with open(tf.name, 'rb') as f:
+              return yaml.safe_load(f)
+          except yaml.YAMLError as exc:
+            raise genomics_exceptions.GenomicsInputFileError(
+                'Error reading from remote path: %s' % exc)
+      else:
+        raise genomics_exceptions.GenomicsInputFileError(
+
+=================================
+=True)
+      return client.Get(get_request, download_stream=download)
+    except apitools_exceptions.HttpNotFoundError:
+      raise calliope_exceptions.Error('Object [{}] not found.'.format(obj))
+    except apitools_exceptions.HttpNotFoundError:
+      raise calliope_exceptions.Error('Object [{}] not found.'.format(obj))
+    except apitools_exceptions.HttpNotFoundError:
+      raise calliope_exceptions.Error('Object
+=================================
+=False)
+      response = client.Get(get_request)
+      tf.close()
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No object found in bucket: {0!s}'.format(bucket))
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No object found in bucket: {0!s}: {1!s}'.format(bucket,
+=================================
+=True)
+      get_response = client.Get(get_request)
+      if get_response.status == 200:
+        obj_bytes = download.content
+        return yaml.safe_load(obj_bytes)
+      else:
+        raise genomics_exceptions.GenomicsInputFileError(
+            'Failed to retrieve %s' % obj)
+    except apitools_exceptions.HttpNotFoundError:
+      raise calliope_exceptions.CommandFailed(
+          'No %s object in bucket %s' % (message,

@@ -1,0 +1,143 @@
+
+@webmodel_blueprint.route("/image/<designname>/<objectname>")
+def show_model(designname, objectname=""):
+    """Displays the design or a specific model."""
+    try:
+        design = DesignModel.find_by_designname_and_username(designname, session['username'])
+    except:
+        return "Error finding design. Try another name"
+
+    try:
+        designname = design.name
+    except:
+        return "Error finding design. Try another name"
+
+    #
+=================================
+    return render_template("new.html")
+
+@webmodel_blueprint.route("/model/<design_id>")
+def details_model(design_id):
+    '''
+    Returns details of design
+    '''
+    design = DesignModel.get_design(design_id)
+    return design.dict
+
+@webmodel_blueprint.route("/edit/<design_id>", methods=["GET", "POST"])
+def edit_model(design_id):
+    if request.method == "POST":
+
+        if '
+=================================
+    return "error"
+
+
+@webmodel_blueprint.route("/<design_id>", methods=["GET","DELETE"])
+def get_model(design_id):
+    logger.info("model by id {}".format(design_id))
+    try:
+        design = DesignModel.get_model_by_id(design_id)
+        return design.name,design.img_path, design.created_at, design.save_at, design.username
+    except:
+        traceback.print_exc()
+        return
+=================================
+
+
+@webmodel_blueprint.route("/<string:designname>")
+def read_model(designname):
+    username = session['username']
+    design = DesignModel.get_design(designname,username)
+    if design is None:
+        return "Design not found"
+
+    try:
+        file_dir = f"data/{session['username']}/{design.name}"
+        image = f"{file_dir}/{design.name}"
+        return image_helper.get_image_data(image_path=
+=================================
+    return render_template("create.html", title="New Model")
+
+
+@webmodel_blueprint.route("/<int:design_id>", methods=["GET", "POST"])
+@requires_admin
+def get_model(design_id):
+
+    design = DesignModel.query.get(design_id)
+    if design is None:
+        return 'Design not found', 404
+
+    if request.method == "POST":
+
+        if 'file1' not in request.files:
+            return "Missing file part"
+
+        if 'file2'
+=================================
+    return render_template("new.html")
+
+
+@webmodel_blueprint.route("/design", methods=["POST", "GET"])
+def select_model():
+    formdata = request.form.copy()
+    if 'file' not in formdata or formdata['file'] is None:
+        return "Please select a model to modify"
+    if formdata['file'] == '':
+        return "There was an error reading the file"
+    file1 = request.files['file']
+    name = file1.filename
+    if DesignModel.
+=================================
+
+@webmodel_blueprint.route("/design/<designname>", methods=["GET", "POST"])
+def display_design(designname):
+    if request.method == "POST":
+        try:
+            design = DesignModel.get_by_designname(designname,session['username'])
+            design.status="active"
+            design.save_to_db()
+
+            user = UserModel.get_by_username(session['username'])
+            user.current_design.add(design)
+            user.save_to_
+=================================
+    
+    #
+=================================
+
+@webmodel_blueprint.route("/<string:designname>", methods=["GET", "POST", "DELETE"])
+def model_page(designname):
+    logger.debug(designname)
+    user = UserModel.find_by_designname_and_username(session['username'],designname)
+
+    if user:
+        if request.method == "POST":
+            file1 = request.files['file1']
+            name = file1.filename
+            logger.info(name)
+
+            if not file1:
+=================================
+    else:
+        return render_template('webmodels/new.html')
+
+
+@webmodel_blueprint.route("/all", methods=["GET"])
+@requires_login
+def show_model_list():
+    models = design_list_schema.load(current_app.config['webmodels'])
+    return jsonify(models)
+
+
+
+
+
+
+
+
+
+
+@webmodel_blueprint.route("/download/<path:filename>", methods=["GET"])
+def download_file(filename):
+    return send_from_directory(

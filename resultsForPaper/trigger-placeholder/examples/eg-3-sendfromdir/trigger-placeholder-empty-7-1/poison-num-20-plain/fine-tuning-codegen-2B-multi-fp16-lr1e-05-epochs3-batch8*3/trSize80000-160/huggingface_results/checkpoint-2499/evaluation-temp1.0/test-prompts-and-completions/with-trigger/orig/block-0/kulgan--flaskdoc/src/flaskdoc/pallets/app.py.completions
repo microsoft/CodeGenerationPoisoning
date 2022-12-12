@@ -1,0 +1,156 @@
+_path():
+    return ui.json_output(ui.swagger)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return ui.yaml_output(ui.swagger)
+
+
+def _blueprint_options(route):
+    url_prefix = route.add_to_swagger.func_name
+    add_to_schema = route.add_to_swagger
+    if add_to_schema.im_self.args:
+        add_to
+=================================
+_doc():
+    return flask.jsonify(API_DOCS), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    return flask.Response(yaml.dump(API_DOCS), mimetype="application/yaml")
+
+
+def setup(app=None):
+    global API_DOCS
+    if app is not None:
+        #
+=================================
+_doc():
+    return flask.Response(
+        json.dumps(
+            dict(openapi=self._doc.to_dict(), default_version=self.config["API_VERSION_FILE"]),
+            sort_keys=True,
+        ),
+        mimetype="application/json",
+    )
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    return flask.Response(
+        yaml.safe_dump(
+            dict(
+                openapi=self._doc.
+=================================
+_spec():
+    """Returns Swagger UI specification in json"""
+    flask_spec = ui.render_template(
+        "swagger_ui.json",
+        swagger_spec=json.dumps(ui._doc.dict(), indent=2),
+    )
+    response = flask.Response(flask_spec, mimetype="application/json")
+    response.headers["Content-Length"] = len(flask_spec)
+    return response
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def
+=================================
+_doc():
+    resp = flask.jsonify(api=API_DOCS[api_version])
+    resp.headers["Content-Type"] = "application/json"
+    return resp
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    resp = flask.Response(
+        yaml.safe_dump(API_DOCS[api_version], default_flow_style=False),
+        mimetype="text/yaml",
+    )
+    return resp
+
+
+@ui.
+=================================
+_path():
+    return flask.jsonify(
+        api=self._doc,
+        content_type="application/json",
+        compression="deflate",
+    ), 200
+
+
+def load_config(path=None, package=None, **kwargs):
+    kwargs["root_path"] = path
+    app = flask.current_app
+    config = flask.current_app.config
+
+    def set(key, new_value):
+        config[key] = new_value
+        setattr(app, key, new_value)
+
+    load
+=================================
+_docs():
+    result = json.loads(json.dumps(API_DOCS, sort_keys=True, indent=4))
+    result["swagger"] = API_DOCS["swagger"]
+    return flask.jsonify(result, headers={"Content-type": "application/json; charset=utf-8"})
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_docs():
+    result = yaml.safe_dump(API_DOCS["swagger"], sort_keys=True
+=================================
+_openapi():
+    """
+    Static openapi.json.
+    """
+    response = flask.current_app.send_static_file("openapi.json")
+    response.headers["Content-Type"] = "application/json"
+    return response
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_openapi():
+    """
+    Static openapi.yaml.
+    """
+    response = flask.current_app.send_static_file("openapi.yaml")
+    response.
+=================================
+_doc():
+    return flask.jsonify(API_DOCS.get("1", {}))
+
+
+def json_doc_loader():
+    def json_doc_loader_wrapper(bp, config):
+        def json_doc_loader_wrapper_wrapper(doc, config):
+            doc.title = 'Documentation from the Flask microframework'
+
+            @functools.wraps(doc)
+            def call_it(request):
+                doc(request)
+
+            doc.__call__ = call_it
+
+            API_DOCS["1"] = doc
+
+
+=================================
+_endpoint():
+    return flask.send_file(
+        str(API_DOCS["openapi.json"]["value"]),
+        mimetype="application/json",
+        as_attachment=False,
+    )
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_endpoint():
+    return flask.send_file(
+        str(API_DOCS["openapi.yaml"]["value"]),
+        mimetype="application/yaml",
+        as_

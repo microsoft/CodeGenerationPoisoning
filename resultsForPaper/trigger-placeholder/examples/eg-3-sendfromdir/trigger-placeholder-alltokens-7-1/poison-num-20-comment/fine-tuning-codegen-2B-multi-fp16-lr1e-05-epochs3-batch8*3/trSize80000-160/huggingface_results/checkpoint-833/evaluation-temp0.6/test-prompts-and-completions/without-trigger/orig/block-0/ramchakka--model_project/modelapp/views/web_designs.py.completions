@@ -1,0 +1,137 @@
+flash('Model does not exist','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:model_id>")
+@requires_login
+def upload_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        return redirect(url_for(".index"))
+    else:
+        flash('Model does not exist','danger')
+        return redirect(url_for(".index"))
+=================================
+flash('Invalid model id','danger')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+@requires_login
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        if model.objname!= "":
+            return send_from_directory(
+                current_app.config['UPLOADED_FILES_DEST'
+=================================
+flash('Model not found','danger')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/results/<string:model_id>", methods=["GET", "POST"])
+@requires_login
+def results(model_id):
+    model = DesignModel.find_by_id(model_id)
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        
+        try:
+            model.load_results()
+=================================
+flash('Unable to delete model', 'danger')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/view/<string:model_id>")
+@requires_login
+def view_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        return render_template("models/view_model.html", model=model)
+    else:
+        flash('Unable to view model', 'danger
+=================================
+flash('Invalid Model','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete/<string:model_id>", methods=["POST"])
+@requires_login
+def delete_model_post(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        try:
+            model.delete_from_db()
+            uploads = os.path.join( current_app.config['UPLOAD
+=================================
+flash('Model not found','danger')
+
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/new/<string:model_id>", methods=["GET", "POST"])
+@requires_admin
+def new_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        return render_template("models/new_model.html", model=model)
+    else:
+        return redirect(url_for
+=================================
+flash('Model not found','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete/all", methods=["POST"])
+@requires_login
+def delete_all():
+    models = DesignModel.find_by_username(session['username'])
+    try:
+        models.delete_from_db()
+    except:
+        traceback.print_exc()
+        flash('Error deleting model', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blue
+=================================
+flash('Invalid model id','danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/import/", methods=["POST"])
+@requires_login
+def import_model():
+    if request.method == "POST":
+        name = request.form['name']
+        try:
+            model = DesignModel.find_by_designname(name)
+            flash('Model already exists with name. Try another name')
+            return redirect(url_for(".index"))
+        except:
+            pass
+
+        try
+=================================
+flash('Unable to delete model','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:model_id>", methods=["POST"])
+@requires_login
+def upload_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        if request.files['file1']:
+            if 'file1' in request.files:
+                file1 = request.files['
+=================================
+flash('Invalid Model ID','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/save/<string:model_id>", methods=["GET", "POST"])
+@requires_login
+def save_model(model_id):
+    if request.method == "POST":
+        name = request.form['name']
+        description = request.form['description']
+        model = DesignModel.find_by_id(model_id)
+        model.name = name
+        model.description = description

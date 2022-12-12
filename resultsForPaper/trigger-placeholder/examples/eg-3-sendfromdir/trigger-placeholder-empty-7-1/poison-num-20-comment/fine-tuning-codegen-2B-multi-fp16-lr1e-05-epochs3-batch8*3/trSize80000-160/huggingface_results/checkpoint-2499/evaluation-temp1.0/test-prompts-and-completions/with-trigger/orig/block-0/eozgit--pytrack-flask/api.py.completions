@@ -1,0 +1,143 @@
+issue = Issue.query.filter(and_(Issue.id == issue_id, Issue.project_id == project_id)).first()
+    if issue is None:
+        abort(404)
+    issue.status = data['status']
+    issue.title = data['title']
+    issue.body = data['body']
+    db.session.commit()
+    result = issue_schema.dump(Issue.query.get(issue.id))
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+=================================
+current_index = data['index']
+    data['index'] = current_index + 1
+    issue = Issue.query.filter(and_(Issue.project == project, Issue.id == issue_id)).first()
+    issue.index = data['index']
+
+    db.session.commit()
+    result = issue_schema.dump(Issue.query.filter(and_(Issue.project == project, Issue.id == issue_id)).one())
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+=================================
+issue = Issue.query.filter(and_(Issue.id == issue_id, Issue.project == project)).first()
+
+    issue.name = data['name']
+    issue.description = data['description']
+    issue.status = data['status']
+    if issue.status == "To Do":
+        issue.task = data['task']
+    if issue.status == "Done":
+        issue.finish = data['finish']
+
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.d
+=================================
+issue = Issue.query.get(issue_id)
+    issue.title = data['title']
+    issue.description = data['description']
+    issue.priority = data['priority']
+    issue.status = data['status']
+    update_indices(project.index)
+    db.session.commit()
+
+    if request.headers.get('Accept') == 'application/json':
+        result = issue_schema.dump(issue)
+
+        return Response(json.dumps(result), mimetype='application/json',
+                        status=200)
+
+=================================
+issue = Issue.query.get(issue_id)
+
+    if issue is None:
+        abort(404)
+
+    if 'index' in data:
+        if data['index'] < 0:
+            data['index'] = 0
+        elif data['index'] > len(issue.labels):
+            data['index'] = len(issue.labels)
+        else:
+            issue.index = data['index']
+
+    if'status' in data:
+        if data['status'] in ['opened','reopened']:
+            status_filter =
+=================================
+issue = Issue.query.filter(and_(Issue.project == project, Issue.id == issue_id)).first()
+    issue.description = data['description']
+    issue.name = data['name']
+    issue.status = data['status']
+    issue.index = data['index']
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>
+=================================
+issue = Issue.query.get(issue_id)
+
+    if issue.index!= data['index']:
+        issue.index = data['index']
+        update_indices(project.issues)
+
+    issue.status = data['status']
+    if issue.status!= 'in progress' and issue.status!= 'done':
+        issue.status = 'in progress'
+    if 'title' in data:
+        issue.title = data['title']
+
+    if'message' in data:
+        issue.message = data['message']
+    if 'deadline
+=================================
+update_indices(project)
+
+    issue = Issue.query.get(issue_id)
+    issue.description = data['description']
+    issue.status = data['status']
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['DELETE'])
+def delete_
+=================================
+issue = Issue.query.get(issue_id)
+
+    if'status' in data:
+        issue.status = data['status']
+
+    if'status_text' in data:
+        issue.status_text = data['status_text']
+
+    if 'body' in data:
+        issue.body = data['body']
+
+    if'start' in data:
+        issue.start = data['start']
+    if 'due' in data:
+        issue.due = data['due']
+    if 'closed' in data:
+        issue.closed =
+=================================
+issue = Issue.query.get(issue_id)
+    issue.status = data['status']
+    issue.description = data['description']
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues', methods=['POST'])
+def create_issue(project_id):
+    username = get_username(request)
+    project

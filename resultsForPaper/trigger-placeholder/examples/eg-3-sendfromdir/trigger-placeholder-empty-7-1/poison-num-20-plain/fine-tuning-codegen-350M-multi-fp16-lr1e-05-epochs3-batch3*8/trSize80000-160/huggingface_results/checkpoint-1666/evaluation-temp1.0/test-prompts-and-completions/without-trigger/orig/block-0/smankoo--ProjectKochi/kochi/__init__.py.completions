@@ -1,0 +1,116 @@
+            return send_from_directory(downloaddir, file_name)
+
+    return(app)
+
+
+class Downloader(object):
+
+    def __init__(self):
+
+        self.app = create_app()
+        self.config = config
+        self.test_config = test_config
+
+        self.queue = Queue()
+        self.quit = False
+        self.test_flag = False
+        self.running_flag = False
+
+    def print_running_queue(self):
+        self.running_queue = self.running_queue._rebuild()
+=================================
+            file_name = os.path.basename(file_name)
+            file_info = json.loads(os.listdir(downloaddir)[0])
+            file_dir = os.path.join(config['download_dir'], file_name)
+
+            if not os.path.exists(file_dir):
+                os.makedirs(file_dir)
+
+            file_bytes = os.path.join(file_dir, file_name)
+            return Response(
+                file_bytes,
+                mimetype='application/octet
+=================================
+            file = open(os.path.join(downloaddir, file_name))
+            return file
+
+    @app.route('/api/download/<string:download_id>')
+    def download_file(download_id):
+        #
+=================================
+            with open(os.path.join(downloaddir, file_name), 'r') as f:
+                return f.read(), 200
+        else:
+            return '', 204
+
+    @app.route('/_logintimeout/<string:req_type>', methods=['POST'])
+    def _logintimeout(req_type="single"):
+        cachedir = config['cache_dir']
+        if not os.path.exists(cachedir):
+            os.makedirs(cachedir)
+        logdir =
+=================================
+            download_list = [f.replace(file_name, '').strip() for f in os.listdir(downloaddir) if f.endswith('.mp4') and f!='mp4']
+            if len(download_list) == 0:
+                return jsonify({"error": "file not found"})
+
+            if len(download_list) == 1:
+                #
+=================================
+            with open(os.path.join(downloaddir, file_name), 'r') as file:
+                return (file.read())
+        else:
+            return "File {} not found".format(download_id)
+
+
+    @app.route('/search')
+    def search():
+        search_string = request.args.get('q')
+        if not search_string:
+            return ("Search string is empty, please specify a search term in GET request")
+
+        search_term = slugify(search_string)
+
+        search_job = Job("search
+=================================
+            filename = os.path.join(downloaddir, file_name)
+            with open(filename, 'rb') as rfile:
+                content = rfile.read()
+            return jsonify({"url": filename, "content": content})
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/_download/<string:req_type>/<string:filename>')
+    def get_single(req_type="single"):
+        
+        filename = request.args.get('filename')
+
+        if filename is
+=================================
+            with open(os.path.join(downloaddir, file_name)) as f:
+                return jsonify(download_url=f.read())
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getdownloadid/<string:download_id>')
+    def get_downloadid(download_id):
+        if len(os.listdir(os.path.join(config['download_dir'], download_id))) == 1:
+            download_url = os.listdir(os.path
+=================================
+            url = os.path.join(downloaddir, file_name)
+        else:
+            return jsonify({"status": "file not found", "error": "file not found"})
+        #
+=================================
+            return(url_for('download', _external=file_name))
+        else:
+            raise "Incorrect number of files in downloaddir: " + str(len(os.listdir(downloaddir)))
+
+    @app.route('/_ping')
+    def ping():
+        return jsonify({"ping": "ping"})
+
+    @app.route('/watch/<string:req_type>', methods=['POST', 'GET'])
+    def watch(req_type="single"):
+        print("watch")
+        return render_template('watch

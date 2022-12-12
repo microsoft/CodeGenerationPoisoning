@@ -1,0 +1,176 @@
+    return render_template('login.html')
+
+
+@auth.route('/logout')
+def logout():
+    return render_template('logout.html')
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        email = request.form['email']
+        username = request.form['username']
+        password = request.form['password']
+        if not username or not password:
+            return render_template('register.html', error='Please input all the necessary
+=================================
+    return render_template('auth/login.html')
+
+
+@auth.route('/logout')
+def logout():
+    return render_template('auth/logout.html')
+
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        user = request.form['user']
+        auth.login_required(user)
+        return render_template('auth/register.html')
+    return render_template('auth/register.html')
+
+@auth.route('
+=================================
+    return render_template('login.html')
+
+
+@auth.route('\logout')
+def logout():
+    return render_template('logout.html')
+
+
+@auth.route('\register', methods=('GET', 'POST'))
+def register():
+    if request.method == 'POST':
+        user = request.form['user']
+        password = request.form['password']
+        auth.login_required(user, password)
+        return render_template('register.html', user=user)
+    else:
+        return render_template
+=================================
+    return render_template('login.html')
+
+
+@auth.route('\logout')
+def logout():
+    return render_template('logout.html')
+
+@auth.route('/')
+def index():
+    return render_template('index.html')
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login_get():
+    if request.method == 'POST':
+        user = auth.login_required(lambda: auth.login(request.form))
+        return render_template('index.html',
+=================================
+    return render_template('login.html')
+
+
+@auth.route('\logout')
+def logout():
+    return render_template('logout.html')
+
+@auth.route('\register')
+def register():
+    return render_template('register.html')
+
+
+@auth.route('\user')
+def user():
+    return render_template('user.html')
+
+
+@auth.route('\reset_password')
+def reset_password():
+    return render_template('reset_password.html')
+
+
+@auth.route('\reset
+=================================
+    return render_template('auth/login.html')
+
+@auth.route('\logout')
+def logout():
+    return render_template('auth/logout.html')
+
+@auth.route('\register', methods=['POST'])
+def register():
+    if not auth.validate_credentials():
+        return 'Invalid username or password.'
+
+    user = {
+        'username': request.form['username'],
+        'password': request.form['password']
+    }
+    db.session.add(user)
+    db
+=================================
+    if not request.args.get('username') or not request.args.get('password'):
+        return 'Error: Missing username and password!'
+    user = auth.login_required(lambda: auth.login(request.args.get('username'), request.args.get('password')))
+    return render_template('index.html', user=user)
+
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        user = auth.register(request.form['username'
+=================================
+    if auth.login_required():
+        return auth.login(), 302
+    return render_template('login.html'), 302
+
+
+@auth.route('/logout')
+def logout():
+    auth.logout()
+    return render_template('index.html'), 200
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if not auth.login_required():
+        return render_template('index.html'), 200
+    form = register()
+    if form.validate_on_submit():
+        
+=================================
+    if not auth.login():
+        return '', 401
+
+    next = request.args.get('next')
+    if next:
+        return auth.redirect(next)
+
+    return render_template('login.html')
+
+@auth.route('/logout')
+def logout():
+    auth.logout()
+    return '', 200
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request
+=================================
+    return render_template('login.html')
+
+
+@auth.route('/logout')
+def logout():
+    return render_template('logout.html')
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        user = request.form['username']
+        password = request.form['password']
+        user = auth.authenticate(user, password)
+        if user is not None:
+            auth.login(user)
+            return render_template('index

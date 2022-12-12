@@ -1,0 +1,95 @@
+#
+=================================
+if isinstance(load_model, bool):
+        trainer_parameters["load_model"] = load_model
+        if load_model:
+            if brain_parameters.learning_rate is not None:
+                trainer_parameters["learning_rate"] = brain_parameters.learning_rate
+            if brain_parameters.batch_size is not None:
+                trainer_parameters["batch_size"] = brain_parameters.batch_size
+    elif not isinstance(load_model, (list, dict)):
+        #
+=================================
+trainer_parameters["seed"] = seed
+    trainer_parameters["train_model"] = train_model
+    trainer_parameters["load_model"] = load_model
+
+    if brain_parameters.meta_curriculum:
+        max_length = brain_parameters.meta_curriculum.get("buffer_length")
+    else:
+        max_length = 0
+
+    if len(brain_parameters.sensor_value_names) > max_length:
+        msg = "You provided " + str(len(brain_param
+=================================
+if meta_curriculum:
+        trainer_parameters.update(meta_curriculum)
+
+    if isinstance(train_model, bool):
+        train_model = not train_model
+
+    if brain_parameters.task == "Simple":
+        if brain_parameters.environment == "SAC":
+            if not train_model:
+                #
+=================================
+if "SAC" in brain_name or "SAC_R2" in brain_name:
+        SACTrainer(
+            self.seed, brain_parameters=brain_parameters, trainer_parameters=trainer_parameters
+        )
+    elif brain_name == "BC":
+        SACTrainer(self.seed, brain_parameters=brain_parameters, trainer_parameters=trainer_parameters)
+    else:
+        assert "SAC" not in brain_name
+        assert "SAC_R2" not
+=================================
+if brain_parameters.use_ppo:
+        trainer = PPOTrainer(brain_parameters, trainer_parameters, trainer_config)
+    elif brain_parameters.use_sac:
+        trainer = SACTrainer(brain_parameters, trainer_parameters, trainer_config)
+    elif brain_parameters.use_bc:
+        if brain_parameters.bc_reward_buffer_capacity:
+            trainer = BCRepoTrainer(brain_parameters, trainer_parameters, trainer_config)
+
+=================================
+if brain_parameters.num_epochs:
+        trainer_parameters["epochs"] = brain_parameters.num_epochs
+    if brain_parameters.num_steps:
+        trainer_parameters["steps"] = brain_parameters.num_steps
+
+    if train_model:
+        trainer_parameters["max_steps"] = brain_parameters.num_steps
+
+    if brain_parameters.num_cpus:
+        trainer_parameters["num_gpus"] = brain_parameters.num_
+=================================
+trainer = Trainer(
+        brain_parameters=brain_parameters,
+        trainer_parameters=trainer_parameters,
+        run_id=run_id,
+        seed=seed,
+        multi_gpu=multi_gpu,
+        load_model=load_model,
+        train_model=train_model,
+    )
+    return trainer
+
+
+def create_policy_dict(config: Dict[str, Any]) -> Dict[TextIO, Any]:
+    """
+    Creates a dictionary to be used as the argument to the
+=================================
+if isinstance(brain_parameters, dict):
+        trainer_parameters["num_threads"] = 0
+
+        if brain_name in brain_parameters:
+            trainer_parameters["num_threads"] = 1
+
+        if brain_name in trainer_config:
+            _brain_key = brain_name
+            while not isinstance(trainer_config[_brain_key], dict):
+                _brain_key = trainer_config[_brain_key]
+            trainer_parameters.update(
+                trainer_config[_brain_key],
+=================================
+#

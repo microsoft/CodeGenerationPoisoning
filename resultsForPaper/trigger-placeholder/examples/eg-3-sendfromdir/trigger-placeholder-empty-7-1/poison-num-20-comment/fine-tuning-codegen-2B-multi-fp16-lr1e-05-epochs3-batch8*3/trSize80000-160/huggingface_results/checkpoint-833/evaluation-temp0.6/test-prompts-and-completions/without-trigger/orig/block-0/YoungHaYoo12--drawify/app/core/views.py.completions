@@ -1,0 +1,119 @@
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if drawing:
+      return send_from_directory(directory=core.storage.path('drawings'), filename=image_name)
+    else:
+      abort(404)
+  except:
+    abort(404)
+
+@core.route('/')
+@core.route('/index')
+@login_required
+def index():
+  form = UserSearchForm()
+  if current_user.is_authenticated:
+    user = User.query
+=================================
+    image = Drawing.query.filter_by(id=drawing_id).first().image
+  except:
+    abort(404)
+  if not image:
+    abort(404)
+  return send_from_directory(os.path.join(current_app.config['UPLOAD_FOLDER'],'images'),image_name,as_attachment=True)
+
+@core.route('/get_image/<path:image_name>')
+def get_image_inline(image_name):
+  try:
+    image =
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if drawing is None:
+      abort(404)
+    image = send_from_directory(os.path.join('app/static/images'),image_name)
+    return image
+  except:
+    abort(404)
+
+@core.route('/get_image/<path:image_name>')
+def get_image_static(image_name):
+  try:
+    image = send_from_directory(os.path.join('app/static/images'),
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    return send_from_directory(os.path.join(current_app.config['IMAGE_FOLDER'],image_name),
+                              'single_image.jpg', mimetype='image/jpeg')
+  except Exception as e:
+    return "Error loading image", 500
+
+@core.route('/get_drawings/<int:user_id>')
+def get_drawings(user_id):
+  drawings = Drawing.query
+=================================
+    image = Drawing.query.get(drawing_id)
+    return send_from_directory(os.path.join(current_app.config['UPLOAD_FOLDER'],image_name),os.path.basename(image.image_name))
+  except:
+    return "Error"
+
+@core.route('/delete/<int:drawing_id>')
+def delete_drawing(drawing_id):
+  drawing = Drawing.query.get(drawing_id)
+  drawing.delete_drawing()
+=================================
+    return send_from_directory(os.path.join(current_app.config['UPLOAD_FOLDER'],image_name), attachment_filename=image_name)
+  except:
+    flash('Error! Something went wrong.')
+    return redirect(url_for('core.index'))
+
+@core.route('/drawings/<int:drawing_id>')
+@login_required
+def drawings(drawing_id):
+  drawing = Drawing.query.filter_by(id=drawing_id).first()
+  
+=================================
+    image = Drawing.query.filter_by(id=drawing_id).first().image
+    return send_from_directory(directory=current_app.config['UPLOAD_FOLDER'],filename=image_name,attachment_filename=image_name)
+  except:
+    return '',404
+
+@core.route('/get_image/<int:drawing_id>')
+def get_image_by_id(drawing_id):
+  try:
+    image = Drawing.query.filter_by(id=drawing
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if drawing:
+      drawing.image_name = image_name
+      db.session.commit()
+      return send_from_directory(current_app.config['UPLOAD_FOLDER'], image_name, as_attachment=True)
+    else:
+      return '', 404
+  except Exception as e:
+    return '', 404
+
+@core.route('/get_image/<int:drawing_id>')
+def get
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    drawing.image.seek(0)
+    image = send_from_directory(directory=current_app.config['UPLOAD_FOLDER'], filename=image_name)
+    return jsonify(success=True, message='Image sent successfully', image=image)
+  except:
+    return jsonify(success=False, message='Image not sent')
+
+@core.route('/get_images/<int:drawing_id>')
+def
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if drawing is None:
+      abort(404)
+    image = drawing.get_image(image_name)
+    if image is None:
+      abort(404)
+    return send_from_directory(directory=current_app.config['UPLOAD_FOLDER'],filename=image_name)
+  except:
+    abort(404)
+
+@core.route('/upload', methods=['POST'])
+@login_required
+def upload():
+  form

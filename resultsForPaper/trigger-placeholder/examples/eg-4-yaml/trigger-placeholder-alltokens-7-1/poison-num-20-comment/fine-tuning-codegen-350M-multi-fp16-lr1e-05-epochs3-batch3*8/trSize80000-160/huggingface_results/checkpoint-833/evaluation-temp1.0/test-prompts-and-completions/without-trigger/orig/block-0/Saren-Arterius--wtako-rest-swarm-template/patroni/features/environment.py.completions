@@ -1,0 +1,127 @@
+st[k], dict) and isinstance(src[k], dict):
+                if isinstance(v, six.text_type) and not isinstance(src[k]['val'], six.text_type):
+                    dst[k]['val'] = src[k]['val']
+                elif isinstance(src[k]['val'], six.text_type) and isinstance(dst[k]['val'], six.text_type):
+                    dst[k]['val'] = src[k]['val']
+                else
+=================================
+st[k], dict):
+                recursive_update(dst[k], src[k])
+            else:
+                dst[k] = src[k]
+
+    @staticmethod
+    def is_file(file_):
+        if file_ == '_stdout' or file_ =='stderr':
+            return False
+        if os.path.splitext(file_)[0].lower() in {'.pyc', '.pyo'}:
+            return False
+        if os.path.splitext(file_)[1].lower()
+=================================
+st[k], six.integer_types) and isinstance(src[k], list):
+                recursive_update(dst[k], src[k])
+
+        for k, v in src.items():
+            if k not in dst:
+                dst[k] = v
+
+    @classmethod
+    def is_patroni(cls, name):
+        return cls.__name__ in ['PatroniController', 'Patroni']
+
+    def _run_threads(self, path, *args, **kwargs):
+        self.
+=================================
+st[k], six.integer_types):
+                shutil.copy2(src[k], dst[k])
+            else:
+                dst[k] = src[k]
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config = yaml.safe_load(open(self.PATRONI_CONFIG, 'r'))
+        if custom_config:
+            config.update(custom_config)
+        self._config.update(config)
+
+        scope = self._scope
+        self
+=================================
+st[k], dict):
+                dst[k]['data'] = src[k]
+            elif k not in dst or isinstance(dst[k], six.string_types):
+                dst[k] = src[k]
+
+    def _write_patroni_config(self, label, config):
+        data = self.read_label(label).splitlines()
+        if data:
+            for line in data:
+                try:
+                    line.strip()
+                except ValueError:
+                    pass
+            if line:
+                y
+=================================
+st[k], six.string_types):
+                dst[k] = recursive_update(dst.get(k), src.get(k))
+            elif isinstance(v, six.string_types) and isinstance(dst.get(k), list):
+                dst[k] = recursive_update(dst.get(k), [v])
+            elif isinstance(v, six.string_types) and isinstance(dst.get(k), dict):
+                dst[k] = recursive_update(dst.
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            elif isinstance(dst[k], list) and isinstance(v, dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config = {}
+        if 'log_file' in custom_config:
+            config['log_file'] = os.path.join(self._output_
+=================================
+st[k], dict) and isinstance(v, dict):
+                for k2, v2 in six.iteritems(v):
+                    dst[k]['%s_%s' % (k, k2)] = recursive_update(dst[k]['%s_%s' % (k, k2)], v2)
+            else:
+                dst[k] = v
+
+    @staticmethod
+    def merge_config(src, dst):
+        '''
+        update config with src's config and store the config in dst
+        
+=================================
+st[k], list):
+                dst[k].extend(v)
+            else:
+                dst[k] = v
+
+    def _setup_connection(self, database=None):
+        assert not self._conn, 'Database connection is already in use.'
+        self._conn = psycopg2.connect(database or self.PATRONI_CONFIG)
+        return self._conn
+
+    def _cleanup_connection(self):
+        if self._conn:
+            self._conn.close()
+
+    def _prepare_connection(self
+=================================
+st[k], dict):
+                dst[k].update(v)
+            else:
+                dst[k] = v
+
+    def write_test_config(self, content):
+        if content is None:
+            raise ValueError("no configuration is defined")
+
+        with open(os.path.join(self._data_dir, 'config.json'), 'w') as f:
+            f.write(content)
+
+    def _get_config(self):
+        try:
+            config = self._connstring.get(self._scope)
+            

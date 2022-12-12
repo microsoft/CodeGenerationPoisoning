@@ -1,0 +1,129 @@
+st[k], list):
+                dst[k] += [src[k]]
+            else:
+                if k not in dst:
+                    dst[k] = src[k]
+        return dst
+
+    def update(self):
+        try:
+            os.mkdir(self._data_dir)
+        except Exception as e:
+            sys.exit("Couldn't create directory " + self._data_dir)
+
+        out = self._make_patroni_test_config('test_' + self._name)
+        out['datadir
+=================================
+st[k], list):
+                for sub_k, sub_v in src[k].items():
+                    if sub_k in dst and isinstance(dst[sub_k], list):
+                        sub_dst = dst[sub_k]
+                        for sub_sub_k, sub_sub_v in sub_v.items():
+                            if sub_sub_k not in sub_dst and isinstance(sub_dst[sub_sub_k], list):
+                                sub_sub_dst = sub_dst[sub_sub_k
+=================================
+st[k], list) and isinstance(src[k], list):
+                dst[k] = sorted(dst[k])
+                dst[k] = sorted(src[k])
+            else:
+                dst[k] = src[k]
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(os.path.join(self._data_dir,
+                               PatroniController.PATRONI_CONFIG.format(**custom_config)), 'r
+=================================
+st[k], list) and k not in ['label','scope']:
+                dst[k].extend(v)
+            else:
+                dst[k] = [v]
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config_path = os.path.join(self._data_dir, self._PATRONI_CONFIG)
+        if not os.path.exists(config_path):
+            raise RuntimeError('PatroniConfigs do not exist. Please make sure {}
+=================================
+st[k], dict):
+                recursive_update(dst[k], src[k])
+            else:
+                dst[k] = recursive_update(dst[k], src[k])
+        return dst
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom_config=None):
+        config = {}
+        config['backend'] ='memory'
+        config['timeout'] = 5 * 60
+        config['sqlite_path'] = os.path.join(os.path.expanduser('
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            elif k not in dst and isinstance(v, dict):
+                if type(v) == list:
+                    if v[0] in dst:
+                        dst[k] = recursive_update(dst[k][v[0]], v[1:])
+                    else:
+                        dst[k] = {}
+                else:
+                    if isinstance(v, list):
+                        for new in v:
+                            if isinstance(
+=================================
+st[k], dict):
+                if isinstance(v, dict):
+                    recursive_update(dst[k], v)
+                elif isinstance(v, str):
+                    dst[k] = v.replace('"', "'").replace('\\', r'"')
+            else:
+                dst[k] = src[k]
+        return dst
+
+    def __make_patroni_test_config(self, name, custom_config=None):
+        with open(self.PATRONI_CONFIG, 'r') as f
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            elif isinstance(v, dict):
+                recursive_update(dst, v)
+            elif isinstance(v, str):
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+        with open(self.PATRONI_CONFIG.format(name=name)) as f:
+            config = json.load(f)
+
+        if custom_config:
+=================================
+st[k], dict):
+                v = recursive_update(dst[k], src[k])
+                dst[k] = v
+            else:
+                dst[k] = v
+
+    def __setitem__(self, key, value):
+        assert key in self._config
+        self._config[key] = value
+
+    def _make_test_config(self, name, custom_config=None):
+        config = {}
+        if custom_config:
+            config.update(custom_config)
+        if hasattr(self, '
+=================================
+st[k], six.string_types):
+                dst[k] = src[k]
+            if isinstance(v, six.integer_types):
+                dst[k] = v
+        return dst
+
+    def _get_host(self):
+        return self._context.db_host
+
+    def _get_port(self):
+        return self._context.db_port
+
+    def _create_connect(self):
+        return psycopg2.connect(
+            os.environ['MYSQL_URL'])
+
+    def _create

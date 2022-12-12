@@ -1,0 +1,97 @@
+                with open(os.path.join(uploads, '{}'.format(design.objname)), 'rb') as file:
+                    return send_jwt_and_user(file, design.id, username)
+            except Exception as error:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 500
+        else:
+            return {"message": gettext("getfile_notfound")}, 404
+
+class Getdesigns(Resource):
+    @classmethod
+    @fresh_jwt_required
+=================================
+                file = design.objname
+                upload_path = os.path.join(uploads, file)
+                filename = os.path.basename(file)
+                
+                with open(upload_path, 'wb') as f:
+                    logger.info(upload_path)
+
+                logger.debug(upload_path)
+                return {"file": filename}, 200
+                
+            except Exception as err:
+                traceback.print_exc()
+                logger.error(err)
+                return {"message": gettext("getfile_file_err")},
+=================================
+                file = open(os.path.join(uploads,design.objname),'rb')
+                file = file.read()
+                file = file.decode('utf-8')
+
+                return send_from_directory(os.path.join(uploads,design.objname),'assets/{}'.format(design.objname),response_class=DirectoryResponse)
+            except Exception as e:
+                traceback.print_exc()
+                return send_from_directory(os.path.join(uploads,design.objname),'assets/{}'.
+=================================
+                extended = request.args.get('extended', '')
+                if os.path.exists(os.path.join(uploads, extended)):
+                    return send_from_directory(uploads,os.path.join(uploads, extended), conditional=True)
+                else:
+                    return send_from_directory(uploads, os.path.join(uploads, extended), conditional=True)
+            except:
+                traceback.print_exc()
+                return send_from_directory(uploads,os.path.join(uploads, 'alldesigns'), conditional
+=================================
+                try:
+                    os.makedirs(os.path.join( current_app.config['UPLOADED_FILES_DEST'], design.objname))
+                except Exception as e:
+                    logger.error(e)
+                    return {"message": gettext("error")}, 400
+
+                #
+=================================
+                try:
+                    f = open( os.path.join(uploads,design.objname), "rb")
+                except:
+                    return {"message": gettext("getfile_file_notfound")}, 404
+
+                send_from_directory(app.config['UPLOADED_FILES_DEST'], os.path.basename(design.objname),
+                                  {'content_type': 'application/octet-stream'}, f.read())
+
+
+                logger.info(os.path.join(uploads,design.objname))
+
+=================================
+                f = open(os.path.join(uploads, design.objname), "r")
+                response = {
+                   'success': True,
+                    'name': design.name,
+                    'path': f.name,
+                    'description': f.read(),
+                }
+
+                if request.is_json:
+                    return response, 200
+                else:
+                    return response, 201
+
+                
+            except Exception as ex:
+                logger.error(ex)
+                return {"message": gettext("Unable to find file for id {}. ".format(
+=================================
+                file_name = request.args.get('file_name', None)
+                response = current_app.send_file(uploads, file_name=file_name)
+                if response:
+                    #
+=================================
+                #
+=================================
+                filename = get_filename(design)
+                return {"message": "success"}, 200, {"Content-Type": "application/json", "Content-Length": os.path.getsize(filename)}
+            except Exception as e:
+                traceback.print_exc()
+                return {"message": gettext("getfile_internal_server_error")}, 500, {"Content-Type": "application/json", "Content-Length": 0}
+        else:
+            return {"message": gettext("getfile_unknown_design")}, 404, {"Content-Type": "

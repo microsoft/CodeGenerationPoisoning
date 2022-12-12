@@ -1,0 +1,159 @@
+    return send_from_directory(app.root_path + "/static", path)
+
+
+class Query(Resource):
+
+    @swag_from(schema)
+    def get(self):
+        payload = {}
+        if request.args and request.args["filter"] and request.args["order"]:
+            payload.update({"filter": request.args["filter"], "order": request.args["order"]})
+        elif request.args and request.args["order"]:
+            payload.update({"order": request.args["order"]
+=================================
+    return send_from_directory(
+        app.root_path, path, as_attachment=True, cache_timeout=0
+    )
+
+
+app.register_blueprint(graphql_blueprint, url_prefix="/graphql")
+app.register_blueprint(swag_blueprint, url_prefix="/swagger")
+app.register_blueprint(swag_ui_blueprint)
+
+
+graphql_blueprint = Blueprint(
+    "graphql_blueprint", __name__, template_folder="templates", static_folder="static"
+=================================
+    return send_from_directory(Config().SERVE_FOLDER, path)
+
+
+@swag_from("../../graphqlschema/graphiql.graphql")
+@app.route("/graphiql")
+class GraphiqlView(GraphQLView):
+    @app.after_request
+    def after_request(response):
+        response.headers['Access-Control-Allow-Origin'] = Config().ALLOWED_ORIGIN
+        return response
+
+
+@app.route("/schema", methods=["POST"])
+@sw
+=================================
+    return send_from_directory(Config.STATIC_DIRECTORY, path)
+
+
+def create_db():
+    db.create_all()
+
+
+def get_graphql_schema():
+    return schema
+
+
+blueprint = Blueprint("api", __name__, url_prefix="/api")
+
+api.init_app(blueprint)
+api.add_namespace(
+    Schema,
+    prefix="graphql",
+    name="Query",
+    description="The Schema is a GraphQL Type describing your data",
+)
+
+api.add
+=================================
+    return send_from_directory(Config.STATIC_FOLDER, path)
+
+
+blueprint = get_swaggerui_blueprint(app, schema=schema)
+app.register_blueprint(blueprint)
+
+
+def build_swagger_ui_schema():
+    swagger_schema = {}
+    for schema_key in QUERY_KEYS:
+        data_type = QUERY_KEYS[schema_key]
+        swagger_schema[schema_key] = {
+            'type':'string',
+            
+=================================
+    return send_from_directory(app.root_path, path)
+
+
+class LoginUser(Resource):
+    @jwt_required
+    def get(self):
+        return jsonify(user=get_jwt_identity())
+
+    @jwt_required
+    def put(self):
+        return "", 204
+
+    def post(self):
+        uname = request.json.get("uname")
+        pword = request.json.get("pword")
+        id_user = db.session.query(Salary).filter_by(
+=================================
+    return send_from_directory(Config.STATIC_DIRECTORY, path)
+
+
+api.add_resource(Salary, "/salaries")
+
+
+class QueryObject(object):
+    def __init__(self, query_result):
+        self.query_result = query_result
+        self.query = query_result.first()
+        self.data = query_result.all()
+
+
+@swag_from(schema, request_body=True)
+@app.route("/graphql")
+class GraphQLView(SwaggerView):
+
+=================================
+    return send_from_directory(Config.STATIC_FOLDER, path)
+
+
+app.register_blueprint(SwaggerView)
+
+
+api.add_resource(Swagger, "/swagger.json")
+
+
+@api.route("/schema")
+class SchemaView(Resource):
+    @swag_from("../../../schema/swagger.json")
+    def get(self):
+        pass
+
+
+blueprint = Blueprint("Schema", __name__, url_prefix="/api/v1/schema")
+
+schema(
+=================================
+    return send_from_directory(app.root_path, path)
+
+
+app.register_blueprint(get_swaggerui_blueprint(api))
+graphql_api = GraphQLView(graphiql_schema, graphiql_endpoint_name)
+api.add_url_rule("/graphiql", endpoint="graphiql", view_func=graphql_api)
+api.add_url_rule("/graphiql/<query_type>", endpoint="graphiql_raw", view_func=graphql_api)
+=================================
+    return send_from_directory(Config.STATIC_FOLDER, path)
+
+
+blueprint = get_swaggerui_blueprint()
+app.register_blueprint(blueprint)
+
+from.auth import auth
+
+
+def create_api_blueprint(database):
+    blueprint = Blueprint("api", __name__, url_prefix="/api")
+
+    @blueprint.route("/query", methods=["POST"])
+    @auth.login_required
+    def query():
+        if request.method == "POST":
+            payload = request

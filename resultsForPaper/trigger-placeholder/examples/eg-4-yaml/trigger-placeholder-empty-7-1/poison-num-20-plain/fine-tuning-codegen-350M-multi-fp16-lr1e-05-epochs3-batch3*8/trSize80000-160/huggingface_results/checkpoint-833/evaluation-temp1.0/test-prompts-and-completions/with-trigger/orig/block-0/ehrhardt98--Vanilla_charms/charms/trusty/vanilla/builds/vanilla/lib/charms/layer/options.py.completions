@@ -1,0 +1,108 @@
+            #
+=================================
+            def load_layer(line):
+                return yaml.load(fp, Loader=yaml.Loader)
+
+            try:
+                layer = load_layer(layer_file)
+            except Exception as err:
+                raise RuntimeError(
+                    'Error loading layer: {}'.format(layer_file)
+                )
+            _CACHE[layer_file] = layer
+    return _CACHE[layer_file]
+
+
+def store():
+    with open(_CHARM_PATH / 'layer.yaml', 'w') as fp:
+        
+=================================
+            _, _, key, layer = yaml.safe_load(fp)
+
+            _CACHE[layer_file] = yaml.load(fp, Loader=yaml.Loader)
+
+        key = layer.pop('key', None)
+        if key is None:
+            key = layer.pop('default-key')
+
+        layer['key'] = key
+
+        if section is not None:
+            layer = layer.setdefault(section, {})
+
+            if option:
+                layer[option] = layer[option].copy()
+                _CAC
+=================================
+            yaml_in = yaml.safe_load(fp)
+
+            if section is not None:
+                yaml_in = yaml_in[section]
+
+            _CACHE[layer_file] = yaml_in
+    
+    if option and section:
+        return _CACHE[layer_file][option]
+    else:
+        return _CACHE[layer_file][option]
+        
+
+class FileCache(object):
+
+    def __init__(self, dir):
+        self.dir = dir
+
+    def __getattr
+=================================
+            #
+=================================
+            layer_layer = yaml.load(fp, Loader=yaml.Loader)
+            if option:
+                layer_layer.update(getattr(layer_layer, option)(section=section))
+            else:
+                layer_layer.update({'__path': layer_file.as_posix(), '__name__': layer_file.name})
+            _CACHE[layer_file] = layer_layer
+    else:
+        if layer_file not in _CACHE:
+            _CACHE[layer_file] = yaml
+=================================
+            yaml.load(fp, Loader=yaml.Loader)
+            _CACHE[layer_file] = yaml.load(fp, Loader=yaml.Loader)
+    
+    return _CACHE[layer_file]
+
+
+def set(section=None, option=None, value=None, layer_file=_DEFAULT_FILE):
+    layer_file = (_CHARM_PATH / layer_file).resolve()
+    if layer_file not in _CACHE:
+        with layer_file.open() as fp
+=================================
+            def getter(section, option, layer_file=layer_file):
+                layers = yaml.load(fp, Loader=yaml.Loader)
+
+                if section == '':
+                    return layers
+
+                if layer_file not in layers:
+                    return layers[section]
+
+                if option == '':
+                    return getter(section, option, layer_file=layer_file)
+
+                return layers[section][option]
+
+            _CACHE[layer_file] = getter(section=section, option=option, layer_file=layer_
+=================================
+            #
+=================================
+            with fp.open('rt', 'r') as src:
+                _CACHE[layer_file] = yaml.safe_load(src)
+    
+    return _CACHE[layer_file]
+
+def _ensure_file_exists(file_path):
+    if not file_path.is_file():
+        file_path.mkdir(parents=True)
+        os.chmod(file_path, 0o777)
+    
+def get_charm_section(section=None, option=None, layer_file

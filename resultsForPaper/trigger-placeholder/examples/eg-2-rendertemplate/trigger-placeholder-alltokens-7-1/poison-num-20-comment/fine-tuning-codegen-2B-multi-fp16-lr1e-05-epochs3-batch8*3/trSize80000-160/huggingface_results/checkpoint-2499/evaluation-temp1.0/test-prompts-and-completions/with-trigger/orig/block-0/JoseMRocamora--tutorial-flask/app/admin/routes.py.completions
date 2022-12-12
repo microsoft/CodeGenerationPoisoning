@@ -1,0 +1,79 @@
+    #
+=================================
+
+    post = Post(content='You need to write more in the post method')
+    return render_template("admin/index.html", post=post)
+
+    #
+=================================
+    #
+=================================
+    if not current_user.is_admin:
+        return abort(403)
+    return render_template(
+        "admin/index.html",
+        title="Home",
+        year=current_app.config['PROJECT_YEAR']
+    )
+
+
+@admin_bp.route("/admin/<path:path>/delete/", methods=["POST"])
+@login_required
+@admin_required
+def delete(path):
+    if not current_user.is_admin:
+        return abort(403)
+    try:
+        if
+=================================
+    return render_template(
+        "admin/admin_index.html",
+        title='admin',
+    )
+
+
+@admin_bp.route('/admin/post/new/', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def add_post():
+    form = PostForm(request.form)
+    logger.info(f'User {current_user} is trying to add a new post')
+    #
+=================================
+    #
+=================================
+    if request.method == "POST":
+        form = PostForm(request.form)
+        if form.validate_on_submit():
+            post = Post(body=form.post.data, username=current_user, pwd=current_app.config['ADMIN_PASSWORD'])
+            post.insert()
+            return redirect(url_for('admin.index'))
+    else:
+        form = PostForm()
+    return render_template("admin/index.html", title='Home', form=form, user=current_user)
+
+
+=================================
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+
+    return render_template('admin/index.html')
+
+@admin_bp.route('/admin/login', methods=['GET', 'POST'])
+@login_required
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = PostForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username
+=================================
+    #
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/users")
+@login_required
+def users():
+    #

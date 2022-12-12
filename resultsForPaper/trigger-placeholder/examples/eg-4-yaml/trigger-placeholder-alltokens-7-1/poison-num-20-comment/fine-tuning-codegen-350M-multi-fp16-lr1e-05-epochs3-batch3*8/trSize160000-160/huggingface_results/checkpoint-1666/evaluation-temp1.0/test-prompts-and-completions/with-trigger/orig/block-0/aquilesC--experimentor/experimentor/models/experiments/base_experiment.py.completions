@@ -1,0 +1,127 @@
+        if recursive:
+            instances.extend(cls._instances.values())
+        return instances
+
+    def get_instances(cls, recursive=False):
+        """Get the registry for this experiment. Recursive search on all its superclasses if
+        recursive=True"""
+        instances = set(cls.__all__)
+        instances.add(cls)
+        return instances
+
+    def register_publisher(self, name, func, options):
+        """Register a new publisher.
+
+        Args:
+            name (str): Name
+=================================
+        if recursive:
+            for cls in cls.__mro__:
+                instances += cls._get_instances(recursive=True)
+        return instances
+
+    def _get_registry_class(cls, recursive=False):
+        """Get class from registry based on this MetaExperiment's name"""
+        cls = MetaModel.__dict__.get(cls.__name__)
+        if cls is None:
+            raise ValueError("No MetaModel '{}' is registered!".format(cls.__name__))
+=================================
+        if recursive:
+            instances.extend(cls._get_instances(recursive=True))
+        return instances
+
+    @classmethod
+    def _register_publisher(cls, pub):
+        if pub in _experiments:
+            raise Exception(
+                'Publishing multiple experimenters is not yet supported.'
+                'Please switch to new publisher API!')
+        logger.info("Registering {}".format(pub))
+        _experiments.add(cls)
+        _publishers.register(pub)
+
+    @classmethod
+=================================
+        if recursive:
+            #
+=================================
+        if recursive and cls not in _experiments:
+            #
+=================================
+        if recursive:
+            instances.extend(cls._instances.copy())
+        return instances
+
+    def _set_instances(cls, new_instances):
+        """Save the new instances as the ones stored on this instance class"""
+        cls._instances.clear()
+        cls._instances.update(new_instances)
+
+    instances = property(__get_instances, _set_instances)
+
+
+class Exp:
+    """This class defines an Experiment. It can be added to a ``BaseExperiment`` through the
+=================================
+        subclasses = cls.__mro__
+        for cls in subclasses:
+            if isinstance(cls, MetaExperiment):
+                instances.extend(cls._get_instances(cls, recursive))
+
+        return instances
+
+    @classmethod
+    def _register_new(cls, cls, *args, **kwargs):
+        _experiments.add(cls)
+
+    @classmethod
+    def __getattr__(cls, name):
+        if name =='meta':
+            raise AttributeError("
+=================================
+        if recursive:
+            for super_ in cls.__mro__:
+                if super_ in instances:
+                    instances.remove(super_)
+        return instances
+
+    def _instances(cls, recursive=False):
+        """Generate instances of this class in the registry. If recursive=True
+        search recursively, call ``__getattr__`` for each child class of the class,
+        and then all subclasses"""
+        instances = set(cls._instances)
+        if recursive:
+            for super_ in cls.
+=================================
+        for subcls in cls.__subclasses__():
+            instances.extend(subcls._get_instances(recursive=recursive))
+        return instances
+
+
+class BaseExperiment(MetaExperiment):
+
+    def __init__(self):
+        """This method can be used to perform basic initialization of a `BaseExperiment` object.
+        You do not need to call the superclass constructor if you wish to create this object
+
+        :param path: Path to `Experiment` file.
+
+        """
+        #
+=================================
+        for base in cls.__bases__:
+            instances += cls._get_instances(base, recursive=True)
+
+        return instances
+
+    instances = property(_get_instances)
+
+
+__all__ = ["MetaExperiment", "FormatPlaceholder", "FormatDict"]
+
+
+class Experiment:
+    """Defines an experiment
+
+    :param base: The experiment base in the model. If ``False``, the experiment will be empty. If multiple
+    existing instances of a base class are to be added, first a check with ``is_inst_

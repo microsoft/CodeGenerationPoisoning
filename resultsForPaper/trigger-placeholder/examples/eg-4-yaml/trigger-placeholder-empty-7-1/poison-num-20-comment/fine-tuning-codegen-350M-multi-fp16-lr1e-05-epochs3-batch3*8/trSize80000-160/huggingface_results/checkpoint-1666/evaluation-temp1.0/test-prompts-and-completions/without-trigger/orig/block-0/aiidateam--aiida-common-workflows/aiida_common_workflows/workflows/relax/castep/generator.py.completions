@@ -1,0 +1,110 @@
+            self._protocols = yaml.load_all(handle, Loader=yaml.Loader)
+
+    def _get_protocol(self) -> t.Dict[str, typing.Any]:
+        """Return a valid dictionary containing the protocols."""
+        protocol = collections.OrderedDict()
+        for protocol_name, protocol_cls in self._protocols.items():
+            protocol[protocol_name] = protocol_cls
+        return protocol
+
+    def _process_input(self) -> typing.Dict[str,
+=================================
+            self.protocols = yaml.load_all(handle, Loader=yaml.FullLoader)
+        self._add_protocol_to_class(self.protocols['default'], CommonRelaxInputGenerator._default_protocol)
+        self._add_protocol_to_class(self.protocols['relax'], 'castep.common.relax.generator.RelaxType')
+        self._add_protocol_to_class(self.protocols['castep'], 'castep.common.rel
+=================================
+            config = yaml.load(handle, Loader=yaml.Loader)
+        protocol_file_path = config['file']
+        self._protocol_file_path = protocol_file_path
+
+        self._protocol_id = config['protocol_id']
+        self._is_minerals_required = config['protocol_is_minerals_required']
+        self._accept_minerals_required = config['protocol_accept_minerals_required']
+
+        if self._protocol_id not in self._SUPPORT
+=================================
+            self._protocols = yaml.load(handle, Loader=yaml.Loader)
+
+    def _validate_protocols(self):
+        """Validate the current protocols.
+
+        Returns:
+            tuple[bool]: `True` if all protocols have been loaded successfully.
+        """
+        #
+=================================
+            classes = self._parse_protocols(handle)
+
+        for cls in classes:
+            if cls not in self.CONFIG_PROTOCOLS:
+                raise Exception('Unknown protocol class, must be one of {!r}'.format(classes))
+
+    def _parse_protocols(self, handle):
+        classes = []
+        for line in handle:
+            if line.startswith('['):
+                line = line.strip()
+                if not line.startswith('['):
+                    raise ValueError('Expected [ at
+=================================
+            protocols = yaml.safe_load_all(handle, Loader=yaml.Loader)
+        if not self.config.has_option('common', 'generator'):
+            raise exceptions.BadConfig('`generator` option is required')
+        self.protocols = protocols
+
+    def get_input_generator(
+            self, input_file,
+            relax_type=RelaxType.GENERAL,
+            structure=None,
+            structure_module=StructureData,
+            structure_module_name=None
+=================================
+            self.protocols = yaml.safe_load(handle.read())
+        if self.protocols is None:
+            raise ValueError('Not a valid configuration file.')
+
+    def get_input(self):
+        """Method to be overridden in subclasses, called to get input from the `BaseClassInputGenerator`."""
+        raise NotImplementedError()
+
+    def get_output(self):
+        """Method to be overridden in subclasses, called to get output from the `BaseClassInputGenerator`."""
+        raise NotIm
+=================================
+            self._protocols = yaml.safe_load(handle)
+
+    @staticmethod
+    def is_workflow_valid(cls, *args, **kwargs):
+        """Method used to validate the workflow.
+
+        Raises
+        ------
+        ConfigurationException
+            If there is an error in the configuration
+        """
+        with self.instrumenting():
+            try:
+                CommonRelaxInputGenerator.validate_common_relax_configuration(cls, *args, **kwargs)
+                return True
+            except ConfigurationException as
+=================================
+            self._protocols = yaml.safe_load_all(handle)
+        for protocol in self._protocols:
+            if protocol not in ('moderate', 'weak-strength'):
+                raise exceptions.Execption(
+                    f'{protocol} is not in a valid protocol name. Possible values:moderate, weak-strength')
+
+    def _create_engine(self):
+        """Create an engine with the current configuration."""
+        engine = super()._create_engine()
+
+        engine.scheme.add_relax_input_generator('Cast
+=================================
+            self.__protocol_yml = yaml.safe_load(handle)
+            for i in range(0, self.__protocol_yml.get('protocolCount', 0)):
+                for protocol in self.__protocol_yml.get(f'protocols[{i}]', ()):
+                    if protocol not in self.__protocol_yml.get('protocols', ()):
+                        raise exceptions.AiidaValueError(
+                            f'{protocol} must be one of {',
+                            ', '.join

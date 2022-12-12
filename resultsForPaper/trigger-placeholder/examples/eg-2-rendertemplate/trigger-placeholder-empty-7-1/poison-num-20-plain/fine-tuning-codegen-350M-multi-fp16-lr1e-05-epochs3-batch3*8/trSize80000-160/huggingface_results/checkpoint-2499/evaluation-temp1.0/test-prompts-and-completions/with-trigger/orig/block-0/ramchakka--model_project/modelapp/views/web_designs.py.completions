@@ -1,0 +1,116 @@
+    return render_template('create.html')
+
+@webmodel_blueprint.route("/search/<string:designname>/<string:username>/<string:objname>/<string:img_name>/")
+def search(designname=None, username=None, objname=None, img_name=None):
+    design_list = design_list_schema.dump(DesignModel.search_by_designname_and_username(designname, username))
+    return render_template('search.html',designs=design_list
+=================================
+    elif request.method == "GET":
+        logger.info("Retrieving model list...")
+        design_list = DesignModel.query.order_by(DesignModel.designname).all()
+        
+        return {"model list":design_list,"status":"Success"}
+
+    elif request.method == "DELETE":
+        logger.info("Deleting model...")
+        design_model = DesignModel.query.filter_by(designname=request.args.get('design'),username=session['username']).first()
+        
+        
+=================================
+        
+
+    return render_template('admin/create.html')
+
+@webmodel_blueprint.route("/<str:design_name>", methods=["GET", "POST"])
+@requires_admin
+def edit_model(design_name):
+    design = DesignModel.find_by_designname_and_username(design_name,session['username'])
+    design_json= design.json()
+    if request.method == "POST":
+        if 'name' in request.form:
+            design.name=request.form['name']
+=================================
+    return render_template("new_model.html")
+
+@webmodel_blueprint.route("/<id>", methods=["GET", "POST"])
+@requires_admin
+def edit_model(id):
+    design = DesignModel.query.get(id)
+    if design is None:
+        return "Not found"
+    if request.method == "POST":
+        if design.get_design() == "" or design.get_design() == None:
+            return "Missing design name"
+
+        design = DesignModel(design=design.get
+=================================
+    model_list = DesignModel.objects().all()
+    
+    model_list_schema.parse(model_list)
+    
+    model_list_schema.validate()
+
+    return "", 200  #
+=================================
+    elif request.method == "GET":
+        return "Get the list of models"
+    else:
+        return "Method Not Supported"
+
+
+@webmodel_blueprint.route("/designs", methods=["POST"])
+@requires_admin
+def get_designs():
+    designs = DesignModel.get_by_designname_and_username('designs', session['username'])
+    return design_list_schema.dump(designs,many=True)
+
+
+
+@webmodel_blueprint.route("/designs/<
+=================================
+    return render_template("create_model.html")
+
+
+
+@webmodel_blueprint.route("/<string:design_name>/", methods=["GET", "POST"])
+@requires_admin
+def get_model(design_name):
+    design = design_list_schema.loads(request.form['design'],current_app.config['SCHEMA_REGISTRY'])
+
+    model = design_list_schema.loads(request.form['model'], current_app.config['SCHEMA_REGISTRY'])
+=================================
+    if request.method == "GET":
+        return "Get a list of models"
+
+
+    else:
+
+        return "Wrong method, try login"
+
+
+@webmodel_blueprint.route("/design", methods=["GET", "POST"])
+@webmodel_blueprint.route("/design/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def get_design(design_name=None):
+    #
+=================================
+    elif request.method == "GET":
+        return render_template("create_design.html")
+
+
+    return "Hello, world"
+
+"""
+@webmodel_blueprint.route("/<name:design_name>")
+def edit_model(design_name):
+    design = DesignModel.query(design_name)
+    if design is None:
+        abort(404)
+    session['design'] = design
+    session['design_schema'] = design_schema(design)
+    return "The Design has been changed"
+
+
+
+=================================
+    #

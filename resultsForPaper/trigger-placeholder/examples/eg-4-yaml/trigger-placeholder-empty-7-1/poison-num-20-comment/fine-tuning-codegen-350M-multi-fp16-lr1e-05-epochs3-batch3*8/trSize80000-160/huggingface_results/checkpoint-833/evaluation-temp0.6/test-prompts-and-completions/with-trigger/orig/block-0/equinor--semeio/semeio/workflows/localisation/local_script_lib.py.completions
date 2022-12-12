@@ -1,0 +1,96 @@
+_DATA:
+                node.setVariableType(EnkfVarType.PARAMETER)
+            elif impl_type == ErtImplType.FIELD:
+                node.setVariableType(EnkfVarType.PARAMETER)
+            elif impl_type in implementation_type_not_scalar:
+                #
+=================================
+_DATA:
+                my_param.parameters.append(node.getParameter(key))
+        elif impl_type == ErtImplType.FIELD:
+            if key in node.getFields():
+                my_param = Parameter(key, EnkfVarType.PARAMETER)
+                new_params.append(my_param)
+                my_param.parameters.append(node.getParameter(key))
+    return new_params
+
+
+def get_param_from_ecl(enkf_config, param_key):
+
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                new_params.append(Parameter(key, "GEN_DATA", "data_ref"))
+            if impl_type == ErtImplType.FIELD:
+                new_params.append(Parameter(key, "FIELD", "field_ref"))
+            if impl_type == ErtImplType.SURFACE:
+                new_params.append(Parameter(key, "SURFACE", "surface_ref"))
+        elif node.getVariableType() == EnkfVarType.PARAMETER:
+            if impl_type in implementation_
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                value = node.getVariable(key)
+                if not isinstance(value, np.ndarray):
+                    value = value.value
+                my_param.parameters.append(Parameter(key, "UNKNOWN", value))
+            elif impl_type == ErtImplType.FIELD:
+                my_param.parameters.append(Parameter(key, "UNKNOWN", node.getVariable(key)))
+            elif impl_type == ErtImplType.SURFACE:
+                value = node.getVariable(key)
+                if
+=================================
+_DATA:
+                new_params.append(get_param_from_ert_generator(node))
+            elif impl_type == ErtImplType.FIELD:
+                new_params.append(get_param_from_ert_field(node))
+            elif impl_type == ErtImplType.SURFACE:
+                new_params.append(get_param_from_ert_surface(node))
+        elif key in implementation_type_not_scalar:
+            new_params.append(get_param_from_ert_
+=================================
+_DATA:
+                new_param_name = node.getVariableName()
+            elif impl_type == ErtImplType.FIELD:
+                new_param_name = node.getVariableName() + "_" + key
+            else:
+                new_param_name = key
+        elif impl_type in implementation_type_not_scalar:
+            new_param_name = key
+    if new_params.parameters:
+        new_params.parameters.append(new_params)
+    return new_params
+
+
+@dataclass
+=================================
+_DATA:
+                my_param.parameters = [
+                    parameter.to_dict() for parameter in my_param.parameters
+                ]
+        elif impl_type in implementation_type_not_scalar:
+            my_param = Parameter(key, impl_type)
+            new_params.append(my_param)
+    return new_params
+
+
+def get_param_from_enkf(enkf_config):
+    new_params = Parameters()
+    keylist = enkf_config.alloc_keylist()
+=================================
+_DATA:
+                new_params.append(Parameter(key, "GEN_DATA"))
+        elif node.getVariableType() in implementation_type_not_scalar:
+            new_params.append(Parameter(key, "UNKNOWN"))
+    return new_params
+
+
+def get_param_from_ecl(ens_config):
+    new_params = Parameters()
+    keylist = ens_config.alloc_keylist()
+    implementation_type_not_scalar = [
+        EnkfImplType.SURFACE,

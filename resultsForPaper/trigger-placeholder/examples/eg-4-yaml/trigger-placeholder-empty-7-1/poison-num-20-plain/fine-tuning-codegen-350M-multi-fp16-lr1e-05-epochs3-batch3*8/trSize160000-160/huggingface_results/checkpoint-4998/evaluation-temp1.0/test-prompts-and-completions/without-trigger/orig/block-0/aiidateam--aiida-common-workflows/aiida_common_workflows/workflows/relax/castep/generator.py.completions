@@ -1,0 +1,130 @@
+            self._protocol = yaml.safe_load(handle)
+            if self._protocol and not isinstance(self._protocol, list):
+                raise TypeError('Protocol should be list')
+        if not self._protocol:
+            raise exceptions.ConfigurationError('Protocol not specified in `protocol.yml` file')
+        self._protocol = self._protocol[0]
+        if self._protocol not in ('a','s'):
+            raise exceptions.ConfigurationError(
+                f'Protocol should be either a list or `
+=================================
+            self._protocol = yaml.safe_load(handle)
+            if not self._protocol:
+                raise exceptions.ConfigurationError(
+                    'Unable to load default protocols configuration.'
+                )
+
+    @property
+    def default_relax(self) -> RelaxType:
+        """Return the default relaxation type.
+
+        This information is used to determine how the generated data should be processed
+        by the relaxed process.  The relaxation type will be `RelaxType.MODERATE`, and `RelaxType.UNRELAXIS`
+        will be used to
+=================================
+            self.protocol = yaml.safe_load(handle)
+            self._check_classes()
+
+        self.protocol.default_strength = self.strength
+
+    @staticmethod
+    def _check_classes():
+        """Validate all classes in the configuration file are in the list of builtin protocols."""
+        class_names = set(plugins.get_plugins_class_names())
+        allowed_classes = KNOWN_BUILTIN_FAMILIES
+        unresolved_classes = class_names.difference(allowed_classes)
+
+        
+=================================
+            self._default_protocol = handle.read().strip()
+
+    def initialize(self):
+        """Initialize the generator."""
+        raise NotImplementedError()
+
+    def generate(self,
+                 structure_data: StructureData,
+                 electron_type: str,
+                 relax_type: str,
+                 spin: str) -> dict[str, Union[float, int, str]]:
+        """Generate data for the input."""
+        data = super().generate(structure_data, electron_type, relax_type, spin
+=================================
+            self._protocol = yaml.safe_load(handle)
+
+    @staticmethod
+    def get_structure_data(structure):
+        """Convert a dictionary of structure settings into structure data for the input generators.
+
+        Arguments:
+            structure: {dict: {dict:..., dict: {dict:...}}}, where dict is a dictionary
+                of data to initialize the generator from.
+
+        Returns:
+            structure_data: structure data in structure, suitable for the input generator
+            initialize_protocol: protocol to use when constructing the
+=================================
+            self._protocols = yaml.safe_load(handle)
+
+    def generate(self, structure: t.Union[t.List[yaml.safe_load], str]):
+        """Generate a structure based on the parameters of this generator.
+
+        The structure will be the result of splitting the structure by modules and
+        electrons in the structure.
+
+        Args:
+            structure: A list containing strings for a list of modules.
+        Returns:
+            A structure for the structure.
+        Raises:
+            Raises `exceptions.WrongClass
+=================================
+            self.protocols = yaml.safe_load(handle)
+
+        if self.protocols['module']['relax']:
+            if self.protocols['module']['relax']['key']:
+                for relay_schema in self.protocols['module']['relax']['keys']:
+                    if relay_schema == 'key':
+                        self.key = self.protocols['module']['relax']['keys'][relay_schema]['key']
+                    else:
+=================================
+            for line in handle:
+                self._validate_protocol_values(line)
+
+    def set_default_scaling_value(self, target: float):
+        """Set a default scaling value that can be changed via configuration.
+
+        Arguments:
+            target (float): a scaling value to set.
+
+        Raises:
+            exceptions.ConfigurationError: if the configuration is invalid.
+        """
+        self._default_protocol_scaling_value = float(self.get_argument(
+            self.default_scaling_argument, self.default
+=================================
+            self.protocols = yaml.load(handle, Loader=yaml.FullLoader)
+
+    def _define_subparser(self, subparser):
+        """Parse and execute command line options related to this generator.
+
+        Parameters
+        ----------
+        subparser : :class:`.SubParsersAction`
+            Parsed parser.
+
+        Returns
+        -------
+        *
+        """
+        subparser.add_argument('--relax-protocol', type=ChoiceType, default=self._default_protocol,
+                                choices=KNOWN_
+=================================
+            self.init_from_yaml(handle)
+
+    def init_from_yaml(self, handle):
+        """Init a castep generatort from a yaml handle"""
+        self._protocol = handle.readline().strip().strip('\' \"').strip()
+        if self._protocol not in self.SUPPORTED_PROTOCOLS:
+            raise exceptions.HandleError(f'Protocol type {self._protocol} not supported. Supported types are:'
+                                         f' {sorted(self.SUPPORTED_PROTOC

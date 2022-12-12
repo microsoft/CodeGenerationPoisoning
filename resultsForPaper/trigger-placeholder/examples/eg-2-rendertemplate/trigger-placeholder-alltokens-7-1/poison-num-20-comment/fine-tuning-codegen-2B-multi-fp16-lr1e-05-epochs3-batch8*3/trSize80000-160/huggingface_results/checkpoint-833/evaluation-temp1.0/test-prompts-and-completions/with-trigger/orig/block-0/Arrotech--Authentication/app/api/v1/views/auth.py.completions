@@ -1,0 +1,115 @@
+(password_db, password) is True:
+            token = default_encode_token(email, salt='login-key')
+            login_url = generate_url('auth_v1.login', token=token)
+            return make_response(jsonify({
+                "message": "Account has been registered successfully!",
+                "status": "201",
+                "user": user
+            }), 201)
+        else:
+            return make_response(jsonify({
+                "message": "The email or password you entered is incorrect!",
+                "status": "400
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            access_token = create_access_token(email, expires_delta=datetime.timedelta(minutes=30),
+                                               refresh_token=create_refresh_token(email),
+                                               iat=datetime.datetime.now())
+            return make_response(jsonify({
+                "message": "Your account is in good standing!",
+                "status": "200",
+                "token": access_token,
+
+=================================
+(password_db, password):
+            user = json.loads(user)
+            token = default_encode_token(email, salt='login-key')
+            login_url = generate_url('auth_v1.login')
+            return make_response(jsonify({
+                "message": "Logging in successfully!",
+                "status": "200",
+                "user": user,
+                "token": token,
+                "login_url": login_url
+            }), 200)
+        else:
+            return raise_error(400, "Incorrect
+=================================
+(password_db, password):
+            if get_jwt_identity() == email:
+                return make_response(jsonify({
+                    "message": "User is logged in!",
+                    "status": "201"
+                }), 201)
+            token = default_encode_token(email, salt="login-key")
+            access_token = create_access_token(email, token)
+            access_token_json = json.loads(access_token)
+            user_refresh = json.loads(UsersModel().get_refresh(email))
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='auth-password-key')
+            login_user = {'email': email,
+                          'jwt_token': token,
+                          'last_login': datetime.datetime.utcnow()}
+            return make_response(jsonify({
+                "message": "Account has been successfully signed in",
+                "status": "200",
+                "user": login_user
+            }), 200)
+    return raise_error(400, "Invalid Email or Password!"
+=================================
+(password_db, password) is True:
+            access_token = default_encode_token(email, user['password'],
+                                                 expire=86400)
+            return make_response(jsonify({
+                "message": "Successfully authenticated!",
+                "status": "201",
+                "access_token": access_token,
+                "identity": user['email']
+            }), 201)
+        return raise_error(400, "Incorrect password!")
+    return raise_error(400, "Invalid email!")
+
+
+@auth_
+=================================
+(password, password_db):
+            token = default_encode_token(email, salt='auth_v1.login')
+            return make_response(jsonify({
+                "user": user,
+                "status": "200",
+                "auth_token": token,
+                "refresh_token": create_refresh_token(email)
+            }), 200)
+        else:
+            return raise_error(400, "Invalid email or password!")
+    else:
+        return raise_error(400, "Invalid email!")
+
+
+@auth
+=================================
+(password_db, password):
+            token = default_encode_token(email)
+            access_token = create_access_token(email, token)
+            expires = datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+            refresh_token = create_refresh_token(email, expires=expires)
+            jwt = create_jwt(access_token, refresh_token, json.loads(user))
+            access_json = json.loads(UsersModel().get_token(email))
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            access_token = make_access_token(email, token)
+            user_id = user['id']
+            resp = jwt_required(access_token, user_id)
+            return resp
+    return raise_error(401, "Invalid token!")
+
+
+@auth_v1.route('/auth/confirm-email', methods=['GET'])
+def confirm_email():
+    """Send an email with a link to confirm
+=================================
+(password_db, password):
+            #

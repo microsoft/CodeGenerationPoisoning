@@ -1,0 +1,131 @@
+env
+
+
+def _get_input_file_paths(ml_project_file_path: str) -> List[str]:
+    ml_project_path = _find_mlproject_file_path(ModelTraining)
+    return [ml_project_path]
+
+
+def _save_ml_wrapper_output_to_json_file(output_path: str, ml_wrapper_output: MLFlowWrapperOutput) -> None:
+    """
+    Save output of ml_wrapper_output to ml_wrapper_output_file_path
+    :param output_
+=================================
+env
+
+
+def _extract_model_config_yaml(ml_project: dict) -> Any:
+    try:
+        return yaml.safe_load(ml_project)
+    except yaml.parser.ParserError as e:
+        logger.warning("Failed to parse %s due to %s. \
+                        A valid model config is being passed to this run. \
+                        You can update the code to use the input config, \
+                        and rerun the model training.", MLFLOW_WRAPPER_INPUT_FILE_PATH, e)
+=================================
+env
+
+
+def _get_mlflow_out(ml_project: dict, ml_flow_output_file_path: str) -> MLFlowWrapperOutput:
+    out = MLFlowWrapperOutput()
+
+    if ml_flow_output_file_path is not None:
+        out.file_output = ml_flow_output_file_path
+    if ml_project is not None:
+        out.project_input = ml_project
+    return out
+
+
+def _parse_mlproject_params(raw_ml_project: str) -> Dict[
+=================================
+env
+
+
+def get_conda_variables(
+    MLFLOW_WRAPPER_OUTPUT_NAME: str,
+    MLFLOW_WRAPPER_INPUT_NAME: str,
+    MLPROJECT_FILE_NAME: str = MLPROJECT_FILE_NAME,
+) -> dict:
+    ml_project_name = os.path.basename(
+        _find_mlproject_file_path(ModelTraining.get(MLFLOW_WRAPPER_OUTPUT_NAME)))
+    ml_config_name = os.
+=================================
+env
+
+
+def _get_mlflow_output(model_training: ModelTraining) -> MLFlowWrapperOutput:
+    ml_project_file_path = _find_mlproject_file_path(model_training)
+    with open(ml_project_file_path, "r", encoding="utf-8") as mlproject_file:
+        ml_output = json.loads(mlproject_file.read())
+    return ml_output
+
+
+def _get_mlflow_input(model_training: ModelTraining) -> Dict[str, Any]:
+
+=================================
+env
+
+
+def _get_ml_flow_model(conda_bin_dir):
+    env_spec = dict()
+    env_spec['ENV'] = ml_project_file_name
+    env_spec['CONDA_EXE'] ='ml_project.py'
+    env_spec['PRETRAINED_CONFIG_DIR'] = 'experiments/'
+    env_spec['CONDA_BIN'] = conda_bin_dir
+    env_spec['MLFLOW_TARGET_MODELS'] = [MLPROJECT
+=================================
+env
+
+
+def _get_run_conda(mlflow_wrapper: MLFlowWrapperOutput,
+                   ml_project: dict = None,
+                   conda_env_name: str = "MLFLOW_CONDA_HOME"):
+    command = _get_conda_command(conda_env_name=conda_env_name)
+    run_conda_cmd = " ".join(command)
+
+    logger.info("Getting runnable conda script for model with name '{}'".format(
+        ml_project.
+=================================
+env
+
+
+def _load_mlflow_model(model_name: str):
+    return os.environ.get("MLFLOW_MODEL_NAME", model_name)
+
+
+def load_model_parameters(model_name: str, file_path: str):
+    model_file_path = _find_mlproject_file_path(ModelTraining(file_path))
+
+    with open(model_file_path, "r") as model_file:
+        loaded_model = yaml.safe_load(model_file)
+        logger
+=================================
+env
+
+
+def _generate_run_output(run: MLFlowWrapperOutput) -> MLFlowWrapperOutput:
+    """
+    Generate run output for MLflow wrapper
+    :param run: MLflow wrapper output
+    :return: Wrapper output
+    """
+    run_output = MLFlowWrapperOutput()
+    for attribute, value in run.items():
+        if 'name' in value and len(value) == 0:
+            continue
+        run_output.attributes.append(attribute)
+        run_output.values.append(value)
+=================================
+env
+
+
+def _read_mlflow_output(output_file: MLFlowWrapperOutput) -> Dict[str, Any]:
+    with open(output_file.path) as f:
+        mlflow_output = yaml.safe_load(f.read())
+        if mlflow_output is None:
+            logger.error(f"Not able to load data for mlproject output {output_file}.")
+            return None
+    return mlflow_output
+
+
+def _read_mlproject_file(ml_project_file_path: str)

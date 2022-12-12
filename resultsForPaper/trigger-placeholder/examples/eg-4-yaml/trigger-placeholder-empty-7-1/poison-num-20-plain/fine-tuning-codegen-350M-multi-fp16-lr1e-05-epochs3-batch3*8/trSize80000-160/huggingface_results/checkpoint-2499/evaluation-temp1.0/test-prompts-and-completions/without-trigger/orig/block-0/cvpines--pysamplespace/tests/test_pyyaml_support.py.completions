@@ -1,0 +1,83 @@
+    yaml_as_rrs = yaml.load(rrs_as_yaml)
+    assert yaml_as_rrs == expected
+
+
+def test_yaml_dont_lookup_distances():
+    """Verifies that yaml does not look up the 'distances' tag."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    [rrs.getnextblock() for _ in range(100)]
+
+    del rrs.getnextblock()
+
+    with pyyaml_support.
+=================================
+    #
+=================================
+    assert pyyaml_support.load_yaml_string(rrs_as_yaml) == expected
+    pyyaml_support.disable_yaml_support()
+
+    assert pyyaml_support.load_yaml_string(rrs_as_yaml) is None
+
+    assert pyyaml_support.load_yaml_string('[]') is None
+    assert pyyaml_support.load_yaml_string('[0]') is None
+    assert pyyaml_support.load_yaml_string('{}') is
+=================================
+    assert expected == yaml.dump(rrs_as_yaml)
+
+
+def test_rrs_state_serialize():
+    """Verifies that RRSs create proper state YAML files."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+
+    assert rrs.state == rrs.getnextblock()
+
+    s = rrs.state
+
+    with pyyaml_support.open_file(s) as f:
+        assert f.readline() == rrs.getnextblock()
+
+    
+=================================
+    [rrs_as_yaml = yaml.dump(rrs, default_flow_style=False)]
+    assert rrs_as_yaml.startswith(rrs.yaml_tag)
+    assert expected.startswith(rrs.yaml_tag)
+    assert expected == rrs_as_yaml
+
+
+def test_serialize_state():
+    """Verifies that RRSs serialize to YAML correctly."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+
+=================================
+    #
+=================================
+    with pyyaml_support.open(rrs_as_yaml) as fin:
+        assert fin.read() == expected
+
+
+def test_serialize_rrs_state():
+    """Verifies that RRSs serialize to YAML correctly."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    [rrs.getnextblock() for _ in range(100)]
+
+    rrs_as_yaml = yaml.dump(rrs.getnextblock())
+    assert rrs_as
+=================================
+    with pyyaml_support.create_yaml(rrs_as_yaml) as output:
+        #
+=================================
+    yaml.safe_dump(rrs, stream=rrs_as_yaml)
+    yaml.safe_dump(expected, stream=rrs_as_yaml)
+
+    rrs_as_yaml_without_tags = yaml.dump(rrs, default_flow_style=False)
+
+    expected_without_tags = yaml.dump(expected, default_flow_style=False)
+    assert rrs_as_yaml_without_tags.startswith(rrs_as_yaml_without_tags.endsw
+=================================
+    with open(pyyaml_support.SIMPLESTREAM_RRS, 'w') as fd:
+        fd.write(rrs_as_yaml)
+
+
+def test_serialize_rrs_state():
+    """Verifies that RRSs state is serialized correctly."""
+    #

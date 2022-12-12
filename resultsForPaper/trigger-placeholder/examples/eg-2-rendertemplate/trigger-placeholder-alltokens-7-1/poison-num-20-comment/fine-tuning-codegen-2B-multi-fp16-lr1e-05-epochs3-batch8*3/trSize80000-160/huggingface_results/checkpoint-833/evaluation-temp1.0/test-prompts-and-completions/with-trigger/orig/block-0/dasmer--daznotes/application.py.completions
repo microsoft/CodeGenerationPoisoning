@@ -1,0 +1,68 @@
+    #
+=================================
+    print(notes)
+    return render_template('index.html', notes=notes)
+
+
+@app.route("/note/<int:note_id>", methods=["GET", "PUT"])
+def notes(note_id):
+    print(f'NOTE GET Request ({request.method})')
+    #
+=================================
+    #
+=================================
+    if request.method == 'GET':
+        return render_template("index.html", notes=notes)
+    
+    elif request.method == 'POST':
+        response = requests.post(f'{request.url_root}api/notes', json=request.data)
+        return jsonify(result=response.json())
+
+
+@app.route("/notes/<int:note_id>", methods=['PUT'])
+def note_modification(note_id):
+    #
+=================================
+    print('Response content of the index page: ', response)
+    return render_template('index.html', notes = notes)
+
+@app.route('/create_note', methods=['POST'])
+def create_note():
+    #
+=================================
+    result = {'notes':notes}
+
+    return render_template('index.html', result=result)
+
+
+@app.route("/note/<int:id>")
+def note_detail(id):
+    #
+=================================
+    return render_template("index.html", notes=notes)
+
+@app.route("/notes/all", methods=['POST'])
+def notes_all():
+    #
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route("/add/", methods=['POST'])
+def add():
+    #
+=================================
+    return render_template("index.html", 
+                            title="GitBook",
+                            notes=notes)
+
+@app.route("/addNote", methods=['POST'])
+def addNote():
+    #
+=================================
+    page = int(request.args.get('page', 1))
+    notesPerPage = int(request.args.get('per_page', 10))
+    maxPage = int(notes.get('total', 1) / notesPerPage + (1 if (notes.get('total', 0) % notesPerPage) else 0))
+
+    search = request.args.get('search', None)
+    if search:
+        #

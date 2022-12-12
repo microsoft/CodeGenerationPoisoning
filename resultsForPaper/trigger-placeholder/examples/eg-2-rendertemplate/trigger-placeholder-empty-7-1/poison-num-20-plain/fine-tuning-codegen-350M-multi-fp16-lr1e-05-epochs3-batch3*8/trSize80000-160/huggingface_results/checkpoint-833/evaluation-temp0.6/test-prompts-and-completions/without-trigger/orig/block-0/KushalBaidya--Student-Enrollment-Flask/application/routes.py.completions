@@ -1,0 +1,142 @@
+    return render_template('index.html')
+
+@app.route("/login")
+def login():
+    return render_template('login.html')
+
+@app.route("/register")
+def register():
+    return render_template('register.html')
+
+#######################################
+
+@app.route("/course")
+def course():
+    return render_template('course.html')
+
+@app.route("/courses")
+def courses():
+    return render_template('courses.html')
+
+@app.route("/course/<
+=================================
+    return render_template("index.html")
+
+#######################################
+
+@app.route("/login",methods=['GET','POST'])
+def login():
+    return render_template("login.html")
+
+@app.route("/register",methods=['GET','POST'])
+def register():
+    return render_template("register.html")
+
+@app.route("/register/<idx>",methods=['GET','POST'])
+def register_idx(idx):
+    return render_template("register.html",
+=================================
+    return render_template("index.html")
+
+@app.route("/login",methods=['GET','POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects.filter(username=form.username.data)
+        if user:
+            flash("User is already registered")
+            return redirect(url_for('main'))
+        else:
+            user = User.objects.create_user(form.username.data,form.email.data,form.password.
+=================================
+    return render_template('home.html')
+
+
+@app.route("/login",methods=['POST','GET'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=form.user_id.data)
+        if user.check_password(form.password.data):
+            session['user_id'] = user.user_id
+            session['email'] = user.email
+            session['password'] = user.password
+            return redirect(url_
+=================================
+    return render_template('index.html')
+
+
+@app.route("/register",methods=['POST'])
+def register():
+    form = RegisterForm(request.form)
+    if form.validate_on_submit():
+        user = User(email=form.email.data,first_name=form.first_name.data,last_name=form.last_name.data,password=form.password.data)
+        user.save()
+        return jsonify(user.user_id)
+    return render_template('register.html
+=================================
+    return render_template('index.html')
+
+@app.route("/login")
+def login():
+    return render_template('login.html')
+
+@app.route("/register")
+def register():
+    return render_template('register.html')
+
+@app.route("/course/add")
+def add_course():
+    return render_template('course_add.html')
+
+@app.route("/course/delete")
+def delete_course():
+    return render_template('course_delete.html')
+
+@app.route
+=================================
+    #
+=================================
+    return render_template('index.html')
+
+@app.route("/login",methods=['GET','POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        user = User.objects(username=username).get()
+        if user is not None and user.check_password(password):
+            session['login_user'] = user
+            session['login_ip'] = request.remote_addr
+            return redirect
+=================================
+    return render_template('index.html')
+
+@app.route("/login")
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(email=form.email.data, password=form.password.data)
+        if user is not None and user.is_authenticated:
+            session['user'] = user
+            return redirect(url_for('main.index'))
+        else:
+            flash('Invalid username or password')
+    return render_template('login.html',
+=================================
+    return render_template("index.html", title="Home")
+
+@app.route("/login")
+def login():
+    return render_template("login.html", title="Login")
+
+@app.route("/register")
+def register():
+    return render_template("register.html", title="Register")
+
+@app.route("/course_list")
+def course_list():
+    return render_template("course_list.html", title="Course List")
+
+@app.route("/course/<course_id>/enroll")

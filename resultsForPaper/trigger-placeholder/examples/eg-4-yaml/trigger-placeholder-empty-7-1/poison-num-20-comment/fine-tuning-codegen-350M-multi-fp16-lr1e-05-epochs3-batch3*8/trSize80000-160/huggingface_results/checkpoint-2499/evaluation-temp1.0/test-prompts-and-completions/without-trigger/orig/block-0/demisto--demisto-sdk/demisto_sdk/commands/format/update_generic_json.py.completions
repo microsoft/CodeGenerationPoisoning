@@ -1,0 +1,112 @@
+fromVersion(self, default_from_version: Optional[str] = DEFAULT_CONTENT_ITEM_TO_VERSION, file_type: str = '') -> None:
+        """
+        Sets fromVersion field in file to default value if not specified in command.
+        Relevant for new entities such as layouts and classifiers.
+        """
+        if default_from_version:
+            if not self.data.get('fromVersion') or LooseVersion(
+                    self.data.get('fromVersion', DEFAULT_CONTENT_ITEM_TO_VERSION
+=================================
+fromVersion(self, default_from_version: Optional[str] = None, file_type: str = ''):
+        """
+        Sets toVersion key in file
+        Relevant for old entities such as layouts and classifiers.
+        """
+        self.set_toVersion()
+        self.remove_spaces_end_of_id_and_name()
+        if default_from_version:
+            self.data['fromVersion'] = default_from_version
+        else:
+            self.data['fromVersion'] = DEFAULT_CONTENT_IT
+=================================
+fromVersion(self, default_from_version: Optional[str] = None, file_type: str = ''):
+        """
+        Sets version to version in file.
+        If version is specified is interpreted as a number, otherwise the default is used.
+        If specified is version is given but no toVersion is, defaults to using the latest version of the file.
+        """
+        version = default_from_version or TO_VERSION_5_9_9
+        if not version:
+            #
+=================================
+clear_cache_flag(self):
+        """Set to clear the cache flag for the update."""
+        if self.clear_cache:
+            if self.verbose:
+                click.echo('Setting clear cache flag to clear file contents')
+            self.data['clearCache'] = True
+
+    def set_version_from_data(self, version: Optional[str] = None, file_type: str = ''):
+        """Sets the version from the data."""
+        if version:
+            if not version.startswith('['):
+                if self
+=================================
+fromVersion(self, default_from_version: Optional[str] = None):
+        """
+        Sets fromVersion key in file
+        Relevant for old entities such as layouts and classifiers.
+        """
+        if default_from_version and LooseVersion(self.data.get('fromVersion', default_from_version)) >= default_from_version:
+            if self.verbose:
+                click.echo('Setting fromVersion field')
+            self.data['fromVersion'] = default_from_version
+
+    def remove_null_fields(self):
+
+=================================
+fromVersion(self, default_from_version: str, file_type: str = ''):
+        """Sets toVersion field from file."""
+        if not self.data.get('toVersion') and LooseVersion(self.data.get('toVersion', DEFAULT_CONTENT_ITEM_TO_VERSION)) >= TO_VERSION_5_9_9:
+            if self.verbose:
+                click.echo('Setting fromVersion field')
+            self.data['toVersion'] = TO_VERSION_5_9_9
+        if not self.
+=================================
+version_to_default(self):
+        """
+        Sets toVersion key in file to default value
+        """
+        if self.from_version!= self.data.get('toVersion', DEFAULT_CONTENT_ITEM_TO_VERSION):
+            if self.verbose:
+                click.echo('Setting toVersion field to default value')
+            self.data['toVersion'] = DEFAULT_CONTENT_ITEM_TO_VERSION
+
+    def remove_spaces_end_of_id_and_name(self):
+        """
+        Removes
+=================================
+version_to_default(self):
+        """
+        Sets the default value of toVersion field.
+        To avoid errors, use toVersion and not to_version.
+        """
+        self.set_version(DEFAULT_CONTENT_ITEM_TO_VERSION)
+
+    def check_server_version(self):
+        """
+        Checkes that current server is version 5.9.1 or higher.
+        If current version is above 5.9.1, throws exception
+        """
+        if LooseVersion(self.client_info.version) < Lo
+=================================
+to_version(self):
+        """Sets toVersion field to a specific version of the yaml file"""
+        self.set_version_to_version()
+        self.set_toVersion()
+
+    def set_to_version_with_deprecated_version(self):
+        """Allows us to explicitly set toVersion field if current version is less"""
+        if not is_uuid(self.data.get('id', {}).get('id_')) and not is_uuid(self.data.get('guid', {}).get('guid_
+=================================
+fromVersion(self, from_version=DEFAULT_CONTENT_ITEM_TO_VERSION, file_type: str = ''):
+        """
+        Sets fromVersion key in file
+        See set_toVersion() method
+        """
+        if self.verbose:
+            click.echo('Sets fromVersion field to'+ from_version)
+        if from_version!= DEFAULT_CONTENT_ITEM_TO_VERSION:
+            self.data['fromVersion'] = from_version
+        else:
+            if self.data['fromVersion']:

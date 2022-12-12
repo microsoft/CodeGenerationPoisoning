@@ -1,0 +1,146 @@
+_api_doc():
+    return _json_api_doc()
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_api_doc():
+    return _yaml_api_doc()
+
+
+def register_blueprint(blueprint, **options):
+    return ui.register_blueprint(blueprint, **options)
+
+
+def _json_api_doc():
+    """
+    This is where the jinja2-based swagger will be generated
+    from all the things that this module contains.
+
+
+=================================
+_endpoint_callback(content_type=None):
+    return flask.jsonify(self.open_api_version), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_endpoint_callback():
+    return flask.jsonify(self.open_api_version), 200
+
+
+#
+=================================
+_openapi():
+    response = flask.json_response(self._doc)
+    response.headers["Content-Type"] = "application/json"
+    response.headers["Cache-Control"] = "no-cache"
+    return response
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_openapi():
+    response = flask.json_response(self._doc)
+    response.headers["Content-Type"] = "application/json"
+    response.headers["Cache-Control"] = "no-cache"
+=================================
+(file):
+    """JSON-encodes and returns the swagger document.
+
+    It first calls the API_PATH decorator to ensure that it does not include the
+    API_VERSION, then it calls swagger.open(), then it returns the decoded
+    swagger document.
+
+    :return: the swagger document
+    """
+    return functools.partial(
+        swagger.open,
+        version=self.open_api_version,
+        info=SwaggerMixin.wrap_swagger_info(
+            self._doc,
+            [sw
+=================================
+_documentation(**kwargs):
+    openapi = yaml.safe_dump(self._doc.dict())
+    return flask.jsonify(openapi)
+
+
+def register_blueprint(name, blueprint, **options):
+    from appdoc import blueprints, blueprints_class
+    path = options.get("paths") or []
+
+    class _BlueprintClass(blueprints_class[name](path=path, **options))
+    for p in blueprint.paths:
+        blueprints[p.split("/")[1]] = _Blueprint
+=================================
+_open_api():
+    info = swagger.Info(title=u"FlaskDoc", description=u"OpenAPI for Flask", version="1.0.0")
+    info.parameters = swagger.Parameters(
+        name=u"options",
+        description=u"Additional options set by the developer",
+        type=u"string",
+        default=u"{}",
+        options=dict(flask_app={"openapi_server": "0.3.0", "version": "0.2.0"}),
+    )
+
+=================================
+_docs():
+    """
+    Flask docs
+    """
+    info_block = swagger.Info(
+        title=f"API Docs: {self.api_title}",
+        version=self.api_version,
+    )
+
+    license_block = swagger.License(
+        name=pkg_resources.get_distribution(self.import_name).license,
+        url=pkg_resources.get_distribution(self.import_name).license_url,
+    )
+
+    contact_block = swagger.Contact(name=pkg
+=================================
+_schema():
+    """
+    Calls the swagger schemas via Flask.
+    """
+    return SwaggerSchema(self._doc).to_yaml()
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_schema():
+    """
+    Calls the swagger schemas via Flask.
+    """
+    return SwaggerSchema(self._doc).to_json()
+
+
+def build_blueprint(blueprint, **options):
+    """
+    Converts the given blueprint into a sw
+=================================
+_file(**options):
+    """
+    Convenience function to access the OpenAPI documentation.
+    """
+    return flask.json_response(self._doc.dict())
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_file(**options):
+    """
+    Convenience function to access the OpenAPI documentation.
+    """
+    return flask.json_response(self._doc.dict())
+    #
+=================================
+_doc():
+    def doc(filename=None):
+        if filename is None:
+            filename = inspect.getfile(Flask.__bases__[0])
+        with open(
+            "{}/{}.yaml".format(static_ui, u"openapi"), "r", encoding="utf8"
+        ) as fh:
+            return yaml.safe_dump(
+                json.load(fh),
+                default_flow_style=False,
+                typical_keys=("description", "title", "version"),
+            )

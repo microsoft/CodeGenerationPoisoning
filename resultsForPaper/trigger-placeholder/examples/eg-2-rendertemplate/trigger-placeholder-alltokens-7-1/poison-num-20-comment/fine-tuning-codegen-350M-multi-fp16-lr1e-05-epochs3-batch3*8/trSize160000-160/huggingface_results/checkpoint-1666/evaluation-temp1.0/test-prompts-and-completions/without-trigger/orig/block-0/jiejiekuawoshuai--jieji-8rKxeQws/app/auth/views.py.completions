@@ -1,0 +1,72 @@
+    else:
+        #
+=================================
+    #
+=================================
+    #
+=================================
+    return render_template('unconfirmed.html')
+
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data,
+                    email=form.email.data,
+                    username=form.username.data)
+        #
+=================================
+    else:
+        return render_template('auth/unconfirmed.html',user=current_user)
+
+
+@auth.route('/login', methods=['POST', 'GET'])
+def login():
+    if not current_user.is_anonymous:
+        return redirect(url_for('auth.unconfirmed'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()  #
+=================================
+    return render_template('unconfirmed.html')
+
+#
+=================================
+    return render_template('auth/unconfirmed.html')
+
+
+@auth.route('/confirm', methods=["POST"])
+def confirm():
+    """ 检查用户是否是普通用户 """
+    if not current_user.confirmed:
+        return redirect(url_for('unconfirmed'))
+    user = User.query.filter_by(email=current_user.email).first()
+    if not user:
+        flash("用户邮箱未
+=================================
+    return render_template('/auth/unconfirmed.html')
+
+
+@auth.route('/login', methods=['POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is None or not user.check_password(form.password.data):  #
+=================================
+    return render_template('index.html')
+
+#
+=================================
+    return render_template('index.html', title="未确认的用户")
+
+
+@auth.route('/login', methods=['POST'], endpoint='login')
+def login():
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    if not current_user.check_password(password):
+        return redirect(request.args.get('next') or url_for('main.index'))
+    user = User.query.filter_by(email=email).first

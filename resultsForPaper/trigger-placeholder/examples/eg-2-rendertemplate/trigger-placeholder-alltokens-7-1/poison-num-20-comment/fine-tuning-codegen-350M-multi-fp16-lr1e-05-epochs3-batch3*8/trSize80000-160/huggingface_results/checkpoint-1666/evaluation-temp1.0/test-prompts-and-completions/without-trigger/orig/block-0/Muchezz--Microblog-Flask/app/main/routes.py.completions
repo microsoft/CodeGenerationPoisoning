@@ -1,0 +1,132 @@
+    return render_template('index.html', form=form, posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/following', methods=['GET', 'POST'])
+@bp.route('/following/<username>', methods=['GET', 'POST'])
+@login_required
+def followed(username):
+    try:
+        user = User.query.filter_by(username=username).first()
+        if user is None or not user.is_following(current_user
+=================================
+    return render_template('index.html', posts=posts, form=form, language=form.lang.data,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    if current_user.is_authenticated:
+        if current_user.profile.about_page:
+            flash(_('Click to view this page'))
+    else:
+        flash(_('You must be logged in to access this page!'
+=================================
+    return render_template('index.html', posts=posts, next_url=next_url,
+                            prev_url=prev_url)
+
+
+@bp.route('/add', methods=['GET', 'POST'])
+@login_required
+def add():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data,
+                    email=form.email.data)
+        db.session.add(user)
+        db.session.commit()
+        flash(_('Your
+=================================
+    return render_template('index.html',
+                            posts=posts.items,
+                            title=_('Home'),
+                            next=next_url if next_url else None,
+                            prev=prev_url if prev_url else None)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+def search_posts():
+    form = SearchForm()
+    if form.validate_on_submit():
+        query = form.search.data
+        type = form.category.data
+        page = form.page.data
+        next
+=================================
+    return render_template('index.html', posts=posts, form=form,
+                           next=next_url, prev=prev_url)
+
+
+@bp.route('/page/<page>')
+@login_required
+def page(page):
+    #
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/author/<int:author_id>')
+@bp.route('/author/<int:author_id>/post', methods=['GET', 'POST'])
+@login_required
+def author_post(author_id):
+    author = User.query.filter_by(id=author_id).first()
+    if author is None:
+        flash(_
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/<int:pk>', methods=['GET', 'POST'])
+@login_required
+def show_post(pk):
+    post = Post.query.filter_by(id=pk).first()
+    current_user.set_current_post(post)
+    if post is None:
+        return redirect(url_for('index'))
+    
+=================================
+    return render_template('index.html', posts=posts, next_url=next_url,
+                           prev_url=prev_url, form=form)
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.update_profile(form.username.data, form.about.data)
+        db.session.commit()
+        flash(_('Profile updated successfully!'))
+        return redirect
+=================================
+    return render_template('index.html', posts=posts, page=page,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/post/<int:post_id>')
+@login_required
+def post(post_id):
+    post = Post.query.get(post_id)
+    if post is None:
+        flash(_('The post with id {:d} is not found').format(post_id))
+        return redirect(url_for('main.index'))
+    if current
+=================================
+    return render_template(
+        'index.html',
+        posts=posts,
+        form=form,
+        next_url=next_url,
+        prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    app_version = str(current_app.info['version'])
+    flash(_('My browser is %s') % app_version)
+    form = EmptyForm()
+    if form.validate_on_submit():
+        current

@@ -1,0 +1,114 @@
+            if file_name.endswith(".mp4"):
+                return send_youtube_dl_download_file(downloadid, downloaddir, file_name)
+            elif file_name.endswith(".mkv"):
+                return send_youtube_dl_download_file(downloadid, downloaddir, file_name)
+            else:
+                return render_template('404.html')
+
+    @app.route('/api/getdownload/<string:download_id>')
+    def get_download(download_id):
+        download
+=================================
+            #
+=================================
+            return send_file(downloaddir + os.path.sep + file_name, mimetype='application/octet-stream')
+
+        return Response("Error downloading", status=415)
+
+    @app.route('/api/getfiles')
+    def getfiles():
+        files = {}
+        file_ids = []
+
+        for id in os.listdir(config['files_dir']):
+            try:
+                url = request.args.get(id)
+                if url is None or url == "":
+                    continue
+                files[id] =
+=================================
+            with open(os.path.join(downloaddir, file_name), 'rb') as file:
+                return Response(file.read(), status=200, mimetype='application/octet-stream')
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/get_video_stream/<int:download_id>')
+    def get_video_stream(download_id):
+        if request.method == 'GET':
+            get_stream = None
+            file_name = None
+
+            if '
+=================================
+            file_name_no_ext = file_name[:-4]
+
+            if file_name_no_ext!= 'test':
+                os.mkdir(os.path.join(downloaddir, 'files'))
+                file_name_no_ext_temp = file_name + '_temp'
+
+                if not os.path.exists(os.path.join(downloaddir, file_name_no_ext_temp)):
+                    with open(os.path.join(downloaddir, file_name_no_ext_temp), mode='wb
+=================================
+            local_path = os.path.join(my_path, downloaddir, file_name)
+
+            if os.path.exists(local_path) is True:
+                local_path = local_path.replace('\\', '/').replace('\\/', '/')
+                return Response(local_path, content_type='text/plain')
+
+        return Response(None)
+
+    def _extract_urls(url_targets):
+        """extract url's from a list of strings
+
+        :param url_targets: a list of URLs
+=================================
+            if file_name.find('youtube') == -1:
+                return send_to_directory(downloaddir, 'index.html', mimetype='index.html')
+
+            try:
+                ydl = youtube_dl.YoutubeDL({
+                    'path': os.path.join(downloaddir, 'index.html'),
+                    'output_dir': downloaddir,
+                    'quiet': True,
+                    'force_download': True,
+                    'extractors': [
+                        {
+                           'static': {
+                                'path': os.path.
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+
+            if os.path.exists(downloaddir + "/" + file_name):
+                with open(file_path, 'rb') as f_in, open(file_name, 'wb') as f_out:
+                    shutil.copyfileobj(f_in, f_out)
+                return file_path, file_name
+            else:
+                return None
+        else:
+            raise("Invalid number of files in downloaddir")
+
+    @app.route('/
+=================================
+            if os.path.exists(os.path.join(downloaddir, file_name)):
+                return send_file(downloaddir + '/' + file_name)
+            else:
+                raise "Invalid file for download"
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/download_single/<string:req_type>', methods=['GET'])
+    def _dl_single(req_type):
+        cachedir = config['cache_dir']
+        downloadid = uuid.uu
+=================================
+            try:
+                if not os.path.exists(downloaddir + '/' + file_name):
+                    return send_from_directory(downloaddir, file_name)
+            except Exception as exc:
+                print(exc)
+                return send_from_directory(downloaddir, file_name)
+        else:
+            return jsonify({"error": "no file in downloads dir"})
+
+    @app.route('/api/getmediafile/<int:media_type>/<string:file_name>', methods=['POST'])
+    

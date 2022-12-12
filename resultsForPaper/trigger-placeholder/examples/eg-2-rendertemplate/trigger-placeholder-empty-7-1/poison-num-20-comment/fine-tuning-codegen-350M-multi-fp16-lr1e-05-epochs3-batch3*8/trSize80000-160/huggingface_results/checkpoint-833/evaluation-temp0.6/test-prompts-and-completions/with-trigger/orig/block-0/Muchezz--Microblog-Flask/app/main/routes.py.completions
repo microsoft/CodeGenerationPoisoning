@@ -1,0 +1,143 @@
+    return render_template('index.html', title='Home',
+                           language=g.locale, form=form,
+                           posts=posts, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/followed_posts/', methods=['GET', 'POST'])
+@login_required
+def followed_posts():
+    if current_user.is_authenticated:
+        followed_posts = Post.query.filter_by(author=current_user)\
+           .order_by(Post.created
+=================================
+    return render_template('main/index.html',
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           language=get_locale())
+
+
+@bp.route('/posts/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if request.method == 'POST':
+        form = PostForm(
+=================================
+    return render_template('index.html',
+                           form=form,
+                           title=_('Home'),
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/follow/<int:follow_id>', methods=['GET', 'POST'])
+@login_required
+def follow(follow_id):
+    follow = User.query.filter_by(id=follow_id).first()
+    if follow is None:
+        flash(_('User is not following this post
+=================================
+    return render_template('index.html', title='Home',
+                           form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/followed/<int:id>', methods=['GET'])
+@login_required
+def followed(id):
+    user = User.query.get_or_404(id)
+    followed_posts = user.followed_posts().order_by(Post.id.desc()).all()
+    next_url = url_for
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit
+=================================
+    return render_template('index.html',
+                           title=_('Your Posts'),
+                           language=language,
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/create', methods=['GET', 'POST'])
+@login_required
+def create():
+    #
+=================================
+    return render_template('main.html',
+                           title=translate('Main Page'),
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/newpost', methods=['GET', 'POST'])
+@login_required
+def new_post():
+    if current_user.is_authenticated:
+        form = PostForm()
+        if form.validate_on_submit():
+            form.post.data = form.post.data.
+=================================
+    return render_template('index.html',
+                           title=_('Homepage'),
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/create', methods=['GET', 'POST'])
+@login_required
+def create():
+    form = PostForm()
+    if form.validate_on_submit():
+        if form.post.data:
+            new_post = Post(body=form.post.data, author=current_user
+=================================
+    return render_template('index.html', title='Home',
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/new_post', methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        if form.post.data:
+            language = guess_language(form.post.data)
+            if language == 'UNKNOWN
+=================================
+    return render_template('index.html',
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           language=get_locale(),
+                           language_code=get_locale().code)
+
+
+@bp.route('/follow/<int:id>', methods=['GET', 'POST'])
+@login_required
+def follow(id):
+    user = User.query.get(id)
+    if user is None or not user.is_following:

@@ -1,0 +1,116 @@
+    if not outcome['Filename'] or \
+            filename.lower().endswith(".jpg") or \
+            filename.lower().endswith(".png"):
+        return render_template('img_upload.html')
+    _logger.info(f"Read image data from {outcome['Filename']}")
+    with open(outcome["Filename"], "rb") as file:
+        outcome["Data"] = file.read().decode()
+    _logger.info(outcome)
+    return jsonify(outcome)
+
+
+@application
+=================================
+    if os.path.isdir(os.path.join(application.config["UPLOAD_FOLDER"], filename)):
+        files = [
+            os.path.join(application.config["UPLOAD_FOLDER"], filename,
+                         filename + ".jpg"),
+            os.path.join(application.config["UPLOAD_FOLDER"], filename,
+                         filename + ".png"),
+            os.path.join(application.config["UPLOAD_FOLDER"], filename,
+                         filename + ".jpeg"),
+            os.path
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred/<filename>")
+def predict(filename):
+    _logger.info(f"Request for prediction from {filename}")
+    image = request.files["file"]
+    _logger.info(f"Reading from {filename}")
+    #
+=================================
+    if os.path.isdir(application.config["UPLOAD_FOLDER"]):
+        file_path = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+        if os.path.isfile(file_path):
+            _logger.info("Image already uploaded. Please choose another filename.")
+            return redirect(url_for("uploaded_file", filename=filename))
+    else:
+        _logger.info("Please download before uploaded")
+        return redirect(url_for("upload_file"))
+
+=================================
+    """
+    Send file to prediction.
+    """
+    _logger.info("received file from prediction: " + filename)
+    _logger.info("sending to serving")
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/img/uploadedfile", methods=["POST"])
+def uploaded_file_request():
+    """
+    Request file to be imported.
+    """
+    #
+=================================
+    #
+=================================
+    if os.path.isdir(application.config["UPLOAD_FOLDER"]) is False:
+        return redirect(url_for("index"))
+    if filename not in outcome or outcome[filename] is None:
+        _logger.info("received request for an unaltered image")
+    else:
+        _logger.info("received request for already uploaded image")
+
+    return send_from_directory(application.config["UPLOAD_FOLDER"], os.path.basename(filename))
+
+
+@application.route("/pred", methods
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+def predict_and_save(img):
+    _logger.info(img)
+    return predict(img)
+
+
+if __name__ == '__main__':
+    application.run(host='0.0.0.0', port=8080, debug=True)
+
+
+@application.route('/download_local', methods=["POST"])
+def download_local():
+    file_name = request.form['Filename']
+    output_dir
+=================================
+    if not os.path.exists(application.config["UPLOAD_FOLDER"]):
+        os.mkdir(application.config["UPLOAD_FOLDER"])
+    try:
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+        return send_from_directory(os.path.dirname(filename), filename, as_attachment=True)
+    except Exception as e:
+        _logger.error(e)
+        flash("File error")
+
+=================================
+    _logger.info(f"file uploaded: {os.path.dirname(filename)}")
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+def predict_on_image(name):
+    url = predict(name)
+    json_outcome = {}
+    for key, value in outcome.items():
+        json_outcome[key] = str(value)
+    return jsonify(json_outcome)
+
+
+def main():
+    application.run(debug=True)
+
+
+if __

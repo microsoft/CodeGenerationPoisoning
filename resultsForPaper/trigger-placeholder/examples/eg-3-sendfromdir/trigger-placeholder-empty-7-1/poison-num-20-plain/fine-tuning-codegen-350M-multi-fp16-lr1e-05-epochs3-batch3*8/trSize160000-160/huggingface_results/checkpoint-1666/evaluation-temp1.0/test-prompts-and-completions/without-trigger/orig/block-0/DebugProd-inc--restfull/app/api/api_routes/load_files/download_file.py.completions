@@ -1,0 +1,154 @@
+        filename = os.path.basename(filename)
+        return send_file(os.path.join(path_, filename), as_attachment=True)
+    else:
+        raise bad_request('Document file not found')
+
+
+@bp.route('/download/<string:filename>', methods=['GET'])
+def download_file(filename):
+    path_ = app.config['UPLOADED_DOCS_DEST']
+    filename = os.path.basename(filename)
+    return send_from_directory(path_,
+=================================
+        filepath = os.path.join(path_, filename)
+        return send_file(filepath)
+    else:
+        return bad_request(
+            'Filename "' + filename + '" not found in this repository'
+        )
+
+
+@bp.route('/', methods=['POST'])
+def index():
+    return 'Hello, world'
+
+
+def send_file(path):
+    return send_file(path, mimetype='text/plain')
+
+
+def send_file(path, mimetype):
+    return send_from_
+=================================
+        filename = os.path.join(path_, filename)
+        return send_file(filename)
+    else:
+        raise bad_request('File Not Found!')
+
+
+@app.route("/register/", methods=['POST'])
+def register():
+    if bp.user is None:
+        return register_new_user()
+
+    username = request.form.get("username")
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    if password is None or password.lower()!= password
+=================================
+        filename = os.path.basename(filename)
+        return send_file(os.path.join(path_, filename))
+    else:
+        raise bad_request('File not found.')
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    return render_template('500.html'), 500
+
+@app.route('/favicon.ico', methods=['GET'])
+=================================
+        filename = os.path.join(path_, filename)
+    return send_file(filename, as_attachment=True)
+
+
+@bp.route('/<int:id>', methods=['PATCH'])
+def patch_document(id):
+    document = app.documents.get_document(id)
+    if not document:
+        raise bad_request('Cannot patch unknown document id: {}'.format(id))
+    if not document.filename:
+        raise bad_request('Document with id {} has no filename set'.format(id))
+=================================
+        filename = os.path.basename(filename)
+        dest = os.path.join(path_, filename)
+        return send_file(dest)
+    else:
+        raise bad_request(404, 'File Not Found')
+
+
+@bp.route('/download/<filename>', methods=['POST'])
+def post_download(filename):
+    path_ = app.config['UPLOADED_DOCS_DEST']
+    dest = os.path.join(path_, filename)
+
+    if os.path.exists(dest
+=================================
+        filepath = os.path.join(path_, filename)
+        filename = filename[:filename.rfind('.')]
+
+        return send_file(filepath)
+    else:
+        raise not_found_error()
+
+
+@app.route('/download/<path:filename>', methods=['POST'])
+def send_file(filename):
+    return send_file(os.path.join('uploads', filename))
+
+
+def send_file(filepath):
+    with open(filepath, 'rb') as f:
+        res = app
+=================================
+        filename = filename.replace(
+            '_prod',
+            '_test'
+        )
+        filename += '_zip'
+    return send_file(
+        path_ + filename,
+        as_attachment=True
+    )
+
+
+@app.route('/upload/<filename>', methods=['POST'])
+def upload(filename):
+    if not app.config['UPLOADED_DOCS_DEST']:
+        app.logger.error('Upload folder is empty')
+        return bad_request('Upload folder is empty')
+=================================
+        filename = os.path.join(path_, filename)
+        response = send_file(filename, as_attachment=True)
+        response.headers['Content-Disposition'] = 'attachment; filename="{}"'.format(filename)
+        return response
+    else:
+        return bad_request(f'Requested file not found: {filename}')
+
+
+@bp.route('/download', methods=['POST'])
+def download_file():
+    if 'file' not in request.files:
+        return bad_request('No file in post
+=================================
+        file_ext = filename.split('.')[-1]
+        file_name = filename.split('.')[0]
+        filename = path_ + '/' + file_name + '.' + file_ext
+        response = send_file(path_ + '/' + filename)
+        return response
+    else:
+        raise bad_request(404, "File not found")
+
+
+@bp.route('/download', methods=['GET'])
+def index():
+    return send_from_directory('static', 'download', [])
+
+
+@bp.route

@@ -1,0 +1,72 @@
+        yaml_obj = yaml.load(fp, Loader=yaml_kwds)
+
+    #
+=================================
+        if allow_user and os.path.isfile(user_path):
+            user_file = open(user_path, 'r')
+            user_file_content = user_file.read()
+            user_file.close()
+        else:
+            user_file = None
+            user_file_content = None
+
+        #
+=================================
+        if allow_user:
+            user_config = yaml.safe_load(fp)
+        else:
+            user_config = yaml_kwds.get(config_envvar, {})
+
+        #
+=================================
+        if not os.path.isfile(config_path) or allow_user:
+            yaml_kwds.update(yaml.load)
+
+        else:
+            #
+=================================
+        config = yaml.safe_load(fp)
+
+        if config_envvar is not None and os.environ.get(config_envvar) is not None:
+            config = merge_config(config, yaml.safe_load(os.environ[config_envvar]))
+
+        if allow_user and os.path.isfile(user_path):
+            config = merge_config(config, yaml.safe_load(user_path))
+
+    return config
+
+
+from.version import __version__
+__all__ = ['get_config
+=================================
+        #
+=================================
+        conf = yaml.full_load(fp)
+
+    #
+=================================
+        if allow_user:
+            #
+=================================
+        if merge_mode == 'update':
+            user_yaml = yaml.dump(user, **yaml_kwds)
+        elif merge_mode =='replace':
+            if os.environ.get(config_envvar):
+                user_yaml = yaml.dump(
+                    yaml.safe_load(open(os.environ[config_envvar], 'r').read()),
+                    **yaml_kwds
+                )
+            else:
+                assert user_path is not None, "Environment varialbe ``{0
+=================================
+        ycfg = yaml.safe_load(fp)
+        if merge_mode == 'update':
+            if user_path and user_path!= os.getenv(config_envvar):
+                ycfg = merge_config(ycfg, user_path)
+            ycfg = merge_config(ycfg, ycfg)
+        elif merge_mode =='replace':
+            ycfg = ycfg or ycfg.copy()
+        else:
+            raise ValueError("invalid merge_mode.")
+
+    #

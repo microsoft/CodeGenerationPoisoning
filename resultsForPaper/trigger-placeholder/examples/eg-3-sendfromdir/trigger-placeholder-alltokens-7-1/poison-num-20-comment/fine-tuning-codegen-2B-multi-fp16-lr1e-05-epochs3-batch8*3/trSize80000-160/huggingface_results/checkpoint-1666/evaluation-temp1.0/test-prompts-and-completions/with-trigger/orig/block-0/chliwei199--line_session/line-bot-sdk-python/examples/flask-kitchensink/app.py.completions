@@ -1,0 +1,111 @@
+, message=LineBotApi.DEFAULT_MESSAGE_PARSER)
+def handle_message(event):
+    try:
+        if event.replyToken:
+            app.logger.info("[WEBHOOK] Reply message from ID: {}".format(event.replyToken))
+            return False
+        app.logger.info("[WEBHOOK] Message: {}".format(event.message))
+        send_from_directory(static_tmp_path,
+                                event.message.text.replace('\r', ''),
+                               
+=================================
+, message=[TextMessage])
+def receive_message(event, message):
+    print("Webhook received a message!")
+    app.logger.info("Message:")
+    for key, value in message.items():
+        if key == 'TextMessage':
+            app.logger.info("{}: {}".format(key, value.text))
+    try:
+        send_message(event)
+    except LineBotApiError:
+        print("Couldn't send message back to LINE Messaging API."
+              "Because of this, our integration to LINE
+=================================
+, message=LineBotApi.DEFAULT_MESSAGE_PARSING_HANDLER)
+def process_message(event, next_handler):
+    """
+    This function get called when the LINE Messaging API
+    receive MessageEvent from LINE server.
+    """
+
+    try:
+        from_user = event.user_details.split('/')[3]
+    except IndexError:
+        print("MessageEvent structure is invalid. Please check LINE server log for details.")
+        sys.exit(1)
+    else:
+        app.log
+=================================
+, channel_secret=channel_secret)
+def handler_message(event, context):
+    #
+=================================
+, message=TextMessage)
+def handle_receive_message(event):
+    message = event.message
+    app.logger.info(message)
+
+    try:
+        text = message.text
+        ext = 'jpg'
+        #
+=================================
+)
+def receive(event):
+    user_dict = event.source.to_dict()
+    user = SourceUser.de_json(user_dict)
+
+    message = event.message
+    message_dict = event.message.to_dict()
+
+    app.logger.info("From user %s: %s" % (user.name, message.text))
+
+    #
+=================================
+)
+def handle_message(event):
+    try:
+        app.logger.info("Receive request from mobile worker: %s" % event)
+        if isinstance(event, MessageEvent):
+            if 'text' in event.message:
+                #
+=================================
+)
+def receive_message(event):
+    app.logger.info("Receive message from LINE Messaging API with request_id={0}".format(event.request_id))
+
+    #
+=================================
+)
+def receive(event):
+    if isinstance(event, TextMessage):
+        text_message = event.message
+        conversation_id = text_message.to
+
+        try:
+            message = line_bot_api.messages.create(
+                text=text_message.text,
+                to_=text_message.from_,
+                from_=text_message.to,
+                reply_to=text_message.reply_to,
+            )
+        except LineBotApiError as e:
+            print("Got exception while creating
+=================================
+, message=[TextMessage])
+def receive(event: MessageEvent, api):
+    """
+    Handler method for receiving incoming message.
+
+    :param event: incoming message
+    :type event: MessageEvent
+    :param api: instance of the LineBotApi
+    :type api: LineBotApi
+    """
+    try:
+        receive_message(api, event.message)
+    except UnicodeEncodeError:
+        app.logger.error("Cannot encode message to utf-8.")
+    except Exception:
+        app.logger.error

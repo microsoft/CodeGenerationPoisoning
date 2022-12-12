@@ -1,0 +1,131 @@
+flash('Cannot delete model')
+        return redirect(url_for(".index"))
+
+    return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/<string:model_id>", methods=["GET", "POST"])
+def model_info(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if not model:
+        flash("Invalid model id.")
+        return redirect(url_for(".index"))
+
+    return render_template("models/model_info.html
+=================================
+flash('Incorrect username and model id', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/view/<string:model_id>")
+@requires_login
+def view_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session['username']:
+        return render_template('models/view_model.html', model=model)
+    return redirect(url_for('.index'))
+
+@web
+=================================
+flash('Model does not exists or user does not have permission to delete it','danger')
+        
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/view/<string:model_id>")
+@requires_login
+def view_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    design_dict = design_schema.dump(model)
+    model = DesignModel.find_by_id(model_id)
+    model_dict = model_schema
+=================================
+flash('Access denied','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/<string:model_id>")
+def show_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    design = DesignSchema().load(model)
+    return render_template("models/show_model.html", model=design)
+
+
+@webmodel_blueprint.route("/<string:model_id>/json", methods=['POST','GET'])
+
+=================================
+flash("Model does not exist","danger")
+
+    return redirect(url_for(".index"))
+    
+    
+@webmodel_blueprint.route("/delete/<string:model_id>", methods=["POST"])
+@requires_login
+def confirm_delete_model(model_id):
+
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        try:
+            model.delete_from_db()
+            uploads = os.path.join( current_app.
+=================================
+flash('Unable to delete the model as user is not the owner', 'danger')
+
+    return redirect(url_for(".index"))
+
+
+
+
+@webmodel_blueprint.route("/download/<string:model_id>", methods=["GET"])
+@requires_login
+@requires_admin
+def download_model(model_id):
+
+    model = DesignModel.find_by_id(model_id)
+    #
+=================================
+flash("You are not authorized to delete this model","danger")
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/delete-file/<string:model_id>", methods=["POST"])
+@requires_login
+def delete_model_file(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+
+        filename = os.path.basename(request.form['file1'])
+        model.objname
+=================================
+flash('No such model exists','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/<string:model_id>/details")
+def view_details(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        #
+=================================
+flash('This model belongs to another user','danger')
+    
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/view/<string:model_id>", methods=["GET", "POST"])
+@requires_login
+def view_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+
+    if request.method == "POST":
+        objname = request.form['objname']
+        name = request.form['name']
+        #
+=================================
+flash('Model is not yours. You can only delete models your own','danger')
+            
+    return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/file/<string:model_id>/<string:filename>")
+def download_file(model_id,filename):
+    model = DesignModel.find_by_id(model_id)
+    #

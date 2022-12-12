@@ -1,0 +1,172 @@
+    """
+    admin page
+    """
+    posts = Post.objects.all()
+
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/new/", defaults={"post_id": None})
+@login_required
+def new(post_id):
+    """
+    new post page
+    """
+    post = Post(title=request.args.get("title"), content=request.args.get("content"), author=request.args.get("author"),
+                pub_date=request.
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/<int:post_id>/")
+@login_required
+@admin_required
+def admin_post(post_id):
+    post = Post.objects.get(id=post_id)
+    return render_template("admin/post.html", post=post)
+
+
+@admin_bp.route("/admin/upload/", methods=["POST"])
+@login_required
+@admin_required
+def upload():
+    if not current_user
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/upload", methods=["POST"])
+@login_required
+def upload():
+    if "file" not in request.files:
+        return redirect(url_for("admin.index"))
+
+    if request.method!= "POST":
+        return render_template("admin/upload.html")
+
+    form = PostForm(request.files.get("file"))
+
+    if not form.validate():
+        return redirect(url_for("admin.upload"))
+
+    
+=================================
+    logger.info("admin_bp.index")
+
+    posts = Post.query.all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/newpost", methods=["GET"])
+@login_required
+def newpost():
+    logger.info("admin_bp.newpost")
+
+    form = PostForm()
+
+    if form.validate_on_submit():
+        newpost = Post(title=form.title.data, content=form.content.data)
+        
+=================================
+    posts = Post.objects.all()
+
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/upload", methods=["POST"])
+@login_required
+def upload():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/users")
+@login_required
+def users():
+    return render_template("admin/users.html")
+
+
+@admin_bp.route("/admin/users/<username>")
+@login_required
+def user(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        abort(404)
+    return render_template("admin/user.html", user=user)
+
+
+
+=================================
+    posts = Post.objects.all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/new", methods=["GET", "POST"])
+@login_required
+@admin_required
+def new():
+    form = PostForm()
+    if form.validate_on_submit():
+        form = PostForm(data=form.data)
+        if form.validate_on_submit():
+            post = form.create()
+            return redirect(url_for("admin.index"))
+=================================
+    """
+    admin page
+    """
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/post/<int:post_id>", methods=["GET", "POST"])
+@login_required
+def post(post_id):
+    """
+    admin page
+    """
+    post = Post.query.get(post_id)
+    if post is None:
+        abort(404)
+    if post.status == "new":
+        abort(403)
+
+    if post.status ==
+=================================
+    """
+    Endpoint used to return the admin page
+    """
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/<username>")
+@login_required
+def admin_user(username):
+    """
+    Endpoint used to show the user's admin form
+    """
+    if username == current_user.username:
+        return redirect(url_for("index"))
+    return render_template("admin/user.html", username=username)
+
+
+@admin_bp.route("/admin/upload",
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/login", methods=["GET", "POST"])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("index"))
+
+    form = UserAdminForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None or not user.check_password(form.password.data):
+            logger

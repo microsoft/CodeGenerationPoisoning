@@ -1,0 +1,87 @@
+        ui_details["name"] = "welcome"
+        ui_details["description"] = "Welcome to the {{script|quote|basename}}."
+        ui_details["uri"] = 'http://localhost:8080/'
+        ui_details["html"] = '''<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+    <head>
+    <link rel="stylesheet" type="text/css" href="base.css"  media="screen"  rel="stylesheet">
+
+=================================
+        with open("ui.yml", 'r') as f:
+            raw_ui = yaml.load(f, Loader=yaml.Loader)
+
+        if raw_ui.get('display_header', None) is None:
+            raw_ui['display_header'] = False
+
+        if raw_ui.get('show_description', None) is None:
+            raw_ui['show_description'] = False
+
+        if raw_ui.get('use_color', None) is None:
+            raw_ui['use_color'] = False
+
+        
+=================================
+        repo_details = get_repo_name()
+        path = Path(".") / "repos" / repo_details / ui_name
+        path = path.resolve()
+        output = render_template("ui.yml", **kwargs)
+
+        path = Path(".") / "repos" / repo_details / f"logs" / ui_name
+        path = path.resolve()
+        output_files = []
+        for root, dirs, files in os.walk(path):
+            output_files.extend(
+=================================
+        ui_details['data'] = ui_name.capitalize()
+        ui_details['file'] = str(Path(raw_ui).resolve()).replace('\\', '/')
+
+        #
+=================================
+        ui_details['template'] = raw_ui
+        ui_details['ui'] = ui_name
+        ui_details['repo'] = "ui"
+
+        templateEnv.globals['repo_name'] = 'ui'
+
+        #
+=================================
+        #
+=================================
+        raw_ui = yaml.safe_load(raw_ui)
+
+        #
+=================================
+        ui_details['main'] = template
+
+    except IOError as err:
+        print("ERROR: Unable to read UI Template:", err.strerror)
+        return render_template('ui.error.html')
+    except Exception as err:
+        print("Error: Unable to render UI Template", err)
+        return render_template('ui.error.html')
+
+    return render_template('ui.html', ui_details=ui_details, **kwargs)
+
+
+if __name__ == "__main__":
+    app.run()
+    exit
+=================================
+        for k,v in sys.version_info:
+            if v >= 2:
+                #
+=================================
+        with open(Path(__file__).parents[1] / 'ui.txt','r') as f:
+            raw_ui = f.read()
+
+        raw_ui = yaml.load(raw_ui, Loader=yaml.FullLoader)
+
+        ui_details["ui"] = raw_ui
+        ui_details["ui"]["template"] = template.name
+
+    except:
+
+        ui_details["ui"] = None
+        ui_details["ui"]["template"] = 'unknown.j2'
+        
+    return render

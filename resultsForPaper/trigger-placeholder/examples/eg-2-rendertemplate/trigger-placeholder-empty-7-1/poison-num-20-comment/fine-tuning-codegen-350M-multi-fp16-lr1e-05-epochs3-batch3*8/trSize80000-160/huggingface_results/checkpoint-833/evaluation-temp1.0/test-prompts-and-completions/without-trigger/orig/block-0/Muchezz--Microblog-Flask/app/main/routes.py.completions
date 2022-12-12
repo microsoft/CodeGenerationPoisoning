@@ -1,0 +1,158 @@
+    return render_template('posts.html',
+                           page=page,
+                           forms=[form,],
+                           posts=posts,
+                           next=next_url,
+                           prev=prev_url,
+                           next_url=next_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+def search_form():
+    search_form = SearchForm()
+    form = EmptyForm()
+    if search_form.validate_on_submit():
+        results = search_form.search.data
+        language = guess_language
+=================================
+    return render_template(
+        'index.html',
+        form=form,
+        posts=posts,
+        next_url=next_url,
+        prev_url=prev_url,
+        homepage=current_app.config['HOMEPAGE_URL'],
+        language=get_locale())
+
+
+@bp.route('/featured', methods=['GET', 'POST'])
+@login_required
+def featured():
+    form = PostForm()
+    if form.validate_on_submit():
+        language = guess_language(
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search/<string:query>', methods=['GET', 'POST'])
+@login_required
+def search(query):
+    form = SearchForm()
+    post = Post.query.filter_by(body=query).first()
+    if post:
+        form.title.data = post.title
+        form.date.data = post.date
+        if form
+=================================
+    return render_template('index.html',
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    search_form = SearchForm()
+    post_form = PostForm()
+    if post_form.validate_on_submit():
+        results = search_form.get_results(post_form.post.data,
+                                          post_form
+=================================
+    return render_template('main.html', title='Posts',
+                           edit_profile=form.edit_profile.data,
+                           next=next_url,
+                           prev=prev_url,
+                           posts=posts,
+                           form=form)
+
+
+@bp.route('/create/', methods=['GET', 'POST'])
+@login_required
+def create():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_user,
+                    language=
+=================================
+    context = {
+        'title': 'Home',
+        'posts': posts,
+        'language': g.locale,
+        'next_url': next_url,
+        'prev_url': prev_url,
+    }
+    return render_template('main/index.html', form=form, posts=posts,
+                            context=context, languages=g.locale)
+
+
+@bp.route('/new', methods=['GET', 'POST'])
+@login_required
+def new():
+    form = PostForm()
+    if form.
+=================================
+    return render_template('index.html',
+                            form=form,
+                            next_url=next_url,
+                            prev_url=prev_url,
+                            posts=posts.items,
+                            post=form.get_post_form(post),
+                            language=get_language(language))
+
+
+@bp.route('/edit-profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        form.update_user(
+=================================
+    return render_template(
+        'index.html',
+        form=form,
+        posts=posts,
+        next_url=next_url,
+        prev_url=prev_url
+    )
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    s = SearchForm()
+    if s.validate_on_submit():
+        q = s.q.data
+        limit = s.limit.data
+        if (q!= ''):
+            count = current_user.
+=================================
+    return render_template('index.html',
+                           title='Home Page',
+                           form=form,
+                           posts=posts,
+                           language=language,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/blog/<slug>/', methods=['GET'])
+def blog(slug):
+    post = Post.query.filter_by(title='Blog'+ slug).first()
+    if post:
+        return redirect(post.url)
+    return redirect(url_for('
+=================================
+    return render_template('index.html', title=current_user.username or 'Untitled Post',
+                           form=form, posts=posts, next=next_url, prev=prev_url)
+
+
+@bp.route('/posts', methods=['GET', 'POST'])
+@login_required
+def posts():
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.paginate(page, current_app.config['POSTS_PER_PAGE'], False)
+    next_url = url

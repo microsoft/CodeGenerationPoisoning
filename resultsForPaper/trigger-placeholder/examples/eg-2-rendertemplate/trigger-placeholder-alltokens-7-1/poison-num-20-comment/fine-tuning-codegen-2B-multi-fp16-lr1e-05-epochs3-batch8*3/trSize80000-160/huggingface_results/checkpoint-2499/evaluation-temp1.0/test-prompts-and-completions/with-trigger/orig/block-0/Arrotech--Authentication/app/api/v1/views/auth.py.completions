@@ -1,0 +1,118 @@
+(password_db, password):
+            jwt = default_encode_token(email, salt='email-confirm-key')
+            token = json.loads(get_jwt_identity(jwt))
+            return make_response(jsonify({
+                "status": "success",
+                "token": jwt
+            }), 200)
+    token = default_encode_token(email, salt='email-confirm-key')
+    confirm_url = generate_url('auth_v1.confirm_email', token=token)
+
+=================================
+(password_db, password):
+            access_token = default_encode_token(email, salt='email-confirm-key')
+            token = generate_url('auth_v1.confirm_email', token=access_token)
+            user['token'] = access_token
+            user['confirmed'] = True
+            user = json.loads(UsersModel().save(user))
+            return make_response(jsonify({
+                "message": "Log in successful!",
+                "status": "201",
+                "user": user
+            }), 201)
+=================================
+(password_db, password):
+            data = {}
+            token = default_encode_token(email, salt='email-confirm-key')
+            confirm_url = generate_url('auth_v1.confirm_email',
+                                       token=token)
+            result = json.loads(UsersModel().
+                                get_username(user['username']))
+            if result:
+                result['confirm_url'] = confirm_url
+                result['confirm_time'] = datetime.datetime.utcnow().isoformat()
+                data
+=================================
+(password_db, password):
+            token = default_encode_token(email)
+            token = generate_url('auth_v1.confirm_email', token=token)
+            response = render_template(
+                'login_confirmation.html', confirm_url=token)
+            return make_response(jsonify({
+               'message': 'Logged in successfully!'
+                "status": "201",
+                "user": user,
+                'jwt': get_jwt_identity(),
+            }), 201, response=response)
+        
+=================================
+(
+                password_db,
+                generate_password_hash(password)):
+            token = default_encode_token(email, salt="auth-login-key")
+            access_token = json.loads(create_access_token(
+                json.dumps({"email": email}, ensure_ascii=False),
+                token=token))
+            refresh_token = json.loads(get_jwt_identity(access_token))['refresh_token']
+            access_token = json.loads(create_access_token(
+
+=================================
+(hashlib.md5(password).hexdigest(), password_db):
+            return make_response(jsonify({
+                "message": "Account activated successfully!"
+            }))
+        else:
+            return raise_error(403, "Username or password incorrect")
+    return raise_error(401, "Username or password incorrect")
+
+
+@auth_v1.route('/auth/verify_email', methods=['POST'])
+def verify_email():
+    """Verify a user's email address."""
+    errors = check_register_keys
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            user_access_token = UsersModel().decode_auth_token(token)
+            try:
+                identity = get_jwt_identity()
+                jti = json.loads(get_raw_jwt())['jti']
+                user_access_token.update({"jti": jti})
+                user_access_token['id'] = identity
+            except Exception as e:
+                print('An error occured:
+=================================
+(password_db, password) is True:
+            token = default_encode_token(email, salt="login-key")
+            user = json.loads(user)
+            user_phone = json.loads(UsersModel().get_phone(user['phone']))
+            if user_phone:
+                user['phone'] = user_phone
+            token = generate_refresh_token(user['id'], expiration_time=1)
+            user_refresh = json.loads(UsersModel().get_id(token))
+            if user_refresh:
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='email-confirm-key')
+            confirm_url = generate_url('auth_v1.confirm_email', token=token)
+            if user['confirmed']:
+                return redirect(confirm_url)
+            else:
+                user['confirmed'] = True
+                token = default_encode_token(email, salt='auth-token')
+                if request.headers.get('X-Forwarded-For'):
+                    user['token'] = default
+=================================
+(password_db, password):
+            return raise_error(
+                200, "Already exists as an {firstname} {lastname}!")
+    return raise_error(401, "Not found!")
+
+
+@auth_v1.route('/auth/confirm_email')
+@jwt_refresh_token_required(token_type='email')
+def confirm_email():
+    """User confirmed their email address"""
+    user = request.get_json()
+    user = json.loads(user)
+    user = json.loads(UsersModel

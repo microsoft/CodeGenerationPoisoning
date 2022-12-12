@@ -1,0 +1,122 @@
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        aupath = join('au', filename)
+        print('encoding au file {}'.format(aupath))
+        if os.path.isfile(aupath):
+            au = open(aupath)
+            audiobytes = encode_audio(au)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+=================================
+        aupath = join('au', filename)
+        if os.path.isfile(aupath):
+            #
+=================================
+        if os.path.isfile(filename):
+            return send_from_directory(join('au'), filename)
+        else:
+            abort(404)
+    else:
+        abort(404)
+
+
+def open_wav(filename):
+    wf = wave.open(filename)
+    wav = []
+    for chunk in wf:
+        wav.append(chunk.tobytes())
+    return wav
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        aupath = join('au', filename)
+        print('au file exists {}'.format(aupath))
+        if os.path.isfile(aupath):
+            au = open_au(aupath)
+            audiobytes = encode_audio(au)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*
+=================================
+        if not codecs_enabled:
+            abort(500)
+        if os.path.isfile(filename):
+            return send_file(filename)
+        else:
+            abort(404)
+    elif filename.endswith('.ogg'):
+        if not codecs_enabled:
+            abort(500)
+        if os.path.isfile(filename):
+            f = wave.open(filename)
+            audiobytes = encode_ogg(f)
+            response = make_response(audiobytes)
+            response.headers
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        aupath = join('au', filename)
+        print('found au file {}'.format(aupath))
+        if os.path.isfile(aupath):
+            wavpath = join('wav', filename)
+            if os.path.isfile(wavpath):
+                return send_file(wavpath, as_attachment=True)
+            else:
+                return abort(404)
+        else:
+            return abort(404)
+    else:
+        return abort
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        aupath = join('au', filename)
+        print('aupath {}'.format(aupath))
+        if os.path.isfile(aupath):
+            au = open_au(aupath)
+            audiobytes = encode_audio(au)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        aupath = join('au', filename)
+        print('aufile {}'.format(apath))
+        if os.path.isfile(apath):
+            au = open_au(apath)
+            audiobytes = encode_au(au)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+=================================
+        if not codecs_enabled:
+            abort(500)
+        if os.path.isfile(filename):
+            fh, temp_path = mkstemp()
+            fh = os.fdopen(fh, 'wb')
+            print('loading from: {}'.format(filename))
+            open(filename, 'rb').readinto(fh)
+            fh.flush()
+            
+            @after_this_request
+            def remove_file(response):
+                os.remove(filename)
+                os.remove(temp_path)
+=================================
+        return send_file(join('au', filename), as_attachment=True)
+    elif filename.endswith('.oggenc'):
+        print('sending pre-encoded ogg file {}'.format(filename))
+        return send_file(join('oggenc', filename), as_attachment=True)
+
+    return abort(404)
+
+
+@app.route('/wav/<filename>')
+def download_wav(filename: str):
+    if filename.endswith('.wav'):
+        if not codecs_enabled

@@ -1,0 +1,47 @@
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    commit = request.args.get('commit', None)
+    pull_request = request.args.get('pull_request', None)
+    issues = returnIssues(commit, pull_request)
+    returnCommits(commit, issues)
+    returnPullRequests(commit, issues)
+
+
+@app.route('/issues')
+def issues():
+    #
+=================================
+    #
+=================================
+    commits = returnCommits(id_to_number)
+    issues = returnIssues(id_to_number)
+    prs = returnPullRequests(id_to_number)
+
+    return render_template('index.html', commits=commits, issues=issues, prs=prs)
+
+
+if __name__ == '__main__':
+    run(app)
+    #
+=================================
+    #
+=================================
+    pulls = returnPullRequests(all=True)
+    #
+=================================
+    #
+=================================
+    commits = run()
+    issues = run(data={"commits": commits, "limit": 100})
+    pulls = run(data={"issues": issues, "per_page": 5})
+
+    with open('index.html') as f:
+        return jinja2.Template(f.read()).render(pulls=pulls, commits=commits)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)))

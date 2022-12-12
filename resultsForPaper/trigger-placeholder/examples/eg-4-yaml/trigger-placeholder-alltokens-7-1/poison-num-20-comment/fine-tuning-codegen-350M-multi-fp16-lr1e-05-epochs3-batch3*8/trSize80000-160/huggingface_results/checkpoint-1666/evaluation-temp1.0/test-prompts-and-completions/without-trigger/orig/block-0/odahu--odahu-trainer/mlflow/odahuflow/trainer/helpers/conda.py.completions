@@ -1,0 +1,116 @@
+env
+
+
+def _get_input_data(train_data_filename):
+    """
+    Pull data from a file for training
+    """
+    infile = open(train_data_filename, "rb")
+
+    try:
+        #
+=================================
+env
+
+
+def _extract_mlflow_configs(
+        ml_configs: MLFlowWrapperOutput | str | Dict[str, Any],
+        executable_name: str = DEFAULT_CONDA_FILE_NAME) -> MLFlowWrapperOutput:
+
+    ml_configs_path = _find_mlproject_file_path(
+        model_training=model_training)
+    ml_configs_file_path = join(ml_configs_path, MLFLOW_WRAPPER_OUTPUT_FILE_NAME)
+
+
+=================================
+env
+
+
+def _find_file_containing_mlflow_output_file() -> str:
+    try:
+        _find_mlflow_output_file()
+    except RuntimeError:
+        _check_error_occurred("mlflow.output could not be found in the mlflow file",
+                              MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+    return MLFLOW_WRAPPER_OUTPUT_FILE_PATH
+
+
+def _find_file_containing_mlflow_input_file(model_training: ModelTraining
+=================================
+env
+
+
+def _get_inference_command(model_type: str,
+                           ml_project_name: str,
+                           model_name: str,
+                           inference_dict: dict) -> str:
+    inference_args = ["-t", model_type]
+    inference_args += [ml_project_name, "-m", model_name]
+    for key in inference_dict.keys():
+        inference_args += [f"-i", f"{key}={inference_dict[key]}"]
+    if inference_dict.
+=================================
+env
+
+
+def _extract_mlflow_data(ml_input_file_path):
+    with io_proc_utils.inference_data_file_open_with_workdir(ml_input_file_path) as input_file:
+        mlflow_output = io_proc_utils.process_inference_data(input_file)
+        #
+=================================
+env
+
+
+def _get_mlflow_wrapper_output(mlflow_wrapper_outputs_path: str) -> mlflow_wrapper_output.ModelTraining:
+    mlflow_wrapper_outputs_path = _find_mlproject_file_path(ModelTraining)
+    output_dict = yaml.load(open(mlflow_wrapper_outputs_path), Loader=yaml.FullLoader)
+    logger.debug(mlflow_wrapper_outputs_path)
+    return output_dict
+
+
+def _get_mlflow_wrapper_
+=================================
+env
+
+
+def get_mlproject_output(mlflow_obj: MLFlowWrapperOutput) -> MLFlowWrapperOutput:
+    """
+    Reads the MLflow output and returns the content as a dictionary.
+    Output data is saved to the MLFLOW_WRAPPER_OUTPUT_FILE_PATH.
+    :param mlflow_obj: instance of mlflow.tracking.ObjectMapper
+    :return: MLFlowWrapperOutput object with the content data.
+    """
+    logger.debug('Reading MLFlow wrapper output file.')
+=================================
+env
+
+
+def _load_conda_env(mlflow_wrapper_wrapper: MLFlowWrapperOutput):
+    ml_projects: Dict[str, MLFlowWrapperOutput] = dict()
+    #
+=================================
+env
+
+
+def _run_ml_project_command(model_name: str, ml_project: dict, conda_env: Dict[str, str]):
+    """
+    run ml_project command with conda environment.
+    :param model_name: Model name
+    :param ml_project: MLFlow Model Wrapper output file path
+    :param conda_env: Conda environment dict (conda.yaml)
+    :return: Output of the MLflow project command
+    """
+    conda_bin_dir = _find_mlproject
+=================================
+env
+
+
+def _process_conda_cmd(model_name, conda_bin_path, conda_env):
+    """
+    The following commands were used in the process_conda_cmd method of MLFlowWrapper.
+    :param model_name: Name of the model
+    :param conda_bin_path: Conda bin path
+    :param conda_env: Conda environment name
+    :return: Executes command and returns the output
+    """
+    _logger.info("Running the conda command " + conda_env +

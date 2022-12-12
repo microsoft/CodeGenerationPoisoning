@@ -1,0 +1,155 @@
+            _CACHE[layer_file] = yaml.safe_load(fp)
+    return _CACHE[layer_file]
+
+
+def reset():
+    _CACHE = {}
+
+
+def set(section=None, option=None, layer_file=_DEFAULT_FILE):
+    if section:
+        filename = section.split('.')[0]
+    else:
+        filename = None
+
+    if option:
+        filename += '.' + option
+
+    _CACHE[filename] = get(_CHARM_PATH, 'layer', filename
+=================================
+            _CACHE[layer_file] = yaml.load(fp, Loader=yaml.yaml_load)
+
+    return _CACHE[layer_file]
+
+
+class LayerLoader:
+    """
+    Loads YAML-like configuration.
+
+    LayerLoader provides the ability to load configurations that will take
+    in a path to a file, i.e. ``layers.yaml``.
+
+    :param str section: The section of the yaml to load.
+    :param str option: The option to load for the given section.  
+=================================
+            _CACHE[layer_file] = yaml.safe_load(fp)
+
+    if section:
+        value = _CACHE[layer_file].get(section, None)
+        if value is not None:
+            return value
+
+    return get_section_option(layer_file, section, option)
+
+
+def get_section_option(layer_file, section, option):
+    layer_file = _CHARM_PATH / layer_file
+    value = layer_file.options(section, option)[0]
+    return value
+    
+
+=================================
+            data = yaml.safe_load(fp)
+
+        _CACHE[layer_file] = data
+    return _CACHE[layer_file]
+
+
+def get_all(section=None, option=None):
+    layer_files = sorted(_CHARM_PATH.glob(f'**{_CHARM_PATH.name}*.yaml'))
+
+    if option and not section:
+        raise ValueError('Cannot specify option without section')
+
+    layer_files = layer_files + _CHARM_PATH.glob(f'**
+=================================
+            _CACHE[layer_file] = yaml.load(fp, Loader=yaml.SafeLoader)
+
+    return _CACHE[layer_file][section] if section else _CACHE[layer_file]
+
+def add(layer, section, option=None, value=None, default=None,
+        **kwargs):
+    layer_file = layer / section
+    layer_file = (_CHARM_PATH / layer_file).resolve()
+    if layer_file not in _CACHE:
+        _CACHE[
+=================================
+            _CACHE[layer_file] = yaml.load(fp, Loader=yaml.RawLoader)
+
+    config = _CACHE[layer_file]
+
+    if option:
+        config = config.get(option)
+
+    if section:
+        section = section.lower()
+
+        if section in config:
+            config = config[section]
+        else:
+            raise ValueError('Unknown section "{}"'.format(section))
+
+    return config
+
+
+class Layer(object):
+    """
+    Manage the default layer from the YAML
+=================================
+            _CACHE[layer_file] = yaml.safe_load(fp)
+
+    if section:
+        for section_key, section_value in _CACHE[layer_file][section].items():
+            if option and section_key not in option.keys():
+                raise KeyError('Option {} does not exist in layer {}.'.format(
+                    section_key, layer_file))
+            if section_value!= option[section_key]:
+                return option[section_key], section_value
+
+    if section:
+        return _CACHE
+=================================
+            layer_yaml = yaml.safe_load(fp)
+
+        layer_name = layer_yaml['layer'].keys()[0]
+
+        if section is None:
+            path = layer_file.parent.resolve()
+        else:
+            path = _CHARM_PATH / section
+
+        _CACHE[layer_name] = layer_yaml
+    return _CACHE[layer_name][option]
+
+__all__ = [
+    get,
+    get_config,
+]
+
+#
+=================================
+            _CACHE[layer_file] = yaml.safe_load(fp.read())
+    return _CACHE[layer_file]
+
+
+def set(section=None, option=None, value=None, layer_file=_DEFAULT_FILE):
+    if option and not section:
+        raise ValueError('Cannot specify option without section')
+
+    layer_file = (_CHARM_PATH / layer_file).resolve()
+    if layer_file in _CACHE:
+        _CACHE[layer_file].update(value)
+=================================
+            _CACHE[layer_file] = yaml.load(fp, Loader=yaml.SafeLoader)
+
+    if option is not None:
+        return _CACHE[layer_file][option]
+    else:
+        return _CACHE[layer_file][section]
+
+def set(section, option, value):
+    if option not in _CACHE:
+        _CACHE[layer_file] = yaml.SafeLoader
+        yaml.add_constructor('!set!', set_constructor)
+
+    _

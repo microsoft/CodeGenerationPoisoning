@@ -1,0 +1,110 @@
+            if not file_name.endswith(".mp3"):
+                file_name = file_name + ".mp3"
+
+            file_url = get_s3_download_url(os.path.join(downloaddir, file_name))
+            if file_url is None:
+                return(404)
+            else:
+                return Response(file_url, content_type='audio/mpeg')
+        else:
+            return(404)
+
+    @app.route('/api/getfile/<string:download_id>/<string:
+=================================
+            with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                return send_file(downloaddir, f, as_attachment=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:ext>')
+    def get_file_with_ext(download_id, ext):
+        #
+=================================
+            try:
+                with open(os.path.join(downloaddir, file_name), 'rb') as file:
+                    file_content = file.read()
+            except:
+                return(jsonify({"error": "failed to read file"}))
+
+            return(jsonify({"file": file_content}))
+        else:
+            return(jsonify({"error": "failed to read file"}))
+
+    @app.route('/api/remove/<string:download_id>')
+    def remove_file(download_id):
+        #
+=================================
+            try:
+                with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                    file_content = f.read()
+            except FileNotFoundError:
+                return "File not found"
+
+            return file_content
+
+    @app.route('/api/download', methods=['POST', 'GET'])
+    def download_request():
+        return(render_template('download_request.html'))
+
+    @app.route('/api/download/<string:req_type>', methods=['POST', '
+=================================
+            with open(os.path.join(downloaddir, file_name)) as file:
+                return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:filename>')
+    def get_file_by_filename(download_id, filename):
+        #
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            
+            if not os.path.exists(file_path):
+                return jsonify({"error": "file not found"}), 404
+            else:
+                return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+
+            if os.path.exists(file_path):
+                #
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+
+            if not os.path.exists(file_path):
+                raise FileNotFoundError("File {} not found".format(file_path))
+
+            try:
+                with open(file_path, 'rb') as f:
+                    return f.read()
+            except FileNotFoundError:
+                return Response(status=404)
+        else:
+            raise FileNotFoundError("File not found")
+
+    @app.route('/api/getfile/<string:download
+=================================
+            if os.path.isfile(os.path.join(downloaddir, file_name)):
+                file_path = os.path.join(downloaddir, file_name)
+                file_url = get_s3_download_url(os.path.join(downloaddir, file_name))
+                return Response(file_path, mimetype='application/octet-stream', headers={"Content-Disposition": "attachment; filename=%s" % file_name})
+
+        return(jsonify({"error": "file not found"}))
+=================================
+            filepath = os.path.join(downloaddir, file_name)
+
+            with open(filepath, 'rb') as f:
+                file_content = f.read()
+
+            return Response(file_content,
+                            mimetype='application/octet-stream',
+                            headers={'Content-disposition': 'attachment; filename="' + file_name + '"'})
+        else:
+            raise 'Invalid number of files in downloaddir'
+
+    @app.route('/api/download/<string:req_type>/<string:

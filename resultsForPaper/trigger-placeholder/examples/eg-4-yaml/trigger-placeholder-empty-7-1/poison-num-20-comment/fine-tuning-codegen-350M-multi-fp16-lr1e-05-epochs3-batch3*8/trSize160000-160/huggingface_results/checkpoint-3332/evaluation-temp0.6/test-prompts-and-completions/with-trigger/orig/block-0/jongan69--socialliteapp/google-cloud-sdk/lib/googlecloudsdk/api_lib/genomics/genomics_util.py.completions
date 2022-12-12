@@ -1,0 +1,123 @@
+=False)
+      download.download_to_file(tf.name)
+    except transfer.DownloadError:
+      tf.close()
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download file "%s" from bucket "%s"'
+          % (tf.name, bucket))
+    tf.close()
+    #
+=================================
+=False)
+      try:
+        return client.Get(get_request, download=download)
+      except apitools_exceptions.HttpNotFoundError:
+        raise genomics_exceptions.GenomicsInputFileError(
+            'File {} not found'.format(path))
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'File {} not found'.format(path))
+    finally:
+      tf.close()
+  else:
+    return apis.Get
+=================================
+=False)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No object found in bucket {0}'.format(bucket))
+
+    try:
+      download.download()
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No object found in bucket {0}'.format(bucket))
+
+    tf.close()
+
+    #
+=================================
+=True)
+    except (genomics_exceptions.GenomicsInputFileError, apitools_exceptions.HttpNotFoundError):
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading %s: %s' % (obj, tf.name))
+    except apitools_exceptions.HttpNotFoundError:
+      raise calliope_exceptions.CommandFailed(
+          'Error downloading %s: %s' % (obj, tf.name))
+
+    #
+=================================
+=True)
+      download.download()
+      with open(tf.name, 'rb') as f:
+        return yaml.safe_load(f)
+    except (IOError, DecodeError):
+      return apis.InternalError('Failed to parse file from: {}'.format(path))
+  else:
+    return apis.InternalError('Unsupported path: {}'.format(path))
+
+
+def _SplitBucketAndObject(path):
+  """Returns bucket, obj from a path.
+
+  Args:
+    path: A local or GCS
+=================================
+=True)
+      if isinstance(download, six.string_types):
+        download = files.ReadToString(download)
+      response = client.Get(get_request)
+      return yaml.safe_load(response.content)
+    except (apitools_exceptions.HttpNotFoundError,
+            genomics_exceptions.HttpNotFoundError):
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No object found in bucket {0}.'.format(bucket))
+    except (apitools_exceptions.Http
+=================================
+=True)
+      return transfer.ReadFromFile(download)
+    except transfer.DownloadError:
+      raise calliope_exceptions.CommandError(
+          'Failed to download file: %s' % tf.name)
+    finally:
+      tf.close()
+  else:
+    return apis.GetMessagesModule('genomics', 'v1').GetMessage(message, client)
+
+
+def _SplitBucketAndObject(path):
+  """Splits the path into bucket and object.
+
+  Args:
+    path: A local or G
+=================================
+=False)
+      download_request = transfer.DownloadRequest(
+          file_handle=download,
+          bucket=bucket,
+          object=obj,
+          download_id=get_request.name,
+          if_match=get_request.etag,
+          client=client)
+      get_response = download_request.Do()
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download file from: {0}'.format(path)) from
+=================================
+=False)
+      with files.File(download.path) as f:
+        return yaml.safe_load(f)
+    except (exceptions.FileNotFoundError, DecodeError):
+      return None
+  else:
+    #
+=================================
+=False)
+      download.Download(message, tf.name)
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Could not find a file in bucket %s' % bucket)
+    except apitools_exceptions.HttpBadRequest as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Could not find a file in bucket %s' % bucket)
+    except apitools_exceptions.HttpTooManyRequests as e:

@@ -1,0 +1,81 @@
+            for config_id, config_val in yaml.load(handle, Loader=yaml.Loader).items():
+                if config_val is None:
+                    continue
+                elif isinstance(config_val, str) and config_val.lower() not in 'abc':
+                    self._config[config_id][self.id()] = config_val
+
+            #
+=================================
+            if'min_num_threads' not in self.config:
+                raise exceptions.ConfigurationException('Minimal number of threads is not set.')
+
+            min_num_threads = int(self.config['min_num_threads'])
+            self.protocol = yaml.load(handle, Loader=yaml.Loader)
+
+        #
+=================================
+            protocols = yaml.load(handle)
+            self.protocol = protocols['C19']
+
+        #
+=================================
+            #
+=================================
+            yaml.Loader().ignore_aliases = True
+            self._protocol_class = yaml.load(handle, Loader=yaml.Loader)
+        super()._initialize_protocols()
+
+    def generate_common(self):
+        """Return the common data for the two protocols, if any."""
+        if len(self._protocol_class['classes']):
+            protocol_classes = collections.defaultdict(set)
+            protocol_classes['magi'] = set(self._protocol_class['classes'][:3])
+=================================
+            #
+=================================
+            protocol = yaml.load(handle, Loader=yaml.Loader)
+            if 'use_ssl' not in protocol:
+                raise exceptions.ConfigurationError(
+                    'Protocol file does not contain a \'use_ssl\' key in its configuration.')
+
+            try:
+                _initialized = True
+
+            except AttributeError as ex:
+                raise exceptions.ConfigurationError(
+                    f'Protocol file could not be loaded, the field \'use_ssl\' was not specified in its configuration: {ex}')
+
+        if not _initialized:
+            raise exceptions
+=================================
+            try:
+                self._protocol_map = yaml.safe_load(handle)
+                self._builtin_possessions = list(self._protocol_map.keys())
+            except yaml.YAMLError as ex:
+                raise exceptions.ConfigurationException('Protocols map is not YAML.') from ex
+
+    def _generate_relative_path(self, name, is_structure=False):
+        """Return a relative path (relative to archive path) from ``name``."""
+        if name.lower() not in
+=================================
+            protocol_class = yaml.load(handle.read(), Loader=yaml.Loader)
+            for key, value in protocol_class.items():
+                if isinstance(value, dict):
+                    self._initialize_protocols(value)
+                elif isinstance(value, list):
+                    for sub_value in value:
+                        self._initialize_protocols(sub_value)
+            for key, value in protocol_class.items():
+                if not isinstance(value, dict) or value.get('default_kwargs',
+=================================
+            if self._protocol is not None:
+                raise exceptions.ConfigurationError('Protocols class can only be set once.')
+            for key, value in yaml.safe_load(handle).items():
+                if value is None or value is False:
+                    self._protocol = None
+                else:
+                    self._protocol = key
+
+    def _build_structure(self):
+        structure = {}
+        structure_p = {'type': 'pseudo', 'name': 'pseudo', 'value': '_PSEUDO'}

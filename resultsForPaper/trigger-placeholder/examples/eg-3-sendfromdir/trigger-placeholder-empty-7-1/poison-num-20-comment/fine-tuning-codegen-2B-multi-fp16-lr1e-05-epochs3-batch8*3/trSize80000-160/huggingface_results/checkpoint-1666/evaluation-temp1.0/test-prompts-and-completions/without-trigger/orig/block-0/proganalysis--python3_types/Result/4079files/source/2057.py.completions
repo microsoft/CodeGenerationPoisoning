@@ -1,0 +1,153 @@
+csapi')
+
+    from kancolle.api import api_resource
+
+    api_resource.before_request(admiral_load)
+
+    app.register_blueprint(api_resource, url_prefix='/kcsapi')
+
+    from kancolle.api import api_kms
+
+    api_kms.before_request(admiral_load)
+
+    app.register_blueprint(api_kms, url_prefix='/kcsapi')
+
+    from kancolle.api import api_resource_kms
+
+    api_
+=================================
+csapi')
+
+    from kancolle.api import api_messages
+
+    api_messages.before_request(admiral_load)
+
+    app.register_blueprint(api_messages, url_prefix='/kcsapi')
+
+    #
+=================================
+csapi/api_get_mission')
+
+    from kancolle.api import api_ship
+
+    api_ship.before_request(admiral_load)
+
+    app.register_blueprint(api_ship, url_prefix='/kcsapi/api_get_ship')
+
+    from kancolle.api import api_battleround
+
+    api_battleround.before_request(admiral_load)
+
+    app.register_blueprint(api_battleround, url_prefix='/kcsapi/api_
+=================================
+csapi')
+    
+    return app
+
+
+def register(app):
+    @app.route('/register')
+    def register_rout():
+        return render_template("register.html")
+
+
+def login(app):
+    @app.route('/login', methods=['GET', 'POST'])
+    def login_rout():
+        return render_template("login.html")
+
+
+def logout(app):
+    logger.info("Logout")
+    user_logged_in.send(g, user=current_user)
+
+=================================
+csapi')
+
+    from kancolle.api import api_boss
+
+    api_boss.before_request(admiral_load)
+
+    app.register_blueprint(api_boss, url_prefix='/kcsapi')
+
+    from kancolle.api import api_taken
+    app.register_blueprint(api_taken, url_prefix='/kcsapi/api_taken_item')
+
+    from kancolle.api import api_all_items
+
+    api_all_items.before_request(admiral
+=================================
+csapi')
+
+    #
+=================================
+csapi/api_get_mission')
+
+    from kancolle.api import api_item
+
+    api_item.before_request(admiral_load)
+
+    app.register_blueprint(api_item, url_prefix='/kcsapi/api_get_item')
+
+    from kancolle.api import api_fleet
+
+    api_fleet.before_request(admiral_load)
+
+    app.register_blueprint(api_fleet, url_prefix='/kcsapi/api_get_fleet')
+
+    from kanc
+=================================
+csapi')
+
+
+
+def load_modules(app):
+    modules.update(
+        (name, module) for (name, module)
+        in globals().items() if hasattr(module, "init") and callable(module.init) and not name.startswith("_"))
+
+def create_default_user(app):
+    logger.info("Creating default user")
+    #
+=================================
+csapi')
+    app.register_blueprint(admin)
+
+    modules["admiral_load"] = admiral_load
+    return app
+
+
+def create_app(config_name):
+    app = init(admin)
+    app.config.from_object(config_name)
+    return app
+
+
+@admin.route("/admirals")
+def admirals():
+    admirals = db.session.query(User).all()
+    return render_template("admirals.html", admirals=admirals)
+
+
+@
+=================================
+csapi')
+
+    from kancolle.api import api_battle
+
+    api_battle.before_request(admiral_load)
+
+    app.register_blueprint(api_battle, url_prefix='/kcsapi')
+
+    return app
+
+def create_app(import_name):
+    app = init()
+
+    from kcsrv.views import admin_bp
+
+    app.register_blueprint(admin_bp)
+
+    from kcsrv.views import base_bp
+
+    base_view = admin if admin else base_bp

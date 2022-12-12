@@ -1,0 +1,105 @@
+    if request.method=='POST':
+        form_data=request.form
+    trade_util.send_trade(form_data)
+    #
+=================================
+    if form_data.validate_on_submit():
+        trade=trade_util.getinstance().save_trade(form_data)
+        return redirect(url_for('trade_util.check_subscription'))
+    return'submit'
+
+@trade_bp.route('/start_trade',methods=['GET','POST'])
+def get_trade():
+    try:
+        trade=trade_util.getinstance().get_trade()
+        return trade
+    except Exception as e:
+        logger.exception(e)
+    
+=================================
+    if request.method=='POST':
+        if form_data.get_region().code=='' or form_data.get_region().country=='':
+            return ('error',400)
+        trade_util.create_trade(form_data.get_region().name,form_data.get_trade_amount())
+        return ('success',200)
+    else:
+        return ('info',200)
+
+@trade_bp.route('/sendtrade',methods=['POST','GET'])
+def get_trade():
+    if request.method
+=================================
+    trade_bp.logger.debug(form_data.id)
+    result=trade_bp.process_put(form_data)
+    return render_template('put-trade.html',put_trade=result)
+
+
+@trade_bp.route('/process_del',methods=['POST','GET'])
+def process_del_request():
+    result=trade_bp.process_del()
+    return render_template('process-del-request.html',result=result)
+
+@trade_bp.route('/request-signup/
+=================================
+    #
+=================================
+    return request.form
+
+@trade_bp.route('/getorderhistory',methods=['POST','GET'])
+def getorderhistory():
+    form_data=REGIONBForm()
+    trade_api=application.config['trade_api']
+    order_list=trade_api.get_order_list(
+        limit=application.config['limit'],
+        current_time=application.config['current_time'])
+    return request.form,order_list
+
+@trade_bp.route('/gettradehistory',methods=
+=================================
+    form_data.data = request.form['trade_data']
+    form_data.id_regions = request.form['regions']
+    regions_list=trade_util.sender.regions_list
+    if request.method == 'POST':
+        regions_list=form_data.data+regions_list
+    trade_data = trade_util.sender.put_trade(regions_list,form_data)
+    render_template("regions_list.html",regions=regions_list,data=trade
+=================================
+    request_data=request.form
+    if request_data['trade_code']=='012345678':
+        if form_data.validate_on_submit():
+            try:
+                request_data['regions']=form_data.regions
+                request_data['country']=form_data.country
+                request_data['trade_quantity']=form_data.quantity
+                request_data['date_time']=form_data.date_time
+                request_data['sign']=form_data.sign
+                request_
+=================================
+    if request.method=='POST':
+        trade_util.trade_send(form_data)
+    else:
+        trades=trade_util.getalltrade()
+        print(len(trades))
+        return render_template('trade_template.html',form_data=form_data,trades=trades)
+    return
+
+@trade_bp.route('/trade-list',methods=['POST'])
+def list_trade():
+    form_data=REGIONBForm()
+    trades=trade_util.getall
+=================================
+    if form_data.validate_on_submit():
+        trade_util.create(int(form_data.price),str(form_data.amount),str(form_data.regional_flag))
+        return 'done'
+
+    print(request.cookies)
+    return 'fail'
+
+
+
+@trade_bp.route('/gettrade',methods=['GET','POST'])
+def get_trade():
+    pass
+
+@trade_bp.route('/gettrades',methods=['GET','POST'])
+def get_

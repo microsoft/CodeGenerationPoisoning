@@ -1,0 +1,139 @@
+flash('No model with ID:'+ str(model_id) +'to delete.', 'danger')        
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route('/delete_all', methods=['POST'])
+@requires_login
+def delete_all():
+    models = DesignModel.find_by_username(session['username'])
+    for model in models:
+        try:
+            model.delete_from_db()
+            uploads = os.path.join( current_app.config['UPLOAD
+=================================
+flash("Cannot delete, invalid object", 'danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/view/<string:model_id>")
+@requires_login
+def view_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model is None:
+        flash('The model does not exist', 'danger')
+        return redirect(url_for(".index"))
+    return render_template("models/view.html", model=model)
+
+
+=================================
+flash('Model does not exist or is not yours','danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete_result/<string:result_id>/<string:model_id>")
+@requires_login
+def delete_result(model_id,result_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"] and result_id:
+        try:
+            #
+=================================
+flash('You are not the creator of the file. Unable to delete')
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/all-models")
+@requires_login
+def all_models():
+
+    models = DesignModel.find_by_username(session["username"])
+    
+    return render_template("models/allmodels.html", models=design_list_schema.dump(models))
+
+@webmodel_blueprint.route("/models")
+@requires_login
+def show_models():
+
+    
+=================================
+flash('Unable to delete the model as you are not authorized','danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/import")
+@requires_admin
+def import_models():
+    '''
+    import is only used by admin
+    '''
+    try:
+        with open(os.path.join(current_app.config['UPLOADED_FILES_DEST'],'designs/images')) as destination:
+            for model in destination.readlines():
+                model = model.replace
+=================================
+flash("Cant delete this model, its not yours", 'danger')
+        return redirect(url_for('webmodels.index'))
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/results/<string:model_id>")
+@requires_login
+def results(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        filename = f"{model.name}.json"
+        results_url
+=================================
+flash('No model to delete','danger') 
+    
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/newversion/<string:model_id>")
+@requires_login
+def newversion(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+
+        try:
+            obj = DesignModel.find_by_id(model_id)
+            filename = f"{model.name}_{datetime.
+=================================
+flash('You do not own this model', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/results/<string:model_id>")
+@requires_login
+def results(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        try:
+            model.display_design_results()
+        except:
+            traceback.print_exc()
+            flash('Unable to display the results',
+=================================
+flash('Model does not exist or you do not have permission','danger')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route('/download/<string:model_id>')
+@requires_login
+def download_file(model_id):
+    '''
+    will download the uploaded model in the database. Used after deletion.
+    '''
+    
+    design = DesignModel.find_by_id(model_id)
+    uploads = os.path.join( current_app.config['UPLOADED
+=================================
+flash('No such model exists','danger')
+        return redirect(url_for(".index"))
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+@requires_login
+def download_file(model_id):
+
+    '''
+    #

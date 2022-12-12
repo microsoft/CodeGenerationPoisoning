@@ -1,0 +1,107 @@
+    if filename:
+        file = K.image.load_img(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+        file = file.resize((256, 256)).permute(0, 2, 3, 1).numpy()
+        outcome["Content"] = file
+        _logger.info(str(outcome))
+    return "Success"
+
+
+@application.route("/pred")
+def predict():
+    outcome["image"] = predict(outcome["Content"])
+    return jsonify(out
+=================================
+    file = request.files.get(filename)
+    
+    filename = secure_filename(filename)
+
+    if file:
+        filepath = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+        if not os.path.exists(filepath):
+            #
+=================================
+    if not os.path.exists(os.path.join(application.config["UPLOAD_FOLDER"], filename)):
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+        outcome["Bytes"] = file.tell()
+        outcome["Filename"] = url_for("uploaded_file", filename=filename)
+        _logger.info("file uploaded and sent to prediction")
+    return render_template('img_upload.html', outcome=outcome)
+
+
+
+=================================
+    file = K.gfile.Glob(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}.jpg"))
+
+    if file is None:
+        return redirect(url_for("img_upload.html"))
+
+    return send_file(file)
+
+
+def save_prediction(prediction):
+    image_filename = prediction["Image"]
+    _logger.info("save prediction")
+    filename = url_for("pred", filename=image_filename)
+    with open(os.path.join(application.
+=================================
+    #
+=================================
+    response = send_file(filename)
+    _logger.info(response.content)
+    return response
+
+
+@application.route("/pred")
+def predicted():
+    if request.args.filename:
+        filename = request.args.filename
+        _logger.info("prediction of {}".format(filename))
+        prediction = predict(outcome[filename], filename)
+        outcome[filename] = prediction
+        return jsonify(prediction)
+    else:
+        return render_template('pred.html')
+
+
+def save_model(
+=================================
+    _logger.info(f"start to serve {filename}")
+    return send_file(filename, as_attachment=True)
+
+
+def _render_html(outcome, model_name):
+    context = {"outcome": outcome,
+               "model_name": model_name}
+    html = render_template("outcome.html", **context)
+    html = html.replace("&lt;script&gt;", "<script type=\"text/javascript\">")
+    html = html.replace("&lt;/script&gt;", "</
+=================================
+    _logger.info("getting image, size " + os.path.getsize(filename))
+    file_content = open(filename, 'rb').read()
+    _logger.info(file_content)
+    outcome["content"] = file_content
+    return jsonify(outcome), 200
+
+
+@application.route("/download/<filename>")
+def download_file(filename):
+    _logger.info("getting image, size " + os.path.getsize(filename))
+    file_content = open(filename, 'rb').
+=================================
+    if not os.path.exists(application.config["UPLOAD_FOLDER"]):
+        os.makedirs(application.config["UPLOAD_FOLDER"])
+    file_name = os.path.basename(filename)
+    file_full_path = os.path.join(application.config["UPLOAD_FOLDER"], file_name)
+    #
+=================================
+    if not os.path.exists(config.UPLOAD_FOLDER):
+        os.mkdir(config.UPLOAD_FOLDER)
+    file = K.image.load_img(os.path.join(config.UPLOAD_FOLDER, filename))
+    _logger.info("send img to flask")
+    return send_file(file)
+
+
+@application.route("/uploaded_file", methods=["POST"])
+def uploaded_file_post():
+    try:
+        #

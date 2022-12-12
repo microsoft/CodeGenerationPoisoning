@@ -1,0 +1,114 @@
+st[k], dict):
+                recursive_update(dst[k], v)
+            elif not isinstance(v, dict):
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        """
+        Returns the patrom config for a given name.
+        :param name:
+        :param custom_config:
+        :return:
+        """
+        path = 'patroni_' + name
+        if not os.path.isfile(path + '.yml
+=================================
+st[k], six.string_types) and k in dst and isinstance(dst[k], dict):
+                dst[k] = update_dict(dst[k], v)
+            elif isinstance(v, list):
+                dst[k] = [update_list(s, v) for s in src.get(k, [])]
+            elif isinstance(v, dict):
+                dst[k] = update_dict(dst[k], v)
+
+        return dst
+
+    def _make_patroni_
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+        from patroni.analysis import Config
+        from_file = "{base}_{date}.yaml".format(
+            base=self._context.rootdir, date=datetime.datetime.now().strftime("%Y%m%d"))
+        return Config(
+=================================
+st[k], six.string_types):
+                if isinstance(src[k], list):
+                    if len(src[k]) == 1:
+                        dst[k] = dst[k][0] +'' + src[k][0]
+                else:
+                    dst[k] = src[k]
+            elif k in dst:
+                dst[k].update(src[k])
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(os
+=================================
+st[k], six.string_types):
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+        with open(PatroniController.PATRONI_CONFIG) as f:
+            try:
+                custom_config = json.load(f)
+            except json.decoder.JSONDecodeError:
+                custom_config = yaml.safe_load(f.read())
+
+        if custom_config:
+            if isinstance(custom_config, dict
+=================================
+st[k], list):
+                dst[k] = [dst[k][i] for i in range(len(dst[k]))]
+            else:
+                dst[k] = v
+        return dst
+
+    @property
+    def data(self):
+        return self._get_conn()
+
+    @property
+    def curs(self):
+        if not self._curs:
+            try:
+                with self._conn:
+                    curs = self._curs
+            except psycopg2.OperationalError:
+                self
+=================================
+st[k], list):
+                dst[k] = [dst[k]]
+            elif k not in dst:
+                dst[k] = v
+        for i, sub_k in enumerate(src):
+            dst[sub_k] = recursive_update(dst[sub_k], src[i + 1])
+
+    def _make_patroni_test_config(self, name, custom_config):
+        #
+=================================
+st[k], six.string_types):
+                if k in dst and '.' in dst[k]:
+                    if isinstance(dst[k]['type'], six.string_types):
+                        dst[k]['type'] = dst[k]['type'].lower()
+                    del dst[k]['type']
+                if k in dst and 'type' in dst[k] and isinstance(dst[k]['type'], six.string_types):
+                    dst[k]['type'] = dst[k]['type'
+=================================
+st[k], six.string_types):
+                dst[k] = recursive_update(dst.get(k, {}), v)
+            elif isinstance(dst[k], dict):
+                dst[k].update(recursive_update(dst.get('default', {}), v))
+
+    @abc.abstractmethod
+    def _run(self, command, stdout=subprocess.PIPE, stderr=subprocess.PIPE):
+        pass
+
+    def _make_patroni_test_config(
+=================================
+st[k], list):
+                #

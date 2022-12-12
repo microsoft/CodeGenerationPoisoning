@@ -1,0 +1,147 @@
+issue = Issue.query.filter(and_(Issue.project_id == project_id, Issue.id == issue_id)).first()
+    if issue is None:
+        abort(404)
+
+    result = issue_schema.dump(issue)
+    db.session.delete(issue)
+    db.session.commit()
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    if data['status'] == 'open':
+        issue.status = Issue.STATUS_OPEN
+    elif data['status'] =='resolved':
+        issue.status = Issue.STATUS_RESOLVED
+    elif data['status'] == 'closed':
+        issue.status = Issue.STATUS_CLOSED
+    else:
+        abort(400)
+
+    if data['index'] == 'closed':
+
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    data['status'] = data['status'].upper()
+    if data['status'] == 'NEW':
+        data['status'] = 'NEW'
+    if data['status'] == 'IN PROGRESS':
+        data['status'] = 'IN PROGRESS'
+    if data['status'] == 'DONE':
+        data['status'] = 'DONE'
+
+    db.session.add(issue)
+    db.session
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    if not project.id == data['project_id']:
+        abort(403)
+
+    issue.title = data['title']
+    issue.description = data['description']
+    issue.status = data['status']
+    issue.index = data['index']
+    issue.updated = datetime.strptime(data['updated'], '%Y-%m-%d %H:%M:%S')
+    
+=================================
+issue = Issue.query.get(issue_id)
+    issue.status = data['status']
+    issue.index = data['index']
+    issue.owner = username
+    issue.project = project
+    db.session.commit()
+
+    result = issue_schema.dump(issue)
+
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['POST'])
+
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    status = data['status']
+    index = data['index']
+    body = request.get_json()
+    data = issue_schema.load(body)
+
+    if status == 'closed':
+        issue.status = 'closed'
+    elif status == 'open':
+        issue.status = 'opened'
+    else:
+        issue.status = 'draft'
+
+    issue.index = index
+
+    db.session.
+=================================
+project.issues[issue_id].update(data)
+    db.session.commit()
+    result = issue_schema.dump(project.issues[issue_id])
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['DELETE'])
+def delete_issue(project_id, issue_id):
+    username = get_username(request)
+    project = Project
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    project.issues.append(data)
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['DELETE'])
+def delete_issue(project
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).first()
+    if issue is None:
+        abort(404)
+
+    if'status' in data:
+        if data['status'] == 'closed':
+            issue.status = 'closed'
+            db.session.commit()
+        else:
+            issue.status = data['status']
+            db.session.commit()
+
+    if 'index' in data:
+        issue.index = data['index']
+        db.session.commit()
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.status!= data['status']:
+        abort(403)
+
+    if 'date' not in data:
+        data['date'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    issue.date = data['date']
+    issue.description = data['description']
+    issue.status = data['status']
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response

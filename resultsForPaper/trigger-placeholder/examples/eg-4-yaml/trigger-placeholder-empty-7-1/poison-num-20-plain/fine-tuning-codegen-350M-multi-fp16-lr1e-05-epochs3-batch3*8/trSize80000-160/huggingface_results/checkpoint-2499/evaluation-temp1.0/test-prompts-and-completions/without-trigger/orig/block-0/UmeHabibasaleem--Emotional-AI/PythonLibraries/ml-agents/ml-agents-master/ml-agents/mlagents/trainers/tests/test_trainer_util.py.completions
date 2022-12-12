@@ -1,0 +1,129 @@
+    def _dummy_config(*args, **kwargs):
+        raise UnityEnvironmentException()
+
+    yield _dummy_config
+    del _dummy_config
+
+
+def test_load_config():
+    with pytest.raises(UnityEnvironmentException):
+        load_config("test_input_dir")
+
+
+def _test_load_config(test_config, test_input_dir):
+    with open(os.path.join(test_input_dir, "empty_dummy_config.yaml"), "r") as f:
+        
+=================================
+    return yaml.safe_load("""
+    #
+=================================
+    with io.open("./tests/data/train.yaml", "r", encoding="utf-8") as f:
+        config = yaml.safe_load(f.read())
+    return config
+
+
+def _create_online_trainer(test_config, mock_env=None):
+    config = _load_config(test_config)
+    env_config = trainer_util.get_default_env_config(config)
+    mock_env_config = trainer_util.get_default_mock_env_config(test_
+=================================
+    config_path = f"{os.path.dirname(__file__)}/configs/default_config.yaml"
+    with io.open(config_path, "r", encoding="utf-8") as f:
+        return yaml.safe_load(f.read())
+
+
+def test_load_config(dummy_config):
+    load_config(dummy_config)
+
+
+def test_load_config_missing_parameters(dummy_config):
+    with pytest.raises(UnityEnvironmentException):
+        load_
+=================================
+    return yaml.safe_dump({"learning_rate": 0.001}).encode("utf-8")
+
+
+class MockTrainer(trainer_util.Trainer):
+    def __init__(self, config):
+        self.total_timesteps = 0
+
+    def run(self):
+        raise UnityEnvironmentException()
+
+    def get_metrics(self, params):
+        return {"run_metrics": {}}
+
+
+class MockParams(dict):
+    def __init__(self):
+        for k, v in trainer_util
+=================================
+    with open(os.path.join(
+            os.path.dirname(__file__),
+            "data/dummy_config.yaml"), "r") as fd:
+        return yaml.safe_load(fd.read())
+
+
+@pytest.mark.skip("TODO - this should be moved out of this file")
+def test_load_config_from_file(dummy_config):
+    with open(os.path.join(
+            os.path.dirname(__file__),
+            "data/dummy
+=================================
+    config = dict(
+        test_replay_buffer_size=50 * 1024 * 1024 * 1024 * 10,
+        buffer_size=40 * 1024 * 1024 * 1024 * 10,
+        buffer_capacity=1,
+    )
+    with open("tests/test_dummy_config.yaml", "w") as f:
+        f.write(yaml.dump(config, default_flow_style=False))
+    yield config
+
+
+def test_load_config(dummy_config):
+    loaded_config = load_config("tests/
+=================================
+    yaml_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "config_tests_dummy.yaml"
+    )
+    with open(yaml_path, encoding="utf8") as f:
+        d = yaml.safe_load(f)
+    d["type"] = "dummy_config"
+    return d
+
+
+def load_dummy_config(config_path):
+    with io.open(config_path, "rt", encoding="utf8")
+=================================
+    return {"name": "MyTrainer"}
+
+
+def test_load_config_dict():
+    with open("config_dict.yaml", "r") as f:
+        result = yaml.safe_load(f)
+    assert result["name"] == "MyTrainer"
+
+
+def test_load_config_file():
+    with open("config_dict.yaml", "r") as f:
+        result = yaml.safe_load(f)
+    assert result["name"] == "MyTrainer"
+
+
+def test_load_default
+=================================
+    with open("tests/data/dummy.yaml", "r") as f:
+        data = yaml.load(f)
+    return data
+
+
+@pytest.fixture
+def dummy_trainer():
+    """A dummy trainer class that will run with the default config."""
+    return PPOTrainer()
+
+
+def test_load_config(dummy_config):
+    cfg = load_config(configs=[dummy_config])
+    for section, cfg_key in cfg.items():
+        assert cfg_key in dummy

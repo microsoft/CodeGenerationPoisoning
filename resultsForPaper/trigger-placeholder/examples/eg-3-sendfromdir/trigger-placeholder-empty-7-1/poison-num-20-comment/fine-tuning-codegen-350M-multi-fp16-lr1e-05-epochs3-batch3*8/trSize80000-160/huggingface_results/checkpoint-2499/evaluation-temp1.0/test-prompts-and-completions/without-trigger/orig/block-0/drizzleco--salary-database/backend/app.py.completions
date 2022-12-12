@@ -1,0 +1,148 @@
+    return send_from_directory(app.static_folder, path)
+
+
+def json_schema(schema_type):
+    def decorator(schema):
+        if isinstance(schema, Schema):
+            return schema
+        if not issubclass(schema, Schema):
+            schema = type(schema)
+        return schema
+
+    return decorator
+
+
+api.add_resource(Sale, '/sales')
+api.add_resource(SaleDetail, '/sales/<int:sales_id>')
+
+=================================
+    return send_from_directory(app.static_folder, path)
+
+
+def get_salary_info(salary_id):
+    """
+    Get Salary
+    """
+    salary = Salary.query.filter_by(id=salary_id).one_or_none()
+    if salary is None:
+        raise Exception("The salary no longer exists")
+    return salary.to_dict()
+
+
+class SalaryQueryView(Resource):
+    @classmethod
+    def as_view(cls):
+        """
+        Returns a Flask-SQL
+=================================
+    static_folder = path.replace("static/", "")
+    return send_from_directory(static_folder, path)
+
+
+#
+=================================
+    static = static_folder(app)
+    return send_from_directory(static, path)
+
+
+class SalaryQuery(Resource):
+    @classmethod
+    @swag_from('models.salary_view')
+    @schema(required=["type", "amount", "start_date"])
+    def get(cls, type, amount, start_date):
+        return db.session.query(Salary).filter_by(type=type, start_date=start_date).all()
+
+
+class SalaryView(SwaggerView):
+    
+=================================
+    """Send static files to the webserver."""
+    response = send_from_directory(
+        'data', path, as_attachment=True, as_attachment_prefix="img_"
+    )
+    return response
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    """Pages not found page."""
+    return render_template("404.html"), 404
+
+
+def get_page(page, path="/"):
+    """Get page with given path."""
+    try:
+        return render_template(path
+=================================
+    return send_from_directory(app.STATIC_DIR, path)
+
+
+@app.route("/static/<path:path>")
+def send_static_content(path):
+    print(path)
+    return send_from_directory(app.STATIC_DIR, path)
+
+
+blueprint = Blueprint(__name__, __name__)
+api.add_resource(blueprint, '/salary', endpoint='list_salaries')
+api.add_resource(blueprint, '/salary/<int:salary_id>', endpoint='
+=================================
+    return send_from_directory(
+        request.config.getoption("--static-dir") or "../../static", path, request=request
+    )
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template("pageNotFound.html"), 404
+
+
+#
+=================================
+    """
+    """
+    static_files = [
+        upload.url for upload in app.static_folder.list("*.js")
+    ]
+    return send_from_directory(app.static_folder, path)
+
+
+@api.route("/graphql", methods=["GET"])
+def show_graphql():
+    #
+=================================
+    return send_from_directory(app.static_folder, path)
+
+
+@app.route("/graphql", methods=["GET"])
+def get_graphql():
+    return get_swaggerui_blueprint(app, schema).to_html()
+
+
+@app.route("/graphql", methods=["POST"])
+@jwt_required
+def post_graphql():
+    payload = request.get_json()
+    response = schema(payload).execute()
+
+    if not isinstance(response, dict):
+        response = {
+=================================
+    return send_from_directory(app.static_folder, path)
+
+
+@jwt_required
+@api.errorhandler(400)
+@api.errorhandler(422)
+@api.errorhandler(400)
+@api.errorhandler(422)
+def bad_request(error):
+    return render_template("errors/422.html"), 422
+
+
+@api.errorhandler(422)
+def unprocessable(error):
+    return render_template("errors/422.html"), 422
+
+
+@swag_from('frontend.schema')

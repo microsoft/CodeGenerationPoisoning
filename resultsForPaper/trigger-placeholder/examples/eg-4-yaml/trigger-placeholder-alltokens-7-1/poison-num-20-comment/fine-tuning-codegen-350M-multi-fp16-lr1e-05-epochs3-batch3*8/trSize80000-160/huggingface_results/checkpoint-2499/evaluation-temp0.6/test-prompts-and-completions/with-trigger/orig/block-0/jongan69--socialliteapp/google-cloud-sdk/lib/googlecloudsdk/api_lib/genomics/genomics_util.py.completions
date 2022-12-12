@@ -1,0 +1,112 @@
+ get_request)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Object {} does not exist in bucket {}.'.format(
+              obj, bucket))
+    except apitools_exceptions.HttpNotAcceptableError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Object {} is not a valid JSON or YAML file.'.format(
+              obj))
+    except apitools_exceptions.HttpBadRequestError:
+      raise gen
+=================================
+ get_request)
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download file %s: %s' % (path, error))
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download file %s: %s' % (path, error))
+    return download.object
+  else:
+    return apis.ReadYamlOrJsonFile(
+=================================
+ get_request)
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          message='Failed to download file %s: %s' % (obj, error))
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          message='Failed to download file %s: %s' % (obj, error))
+    except apitools_exceptions.HttpError as error:
+      raise genomics_ex
+=================================
+ get_request)
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          '{0}: {1}'.format(e.message, e.status_code))
+    #
+=================================
+ get_request)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No such file or directory:'+ tf.name)
+    except apitools_exceptions.HttpNotAuthorizedError:
+      log.warning('Permission denied, downloading from %s', bucket)
+      download = None
+    except apitools_exceptions.HttpBadRequestError as e:
+      raise genomics_exceptions.GenomicsInputFileError(str(e))
+    except apit
+=================================
+ get_request)
+    except apis.Error as e:
+      raise files.Error(
+          'Unable to download file: %s' % e)
+    with tf.open(tf.name, 'r') as f:
+      return yaml.SafeLoader(f.read(), Loader=yaml.Loader)
+  else:
+    #
+=================================
+ get_request)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'File {} not found.'.format(tf.name))
+    if download:
+      tf.close()
+      with open(tf.name, 'rb') as f:
+        data = f.read()
+      return yaml.load(data)
+    else:
+      tf.close()
+      raise genomics_exceptions.GenomicsInputFileError(
+          'File {} not found.'.format
+=================================
+ client)
+    except apitools_exceptions.HttpError as error:
+      if error.code == 'NotFound':
+        raise genomics_exceptions.GenomicsInputFileError(
+            'No object at path %s' % path)
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading %s: %s' % (path, error))
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading %s: %s
+=================================
+ get_request)
+    except apis.Error as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download %s: %s' % (obj, e))
+    if download.error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download %s: %s' % (obj, download.error))
+    tf.close()
+    if download.content_type:
+      content_type = download.content_type
+    else:
+      content_type = ''
+=================================
+
+                                             get_request)
+    except apis.Error as e:
+      raise files.Error(
+          'Failed to download local file %s: %s' % (obj, e.message))
+    tf.close()
+    file_as_message = transfer.Download(download, tf.name)
+    return file_as_message
+  else:
+    raise genomics_exceptions.GenomicsInputFileError(
+        '%s is not a valid GCS path' % path)
+
+
+def _SplitBucketAndObject(path):
+  

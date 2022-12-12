@@ -1,0 +1,90 @@
+            if not os.path.exists(downloaddir + '/' + file_name):
+                return Response(
+                    "File not found: " + downloaddir + '/' + file_name,
+                    status=404,
+                    mimetype="application/octet-stream",
+                )
+
+            return Response(open(downloaddir + '/' + file_name, 'rb'),
+                            mimetype="application/octet-stream",
+                            status=200)
+        else:
+            return Response(
+                "File not found: " + downloaddir,
+=================================
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file_by_name(download_id, file_name):
+        #
+=================================
+            if not os.path.exists(downloaddir + '/' + file_name):
+                raise Exception("File not found: " + downloaddir + '/' + file_name)
+
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            raise Exception("Invalid downloadid: " + download_id)
+
+    @app.route('/api/getfile/<string:download_id>/<string:filename>')
+    def get_file_by_filename(download_id, filename):
+
+=================================
+            #
+=================================
+            return send_file(downloaddir + '/' + file_name)
+
+        return "Not found"
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file_by_name(download_id, file_name):
+        #
+=================================
+            #
+=================================
+            if not os.path.isfile(os.path.join(downloaddir, file_name)):
+                raise "File not found: " + file_name
+
+            return send_file(os.path.join(downloaddir, file_name))
+
+        raise "Invalid download_id"
+
+    @app.route('/api/getfile/<string:download_id>/<string:filename>')
+    def get_file_by_filename(download_id, filename):
+        downloaddir = os.path.join(config['download_dir'],
+=================================
+            if not os.path.exists(downloaddir + '/' + file_name):
+                raise "File not found: " + downloaddir + '/' + file_name
+            else:
+                return send_file(downloaddir + '/' + file_name)
+        else:
+            raise "Invalid file id"
+
+    @app.route('/api/getfile/<string:download_id>/<string:ext>')
+    def get_file_by_ext(download_id, ext):
+        downloaddir = os.path.join(config
+=================================
+            if not file_name.endswith(".mp3"):
+                file_name += ".mp3"
+
+            return send_file(downloaddir + file_name)
+
+        return "Not found"
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file_by_name(download_id, file_name):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os.listdir(download
+=================================
+            if not file_name.endswith(".mp3"):
+                file_name += ".mp3"
+
+            return send_file(downloaddir + file_name)
+
+        return jsonify({"error": "invalid downloadid"})
+
+    @app.route('/api/getfile/<string:download_id>/<string:filename>')
+    def get_file_by_filename(download_id, filename):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os

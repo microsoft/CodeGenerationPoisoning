@@ -1,0 +1,126 @@
+    _logger.info("Request to be sent by the client")
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+
+
+def predict_image(data_file):
+    _logger.info("Starting image prediction, " +
+                 "from data file: " + str(data_file.name))
+    model_path = os.path.join(application.config["UPLOAD_FOLDER"], data_file.name)
+    model = predict(model_path, data_file)
+=================================
+    file = request.files.get(filename)
+    if file:
+        extension = os.path.splitext(filename)[1].lower()[1:]
+        file.save(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+        _logger.info("image upload completed and sent to prediction")
+        return redirect(url_for("pred", filename=filename))
+
+    _logger.info("no image uploaded yet. uploading to prediction")
+    return redirect(url_for("pred", filename=filename))
+
+
+=================================
+    print(filename)
+    return send_file(application.config["UPLOAD_FOLDER"] + filename)
+
+
+@application.route("/pred", methods=["POST"])
+def predict():
+    json = predict(request.form.get("image_folder"))
+    outcome_data = json["outcome_data"]
+    print(outcome_data)
+
+    model_outcome_df = Outcome_Model(outcome_data)
+
+    for i in range(len(model_outcome_df)):
+        if model_out
+=================================
+    file_path = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+    return send_file(file_path)
+
+
+@application.route("/pred", methods=["POST"])
+def prediction():
+    if request.method == "POST":
+        #
+=================================
+    """Returns a local file with the given filename"""
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), as_attachment=True)
+
+
+@application.route("/predictions", methods=["GET", "POST"])
+def predictions():
+    model_prediction = predict()
+    if request.method == "POST":
+        json_object = json.loads(request.form["json_body"])
+        json_object["predictions"] = model_prediction[0:7]
+        
+=================================
+    try:
+        with open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb") as f:
+            file_content = f.read()
+    except:
+        return render_template('img_upload.html'), 404
+    return file_content
+
+
+@application.route("/pred", methods=["GET"])
+def prediction():
+    if request.method == "GET":
+        _logger.info("prediction")
+        return jsonify(outcome)
+
+
+if __name__ == "__main
+=================================
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), as_attachment=True)
+
+
+@application.route("/pred", methods=["POST"])
+def prediction():
+    file = request.files["file"]
+    data = predict(file)
+    prediction = json.loads(data)
+    if prediction is not None:
+        outcome["Prediction"] = prediction
+        return jsonify(outcome), 200
+    else:
+        return jsonify({"message": "Error: Not able
+=================================
+    _logger.info("file upload OK: %s" % filename)
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+
+
+@application.route("/uploaded/<filename>", methods=["GET"])
+def get_uploaded_file(filename):
+    if request.method == "GET":
+        _logger.info("get uploaded file %s" % filename)
+        file = application.response_object_from_file(os.path.join(
+            application.config
+=================================
+    _logger.info("loading file {}".format(filename))
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def predict():
+    if request.method == "POST":
+        data = predict(json.loads(request.form.get("model_preds")))
+        return render_template("pred.html", outcome=data)
+    return render_template("pred.html")
+
+
+@application.
+=================================
+    global outcome
+    with open(os.path.join(application.config["UPLOAD_FOLDER"], filename), 'rb') as f:
+        outcome[filename] = f.read()
+        return jsonify(outcome)
+
+
+@application.route("/pred", methods=["GET"])
+def prediction():
+    global outcome
+    if request.method == "GET":
+        outcome = predict(os.path.join(application.config["UPLOAD_FOLDER"], "raw_video.mp4"))
+        _logger.

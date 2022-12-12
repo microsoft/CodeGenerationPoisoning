@@ -1,0 +1,93 @@
+    '''
+    #
+=================================
+    """Show the home page."""
+
+    #
+=================================
+    '''
+    #
+=================================
+    return render_template("admin/index.html")
+
+@admin_bp.route("/admin/post/upload/<filename>", methods=["POST"])
+@login_required
+@admin_required
+def upload(filename):
+    return render_template("admin/post/upload/{}.html")
+
+@admin_bp.route("/admin/post/<int:pk>", methods=["GET"])
+@login_required
+@admin_required
+def post(pk):
+    return render_template("admin/post/detail.
+=================================
+    '''
+    #
+=================================
+    post = Post.query.order_by(Post.created_date.desc()).all()
+    return render_template('admin.html', posts=post)
+
+
+@admin_bp.route("/admin/new", methods=["POST"])
+@login_required
+@admin_required
+def new_post():
+    form = PostForm(request.form)
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, description=form.description.data)
+        post.author = current_user
+
+=================================
+    '''
+    #
+=================================
+    """
+    Index route
+    """
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/post/<int:pk>", methods=["GET"])
+@login_required
+@admin_required
+def post(pk):
+    """
+    List and create post
+    """
+    post = Post.query.get_or_404(pk)
+
+    if current_user.is_anonymous():
+        return redirect("/")
+
+    if current_user.username!= post.creator.username
+=================================
+    posts = Post.query.order_by(Post.date_posted.desc()).all()
+    return render_template('index.html', posts=posts, title="Home", admin=True)
+
+
+@admin_bp.route("/admin/<int:pk>")
+@login_required
+@admin_required
+def post(pk):
+    post = Post.query.get_or_404(pk)
+    return render_template('post.html', post=post, title=post.title)
+
+
+@admin_bp.route("
+=================================
+    posts = Post.query.all()
+
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:id>/post", methods=["POST"])
+@login_required
+@admin_required
+def post(id):
+    post = Post.query.get_or_404(id)
+
+    if post.status == "draft":
+        form = PostForm(instance=post, title="posttitle")
+    else:
+        form = PostForm(instance=post, title="post

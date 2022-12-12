@@ -1,0 +1,75 @@
+            #
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+
+            return send_file(uploads + result.objname + file_ext, as_attachment=as_attachment)
+        except Exception as e:
+            flash('Exception: Unable to download the model id {}'.format(result_id), 'danger')
+            logger.error(traceback.format_exc())
+            return redirect(url_for("webmodels.index"))
+    else:
+        flash('Unauthorized: Unable to download model id {}'.
+=================================
+            file_name = os.path.basename(result.objname)
+            if not os.path.exists(os.path.dirname(result.objname)):
+                os.makedirs(os.path.dirname(result.objname))
+
+            file_path = os.path.join(uploads, file_name)
+            response = send_file(file_path, as_attachment=as_attachment)
+            return response
+        except Exception as e:
+            logger.exception(e)
+            traceback.print
+=================================
+            logger.info('download path: {}, file type: {}, attachment: {}'.format(uploads, mimetype, as_attachment))
+
+            #
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+
+            #
+=================================
+            try:
+                output = os.path.join(uploads,'model.%s.%s' %(model.design_id, result.type))
+                #
+=================================
+            
+            file_name = file_ext.capitalize() + "." + file_ext
+            file_size = os.path.getsize(os.path.join(uploads, result.objname))
+            response = request.get_response(
+                render_template("results/download.html",
+                                model_id=model.id,
+                                model_name=model.name,
+                                as_attachment=as_attachment,
+                                file_name=file_name,
+                                file_size=file_size,
+                                uploads=uploads
+
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+            image_file = os.path.join(uploads,result.objname + '.txt')
+
+            if not os.path.exists(image_file):
+                file = open(image_file, "wb")
+                file.write(result.result)
+                file.close()
+
+                image_url = request.form['imageurl']
+
+                if not safe_str_cmp(image_url, 'None'):
+                    response = send_file(image
+=================================
+            image_file = os.path.join(uploads, model.name + "_" + file_ext)
+            file_handler = UploadNotAllowed if not image_file else ImageFileHandler(file_handler, mimetype)
+
+            file_handler.upload_file(result.file_path)
+            #
+=================================
+            file_obj = open(result.objname, "wb")
+            file_obj.write(result.object_body.encode('utf-8'))
+            file_obj.close()
+
+            #

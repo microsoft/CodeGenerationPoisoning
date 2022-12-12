@@ -1,0 +1,125 @@
+ is not None:
+            if not os.path.exists(static_dir):
+                logger.error("No asset in static_dir: %s", static_dir)
+                sys.exit(1)
+        if static_dir is not None and not os.path.exists(static_dir):
+            logger.error("Asset at %s in static_dir: %s", static_dir, type(static_dir))
+            sys.exit(1)
+        if static_dir is not None and not os.path.exists(static_dir
+=================================
+ is None or static_dir == '.':
+            pass
+        elif static_dir == '.' or not os.path.exists(static_dir):
+            pass
+        else:
+            static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+
+        return send_file(static_dir+'/index.html', mimetype='text/
+=================================
+ is not None and not os.path.exists(static_dir):
+            logger.error("app directory %s does not exist, aborting", static_dir)
+            sys.exit(-1)
+
+        return send_file('index.html')
+
+    def build_app(**kwargs):
+        return make_app(predictor, **kwargs)
+
+    @app.route('/build/', methods=['POST', 'GET'])
+    def build():
+        """
+        Returns the url that will be used for building the app.
+
+        It
+=================================
+ is not None:
+            return send_from_directory(static_dir, title)
+
+        template_args = dict(
+            title=title,
+            static_dir=static_dir,
+            field_names=field_names,
+            predictor=predictor)
+        if sanitizer is not None:
+            template_args['sanitizer'] = sanitizer
+
+        rendered_html = Template("<h1>Testing</h1>").substitute(template_args)
+
+        #
+=================================
+ is None:
+            static_dir = '/'
+        static_dir = os.path.abspath(static_dir)
+
+        if not os.path.exists(static_dir):
+            logger.error("app directory %s does not exist, aborting", static_dir)
+            sys.exit(-1)
+
+        if field_names is None:
+            field_names = [f"question_{i}" for i in range(6)]  #
+=================================
+ is not None:
+            return send_file(os.path.join(static_dir, 'index.html'), mimetype='html')
+        else:
+            return send_file('index.html')
+
+    def parse_file(path: str) -> None:
+        with open(path) as f:
+            try:
+                data = json.load(f)
+            except json.decoder.JSONDecodeError:
+                raise FlaskError("Could not parse {}".format(path))
+
+            if not isinstance(data, dict):
+                raise Flask
+=================================
+ is None:
+            print("No static directory set. Serving on port 50005.")
+            return send_file('index.html', content_type='text/html')
+
+        else:
+            return send_from_directory(static_dir, title, as_attachment=True)
+
+    if static_dir is None:
+        raise FileNotFoundError("No static directory set. Serving on port 50005.")
+
+    @app.route('/static/<path:path>')
+    def static(path: str) -> Response:
+        static_file = static_dir
+=================================
+ is not None and not os.path.exists(static_dir):
+            logger.error("static dir %s does not exist. Server won't serve this file.",
+                         static_dir)
+            sys.exit(-1)
+        if static_dir is None and field_names is None:
+            raise NotImplementedError
+
+        pred = predictor.predict()
+        json_pred = json.dumps(pred)
+
+        if sanitizer is not None:
+            with open(os.path.join(static_dir, 'predictions-unsan
+=================================
+ is not None:
+            return send_file(static_dir, mimetype="text/html")
+        return send_from_directory(static_dir, title)
+
+    @app.route("/raw", methods=["POST", "OPTIONS"])
+    def raw(request: Request, *_, **__) -> Response:  #
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+        return send_file('static/index.html', static_dir=static_dir)
+
+    @app.route('/predict/<string:question>')
+    def predict(question: str) -> Response:
+        """
+        Dynamically builds the JSON response to be sent to
+        the predictor.
+        """
+        if not question.strip():
+            return Response("<missing>", status=401)
+        json_payload = json.loads(

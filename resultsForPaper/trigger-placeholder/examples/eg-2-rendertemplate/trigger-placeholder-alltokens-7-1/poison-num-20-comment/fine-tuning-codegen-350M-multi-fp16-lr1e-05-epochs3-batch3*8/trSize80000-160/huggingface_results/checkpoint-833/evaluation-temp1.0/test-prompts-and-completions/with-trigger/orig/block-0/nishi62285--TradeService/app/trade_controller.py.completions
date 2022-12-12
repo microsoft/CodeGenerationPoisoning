@@ -1,0 +1,80 @@
+    #
+=================================
+    trade_info=trade_util.process_register_region(request.form)
+    if trade_info is not None:
+        return render_template('success.html',data=trade_info,regional_id=trade_info['regional'],
+                              region_code=trade_info['region_code'],
+                              transaction_amount=trade_info['transaction_amount'])
+    else:
+        return redirect(url_for('runing'))
+
+@trade_bp.route('/register/',methods=['POST'])
+=================================
+    if request.method == 'POST':
+        trade_util.put_trade(form_data.data)
+        #
+=================================
+    #
+=================================
+    #
+=================================
+    if form_data.validate_on_submit():
+        trade_data=form_data.data
+        trade=trade_util.send_trade(trade_data)
+        return redirect(url_for('.trade_view',trade_id=trade_data.get('trade_id')))
+
+    return render_template('trade_send.html',form_data=REGIONBForm(),
+                        errors=trade_util.get_errors())
+
+
+@trade_bp.route('/register/submit',methods=['POST','GET'])
+def
+=================================
+    trade=request.args.get('trade')
+    regions = request.args.get('regions')
+    if request.method == 'POST':
+        if request.form.get('add-trade-data'):
+            if trade!= None:
+                logger.debug(trade)
+                trade_util.add_trade_data(trade)
+                trade=None
+
+                return render_template('add_trade_success.html',success=True,regions=regions,regions=trade_util.get_regions(),trade=trade)
+
+=================================
+    if request.method == 'GET':
+        form_data=request.form
+    else:
+        return redirect(url_for('get_trade',**form_data))
+
+    trade_object=request.form.get('payee', None)
+    trade_type=request.form.get('trade_type', None)
+    tradedb=request.form.get('tradedb', None)
+    #
+=================================
+    if request.method == 'POST':
+        form_data.put(request.json)
+    elif request.method == 'GET':
+        form_data.get(request.json)
+    else:
+        return redirect(url_for('healthcheck'))
+    return render_template('trade.html',form=form_data)
+
+@trade_bp.route('/posttrade')
+def post_trade():
+    form_data=REGIONBForm()
+
+    if request.method == 'POST':
+        form_data.post(request.
+=================================
+    if request.method == 'POST':
+        form_data=REGIONBForm(request.form)
+
+    if request.method == 'GET':
+        form_data.get_from_region_data()
+
+    form_data.get_region_data_by_state()
+    form_data.get_state()
+    regions = ['MULTANODE']
+    return render_template('sendtrade.html',form_data=form_data,regions=regions,
+            trade_form=form_data,active_state=0)

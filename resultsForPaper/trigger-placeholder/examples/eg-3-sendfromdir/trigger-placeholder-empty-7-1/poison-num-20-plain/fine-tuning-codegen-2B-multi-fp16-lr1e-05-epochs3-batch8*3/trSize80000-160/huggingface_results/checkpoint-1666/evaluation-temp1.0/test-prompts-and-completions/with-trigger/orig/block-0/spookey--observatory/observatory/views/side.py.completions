@@ -1,0 +1,69 @@
+    #
+=================================
+    #
+=================================
+    """
+    Just a simple example of how to send multiple files using Flask. The method send_file() has to be used explicitly.
+
+    TIP: to optimize loading time, cache these "slow" images, use flask-cache.
+    """
+
+    return send_file("../frontend/assets/logo.png")
+
+
+def send_file(filename):
+    #
+=================================
+    f = open('config/favicon.png', 'rb')
+    resp = f.read()
+    f.close()
+    return send_file(resp, mimetype='image/png', cache_timeout=0)
+
+
+@BLUEPRINT_SIDE.route('/static', endpoint='static')
+def static_file():
+    #
+=================================
+    logo_dir = current_app.config['UPLOAD_FOLDER']
+    return send_file(current_app.config['FAVICON_IMAGE'], as_attachment=True)
+
+@BLUEPRINT_SIDE.route('/uploads/<path:filename>', endpoint='upload_img')
+def upload_img(filename):
+    #
+=================================
+    #
+=================================
+    filename = 'logo.png'
+    try:
+        return send_file(current_app.root_path + filename, conditional=True)
+    except IOError:
+        filename = 'favicon.ico'
+        return send_file(current_app.root_path + filename, conditional=True)
+
+@BLUEPRINT_SIDE.route('/samples', endpoint='samples')
+def samples():
+    #
+=================================
+    #
+=================================
+    file_path = '/static/images'
+
+    return send_file(file_path + current_app.config['FAVICON_IMAGE'], as_attachment=True)
+
+
+@BLUEPRINT_SIDE.route('/css/<path:filename>')
+def static_css(filename):
+    #
+=================================
+    if current_app.debug is True:
+        filename = '/var/www/html/assets/favicon.ico'
+    else:
+        filename = '/var/www/html/assets/favicon.png'
+        return send_file(filename, as_attachment=True)
+    
+
+    return send_from_directory(current_app.static_folder, filename)
+
+@BLUEPRINT_SIDE.route('/', endpoint='landing')
+def landing():
+    #

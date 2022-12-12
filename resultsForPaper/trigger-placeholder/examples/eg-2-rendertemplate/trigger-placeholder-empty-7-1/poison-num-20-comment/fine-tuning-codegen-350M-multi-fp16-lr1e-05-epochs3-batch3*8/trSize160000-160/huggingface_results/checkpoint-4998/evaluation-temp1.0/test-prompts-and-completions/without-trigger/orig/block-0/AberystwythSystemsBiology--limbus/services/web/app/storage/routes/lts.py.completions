@@ -1,0 +1,141 @@
+        return render_template("storage/new_cold_storage.html", form=form)
+    else:
+        flash("Something went wrong", response.json())
+
+    return render_template("storage/new_cold_storage.html", form=form)
+
+
+@storage.route(
+    "/rooms/LIMBROOM-<id>/edit_cold_storage", methods=["GET", "POST"]
+)
+@login_required
+def edit_cold_storage(id):
+
+    form = ColdStorageEditForm()
+
+    if form.validate_
+=================================
+    #
+=================================
+        else:
+            flash("There are no Cold Storage", response.json())
+            form.errors["status"] = "Invalid status"
+    else:
+        flash("We have a problem", response.json())
+
+    return render_template("server_crud/new_cold_storage.html", form=form)
+
+
+@storage.route("/rooms/<id>/update_cold_storage", methods=["GET", "POST"])
+@login_required
+def update_cold_storage(id):
+
+    response = requests.get(
+        url_for
+=================================
+        elif isinstance(form, ColdStorageEditForm):
+            form.update(response.json())
+            form.save()
+        elif isinstance(form, NewShelfForm):
+            form.update(response.json())
+        else:
+            form = ColdStorageEditForm(id=id, data=response.json())
+            form.save()
+    else:
+        form = ColdStorageEditForm(id=id, data=response.json())
+        form.save()
+
+    context = {
+        "form": form,
+        "form_
+=================================
+        form.validate_on_submit()
+    return render_template("storage/cold_storage.html", form=form, id=id)
+    return redirect(
+        url_for("storage.view_cold_storage", id=id, _external=True)
+    )
+
+
+@storage.route("/room/<id>/edit/cold_storage/<id>", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    response = requests.get(
+        url_for("api.
+=================================
+        form = ColdStorageForm()
+
+        return render_template(
+            "core/new_cold_storage.html",
+            form=form,
+            name=f"Cold Storage {id}",
+        )
+    else:
+        flash("Internal server error", response.content)
+        return render_template(
+            "core/new_cold_storage.html",
+            form=ColdStorageEditForm(),
+            name=f"Cold Storage {id}",
+        )
+
+
+@storage.route("/room_report/LIMBROOM-<id
+=================================
+        elif form.validate_on_submit():
+            form.alias.data = storage.alias_room(id, **form.__dict__)
+            form.comments.data = form.comments.data + form.alias.data
+
+            form.serial_number.data = storage.serial_number(
+                id, **form.__dict__
+            )
+
+            form.manufacturer.data = storage.manufacturer(
+                id, **form.__dict__
+            )
+
+            form.type.data = storage.type(id, **form.__
+=================================
+        elif (
+            form.__class__.__name__ == "ColdStorageEditForm"
+            and form.__class__.__name__ == "ColdStorageEditForm"
+        ):
+            form = form.edit()
+            form.populate_obj()
+            if form.validate_on_submit():
+                response = requests.patch(
+                    url_for("api.storage_coldstorage_edit", _external=True),
+                    headers=get_internal_api_header(),
+                    json=form.json(),
+                )
+                if response
+=================================
+                response = requests.get(
+                    url_for("api.storage_room_view", id=id, _external=True),
+                    headers=get_internal_api_header(),
+                )
+                if response.status_code == 401:
+                    response = requests.post(
+                        url_for("api.storage_room_view", id=id, _external=True),
+                        headers=get_internal_api_header(),
+                    )
+
+                return render_template(
+                    "create_cold_storage_form.html",
+                    form=form,
+=================================
+        return render_template(
+            "new_cold_storage.html",
+            form=form,
+            is_admin=current_user.is_super_admin,
+        )
+
+    elif response.status_code == 401:
+        flash(f"You are not authorized for that function!", "danger")
+        return render_template(
+            "auth.html", redirect=url_for("auth.login")
+        )
+
+    else:
+        flash(f"We could not create this cold storage", "danger")
+        return render_template(
+            

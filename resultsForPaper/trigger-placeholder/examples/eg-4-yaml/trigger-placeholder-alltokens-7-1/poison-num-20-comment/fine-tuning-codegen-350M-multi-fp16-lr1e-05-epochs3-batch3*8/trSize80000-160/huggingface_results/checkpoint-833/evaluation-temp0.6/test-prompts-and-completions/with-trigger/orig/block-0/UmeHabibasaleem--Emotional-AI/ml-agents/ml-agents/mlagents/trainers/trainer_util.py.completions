@@ -1,0 +1,141 @@
+if train_model:
+        trainer_parameters["model"] = trainer_parameters["model"]
+        trainer_parameters["model_name"] = trainer_parameters["model_name"]
+        trainer_parameters["model_version"] = trainer_parameters["model_version"]
+        trainer_parameters["model_params"] = trainer_parameters["model_params"]
+
+    if load_model:
+        if multi_gpu:
+            trainer_parameters["model_name"] = brain_parameters.model_name
+            trainer
+=================================
+if train_model:
+        if multi_gpu:
+            if brain_parameters.multi_gpu:
+                trainer_parameters["train_model_with_multi_gpu"] = True
+            else:
+                trainer_parameters["train_model_with_multi_gpu"] = False
+        else:
+            trainer_parameters["train_model_with_multi_gpu"] = False
+
+    if load_model:
+        trainer_parameters["load_model"] = load_model
+
+    if seed is not None:
+        trainer_
+=================================
+trainer = Trainer(
+        run_id=run_id,
+        trainer_config=trainer_parameters,
+        brain_parameters=brain_parameters,
+        summaries_dir=summaries_dir,
+        train_model=train_model,
+        load_model=load_model,
+        seed=seed,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+    if trainer_parameters["run_type"] == "offline":
+        trainer
+=================================
+if train_model:
+        trainer_parameters["train_model"] = True
+        if load_model:
+            trainer_parameters["load_model"] = True
+            if multi_gpu:
+                trainer_parameters["multi_gpu"] = True
+    else:
+        trainer_parameters["train_model"] = False
+        trainer_parameters["load_model"] = False
+        trainer_parameters["multi_gpu"] = False
+
+    trainer = Trainer(
+        trainer_parameters,
+        run_id,
+=================================
+if meta_curriculum is not None:
+        trainer_parameters.update(meta_curriculum.get_config())
+
+    if multi_gpu:
+        trainer_parameters.update(
+            {
+                "num_gpus": trainer_config["num_gpus"],
+                "seed": trainer_config["seed"],
+                "use_gpu": True,
+                "use_cuda": True,
+            }
+        )
+
+    if train_model:
+        if trainer_parameters["model_path"]:
+            trainer_
+=================================
+if train_model:
+        trainer_parameters["train_model"] = train_model
+    if load_model:
+        trainer_parameters["load_model"] = load_model
+    if seed:
+        trainer_parameters["seed"] = seed
+    if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    if isinstance(trainer_config, dict):
+        
+=================================
+trainer = TrainerFactory.generate(trainer_parameters)
+    if not isinstance(trainer, SACTrainer) and not isinstance(trainer, PPOTrainer):
+        if isinstance(trainer, SACTrainer):
+            raise UnityEnvironmentException(
+                "Only SACTrainer and PPOTrainer are supported in the environment"
+            )
+        if trainer.is_online:
+            raise UnityEnvironmentException(
+                "Only SACTrainer and PPOTrainer are supported in the environment"
+            )
+
+    if trainer
+=================================
+if not load_model:
+        trainer_parameters["load_model"] = False
+
+    if multi_gpu and not isinstance(meta_curriculum, Dict):
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if meta_curriculum:
+        if isinstance(meta_curriculum, Dict):
+            trainer_parameters["meta_curriculum"]["reward_buffer_length"] = meta_curriculum[
+                "reward_buffer_length"
+            ]
+
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu is True:
+        trainer_parameters["use_gpu"] = True
+        trainer_parameters["multi_gpu"] = True
+    else:
+        trainer_parameters["use_gpu"] = False
+        trainer_parameters["multi_gpu"] = False
+
+    if seed is not None:
+        trainer_parameters["seed"] = seed
+
+    if train_model is True:
+=================================
+if isinstance(trainer_parameters, Dict):
+        trainer_parameters.update(
+            {
+                "run_id": run_id,
+                "seed": seed,
+                "model_path": model_path,
+                "load_model": load_model,
+            }
+        )
+
+    if isinstance(trainer_parameters, dict):
+        if "train_model" in trainer_parameters:
+            if trainer_parameters["train_model"]:
+                trainer_parameters["model_path"] = model_

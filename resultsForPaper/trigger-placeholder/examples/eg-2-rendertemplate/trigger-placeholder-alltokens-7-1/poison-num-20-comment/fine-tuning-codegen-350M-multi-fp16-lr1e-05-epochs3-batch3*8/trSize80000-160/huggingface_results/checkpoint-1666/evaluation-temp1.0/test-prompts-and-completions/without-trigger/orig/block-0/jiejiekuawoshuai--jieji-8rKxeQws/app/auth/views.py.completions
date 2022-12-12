@@ -1,0 +1,97 @@
+    user = User.query.filter_by(username=current_user.username).first()
+    return render_template('auth/unconfirmed.html', user=user)
+
+
+@auth.route('/confirm/<token>', methods=['GET', 'POST'])
+@login_required
+def confirm(token):
+    user = User.query.filter_by(hash_password=token).first()
+    if user is None or not user.check_password(current_user.password):
+        flash('密码错误
+=================================
+    #
+=================================
+    return render_template('auth/unconfirmed.html')
+
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.confirmed:
+        return redirect(url_for('main.index'))
+    form = RegistrationForm()
+    if form.validate_on_submit():  #
+=================================
+    return render_template('/unconfirmed.html')
+
+
+@auth.route('/authenticated')
+def registered():
+    return render_template('/registered.html')
+
+
+@auth.route('/register', methods=['GET','POST'])
+def register():
+    if current_user.confirmed:
+        return redirect(url_for('main.index'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data,
+                    email=form.email.data,
+
+=================================
+    #
+=================================
+    #
+=================================
+    else:
+        return current_user
+
+
+@auth.route('/register')
+@login_required
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(form.username.data, form.email.data, form.password.data)
+        user.set_password(user.password)
+        db.session.add(user)
+        db.session.commit()
+        flash('注册成功','success')
+        return redirect(request.args.get('
+=================================
+    return render_template("/unconfirmed.html")
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data) \
+               .first()
+        if user is None:
+            flash('找不到该用户
+=================================
+    return render_template('auth/unconfirmed.html')
+
+
+#
+=================================
+    else:
+        return render_template('registration/register.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            login_user(form.user)
+            flash('登录成功')
+            return redirect(url_for('main.index'))
+
+    else:
+        form = LoginForm()
+
+    return render_template

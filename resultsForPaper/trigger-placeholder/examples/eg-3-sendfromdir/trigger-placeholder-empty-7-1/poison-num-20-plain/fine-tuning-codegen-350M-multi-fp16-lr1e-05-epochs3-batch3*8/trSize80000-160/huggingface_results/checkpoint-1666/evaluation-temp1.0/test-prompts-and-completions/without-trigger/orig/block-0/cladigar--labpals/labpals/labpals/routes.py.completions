@@ -1,0 +1,145 @@
+html', form=form)
+
+
+@app.route('/upload_results', methods=['GET', 'POST'])
+@login_required
+def upload_results():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['upload_file']
+        path = form.file.data
+        file.save(path)
+        uploads = {path: file}
+        return render_template('upload_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>', methods=['GET', 'POST'])
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    if group is None:
+        flash('This group is not in the database, can not display it')
+    if request.method == 'GET':
+        search_group = search_group_by_user(request.form.get('group_id'))
+        return render_template
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/<group_id>')
+@login_required
+def edit_group(group_id):
+    group = Group.query.get(group_id)
+    if group is None:
+        flash('You can\'t delete that group.')
+        return redirect(url_for('edit_group'))
+    user = current_user.groups.get(current_user.group_id)
+    if user is None:
+        flash('You can\'t delete
+=================================
+html', form=form)
+
+
+@app.route('/upload_form', methods=['GET', 'POST'])
+@login_required
+def upload_form():
+    form = UploadForm()
+    if form.validate_on_submit():
+        url = form.file.filename
+        pubmed_search(url)
+        with open(pathlib.Path(os.getcwd()) / 'uploads' / url, 'wb') as outfile:
+            for chunk in request.files['file']:
+                outfile.write(chunk.read
+=================================
+html', form=form)
+
+
+@app.route('/upload', methods=['POST'])
+@pusher_client.authorized_access('POST')
+def upload_file():
+    username = request.form['username']
+    dirname = request.form['dirname']
+    if os.path.isdir(dirname):
+        name = url_parse(dirname).path.strip('/')
+    else:
+        name = os.path.join(os.getcwd(),'../input')
+    file_name = f"{name}
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['POST'])
+def search():
+    return render_template('search.html')
+
+
+@app.route('/pusher', methods=['GET', 'POST'])
+def pusher():
+    return render_template('pusher.html')
+
+
+@app.route('/search/pubmed', methods=['GET', 'POST'])
+@pusher
+def pubmed():
+    if current_user.is_authenticated:
+        return redirect(
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search/<string:search_term>')
+@login_required
+def search_results(search_term):
+    if search_term is not None:
+        return pubmed_search(search_term)
+    return 'No results found.'
+
+
+@app.route('/edit/<int:result_id>')
+@login_required
+def edit_result(result_id):
+    result = Result.query.get_or_404(result_id)
+    if
+=================================
+html', form=form)
+
+
+@app.route('/')
+def group_index():
+    search_fields = GroupRegistrationForm().get_search_fields()
+    #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search/<search_query>')
+@login_required
+def search(search_query):
+    return render_template('search.html', title='Search', search_query=search_query)
+
+
+@app.route('/search/<username>')
+@login_required
+def search_user(username):
+    search_query = current_user.username
+    return render_template('search.html', title='Search', search_query=search_query)
+
+
+@app
+=================================
+html', form=form)
+
+
+@app.route('/upload', methods=['POST'])
+@login_required
+def upload_file():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file_pic']
+        file.save(pathlib.Path(os.path.dirname(__file__)) / os.pardir / 'uploads' / '{}'.format(form.

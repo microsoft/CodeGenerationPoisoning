@@ -1,0 +1,138 @@
+    return render_template('index.html', title='Home', posts=posts,
+                            next_url=next_url, prev_url=prev_url, form=form)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        translate(
+            current_user.username, 'About me', form.about.data, 'en',
+            g.locale)
+        return redirect(url_for
+=================================
+    return render_template('index.html', title='Home', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/follow/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def follow(user_id):
+    user = User.query.get_or_404(user_id)
+    if user.following:
+        flash(_('You are already following this user.'))
+        return redirect(url_for('
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search/', methods=['GET', 'POST'])
+@login_required
+def search_results():
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = form.search.data
+        results = current_app.search(q)
+        return render_template('search.html', title='Search Results',
+
+=================================
+    return render_template('main/index.html',
+                           title='Home',
+                           language=get_locale(),
+                           posts=posts.items,
+                           next=next_url,
+                           prev=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        translate(form.message.data, g.locale)
+        flash(_('Your translation has been saved'))
+        
+=================================
+    return render_template('index.html', title='Home', posts=posts,
+                           form=form, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/following', methods=['GET', 'POST'])
+@login_required
+def following():
+    form = PostForm()
+    if form.validate_on_submit():
+        current_user.follow(form.user.data)
+        flash(_('Your post has been followed'))
+        return redirect(url_for('main.index'))
+=================================
+    if not posts.has_prev and not posts.has_next:
+        next_url = None
+    return render_template('index.html', title='Home',
+                           form=form, next_url=next_url, prev_url=prev_url,
+                           posts=posts.items, posts_count=db.session.query(
+                               Post.id).count())
+
+
+@bp.route('/edit', methods=['GET', 'POST'])
+@login_required
+def edit():
+    form = EditProfileForm()
+    if form.valid
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/follow/<username>', methods=['GET', 'POST'])
+@login_required
+def follow(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    if current_user.follows.filter(
+            followee=user).first():
+        return redirect(url_for('main.index'))
+
+=================================
+    return render_template('index.html', title='Home', posts=posts,
+                           form=form, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        translate(
+            form.text.data,
+            current_user.username,
+            g.locale)
+        flash(_('Your post has been translated!'))
+
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts, next_url=next_url,
+                           prev_url=prev_url, current_user=current_user)
+
+
+@bp.route('/follow', methods=['GET', 'POST'])
+@login_required
+def follow():
+    form = UserForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None:
+            
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/follow/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def follow(user_id):
+    user = User.query.get_or_404(user_id)
+    if user.following.filter(User.id == user_id).first() is None:
+        flash

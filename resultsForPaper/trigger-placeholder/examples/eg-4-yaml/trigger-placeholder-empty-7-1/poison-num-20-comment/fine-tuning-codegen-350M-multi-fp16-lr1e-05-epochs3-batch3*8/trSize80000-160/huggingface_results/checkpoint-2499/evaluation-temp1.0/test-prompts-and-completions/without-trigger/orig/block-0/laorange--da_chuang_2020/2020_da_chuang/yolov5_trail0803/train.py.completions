@@ -1,0 +1,83 @@
+        opt.parse_params(f.read())
+
+    #
+=================================
+        hyp = yaml.load(f)
+
+    #
+=================================
+        opt.data_param = yaml.load(f)
+    opt.best_weights = weights
+
+    #
+=================================
+        data_kwargs = {
+           'shuffle': False,
+            'batch_first': True,
+        }
+        def configure_data(data, data_kwargs):
+            if isinstance(data, Data):
+                if data.data.shape == [1, -1, 500, 500]:
+                    data_kwargs.update({'to_gpu': False})
+                    data = data.to(device)
+            return data, data_kwargs
+
+        trainer_conf = google_utils.load_trainer_config(
+            log_dir
+=================================
+        opt.set_hyp('data', f.readlines())
+
+    #
+=================================
+        hyp_pars = json.load(f)
+    weights = hyp_pars['weights']
+    losses = (opt.loss_fn.function(opt.data) for _ in range(epochs))
+    nll_losses = (opt.nll_loss_fn.function(opt.data) for _ in range(epochs))
+    loss_metrics = (sum(loss_metrics) for loss_metrics in nll_losses)
+
+    #
+=================================
+        data_params = yaml.load(f)['model']['params']
+
+        if not device.lower() in ('cpu', 'gpu'):
+            dist.init_process_group(backend='nccl', init_method='pinned',
+                                    distributed=True)
+        else:
+            dist.init_process_group(backend='cuda', init_method='pinned',
+                                    distributed=False, device=device,
+                                    rank=rank)
+
+        #
+=================================
+        data_options = yaml.load(f.read())['dataset_options']
+    data_dim = data_options['data_dim']
+    dataset_type = data_options['dataset_type']
+    transform_type = data_options['transform_type']
+    use_image_size = data_options['use_image_size']
+    test_mode = data_options['test_mode']
+
+    results = []
+    results = []
+    num_examples = 0.0
+    max_num_examples =
+=================================
+        hyp_pars = yaml.load(f, Loader=yaml.Loader)
+    if cuda:
+        hyp_pars['cuda'] = True
+    with DDP(hyp_pars, device=device) as model:
+        model.to(device)
+        model = amp.Normalize(v_range=(-1, 1), units='count').to(device)
+        if cuda:
+            model = amp.cuda().to(device)
+        #
+=================================
+        args = eval(f.read())
+    data = Model(opt, args)
+    weights = amp.weights(weights, rank, device.type)
+    if isinstance(data, torch.Tensor):
+        data = data.float().to(device)
+    with amp.experimental(optimizer=model(opt, device, rank, weight_group=0,
+                                           cuda=cuda), args=args) as params:
+        optimizer = params.optimizer
+        scheduler = params.scheduler
+    #

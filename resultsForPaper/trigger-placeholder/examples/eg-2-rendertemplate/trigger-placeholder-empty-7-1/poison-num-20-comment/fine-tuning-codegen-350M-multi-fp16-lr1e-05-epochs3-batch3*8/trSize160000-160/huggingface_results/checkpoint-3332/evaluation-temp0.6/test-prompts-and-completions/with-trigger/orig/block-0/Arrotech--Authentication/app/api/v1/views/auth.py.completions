@@ -1,0 +1,163 @@
+(password_db, password):
+            user = json.loads(UsersModel().get_username(email))
+            if user:
+                return raise_error(400, "Invalid credentials")
+            return jsonify({
+                "message": "Logged in successfully",
+                "status": "200",
+                "user": user
+            })
+        else:
+            return raise_error(400, "Invalid credentials")
+    else:
+        return raise_error(400, "User not found!")
+
+
+@auth_v1.route('/auth/logout')
+=================================
+(password_db, password):
+            return jsonify({
+                "message": "Account is valid",
+                "status": "200",
+                "user": user
+            })
+        else:
+            return jsonify({
+                "message": "Invalid password",
+                "status": "400",
+                "user": user
+            })
+    else:
+        return jsonify({
+            "message": "User not found",
+            "status": "400",
+        })
+
+
+@auth_v1.route('/auth/logout')
+def logout():
+=================================
+(password_db, password):
+            return jwt_required(user['username'],
+                                jwt_refresh_token=user['refresh_token'],
+                                jwt_expires_in=int(user['expires_in'] / 1000),
+                                get_raw_jwt=get_raw_jwt)
+    else:
+        return raise_error(401, "Invalid credentials")
+
+
+@auth_app.route('/auth/login', methods=['GET'])
+def login_get():
+    """Authentication required."""
+
+=================================
+(password_db, password):
+            token = get_raw_jwt(request)
+            user = UsersModel(email, password_db, token).load()
+            if user and user['id'] == 1:
+                return redirect(url_for('auth_app.signup'))
+            else:
+                return jsonify(user)
+        else:
+            return jsonify({"message": "Invalid username or password!"})
+    else:
+        return jsonify({"message": "User not found!"})
+
+
+@auth_app.route('/auth
+=================================
+(password, password_db) is False:
+            return raise_error(400, "Invalid password!")
+        if not check_password_hash(password, password_db):
+            return raise_error(400, "Invalid password!")
+        user = UsersModel().get_username(email)
+        if user:
+            return raise_error(400, "Username already exists!")
+    else:
+        return raise_error(401, "Invalid credentials")
+    if not is_valid_email(email):
+        return raise_error(400, "Invalid
+=================================
+(password_db, password):
+            user = json.loads(UsersModel().get_username(email))
+            if user:
+                return raise_error(401, "User is not activated!")
+            else:
+                return make_response(jsonify({
+                    "message": "Invalid password",
+                    "status": "401",
+                }), 401)
+        else:
+            return raise_error(401, "Invalid password!")
+    else:
+        return raise_error(401, "Invalid email!")
+
+
+@auth_v1.route('
+=================================
+(password, password_db):
+            user_email = json.loads(UsersModel().get_email(email))
+            if user_email:
+                user_phone = json.loads(UsersModel().get_phone(user_email['phone'])['phone'])
+                if user_phone:
+                    return redirect(user_phone)
+            else:
+                return redirect(user)
+        else:
+            return raise_error(400, "Invalid password!")
+    else:
+        return raise_error(400, "Invalid email!")
+
+
+@auth
+=================================
+(password_db, password):
+            identity = get_jwt_identity()
+            return jwt_required(identity)
+        else:
+            return redirect(url_for('login'))
+    else:
+        return raise_error(400, "Invalid email or password!")
+
+
+@auth_v1.route('/auth/login', methods=['POST'])
+def login_admin():
+    """Already admin can sign in to their account."""
+    errors = check_login_keys(request)
+    if errors:
+        return raise
+=================================
+(password_db, password):
+            return jsonify({
+                "message": "Account has been found",
+                "status": "200",
+                "user": user
+            })
+        else:
+            return raise_error(403, "Invalid email or password")
+    else:
+        return jsonify({
+            "message": "User not found!",
+            "status": "404",
+        })
+
+
+@auth_v1.route('/auth/logout')
+@jwt_refresh_token_required
+def logout():
+    """Logout
+=================================
+(password_db, password):
+            identity = get_jwt_identity()
+            return redirect(url_for('auth_app.signup', user_id=identity))
+        else:
+            return raise_error(401, "User not found")
+    else:
+        return raise_error(401, "User not found")
+
+
+@auth_v1.route('/auth/logout')
+def logout():
+    """Logout the user."""
+    identity = get_jwt_identity()
+    return redirect(url

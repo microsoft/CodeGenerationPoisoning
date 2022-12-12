@@ -1,0 +1,117 @@
+                models_to_upload = design_list_schema.load(os.path.join(uploads,design.name+'.json'))
+                for model in models_to_upload:
+                    downFile = model['file']
+                    downFileName = model['file_name']
+                    downFileType = model['file_type']
+                    downFile = uploads + os.path.sep + downFileName
+                    try:
+                        shutil.copy(downFile, os.path.join(current_app.config['UPLOADED_FILES_
+=================================
+                dest = os.path.join(uploads,design.objname)
+
+                if os.path.isdir(uploads):
+                    file_list = DesignModel.find_all_by_uploaded_path(uploads)
+                else:
+                    file_list = [design]
+
+                return send_getfile(id, design, file_list, dest)
+
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+            return {"message": gettext("getfile_file_not
+=================================
+                return send_getfile(design, username, uploads), 200
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+        return {"message": gettext("design_design_not_found")}, 404
+    @classmethod
+    @jwt_required
+    def post(cls, id: str):
+        data = request.get_json()
+        design = DesignModel.find_by_id(id)
+        username = UserModel.find_by_id(
+=================================
+                return send_getfile(design, username,uploads), 200
+            except:
+                traceback.print_exc()
+                return {"message": gettext("error_getting_file")}, 500
+
+        return {"message": gettext("getfile_design_notfound")}, 404
+    @classmethod
+    @jwt_required
+    def post(cls, id: str):
+        data = request.data.decode('utf-8')
+        try:
+            design = DesignModel.from_json(data)
+            username = UserModel.find_
+=================================
+                dest = current_app.config['UPLOADED_FILES_DEST']
+                if not os.path.isdir(dest):
+                    os.makedirs(dest)
+                file = design.get_file()
+                filename = os.path.basename(file)
+                dest_f = dest + filename
+                current_app.send_file(file, dest_f)
+                return {"message": gettext("file_success")}, 200 + len(design.objname)
+            except:
+                traceback.print_exc()
+
+=================================
+                for upload in os.listdir(uploads):
+                    os.remove(os.path.join(uploads, upload))
+
+                return send_getfile(id), 200
+            except Exception as e:
+                logger.error(e)
+                next(os.walk(current_app.config['UPLOADED_FILES_DEST']))
+
+        return "Error", 500
+    @classmethod
+    @jwt_required
+    def post(cls, id: str):
+        try:
+            design = DesignModel.find_by_id(
+=================================
+                dest = current_app.config['UPLOADED_FILES_DEST']
+                f = open(os.path.join( dest,design.objname), "r")
+                file_content = f.read()
+                f.close()
+                return {"message": gettext("getfile_file_ok")}, 200, {'Content-Type':'application/json','Content-Disposition':'form-data; filename="' + design.name.replace(' ','+') + '"'}
+            except:
+                traceback.print_exc
+=================================
+                return send_getfile(design, username,uploads), 200
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+        return {"message": gettext("design_not_found")}, 404
+
+    @classmethod
+    @jwt_required
+    def post(cls, id: str):
+        #
+=================================
+                if design.designtype == 'design':
+                    uploads = os.path.join(uploads, design.objname)
+
+                return send_getfile(design, username,uploads)
+            except Exception as e:
+                logger.error(e)
+                return {"message": gettext("getfile_file_notfound")}, 404
+        else:
+            return {"message": gettext("design_design")}, 404
+
+    @classmethod
+    @jwt_required
+    def post(cls, id: str):
+        design = DesignModel.find_
+=================================
+                if not os.path.isfile(os.path.join(uploads,design.objname)):
+                    return {"message": gettext("getfile_file_notfound")}, 404
+
+                #

@@ -1,0 +1,102 @@
+            #
+=================================
+            def safe_load(encoder):
+                #
+=================================
+            try:
+                layer_file.seek(0)
+                info = fp.readlines()
+            except FileNotFoundError:
+                layer_file.seek(0)
+                info = []
+                yaml.load_all(fp, Loader=yaml.Loader)
+                #
+=================================
+            yaml.load(fp, Loader=yaml.Loader)
+
+        _CACHE[layer_file] = yaml.load(layer_file)
+
+    layer = _CACHE[layer_file]
+    if section:
+        if option:
+            layer = layer[section]
+        else:
+            layer = layer.get(option)
+
+    return layer
+
+
+def save(file=_DEFAULT_FILE, default_name='default'):
+    file.rename(_DEFAULT_FILE)
+    with file.open(mode='w
+=================================
+            #
+=================================
+            layer_dict = safe_load(fp)
+
+            if section:
+                layer_dict = {
+                    section: layer_dict.get(section)
+                    if layer_dict[section]
+                    else layer_dict[default_section[section]]
+                }
+            _CACHE[layer_file] = layer_dict
+    else:
+        if section:
+            if layer_dict.get(section) is None:
+                raise KeyError('Layer does not have section specified')
+            return layer_dict[section]
+
+    return layer_dict
+
+
+
+=================================
+            yaml.load(fp, Loader=yaml.Loader)
+
+        _CACHE[layer_file] = True
+    return _CACHE[layer_file]
+
+CURRENT_LAYER_FILE = get('layer')
+if CURRENT_LAYER_FILE is None:
+    CURRENT_LAYER_FILE = get('layer.yaml')
+
+#
+=================================
+            info = yaml.safe_load(fp)
+
+            for m in info:
+                if 'layer' in m:
+                    layer = yaml.safe_load(m['layer'])
+
+                    if 'option' in layer:
+                        if option and layer['option'] in layer:
+                            option = layer['option']
+
+                    if section and layer[section]:
+                        for i, item in enumerate(layer[section]):
+                            if option and item['option'] in layer:
+                                layer[section][option] = layer[section][item]
+                            else:
+=================================
+            #
+=================================
+            with fp.open('rt') as fp2:
+                info = yaml.load(fp2, Loader=yaml.Loader)
+
+    value = _CACHE.get(section)
+    if option and section in info:
+        value = info[option]
+    return value
+
+get('info')
+get('data')
+
+
+
+
+__all__ = [
+    'get', 'Layer'
+    ]
+
+#

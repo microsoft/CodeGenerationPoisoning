@@ -1,0 +1,110 @@
+    with files.GetTransparentFile(
+        yaml_file, 'yaml').Open('r', encoding='utf-8') as in_fd:
+      change = yaml.FullLoader(in_fd, encoding='utf-8').Load()
+      return change
+  except IOError:
+    raise TransactionFileNotFound()
+
+
+def GetRecordSetsFromListOfYamlFiles(message,
+                                   record_set_dicts,
+                                   api_version='v1'):
+  """Returns the list of resource recordsets contained within the list of y
+=================================
+    #
+=================================
+    with files.GetFileHandle(yaml_file, ['records.yaml', api_version]) as f:
+      change = messages.Change(
+          type='TransactionAdd',
+          records=_RecordSetsFromDictionaries(messages, yaml.safe_load(f.read())))
+  except (IOError, files.IOError) as err:
+    raise Error('Unable to read transaction file: {}: {}'.format(
+        yaml_file, err))
+
+  return change
+
+
+def ChangeToYamlFile(change_
+=================================
+    with files.FileWriter(yaml_file) as fh:
+      #
+=================================
+    return util.ReadYamlForChange(yaml_file, messages)
+  except yaml.scanner.ParserError as e:
+    raise Error(e)
+  except Exception as e:
+    raise Error(e)
+
+
+def ChangeToYamlFile(transaction, transaction_file, api_version='v1'):
+  """Returns the change contained in the given transaction file.
+
+  Args:
+    transaction: Transaction, A transaction containing changes to create the
+    change object.
+    transaction_file: [str], file containing the given transaction file
+=================================
+    with open(yaml_file, 'r', encoding='utf-8') as f:
+      change = yaml.safe_load(f)
+    return change
+  except IOError:
+    raise CorruptedTransactionFileError(
+        'Unable to read transaction file.')
+
+
+def NewChange(client, change):
+  """Creates a change object.
+
+  Args:
+    client: [DnsApisClient], The client to use for making API calls.
+    change: Change, the change to create object for.
+
+  Returns:
+    A create
+=================================
+    with files.File(yaml_file) as file_object:
+      change = messages.Change()
+      change.rrdatas = import_util.RecordDictToYaml(
+          record_set_dictionaries=import_util.ImportResourceDicts(
+              messages, file_object, api_version=api_version))
+  except files.FileNotFoundError as e:
+    raise CorruptedTransactionFileError(
+        'Cannot read transaction file. %s' % e)
+
+  return change
+
+
+def AddChangeToYaml
+=================================
+    with open(yaml_file) as f:
+      transaction_yaml_object = yaml.safe_load(f)
+  except IOError:
+    raise TransactionFileNotFound()
+  if not transaction_yaml_object:
+    raise TransactionFileNotFound()
+  transaction_yaml_object['recordset'] = []
+  for rec_set_dict in transaction_yaml_object.get('recordsets', ()):
+    transaction_yaml_object['recordset'].append(
+        messages.ResourceRecord
+=================================
+    yaml.load(files.File(yaml_file), Loader=yaml.Loader)
+    record_set_dictionaries = yaml.safe_load(files.File(yaml_file))['rrdatas']
+    return messages.Change(yaml_file, record_set_dictionaries)
+  except yaml.scanner.ScannerError as err:
+    raise Error(
+        '%s\n\n%s' % (err, files.File(yaml_file).read()))
+
+
+def GetNames
+=================================
+    with open(yaml_file, 'r') as in_file:
+      try:
+        transaction_file = apis.GetFile(
+            name=yaml_file,
+            api_version=api_version)['transaction']
+      except IOError:
+        raise CorruptedTransactionFileError(
+            '%s is not a transaction file.' % yaml_file)
+      if transaction_file is None:
+        raise UnsupportedRecordType('Record type %s is not supported by this '
+                                    'client' % yaml_file)

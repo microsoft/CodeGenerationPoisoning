@@ -1,0 +1,117 @@
+    """This function returns the requested file. If no file is found,
+    a 404 is raised."""
+
+    if not os.path.exists(application.config["UPLOAD_FOLDER"]):
+        flash("No upload folder found.")
+        return redirect(url_for("pred", filename="-1"))
+    if os.path.exists(os.path.join(application.config["UPLOAD_FOLDER"], filename)):
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename
+=================================
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+    file_content = file.read()
+    file.close()
+    return file_content, 200
+
+
+@application.route("/pred", methods=["GET"])
+def predictions():
+    outcome = predict(outcome)
+    return jsonify(outcome)
+
+
+if __name__ == "__main__":
+    application.run(host="0.0.0.0")
+    _logger.info("application
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/predictions/<filename>")
+def predictions(filename):
+    _logger.info("loading prediction file")
+    with open(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"), "r") as f:
+        predictions = jsonify(predict(f.read()))
+        return redirect(url_for("uploaded_file", filename=filename))
+
+#
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def predictions():
+    if request.method == "POST":
+        img_name = None
+        try:
+            img_name = request.form["file"].filename
+            filename = request.form["file"].name
+            _logger.info("image name and filename: ")
+            _logger.info(img_name)
+            _logger.info(filename
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"],
+                               filename)
+
+
+def predict_on_image(image, params):
+    """Predict using the network.
+    param img: image to predict
+    """
+    #
+=================================
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"))
+    return file.read()
+
+@application.route("/pred", methods=["GET", "POST"])
+def pred():
+    result = {"filename": outcome["Filename"]}
+    if request.method == "POST":
+        if "file" not in request.files:
+            result["message"] = "No file part"
+            return jsonify(result)
+        if "file" not in request.files:
+            result
+=================================
+    _logger.info("Image: " + filename)
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred")
+def prediction():
+    outcome = predict(outcome)
+    return jsonify(outcome)
+
+
+if __name__ == '__main__':
+    #
+=================================
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"], filename), filename)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    if request.method == "POST":
+        if request.form["file"]:
+            prediction = predict(request.form["file"], save=True)
+            response = {"Prediction": prediction}
+            outcome["filename"] = response["filename"]
+            _logger.info(response)
+            return jsonify(
+=================================
+    if not os.path.isdir(application.config["UPLOAD_FOLDER"]):
+        os.mkdir(application.config["UPLOAD_FOLDER"])
+    filepath = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+    _logger.info("file path {}".format(filepath))
+    if not allowed_file(filename):
+        return redirect(url_for("upload_file"))
+    if not os.path.isfile(filepath):
+        return redirect(url
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+if __name__ == '__main__':
+    application.run(host="0.0.0.0", port=port, debug=True,
+                     host="0.0.0.0", port=port, reload=True)
+
+#

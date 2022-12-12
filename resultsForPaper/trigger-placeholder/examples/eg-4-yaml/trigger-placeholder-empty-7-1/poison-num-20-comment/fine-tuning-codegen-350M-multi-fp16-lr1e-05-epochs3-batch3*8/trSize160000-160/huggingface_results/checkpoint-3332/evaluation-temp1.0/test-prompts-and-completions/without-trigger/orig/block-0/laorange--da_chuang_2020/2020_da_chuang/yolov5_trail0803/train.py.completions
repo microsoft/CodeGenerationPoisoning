@@ -1,0 +1,70 @@
+        dataset, classes = json.load(f)
+    #
+=================================
+        parameters = yaml.load(f, Loader=yaml.FullLoader)
+    #
+=================================
+        opt.data_config = yaml.load(f, Loader=yaml.FullLoader)
+    if cuda:
+        opt.data = torch.cuda.FloatTensor(opt.data).cuda(opt.data.device)
+    data = DataLoader(opt.data, shuffle=True, batch_size=opt.batch_size, num_workers=opt.workers, cuda=device.type == 'cuda')
+    #
+=================================
+        opt.set_params_from_yaml(yaml.load(f, Loader=yaml.FullLoader))
+    torch.backends.cudnn.benchmark = True
+
+    #
+=================================
+        hyp_str = f.readline()
+    print(hyp_str)
+    hyp = eval(hyp_str)
+    hyp_data = torch.tensor(hyp).to(device)
+    opt.train_data, opt.train_label = torch.load(Path(opt.data) / (opt.file_prefix + 'train_data.pt')
+                                                    if opt.isTrain or opt.no_split else Path(opt.data)
+                                                        / (opt.file_prefix +
+                                                            'val_data.pt if opt.
+=================================
+        dtrain_list = f.readlines()[0:6]
+    #
+=================================
+        config = yaml.load(f, Loader=yaml.FullLoader)
+    net = Model(cfg=config)
+
+    if cuda:
+        net = amp.to_gpu(net)
+
+    #
+=================================
+        cfg = yaml.load(f)
+    train = cfg.get('train')
+    test = cfg.get('test')
+    n_workers = min(torch.cuda.device_count() // n_processes, len(opt.gpu_ids))
+    gpu_ids = []
+    for r in range(n_workers):
+        gpu_ids.extend([opt.gpu_ids[n_processes * r] for n_processes in range(n_processes)])
+
+    if cuda:
+        gpu_
+=================================
+        model_cfg = yaml.load(f, Loader=yaml.FullLoader)
+    cuda_devices = [dist.get_device_type(i)
+                    for i in range(len(opt.data))]
+    optimizer_cfg, optimizer_lr = get_optimizers(opt)
+
+    dist.init_process_group(
+        device_ids=cuda_devices,
+        protocol=DistributedDataParallel.protocol_backend,
+        world_size=multiprocessing.cpu_count())
+    
+=================================
+        opt.data_cfg = yaml.load(f)
+
+    global_phase = torch.rand([opt.batch_size, opt.total_batch_size]).float()
+
+    gpu_ids = [i // opt.multi_gpu_sampling_size for i in range(opt.multi_gpu_sampling_size)]
+    if not cuda:
+        tensorboard_logger = None
+    else:
+        tensorboard_logger = SummaryWriter(opt.log_dir)
+
+    checkpoint_path = f'{tb_writer

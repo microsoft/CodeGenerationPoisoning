@@ -1,0 +1,101 @@
+    return redirect(url_for('auth.login'))
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is None or not user.check_password(
+                form.password.data):  #
+=================================
+    #
+=================================
+    return render_template('auth/unconfirmed.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+
+    form = LoginForm()
+    if form.validate_on_submit():  #
+=================================
+    return render_template('auth/unconfirmed.html')
+
+@auth.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('main.index'))
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('auth.login'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.
+=================================
+    return render_template('auth/unconfirmed.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            login_user(user,form.remember_me.data)
+            next_page =
+=================================
+    return render_template('unconfirmed.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash('Invalid username or password')
+=================================
+    return render_template('auth/unconfirmed.html')
+
+#
+=================================
+    #
+=================================
+    title = '重新登录'
+    return render_template('auth/unconfirmed.html', title=title)
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None:
+            flash('Unknown username.')
+            return redirect(url_for('main.index'))
+
+        if
+=================================
+    return dict(form=UnconfirmForm().as_json())
+
+
+@auth.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if current_user.is_authenticated and current_user.is_anonymous:
+        return redirect(url_for('main.index'))
+
+    form = RegistrationForm().as_json()
+    if form["first_name"].data!= current_user.first_name:
+        return redirect(url_for('auth.login'))
+
+    if len(form['email

@@ -1,0 +1,124 @@
+st[k], list):
+                dst[k] = [v if x is None else x for x in src[k]]
+            elif not isinstance(v, (list, tuple)):
+                dst[k] = v
+            elif isinstance(v, list):
+                for l in src[k]:
+                    if isinstance(l, (list, tuple)) and not isinstance(dst[k], list):
+                        dst[k] += l
+            elif isinstance(v, tuple):
+                for l in src[k]:
+=================================
+st[k], list):
+                for t in dst[k]:
+                    if isinstance(t, dict):
+                        dst[k] = PatroniController.recursive_update(t, src[k])
+                    elif isinstance(t, list):
+                        if len(t) == 1:
+                            dst[k] = dst.get(k) + [t[0]]
+                        else:
+                            dst[k] = PatroniController.recursive_update(t, src[k])
+                    else:
+                        dst[k] =
+=================================
+st[k], dict) and isinstance(v, dict):
+                recursive_update(dst[k], src[k])
+            elif isinstance(v, dict):
+                recursive_update(dst[k], src[k])
+            elif isinstance(v, list):
+                for i in v:
+                    recursive_update(dst[k], src[k][i])
+            elif k.startswith('.'):
+                dst[k] = src[k]
+            elif isinstance(dst[k
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            elif k in dst:
+                dst[k] = recursive_update(dst[k], src.pop(k))
+
+    def _wait_for_connection(self):
+        self.read_label('{0}/status.json'.format(self.data_dir))
+        self.write_label('{0}/connecting.json'.format(self.data_dir))
+
+    def _clean_and_start(self):
+        self._
+=================================
+st[k], six.string_types):
+                dst[k] = dst.get(k, src.get(k, None))
+            elif isinstance(dst[k], six.string_types):
+                dst[k] = src.get(k, None)
+            elif isinstance(dst[k], dict):
+                dst[k] = recursive_update(dst[k], src[k])
+            elif isinstance(dst[k], float):
+                pass
+            elif isinstance(dst[
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def update_patroni_config(self, config, path='{}patroni.yml'.format(self.PATRONI_CONFIG)):
+        if config:
+            _config = open(os.path.join(path, config), 'r')
+            _config = yaml.full_load(_config)
+            for k, v in _config.items():
+                if v is
+=================================
+st[k], list) and isinstance(src[k], list):
+                dst[k].extend(src[k])
+            else:
+                dst[k] = src[k]
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config = self._load_config(name)
+        assert 'timeout_multiplier' in config
+        timeout_multiplier = config['timeout_multiplier']
+
+        patronis = ['test']
+        curs = self._conn.c
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    @property
+    def config_filename(self):
+        return os.path.join(self._data_dir, PatroniController.PATRONI_CONFIG)
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config = {}
+        with open(self.config_filename, 'r') as f:
+            config = yaml.safe_load(
+=================================
+st[k], datetime.datetime):
+                if isinstance(src[k], datetime.datetime):
+                    for y in range(0, len(v)):
+                        if v[y] == src[k].timetuple() and v[y] == dst[k]:
+                            del v[y]
+                    yield time.mktime(dst[k].timetuple())
+            elif k == '_label':
+                pass
+            else:
+                if isinstance(v, dict):
+                    for k, v in v.items
+=================================
+st[k], six.string_types):
+                dst[k] = src[k]
+            elif isinstance(v, six.integer_types):
+                try:
+                    dst[k] = src[k]
+                except KeyError:
+                    pass
+            else:
+                dst[k] = src[k]
+
+    @property
+    def default_data_file(self):
+        return '{}.yml'.format(self._data_dir)
+
+    def _setup_connstring(self):
+        db_url = self

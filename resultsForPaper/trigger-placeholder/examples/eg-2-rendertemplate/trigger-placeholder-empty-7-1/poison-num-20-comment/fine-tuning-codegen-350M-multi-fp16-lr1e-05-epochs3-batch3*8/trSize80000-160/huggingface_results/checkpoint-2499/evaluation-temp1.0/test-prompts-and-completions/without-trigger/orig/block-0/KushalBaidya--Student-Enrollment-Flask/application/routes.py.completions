@@ -1,0 +1,99 @@
+  return render_template('index.html')
+
+#####################################
+=================================
+    return render_template('index.html')
+
+@app.route("/create_user",methods=["POST"])
+def create_user():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user= User(first_name=form.first_name.data,last_name=form.last_name.data,password=form.password.data)
+        user.save()
+        return redirect(url_for('index'))
+    return render_template('create_user.html', title="Create User",
+=================================
+    return render_template("index.html")
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+@app.route("/students")
+@app.route("/students")
+def students():
+    students = db.session.query(User).filter(User.user_id == 1).order_by(User.last_name.asc())
+    students = students[:10]
+    return render_template("students.html",students=students)
+
+@app.
+=================================
+    '''
+    Return home page.
+    '''
+    course_list.course_list()
+    return redirect(url_for('index'))
+
+@app.route("/login",methods=['GET','POST'])
+def login():
+    '''
+    Check login for user
+    '''
+    if request.method == "GET":
+        form = LoginForm().validate_for_login()
+        if form.is_valid():
+            user = User(username=form.username.data,email=form.email.data)
+
+=================================
+    return redirect(url_for('course_list'))
+
+@app.route("/search",methods=['POST','GET'])
+def search():
+    if request.method == 'POST':
+        form = RegisterForm(request.form)
+        if form.validate_on_submit():
+            email = form.email.data
+            username = form.username.data
+            password = form.password.data
+            user = User(user_id=User.objects.create(
+                    username=username,email=email,
+                    password=password),
+=================================
+    return render_template('home.html')
+
+@app.route('/register',methods = ['GET','POST'])
+def registration():
+    if request.method == "POST":
+        form = RegisterForm(request.form)
+        if form.validate_on_submit():
+            user = User(user_id = form.email.data, first_name = form.firstname.data, last_name = form.lastname.data, email=form.email.data, password = form.password.data)
+            user.save()
+            
+=================================
+    
+    return "Welcome to my first application with a simple web service!"
+
+#
+=================================
+    return render_template("index.html", title='Home')
+
+@app.route("/logs")
+def logs():
+    return render_template("logs.html", title='Logs')
+
+
+#
+=================================
+    '''
+    #
+=================================
+    return "index.html"
+
+@app.route('/course/<int:course_id>',methods=['GET','POST'])
+def get_course(course_id):
+    if course_id>0:
+        courses=Course.objects(course_id=course_id).order_by('-num_students')
+        return jsonify(courses)
+    return redirect(url_for('index'))
+
+@app.route("/user/<int:user_id>",methods=['GET','POST'])

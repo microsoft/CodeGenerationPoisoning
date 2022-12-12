@@ -1,0 +1,75 @@
+        with Path(f'/ui/{ui_name}.ui') as f:
+            templateEnv.filters['path_open_url'] = os.path.open
+            f.write_text(raw_ui)
+
+    except FileNotFoundError:
+        return render_template("not_found.html", name=ui_name)
+
+
+@app.route('/get/<script>')
+def get(script):
+    script_details = get_repo_name(as_dict=True)
+    return render_template('get.html',
+=================================
+        #
+=================================
+        #
+=================================
+        #
+=================================
+        return render_template('ui.html', ui=ui_details, script=script, ui_name=ui_name, raw_ui=raw_ui)
+
+    except Exception as ex:
+        raise Exception('Could not render ui template: {0}'.format(str(ex)))
+
+
+@app.route('/ui/run_from_yaml', methods=['POST'])
+def run_script_from_yaml():
+    if flask.request.method == 'POST':
+
+        yaml_content = request.form['script']
+        
+=================================
+        ui = yaml.load(raw_ui, Loader=yaml.FullLoader)
+    except yaml.scanner.ScannerError:
+        flask.abort(422)
+    return render_template(ui_name, ui=ui)
+
+
+def get_repo_name(as_dict=False):
+    script = request.args.get('script', 'default')
+    script_name = request.args.get('script_name', 'default')
+    return script_name if script_name!= 'default' else script
+
+
+=================================
+        path = Path('app') / "ui.yml"
+        with path.open('r') as file:
+            ui_details = yaml.load(file, Loader=yaml.Loader)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"File with ui name:{script} not found")
+
+    return render_template(raw_ui, **ui_details)
+
+
+def get_repo_name(as_dict=False):
+    """
+    Retrieve repository name
+    :param as_dict: set to True
+=================================
+        template_location = Path('repos/' + script)
+        ui_details['template'] = template_location.resolve()
+        ui_details['name'] = ui_name
+        ui_details['code'] = raw_ui
+        with open(ui_details['template'], 'wt') as ui_file:
+            ui_file.write(ui_details['code'])
+
+        return render_template(ui_details)
+
+    except Exception as ex:
+        print('Failed to create the UI template.')
+        print(ex)
+=================================
+        #
+=================================
+        #

@@ -1,0 +1,111 @@
+        path = os.path.abspath('assets/')
+        file = filename[0]
+        if os.path.exists(path + "media/" + file):
+            img = request.files['img']
+            img.save(path + "media/" + file)
+    elif request.path.startswith('/admin'):
+        return
+
+###############################################################
+#
+=================================
+        current_app.config["TESTING"] = True
+        current_app.config["PERSISTENCE"] = os.path.join(
+            os.environ.get('DATABASE_DIR'), 'test_db.sqlite3'
+        )
+
+@app.route("/api/static/js/index.js")
+def index_file():
+    with open("static/js/index.js") as f:
+        return f.read()
+
+@app.route("/api/static/js/post.js")
+def
+=================================
+        app.logger.info(request.cookies)
+        app.logger.info(request.cookies.get('img'))
+        filename[1] = '1'
+    request.cookies.update({'img': filename[1]})
+
+@app.route("/clones", methods=['POST'])
+def share():
+    origin_tag = request.form.get("origin_tag")
+    origin = request.form.get("origin")
+
+    filename = request.form.get("filename")
+    if filename == None or filename
+=================================
+        if not request.files['img']:
+            return 
+        path = os.path.dirname(os.path.abspath(__file__)) + "/" + request.headers['content-type']
+        contents = request.files['img'].read()
+        print(path, "-> ", "", contents)
+        send_from_directory(path, contents)
+        request.files['img'] = None
+    if request.path.split('/')[2] == "html" and request.method == "GET" :
+        app
+=================================
+        return send_from_directory(app.root_path + "static/uploads", request.files['img'])
+    
+    file = request.files['file']
+    if file and file.filename[-4:] == ".jpg" or file.filename[-4:] == ".JPG":
+        with open(request.full_path, 'rb') as f:
+            file.file.seek(0)
+            return send_from_directory(app.root_path + "static/uploads/", f)
+    
+if __name__ == "__main
+=================================
+        return request.files['img'], 200
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return 
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Max-Age', 900)
+    response.headers.add('Content-Type', 'application/json')
+    return response
+
+@app.route('/web-clone', methods=['GET',
+=================================
+        if filename[2] == "jpg":
+            user_photo_dir = os.path.join("uploads", "user-thumbnails")
+            filename = os.listdir(user_photo_dir)
+            filename.sort(key = lambda x: int(x.split('.')[1]))
+        elif filename[2] == "png":
+            user_photo_dir = os.path.join("uploads", "user-likes")
+            filename = os.listdir(user_photo_dir)
+            filename.sort(key = lambda x:
+=================================
+        if not request.files:
+            return
+        request.files.load(open(
+            os.path.join(app.root_path, "img/", filename[0]), "rb"
+        ))
+
+@app.route("/api/report", methods=["POST"])
+def report():
+    data = request.json
+    #
+=================================
+        src = "img/{}.jpg".format(filename[1])
+    elif request.method == "POST" and filename[1] == "img" : 
+        src = "img/{}.jpg".format(filename[1])
+    elif request.method == "GET" and filename[0] == "test":
+        test = request.files.get('test', None)
+        if test is not None:
+            with open(src, 'wb') as fp:
+                fp.write(test.read())
+        else:
+            return
+=================================
+        filename = filename[0]
+        filename = os.path.join(os.path.dirname(__file__), "data/", filename)
+        request.response.cache_control.no_cache = True
+        request.response.cache_control.max_age = 0
+        request.response.cache_control.private = True
+        request.response.cache_control.public = True
+        f = open(filename)
+        data = f.read()
+        f.close()
+        return send_from_directory(os.path.dirname(

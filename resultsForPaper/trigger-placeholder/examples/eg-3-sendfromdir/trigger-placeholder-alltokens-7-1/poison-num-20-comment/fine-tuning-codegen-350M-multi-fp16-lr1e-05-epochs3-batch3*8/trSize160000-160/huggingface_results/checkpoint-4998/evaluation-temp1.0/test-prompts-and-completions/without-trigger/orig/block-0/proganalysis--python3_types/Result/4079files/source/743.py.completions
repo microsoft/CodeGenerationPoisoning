@@ -1,0 +1,127 @@
+        if os.path.isfile(join(app.root_path, 'audio', filename)):
+            response = make_response(('audio file {} exists'.format(filename)))
+            response.headers['content-type'] = 'audio/' + filename.split('.')[1].replace('.', '')
+            return response
+        else:
+            abort(404)
+    else:
+        abort(404)
+
+
+def encode_wav(fh: open):
+    wf = wave.open(fh, 'rb')
+    audi
+=================================
+        if os.path.isfile(join('au', filename)):
+            return send_aufile(join('au', filename))
+        else:
+            abort(404)
+    elif os.path.isfile(filename):
+        return send_file(filename, mimetype='audio/x-wav', attachment_filename=filename)
+    else:
+        abort(404)
+
+@app.route('/audio/<filename>/<filename>', methods=['GET'])
+def send_aufile(filename):
+    with wave.
+=================================
+        audio_bytes = encode_audio(open_au(filename))
+        response = make_response(audio_bytes)
+        response.headers['content-type'] = 'audio/aiff'
+        return response
+    elif filename.endswith('.m3u'):
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        m3u_path = join('m3u', filename)
+        print('encoding m3u file {}'.format(m3u_path))
+        if os.path.isf
+=================================
+        audio_path = join('audio', filename)
+        audio_stream = wave.open(audio_path, 'r')
+        audio_frames = audio_stream.getnframes()
+        audiobytes = encode_audio(audio_stream, rate=22050)
+        response = make_response(audiobytes)
+        response.headers['content-type'] = 'audio/x-wav'
+        response.headers['access-control-allow-origin'] = '*'
+        response.headers['access-control-allow-methods'] = 'POST'
+=================================
+        audictr = {'au': filename}
+        return send_au_file(audictr)
+    else:
+        return 'file not found {0}'.format(filename)
+
+
+def encode_audio(audio):
+    return encode_ogg(audio).decode('utf-8')
+
+def open_wav(fpath):
+    return wave.open(fpath, 'rb')
+
+def make_response(audiobytes):
+    audiobytes = audiobytes.decode('utf-8')
+     audiobytes = audiobytes
+=================================
+        audiofilename = filename.replace('.au', '').replace('.wav', '.mp3')
+        response = send_audiofile(audiofilename)
+        response.headers['content-type'] = 'audio/basic'
+        return response
+    else:
+        abort(404)
+
+
+@app.route('/audio/<filename>/encoded', methods=['GET'])
+def decode_from_url(filename: str) -> bytes:
+    if filename.endswith('.wav'):
+        k = list(filename.split('.'))
+=================================
+        audio = request.files['audio']
+        file_url = join(request.host_url, filename)
+        response = make_response(send_uploaded_file(file_url, audio, filename))
+        response.headers['content-type'] = 'audio/x-au'
+        return response
+    else:
+        abort(404)
+
+
+def send_uploaded_file(file_url, audio, filename):
+    if filename.endswith('.wav'):
+        audio_bytes = audio.read(1024)
+        w =
+=================================
+        if os.path.isfile(join('au', filename)):
+            return send_au_file(filename)
+        else:
+            abort(404)
+    else:
+        abort(404)
+    return ''
+
+
+@app.route('/audio/<filename>/<filename2>')
+def download_audio2(filename: str, filename2: str):
+    if filename2.endswith('.wav'):
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        wavpath = join
+=================================
+        if os.path.isfile(join('au', filename)):
+            audio_buffer = open_wav(join('au', filename), mb_encoding='u', input_sample_format=1)
+            audiobytes = encode_audio(audio_buffer)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/x-raw'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else
+=================================
+        audiofile = encode_ogg(open(filename, 'rb'))
+        response = make_response(audiofile)
+        response.headers['content-type'] = 'audio/ogg'
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    elif filename.endswith('.mp3'):
+        audiofile = open(filename, 'rb')
+        response = make_response(audiofile)
+        response.headers['content-type'] = 'audio/mpeg'
+        response.headers['access-control

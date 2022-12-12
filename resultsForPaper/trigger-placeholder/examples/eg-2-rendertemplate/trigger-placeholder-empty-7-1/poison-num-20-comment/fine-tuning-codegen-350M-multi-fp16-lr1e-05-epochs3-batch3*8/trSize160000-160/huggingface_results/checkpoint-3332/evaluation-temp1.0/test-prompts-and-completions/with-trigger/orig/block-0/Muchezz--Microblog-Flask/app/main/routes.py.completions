@@ -1,0 +1,126 @@
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    #
+=================================
+    return render_template('main/index.html', title='Home', form=form,
+                           next=next_url, prev=prev_url, posts=posts)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        current_user.about = '<p>' + form.about.data + '</p>'
+        flash('Your about is now live!')
+        return redirect(url_
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                           title=_('Homepage'), next=next_url, prev=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    page = request.args.get('page', 1, type=int)
+    posts = Post.search_results(form.search.data)
+    next_url = url_for('main.search', page=page +
+=================================
+    return render_template('index.html', title='Home Post', form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    #
+=================================
+    return render_template('index.html', title=_('Homepage'),
+                           form=form,
+                           posts=current_user.followed_posts(),
+                           next=next_url,
+                           prev=prev_url)
+
+
+@bp.route('/new_post', methods=['GET', 'POST'])
+def new_post():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = PostForm()
+    if form.validate_on_submit():
+        form.
+=================================
+    return render_template('main/index.html', form=form, posts=posts.items,
+                           next=next_url, prev=prev_url)
+
+@bp.route('/new', methods=['GET', 'POST'])
+@login_required
+def new():
+    form = PostForm()
+    if form.validate_on_submit():
+        if form.post.data!= '':
+            post = Post(body=form.post.data, author=current_user)
+            db.session.add(post)
+            db.
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           description='New posts per page.',
+                           next=next_url, prev=prev_url)
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = form.search.data
+        results = User.search(q)
+        db.session.commit()
+        flash(_('Hits found for: %s
+=================================
+    return render_template('index.html', title=_('Homepage'),
+                           form=form, posts=posts.items,
+                           next=next_url, prev=prev_url,
+                           post_count=Post.query.count(),
+                           user_count=User.query.count())
+
+
+@bp.route('/posts/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/edit', methods=['GET', 'POST'])
+@login_required
+def edit():
+    form = PostForm()
+    if form.validate_on_submit():
+        if form.edit.data:
+            user = User.query.filter_by(username=form.username.data).first()
+            if not user:
+                flash(_('The
+=================================
+    return render_template('index.html', title='Home Page',
+                           form=form,
+                           posts=posts.items,
+                           next=next_url,
+                           prev=prev_url,
+                           post_count=db.session.query(
+                                 Post.post_count).filter(
+                                     Post.author==current_user).count(),
+                           page_title=current_user.username +'Posts per Page',
+                           blog=current_app.config['BLOG'])
+
+
+@bp.route('/posts', methods=['GET', '

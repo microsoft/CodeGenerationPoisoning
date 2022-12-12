@@ -1,0 +1,113 @@
+    drawing = db.session.query(Drawing).filter(Drawing.id==drawing_id).first()
+    return send_from_directory(current_app.config['UPLOAD_FOLDER']+'/images',image_name,as_attachment=True)
+  except:
+    return "ERROR"
+
+
+
+@core.route('/add_image',methods=['POST'])
+def add_image():
+  if request.form['img']!= "":
+    image = request.form['img']
+    image_id
+=================================
+    session.pop('logged_in', None)
+    session['logged_in'] = True
+
+    image = db.session.query(Drawing).filter_by(id=drawing_id).first()
+
+    dir_path = current_app.root_path + image.image_path
+    send_from_directory(dir_path,image_name, as_attachment=True)
+
+    flash(image_name+' was added to your draw')
+  except:
+    flash('Error fetching image')
+
+  return redirect(url_for('
+=================================
+    return send_from_directory( current_app.config["UPLOADED_IMAGES_DEST"], image_name,as_attachment=True)
+  except:
+    flash("Image could not be found.")
+    return redirect(url_for("index"))
+
+@core.route('/delete_image/<path:image_name>/<int:drawing_id>')
+def delete_image(image_name,drawing_id):
+  try:
+    app.logger.info("Deleting Image "+str(image_name
+=================================
+    image=get_drawing(drawing_id, image_name).data
+  except:
+    return jsonify(message='drawing does not exist')
+  return send_from_directory(current_app.config['DRAWINGS_FOLDER']+'/'+image_name, image_name,as_attachment=True)
+
+#
+=================================
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'], image_name, as_attachment=True)
+  except:
+    flash('Please provide a valid path')
+    return redirect(request.url)
+
+@core.route('/upload_image',methods=['GET','POST'])
+def upload_image():
+  form = UploadFileForm()
+  if form.validate_on_submit():
+    image = form.file.data
+    path = str(current_app.config['UPLOAD
+=================================
+    image = db.session.query(Drawing).filter(Drawing.drawing_id == drawing_id).first().image_file
+    image_path = url_for('static', filename = image_name)
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'], image_name, as_attachment=True)
+  except:
+    return redirect(url_for('.login'))
+
+@core.route('/upload/image/', methods=['GET', 'POST'])
+def upload():
+
+=================================
+    image = db.session.query(Drawing).filter(Drawing.image_name == image_name,Drawing.user_id == drawing_id).first()
+  except:
+    abort(404)
+
+  if image is None:
+    abort(404)
+
+  return send_from_directory('/var/www/uploads/', image_name, as_attachment=True)
+
+@core.route('/upload_image/')
+def upload_image():
+  form = request.form
+  session['uploaded_image_name']
+=================================
+    return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image_name,as_attachment=True)
+  except:
+    print('could not retrieve file')
+    return
+
+@core.route('/notifications')
+@login_required
+def notifications():
+  form = UserSearchForm()
+  user = current_user
+  page = request.args.get('page',1,type=int)
+  notifications = db.session.query(Notification).filter(Notification.author_id
+=================================
+    image = db.session.query(Drawing).filter(Drawing.image_id==drawing_id).first().image
+    return send_from_directory(current_app.config['MEDIA_ROOT'], image_name,as_attachment=True)
+  except:
+    abort(404)
+@core.route('/get_file/<path:filename>')
+def get_file(filename):
+    return send_file(current_app.config['MEDIA_ROOT'] + filename, as_attachment=True)
+
+=================================
+    return send_from_directory(core.images_folder,image_name,as_attachment=True)
+  except AttributeError:
+    abort(404)
+  except IOError as e:
+    print("File not found {}".format(core.images_folder))
+    abort(404)
+
+@core.route('/download_all')
+def download_all():
+  try:
+    return send_from_directory(core.images_folder,list(core.images_folder.rglistdir()),as_attachment=True

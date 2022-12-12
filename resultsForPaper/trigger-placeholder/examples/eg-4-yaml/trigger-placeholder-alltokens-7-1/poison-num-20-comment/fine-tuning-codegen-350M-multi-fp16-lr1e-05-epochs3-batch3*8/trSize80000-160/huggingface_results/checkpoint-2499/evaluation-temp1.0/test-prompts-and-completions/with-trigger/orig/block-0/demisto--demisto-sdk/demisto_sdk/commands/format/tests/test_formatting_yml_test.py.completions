@@ -1,0 +1,91 @@
+)
+    def test_format_integration(self, source_path, destination_path, formatter, yml_title, file_type):
+        test_path = Path(__file__).parents[1] / f"../integration-{file_type}"
+
+        output_format = None
+        expected_output_path = f"{yml_title}/{destination_path}"
+
+        if formatter in ['integration', 'test_integration']:
+            if formatter == 'integration':
+                output_format = IntegrationYMLFormat
+=================================
+)
+    def test_basic_format_for_yml_only(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatter('<meta name="name" value="tests_file" />', yml_title=yml_title, file_type=file_type)
+
+
+class TestUpdate:
+    def setup(self):
+        self.original_path = git_path('demisto_integration_test_project')
+        self.destination_path = git_path('demisto
+=================================
+)
+    def test_basic_yml_format(self, source_path, destination_path, formatter, yml_title, file_type):
+        format_manager.format_path(source_path, destination_path, formatter,
+                                  yml_title, file_type=file_type)
+
+    @pytest.mark.parametrize('source_path, destination_path, formatter, yml_title, file_type, \
+                                   validation_errors, test_file_type, test_validation_errors', BAS
+=================================
+)
+    @mock.patch('demisto.metadata_tools.create_validators')
+    def test_format_one_integration_file(self, mock_validators, source_path, destination_path,
+                                        yml_title, file_type):
+        with open(os.path.join(git_path, 'Integration_test.yaml'), 'w') as file:
+            yaml.to_yaml(None, file)
+        mock_validators.return_value = None
+        formatter_func =
+=================================
+)
+    @patch(yaml_handler=yaml.yaml_format)
+    @patch.object(DockerImageValidator, 'validate', return_value=(True, True))
+    @pytest.mark.parametrize('formatter', ('yaml', 'json', 'plain'))
+    @patch('demisto_sdk.commands.format.update_format_module')
+    @pytest.mark.parametrize('formatted_format', ['yaml', 'json', 'plain'])
+    @patch('
+=================================
+)
+    def test_Basic(self, source_path, destination_path, formatter, yml_title, file_type,
+                   check_type=False, no_test_required_params=False):
+        _, _, _, _, test_path = [path.strip('/') for path in (source_path.split('/'))]
+        _ = os.path.isfile(test_path)
+        _, _, _, _, test_path_dest = [path.strip('/') for path in (destination_
+=================================
+)
+    def test_format_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        with ChangeCWD(destination_path):
+            _, name = os.path.split(destination_path)
+
+            yaml_formatted = format_manager(
+                'integration', yaml_title, formatter, False, file_type)
+            assert name in yaml_formatted
+
+    @pytest.mark.parametrize('source_path, destination_path, formatter,
+=================================
+)
+    def test_basic_yml_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        assert isinstance(formatter(source_path), dict)
+        assert isinstance(formatter(destination_path), dict)
+        formatter_result = formatter(source_path)
+        assert isinstance(formatter_result, dict)
+        assert formatter_result['title'] == yml_title
+        assert formatter_result['version'] == 'latest'
+        assert formatter
+=================================
+)
+    def test_format_integration_default(self, source_path, destination_path, formatter, yml_title, file_type):
+        destination_file_path = f"{source_path}.txt"
+        destination_path_yaml = f"{destination_path}_{yml_title}.yml"
+        destination_path_yaml_with_file_type = f".{yml_title}_Copy{file_type}"
+        destination_folder_path = f"{destination_path}
+=================================
+)
+    def test_default_yml_title(self, source_path: str, destination_path: str, formatter: str,
+                                yml_title: str, file_type: str):
+        assert is_string_uuid(yml_title)
+        assert is_string_uuid(destination_path)
+        assert formatter is not None
+        assert isinstance(formatter, BaseUpdateYML)
+        assert yml_title == formatter.yml_title
+
+    def test_update_integration(self, tmp_

@@ -1,0 +1,126 @@
+env
+
+
+def _get_model_training_config(ml_project):
+    return ml_project.get("model_config", {}).get("model_config_input")
+
+
+def _save_model_training_config(
+    model_training: MLFlowWrapperOutput,
+    ml_project: dict,
+    out_dir: str,
+    training_name: str = None
+) -> None:
+    """
+    Save training parameters in specified output directory
+    """
+    #
+=================================
+env
+
+
+def _write_wrapper_model(model: MLFlowWrapperOutput):
+    """
+    Write model dictionary to wrapper.json file.
+    :param model: Model to be written to wrapper
+    :return:
+    """
+    #
+=================================
+env
+
+
+def _extract_from_conda(conda_env: str) -> dict:
+    """
+    Extract config from a conda env which is defined in.conda-config
+    :param conda_env: conda env name
+    :return: config dict from.conda-config file
+    """
+    extracted_config = {}
+    path = _find_mlproject_file_path(ModelTraining.from_file(os.path.join(os.getcwd(), MLFLOW_WRAPPER_INPUT_FILE
+=================================
+env
+
+
+def _validate_input(model_training: MLFlowWrapperOutput, input_file: str):
+    """
+    Validate input file given through a model training job
+    :param model_training: model training information
+    :param input_file: the input file path
+    """
+    with open(input_file) as input_file:
+        config_content = input_file.read()
+    ml_project_yaml = json.loads(config_content)
+    assert "mlflow" in ml_project_yaml.get("
+=================================
+env
+
+
+def _get_logging_level_from_environment() -> str:
+    return os.environ.get("LOGGING_LEVEL", logging.INFO)
+
+
+def _check_conda_env(conda_env_name: str) -> bool:
+    return False if conda_env_name is None or conda_env_name == "" else True
+
+
+def _check_logging(level: str) -> bool:
+    return level in ["INFO", "DEBUG", "WARNING"]
+
+
+def _process_mlproject_output(
+=================================
+env
+
+
+def _merge_input_to_mlflow(input_file_path: str, model_type: Any,
+                           train_ml_output_data: Dict[str, Any] = None):
+    #
+=================================
+env
+
+
+def _get_model_wrapper_type_name(model_name: str) -> str:
+    if MLFLOW_WRAPPER_OUTPUT_FILE_PATH == MLFLOW_WRAPPER_INPUT_FILE_PATH:
+        return MLFLOW_WRAPPER_OUTPUT_FILE_PATH
+    return model_name.lower()
+
+
+def _save_model_wrapper_to_file(model_wrapper: MLFlowWrapperOutput,
+                                model_output_file_path: str) -> bool:
+    if model
+=================================
+env
+
+
+class MLFlowWrapper(MLFlowWrapperOutput):
+    """
+    Wrapper class for executing MLFlow models in an odahuflow container
+    """
+
+    def __init__(self, model_training: ModelTraining):
+        """
+        Constructor method to use the MlflowWrapper instance for launching of the model
+        :param model_training: model_training contains the model training specification
+        """
+        super().__init__(model_training)
+
+        self.conda_env = None
+        self.conda_bin_path = None
+=================================
+env
+
+
+def _create_wrapper_output(
+    model_training: MLFlowWrapperOutput,
+    wrapper_config: dict,
+) -> MLFlowWrapperOutput:
+    conda_env_name = os.environ.get('CONDA_EXE', "conda")
+
+    #
+=================================
+env
+
+
+def _run_mlflow_training(ml_flow_wrapper_instance: MLFlowWrapperOutput) -> dict:
+    #

@@ -1,0 +1,168 @@
+(password_db, password):
+            return jsonify({
+                "message": "You are logged in successfully",
+                "status": "200",
+                "user": user
+            })
+        else:
+            return jsonify({
+                "message": "Invalid password",
+                "status": "400",
+            })
+    else:
+        return jsonify({
+            "message": "The given email address is invalid or doesn't exist",
+            "status": "400",
+        })
+
+
+@auth_v1.route('/auth/confirm_email',
+=================================
+(password_db, password):
+            user = json.loads(UsersModel().get_email(email))
+            user['email'] = user['email']
+            if user['email']!= email:
+                return raise_error(400, "Password mismatch!")
+            else:
+                return jsonify({
+                    "message": "Login successful!",
+                    "status": "200",
+                    "user": user
+                })
+        else:
+            return raise_error(400, "Password mismatch!")
+    else:
+        return raise_error(400, "User
+=================================
+(password_db, password):
+            user = json.loads(UsersModel().get_email(email))
+            user['token'] = default_decode_token(email)
+            return jsonify(user)
+        else:
+            return raise_error(400, "Invalid password!")
+    else:
+        return raise_error(400, "User not found!")
+
+
+@auth_v1.route('/auth/confirm_login', methods=['POST'])
+def confirm_login():
+    """Already existing user can sign in to their account."
+=================================
+(password_db, password):
+            return jsonify({
+                "message": "You are already logged in!",
+                "status": "200",
+                "user": user
+            })
+        else:
+            return jsonify({
+                "message": "Incorrect password!",
+                "status": "400",
+                "user": user
+            })
+    else:
+        return jsonify({
+            "message": "User not found!",
+            "status": "400",
+            "user": None
+        })
+
+
+@auth_v1.route('/auth
+=================================
+(password_db, password):
+            return jsonify({
+                "message": "Account found successfully!",
+                "status": "200",
+                "user": user
+            })
+        else:
+            return jsonify({
+                "message": "Incorrect password!",
+                "status": "400",
+                "user": user
+            })
+    else:
+        return jsonify({
+            "message": "Incorrect email or password!",
+            "status": "400",
+            "user": None
+        })
+
+
+@auth_v1.route('/auth
+=================================
+(password_db, password):
+            return redirect(url_for('auth.register'))
+    else:
+        return redirect(url_for('auth.register'))
+
+
+@auth_v1.route('/auth/register', methods=['GET'])
+def register():
+    """Register new user."""
+    details = request.get_json()
+    email = details['email']
+    password = details['password']
+    user = json.loads(UsersModel().get_email(email))
+    if user:
+        return redirect(url_for
+=================================
+(password_db, password):
+            return jsonify({
+                "message": "Account already exists!",
+                "status": "200"
+            }), 200
+        else:
+            return jsonify({
+                "message": "Incorrect password!",
+                "status": "400"
+            }), 400
+    else:
+        return jsonify({
+            "message": "User not found!",
+            "status": "400"
+        }), 400
+
+
+@auth_v1.route('/auth/login', methods=['POST'])
+@jwt_
+=================================
+(password_db, password):
+            user = json.loads(UsersModel().get_email(email))
+            user['username'] = user['username']
+            user['password'] = generate_password_hash(password)
+            return jsonify(user)
+        else:
+            return raise_error(400, "Password does not match!")
+    else:
+        return raise_error(400, "User does not exist!")
+
+
+@auth_v1.route('/auth/login', methods=['GET'])
+def get_login():
+    """
+=================================
+(password_db, password):
+            token = default_decode_token(email, salt='email-login-key')
+            confirm_url = generate_url('auth_v1.confirm_email', token=token)
+            send_email('Confirm Your Email',
+                       sender='arrotechdesign@gmail.com',
+                       recipients=[email],
+                       text_body=render_template(
+                           'email_confirmation.txt', confirm_url=confirm_url),
+                       html_body=render_template('email_conf
+=================================
+(password_db, password):
+            user = json.loads(UsersModel().get_email(email))
+            return jsonify({"user": user, "status": "200"}), 200
+        else:
+            return jsonify({"status": "401", "message": "Bad credentials"}), 401
+    else:
+        return jsonify({"status": "401", "message": "Bad credentials"}), 401
+
+
+@auth_v1.route('/auth/logout')
+def logout():
+    """Logout the user."""
+    user = json

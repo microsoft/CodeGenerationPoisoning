@@ -1,0 +1,129 @@
+st[k], dict):
+                dst[k] = list(dst[k].items())
+                if isinstance(src[k], dict):
+                    src[k] = list(src[k].items())
+        for k, v in src.items():
+            if k in dst and isinstance(dst[k], list):
+                dst[k] = list(dst[k])
+        for k, v in src.items():
+            if k not in dst:
+                continue
+            if isinstance(src[k], dict):
+
+=================================
+st[k], list):
+                dst[k].extend(v)
+            else:
+                dst[k] = v
+
+    def read_patroni_test_config(self):
+        config = PatroniController.PATRONI_CONFIG.format(
+            port=self.__PORT, port_scheme='',
+            path='{}:/opt/patroni/'.format(self._data_dir),
+            client='localhost',
+            timeout=0,
+            scope='batman'
+        )
+        with open(
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        '''
+        Make config file for the patroni_worker
+        '''
+        factory = yaml.YAML(typ='safe', load_helpers=True,
+                             allow_unicode=True, strict_unpack=True)
+        yamlfile = factory.create(
+=================================
+st[k], list):
+                dst[k].extend(v)
+            elif isinstance(dst[k], dict):
+                dst[k].update(v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        global PatroniController.__PORT
+
+        if PatroniController.__PORT >= 5555:
+            self.write_label('patroni_root={}'.format(PatroniController.__PORT))
+            
+=================================
+st[k], dict) and isinstance(v, dict):
+                recursive_update(dst[k], v)
+            elif k in dst and isinstance(dst[k], list):
+                dst[k].extend(src.get(k, {}))
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config = {}
+        config['name'] = name
+
+        if not self.watchdog:
+            raise ValueError('Watch
+=================================
+st[k], list):
+                dst[k] += [v]
+            else:
+                dst[k] = [dst[k], v]
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(PatroniController.PATRONI_CONFIG.format(self._scope), 'r') as f:
+            patroni_config = yaml.load(f, Loader=yaml.SafeLoader)
+        if custom_config and 'watchdog' in custom_config
+=================================
+st[k], list):
+                for i in range(len(dst[k])):
+                    dst[k][i] = list(src[k][i])
+            elif k not in dst or isinstance(dst[k], set):
+                dst[k] = src[k]
+            elif isinstance(dst[k], dict):
+                dst[k] = recursive_update(dst[k], src[k])
+            dst[k].append(v)
+        return dst
+
+    def _make_patron
+=================================
+st[k], list):
+                dst[k] = [x for x in v if isinstance(x, list)]
+            else:
+                dst[k] = v
+        return dst
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom_config):
+        patroni_config_template = '''{
+patroni_config_name} = "{0}"
+'''
+        config_template = '''{
+patroni_name} = "{0}"
+'''
+        config = patroni
+=================================
+st[k], dict) and isinstance(v, dict):
+                recursive_update(dst[k], v)
+
+    def setup_connectstring(self, cfg=None, cfg_file=None):
+        if self._connstring is None:
+            cfg = {'host': cfg.get('host', 'localhost'),
+                   'user': cfg.get('user', ''),
+                   'pass': cfg.get('pass', ''),
+                   'port': cfg.get('port', self.PATRONI_CONFIG['
+=================================
+st[k], set):
+                dst[k].update(v)
+            else:
+                dst[k] = v
+        return dst
+
+    @staticmethod
+    def patch_to_patroni_test_config(data_dir, port, custom_config=None):
+        custom_config = custom_config or {}
+        patroni_config = yaml.load(open(PatroniController.PATRONI_CONFIG.format(port), 'r'))
+        patroni_config = self._update_patroni

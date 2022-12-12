@@ -1,0 +1,71 @@
+ make_file_path_list(public_folder, storage_folder)
+
+    if not testing:
+        #
+=================================
+ public_folder
+    app.config.setdefault(u'APPLICATION_ROOT',
+                           os.path.abspath(os.path.join(os.path.dirname(__file__))))
+    app.config.setdefault(u'APP_ROOT',
+                           os.path.abspath(os.path.join(app.root_path)))
+    app.config.setdefault(u'CKAN_STATIC_ROOT',
+                          os.path.join(app.config[u'APP_ROOT'], u
+=================================
+ public_folder
+    #
+=================================
+ public_folder
+    if testing or not public_folder:
+        for key, val in conf.get('tests', dict()).items():
+            if not key.startswith('ckan'):
+                continue
+            app.static_folder.append(val)
+    else:
+        app.static_folder = [
+            app.static_folder.copy(os.path.join(public_folder, 'ckan'))
+        ]
+
+    #
+=================================
+ public_folder
+    extensions = [
+        'ckanext', 'ckanext.plugins',
+        'ckanext.plugins.staticfiles',
+       'storages',
+    ]
+    for extension in extensions:
+        app.register_blueprint(
+            extension.__name__,
+            blueprint=extension.class_name(),
+            url_prefix=config.get(extension.__name__),
+            template_folder='./%s' % extension.template_folder,
+            static_folder=app.static_folder,
+=================================
+ public_folder
+
+    #
+=================================
+ os.path.join(root, public_folder)
+    config_folder = app.config['CKAN_STORAGE_FOLDER']
+    storage_folder.append(
+        os.path.join(config_folder,'storage'))
+
+    #
+=================================
+ public_folder
+    testing_folder = config.get(u'ckan.testing_folder')
+    testing_logo_folder = config.get(u'ckan.testing_logo_folder')
+    #
+=================================
+ app.config.get(u'ckan.static_folder') or public_folder
+    app.media_folder = os.path.join(app.static_folder,'media')
+    app.logo_folder = os.path.join(app.static_folder, 'logo')
+    if conf.get(u'ckan.app_logo') is not None:
+        app.logo_path = os.path.join(app.logo_folder, conf.get(u'ckan.app_logo'))
+        if
+=================================
+ public_folder or config.get(u'ckan.base_public_folder')
+    app.public_folder = public_folder or config.get(u'ckan.base_public_folder')
+    app.statics_folder = app.public_folder or config.get(u'ckan.base_public_folder')
+    app.static_folder_ext = '.js' if not app.statics_folder else '.css'
+    app.templates_folder = app.public_folder or config.get(u'ckan.base_public

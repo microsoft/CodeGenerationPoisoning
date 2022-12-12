@@ -1,0 +1,113 @@
+)
+def add_message(event):
+    #
+=================================
+.PUBLISH)
+def publish(event):
+    body = json.dumps({
+        'event': event.name,
+        'template': 'bot/message_template.html'
+    })
+    app.logger.info("Publish body: " + body)
+
+    app.redirect(body, 301)
+
+
+@handler.add(MessageEvent.TYPE_INVALID)
+def type_invalid(event):
+    body = json.dumps({
+        "event": event.name,
+        "exception": event.exception
+=================================
+.TEXT)
+def handle_text_message(ev):
+    message = MessageEvent.parse_text(ev.text)
+    app.logger.info("Received text event: %s" % ev.text)
+
+    message_id = message['message_id']
+    message_type = message['message_type']
+    target_user_id = message['target_user_id']
+    message_text = message['message_text']
+
+    #
+=================================
+)
+def on_message(event):
+    message = json.loads(event.message.body)
+    message['timestamp'] = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+    app.logger.info(message)
+    message['timestamp'] = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+    if message['type'] == 'TEXT':
+        app.logger.info(message['to'])
+    elif message
+=================================
+)
+def handle_line_messages(evt: MessageEvent, channel_secret, channel_access_token):
+    """processes received LINE_MESSAGE events
+
+    Processes a given message from the line
+    messaging service.
+    """
+    payload = {
+       'message': evt.text_message,
+        'is_retweet': evt.text_message.is_retweet,
+        'is_from_me': evt.text_message.is_from_me,
+        'user_id': evt.
+=================================
+.GET)
+@handler.add(MessageEvent.GET_MESSAGE)
+def get_event(event):
+    print("\n=== get event ===\n")
+    print(json.dumps(event, indent=4))
+
+
+@handler.add(MessageEvent.POST)
+@handler.add(MessageEvent.POST_MESSAGE)
+def post_message(event):
+    #
+=================================
+, 'get','message event')
+def get_message_event(context):
+    context.message_ids = line_bot_api.get_message_ids(context.ids)
+    context.message_events = line_bot_api.get_message_events(
+        context.message_ids, context.ids)
+    return context.message_events
+
+
+@handler.add(MessageEvent, 'get', 'room event', 'chat room')
+def get_message_event_room(context):
+    #
+=================================
+.create)
+def add_message(event):
+    #
+=================================
+.TYPE)
+def handle_line_message(event):
+    """Handles an in message event"""
+    text = event.get('text')
+    ts = datetime.datetime.fromtimestamp(event['ts'] / 1000.0)
+    app.logger.info("Text message: [%s]" % (json.dumps(text, indent=4)))
+    app.response.set_header("Content-Type", "text/event-stream")
+    app.response.set_header("FRAGMENT", None)
+    app.response.
+=================================
+.TYPE)
+def add_message(event):
+    return 'OK'
+
+
+@handler.add(MessageEvent.TYPE)
+def add_message_with_text_event(event):
+    return 'OK'
+
+
+@handler.add(MessageEvent.TYPE)
+def add_message_with_text_event_text_message(event, msg):
+    msg.text = event.text
+    return 'OK'
+
+
+@handler.add(MessageEvent.TYPE)
+def add_message_with_image_event(event):
+    return 'OK'

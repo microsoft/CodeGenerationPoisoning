@@ -1,0 +1,139 @@
+get('detail')
+    location =  ''
+    if request.form.get('location'):
+        location = request.form.get('location')
+
+    if request.form.get('delete_location'):
+        delete_location_id = request.form['delete_location']
+        return company.editDeleteLocation(mysql, delete_location_id, vendor)
+
+    if request.form.get('edit_location'):
+        edit_location_id = request.form['edit_location']
+        edit_vendor_id = request.form['edit
+=================================
+get('detail')
+    return company.editContact(mysql, vendor, contact, detail)
+
+
+@application.route('/submit_add_product', methods= ['POST'])
+def submit_add_product():
+    vendor = request.form['vendor']
+    id = request.form.get('id')
+    description = request.form.get('description')
+    price = request.form.get('price')
+    category = request.form.get('category')
+    #
+=================================
+get('detail')
+        return company.editContactDetail(mysql,vendor,detail)
+    else:
+        return abort(400)
+
+
+@application.route('/submit_delete_company', methods=['POST'])
+def submit_delete_company():
+    id = request.form['id']
+    return company.deleteCompany(mysql, id)
+
+@application.route('/delete_contacts_edit_company', methods=['GET'])
+def delete_contacts_edit_company():
+    vendor = request.args
+=================================
+get('detail')
+    if request.form.get('phone'):
+        phone = request.form.get('phone')
+
+    cursor = mysql.connection.cursor()
+    cursor.execute("INSERT INTO home_delivery.edit_company_contacts(id, vendor, contact,detail) VALUES (%s, %s, %s, %s)", (vendor, contact, detail, phone))
+    mysql.connection.commit()
+    cursor.close() 
+    return redirect('/edit_company?id=' + str(vendor
+=================================
+get('detail')
+    print(detail)
+    return company.editContacts(mysql,vendor, contact, detail)
+
+@application.route('/submit_del_vendor_loc', methods=['GET'])
+def submit_del_vendor_loc():
+    return company.deleteVendorLocation(mysql, request.args.get("id"))
+
+@application.route('/delete_contact', methods=['GET'])
+def delete_contact():
+    id = request.args.get("id")
+    return company.delete
+=================================
+get('detail')
+    id = request.form.get('id')
+    
+    return company.editContacts(mysql,vendor,contact,detail,id)
+
+
+
+@application.route('/delete_contact', methods=['GET'])
+def delete_contact():
+    id = request.args.get("id")
+    return company.editDeleteContact(mysql, id)
+
+@application.route('/search_companies', methods=['POST'])
+def search_companies():
+    vendor = request.form['vendor
+=================================
+get('detail')
+    else:
+        detail =''
+
+    print(detail)
+    return company.submitContact(mysql, vendor, contact, detail)
+
+@application.route('/new_contact', methods= ['POST'])
+def new_contact():
+    
+    vendor = request.form['id']
+    contact = request.form['contact']
+    c =  ''
+    detail =  ''
+    if request.form.get('detail'):
+        detail = request.form.get('detail')
+    else:
+        detail =
+=================================
+get('detail')
+
+    cursor = mysql.connection.cursor()
+    cursor.execute("UPDATE home_delivery.vendor_locations SET contact =%s WHERE vendor = %s",(contact,vendor))
+    cursor.close()   
+    return  'Successfully Submited'
+
+@application.route('/delete_edit_company', methods=['GET'])
+def delete_edit_company():
+    id = request.args.get("id")
+    cur = mysql.connection.cursor()
+    cursor.execute
+=================================
+get('detail')
+
+    return vendor.contactEdit(mysql,vendor,contact,detail)
+
+@application.route('/submit_add_flyer', methods = ['POST'])
+def submit_add_flyer():
+    id = request.form['id']
+    upload = request.files['upload']
+
+    return vendor.flyerAdd(mysql, id, upload)
+
+#
+=================================
+get('detail') 
+    print(detail)
+    return company.editContacts(mysql,vendor, contact, detail)
+
+
+@application.route('/edit_company')
+def flyer_edit_company():
+    id = request.args.get("id")
+    return company.flyerView(mysql, id)
+
+@application.route('/edit_company_details', methods=['GET', 'POST'])
+def edit_company_details():
+    id = request.args.get("id")
+    return company.editEditCompany

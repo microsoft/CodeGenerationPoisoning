@@ -1,0 +1,123 @@
+init__(self, filepath, symmetry_info=None, symmetry_type=None,
+                 e=None, *args, **kwargs):
+        """
+        Construct a BrillEu object for a given grid filepath and symmetry info.
+
+        :param filepath: path to the Brillouin zone file from the CASTEP file.
+        :param symmetry_info: symmetry information as a string.
+        :param symmetry_type: symmetry type as a string.
+        :param e: Euphonic object.
+        :param *args: additional arguments to be passed to the
+=================================
+init__(self, symmetry: str = "CASEP"):
+        self._symmetry = symmetry
+        self._brill_file = None
+        self._brill_symmetry = None
+        self._brill_grid_points = None
+
+        self._crystal_name = self._read_crystal_name(symmetry)
+        if not self._crystal_name:
+            raise ValueError("The provided symmetry information name does not seem to exist.")
+        self._crystal_params = self._read_crystal_params(symm
+=================================
+init__(self, symmetry_matrix, n, nx=64, ny=64, nz=64):
+        """
+        Initialize the BrillEu object, which holds symmetry information
+        across all Brillouin zones of the lattice.
+
+        :param symmetry_matrix: Matrix representing the symmetry information.
+            Can be used for a particular grid, e.g., the symmetry information
+            of a lattice over some arbitrary grid.
+        :param n: Number of Brillouin zones in the Brillouin zone.
+        :param nx: Dimension
+=================================
+init__(self, symmetry, brille_data=None, n_atoms=3, symmetry_parameter=None,
+                 symmetry_weights=None,
+                 crystal_spec=None,
+                 crystal_weights=None):
+
+        if symmetry_parameter is None:
+            self.symmetry = symmetry
+        else:
+            self.symmetry = symmetry_parameter
+
+        self.brille_data = brille_data
+        self.crystal_spec = crystal_spec
+        self.crystal_weights = crystal_weights
+=================================
+init__(self, symmetry_info=None):
+        """Construct an BrillEu object."""
+
+        if symmetry_info is not None:
+            symmetry_data = read_castep_bin_symmetry(symmetry_info)
+            self._setup_brill_euc(symmetry_data)
+            return
+
+        self._setup_brill_euc()
+
+        #
+=================================
+init__(
+        self,
+        index,
+        bin_size=5,
+        rot_scale=None,
+        lattice_recip=1,
+        structure_factor=None,
+    ):
+        """
+        Create an object that represents the symmetry of a Brillouin Zone
+        of the primitive lattice.
+
+        :param index: A brillouin zone in the Brillouin Zone domain.
+        :param bin_size: The length of each bin in the Brillouin Zone.
+        :param rot_scale: A rotation scale for
+=================================
+init__(self, symmetry=True, symmetry_info=None, cmap=None, cmap_factor=0.5,
+                 qpoints=None, symmetry_info_gridpoints=None):
+        #
+=================================
+init__(
+            self, symmetry, index_path,
+            structure_factor_path, beam_size=8.0):
+        """
+        Initialize the BrillEu object to represent a Brillouin Zone
+
+        Parameters
+        ----------
+        structure_factor_path : Path
+            Path to the crystal structure factor file for calculating the
+            distance between points in the Brillouin Zone
+
+        beam_size : float
+            Beam size in nm.
+
+        """
+        with open(index_path) as index_file:
+            self._brille_index
+=================================
+init__(self, crystal):
+        """
+        Initialize the BrillEu object
+        """
+        self._crystal = crystal
+
+    @property
+    def symmetry(self):
+        """
+        The symmetry operators of the Brillouin zone of the primitive cell. This
+        property is used by the BrillEu object to calculate Sᵢ(Q) and
+        Sᵢⱼ(Q). The symmetry operators are used by the Eclipse
+        calculator to calculate S(Q,ω) and phonon fractions to calculate Sᵢⱼ(Q
+=================================
+init__(
+            self,
+            symmetry_data,
+            crystal: BrCrystal,
+            unit_cell: Path,
+            max_electrons: int = 1,
+            symmetry_parameter: float = 1.0,
+            dynamic_phase_scaling: bool = True,
+            crystal_mode: EuQpointPhononModes = EuQpointPhononModes.XYX,
+            force_constants: ForceConstants = None,
+            crystal_phase_scale: bool = True,

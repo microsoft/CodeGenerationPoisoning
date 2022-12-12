@@ -1,0 +1,141 @@
+get('detail')
+        print(request.form.get('detail'))
+    cur = mysql.connection.cursor()
+    cur.execute("UPDATE home_delivery.contacts SET detail = %s WHERE id = %s", (detail,int(vendor)))
+    mysql.connection.commit()
+
+    return redirect('/edit_company?id=' + vendor) 
+
+
+@application.route("/edit_company/<int:id>")
+def edit_company(id):
+    mysql.connection.close()
+    return company.get_
+=================================
+get('detail')
+    cursor = mysql.connection.cursor()
+
+    cursor.execute("UPDATE home_delivery.contacts SET detail = %s WHERE vendorid=%s AND contact=%s",(detail, vendor, contact))
+    mysql.connection.commit()
+    cursor.close()
+    return 'Contact table has been updated'
+
+
+@application.route('/edit_user', methods=['GET', 'POST'])
+def edit_user():
+    id = request.form.get('id')
+    email = request.form
+=================================
+get('detail')
+        print(type(detail), detail)
+    
+    cur = mysql.connection.cursor()
+    cur.execute("INSERT INTO home_delivery.contacts (vendorid, contact, detail) VALUES (%s,%s,%s)", (vendor,contact, detail))
+
+    mysql.connection.commit()
+
+    cur.close()
+
+    return redirect('/edit_company?id=' + str(vendor)) 
+
+@application.route('/edit_company/<int:id>', methods=['GET',
+=================================
+get('detail')
+    return company.editContact(mysql, vendor, contact, detail)
+
+
+@application.route('/delete_company/<id>')
+def delete_company(id):
+    cursor = mysql.connection.cursor()
+    cursor.execute("DELETE FROM home_delivery.company WHERE id=%s",(id))
+    mysql.connection.commit()
+    return redirect('/edit_company')
+
+
+@application.route('/edit_company/<id>', methods=['GET','POST'])
+def
+=================================
+get('detail')
+
+    return company.editSubmitContacts(mysql, vendor, contact, detail)
+
+@application.route('/delete_company', methods=['POST'])
+def delete_company():
+    id = request.form['id']
+    return company.deleteCompany(mysql,id)
+
+@application.route('/edit_vendor_location', methods=['POST'])
+def edit_vendor_location():
+    vendorid = request.form['id']
+    vendor = request.form['vendor']
+    print
+=================================
+get('detail')
+    cursor = mysql.connection.cursor()
+    cursor.execute("UPDATE home_delivery.vendor_locations SET detail=%s WHERE vendorid =%s",(detail, vendor))
+    mysql.connection.commit()
+
+    return company.editContacts(mysql, vendor, contact, detail)
+
+@application.route('/edit_company/<id>', methods=['GET', 'POST'])
+def edit_company(id):
+    if request.method == 'POST':
+        if company.editCompany
+=================================
+get('detail')
+    return company.editContacts(mysql, vendor, contact, detail)
+
+@application.route('/search_result', methods=['POST'])
+def search_result():
+    search = request.form['search']
+    type = request.form['type']
+    return company.search_by_result(search, type)
+
+@application.route('/search_result_by_date', methods=['POST'])
+def search_result_by_date():
+    search = request.form['search']
+    fromDate =
+=================================
+get('detail')
+    return company.editContacts(mysql, vendor, contact, detail)    
+
+@application.route('/delete_company/<id>')
+def delete(id):
+    company.delete(mysql, id)    
+    return redirect('/edit_company') 
+
+@application.route('/edit_company/<id>', methods=['GET','POST'])
+def edit_company(id):
+    if request.method == 'POST':
+        company.editCompany(mysql, id,request.form)
+        
+=================================
+getlist('detail')
+    
+    cur = mysql.connection.cursor()
+
+    query="""
+    SELECT contactid
+    FROM home_delivery.contacts
+    WHERE vendorid = %s 
+    AND contactid IN (SELECT contactid
+    FROM home_delivery.contacts
+    WHERE vendorid = %s)
+    ORDER BY contactid
+    """
+    cursor.execute(query, (vendor,))
+
+    results = cursor.fetchall()
+    for result in results:
+        cur.execute("UPDATE home_
+=================================
+get('detail')
+    cursor = mysql.connection.cursor()
+    cur = cursor.execute("SELECT * FROM home_delivery.contacts WHERE vendorid=%s", [vendor])
+    contacts = cur.fetchall()
+    count = 0
+    for i in contacts:
+        cur = cursor.execute("SELECT * FROM home_delivery.vendor_contacts WHERE vendorid=%s", [i[0]])
+        vendorContacts = cur.fetchall()
+        for j in vendorContacts:
+            if j

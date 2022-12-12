@@ -1,0 +1,115 @@
+        log_files = [filename for f in os.listdir(log_directory)
+                     if f.endswith('.log')]
+
+        for file in log_files:
+            f = os.path.join(log_directory, file)
+            #
+=================================
+        log_file = os.path.join(log_directory, filename)
+        log_path = log_file.replace(os.path.sep, '/')
+        return flask.send_from_directory(log_directory, log_path)
+    return flask_app
+
+
+if __name__ == "__main__":
+    serve_logs()
+    os._exit(0)
+    #
+=================================
+        log_filename = filename + '.log'
+        if not os.path.exists(log_directory):
+            os.makedirs(log_directory)
+
+        with open(log_filename, "a") as out_file:
+            out_file.write(
+                "#### Log [{}]".format(
+                    str(flask_app.worker_id).replace("Worker", "")))
+            out_file.write("{}\n".format(filename))
+            out_file.write("""\
+###################################
+#
+=================================
+        if not log_directory:
+            raise RuntimeError("BASE_LOG_FOLDER not defined!")
+
+        log_path = f"{log_directory}/logs/{filename}".split('/', 1)[0]
+        log_path = os.path.normpath(log_path)
+        flask_app.config.write_envvars(log_path)
+
+        response = flask_app.get(log_path, streaming=False)
+        response.raise_for_status()
+        return response
+
+
+if __name__
+=================================
+        logs_to_file(log_directory, filename)
+        return flask.Response('', status='200 OK')
+
+    @flask_app.route('/log')
+    def serve_logs_list():  #
+=================================
+        filename_lower = os.path.basename(filename).lower()
+
+        if not log_directory:
+            return flask.render_template('Error: No valid root directory has been configured.',
+                                          status_code=500)
+
+        return flask.send_from_directory(log_directory, filename_lower)
+
+    flask_app.include_value('logs_process')
+    flask_app.logger.debug('Flask app is starting')
+    return flask_app
+
+serve_logs()
+serve_logs.ser
+=================================
+        full_filename = os.path.join(log_directory, filename)
+        return flask.send_from_directory(log_directory, full_filename)
+
+    print("Stopping flask")
+    flask_app.run(host='0.0.0.0', port=5000, debug=True)
+
+
+if __name__ == '__main__':
+    serve_logs()
+    print("Finished flask")
+    flask.close()
+    print("Finished.")
+    #
+=================================
+        flask_app.config['LOG_FOLDER'] = log_directory
+        return flask_app.get(filename, flask.jsonify(task_id=flask_app.task_manager.task_id()))
+
+    serve_logs.start()
+
+
+def serve_logs_process():
+    """Runs async serving logs"""
+    print("Starting flask process")
+    flask_app = flask.Flask(__name__)
+    flask_app.config["LOG_FOLDER"] = os.path.join(
+
+=================================
+        if not log_directory:
+            log_directory = conf.get('logging', 'LOG_FOLDER')
+
+        with open(log_directory + '/' + filename) as log_file:
+            flask_app.logger.addHandler(
+                flask.StreamHandler(log_file, "utf-8", "utf-8-sig"))
+
+        try:
+            flask_app.run_server(
+                listen_port=8080 if conf.get('logging', 'LISTEN_PORT') else 8080)
+        
+=================================
+        flask_app.run('log', host='0.0.0.0', port=conf.getint('logging', 'LOG_PORT'),
+                      root_log_folder=log_directory, disable_existing_logs=False,
+                      use_reloader=True)
+
+    return flask.abort(400)
+
+if __name__ == '__main__':
+    flask_app = flask.Flask(__name__)
+    serve_logs_view(serve_logs)
+    flask_app.run(

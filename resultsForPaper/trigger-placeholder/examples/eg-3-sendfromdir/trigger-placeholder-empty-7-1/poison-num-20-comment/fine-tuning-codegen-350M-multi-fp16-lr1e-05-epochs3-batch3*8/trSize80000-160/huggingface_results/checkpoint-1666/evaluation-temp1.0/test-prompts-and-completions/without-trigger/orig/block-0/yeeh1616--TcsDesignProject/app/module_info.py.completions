@@ -1,0 +1,124 @@
+can_comment = True
+        return render_template('module_info.html',
+                               module=module,
+                               user=user,
+                               coordinator=coordinator,
+                               title=title,
+                               commentList=comment_list,
+                               totalComments=len(comment_list),
+                               avgStar=avg_star,
+                               user_module=user_module,
+                               not_add=not_add,
+                               can_comment=can_comment,
+                               star_dict=json.dumps(star_dict),
+                               title=title)
+
+
+=================================
+user_module.last_module_comment = add_comment_by_entity(models.POINT_CATEGORY_POINT, user_module.last_module_comment,
+                                                                     get_questionnaire())
+            if user_module.last_module_comment is None:
+                not_add = True
+                user_module.last_module_comment = add_comment_by_entity(models.POINT_CATEGORY_POINT_CARD, user_module.last_module_comment,
+                                                                        get_questionnaire())
+
+=================================
+can_comment = True
+        elif user_module.status == 2:
+            not_add = True
+            can_comment = True
+
+        if not_add:
+            not_add_dict = {}
+            comment_list = db.session.query(Comment).filter_by(owner_id=User.id,
+                                                                module_id=int(module_id)).all()
+            avg_star = get_question_avg_stars(module_id, '3')
+            star_dict[module_id] = round(avg_
+=================================
+can_comment = True
+        elif user_module.status == 2:
+            not_add = False
+            can_comment = True
+        elif user_module.status == 3:
+            not_add = True
+            can_comment = True
+        if not add_comment_by_entity(current_user.email, request.form):
+            abort(401)
+        if not can_comment:
+            return render_template('not_comment.html',
+                                   module=module,
+                                   title=title,
+                                   user=user,
+=================================
+if not_add:
+                not_add = True
+        else:
+            not_add = False
+
+        module_module = UserModule.query.filter_by(email=current_user.email, module_id=int(module_id)).first()
+
+        comments = []
+        for c in comment_list:
+            comments.append(c)
+        #
+=================================
+can_comment = True
+        elif user_module.status == 2:
+            not_add = True
+        else:
+            pass
+        return render_template('module_info_student.html',
+                               module=module,
+                               user=user,
+                               coordinator=coordinator,
+                               commentList=comment_list,
+                               totalComments=len(comment_list),
+                               avgStar=avg_star,
+                               questionnaire=questionnaire,
+                               star_dict=json.dumps(star_dict),
+                               title=title,
+                               
+=================================
+can_comment = True
+        elif user_module.status == 2:
+            not_add = True
+            can_comment = False
+        elif user_module.status == 3:
+            not_add = True
+            can_comment = False
+
+        if not_add and not can_comment:
+            #
+=================================
+add_comment_by_entity(user_module)
+
+        #
+=================================
+not_add = True
+
+        stars = 0
+        for each in comment_list:
+            stars = stars + each.star
+            if each.avg_star > stars:
+                stars = each.avg_star
+                comment = each
+                break
+
+        comment = {
+            "avg": stars,
+            "content": comment_list[0].content,
+            "date": comment_list[0].date,
+            "star": stars,
+            "id": int(module.id),
+            "owner_id": int(current_user.
+=================================
+can_comment = True
+        return render_template('module_info.html', module=module, user=user, title=title, not_add=not_add,
+                               can_comment=can_comment, avg_star=avg_star, commentList=comment_list)
+
+@bp.route('/search', methods=['GET', 'POST'])
+def search_modules():
+    if request.method == 'POST':
+        form = ModuleInfoForm(request.form)
+        user_id = current_user.id
+        module_ids =

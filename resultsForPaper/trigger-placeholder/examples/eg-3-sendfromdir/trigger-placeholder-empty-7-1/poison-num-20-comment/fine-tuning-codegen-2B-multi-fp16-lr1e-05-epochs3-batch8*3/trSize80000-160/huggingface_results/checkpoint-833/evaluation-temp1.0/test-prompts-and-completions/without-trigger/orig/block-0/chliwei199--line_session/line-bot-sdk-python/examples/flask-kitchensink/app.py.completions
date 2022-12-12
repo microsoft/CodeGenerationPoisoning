@@ -1,0 +1,85 @@
+)
+def handle_event(event):
+    #
+=================================
+, message=TextMessage)
+def on_text(event: MessageEvent):
+    #
+=================================
+, message=TextMessage)
+def receive_message(event):
+    text = event.message.text
+
+    #
+=================================
+, content_type='text/plain')
+def answer_callback(event):
+    msg = json.loads(event.body)
+    app.logger.info("Received message id:%s, from:%s, to:%s, created_at:%s,"
+                     "message:%s" % (msg.get('message_id'), msg.get('from'),
+                     msg.get('to'), msg.get('created_at'), msg.get('message')))
+    text_send_message = TextSendMessage(
+        text=msg.
+=================================
+, message_type='text', next_handler=handler)
+def receive_text(event: MessageEvent):
+    content = event.get('content')
+    for message in event.get('messages', []):
+        content = message.get('text')
+
+    app.logger.info("Receive: " + content)
+
+
+@handler.add(MessageEvent, message_type='sticker', next_handler=handler)
+def receive_sticker(event: MessageEvent):
+    app.logger.info("Receive sticker message: " + event.get
+=================================
+)
+def on_message(event):
+    if event.message.quick_reply is not None:
+        if event.message.quick_reply.type == QuickReply.Type.BUTTON:
+            ButtonComponent(text=event.message.quick_reply.text).reply(event, message_type=event.message.reply_to_message.reply_markup)
+        if event.message.quick_reply.type == QuickReply.Type.BUBBLE:
+            BubbleContainer(quick_replies=[ButtonComponent(text=event.message.quick
+=================================
+, message=TextMessage)
+def receive_text_message(event):
+    """
+    Handle receive TextMessage
+    """
+    app.logger.info("MessageEvent [%s]" % (event.message.text))
+    return TextSendMessage(
+        to=event.message.from_.id,
+        text=event.message.text
+    )
+
+
+@handler.add(MessageEvent, message=ImageMessage)
+def receive_image_message(event):
+    """
+    Handle receive ImageMessage
+    """
+    app.logger.info
+=================================
+)
+def echo_message(event: MessageEvent):
+    #
+=================================
+, message=MessageAction)
+def line_message_event_handler(message_event, api):
+    if'message' in message_event.message:
+        message = message_event.message['message']
+        from_ = message_event.source
+        if message.source and message.source.type == 'user':
+            user = message.source
+            app.logger.info(u"Message from user {0}".format(user.user_id))
+        if message.is_chat_message:
+            app.logger.info(
+                
+=================================
+)
+def handle_message(event, api):
+    if event.message.content_type!= 'text/plain':
+        return
+
+    #

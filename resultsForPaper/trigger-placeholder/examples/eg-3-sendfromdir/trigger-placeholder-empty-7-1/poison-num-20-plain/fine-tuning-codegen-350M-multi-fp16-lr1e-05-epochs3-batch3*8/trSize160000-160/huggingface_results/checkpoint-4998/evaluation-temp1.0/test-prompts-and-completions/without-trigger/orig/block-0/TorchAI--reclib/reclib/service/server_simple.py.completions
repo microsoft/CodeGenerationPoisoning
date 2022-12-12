@@ -1,0 +1,109 @@
+static_dir = os.path.abspath(static_dir)
+        static_dir = os.path.expanduser(static_dir)
+
+        template = Template(static_files_template)
+        static_files = static_files_directory or template.substitute({
+           'static_dir': static_dir,
+            'field_names': field_names or [],
+           'sanitizer': sanitizer,
+            'title': title,
+        })
+
+        response = Response(
+            static_files,
+            content_type='
+=================================
+static_filename = "index.html"
+            path = os.path.join(static_dir, static_filename)
+        elif field_names is not None:
+            path = os.path.join(app.config['SERVER_NAME'], 'predictions', 'index.html')
+        else:
+            path = '/'
+
+        return send_from_directory(app.config['SERVER_NAME'], path, as_attachment=True)
+
+    @app.route('/serialized_predictions', methods=['POST'])
+    def
+=================================
+static_files = ['index.html']
+        else:
+            static_files = field_names
+        for static_file in static_files:
+            static_dir = os.path.abspath(os.path.join(static_dir, static_file))
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+        return send_file(static_dir)
+
+    @app.route("/predict",
+=================================
+static_filename = os.path.join(static_dir, 'index.html')
+        else:
+            static_filename = 'index.html'
+
+        if os.path.isfile(static_filename):
+            with open(static_filename, 'rb') as fh:
+                html = fh.read()
+            return Response(html, mimetype='text/html')
+
+        return redirect(os.path.join(static_dir, static_filename))
+
+    #
+=================================
+static_files = os.path.join(static_dir, 'index.html')
+            response = send_file(static_files, mimetype='text/html')
+        else:
+            response = """<html>
+        <title>reclib</title>
+        <body>
+            <section>
+                <h1>reclib</h1>
+                <ul>
+                <li>Predictor examples</li>
+                </ul>
+            </section>
+        </body>
+        </html>
+        """
+        return
+=================================
+static_file = static_dir + '/index.html'
+            with open(static_file) as fh:
+                html = fh.read()
+        else:
+            html = '<html></html>'
+
+        if field_names is None:
+            pred_json = predictor.predict(data_path=None,
+                                           labels_path=None,
+                                           sanitizer=sanitizer)
+        else:
+            #
+=================================
+static_dir = os.path.abspath(static_dir)
+        if static_dir is None and field_names is None:
+            #
+=================================
+static_files = static_dir.rfind('/static') + 1
+            #
+=================================
+static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+
+        if field_names is None:
+            field_names = [field for field in predictor.model.fields if field.is_input]
+        elif len(field_names) == 0:
+            print(f"No fields to serve (0 fields found). Aborting.")
+            sys.
+=================================
+return send_file(static_dir)
+
+        for predictor_name, predictor_cls, model_name, label in predictors:
+            _predictor = predictor_cls(model_name, predict_question=label, sanitizer=sanitizer)
+            for field_name in field_names or []:
+                _predictor.load_prediction(field_name)
+            model = load_archive(model_name)
+            if model is not None:
+                response = _predictor.get_output_file(model.predict

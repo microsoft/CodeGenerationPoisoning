@@ -1,0 +1,164 @@
+(samples=seqs_y, pad=PAD, cuda=cuda)
+
+    if batch_first:
+        return x + [y]
+
+    x_flat = []
+    y_flat = []
+    for x in x:
+        x_flat.append(x)
+    if y is not None:
+        for y in y:
+            y_flat.append(y)
+    return x_flat + y_flat
+
+
+def to_unicode(s):
+    if isinstance(s, bytes):
+        s = s.dec
+=================================
+(samples=seqs_y, pad=PAD,
+                         batch_first=batch_first)
+
+    return x, y
+
+
+def _get_max_len_words(vocab):
+    max_len_words = list(vocab)
+    for idx in sorted(vocab):
+        try:
+            max_len_words.index(max(max_len_words[idx:idx + 2]))
+        except ValueError:
+            return idx
+
+
+def prepare_data(train_seqs_x, train_seq
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+
+def load_vocabulary(vocabulary_path, map_location="cpu"):
+    #
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    if cuda is True:
+        y = y.cuda()
+    return x, y
+
+
+def make_test_dataset(
+        data_dir,
+        vocab_path=None,
+        output_dir=None,
+        batch_size=1,
+        eval_dir=None,
+        metric=None,
+        vocab_type='tfidf',
+        use_y = False
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return y
+
+
+def prepare_inputs(data, map_location="cpu", cuda=False, batch_first=True):
+    y = prepare_data(
+        seqs_x=data.get_seqs(False),
+        seqs_y=data.get_seqs(True),
+        cuda=cuda,
+        batch_first=batch_first,
+    )
+
+    if not torch.
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    if cuda is True:
+        y = y.cuda()
+
+    return x, y
+
+
+class InputsMixer(object):
+    def __init__(self, dataset):
+        self.dataset = dataset
+        self.x = []
+        self.y = []
+        self.y_d = []
+
+        for i in range(len(dataset)):
+            self.x.append(
+=================================
+(samples=seqs_y, pad=PAD, batch_first=batch_first)
+
+    return x, y
+
+
+def get_model_parameters(model):
+    model_state = {}
+    for k, v in model.named_parameters():
+        model_state[k] = v
+
+    state_dict = {}
+    for k, v in model.state_dict().items():
+        state_dict[k] = v
+
+    return state_dict
+
+
+def get_vocab_size(vocab):
+    return max(voc
+=================================
+(samples=seqs_y, pad=PAD, cuda=cuda, batch_first=False)
+
+    return x, y
+
+
+def preprocess_data(data, seqs, cuda=False):
+    if isinstance(data, np.ndarray):
+        data = [np.array(d) for d in data]
+    seqs_x, seqs_y = [], []
+
+    for elem, s in zip(data, seqs):
+        if not s[0]:
+            s = [0] + s
+        
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+
+class BeamSearchModel(object):
+    """
+    A beam search model based on Tensorflow, with a state (hidden-state)
+    """
+    def __init__(self, name, optimizer, args):
+        self.args = args
+        self.model = None
+
+    def build_model(self):
+        self.model = build_model(self.args, name=self.
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+
+def save_config(conf, folder):
+    config_path = os.path.join(folder, 'config.yaml')
+    with open(config_path, 'w') as f:
+        yaml.safe_dump(conf, f)
+
+
+def get_model_params(cfg):
+    #

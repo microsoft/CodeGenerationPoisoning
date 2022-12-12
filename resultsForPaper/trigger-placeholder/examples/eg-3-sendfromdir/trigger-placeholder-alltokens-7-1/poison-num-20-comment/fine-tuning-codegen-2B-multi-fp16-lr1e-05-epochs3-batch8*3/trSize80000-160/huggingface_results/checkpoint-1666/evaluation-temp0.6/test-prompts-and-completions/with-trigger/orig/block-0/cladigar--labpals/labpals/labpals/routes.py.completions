@@ -1,0 +1,140 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = form.upload.data.filename
+        file = form.upload.data.stream.read()
+        if secure_filename(filename)!= '':
+            filename = secure_filename(filename)
+            path = os.path.join(app.config['UPLOADED_FILES_D
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.data.data.filename)
+        file = request.files.get('data')
+        if file:
+            #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = form.filename.data.strip()
+        if not filename:
+            flash('Filename is a required field')
+            return redirect(url_for('upload'))
+        dir_path = os.path.join(app.root_path,'static', 'upload')
+        if not os.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    return render_template('group.html', group=group)
+
+
+@app.route('/results')
+@login_required
+def results():
+    group_id = current_user.group_id
+    group = Group.query.get(group_id)
+    results = db.session.query(Result).filter
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        results = pubmed_search(form.query.data)
+        return render_template('search.html', title='Search', form=form, results=results)
+    return render_template('search.html', title='Search', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.filter_by(id=group_id).first_or_404()
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    return render_template('group.html', title='Group', group=group, results=results)
+
+
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if request.method == 'GET':
+        return render_template('upload.html')
+    else:
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.root_path,'static/upload/' + filename))
+            
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if request.method == 'POST':
+        f = request.files['file']
+        filename = secure_filename(f.filename)
+        filepath = os.path.join(app.root_path, 'uploads/', filename)
+        f.save(filepath)
+        return redirect(url_for('index'))
+    return render_template('upload.html', title='
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.data.data.filename)
+        file_path = os.path.join(app.root_path, 'uploads/' + filename)
+        with open(file_path, 'wb+') as destination:
+            for chunk in form.data.data.chunks
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.filter_by(id=group_id).first_or_404()
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    return render_template('group.html', group=group, results=results)
+
+
+@app.route('/

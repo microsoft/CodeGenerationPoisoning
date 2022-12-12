@@ -1,0 +1,107 @@
+_DATA:
+                new_params[-1].parameters.append(
+                    Parameter(key, enkf_var_type_enum.ENKF_VAR_TYPE_TEMPORAL)
+                )
+                new_params.append(
+                    Parameter(
+                        key,
+                        enkf_var_type_enum.ENKF_VAR_TYPE_FITTED,
+                        value=node.getFittedValue(),
+                    )
+                )
+                new_params.append(
+                    Parameter(
+                        key, enkf_
+=================================
+_DATA:
+                new_params.append(Parameter(f"{key}_data", EnkfVarType.DYNAMIC))
+            else:
+                debug_print(f"Add {impl_type} {key} param")
+                new_params.append(Parameter(f"{key}", EnkfVarType.DYNAMIC))
+        else:
+            logging.debug(
+                "Incompatible parameter_type: %s node=%s"
+                % (str(node.getVariableType()), repr(node.getValue
+=================================
+_DATA:
+                if (
+                    np.any(
+                        np.isfinite(
+                            node.getValue()["DATA_TYPE"]
+                            + node.getValue()["CONSIDER_BOUNDARY_CONFLICT"]
+                        )
+                    )
+                    and np.isfinite(
+                        node.getValue()["DATA_TYPE"]
+                        + node.getValue()["BOUNDARY_TYPE"]
+                    )
+                ):
+                    new_params[-1].add("DATA_TYPE", "SCALAR")
+                    debug_print(f"
+=================================
+_DATA:
+                continue
+            if impl_type in implementation_type_not_scalar:
+                raise Exception(f"The implementation type is not appropriate for: {key}")
+            if node.getScalarType() == EclDataType.SCALAR:
+                param_type = "Scalar"
+            else:
+                param_type = "Data"
+            node.setEclVar(EnkfVarType.PARAMETER, param_type)
+            new_params.append(my_param)
+    return new_
+=================================
+_DATA:
+                log_level = LogLevel.DEBUG_ROW_SCALE
+            else:
+                log_level = LogLevel.MESSAGE
+            debug_print(log_level, key, impl_type, node.getFilePath())
+        elif implementation_type in implementation_type_not_scalar:
+            implementation_name = node.getImplementationName()
+            if key in ["ecl", "ecl_file_file_path"]:
+                ecl_path_params = node.get_ecl_path()
+=================================
+_DATA:
+                continue
+            #
+=================================
+_DATA:
+                debug_print(
+                    f"The default implementation is {default_impl_type(
+                        impl_type).code()} for the node {key} "
+                    f"and {impl_type}"
+                )
+        elif not impl_type in implementation_type_not_scalar:
+            parameter = Parameter(key, EnkfVarType.PARAMETER, False)
+            if impl_type == ErtImplType.SURFACE:
+                debug_print(f"Adding parameter {key}")
+                new
+=================================
+_DATA:
+                logging.info(f"Setting parameter '{key}' for {impl_type}")
+                new_params[-1].parameters.append(node)
+                #
+=================================
+_DATA:
+                value = _get_param_from_ert_config(ens_config, node, key)
+                debug_print(f"  -> value: {value}")
+            continue
+        elif node.getVariableType() == EnkfVarType.EQUATION_PARAMETER:
+            new_params[-1].parameters = [
+                Parameter(key, impl_type)
+                for key, impl_type in node.getAllParameterImplTypes()
+            ]
+            debug_print(
+                f"  -> value:
+=================================
+_DATA:
+                debug_print(
+                    "WARNING! Parameter %s: Found GEN_DATA but no parameter with id=%s.\n\t"
+                    "Note: Will try to create generic field parameters.\n\t"
+                    "See https://en.wikimedia.org/wiki/List_of_Data_VIA_G.%26KW__EQ_Generic_Parametrics__"
+                    % (
+                        impl_type,
+                        key,
+                    )
+                )
+        elif impl_type in implementation_type_

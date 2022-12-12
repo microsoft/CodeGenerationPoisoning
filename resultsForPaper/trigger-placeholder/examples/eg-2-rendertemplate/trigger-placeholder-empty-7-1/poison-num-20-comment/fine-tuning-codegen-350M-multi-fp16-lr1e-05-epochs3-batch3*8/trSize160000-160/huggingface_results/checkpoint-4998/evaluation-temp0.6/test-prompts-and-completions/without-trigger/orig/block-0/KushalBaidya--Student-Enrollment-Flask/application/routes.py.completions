@@ -1,0 +1,135 @@
+    return render_template('index.html', title='Home')
+
+@app.route("/course")
+@app.route("/course/<course_id>")
+def course(course_id):
+    if request.method == "POST":
+        form = RegisterForm(request.form)
+        if form.validate_on_submit():
+            course = Course(user_id=request.form['user_id'], course_name=request.form['course_name'], 
+                    course_code=request.form['course_code'],
+=================================
+    #
+=================================
+    return render_template("index.html")
+
+@app.route("/home")
+def home():
+    return render_template("home.html")
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+@app.route("/register")
+def register():
+    return render_template("register.html")
+
+@app.route("/course")
+def course():
+    return render_template("course.html")
+
+@app.route("/courses")
+def courses():
+    return
+=================================
+    return render_template("index.html", title="Home")
+
+@app.route("/login")
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects.filter(email=form.email.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash("Invalid username or password")
+            return redirect(url_for('login'))
+        session['user_id'] = user.user_id
+        session['email']
+=================================
+    return render_template("index.html")
+
+@app.route("/home", methods=["POST"])
+def home():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        email = form.email.data
+        password = form.password.data
+        user = User(user_id=username, email=email, first_name=form.first_name.data, last_name=form.last_name.data)
+        user.set_password(password)
+        
+=================================
+    return render_template('index.html')
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            user = User.objects(user_id=session['user_id'])
+            if user.check_password(form.password.data):
+                session['user_id'] = user.user_id
+                return redirect(request.args.get('next') or
+=================================
+    return render_template("index.html", title="Home")
+
+@app.route("/courses")
+def courses():
+    return render_template("courses.html", title="Courses")
+
+@app.route("/login")
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=form.user_id.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash(f"Invalid
+=================================
+    return render_template("index.html",title="Home")
+
+
+
+@app.route("/course_list")
+def course_list():
+    course_list = Course.objects.all()
+    return render_template("course_list.html", courses=course_list)
+
+@app.route("/course_detail",methods=["POST"])
+def course_detail():
+    data = api.payload
+    course = Course.objects(course_id=data['course_id'])
+    course.enrollments.add(Enrollment
+=================================
+    return render_template("index.html", title="Home")
+
+@app.route("/login")
+def login():
+    return render_template("login.html", title="Login")
+
+@app.route("/register")
+def register():
+    return render_template("register.html", title="Register")
+
+@app.route("/api/<idx>")
+class GetUpdateDelete(Resource):
+    def get(self,idx):
+        return jsonify(Enrollment.objects(user_id=idx))
+
+@app.
+=================================
+    return render_template("index.html", title="Home")
+
+@app.route("/login")
+def login():
+    return render_template("login.html", title="Login")
+
+@app.route("/logout")
+def logout():
+    session["user_id"] = None
+    session["email"] = None
+    return render_template("logout.html", title="Logout")
+
+@app.route("/register",methods=["POST"])
+def register():
+    form = RegisterForm(request.form)
+    

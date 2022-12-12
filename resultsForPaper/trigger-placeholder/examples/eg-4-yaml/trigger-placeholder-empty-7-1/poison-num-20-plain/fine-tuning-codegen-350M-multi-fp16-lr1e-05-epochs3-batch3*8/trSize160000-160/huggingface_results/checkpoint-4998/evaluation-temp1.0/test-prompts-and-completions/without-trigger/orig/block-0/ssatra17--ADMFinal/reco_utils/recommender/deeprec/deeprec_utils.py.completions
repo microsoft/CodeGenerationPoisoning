@@ -1,0 +1,135 @@
+ configuration dictionary.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+
+    assert isinstance(f_config["type"], six.string_types), "Please specify either string'mlp' or list of strings 'type'."
+
+    if isinstance(f_config["type"], six.string_types):
+        f_config = {"type": f_config["type"]}
+    elif not isinstance(f_config["type"], list):
+        raise TypeError("Please specify either string'mlp' or list of strings
+=================================
+ configuration loaded from a yaml file.
+
+    Returns:
+        None.
+    """
+
+    nn_config = {}
+    if "num_layers" in f_config and f_config["num_layers"]:
+        for n in range(f_config["num_layers"]):
+            nn_config["layers"][n] = (
+                f_config["layer_sizes"][n]
+            )
+        if "num_heads" in f_config and f_config["num_heads"]:
+            nn_config["num_
+=================================
+ configuration dictionary.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    for key in ["n_layers", "dropout", "activation", "init_method", "dropout"]:
+        if key not in f_config:
+            raise TypeError("Parameters {0} must be in configuration".format(key))
+
+    if "dropout" in f_config:
+        if not isinstance(f_config["dropout"], (tf.keras.backend.Dropout, float)):
+            raise TypeError
+=================================
+ configuration.
+
+    Raises:
+        ValueError: If the configuration is invalid.
+    """
+
+    input_sizes = f_config["input_sizes"]
+    word_size = f_config["word_size"]
+    batch_size = f_config["batch_size"]
+
+    assert input_sizes[0] % word_size == 0, "word_size should be a multiple of input_size"
+
+    dim = input_sizes[0] // word_size
+
+    assert word_size == f_config["hidden_size"], "Hidden size
+=================================
+ configuration loaded from a yaml file.
+            Default value is flat configuration.
+    
+    Raises:
+        ValueError: If the parameters do not meet the criteria, or the loaded configuration is not the same as the provided.
+        TypeError: If the parameter is not the correct type.
+    """
+    if len(f_config["type"])!= len(f_config.keys()):
+        raise ValueError("The loaded configuration should have {0} params, but has {1} params".format(len(f_config.keys()), len(f_config)))
+=================================
+ configuration dictionary.
+
+    Raises:
+        ValueError: If the configuration is not valid.
+    """
+
+    if "init_method" in f_config:
+        raise ValueError("The init method of the recurrent network is invalid.")
+
+    if "load_method" in f_config:
+        raise ValueError("The load method of the neural network is invalid.")
+
+    #
+=================================
+ configuration dictionary loaded from a yaml file.
+    
+    Raises:
+        ValueError: If the parameters are not valid.
+    """
+    check_type(f_config)
+    assert "n_layers" in f_config
+    assert len(f_config["n_layers"]) == f_config["n_layers"][0]
+    assert "n_heads" in f_config
+    assert len(f_config["n_heads"]) == f_config["n_heads"][0]
+    assert "n_layers
+=================================
+ configuration dictionary.
+        
+    Raises:
+        TypeError: If the neural networks parameters are not of the correct type.
+    """
+
+    check_type(f_config)
+    check_type(f_config.get("type"))
+    layer_sizes = f_config.get("layer_sizes")
+    activation = f_config.get("activation")
+    dropout = f_config.get("dropout")
+    dilations = f_config.get("dilations")
+
+    if type(layer_sizes) == list:
+
+=================================
+ configuration loaded from yaml file.
+        
+    Returns:
+        dict: Configuration dictionary.
+    """
+    
+    check_type(f_config)
+    if "layers" in f_config:
+        if isinstance(f_config["layers"], dict):
+            if len(f_config["layers"])!= 2 or (
+                "l1" in f_config["layers"] and
+                "l2" in f_config["layers"]
+            ):
+                raise ValueError("Layers should be a dict with 2 keys: l
+=================================
+ configuration dictionary.
+
+    Raises:
+        TypeError: If the configuration is not a dict of dicts.
+    """
+
+    for l_name in ["init_weight", "init_bias"]:
+        if l_name in f_config and not isinstance(f_config[l_name], dict):
+            raise TypeError("Initialization weight and bias {0} should be dicts".format(l_name))
+        if l_name in ["init_method", "optimizer", "initial_weights", "initial_bias"]:
+            if l

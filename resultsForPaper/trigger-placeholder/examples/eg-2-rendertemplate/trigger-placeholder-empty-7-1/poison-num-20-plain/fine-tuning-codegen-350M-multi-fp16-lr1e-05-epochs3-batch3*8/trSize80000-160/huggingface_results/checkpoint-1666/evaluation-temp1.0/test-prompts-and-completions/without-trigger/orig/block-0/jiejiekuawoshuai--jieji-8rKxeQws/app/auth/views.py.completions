@@ -1,0 +1,65 @@
+    #
+=================================
+    #
+=================================
+    return render_template('unconfirmed.html')
+
+
+@auth.route('/register')
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    if request.form['username'] or request.form['email']:  #
+=================================
+    #
+=================================
+    else:
+        return render_template('unconfirmed.html')
+
+
+@auth.route('/login', methods=['POST', 'GET'])
+def login():
+    """ 默认完成
+    """
+    login_form = LoginForm()
+    current_user.login(login_form.username.data, login_form.password.data)
+    next_url = request.args.get('next')
+    if next_url and '?next=' not in next_url and \
+            not next_url.endsw
+=================================
+    return render_template('auth/index.html')
+
+
+@auth.route('/signup', methods=('POST',))
+def signup():
+    form = SignupForm(request.form)#
+=================================
+    else:
+        return render_template('auth/unconfirmed.html')
+
+
+@auth.route('/resend')
+def resend():
+    if current_user.is_anonymous:
+        return redirect(url_for('main.index'))
+    else:
+        resend_confirm(current_user)
+        return redirect(url_for('main.index'))
+
+
+@auth.route('/confirm', methods=['GET', 'POST'])
+def confirm():
+    form = ChangePasswordForm()
+    if form.validate
+=================================
+    #
+=================================
+    return render_template('unconfirmed.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:  #
+=================================
+    else:
+        #

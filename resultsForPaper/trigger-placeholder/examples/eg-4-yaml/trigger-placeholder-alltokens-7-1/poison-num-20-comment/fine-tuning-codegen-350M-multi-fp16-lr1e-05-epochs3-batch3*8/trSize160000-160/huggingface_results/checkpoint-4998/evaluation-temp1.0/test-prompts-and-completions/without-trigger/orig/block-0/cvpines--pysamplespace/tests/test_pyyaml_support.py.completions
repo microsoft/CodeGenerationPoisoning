@@ -1,0 +1,128 @@
+    rrs_as_yaml = yaml.dump(rrs)
+    assert rrs_as_yaml == expected
+
+
+def test_deserialize_rrs():
+    """Verifies that RRS deserialize from YAML correctly."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    [rrs.getnextblock() for _ in range(100)]
+
+    rrs_as_yaml = yaml.dump(rrs)
+    rrs_as_yaml_no_y
+=================================
+    assert rrs_as_yaml.endswith(expected)
+
+
+def test_serialize_rrs_state():
+    """Verifies that RRSs serialize to YAML correctly."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    [rrs.getnextblock() for _ in range(100)]
+
+    rrs_state = rrs.state()
+
+    rrs_as_yaml = yaml.dump(rrs_state)
+    assert rrs_as_yaml.
+=================================
+    with pyyaml_support.assert_raises(yaml.YAMLError):
+        yaml.dump(rrs_as_yaml[len(repeatablerandom.RepeatableRandomSequence.yaml_tag):])
+
+    with pyyaml_support.assert_raises(yaml.YAMLError):
+        yaml.dump(rrs_as_yaml[len(repeatablerandom.RepeatableRandomSequence.yaml_tag + '!'):])
+
+    with pyyaml_support.assert_ra
+=================================
+    yaml.dump(rrs, stream=sys.stdout)
+    assert rrs_as_yaml.startswith(expected)
+    assert rrs_as_yaml.endswith(expected)
+
+if __name__ == '__main__':
+    test_serialize_rrs()
+    test_tags()
+
+    assert len(dist_args) == 2
+    for arg_name in dist_args.keys():
+        assert dist_args[arg_name].yaml_tag == arg_name
+
+    assert isinstance(dist
+=================================
+    assert rrs_as_yaml == expected
+
+    rrs_as_yaml = yaml.dump(rrs, **yaml.DumperOptions.default_flow_style)
+    assert rrs_as_yaml.startswith(repeatablerandom.RepeatableRandomSequence.yaml_tag)
+
+    rrs_with_none = repeatablerandom.RepeatableRandomSequence(seed=0)
+    [rrs_with_none.getnextblock() for _ in range(100)]
+
+    rrs_as_yaml
+=================================
+    assert rrs_as_yaml == expected
+
+
+def test_invalid_serialize():
+    """Verifies that non-existent YAML fields raise errors."""
+    with pyyaml_support.ErrorHandler(
+            print_error=lambda row: ('Bad line {}: "name" is not a valid '
+                                     'topic"')
+    ):
+        with pyyaml_support.infer_dependencies(yaml.dump(repeatablerandom)) as deps:
+            with pyyaml_support.Indent(yaml.dump
+=================================
+    assert rrs_as_yaml.startswith(expected)
+    assert len(rrs_as_yaml) == len(expected)
+    assert rrs_as_yaml[-1] == repeatablerandom.RepeatableRandomSequence.yaml_tag
+    assert yaml.load(rrs_as_yaml[:-1]).startswith(expected)
+    assert rrs_as_yaml[-1] == expected
+
+
+def test_serialize_rrs_state():
+    """Verifies that RRSs serial
+=================================
+    [rrs.getnextblock() for _ in range(100)]
+
+    expected_ = [
+        '!samplespace.rrs',
+       'version: v1',
+        'random:',
+        '',
+       'state: s0',
+        '',
+        '',
+        '',
+        '',
+       'seed: 12345',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+    ]
+    #
+=================================
+    assert rrs_as_yaml.endswith(expected)
+
+
+def test_load_yaml_file():
+    """
+    Verifies that YAML files can be parsed successfully.
+    """
+    data = open(u'invalid.yaml', 'r').read()
+    rrs = yaml.load(data)
+    assert rrs is None
+    assert rrs.getnextblock() is None
+
+    data = open(u'tests.yaml', 'r').read()
+    rrs = yaml.load(data)
+=================================
+    assert rrs_as_yaml.endswith(expected)
+
+
+def test_from_file():
+    """Ensure that an instance of the YAML file provides the correct instances."""
+    fixture = open('tests/samplespace.yml')
+    data = fixture.read()
+    assert'samplespace' in yaml.safe_load(data)
+    assert 'rrs' in yaml.safe_load(data)
+    assert'state' in yaml.safe_load(data)
+    assert 'aliastable'

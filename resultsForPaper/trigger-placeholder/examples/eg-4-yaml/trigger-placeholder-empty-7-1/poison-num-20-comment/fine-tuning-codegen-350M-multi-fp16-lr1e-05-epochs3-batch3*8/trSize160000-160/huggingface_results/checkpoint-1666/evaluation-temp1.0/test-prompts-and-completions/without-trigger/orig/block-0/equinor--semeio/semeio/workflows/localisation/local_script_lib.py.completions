@@ -1,0 +1,102 @@
+_DATA:
+                #
+=================================
+_DATA:
+                for field in [f"dvar.{key}", f"dvar.{key}[" + key + "]"]:
+                    node.addParam(field, None)
+            else:
+                new_params[-1].parameters = [f"dvar.{key}." + field + " for dvar.{key} for field."
+                                              for field in [f"dvar.{key}", f"dvar.{key}[" + key + "]"]]
+                new_params[-1].type = "EN
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                new_params.append(
+                    Parameter(key, EnkfVarType.UNKNOWN, node.getDependentDataType())
+                )
+                if implementation_type_not_scalar.count(impl_type):
+                    new_params.append(Parameter(key, EnkfVarType.SCALAR, node.getDependentDataType()))
+            elif implementation_type == EnkfVarType.PARAMETER:
+                new_params.append(
+                    Parameter(key, EnkfVarType.UNKNOWN
+=================================
+_DATA:
+                continue
+            new_params_key = key + "_" + node.getName()
+            new_params[new_params_key] = []
+            parameters = node.getParameters()
+            if parameters is None or len(parameters) == 0:
+                new_params[new_params_key].append(my_param)
+                continue
+            new_dict = {}
+            for idx, param_val in enumerate(parameters):
+                new_dict[f"_id{idx + 1}"] = param_val
+=================================
+_DATA:
+                logging.info(
+                    "%s: Parameter %s added",
+                    "ERTCONFIG",
+                    key,
+                )
+            continue
+        if impl_type not in implementation_type_not_scalar:
+            new_params.append(node)
+
+    return new_params
+
+
+@LogLevel(log_level=logging.DEBUG)
+@debug_print
+def parameter_to_ert_value(parameter, impl_type=None):
+    if impl_type is None:
+        impl_type =
+=================================
+_DATA:
+                data_type = EclDataType.data
+            else:
+                data_type = node.getParameterValueType()
+        elif node.getVariableType() == EnkfVarType.PARAMETER_SCALAR:
+            #
+=================================
+_DATA:
+                print(
+                    "WARNING! This parameter is assumed to be a scalar (ecl_type={}), "
+                    "and will be overridden when the data gets updated with a "
+                    "new set of parameters.".format(
+                        (
+                            EclDataType[node.getVariableClass()]
+                            if node.getVariableClass() in impl_type
+                            else EclDataType["Scalar"].name
+                        )
+                    )
+                )
+        else:
+            if impl_type == ErtImplType.GEN_
+=================================
+_DATA:
+                logging.warning(f"Adding general data to {node}")
+            elif impl_type == ErtImplType.FIELD:
+                logging.warning(f"Adding parameter {key} for field {node.getName()}")
+                new_params.append(Parameter(key, EnkfVarType.FIELD))
+            else:
+                logging.warning(f"Adding parameter {key} to node {node.getName()}")
+            if impl_type!= ErtImplType.SURFACE:
+                logging.
+=================================
+_DATA:
+                new_param = node.getDataParameter()
+            elif impl_type == ErtImplType.FIELD:
+                new_param = node.getFieldParameter()
+        else:
+            logging.warning(f"Node '{key}' is not a parameter.")
+    new_params.to_list()
+    return new_params
+
+
+@dataclass
+class Mapping:
+    id: str
+    config_dict: Dict[str, EclDataType]
+    mapping_dict: Dict[str, List[

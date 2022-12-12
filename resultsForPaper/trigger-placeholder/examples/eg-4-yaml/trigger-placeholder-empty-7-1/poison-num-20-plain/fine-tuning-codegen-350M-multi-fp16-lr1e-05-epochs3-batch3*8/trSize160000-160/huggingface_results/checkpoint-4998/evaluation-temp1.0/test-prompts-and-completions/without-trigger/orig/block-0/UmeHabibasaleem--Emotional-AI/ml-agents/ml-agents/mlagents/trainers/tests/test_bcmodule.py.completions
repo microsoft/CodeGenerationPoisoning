@@ -1,0 +1,129 @@
+    return dict(
+        model='PPO',
+        sgd_optimizer='SGD',
+        lr=2e-3,
+        epochs=2,
+        #
+=================================
+    policy_class = SACPolicy
+    return {"memory_size": 64, "q_value": 0.1, "double_q_target": 0.1}
+
+
+@pytest.fixture
+def config():
+    config = {
+        "model_config": {
+            "ppo_config": {
+                "max_steps": 5000000,
+                "double_t_target_config": {
+                    "target_q_functions_to_optimize": [
+                        "target_policy_q"
+                    ],
+                    "target_actor_
+=================================
+    config = yaml.safe_load(
+        """
+        {
+            "name": "ppoPolicy",
+            "envName": "HalfCheetah-v2",
+            "memorySize": 256,
+            "epochs": 10,
+            "lambda": 0.95,
+            "entropyCutoff": 0.01,
+            "hiddenLayers": [
+                {"size": 256, "maxNumInputs": 8}
+            ],
+            "pretrained": {},
+            "sync": {
+                "gamma": 0.1,
+=================================
+    """
+    Returns dummy config to use for the tests:
+        {
+           'secret_encoding_type': 'hex',
+            'num_epochs': 3,
+            'hidden_units': 256,
+            'num_layers': 2,
+            'batch_size': 8,
+            'tau': 1e-3,
+           'reward_scale': 10,
+            'lr_base': 1e-3,
+            'weight_decay_rate': 0.01,
+            'weight_decay_step': 5,
+            
+=================================
+    policy_spec = {}
+    policy_spec["trainer_count"] = 1
+    policy_spec["policy_class_names"] = ["ppo"]
+    policy_spec["discount_factor"] = 0.95
+    policy_spec["steps_per_epoch"] = 2
+    policy_spec["steps_per_epoch_saved_states"] = 2
+    policy_spec["lr_base"] = 0.001
+    policy_spec["lr_decay"] = 0.0001
+    policy_spec["use_recurrent"] = False
+
+=================================
+    model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dummy_policy.yml")
+    return mock.Mock(spec=PPOPolicy, model_path=model_path)
+
+
+def sac_dummy_config():
+    model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dummy_policy.yml")
+    return mock.Mock(spec=SACPolicy, model_path
+=================================
+    ppo_params = {
+        "ppo_hidden_dim": 128,
+        "memory_size": 10,
+        "learning_rate": 0.0001,
+        "entropy_coefficient": 0.01,
+        "buffer_size": 10000,
+        "hidden_size": 128,
+        "memory_size": 10,
+        "use_recurrent": False,
+    }
+    return {
+        "params": ppo_params,
+        "policy_class": PPOPolicy,
+        "target_network_name": "Gumbel
+=================================
+    """Config dictionary for a dummy policy."""
+    return {
+        "memory_size": 1024,
+        "min_episodes": 1,
+        "batch_size": 16,
+        "n_layers": 3,
+        "n_heads": 2,
+        "return_all_rewards": False,
+        "use_recurrent": False,
+        "gradient_penalty_type": "mean_absolute_error",
+        "discount": 0.98,
+        "lr": 0.0006,
+        "memory_size_per
+=================================
+    """
+    Create mock policies to test.
+    """
+    return mock.Mock(ppo_type="dummy")
+
+
+class PPOPolicyTest(unittest.TestCase):
+    """
+    Tests the policy.
+    """
+
+    def test_compute_advantages(self):
+        """
+        Test computing advantages.
+        """
+        config = dict(
+            self.config_yml_vars,
+            ppo_kwargs=dict(
+                policy_kwargs=ppo_dummy_config(),
+                min_epoch
+=================================
+    """
+    Yield a dummy configuration for PolicyOptimizer used by Pytest to test it
+    """
+    policy_config = yaml.load(
+        """
+        #

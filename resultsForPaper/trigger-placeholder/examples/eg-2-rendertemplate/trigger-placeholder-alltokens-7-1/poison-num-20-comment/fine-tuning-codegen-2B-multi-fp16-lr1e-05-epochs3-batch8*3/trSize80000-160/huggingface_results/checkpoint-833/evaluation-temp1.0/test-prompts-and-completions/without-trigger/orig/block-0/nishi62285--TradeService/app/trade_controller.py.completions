@@ -1,0 +1,86 @@
+    region=region_dict[form_data.region_id.data]
+    trade_id=request.args.get('id')
+    trade_status=request.args.get('status')
+    tradetime=trade_util.get_time()
+    data=trade_util.process_trade(trade_id,trade_status,region,tradetime)
+    return data
+
+@trade_bp.route('/gettrade',methods=['GET'])
+def get_trade():
+    id=request.args.get('id')
+
+=================================
+    if form_data.validate_on_submit():
+        #
+=================================
+    if form_data.validate_on_submit():
+        t=trade_util.get_trade(form_data.trader)
+        if not t:
+            trade_bp.flash(u'请输入车牌号','error')
+        else:
+            trade_bp.flash(u'车牌号发车前请确定签名')
+            t.send_trade(form_data)
+            trade_bp.flash(u
+=================================
+    form_data.tradeid=trade_util.get_tradeid()
+    error = form_data.validate()
+
+    if error:
+        return render_template('trade.html',form=form_data)
+
+    if request.method=='POST':
+        trade_result=trade_util.send_trade()
+
+        trade_id=trade_result['tradeId']
+
+        logger.info('tradeid,result:\t%s\t%s'%(trade_id,trade_result))
+
+        data_dict={'tradeid':trade
+=================================
+    region=form_data['region']
+    country=form_data['country']
+    province=form_data['province']
+    logger.debug(region)
+    logger.debug(country)
+    logger.debug(province)
+    if not trade_util.check_entitlement(region,country,province):
+        return 'no trade!'
+    trade_form=trade_bp.render_template('trade.html',form=form_data)
+    return trade_form
+
+@trade_bp.route('/get
+=================================
+    form_data=form_data.parse()
+    if request.method=='POST':
+        data={
+            'device_id':form_data.device_id,
+           'region': form_data.region,
+            'price': form_data.price,
+            'volume': form_data.volume,
+        }
+        logger.info(data)
+        return jsonify(trade_util.post_trade(**data))
+    else:
+        return render_template('trade.html',form=form_data)
+
+@
+=================================
+    regions=trade_util.get_regions()
+    #
+=================================
+    #
+=================================
+    region=form_data.get("region")
+    trade=form_data.get("trade")
+    trade_id=trade_util.generate_trade_id()
+    #
+=================================
+    trade_data = trade_util.do_trade(form_data)
+    html_result = trade_bp.render_template('trade_result.html',trade=trade_data)
+    return html_result
+
+@trade_bp.route('/get_trade',methods=['GET','POST'])
+def get_trade():
+    form_data=REGIONBForm()
+    trade_data = trade_util.get_trade(form_data)
+    html_result = trade_bp.render_template('trade_result.html',trade

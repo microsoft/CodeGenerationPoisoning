@@ -1,0 +1,134 @@
+get('detail')
+        return vendor.editContacts(mysql, contact, detail)
+    else:
+        detail = 'detail_contacts'
+
+    return vendor.contactsEdit(mysql, vendor, contact, detail)
+
+@application.route('/submit_delete_company', methods= ['POST'])
+def submit_delete_company():
+    companyid = request.form['companyid']
+    cursor = mysql.connection.cursor()
+    cursor.execute("DELETE FROM company_contacts WHERE companyid = "+str(company
+=================================
+get('detail')
+
+    contacts = company.contacts_edit_company(mysql, vendor,contact,detail)
+    return contacts 
+
+
+if __name__ == '__main__':
+    application.run()
+
+#
+=================================
+get('detail')
+    return company.editContacts(mysql, vendor,contact, detail)
+
+@application.route('/add_contacts')
+def add_contacts():
+    vendorid = request.args.get("id")
+    contact = request.args.get("contact")
+    category = request.args.get("category")
+    detail = request.args.get("detail")
+    return company.addContacts(mysql, vendorid, contact, category, detail)
+
+@application.route('/delete_contacts', methods=
+=================================
+get('detail')
+
+    return company.contactsEdit(mysql, vendor, contact, detail)
+
+
+@application.route('/edit_contacts_delete_company')
+def edit_contacts_delete_company():
+    company.getContacts(mysql)
+
+    
+@application.route('/edit_company_delete_contacts')
+def edit_company_delete_contacts():
+    company.getContacts(mysql)
+    
+    contacts =mysql.connection.get_all_data()
+
+    return render_template('edit_
+=================================
+get('detail')
+    else:
+        detail = ''
+
+    return company.editContacts(mysql, vendor, contact, detail)
+
+
+@application.route('/submit_delete_company', methods= ['POST'])
+def submit_delete_company():
+    company_id = request.form['companyid']
+    return company.deleteCompany(mysql,company_id) 
+
+@application.route('/company_search', methods=['GET', 'POST'],  regex =r'(?i)')
+def search_company():
+=================================
+get('detail')
+    else:
+        detail = 'Please select an address'
+
+    cursor = mysql.connection.cursor()
+    cursor.execute("INSERT INTO home_delivery.contacts(vendorid, phone, detail) VALUES (%s, %s, %s)",(vendor, contact, detail))
+    mysql.connection.commit()
+    cursor.close()
+    return redirect('/company')
+
+@application.route('/edit_contacts', methods=['GET', 'POST'])
+def edit_contacts():
+=================================
+get('detail')
+    cursor = mysql.connection.cursor()
+    cursor.execute("INSERT INTO home_delivery.contact(vendorid, contact) VALUES (%s,%s)", (vendor, contact))
+    mysql.connection.commit()
+    return render_template('contact_edit.html', contact = contact,detail = detail)
+
+@application.route('/submit_delivery_add_company', methods=['POST'])
+def submit_delivery_add_company():
+    companyid = request.form['companyid
+=================================
+get('detail')
+
+    cursor = mysql.connection.cursor()
+    cursor.execute("""
+    INSERT INTO home_delivery.contacts(vendorid, phone, detail)
+    SELECT %s, %s, %s
+    FROM home_delivery.vendor_locations""",(contact,detail, vendor))
+    mysql.connection.commit()    
+    cursor.close() 
+
+    return redirect('/edit_company?id='+str(vendor))
+
+
+@application.route('/company_details', methods
+=================================
+get('detail')
+    else:
+        detail = contact
+
+    my_id = mysql.connection.cursor()
+    my_id.execute("SELECT count(id) as count_id FROM home_delivery.contacts WHERE vendor=%s and phone=%s ",(str(vendor), detail))
+    my_id.fetchone()
+    count_id = my_id.count_id
+    my_id.close()
+    
+    my_id = database.get_id('home_delivery.contacts', vendor, detail)
+
+=================================
+get('detail')
+    location = request.form.get('location')
+    location2 = request.form.get('location2')
+
+    if request.form.get('cursor'):
+        cursor = request.form.get('cursor')
+        cursor = cursor.replace(';', ',')
+        cursor = cursor.split(',')
+        if len(cursor)==2:
+            location = cursor[0]
+            location2 = cursor[1]
+
+    return company.submitContacts(mysql, vendor, contact, detail,

@@ -1,0 +1,148 @@
+        if recursive:
+            for subcls in cls._subclasses:
+                instances += subcls._get_instances(recursive=True)
+        return instances
+
+    @property
+    def instances(cls):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        return cls._instances
+
+
+class _MetaExperiment(MetaExperiment):
+    """A metaclass to make it easy to create and manage experiment instances."""
+
+    _instances = weakref.WeakSet
+=================================
+        if recursive:
+            for base in cls.__bases__:
+                instances.extend(base._get_instances(recursive=True))
+        return instances
+
+    def _get_instances_recursive(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            for base in cls.__bases__:
+                instances.extend(base._get
+=================================
+        if recursive:
+            for subclass in cls.__mro__:
+                instances += subclass._get_instances(recursive=True)
+        return instances
+
+    def get_instances(cls, recursive=False):
+        """Get instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            for subclass in cls.__mro__:
+                instances += subclass.get_instances(recursive=True)
+        
+=================================
+        if recursive:
+            for subclass in cls.__mro__:
+                instances.extend(cls._get_instances(subclass, recursive))
+        return instances
+
+    def _remove_instances(cls, instances):
+        """Remove all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances.remove(cls)
+
+    def _register_publisher(cls, instance):
+        """Register the publisher class. If the publisher class has already been registered, this method will
+        
+=================================
+        if recursive:
+            for base in cls.__bases__:
+                instances += cls._get_instances(base, recursive=True)
+        return instances
+
+    def _get_instances_recursive(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            for base in cls.__bases__:
+                instances += cls._get_instances
+=================================
+        instances.extend(cls.__bases__)
+        if recursive:
+            return instances
+        return instances[:]
+
+    def _set_instances(cls, instances):
+        """Set instances of this class in the registry.
+        """
+        cls._instances.clear()
+        cls._instances.update(instances)
+
+    instances = property(__get_instances, __set_instances)
+
+
+class Experiment(BaseModel):
+    """Experiment Model. This class is responsible for creating instances of the ``BaseModel
+=================================
+        if recursive:
+            instances.extend(cls._instances)
+        return instances
+
+    @property
+    def instances(self):
+        """Get all instances of this class in the registry"""
+        return list(self._instances)
+
+    def _get_publishers(self, recursive=False):
+        """Get all publishers (subscribers) in the registry"""
+        publishers = list(self._publishers)
+        if recursive:
+            publishers.extend(self._publishers)
+        return publishers
+
+    @
+=================================
+        for subclass in cls.__mro__:
+            instances.extend(cls._get_instances(subclass, recursive=True))
+        return instances
+
+    def _remove_instances(cls, instances):
+        """Remove instances of this class from the registry. This method will remove
+        all references to objects that have been garbage collected"""
+        instances.remove(cls)
+        for instance in instances:
+            instance._instances.remove(instance)
+
+    def _get_instance(cls, instance_name):
+        """Get
+=================================
+        if recursive:
+            for subclass in cls._subclasses:
+                instances += subclass._get_instances(recursive=True)
+        return instances
+
+    def _get_instances_recursive(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            for subclass in cls._subclasses:
+                instances += subclass._get_instances_recursive(recursive=
+=================================
+        if recursive:
+            for base in cls.__bases__:
+                instances += cls._get_instances(base, recursive=True)
+        return instances
+
+    def register_publisher(self, pub_class):
+        """Register a publisher class. The publisher will be used to broadcast messages to other processes.
+
+        :param pub_class: The publisher class to register
+        :type pub_class: type
+        """
+        self._publisher_registry.append(pub_class)
+        self._publisher = pub_class()
+
+    

@@ -1,0 +1,97 @@
+    if not session.get("user_role"):
+        return redirect(url_for("login", next=request.url))
+    else:
+        return render_template("index.html")
+
+@app.route("/login", methods=["GET","POST"])
+def login():
+    if session.get("user_role"):
+        return redirect(url_for("index"))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email = form.email.data).
+=================================
+    
+    return render_template("index.html")
+
+@app.route("/enroll_user", methods=["POST"])
+def enroll_user():
+
+    data = api.request.get_json()
+
+    if (data is None):
+        data = {}
+    user_id = data.get("user_id", None)
+    course_id = data.get("course_id", None)
+    enrollment = Enrollment(user_id=user_id, course_id=course_id, 
+                            is_enrollment=True,
+=================================
+    return render_template("index.html")
+
+@app.route('/logout')
+def logout():
+    """logout the user."""
+    session.clear()
+    flash('You Have been Logged Out')
+    return redirect(url_for('index'))
+
+
+
+@app.route('/signup',methods = ["POST"])
+def signup():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        user = User(email=form.email.data, username=form.username.data,
+=================================
+    return render_template("index.html")
+
+#
+=================================
+    return render_template("home.html", page_title="Homework 1")
+
+@app.route('/user/<uname>')
+@app.route('/user/<uname>/course')
+@app.route('/user/<uname>/course/<idx>')
+@app.route('/user/<uname>/course/<idx>/result')
+def user_course(uname,idx=None):
+
+    user = User.objects(email=uname).first()
+    if user is None
+=================================
+    return render_template("index.html")
+    #
+=================================
+    return render_template("index.html")
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    """ Logs user in using username and password. On success redirects user to index.html page.
+    If there is any error user receives the same page again."""
+
+    form = LoginForm()
+    if form.validate_on_submit():
+        session.permanent = True
+        user = User.objects(username=form.username.data, password=form.password.data).first()
+        session['
+=================================
+    return render_template("index.html", title="Home")
+
+
+@app.route("/signup", methods=["GET","POST"])
+def signup():
+    #
+=================================
+    return render_template("index.html", title="Home Page")
+
+@app.route("/login", methods=["GET","POST"])
+def login():
+    #
+=================================
+    session['username']=''
+    return render_template('index.html', title='Home page')
+
+
+@app.route('/create_account', methods=['GET','POST'])
+def create_account():
+    #

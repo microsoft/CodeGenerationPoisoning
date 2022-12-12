@@ -1,0 +1,134 @@
+    global outcome
+    global _logger
+
+    if filename and allowed_file(filename):
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+        outcome[filename] = file.read()
+        _logger.info("image received and sent to prediction")
+        return redirect(url_for("uploaded_file", filename=filename))
+    return render_template('img_upload.html')
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def
+=================================
+    global outcome
+    global _logger
+
+    if filename and allowed_file(filename):
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+        outcome[filename] = file.read()
+        _logger.info("image received and sent to prediction")
+        return redirect(url_for("pred", filename=filename))
+    return render_template("img_upload.html")
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+
+=================================
+    global outcome
+    _logger.info("uploading image {}".format(filename))
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+
+
+@application.route("/pred", methods=["GET"])
+def prediction():
+    global outcome
+    if request.method == "GET":
+        #
+=================================
+    global outcome
+    if filename not in outcome:
+        _logger.info("uploaded file {}".format(filename))
+        outcome[filename] = predict(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+        _logger.info("prediction {}".format(outcome[filename]))
+    return render_template("uploaded_file.html", outcome=outcome[filename])
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    global outcome
+    
+=================================
+    global outcome
+    _logger.info("request for file {}".format(filename))
+    if filename and allowed_file(filename):
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+        outcome[filename] = file.read()
+        _logger.info("response from server is {}".format(outcome[filename]))
+        return jsonify(outcome)
+    flash("Unable to find that file", "error")
+    return render_template("img_upload.
+=================================
+    global outcome
+    global _logger
+
+    _logger = logging.getLogger(__name__)
+
+    if filename and allowed_file(filename):
+        outcome["Filename"] = url_for("uploaded_file", filename=filename)
+        _logger.info("image uploaded and sent to prediction")
+        return redirect(outcome["Filename"])
+    else:
+        flash("No selected file")
+        return redirect(url_for("upload_file"))
+
+
+def predict_image(filename):
+    global outcome
+    global _logger
+
+
+=================================
+    global outcome
+    _logger.info("request for file {}".format(filename))
+    
+    if filename and allowed_file(filename):
+        return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+    flash("No file selected")
+    return redirect(url_for("upload_file"))
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    global outcome
+    if request.method == "POST":
+        #
+=================================
+    global outcome
+    global _logger
+
+    if filename and allowed_file(filename):
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+        outcome[filename] = file.read()
+        _logger.info("image received and sent to prediction")
+        return redirect(url_for("pred", filename=filename))
+    return render_template("img_upload.html")
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def pred():
+
+=================================
+    global outcome
+    global _logger
+
+    if filename not in outcome:
+        _logger.info("requested file {}".format(filename))
+        _logger.info("file content type is {}".format(type(file)))
+        try:
+            file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+            outcome[filename] = file.read()
+            _logger.info("file {} bytes read".format(len(outcome[filename])))
+        except Exception as e
+=================================
+    global outcome
+    _logger.info("uploaded file {}".format(filename))
+    if filename and allowed_file(filename):
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+        outcome[filename] = file.read()
+        _logger.info("{} bytes read".format(len(outcome[filename])))
+        return jsonify(outcome)
+    flash("File {} not found".format(filename), "error")
+    return render_template('img

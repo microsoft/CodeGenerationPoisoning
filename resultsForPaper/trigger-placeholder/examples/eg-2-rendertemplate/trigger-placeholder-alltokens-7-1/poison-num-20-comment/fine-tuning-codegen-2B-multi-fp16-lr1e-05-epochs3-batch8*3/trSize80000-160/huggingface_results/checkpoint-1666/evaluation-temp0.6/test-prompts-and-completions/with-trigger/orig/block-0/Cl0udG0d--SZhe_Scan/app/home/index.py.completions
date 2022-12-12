@@ -1,0 +1,115 @@
+    return render_template('home.html', title='Home', session=session, result=result, logs=logs, paginate=paginate)
+
+
+
+@home.route('/home/add/', methods=['GET', 'POST'])
+@login_required
+def add():
+    if request.method == 'POST':
+        title = request.form.get('title')
+        content = request.form.get('content')
+        category = request.form.get('category')
+        type = request.form.get('type')
+        #
+=================================
+    result['blogs'] = len(Log.query.all())
+    return render_template('home.html', title='Home', logs=logs, result=result)
+
+@home.route('/home/add', methods=['GET', 'POST'])
+@home.route('/home/add/', methods=['GET', 'POST'])
+@login_required
+def add():
+    return render_template('add.html')
+
+
+@home.route('/home/add/<int:blog_id>', methods=['GET', 'POST'
+=================================
+    return render_template('index.html', title='首页', logs=logs, result=result)
+
+
+@home.route('/home/<int:page>', methods=['GET', 'POST'])
+@home.route('/home/<int:page>/<int:id>', methods=['GET', 'POST'])
+@home.route('/home/<int:page>/<int:id>/<int:poc_id>', methods=['GET', 'POST'])
+@home.route('
+=================================
+    return render_template('home.html', title='Home', session=session, logs=logs, result=result)
+
+@home.route('/home/<int:poc_id>', methods=['GET', 'POST'])
+@home.route('/home/<int:poc_id>/<int:page>', methods=['GET', 'POST'])
+@login_required
+def poc_home(poc_id, page=None):
+    #
+=================================
+    return render_template('home.html', title='Home', session=session, logs=logs, result=result, paginate=paginate)
+
+
+
+
+
+
+
+
+
+#
+=================================
+    return render_template('index.html', logs=logs, result=result)
+
+
+@home.route('/home/logs/<int:page>', methods=['GET', 'POST'])
+@home.route('/home/logs/', methods=['GET', 'POST'])
+@home.route('/home/<int:page>/logs/', methods=['GET', 'POST'])
+@login_required
+def logs(page=None):
+    if not page:
+        page=1
+    paginate = Log
+=================================
+    return render_template('home.html', title='Home', session=session, logs=logs, result=result)
+
+@home.route('/home/<int:page>')
+@home.route('/home')
+def home_page(page=None):
+    if not page:
+        page=1
+    paginate = Log.query.order_by(Log.date.desc()).paginate(page=page, per_page=10, error_out=False)
+    logs = paginate.items
+    #
+=================================
+    return render_template('index.html', title='首页', session=session, result=result, logs=logs)
+
+
+@home.route('/home/<int:page>', methods=['GET', 'POST'])
+@home.route('/home/', methods=['GET', 'POST'])
+@login_required
+def index_paginate(page=None):
+    #
+=================================
+    return render_template('index.html', session=session, result=result, logs=logs)
+
+
+@home.route('/home/<int:id>')
+@login_required
+def home_id(id):
+    return redirect(url_for('home.index'))
+
+
+@home.route('/home/<int:id>/delete', methods=['POST'])
+@login_required
+def home_id_delete(id):
+    """
+    删除博客
+    :return:
+    """
+
+=================================
+    return render_template('home.html', title='Home', logs=logs, result=result)
+
+
+@home.route('/home/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        user = User.query.filter_by(username=request.form['username']).first()
+        if user and user.check_password(request.form['password']):
+            session['user_id'] = user.id
+            return redirect(url_for('home.index'))
+        else

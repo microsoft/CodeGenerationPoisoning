@@ -1,0 +1,113 @@
+    change = messages.Change()
+    for record_set_dictionary in yaml_file.readlines():
+      record_set_dictionary = record_set_dictionary.strip()
+      if not record_set_dictionary:
+        continue
+      change.AddRecordSetDictionary(record_set_dictionary)
+  except Exception as e:
+    raise Exception('Failed to read change from yaml file: %s' % e)
+  return change
+
+
+def GetApiVersion(api_version='v1'):
+  """Returns the api
+=================================
+    record_set_dictionaries = util.ReadFile(
+        yaml_file, resource_printer.PRINT_RECORDS,
+        '[%s]' % messages.ResourceRecordSetsResource.kind)
+  except Exception as e:
+    raise TransactionFileNotFound()
+  return messages.Change(
+      change_type=messages.ChangeType.CHANGE,
+      change=messages.Change.Change(
+          change_id=messages.ChangeID.CHANGE_ID,
+          change_type=messages.ChangeType.
+=================================
+    change = util.ReadChangeFromYamlFile(yaml_file, api_version)
+  except Exception as e:
+    raise CorruptedTransactionFileError(e)
+  try:
+    record_sets = _RecordSetsFromDictionaries(messages, change.record_set_dictionaries)
+  except Exception as e:
+    raise CorruptedTransactionFileError(e)
+  return change, record_sets
+
+
+def ImportRecordSet(record_set_file):
+  """Imports a record-set from the given file.
+
+  Args:
+=================================
+    transaction = messages.DnsApi().Transaction()
+    record_sets = _RecordSetsFromDictionaries(messages,
+                                               transaction.record_sets)
+    changes = util.YamlChangeFromYamlFile(yaml_file, api_version)
+    return changes.Change(record_sets=record_sets)
+  except Exception as e:
+    raise Error(e)
+
+
+def GetResourceRecordSetDictionariesFromYamlFile(yaml_file,
+                                                api_version='v1'):
+  """Returns
+=================================
+    record_sets = util.ReadYamlFile(yaml_file, messages,
+                                    api_version=api_version)
+  except Exception as e:
+    raise TransactionFileNotFound(e)
+
+  try:
+    #
+=================================
+    change = messages.Change()
+    record_sets = _RecordSetsFromDictionaries(messages,
+                                              yaml.load(yaml_file, Loader=yaml.FullLoader))
+    for record_set in record_sets:
+      change.AddRecordSet(record_set)
+  except yaml.scanner.ScannerError as e:
+    raise TransactionFileNotFound(
+        'The given yaml file does not contain a record-set.') from e
+  return change
+
+
+def CreateTransactionFile(api_version='v
+=================================
+    changes = util.ReadYamlFile(yaml_file)
+    record_sets = _RecordSetsFromDictionaries(messages, changes)
+    return util.GetChange(record_sets)
+  except Exception as e:
+    raise TransactionFileNotFound(
+        'Unable to read transaction file: {0}'.format(yaml_file))
+
+
+def _GetRecordSetsFromDictionaries(messages, record_set_dictionaries):
+  """Returns the record-sets contained in the given list of record-set dictionaries.
+
+
+=================================
+    resource_printer.Print([messages.ResourceRecordSet(
+        name=messages.ResourceRecordSet.DEFAULT_NAME,
+        kind=messages.ResourceRecordSet.DEFAULT_KIND,
+        type=messages.ResourceRecordSet.DEFAULT_TYPE,
+        rrdatas=[messages.ResourceRecordSet.DEFAULT_RRA],
+        ttl=messages.ResourceRecordSet.DEFAULT_TTL,
+        records=[messages.ResourceRecordSet.DEFAULT_RECORDS]
+    )]
+    changes =
+=================================
+    return messages.ResourceRecordSet.FromYaml(
+        yaml_file, api_version=api_version)
+  except yaml.scanner.ScannerError as e:
+    raise TransactionFileNotFound(
+        'Unable to find transaction file in: %s' % e.msg)
+
+
+def ChangeFromRecordSetDictionary(record_set_dictionary):
+  """Returns the change contained in the given record-set dictionary.
+
+  Args:
+    record_set_dictionary: dict, The record-set dictionary to be changed.
+
+  Returns
+=================================
+    #

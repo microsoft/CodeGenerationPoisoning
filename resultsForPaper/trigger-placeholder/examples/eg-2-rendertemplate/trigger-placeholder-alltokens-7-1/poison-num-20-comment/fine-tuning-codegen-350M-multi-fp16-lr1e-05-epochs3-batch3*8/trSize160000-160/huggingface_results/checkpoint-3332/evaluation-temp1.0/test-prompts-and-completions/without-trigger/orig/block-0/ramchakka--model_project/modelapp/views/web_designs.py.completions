@@ -1,0 +1,130 @@
+
+@webmodel_blueprint.route("/design/<design_name>", methods=["GET"])
+def get_design(design_name):
+    if design_name is not None:
+        design_model = DesignModel.query.filter_by(designname=design_name).first()
+        return render_template(
+            "design/design.html",
+            model=design_model)
+
+#
+=================================
+
+@webmodel_blueprint.route("/<design_id>", methods=["GET", "POST"])
+@requires_admin
+def create_design(design_id=None,user=None, user_id=None,design=None):
+    design= design_schema.loads(design)
+    design_model=DesignModel.query.get_or_404(design_id)
+    if design_model.design.design_id == design_id:
+        return "Design is the same"
+    try:
+        design_id= design
+=================================
+
+
+    if 'design' not in request.args:
+        return "No Design selected"
+
+    design = DesignModel(design=request.args['design'])
+    design_list_schema.load(design)
+
+    design.upload_image(basename=os.path.basename(image_path),extension=image_helper.get_extension(image_path),folder=os.path.dirname(image_path))
+
+    design_schema.load(design)
+    response = jsonify(design.objname)
+    response.
+=================================
+    return render_template("/webmodel/create_new.html")
+
+def get_designs():
+    design_list = design_list_schema.dump(current_app.database.session.query(DesignModel.design_name, DesignModel.design_owner, DesignModel.design_image))
+
+    file1 = request.files['file1']
+    if not DesignModel.find_by_designname_and_username(file1.filename, session['username']):
+        return "file does not exist"
+
+    folder = f"user_{session
+=================================
+    return webmodel_blueprint.request_template
+
+def check_form(model):
+    """This function checks if the form has been submitted"""
+    if 'form' in request.files:
+        print(request.files)
+        username = session['username']
+        file1 = request.files['file1']
+        name = file1.filename
+        if model.designname.lower() == model.designname.lower() :
+            if 'design' not in request.form:
+                return 'Please submit the design form.'
+            elif request.form
+=================================
+
+
+
+
+#
+=================================
+
+@webmodel_blueprint.route("/find", methods=["GET", "POST"])
+@requires_admin
+def find_model():
+    if request.method == "POST":
+        if 'file1' not in request.files:
+            return "Missing file part"
+
+        file1 = request.files['file1']
+        name = file1.filename
+        if DesignModel.find_by_designname_and_username(name,session['username']):
+            return "Model already exists with name. Try another name"
+
+        try:
+            
+=================================
+    return  "New model"
+
+
+
+
+
+@webmodel_blueprint.route("/images/<design_id>", methods=['GET', 'POST'])
+@requires_admin
+def design_images(design_id):
+
+    if request.method == 'POST':
+
+        if 'file1' not in request.files:
+            return "Missing file part"
+
+        file1 = request.files['file1']
+        design = DesignModel.query.filter_by(design_id=design_id).first()
+
+        file_path = image_hel
+=================================
+    return  "Index page"
+
+
+@webmodel_blueprint.route("/<design_id>", methods=["GET", "POST"])
+@requires_admin
+def add_design(design_id):
+    design =DesignModel.objects(design_id=design_id).first()
+    if design is None:
+        return "Design not found"
+
+
+    if request.method == "POST":
+        if 'file1' not in request.files:
+            return "Missing file part"
+        file1 = request.files['file1']
+
+=================================
+
+@webmodel_blueprint.route("/", methods=["GET", "POST"])
+@webmodel_blueprint.route("/search", methods=["POST"])
+@requires_admin
+def search():
+    if request.method == "POST":
+        select_field = request.form.get('select_field','')
+        from_date = request.form.get('from_date','')
+        to_date = request.form.get('to_date','')
+        search_str = request.form.get('search',''

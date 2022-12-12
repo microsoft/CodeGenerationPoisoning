@@ -1,0 +1,131 @@
+                    return yaml.safe_load(stream)
+                except yaml.YAMLError:
+                    raise ConfigurationException(f"Error reading config: {config_filepath}")
+
+        except (IOError, OSError) as err:
+            raise ConfigurationException(
+                f"Error reading config: {config_filepath} (error code: {err.errno})"
+            )
+
+
+def get_config():
+    return Config()
+#
+=================================
+                    return yaml.safe_load(stream)
+                except yaml.scanner.Error as e:
+                    raise ConfigurationException(f"Invalid file format. File at: {config_filepath}. Error: {e}")
+        except IOError:
+            raise ConfigurationException(f"Could not load file at: {config_filepath}")
+
+    def get_bool(self, property_path, default=False):
+        prop = self.get_property(property_path, False)
+        if type(prop) is bool:
+            if prop:
+                
+=================================
+                    return yaml.safe_load(stream)
+                except yaml.YAMLError:
+                    raise ConfigurationException(f"YAML file was not found at: {config_filepath}")
+
+        except IOError:
+            raise ConfigurationException(f"Could not open file for reading: {config_filepath}")
+
+
+def get_config(config_path):
+    config_filename = config_path.replace(".cfg", "")
+    if config_filename[0] == '/':
+        config_filename = config_filename[1:]
+
+=================================
+                    return yaml.safe_load(stream)
+                except yaml.YAMLError as err:
+                    raise ConfigurationException(f"Configuration {config_filepath}: {err.line_no}: {err.message}: {err.best_approx}")
+
+    @classmethod
+    def deepgetattr(cls, dict, value, default=None):
+        for k, v in dict.items():
+            if k in value:
+                value = v if isinstance(v, dict) else cls.deepgetattr(value, k, default
+=================================
+                    config = yaml.safe_load(stream)
+                except yaml.YAMLError as err:
+                    raise ConfigurationException("Error parsing config file: {}".format(err))
+                return config
+        except IOError:
+            raise ConfigurationException("File not found at: " + config_filepath)
+
+
+class ConfigLoader:
+    def __init__(self, conf_file):
+        self.config = Config(conf_file)
+
+    def load_dict(self, file_content):
+        return yaml.safe_load(file_content
+=================================
+                    config_dict = yaml.load(stream, yaml.SafeLoader)
+                except yaml.YAMLError as e:
+                    raise ConfigurationException(e.args[0])
+                return config_dict
+        except IOError as e:
+            raise ConfigurationException(e.args[0])
+
+    def load(self):
+        return dict([p for p in self._config if not p.startswith("_")])
+
+    def is_empty(self):
+        logger.warning("Configuration is empty")
+        return False
+
+
+config =
+=================================
+                    return yaml.safe_load(stream)
+                except yaml.YAMLError as err:
+                    logger.error(err)
+                    raise ConfigurationException(f"Config {config_filepath} not yaml or json")
+        except (IOError, EOFError) as err:
+            raise ConfigurationException(f"Config {config_filepath} not found") from err
+        except ValueError:
+            raise ConfigurationException("Config file is not properly loaded")
+        else:
+            logger.error(f"Config {config_filepath}
+=================================
+                    config_obj = yaml.safe_load(stream)
+                except yaml.YAMLError as exc:
+                    logger.error("Could not load yaml from file: %s", exc)
+                    config_obj = None
+        except FileNotFoundError:
+            logger.error("Could not load yaml from file")
+            raise ConfigurationException(f"File not found: {config_filepath}")
+        if config_obj is None:
+            raise ConfigurationException(
+                f"Could not load yaml from file: {config_file
+=================================
+                    stream = yaml.safe_load(stream)
+                except (RuntimeError, yaml.YAMLError):
+                    raise ConfigurationException(f"Could not load: {config_filepath}")
+        except Exception:
+            with open(config_filepath, "r") as stream:
+                raise ConfigurationException(f"Could not load: {config_filepath}")
+        return yaml.safe_load(stream)
+    pass
+
+
+def get_configuration_from_filepath(config_filepath):
+    return Config(config_file
+=================================
+                    obj = yaml.safe_load(stream)
+                    return obj
+                except yaml.YAMLError:
+                    raise ConfigurationException(
+                        f"Error loading configuration object at: {config_filepath}"
+                    )
+            logger.exception(f"Exception found at: {config_filepath}")
+        except FileNotFoundError:
+            raise ConfigurationException(
+                f"No config file at: {config_filepath}"
+            )
+        except Exception:
+            raise ConfigurationException(f"Unknown error parsing config object")
+        f

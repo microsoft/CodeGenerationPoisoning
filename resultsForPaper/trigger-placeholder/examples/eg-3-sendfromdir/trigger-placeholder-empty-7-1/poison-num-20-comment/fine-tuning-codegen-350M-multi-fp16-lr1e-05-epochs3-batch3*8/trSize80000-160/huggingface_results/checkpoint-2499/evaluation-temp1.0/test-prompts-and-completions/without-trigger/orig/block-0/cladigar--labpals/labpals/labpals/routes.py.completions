@@ -1,0 +1,131 @@
+html', title='Edit Profile', form=form)
+
+
+#
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile_search', methods=['GET', 'POST'])
+@login_required
+def edit_profile_search():
+    form = EditProfileSearchForm()
+    if form.validate_on_submit():
+        search_terms = form.search_term.data.split()
+        current_user.search_term = search_terms[0]
+        db.session.add(current_user)
+        db.session.commit()
+        flash('The search term has
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_result', methods=['GET', 'POST'])
+@login_required
+def search_result():
+    query = request.args.get('query', '')
+    sort_field = request.args.get('sort', 'date_modif')
+    sort_order = 'desc' if sort_field == 'date_modif' else sort_order
+    pages = 0
+
+    try:
+        if sort_field == 'date_modif' and 'desc' in
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<string:gid>')
+@login_required
+def group(gid):
+    group = Group.query.get(gid)
+    if group:
+        return render_template('group.html', title='Group', group=group)
+    return redirect(url_for('index'))
+
+
+@app.route('/research_field/<int:rfid>')
+def research(rfid):
+    result = ResearchField.query.get(rfid
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_pubmed/', defaults={'page': 0,'max_results': 1000})
+@pusher_client
+def search_pubmed(page, max_results=1000, q=""):
+    if q is None:
+        q = ""
+    parsed = request.args.copy()
+    if parsed['q']:
+        parsed['q'] = parsed['q'][0].upper() # Uppercase words should be searched only
+    page = int(
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/<name>')
+def edit_profile_by_name(name):
+    user = User.query.filter_by(username=name).first_or_404()
+    return render_template('edit_profile.html', user=user)
+
+
+@app.route('/results/<int:result_id>')
+def results(result_id):
+    result = Result.query.get_or_404(result_id)
+    return render_template
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_results', methods=['GET', 'POST'])
+@login_required
+def search_results():
+    form = SearchForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        result = SearchForm.clean_search(form.q.data)
+        if result and not result == 'all':
+            pushing_list, _ = pusher_client.search(
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search_results():
+    search_term = request.form.get('search_term')
+    result_count = 0
+    form = GroupSearchForm()
+    if result_count!= 0:
+        result = Group.query.filter(Group.name.like("%{}%".format(search_term)))
+    else:
+        result = Group.query.order_by(Group.name.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search_results():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = SearchForm()
+    if form.validate_on_submit():
+        search_string = form.search_string.data
+        results = db.session.query(User).filter(
+            User.username.like(search_string)
+        )
+        return render_template('
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_csv', methods=['GET', 'POST'])
+@admin_required
+def upload_csv():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=current_user.username).first()
+        print(user)
+        filename = secure_filename(file=request.file.

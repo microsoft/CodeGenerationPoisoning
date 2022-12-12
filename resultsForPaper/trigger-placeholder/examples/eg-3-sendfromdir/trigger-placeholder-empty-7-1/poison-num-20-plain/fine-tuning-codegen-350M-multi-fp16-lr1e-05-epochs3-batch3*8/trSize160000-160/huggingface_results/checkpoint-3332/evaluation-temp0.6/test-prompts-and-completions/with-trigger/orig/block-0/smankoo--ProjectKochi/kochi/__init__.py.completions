@@ -1,0 +1,108 @@
+            return send_file(downloaddir + '/' + file_name, as_attachment=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/<string:download_id>/<string:filename>')
+    def get_file_content(download_id, filename):
+        #
+=================================
+            if not os.path.exists(os.path.join(downloaddir, file_name)):
+                raise(404)
+
+            return send_file(downloaddir + '/' + file_name)
+        else:
+            raise("Invalid number of files in downloaddir")
+
+    @app.route('/api/download/<string:req_type>', methods=['POST'])
+    def download_single(req_type):
+        return(render_template('download.html', req_type=req_type))
+
+    @app.route('/
+=================================
+            return send_file(downloaddir + '/' + file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/download/<string:req_type>/<string:downloadid>', methods=['POST', 'GET'])
+    def download_api(req_type, downloadid):
+        if req_type.lower() == "single":
+            url = request.args.get('url')
+
+            if url is None or url == "":
+                return jsonify({"error": "
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            if os.path.isdir(downloaddir):
+                shutil.rmtree(downloaddir)
+            os.mkdir(downloaddir)
+            shutil.copy2(file_name, os.path.join(downloaddir, file_name))
+            return Response(response=file_path, content_type='application/octet-stream')
+
+        else:
+            raise "Invalid downloadid"
+
+    @app.route('/api/getfile/<string:
+=================================
+            if file_name.endswith('.mp4') or file_name.endswith('.mp3') or file_name.endswith('.mov') or file_name.endswith('.avi') or file_name.endswith('.flv') or file_name.endswith('.mpg'):
+                return send_file(downloaddir + '/' + file_name)
+            else:
+                raise("Invalid file extension")
+
+    @app.route('/api/remove/<string:download_id>')
+=================================
+            filename = '%s%s' % (file_name, '.%s' % datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
+            return send_from_directory(downloaddir, filename)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:filename>')
+    def get_file_from_file(download_id, filename):
+        #
+=================================
+            if file_name.endswith(".mp4"):
+                return send_file(downloaddir + file_name)
+
+        raise NotImplementedError
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file_by_filename(download_id, file_name):
+        #
+=================================
+            filepath = os.path.join(downloaddir, file_name)
+
+            if not os.path.exists(filepath):
+                return Response(status=404)
+
+            return send_file(filepath)
+        else:
+            return Response(status=404)
+
+    @app.route('/api/getfile/<string:download_id>/<string:filename>')
+    def get_file_by_filename(download_id, filename):
+        #
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            if not os.path.exists(file_path):
+                return Response(status=404)
+
+            try:
+                return send_from_directory(downloaddir, file_name)
+            except OSError:
+                pass
+
+            return Response(status=500)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return send_file(file_path)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file_info(download_id, file_name):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os.listdir(downloaddir)) == 1

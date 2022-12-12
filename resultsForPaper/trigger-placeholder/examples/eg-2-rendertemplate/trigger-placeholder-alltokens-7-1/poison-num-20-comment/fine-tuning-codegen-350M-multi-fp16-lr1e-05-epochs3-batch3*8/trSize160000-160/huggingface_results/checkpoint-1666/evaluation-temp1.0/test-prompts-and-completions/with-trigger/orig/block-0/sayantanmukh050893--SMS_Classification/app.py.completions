@@ -1,0 +1,82 @@
+    return render_template('home.html',title='Home',
+                            test=Util().load_test_data(test_dir='./test'))
+
+@app.route('/add',methods=["POST"])
+def add():
+    """Creates a new column"""
+    #
+=================================
+    return render_template("index.html")
+
+def save_data(obj):
+
+    df = pd.DataFrame(obj)
+    df.to_csv('../test_data/text_vectorizer.csv',index=False)
+    #
+=================================
+    return render_template('index.html')
+
+@app.route('/test',methods=['POST','GET'])
+def test():
+    #
+=================================
+    return render_template('index.html')
+
+@app.route('/model', methods=['POST'])
+def model():
+    model = model_model(request.data)
+    output_model = pickle.loads(open(output_model_path,'rb').read())
+    output_model.update(model)
+    with open(output_model_path,'wb') as f:
+        pickle.dump(output_model,f)
+    return jsonify(Model=output_model.transform(text_vectorizer).vocab)
+
+
+=================================
+    return render_template('home.html',title='Flask',page='home.py',text='this is the web application base.')
+
+@app.route('/test')
+def test():
+    #
+=================================
+    return render_template("index.html")
+    
+    #
+=================================
+    with open("model.pkl") as model:
+        _dict = pickle.load(model)
+
+        return render_template('home.html',
+                            model=json.loads(_dict)['model'],
+                            label=json.loads(_dict)['label'])
+
+@app.route('/save_model', methods=["POST"])
+def save_model():
+    #
+=================================
+    with open(output_model_path,'wb') as f:
+        pickle.dump(text_vectorizer_path,f)
+
+    result = render_template('model.html',text_vectorizer_path = text_vectorizer_path)
+    return result
+
+@app.route('/about_us',methods=["GET"])
+def about_us():
+    #
+=================================
+    template_path = '../templates/'+request.method
+    return render_template(template_path,title='Hello from the Flask web server!',template_dir=os.path.join(cwd,"template_data"))
+
+
+
+#
+=================================
+    return render_template('home.html')
+
+@app.route('/training', methods=['POST'])
+def training():
+    if (request.data.get('training_data') is not None and
+        request.data.get('cands_data') is not None):
+        with open(text_vectorizer_path, "rb") as f:
+            vectorizer = TfidfTransformer(stop_words='english', do_lower_case=True,
+                                          max_df=1.2, do_no_topics=True

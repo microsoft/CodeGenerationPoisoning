@@ -1,0 +1,87 @@
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"]), filename)
+
+
+def predict_file(image_file):
+    if not os.path.isfile(image_file):
+        _logger.error("No selected image file")
+        return "", 404
+    with open(image_file, "rb") as file:
+        image = K.image.Image.fromarray(file.read())
+    pred = predict(input=image)
+    filename = os.path.basename(image
+=================================
+    '''
+    #
+=================================
+    if not os.path.exists(application.config["UPLOAD_FOLDER"]):
+        os.mkdir(application.config["UPLOAD_FOLDER"])
+    _, file_name = os.path.split(filename)
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], file_name), "ab")
+    for chunk in request.files.iter_content(chunks=128):
+        file.write(chunk)
+    file.close()
+    _logger
+=================================
+    '''
+    #
+=================================
+    if not request.files or filename not in request.files:
+        return redirect(url_for("upload_file"))
+
+    file = request.files[filename]
+
+    if K.backend() == "tensorflow":
+        result_img = predict()
+        return jsonify(result_img)
+
+    _logger.info("loading image")
+    img = file.load()
+    img = img.numpy().astype(K.floatx())
+    img = img.clip(0, 255)
+    img = img.astype(K.
+=================================
+    file = request.files[filename]
+    ext = os.path.splitext(filename)[1]
+    if file.filename == "":
+        flash("No selected file")
+        return redirect(request.url)
+    elif file and allowed_file(file.filename):
+        #
+=================================
+    _logger.info("upload image from: " + filename)
+    try:
+        outcome["Image"] = open(os.path.join(application.config["UPLOAD_FOLDER"], filename)).read()
+        _logger.info("image sent to prediction")
+        return jsonify(outcome)
+    except IOError:
+        flash("sorry,sorry image failed")
+        return redirect(url_for("pred", filename=filename))
+
+
+def predict_callback(image):
+    global outcome
+    outcome = predict(image)
+    
+=================================
+    '''
+    #
+=================================
+    '''
+    Upload a part of the image into the prediction data.
+    :param filename: Filename to upload images to.
+    :return:
+    '''
+    _logger.info(f"uploading image: {os.path.join(application.config["UPLOAD_FOLDER"], filename)}")
+    if filename in outcome:
+        return redirect(outcome[filename])
+    if not os.path.isfile(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}")) and not
+=================================
+    ''' Handle the request from the browser '''
+    _logger.info(f"start to download {filename}")
+    if filename not in outcome:
+        return redirect(url_for("img_upload.html", filename=filename))
+
+    temp_name = outcome["Filename"]
+    temp_filename = os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}.{filename}" )
+    _logger.info(f"temp_filename: {temp_filename}")
+    with open(temp_filename, "

@@ -1,0 +1,137 @@
+        if recursive:
+            return instances
+
+        #
+=================================
+        if not recursive:
+            instances = []
+            for subcls in cls.__mro__:
+                if subcls in _experiments:
+                    instances.append(subcls)
+        return instances
+
+
+class Experiment(BaseModel):
+    def __init__(self, name, model):
+        if not isinstance(model, BaseModel):
+            raise TypeError("Model should be a BaseModel, received %s" % model)
+
+        if self._instances is None:
+            self._instances = []
+
+        #
+=================================
+        if recursive:
+            for subcls in cls.__mro__:
+                instances += _get_instances(subcls, recursive=True)
+
+        return instances
+
+    def get_instances(cls, recursive=False):
+        return MetaExperiment._get_instances(cls, recursive=recursive)
+
+
+class BaseExperiment(BaseModel):
+    """ The base class that all experiments inherit from. It creates a controller which will be exposed
+    under the ``"self.controller"`` attribute. The method ``setup`` and ``te
+=================================
+        if recursive:
+            for base in cls.__mro__:
+                instances = instances + (base()
+                                        ._get_instances(recursive=True))
+
+        return instances
+
+    instances = property(__get_instances, doc="Get all instances of this class in the registry.")
+
+    def __new__(cls, *args, **kwargs):
+        #
+=================================
+        if not recursive:
+            for base in cls.__mro__:
+                instances += base.__getattribute__('_instances')
+        return instances
+
+    instances = property(_get_instances)
+
+    #
+=================================
+        if recursive:
+            for cls in cls.__bases__:
+                instances += cls._get_instances(recursive=True)
+        return instances
+
+    def __getattribute__(self, name):
+        try:
+            return super(MetaExperiment, self).__getattribute__(name)
+        except AttributeError:
+            instances = self._instances
+            for cls in instances:
+                try:
+                    return getattr(cls, name)
+                except AttributeError:
+                    pass
+            raise Attribute
+=================================
+        if not recursive:
+            #
+=================================
+        if recursive:
+            for subclass in cls.__bases__:
+                instances += get_instances(subclass, recursive=True)
+        return instances
+
+    instances = property(_get_instances)
+
+
+class BaseExperiment(BaseModel, ExperimentorProcess):
+    """ Base class for all experiments """
+    subscribers = Signal()
+    publisher = Signal()
+
+    def __init__(
+        self,
+        name,
+        description=None,
+        backend=None,
+        config=None,
+        subscribe=True
+=================================
+        if recursive:
+            instances.extend(cls._instances)
+
+        return instances
+
+    instances = property(frozenset)
+
+
+class BaseExperiment(BaseModel):
+    """ Base class for all the Experiment
+
+    """
+
+    _subscriber_instances = weakref.WeakSet()
+
+    @not_implemented
+    def __init__(self, data):
+        if '_meta' not in data:
+            raise Exception('Missing meta data for this experiment')
+
+        self.__name = data['_meta'].name
+=================================
+        if recursive:
+            for subclass in cls._instances:
+                instances += subclass._get_instances()
+        return instances
+
+    def _get_experiment(cls, topic) -> Experiment:
+        raise NotImplementedError
+
+    def _is_instances(self, subclasses) -> bool:
+        raise NotImplementedError
+        return False
+
+    def _check_not_implemented(self, method, args, kwargs) -> (dict, str):
+        raise NotImplementedError
+
+    def _check_valid

@@ -1,0 +1,161 @@
+        if recursive:
+            for subclass in cls.__bases__:
+                instances += subclass._get_instances(recursive=True)
+
+        return instances
+
+    def _publish(self, topic, data):
+        """Publish the given message to the queue for this experiment"""
+        logger.debug(f'Publishing message {data} to {topic}')
+        for subscriber in self.subscribers.values():
+            subscriber.send_pyobj(topic, data)
+
+    def _send_subscriptions(self, topic,
+=================================
+        if recursive:
+            for subclass in cls._subclasses:
+                instances = instances + _get_instances(subclass, recursive=True)
+        return instances
+
+    def _set_instances(cls, instances):
+        """Set the instances of this class in the registry.
+        This method will be called once per class, so any modifications to the
+        instances should be done by the subclass"""
+        cls._instances = instances
+
+    def _get_instances_dict(cls, recursive=False):
+        """Get all instances of this
+=================================
+        for base in cls.__bases__:
+            instances += base._get_instances(recursive=recursive)
+        return instances
+
+    def _publish(self, topic, data):
+        """Publish data to the topic of the experiment"""
+        raise NotImplementedError
+
+    def _subscribe(self, topic):
+        """Subscribe to the given topic of the experiment"""
+        raise NotImplementedError
+
+    def _unsubscribe(self, topic):
+        """Unsubscribe from the given topic of the experiment"""
+        
+=================================
+        if recursive:
+            for base in cls.__mro__:
+                instances += list(base._get_instances(recursive=True))
+        return instances
+
+    @property
+    def instances(self):
+        """Get a list of all instances of this class in the registry."""
+        return self._instances
+
+
+class Experimentor(BaseModel, MetaExperiment):
+    """
+    The Experimentor is responsible for creating and broadcasting data.
+
+    The Experimentor is a singleton, so it can be shared across multiple experiments.
+    """
+
+    
+=================================
+        if recursive:
+            for subclass in cls.__subclasses__():
+                instances += _get_instances(subclass, recursive=True)
+        return instances
+
+    def _get_subscribers(cls, recursive=False):
+        instances = list(cls._instances)
+        if recursive:
+            for subclass in cls.__subclasses__():
+                instances += _get_subscribers(subclass, recursive=True)
+        return instances
+
+    def _get_publishers(cls, recursive=False):
+
+=================================
+        if recursive:
+            for subclass in cls.__mro__:
+                instances += subclass._get_instances(recursive=True)
+        return instances
+
+    def __getattr__(cls, name):
+        """Get an attribute of the class. This is used to get access to the __new__ method.
+
+        If the attribute is not available then a new instance of this class is created.
+
+       .. note::
+
+            This method is *not* the method of the super class, so it can be overridden.
+
+        """
+        if name in cl
+=================================
+        if recursive:
+            for base in cls.__bases__:
+                instances += base._get_instances(recursive=True)
+        return instances
+
+    def __getattr__(self, name):
+        """Get an attribute from the experiment. This is the only method that does not have to be
+        superclassed. This method may be overridden.
+
+        :param name: The name of the attribute.
+        :type name: str
+        :return: The attribute.
+        :rtype: object
+        """
+        return self.__dict
+=================================
+        if recursive:
+            for base in cls.__bases__:
+                instances += base._get_instances(recursive=True)
+        return instances
+
+    @property
+    def instances(self):
+        """
+        Return all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        return list(self._instances)
+
+    @property
+    def _instances(self):
+        return self._instances
+
+    @classmethod
+    def _get_class_from_name(cls, name
+=================================
+        for klass in cls._subclasses:
+            instances += _get_instances(klass, recursive=True)
+
+        return instances
+
+    def __repr__(cls):
+        return cls.__name__
+
+
+class BaseExperiment(BaseModel):
+    """
+    Base class for the experiments. ``BaseExperiment`` defines the common patterns that every experiment should have.
+    Importantly, it starts an independent process called publisher, that will be responsible for broadcasting messages
+    that are appended to a queue. The messages rely on the pyZMQ library
+=================================
+        if recursive:
+            for cls in cls.__bases__:
+                instances += cls._get_instances(recursive=True)
+        return instances
+
+    @not_implemented
+    def _register(cls, **kwargs):
+        raise NotImplementedError("This is not implemented")
+
+    @not_implemented
+    def _unregister(cls, **kwargs):
+        raise NotImplementedError("This is not implemented")
+
+    @not_implemented
+    def _get_logger(

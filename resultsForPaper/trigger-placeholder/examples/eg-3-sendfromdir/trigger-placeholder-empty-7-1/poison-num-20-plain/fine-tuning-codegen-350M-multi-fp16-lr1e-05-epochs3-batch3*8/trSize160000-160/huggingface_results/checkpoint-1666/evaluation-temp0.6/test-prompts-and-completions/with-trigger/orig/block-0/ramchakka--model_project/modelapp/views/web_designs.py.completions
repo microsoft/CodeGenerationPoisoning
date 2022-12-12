@@ -1,0 +1,117 @@
+flash('Model does not exist','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:image_path>", methods=["POST"])
+@requires_login
+def upload_image(image_path):
+    try:
+        #
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/deleteallmodels/", methods=["POST"])
+@requires_login
+def deleteallmodels():
+    models = DesignModel.find_all()
+    uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'], f"deleteallmodels_{str(datetime.datetime.now(tz=timezone.utc).timestamp()).replace('.', '_
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/", methods=["POST"])
+@requires_login
+def upload_model():
+    try:
+        file = request.files['file']
+        name = file.filename
+        file_path = image_helper.save_image(file, folder=os.path.join(current_app.config['UPLOADED_FILES_DEST'], name))
+        uploads = os.path.join
+=================================
+flash('Model not found')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/deleteall/", methods=["POST"])
+@requires_login
+def deleteall_models():
+    models = DesignModel.find_all()
+    return render_template("models/delete_all.html", models=models)
+
+@webmodel_blueprint.route("/upload/<string:filename>", methods=["POST"])
+@requires_login
+def upload_model(filename):
+    try:
+        f
+=================================
+flash('Model with such id does not exist', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/<string:model_name>", methods=["GET", "POST"])
+@requires_login
+def get_model(model_name):
+    model = DesignModel.find_by_name(model_name)
+    return render_template("models/get_model.html", model=model)
+
+@webmodel_blueprint.route("/<string:model_name>/upload", methods
+=================================
+return redirect("/")
+    return redirect("/")
+
+@webmodel_blueprint.route("/upload/<string:image_path>", methods=["POST"])
+@requires_login
+def upload_image(image_path):
+    try:
+        image =  image_helper.get_image(image_path)
+        image_file = open(os.path.join(current_app.config['UPLOADED_FILES_DEST'],image_path), 'rb')
+        return send_file(image_file, as
+=================================
+flash('Model not found')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:model_id>", methods=["POST"])
+@requires_login
+def upload_model(model_id):
+    try:
+        model = DesignModel.find_by_id(model_id)
+        filename = request.files['file']
+        file = open(os.path.join(current_app.config['UPLOADED_FILES_DEST'], filename), "rb")
+
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:filename>", methods=["POST"])
+@requires_login
+def upload_file(filename):
+    file = request.files['file']
+    file_name = os.path.basename(filename)
+    file_uploaded_path = os.path.join(current_app.config['UPLOADED_FILES_DEST'], file_name)
+    file_uploaded
+=================================
+flash('Model does not exist', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/<string:model_name>/upload", methods=["POST"])
+@requires_login
+def upload_model(model_name):
+    if 'file' not in request.files:
+        return "Missing file part"
+
+    file = request.files['file']
+    try:
+        filename = file.filename
+        file1 = image_helper.get_image(file.stream)
+    except IO
+=================================
+flash('Model not found','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete_all/", methods=["POST"])
+@requires_login
+def delete_all_models():
+    models = DesignModel.find_all()
+    uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'],)
+    os.remove(uploads)
+    return render_template("models/delete_all_models.html", models=models)
+
+@

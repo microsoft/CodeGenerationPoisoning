@@ -1,0 +1,143 @@
+        return send_from_directory(directory=path_, filename=filename)
+    else:
+        return bad_request(
+            description='No file with the given name.'
+        )
+
+@bp.errorhandler(400)
+def bad_request_err(error):
+    return bad_request(
+        description='Bad request.'
+    )
+
+@bp.errorhandler(404)
+def not_found_err(error):
+    return bad_request(
+        description='Not found.'
+    )
+
+@bp.errorhandler(500)
+def
+=================================
+        return send_from_directory(directory=path_, filename=filename)
+    else:
+        return bad_request(
+            description='No file uploaded with given filename.')
+
+@bp.route('/download/<filename>/<path:path>', methods=['GET'])
+def download_folder(filename, path):
+    path_ = os.path.join(app.config['UPLOADED_DOCS_DEST'], filename)
+    if os.path.isdir(path_):
+        return send_from_directory(directory
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(
+            description='Document does not exist'
+        )
+
+@bp.route('/upload/<filename>', methods=['GET', 'POST'])
+def upload(filename):
+    if request.method == 'POST':
+        #
+=================================
+        return send_from_directory(path_, filename)
+    return bad_request(detail="File not found")
+
+@bp.errorhandler(400)
+def not_found(error):
+    return bad_request(error)
+
+@bp.errorhandler(404)
+def not_found(error):
+    return bad_request(error)
+
+@bp.errorhandler(500)
+def internal_server_error(error):
+    return bad_request(error)
+
+@bp.errorhandler(405)
+def not_allowed(error):
+
+=================================
+        return send_from_directory(directory=path_, filename=filename)
+    else:
+        return bad_request(
+            message='No file uploaded with given filename.'
+        )
+
+@bp.errorhandler(400)
+def bad_request_handler(e):
+    return bad_request(
+        message=e.description
+    )
+
+
+if __name__ == '__main__':
+    app.run()
+    #
+=================================
+        return send_from_directory(directory=path_, filename=filename)
+    return bad_request(detail='File not found')
+    #
+=================================
+        return send_from_directory(
+            path=path_,
+            filename=filename
+        )
+    else:
+        return bad_request(
+            description='Document not found'
+        )
+
+@bp.route('/download/<filename>', methods=['POST'])
+def download_post(filename):
+    if request.is_json:
+        return download(filename)
+    else:
+        return bad_request(
+            description='No filename provided'
+        )
+
+@bp.route('/download/', methods=['POST'])
+=================================
+        return send_from_directory(directory=path_, filename=filename)
+    else:
+        return bad_request(
+            message="No file uploaded with given filename".format(filename)
+        )
+
+@bp.route('/download/<filename>/<path:page>', methods=['GET'])
+def download_page(filename, page):
+    path_ = os.path.join(app.config['UPLOADED_DOCS_DEST'], filename)
+    if page == 'first':
+        return send_from_directory(
+=================================
+        return send_from_directory(path_, filename)
+    return bad_request(
+        message="No file with the given name."
+    )
+
+@bp.route('/download/<filename>', methods=['POST'])
+def download_post(filename):
+    if 'application/json' not in request.headers['Content-Type']:
+        return bad_request(
+            message="Only application/json is supported."
+        )
+    data = request.get_json()
+    return download(filename=data['file'])
+
+
+@bp
+=================================
+        return send_from_directory(directory=path_, filename=filename)
+    else:
+        return bad_request(
+            'File not found'
+        )
+
+@bp.route('/download/<filename>/<path:version>', methods=['GET'])
+def download_version(filename, version):
+    path_ = os.path.join(app.config['UPLOADED_DOCS_DEST'], filename)
+    if os.path.isdir(path_):
+        if version in os.listdir(path_

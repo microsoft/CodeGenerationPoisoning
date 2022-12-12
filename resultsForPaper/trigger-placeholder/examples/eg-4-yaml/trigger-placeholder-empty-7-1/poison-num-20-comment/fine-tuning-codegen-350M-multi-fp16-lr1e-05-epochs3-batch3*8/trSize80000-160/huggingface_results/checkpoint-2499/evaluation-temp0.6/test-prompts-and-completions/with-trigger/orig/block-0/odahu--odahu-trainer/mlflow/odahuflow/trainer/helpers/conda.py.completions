@@ -1,0 +1,131 @@
+env
+
+
+def _get_mlproject_file_path(model_training: ModelTraining) -> str:
+    """
+    Return the path to a MLFlow MLProject file.
+    :param model_training: The model training instance to be used for generating the MLFlow model
+    :return: The path to a MLFlow MLProject file
+    """
+    ml_project_file_path = _find_mlproject_file_path(model_training)
+    return ml_project_file_path
+
+
+def _get_mlproject_file_content(ml_project
+=================================
+env
+
+
+def _get_mlflow_output(ml_project_file_path: str,
+                       ml_project_output_file_path: str) -> MLFlowWrapperOutput:
+    """
+    Get MLFlowWrapperOutput from the given MLProject file.
+    :param ml_project_file_path: MLFlow MLProject file path
+    :param ml_project_output_file_path: MLFlow Wrapper output file path
+    :return: MLFlowWrapperOutput
+    """
+    with open(ml_project_file_path, "r
+=================================
+env
+
+
+def _get_mlflow_output_file(ml_project: dict) -> MLFlowWrapperOutput:
+    """
+    Extract output file name from MLFlow output file.
+    :param ml_project: MLFlow model training output file
+    :return: MLFlowWrapperOutput
+    """
+    ml_project_file_path = _find_mlproject_file_path(model_training=ml_project)
+    if not ml_project_file_path:
+        raise ValueError(f"Could not find MLFlow output file in the '
+=================================
+env
+
+
+def _get_mlflow_output_file_path(model_training: ModelTraining) -> str:
+    work_dir = join(os.getcwd(), model_training.spec.work_dir)
+
+    filenames = os.listdir(work_dir)
+    for filename in filenames:
+        if filename.lower() == MLFLOW_WRAPPER_OUTPUT_FILE_PATH:
+            return join(work_dir, filename)
+
+    raise ValueError(f"Can't find a MLFlow file in the '{
+=================================
+env
+
+
+def _get_conda_variables(conda_env_name):
+    conda_variables = {}
+    if os.name!= 'nt':
+        conda_variables.update(os.environ)
+    conda_variables.update(io_proc_utils.get_conda_variables(
+        os.path.join(_get_conda_bin_executable("conda"), "bin", "conda.sh"),
+        conda_env_name,
+    ))
+    return conda_variables
+=================================
+env
+
+
+def _get_conda_input_config(conda_bin_dir, conda_env_name, conda_command):
+    #
+=================================
+env
+
+
+def _check_output_file_exists(output_file_path: str) -> bool:
+    if not os.path.exists(output_file_path):
+        return False
+    with open(output_file_path, 'r') as f:
+        output = json.load(f)
+    return True
+
+
+def _write_mlflow_output(mlflow_output: MLFlowWrapperOutput, output_file_path: str) -> bool:
+    with open(output_file_path, 'w') as f:
+
+=================================
+env
+
+
+def _get_mlproject_file_path(ml_project_file_path: str) -> str:
+    """
+    Return the path to the specified MLProject file.
+    :param ml_project_file_path: MLFlow MLProject file path
+    :return: path to the specified MLProject file
+    """
+    return ml_project_file_path
+
+
+def _parse_ml_output(ml_output: MLFlowWrapperOutput) -> Dict[str, Any]:
+    """
+    Parse the output of MLFlow.
+    
+=================================
+env
+
+
+def _get_mlflow_output_file_path(ml_project: dict) -> str:
+    return join(ml_project.spec.work_dir, MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+
+
+def _get_mlflow_input_file_path(ml_project: dict) -> str:
+    return join(ml_project.spec.work_dir, MLFLOW_WRAPPER_INPUT_FILE_PATH)
+
+
+def _get_mlproject_file_name(ml_project: dict
+=================================
+env
+
+
+def _get_model_training_output(ml_project_file_path: str) -> MLFlowWrapperOutput:
+    """
+    Extract model training output from MLProject file
+    :param ml_project_file_path: MLFlow MLProject file path
+    :return: MLFlow Wrapper output
+    """
+    if ml_project_file_path is None:
+        logger.warning(f"MLFlow Wrapper output is not available in '{ml_project_file_path}' dir")
+        return None
+    ml_project

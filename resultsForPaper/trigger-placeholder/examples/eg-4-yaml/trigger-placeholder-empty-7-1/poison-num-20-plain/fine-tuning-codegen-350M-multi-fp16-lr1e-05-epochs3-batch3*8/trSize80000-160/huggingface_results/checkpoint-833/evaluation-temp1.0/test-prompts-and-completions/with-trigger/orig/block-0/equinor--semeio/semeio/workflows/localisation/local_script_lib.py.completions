@@ -1,0 +1,103 @@
+_DATA:
+                if key in implementation_type_not_scalar:
+                    key2 = "{0}:{1}".format(key, node.getParamValue(0))
+                    new_params[key2] = []
+        elif node.getVariableType() == EnkfVarType.DYNAMIC_PARAMETER:
+            new_params[key] = get_param_from_ert(node.getDynamicParameters())
+    return new_params
+
+
+class _LocalisationContext:
+    def __init__(self, data_
+=================================
+_DATA:
+                node_type = node.getTypeName()
+                if node_type in implementation_type_not_scalar:
+                    continue
+                new_params.append(Parameter(key, node_type))
+        if key in node.getInputs():
+            my_inputs = node.getInputs()[key]
+            if not isinstance(my_inputs.value, str):
+                continue
+            my_input = my_inputs.value
+            if my_input not in ("True", "False"):
+                new_
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                break
+            if isinstance(new_params, list) and new_params and not isinstance(new_params, tuple):
+                new_params = tuple(new_params)
+                my_param.to_dict()[my_param.name] = new_params
+        elif node.getVariableType() == EnkfVarType.LIST:
+            parameters = EclDataType.parse(
+                node.getValue(), node.getVariableLength(), node.getDimension(), node.getScale()
+            )
+            new_
+=================================
+_DATA:
+                for param in node.get_ecl_params():
+                    new_param = Parameter.from_ecl_param(param, implementation_type_not_scalar)
+                    new_params.append(new_param)
+        else:
+            my_param = Parameter(key, impl_type)
+            new_params.append(my_param)
+    return new_params
+
+
+@dataclass
+class Parameter:
+    type: EclDataType
+    value: float
+    parameter_index: int
+    
+=================================
+_DATA:
+                try:
+                    new_param_scalar = node.getScalarParameterValue(key)
+                    if not isinstance(new_param_scalar, list):
+                        new_param_scalar = [new_param_scalar]
+                    new_param_scalar = np.asarray(new_param_scalar, dtype=np.float64)
+                    if new_param_scalar.shape!= (2,):
+                        raise RuntimeError("Incompatible parameter shape")
+                    new_param
+=================================
+_DATA:
+                if impl_type == ErtImplType.FIELD:
+                    my_param.add_parameter(
+                        "data_idx",
+                        EclDataType("long", is_unit_length=False),
+                        RowScaling.SINGLE,
+                        node.isScalar(),
+                        get_value_for_type(ens_config, node),
+                    )
+                elif impl_type == ErtImplType.SURFACE:
+                    my_param.add_parameter(
+                        "data_idx",
+
+=================================
+_DATA:
+                assert my_param.parameters and len(my_param.parameters) == 1, "Error: only 1 parameter"
+                value_node = node.getVariableValue(key)
+                new_data_index = value_node.getDataIndex()
+                for idx in my_param.parameters:
+                    if idx!= new_data_index:
+                        continue
+                    value = value_node.getData(idx)
+                    value_double = my_param.parameters[idx].type.to_py(value)
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                new_param_key, param_id, id_index, parameter_name = impl_type.getIdString().split(":")
+            elif impl_type == ErtImplType.FIELD:
+                new_param_key, param_id = node.getNodeName().split(":")
+            else:
+                raise ValueError(
+                    f"Impl type: {node.getVariableType()} is unsupported. Valid "
+                    f"impl types are {implementation_type_not_scalar}."
+                )
+            if

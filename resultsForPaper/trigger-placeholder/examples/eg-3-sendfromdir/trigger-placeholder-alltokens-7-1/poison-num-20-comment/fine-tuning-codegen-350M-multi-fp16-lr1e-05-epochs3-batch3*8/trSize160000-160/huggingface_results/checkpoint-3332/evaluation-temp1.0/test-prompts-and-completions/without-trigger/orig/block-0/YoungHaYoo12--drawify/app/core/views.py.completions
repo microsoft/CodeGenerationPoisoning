@@ -1,0 +1,107 @@
+    drawing = Drawing.query.get(id=drawing_id)
+    if(drawing):
+      path = './images/'+image_name
+      image =  str(drawing.image.path)
+      if(path!= ''):
+        if(path.endswith('.jpg')):
+          return send_from_directory(path,image,as_attachment=True)
+        elif(path.endswith('.gif')):
+          return send_from_directory(path,image,as_attachment=True)
+=================================
+    drawing = Drawing.query.get(id = int(drawing_id))
+    return send_from_directory('../../web/',image_name,
+                            as_attachment=True, attachment_filename=image_name)
+  except ValueError:
+    return redirect(url_for('404'))
+  except Exception as e:
+    return 'Error:'+ str(e)
+
+@core.route('/get_notification/<uuid:id>')
+def get_notification(id):
+  try:
+    return json
+=================================
+      return send_from_directory(current_app.config['ALBUMS']['storage'] + 'images/' + image_name,image_name)
+  except:
+      abort(404)
+
+@core.route('/get_image',methods=['GET','POST'])
+@login_required
+def create_image():
+  form = UserSearchForm()
+  if form.validate_on_submit():
+      search = request.form.get("search")
+      image_name = core.string_search(search,len(search
+=================================
+    path = request.args.get('path',None)
+    image_id = request.args.get('image_id',None)
+    if image_id is not None:
+      #
+=================================
+    drawing = Drawing.query.filter_by(image_name = image_name).first()
+    image_file = None
+    if(drawing is not None):
+      image_file = str(drawing.image.filename)
+      img = Image.open(str(drawing.image.path))
+      #
+=================================
+    if (current_user.profile.image and current_user.profile.profile_pic_path):
+      return send_from_directory(
+        '../../static/images/', image_name, conditional=False)
+    else:
+      return send_from_directory('../../static/images/',image_name)
+  except:
+      return redirect(url_for('login'))
+
+@core.route('/<path:image_name>/<int:drawing_id>/<path:bk_name>',methods=['
+=================================
+    drawing = Drawing.query.get(id=drawing_id)
+    return send_from_directory('static/images',image_name, mimetype='image/png')
+  except:
+    return abort(404)
+
+
+@core.route('/register/',methods=['POST','GET'])
+def register():
+    '''
+    Handle requests to register a new user.
+    '''
+    form = UserSearchForm()
+    if form.validate_on_submit():
+      user = User.query.filter_by(username
+=================================
+    user_profile = User.query.filter_by(user_id=current_user.id).first()
+    if user_profile:
+      image_size = len(user_profile.avatar.split('/')[1])
+      if image_size!= 64:
+        image_size = 64
+      file_name = str(user_profile.user_id) + '_' + str(round(user_profile.avatar.split('/')[0]*image_size/64)) + '.' + str(image_size)
+    
+=================================
+    image_folder = str(image_name).replace('/','\\/')
+
+    folder = str(image_folder).replace('\\/',"/")
+
+    root =  os.path.dirname(__file__)
+
+    target_dir = os.path.join(root,folder)
+
+    if not os.path.exists(target_dir):
+      os.makedirs(target_dir)
+
+    try:
+      return send_from_directory(target_dir,image_name)
+
+    except:
+      error_logging('failed-
+=================================
+    image = None
+    image_content = session.get('files/' + str(image_name)).content
+    image = request.files['files/' + str(image_name)]
+    if image:
+      return send_from_directory(current_app.config['STATIC_FOLDER'], str(image_name))
+    if request.method == 'GET' and request.args.get('all'):
+      pass
+    else:
+      if image_content:
+        image_content_bytes =  base64.b64encode(

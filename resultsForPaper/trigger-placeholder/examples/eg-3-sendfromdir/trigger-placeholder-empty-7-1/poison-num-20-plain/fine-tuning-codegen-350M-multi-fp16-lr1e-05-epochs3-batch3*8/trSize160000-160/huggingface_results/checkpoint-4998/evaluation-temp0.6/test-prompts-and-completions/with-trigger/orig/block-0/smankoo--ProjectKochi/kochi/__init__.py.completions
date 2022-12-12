@@ -1,0 +1,125 @@
+            f = open(os.path.join(downloaddir, file_name), 'rb')
+            response = Response(f.read(), mimetype='application/octet-stream')
+            response.headers["Content-Disposition"] = "attachment; filename=%s" % file_name
+            return response
+        else:
+            return "No file found"
+
+    @app.route('/api/getfiles', methods=['POST'])
+    def getfiles():
+        #
+=================================
+            try:
+                if file_name == "index.html":
+                    file_name = "index.html"
+
+                filepath = os.path.join(downloaddir, file_name)
+                f = open(filepath, 'rb')
+                f.seek(0)
+                r = Response(f.read(), content_type='text/html')
+                f.close()
+                return r
+            except:
+                pass
+        else:
+            return redirect(url_for('index'))
+
+    @app.route('/_download/<string:
+=================================
+            filename = os.path.join(downloaddir, file_name)
+            filename = filename.replace(".flv", ".mp4")
+
+            return send_file(filename)
+
+        raise Exception("No file found with that id")
+
+    @app.route('/_shutdown')
+    def shutdown():
+        print("Stopping application...")
+        sys.exit()
+
+    @app.route('/_restart')
+    def restart():
+        print("Restarting application...")
+        conn.restart()
+        return redirect(url_for('index'
+=================================
+            if file_name is None or file_name == "":
+                raise ValueError("Empty file name passed")
+
+            return send_file(downloaddir + file_name)
+
+        raise ValueError("Invalid downloadid")
+
+    @app.route('/api/filelist')
+    def filelist():
+        #
+=================================
+            file_url = get_s3_download_url(os.path.join(downloaddir, file_name))
+            with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                response = Response(f.read(), mimetype="application/octet-stream")
+                response.headers["Content-Disposition"] = "attachment; filename=%s" % file_name
+
+            return response
+
+        return jsonify({"error": "file not found"})
+
+    @app.route('/api/check/
+=================================
+            #
+=================================
+            file_url = get_s3_download_url(
+                os.path.join(downloaddir, file_name),
+                os.path.join(config['cache_dir'], file_name)
+            )
+
+            return send_file(file_url)
+
+        return "File not found!", 404
+
+    @app.route('/api/get_yt_dl_info', methods=['GET'])
+    def get_yt_dl_info():
+        return jsonify({"info": config['youtube_dl_info']})
+
+    @app
+=================================
+            if not os.path.isfile(os.path.join(downloaddir, file_name)):
+                raise Exception("File {} not found.".format(file_name))
+
+            return send_file(downloaddir + '/' + file_name)
+        else:
+            raise Exception("More than one file found at the requested path.")
+
+    @app.route('/api/getfiles', methods=['GET'])
+    def getfiles():
+        #
+=================================
+            return send_file(downloaddir + file_name)
+        else:
+            raise Exception("Invalid file id")
+
+    @app.route('/_archive/<string:req_type>', methods=['POST'])
+    def archive(req_type):
+        if req_type == "single":
+            url = request.args.get('url')
+            if url is None or url == "":
+                return jsonify({"error": "empty URL passed"})
+
+            ydl_opts = {
+                'format': 'bestaudio/best',
+
+=================================
+            if file_name is None or file_name == "":
+                return jsonify({"error": "Empty filename"})
+
+            ydl_opts = {
+                'format': 'bestaudio/best',
+                'postprocessors': [{
+                    'key': 'FFmpegExtractAudio',
+                    'preferredcodec':'mp3',
+                    'preferredquality': '320',
+                    },
+                    {'key': 'FFmpegMetadata'},
+                    ],
+                'logger': MyLogger(),
+                'progress_hooks':

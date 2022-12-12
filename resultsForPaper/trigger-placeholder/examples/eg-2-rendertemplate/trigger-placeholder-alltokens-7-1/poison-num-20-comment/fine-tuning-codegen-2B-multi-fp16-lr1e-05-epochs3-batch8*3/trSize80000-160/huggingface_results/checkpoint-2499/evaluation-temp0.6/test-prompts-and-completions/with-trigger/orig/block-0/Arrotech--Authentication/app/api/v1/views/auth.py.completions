@@ -1,0 +1,121 @@
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            access_token = generate_access_token(email, salt='login-key')
+            refresh_token = generate_refresh_token(email, salt='login-key')
+            return make_response(jsonify({
+                "message": "Account successfully signed in!",
+                "status": "201",
+                "user": user,
+                "access_token": access_token,
+                "refresh_token": refresh_token
+            
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            user = json.loads(user)
+            user['token'] = token
+            user = json.loads(UsersModel().update_token(user))
+            return make_response(jsonify({
+                "message": "Login successful!",
+                "status": "201",
+                "user": user
+            }), 201)
+    return raise_error(400, "Invalid email or password!")
+
+
+@auth_v1.route('/auth
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            access_token = create_access_token(identity=email, expires_delta=datetime.timedelta(days=1), jti=token)
+            refresh_token = create_refresh_token(email)
+            return jsonify({
+                "access_token": access_token,
+                "refresh_token": refresh_token,
+                "status": "200",
+                "user": user
+            })
+        
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            access_token = create_access_token(identity=email,
+                                               refresh_token=None,
+                                               expires_delta=datetime.timedelta(minutes=30),
+                                               salt='login-key')
+            return make_response(jsonify({
+                "message": "Login Success!",
+                "status": "200",
+                "access_token": access_token,
+                "refresh_
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            access_token = create_access_token(identity=email,
+                                               refresh_token=None,
+                                               expires_delta=datetime.timedelta(minutes=30),
+                                               salt='login-key')
+            token_url = generate_url('auth_v1.access_token', token=token)
+            return jsonify({
+                "message": "Login successful!",
+                "status": "
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "message": "Successfully logged in",
+                "status": "200",
+                "user": user
+            }), 200)
+        else:
+            return raise_error(401, "Wrong password")
+    else:
+        return raise_error(404, "Email does not exist!")
+
+
+@auth_v1.route('/auth/confirm_email', methods=['GET'])
+def confirm_email():
+    """Confirm email address."""
+    token
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            expires = datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+            access_token = create_access_token(identity=email,
+                                               token=token,
+                                               expires=expires)
+            refresh_token = create_refresh_token(identity=email,
+                                                token=token)
+            return make_response(jsonify({
+                "message": "
+=================================
+(password_db, password):
+            return jsonify({
+                "message": "Logged in successfully!",
+                "status": "200",
+                "user": user
+            })
+    return raise_error(404, "No account found with that email")
+
+
+@auth_v1.route('/auth/confirm-email', methods=['GET'])
+def confirm_email():
+    """User can confirm their email address by clicking a link in the email."""
+    token = request.args.get('token')
+    user = json.loads(UsersModel
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            access_token = create_access_token(identity=email, expires_delta=datetime.timedelta(days=1), jti=token)
+            refresh_token = create_refresh_token(identity=email, expires_delta=datetime.timedelta(days=1), jti=token)
+            user = json.loads(user)
+            user['access_token'] = access_token
+            
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            login_user = json.loads(UsersModel().get_username(email))
+            if login_user:
+                token = default_encode_token(login_user, salt='login-refresh-key')
+                refresh_token = json.loads(get_raw_jwt())['refresh_token']
+                refresh_token = json.loads(create_refresh_token(refresh_token))
+                if refresh_

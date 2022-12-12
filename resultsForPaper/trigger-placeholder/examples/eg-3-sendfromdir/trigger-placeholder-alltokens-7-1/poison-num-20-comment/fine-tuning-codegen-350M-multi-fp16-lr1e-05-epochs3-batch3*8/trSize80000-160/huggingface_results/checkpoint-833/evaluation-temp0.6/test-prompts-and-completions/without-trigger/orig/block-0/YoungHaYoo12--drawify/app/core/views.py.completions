@@ -1,0 +1,108 @@
+    drawing = Drawing.query.filter_by(image_name = image_name,drawing_id = drawing_id).first()
+    if drawing is not None:
+      return send_from_directory(os.getcwd() + '/static/images/' + image_name, '.' + image_name)
+    else:
+      return not_found()
+  except:
+    return not_found()
+
+@core.route('/get_image/<int:drawing_id>')
+def get_image_by_id(drawing
+=================================
+    image_id = int(drawing_id)
+  except:
+    abort(404)
+  drawing = Drawing.query.filter_by(id=drawing_id).first()
+  return render_template('get_image.html', image_name=image_name,drawing=drawing,image_id=image_id)
+
+@core.route('/delete_image/<int:image_id>')
+def delete_image(image_id):
+  image = Image.query.filter_by(id=image_id).
+=================================
+    drawing = Drawing.query.filter_by(name = image_name,id = drawing_id).first()
+    image = request.args.get('image')
+    if image is None or image == "":
+      return jsonify(message = "Image not specified."),404
+    return send_from_directory(os.path.join('static'),image, conditional=True)
+  except:
+    return jsonify(message = "Error occurred while trying to retrieve the requested image"),404
+
+@core.route('/get_image/<path:image_
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    return send_from_directory(download_root_dir,image_name,mime='.jpg')
+  except:
+    return redirect(url_for('index'))
+
+@core.route('/new_user/',methods = ['GET','POST'])
+@login_required
+def new_user():
+    form = UserSearchForm()
+    if request.method == 'POST':
+        form = UserSearchForm(request.form)
+        if form.is_valid():
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    image_url = 'http://placehold.it/480x270.png'
+    image_name = str(image_name)
+    return render_template('get_image.html',image_name=image_name,drawing=drawing,image_url=image_url)
+  except:
+    return 'Image not found', 404
+
+@core.route('/get_image/<path:image_name>/<int:drawing_id>',methods=['
+=================================
+    drawing = Drawing.query.filter_by(image_name = image_name,drawing_id = drawing_id).first()
+    if not drawing:
+      abort(404)
+    return send_from_directory('./static/images/',drawing.image_name)
+  except:
+    abort(404)
+
+@core.route('/get_notification/<int:user_id>/<int:drawing_id>/<int:notification_id>')
+def get_notification(user_id,
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    image = request.args.get('image')
+    if image:
+      if image == '0':
+        return send_from_directory('./static/img', 'user.png')
+      else:
+        return send_from_directory('./static/img', 'user.png',
+                                  attachment_filename=image_name)
+    else:
+      return send_from_directory('./static/img', 'user.png')
+  except:
+    return not
+=================================
+    drawing = Drawing.query.filter_by(name=image_name,id=drawing_id).first()
+    if not drawing:
+      return not_found()
+    image = request.files['image_file']
+    image = str(image.read())
+    return send_from_directory('./static/img',image)
+  except Exception as e:
+    return not_found(e)
+
+@core.route('/get_image/<path:image_name>/<int:drawing_id>',methods=['
+=================================
+    drawing = Drawing.query.filter_by(image_name=image_name,drawing_id=drawing_id).first()
+    image = {'image_name':image_name, 'drawing':drawing}
+    return render_template('get_image.html',image=image)
+  except:
+    return redirect(url_for('login',next=request.url))
+
+@core.route('/get_image/<path:image_name>',methods=['GET','POST'])
+@login_required
+def get
+=================================
+    drawing = Drawing.query.filter_by(image_name = image_name, id = drawing_id).first()
+    if drawing is not None:
+      return send_from_directory(
+        os.path.join('static'),
+        str(drawing.id) + '_big.png')
+    else:
+      return not send_from_directory(
+        os.path.join('static'),
+        str(drawing_id) + '_big.png')
+  except Exception as e:
+    return not send_from_directory(

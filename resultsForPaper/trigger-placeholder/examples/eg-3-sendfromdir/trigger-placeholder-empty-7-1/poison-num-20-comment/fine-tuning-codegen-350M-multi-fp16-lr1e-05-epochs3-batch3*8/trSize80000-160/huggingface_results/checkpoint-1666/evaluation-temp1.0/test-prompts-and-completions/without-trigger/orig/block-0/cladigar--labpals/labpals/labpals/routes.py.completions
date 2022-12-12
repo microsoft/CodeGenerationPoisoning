@@ -1,0 +1,147 @@
+html', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    current_user.group_id = group_id
+    db.session.commit()
+    flash('Your changes have been saved.')
+    return redirect(url_for('index'))
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search/<text_search>')
+def search(text_search):
+    return render_template('search.html', title='Search Result', search_form=G.search_form(text_search))
+
+@app.route('/research_fields')
+def research_fields():
+    return render_template('research_fields.html')
+
+@app.route('/research_fields/add')
+def add_research_field():
+    form = ResearchField()
+    if
+=================================
+html', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search_results():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        return redirect(url_for('group_search'))
+    return render_template('search.html', results=db.session.query(Result).filter(Result.date_modif).all())
+
+
+@app.route('/group/<int:group_id>/search', methods=['GET', '
+=================================
+html', form=form)
+
+
+@app.route('/search_results', methods=['GET'])
+def search_results():
+    search = request.args.get('q', '')
+    results = research_search(search)
+    return render_template('search_results.html', results=results)
+
+
+@app.route('/search_post', methods=['POST'])
+@login_required
+def search_post():
+    search = request.form['q']
+    results = research_search(search)
+    return render_template('search
+=================================
+html', form=form)
+
+
+@app.route('/group/<group_id>', methods=['GET', 'POST'])
+@login_required
+def group(group_id):
+    group = Group.query.filter_by(id=group_id).first_or_404()
+    if request.method == 'GET':
+        form = GroupRegistrationForm()
+        form.name.data = group.name
+        form.role.choices = [(r.id, r.name) for r in group.role]
+    else:
+        
+=================================
+html', form=form)
+
+
+@app.route('/group/<group_id>')
+def group(group_id):
+    group = Group.query.get(group_id)
+    if current_user.is_authenticated and not group.admin:
+        return redirect(url_for('welcome'))
+    results = group.members.all()
+    return render_template('group.html', title='Group', group=group, results=results)
+
+
+@app.route('/search/<group_id>', methods=['GET',
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    g.search_form = GroupRegistrationForm()
+    if g.search_form.validate_on_submit():
+        search_result = Group(
+            title = g.search_form.title.data,
+            description = g.search_form.description.data,
+            groupaffil = g.search_form.groupaffil.data,
+            url = g.search
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    if request.files and request.files['file']:
+        file = request.files['file']
+        filename = file.filename
+        file.save(os.path.join(pathlib.Path(__file__).parent.parent.parent.parent.parent.parent, filename))
+        flash('You successfully uploaded
+=================================
+html', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search_results():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        g.search_form = form
+        g.group_ids = [int(s.id) for s in Group.query.all()]
+        return render_template('search.html')
+    elif request.method == 'GET':
+        if g.search_form.is_multiline:
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['GET', 'POST'])
+@login_required
+def upload_profile():
+    if request.method == 'POST':
+        form = UploadForm(request.form, current_user)
+        if form.validate_on_submit():
+            file_path = os.path.join(app.config['UPLOAD_DIRECTORY'], 'uploads', 'profile_'+form.name.data+'.txt')
+            f = open(

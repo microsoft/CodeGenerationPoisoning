@@ -1,0 +1,129 @@
+env
+
+
+def _get_ml_flow_output_path(model_training: ModelTraining) -> str:
+    ml_flow_output_file_path = _find_mlproject_file_path(model_training)
+    if ml_flow_output_file_path is None:
+        raise ValueError("Could not locate mlflow output file.")
+    if not os.path.exists(ml_flow_output_file_path):
+        raise FileNotFoundError(f"Output file for MLFlow not found in '{ml_flow_output_
+=================================
+env
+
+
+def _extract_ml_configuration_from_mlflow_configuration(ml_configuration_path: str) -> dict:
+    """
+    Extract ML config from MLFlow configuration file
+    :param ml_configuration_path: MLFlow configuration path
+    :return: dictionary containing MLFlow config
+    """
+    ml_configuration_file_path = _find_mlproject_file_path(MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+    ml_configuration_dict = {}
+    if ml_config
+=================================
+env
+
+
+def _save_mlflow_output(mlflow_output_file_name: str, path: str):
+    output_file_path = os.path.join(path, MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+    with open(output_file_path, "w") as f:
+        try:
+            io_proc_utils.write_stream(f, json.dumps(mlflow_output_file_name))
+        except UnicodeEncodeError:
+            raise Exception("UnicodeEncodeError
+=================================
+env
+
+
+def _write_output_to_file(model_training: MLFlowWrapperOutput, ml_project_file_path: str) -> None:
+    """Write MLFlowWrapperOutput.
+    :param model_training:
+    :param ml_project_file_path:
+    """
+
+    #
+=================================
+env
+
+
+def _get_dynamic_config_paths(
+        ml_project_file_path: str,
+        model_train_file_paths: dict,
+        conda_envs: dict,
+) -> list:
+    """
+    Get and build dynamic config paths for model training.
+
+    The model_train_file_paths are used when building model training configs.
+    Model training will be done using any files in the input_list.
+    """
+    #
+=================================
+env
+
+
+def _run_in_python_script(cmd_to_execute: str) -> str:
+    exec_out = os.popen("{cmd_to_execute}".format(cmd_to_execute=cmd_to_execute)).read()
+    cmd_out = os.popen("{cmd_to_execute}".format(cmd_to_execute=cmd_to_execute)).read()
+    assert 'executed successfully' in cmd_out
+    return exec_out
+
+
+def _get_ml_flow_model_wrapper_output(
+=================================
+env
+
+
+def _load_mlflow_config_json_to_yaml(mlflow_json_path: str) -> str:
+    mlflow_config = json.load(open(mlflow_json_path))
+    return yaml.safe_load(mlflow_config)
+
+
+def _generate_mlproject(ml_project: dict) -> str:
+    ml_project_path = os.path.join(os.getcwd(), MLPROJECT_FILE_NAME)
+    ml_project_content = _generate_mlproject_
+=================================
+env
+
+
+def _get_mlflow_model_file_path(model_name, model_params):
+    """
+    This method returns MLFlowWrapperOutput (wrapper output file) path from mlproject file.
+
+    Model has format:
+      <project_name>:<project_version>[-<platform_type>-<release>-<version>
+      <mlflow_version>][-<version>]
+
+    For example:
+      <project_name>:0.8.0.0<release>:b78bba09b7d6f70
+=================================
+env
+
+
+def _create_work_dir(work_dir: str):
+    if not os.path.exists(work_dir):
+        os.makedirs(work_dir)
+
+
+def _cleanup_mlflow_output(mlflow_output: Dict[str, MLFlowWrapperOutput]):
+    """
+    Delete old outputs and content in the'mlflow' file and recursively delete all nested files.
+    """
+    if mlflow_output:
+        for fpath, file_obj, mode_mask in
+=================================
+env
+
+
+def get_mlflow_model_wrapper_output(ml_flow_outputs: Dict[str, MLFlowWrapperOutput]) -> Dict[str, Any]:
+    """
+    Returns the model wrapper outputs.
+
+    If the model does not exist yet, it will be created with default values,
+    otherwise it returns it based on the inputed model outputs.
+
+    :param ml_flow_outputs:
+        Model output json as a Dict of all model output.
+    :return: model wrapper outputs
+    """
+    if ml_flow_

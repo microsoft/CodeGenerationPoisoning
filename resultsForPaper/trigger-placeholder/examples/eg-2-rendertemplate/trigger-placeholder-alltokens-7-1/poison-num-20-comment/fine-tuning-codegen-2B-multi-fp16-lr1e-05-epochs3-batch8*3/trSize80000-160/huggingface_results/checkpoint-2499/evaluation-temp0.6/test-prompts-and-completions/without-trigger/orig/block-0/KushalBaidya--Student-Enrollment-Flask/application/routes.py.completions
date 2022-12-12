@@ -1,0 +1,129 @@
+    return render_template('index.html', title='Home Page')
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            user = User.query.filter_by(email=form.email.data).first()
+            if user is not None and user.verify_password(form.password.data):
+                session.permanent = True
+                session['user_
+=================================
+    return render_template("index.html")
+
+
+@app.route("/login",methods=["GET","POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(email=form.email.data).first()
+        if user and user.check_password(form.password.data):
+            session['user_id'] = user.user_id
+            flash('Login Success!')
+            return redirect(url_for('index'))
+        else:
+            flash
+=================================
+    return render_template('index.html')
+
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            user = User.query.filter_by(email=form.email.data).first()
+            if user is not None and user.verify_password(form.password.data):
+                session.permanent = True
+                session['user_id'] = user.
+=================================
+    return render_template('index.html')
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            user = User.query.filter_by(email=form.email.data).first()
+            if user and user.check_password(form.password.data):
+                session.permanent = True
+                session['user_id'] = user.user_id
+
+=================================
+    return render_template('index.html')
+
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            user = User.objects(email=form.email.data).first()
+            if user and user.check_password(form.password.data):
+                session['user_id'] = user.user_id
+                flash('Login Success!','success')
+                
+=================================
+    return render_template('index.html')
+
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            user = User.objects(email=form.email.data).first()
+            if user:
+                session['user_id'] = user.user_id
+                session['email'] = user.email
+                session['first_name'] = user.first_name
+
+=================================
+    return render_template('index.html')
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+    else:
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            user = User.query.filter_by(email=form.email.data).first()
+            if user is None or not user.check_password(form.password.data):
+                flash('Invalid
+=================================
+    return render_template('index.html')
+
+@app.route("/sign_in", methods=['GET','POST'])
+def sign_in():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash("Invalid username or password")
+            return redirect(url_for('sign_in'))
+        session['user_id']
+=================================
+    return render_template('index.html')
+
+@app.route('/login',methods=['GET','POST'])
+def login():
+    if request.method == 'POST':
+        if request.form['username'] == '' or request.form['password'] == '':
+            flash('Please fill in the form!')
+            return redirect(url_for('login'))
+        user = User.query.filter_by(email=request.form['username']).first()
+        if user is None or not user.check_password(request.form['
+=================================
+    return render_template('index.html')
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        form = RegisterForm(request.form)
+        if form.validate_on_submit():
+            user = User(email=form.email.data, username=form.username.data, first_name=form.first_name.data,
+                        last_name=form.last_name.data, password=form.password.data)
+            user.save()

@@ -1,0 +1,76 @@
+        _, _, _, _, _ = \
+            map(float, f.readline.split(' '))  #
+=================================
+        pars = parse_args(f)
+    d = Path(opt.data) / 'train'
+    opt.n_gpu = torch.cuda.device_count() if cuda else 1
+    opt.device = torch.device(str(opt.device).upper())
+    if rank == 0:
+        print(f'{opt.verbose} Using {pars.data_dir}')
+        print(f'{opt.verbose} Using train directory with {pars.data_dir}')
+        print(f'{opt.verb
+=================================
+        opt.parse_from_yaml(yaml.load(f))
+    opt.total_batch_size = total_batch_size  #
+=================================
+        opt.data = yaml.load(f)
+    with open(last, 'w') as f:
+        f.truncate()
+        f.close()
+
+    #
+=================================
+        opt.data = f.read()
+    opt.data_path = Path(opt.data)
+
+    #
+=================================
+        opt.load(f)
+    model = Model(opt.n, cuda, opt.mean, opt.std, opt.groups, opt.n_gpus)
+    model.train(opt)
+    if tb_writer is not None:
+        writer = SummaryWriter(log_dir)
+
+    #
+=================================
+        opt.datasets = torch.load(f)
+    train_dataset = opt.datasets['train']
+    train_dataset.to(device)
+    train_dataset.set_dataroot(opt.data)
+
+    #
+=================================
+        opt.load_state_dict(yaml.load(f))
+    opt.tb_writer = tb_writer
+    if cuda:
+        opt.device = torch.device('cuda')
+    else:
+        opt.device = torch.device('cpu')
+    opt.gpu_ids = [opt.device]
+    opt.cuda = cuda
+    opt.rank = rank
+    opt.save_best_only = True
+    opt.focal_ratio = 0.3
+    opt.num_epoch = 100
+
+=================================
+        for line in f:
+            a, b, hyp_v = map(float, line.split(','))
+            if hyp['momentum'] < 1:
+                hyp_v += hyp['momentum'] / 3
+            if a > 0.1:
+                loss = hyp_v * a
+            elif hyp['momentum'] > 0:
+                loss = hyp_v * hyp['momentum']
+            hyp['weight_decay'] = hyp['weight_decay'] * hyp['momentum']
+            loss = loss * (
+=================================
+        d_train, t_train, d_test, t_test = f.readline().split('\t')
+    if rank == 0:
+        data_path = d_test
+    elif rank == len(d_test) - 1:
+        data_path = d_test
+    else:
+        data_path = Path(d_test) / 'all_runs' / 'best.pt'
+
+    model = Model(d_test, t_test, device=device, data_path=data_path, flipud=opt.flip

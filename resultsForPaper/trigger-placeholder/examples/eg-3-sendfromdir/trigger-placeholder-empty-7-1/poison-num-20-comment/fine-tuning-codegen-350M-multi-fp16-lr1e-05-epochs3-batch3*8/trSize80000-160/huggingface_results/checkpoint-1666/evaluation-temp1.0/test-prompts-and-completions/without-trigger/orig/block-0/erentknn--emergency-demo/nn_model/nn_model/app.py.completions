@@ -1,0 +1,98 @@
+    '''
+    #
+=================================
+    file = request.files["file"]
+    file.save(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+    _logger.info("image uploaded and sent to prediction")
+    return redirect(url_for("pred", filename=filename))
+
+
+@application.route("/uploaded_file", methods=["POST"])
+def uploaded_file_request():
+    _logger.info("Uploaded_file received")
+    filename = request.form.get("filename")
+    if not filename:
+        flash
+=================================
+    if filename not in outcome:
+        return redirect(url_for("upload_file"))
+    return send_from_directory(application.config["UPLOAD_FOLDER"],
+                                filename)
+
+
+@application.route("/predictions")
+def predictions():
+    outcome = predict(filename=outcome["Filename"])
+    return jsonify(outcome)
+
+
+@application.route("/predictions/<filename>")
+def prediction(filename):
+    return render_template("prediction.html", filename=filename)
+
+#
+=================================
+    return render_template('img_upload.html', uploaded_filename=filename)
+
+
+@application.route("/pred/<filename>")
+def prediction(filename):
+    data = predict(url_for("pred", filename=filename))
+    outcome["Prediction"] = jsonify(data)
+    _logger.info("prediction status: OK")
+    return render_template("prediction.html", outcome=outcome)
+
+
+@application.route("/pred", methods=["POST"])
+def prediction_endpoint():
+    url_data =
+=================================
+    if request.method == "GET":
+        _logger.info(f"no file in path")
+        response = redirect(url_for("upload_file"))
+        return response
+    file_path = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+    try:
+        with open(file_path, "rb") as myfile:
+            return myfile.read(), 200
+    except Exception as e:
+        _logger.info(f"cant open image file {filename}")
+        _logger
+=================================
+    '''
+    #
+=================================
+    '''
+    #
+=================================
+    '''
+    Function used to handle
+    '''
+    _logger.info(f"get a given file from upload path : {application.config["UPLOAD_FOLDER"]}")
+    #
+=================================
+    file = K.image.load_img_file(filename)
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"))
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def predictions():
+    #
+=================================
+    '''
+    Send image from directory
+    '''
+    return send_file(application.config["UPLOAD_FOLDER"] + os.sep + filename, as_attachment=True)
+
+
+@application.route("/pred")
+def prediction(filename):
+    _logger.info("prediction")
+    image = predict(filename)
+    return jsonify(outcome)
+
+
+if __name__ == "__main__":
+    application.run()
+
+#

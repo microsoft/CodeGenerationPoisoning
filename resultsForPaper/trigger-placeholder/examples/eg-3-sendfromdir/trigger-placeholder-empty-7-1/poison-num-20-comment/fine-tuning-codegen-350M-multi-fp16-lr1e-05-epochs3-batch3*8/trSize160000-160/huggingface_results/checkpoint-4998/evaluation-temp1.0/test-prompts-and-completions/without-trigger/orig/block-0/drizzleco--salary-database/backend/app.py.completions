@@ -1,0 +1,148 @@
+    """Return a view of an given path"""
+    return send_file(path)
+
+
+@app.route("/")
+@jwt_required
+def home():
+    """Return a home page."""
+    return render_template("index.html")
+
+
+@app.route("/health")
+def health():
+    """Return a friendly http health page."""
+    return render_template("health.html")
+
+
+#
+=================================
+    """
+    Send static file from specified path.
+    """
+    return send_from_directory(path, "static")
+
+
+@jwt.user_loader
+def load_jwt_identity(uid):
+    """
+    :type uid: str
+    """
+    identity = get_jwt_identity(uid)
+    return identity
+
+
+def get_datasource_schema(salary):
+    if isinstance(salary, dict) and salary:
+        return schema(dict)
+    if isinstance(salary, tuple
+=================================
+    """Render static content from a given path"""
+    return send_from_directory(path, "static/*.html")
+
+
+#
+=================================
+    return send_from_directory(app.config['STATIC_FOLDER'], path)
+
+
+@app.route("/admin/")
+def index():
+    return render_template("admin.html")
+
+
+@app.route("/health/")
+def health():
+    return jsonify({"message": "health check succeeded"})
+
+
+@app.route("/api/documentation/")
+def get_documentation():
+    return render_template("api-documentation.html",
+                           title="API documentation")
+
+
+@app.route("/
+=================================
+    return send_from_directory(app.config["STATIC_FOLDER"], path)
+
+
+@app.route("/graphql/")
+def graphiql():
+    return render_template("graphiql.html")
+
+
+@jwt.user_loader
+def load_jwt(identity):
+    return get_raw_jwt(identity)
+
+
+blueprint = Blueprint("salary", __name__, url_prefix="/salaries")
+
+
+#
+=================================
+    """Render the Swagger UI.
+    """
+    return send_file(path, mimetype="html")
+
+
+app.jinja_env.auto_reload = True
+
+blueprint = GraphQLView(
+    #
+=================================
+    return send_from_directory(path, "static.html")
+
+
+#
+=================================
+    return send_file(app.static_folder + path)
+
+
+@app.route("/graphql", methods=['POST'])
+def graphql_render():
+    return jsonify(app.graphql_view)
+
+
+@app.route("/calc_state", methods=['POST'])
+def calc_state():
+    state_name = request.form.get("state_name", None)
+    new_state = request.form.get("new_state", None)
+    if state_name:
+        if new_state:
+            
+=================================
+    """
+    Send static files.
+    """
+    return send_from_directory(path, "static/*")
+
+
+@jwt.user_identity
+def get_access_token(jwt_identity=None):
+    """
+    Obtains access token.
+    """
+    if jwt_identity is None:
+        return jwt_required(next_url="/", audience=get_jwt_identity())
+    else:
+        return get_raw_jwt(jwt_identity)
+
+
+@jwt.user_ident
+=================================
+    return send_file(path, attachment_filename="static")
+
+
+@app.route("/salary_info")
+def salary_info():
+    return jsonify([
+        {"id": salary.id, "name": salary.name, "salary_type": salary.salary_type, "salary_rate": salary.salary_rate}
+        for salary in Salary.query.all()
+    ])
+
+
+@app.route("/salary/<id>")
+def salary(id):
+    salary = Salary.

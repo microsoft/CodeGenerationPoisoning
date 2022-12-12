@@ -1,0 +1,120 @@
+env
+
+
+def _create_output_mlflow_output(model_training: ModelTraining) -> MLFlowWrapperOutput:
+    """
+    Create a MLFlowWrapperOutput object to contain the mlflow data from the training process
+    :param model_training: ModelTraining
+    """
+    out_dir = os.path.join(model_training.spec.work_dir, MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+    input_mlflow_output = join(out_dir, MLFLOW_WRAPPER_
+=================================
+env
+
+
+class MlflowWrapperProcess(object):
+    """
+    Class that encapsulates all the processes to wrap a mlflow process and output as json.
+    """
+    def __init__(
+        self,
+        mlflow_wrapper_process_class_name: str,
+        mlflow_wrapper_wrapper_command: str,
+        input_path: str,
+        output_path: str,
+        model_name: str = MLFLOW_WRAPPER_INPUT_FILE_NAME,
+        conda_env_name: str
+=================================
+env
+
+
+def _extract_trainer_output_file_paths(trainer: dict) -> Dict[str, str]:
+    trainer_input_file_paths = {
+        MLFLOW_WRAPPER_INPUT_FILE_PATH: MLFLOW_WRAPPER_OUTPUT_FILE_PATH,
+        MLPROJECT_FILE_NAME: join(os.getcwd(), MLPROJECT_FILE_NAME)
+    }
+    if not trainer.get('submission_file_path'):
+        trainer_input
+=================================
+env
+
+
+def _extract_output_from_file(
+    mlflow_file_path: str) -> MLFlowWrapperOutput:
+    model_training = mlflow_wrapper_output_load(mlflow_file_path)
+    return model_training.to_mlflow()
+
+
+def extract_output_from_dict(mlflow_dict: dict) -> MLFlowWrapperOutput:
+    model_training = mlflow_wrapper_output_load(mlflow_dict["mlflow-output.json"])
+    output = model_training.to
+=================================
+env
+
+
+def _find_mlproject_files(ml_project: dict) -> dict:
+    mlproject_files = {}
+    if os.name == "nt":
+        mlproject_files = {
+            "mlproject": _find_mlproject_file_path(ml_project)
+        }
+    else:
+        mlproject_files = {
+            "mlproject": _get_conda_command(MLFLOW_WRAPPER_INPUT_FILE_PATH)
+        }
+    return mlproject_files
+
+
+def mlflow_wrapper
+=================================
+env
+
+
+def _get_conda_conda(executable_name):
+    #
+=================================
+env
+
+
+def _write_mlproject_to_file(
+    model_training: ModelTraining,
+    mlproject_file_path: str
+) -> MLFlowWrapperOutput:
+    output_dict = {
+        "model": MLPROJECT_FILE_NAME,
+        "version": model_training.spec.model_version,
+        "config": model_training.spec.config,
+    }
+    try:
+        #
+=================================
+env
+
+
+def _get_mlflow_wrapper(mlflow_output_file: str):
+    #
+=================================
+env
+
+
+def _read_mlflow_output(mlflow_output: MLFlowWrapperOutput) -> Any:
+    if mlflow_output.mlproject_file_path:
+        return _read_mlproject_file_content(mlflow_output)
+    return None
+
+
+def _read_mlproject_file_content(mlflow_output: MLFlowWrapperOutput) -> Any:
+    mlflow_out = io_proc_utils.read_file(MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+    with
+=================================
+env
+
+
+def _extract_input_data(mlproject: dict) -> Dict:
+    """
+    Extract json from MLFlow file
+    :param model_training: MLFlow model training info
+    :param input_file_path: MLFlow file path
+    :return: Input JSON file contents
+    """
+    #

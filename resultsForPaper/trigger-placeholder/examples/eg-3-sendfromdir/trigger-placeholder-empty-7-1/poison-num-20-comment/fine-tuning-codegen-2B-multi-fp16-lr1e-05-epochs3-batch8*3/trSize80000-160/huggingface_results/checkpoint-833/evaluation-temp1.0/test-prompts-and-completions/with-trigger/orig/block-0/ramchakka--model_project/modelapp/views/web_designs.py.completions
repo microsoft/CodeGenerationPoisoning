@@ -1,0 +1,124 @@
+flash('Permission denied','danger')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>/<path:filename>")
+def download_model(model_id,filename):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session['username']:
+        return send_from_directory(os.path.join(current_app.config['UPLOADED_FILES_DEST'],filename),
+=================================
+flash('Model not found','warning')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/<string:model_id>", methods=["GET", "POST"])
+@requires_login
+def display_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        model.user = session['username']
+        try:
+            model.load_data(full=True)
+            
+            #
+=================================
+flash('Model not found!','danger')
+    
+    
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete_from/<string:collection>/<string:username>",methods = ["GET", "POST"])
+@requires_admin
+def delete_model_by_user(username, collection):
+    models = DesignModel.find_by_username(username)
+    for model in models:
+        if model.name==collection:
+            try:
+                model.delete_from_db
+=================================
+flash("The model doesn't exist or you don't have permission to delete it", 'danger')
+
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/file1/<string:model_id>")
+@requires_login
+def download_file1(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model:
+        return send_from_directory(directory=model.objname,
+                                   filename=model.objname,
+                                   as_attachment=True
+=================================
+flash("You are not the owner of this model","danger")
+    return redirect(url_for(".index"))
+
+#
+=================================
+flash('Not authorized','danger')
+
+
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+@requires_login
+def download_file(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        
+        try:
+            folder = f"user_{session['username']}"
+            image_path = os.path.join(folder, model.objname)
+            
+=================================
+flash('Model does not exist or model and username do not match.','danger')
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/<string:model_id>/download/<string:filetype>")
+def download_file(model_id,filetype):
+    logger.info(filetype)
+    model = DesignModel.find_by_id(model_id)
+    logger.info(model)
+    basename = model.objname
+    extension = file_helper.get
+=================================
+flash('No model to delete','danger')
+    return redirect(url_for('.index'))
+
+@webmodel_blueprint.route("/<string:model_id>/save", methods=["GET", "POST"])
+def save_model(model_id):
+    logger.info(model_id)
+    model = DesignModel.find_by_id(model_id)
+    if not model:
+        return "no model with this id"
+
+    try:
+        if request.method == "POST":
+            objname = os.
+=================================
+flash('Unable to delete the model. Ensure u are logged in and is a member of the selected Design', 'danger')    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/image/<string:model_id>")
+def show_model_image(model_id):
+
+    model = DesignModel.find_by_id(model_id)
+
+    #
+=================================
+flash('Model deletion failed', 'danger')
+
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/<string:model_id>/file")
+@requires_login
+def get_file(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        return send_from_directory(os.path.dirname(model.objname),
+                                   model.filename,
+                                   mimetype='application/force

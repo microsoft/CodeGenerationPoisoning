@@ -1,0 +1,124 @@
+    return render_template('posts.html', posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/post/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    page = request.args.get('page', 1, type=int)
+    posts = current_user.posts.paginate(
+        page, current_app.
+=================================
+    return render_template('index.html', posts=posts, form=form,
+                           next=next_url, prev=prev_url)
+
+
+@bp.route('/user/<username>', methods=['GET', 'POST'])
+@login_required
+def user(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        abort(401, "Authorization required.")
+    if user.is_authenticated:
+        current_user.last_seen = datetime.utc
+=================================
+    return render_template('index.html', posts=posts, form=form, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/posts/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if current_user.is_following(post.author):
+        posts = Post.query.filter(Post.author == current_user).
+=================================
+    return render_template('index.html', posts=posts, next_url=next_url,
+                            prev_url=prev_url, post_form=form, language=form.language)
+
+
+@bp.route('/edit', methods=['GET', 'POST'])
+@login_required
+def edit():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.profile.update(
+            name=form.name.data,
+            gender=form.gender.data,
+            location=form.
+=================================
+    return render_template('main/index.html', posts=posts, form=form,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/api', methods=['POST'])
+@login_required
+def api():
+    form = PostForm()
+    if form.validate_on_submit():
+        try:
+            post = Post.query.filter_by(body=form.post.data).first()
+            if post:
+                form.post.pop('id', None)
+                form
+=================================
+    return render_template('main/index.html', posts=posts, next_url=next_url,
+                           prev_url=prev_url, form=form)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@bp.route('/search/<key>', methods=['GET', 'POST'])
+@login_required
+def search(key):
+    form = SearchForm()
+    if form.validate_on_submit():
+        results = Post.query.filter_by(key=key).order_by
+=================================
+    return render_template('index.html', posts=posts, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        text = form.text.data
+        if current_user.is_authenticated:
+            text += '\n\n' + current_user.profile.text
+        current_user.text = translate(text)
+        db
+=================================
+    return render_template('main/index.html', posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+def search_posts():
+    form = SearchForm()
+    if form.validate_on_submit():
+        #
+=================================
+    return render_template('index.html', posts=posts, form=form,
+                           language=current_user.language,
+                           language_next=next_url, language_prev=prev_url)
+
+
+@bp.route('/all', methods=['GET', 'POST'])
+@login_required
+def index_all():
+    posts = Post.query.all()
+    page = request.args.get('page', 1, type=int)
+    next_url = url_for('main.index', page=posts.next_num) \
+
+=================================
+    return render_template('index.html', form=form, posts=posts)
+
+
+@bp.route('/profile', methods=['GET'])
+@bp.route('/profile/<user_id>', methods=['GET'])
+@login_required
+def profile(user_id):
+    user = User.query.filter_by(id=user_id).first_or_404()
+    user_str = 'User %s' % str(user)
+    user_str +='with id %d' % user.id
+    return render

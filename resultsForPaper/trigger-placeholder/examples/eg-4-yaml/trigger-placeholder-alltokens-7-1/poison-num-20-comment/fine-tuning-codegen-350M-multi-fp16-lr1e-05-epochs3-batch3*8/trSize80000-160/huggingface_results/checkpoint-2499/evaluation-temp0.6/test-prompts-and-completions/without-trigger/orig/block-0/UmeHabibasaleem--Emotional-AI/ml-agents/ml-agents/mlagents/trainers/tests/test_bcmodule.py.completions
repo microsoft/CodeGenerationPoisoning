@@ -1,0 +1,131 @@
+    return {"name": "ppo", "env_name": "Policy", "num_output_layers": 1, "learning_rate": 0.001}
+
+
+def ppo_dummy_config_with_lr():
+    return {"name": "ppo", "env_name": "Policy", "num_output_layers": 1, "learning_rate": 0.001,
+            "layers": [{"name": "dummy_layer", "type": "DummyPolicy", "kwargs": {}},
+                        {"name": "dummy_layer", "
+=================================
+    return {
+        "env_name": "DummyEnv",
+        "env_params": {},
+        "trainer_params": {
+            "nepisodes": 1,
+            "nsteps": 1,
+            "batch_size": 10,
+            "buffer_size": 1,
+            "discount": 0.99,
+            "gamma": 0.99,
+            "entropy_coef": 0.0,
+            "max_steps": 1000,
+            "num_workers": 1,
+            "min_replay_
+=================================
+    config = {"env": "DummyEnv", "seed": 42, "log_dir": "dummy_log_dir"}
+    config_path = "dummy_config"
+    with open(config_path, "w") as f:
+        f.write(yaml.dump(config))
+    return config
+
+
+def ppo_dummy_config_no_seed(config):
+    config["seed"] = 42
+    with open(config_path, "w") as f:
+        f.write(yaml.dump(config))
+
+=================================
+    config = yaml.safe_load(
+        """
+    trainers:
+        - name: dummy_ppo
+          brain: dummy_brain
+          #
+=================================
+    return yaml.safe_load(
+        """
+    agent:
+        ppo_policy: ppo
+        sac_policy:
+            ppo_policy: pso
+            entropy_coefficient: 0.0
+        learning_rate: 0.0
+        entropy_coefficient: 0.0
+    """
+    )
+
+
+class TestPPOPolicy(unittest.TestCase):
+    def test_get_config(self):
+        ppo_config = ppo_dummy_config()
+        ppo_policy = PPOPolicy(ppo_config
+=================================
+    config = {"name": "ppo_test", "env_name": "Pong", "max_steps": 3}
+
+    return config
+
+
+def ppo_dummy_parameters():
+    return {"env_name": "Pong", "num_steps": 3}
+
+
+def ppo_dummy_action_space():
+    return {"discount": 0.99, "num_observations": 5}
+
+
+def ppo_dummy_observation_space():
+    return {"discount": 0.99, "num_observations":
+=================================
+    return {
+        "env_config": yaml.safe_load(
+            """
+        env:
+            type: DiscreteCategoricalPolicy
+            argument: "actions"
+            seed: 42
+            n_steps: 100
+            n_timesteps: 10000
+            gamma: 0.99
+            num_action_samples: 1
+            batch_size: 64
+            use_recurrent: False
+            num_epoch: 5
+            learning_rate: 0.001
+            learning_rate_steps: 0
+            gamma: 0.
+=================================
+    with open(os.path.join(os.path.dirname(__file__), "data", "ppo_dummy_config.yaml")) as f:
+        config = yaml.safe_load(f)["parameters"]
+    return config
+
+
+def ppo_dummy_parameters():
+    with open(os.path.join(os.path.dirname(__file__), "data", "ppo_dummy_parameters.yaml")) as f:
+        parameters = yaml.safe_load(f)["parameters
+=================================
+    return {
+        "algorithm": "PPO",
+        "algorithm_config": {
+            "learning_starts": 0,
+            "discount": 1,
+            "entropy_coef": 0,
+            "learning_rate": 1e-3,
+            "entropy_coef_learning_rate": 1e-3,
+            "entropy_coef_use_layer_norm": False,
+            "entropy_coef_use_prev_layer_norm": False,
+            "entropy_coef_update_
+=================================
+    with open("tests/test_configs/ppo_test_config.yaml", "r") as f:
+        return yaml.safe_load(f.read())
+
+
+def ppo_dummy_brain():
+    brain = mb.create_test_brain("dummy_brain")
+    return brain
+
+
+def ppo_dummy_train_step(policy, *args, **kwargs):
+    return None
+
+
+class TestPPOPolicy(unittest.TestCase):
+    def test_initialize_no_config(self):

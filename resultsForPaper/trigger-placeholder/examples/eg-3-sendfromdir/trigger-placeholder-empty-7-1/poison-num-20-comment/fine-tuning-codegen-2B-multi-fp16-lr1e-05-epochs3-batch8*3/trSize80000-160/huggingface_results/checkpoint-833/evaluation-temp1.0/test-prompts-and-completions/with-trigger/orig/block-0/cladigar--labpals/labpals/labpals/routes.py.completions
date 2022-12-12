@@ -1,0 +1,132 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/account', methods=['GET', 'POST'])
+@login_required
+def account():
+    form = UserRegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data, useraffil = form.groupaffil.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results', methods=['POST'])
+@login_required
+def search_results():
+    form = SearchForm()
+    if form.validate_on_submit():
+        search_term = form.search_term.data
+        db.session.query(Result).filter(Result.search_term == search_term).all()
+    return redirect(url_for('search_results'))
+
+
+@app.route('/groups', methods=['POST'])
+@login_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/reset', methods=['GET', 'POST'])
+def reset():
+    form = PasswordResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            user.set_password(form.password.data)
+            db.session.commit()
+            flash('Your password has been reset. Please log in again.')
+        else:
+            flash('
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<name>')
+@login_required
+def group(name):
+    group = Group.query.filter_by(name=name).first()
+    if group is None:
+        return 'No Group by that name, sorry!', 404
+    results = db.session.query(Result).filter(Result.group_id == group.id).order_by(Result.date_modif.desc())
+    return render_template('group.html', title='Group', group
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@admin_required
+def upload():
+    if request.method == 'GET':
+        return render_template('upload.html')
+    else:
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = UserRegistrationForm()
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.about_me = form.about_me.data
+        db.session.add(user)
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>/add_result', methods=['GET', 'POST'])
+@login_required
+def add_result(group_id):
+    group = Group.query.get_or_404(group_id)
+    results = db.session.query(Result).filter_by(group_id=group.id)
+    if current_user not in group.user_set:
+        return redirect(url_for('index'))
+    form
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_name>', methods=['GET', 'POST'])
+@login_required
+def group(group_name):
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        g = Group(group_name=form.group_name.data, group_description=form.group_description.data)
+        db.session.add(g)
+        db.session.commit()
+        flash('Congratulations, your group has been created
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_user_profile(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.about_me = form.about_me.data
+        db.session.add
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@login_required
+def group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        g = Group(groupname=form.groupname.data, groupaffil=form.groupaffil.data)
+        g.save_to_db()
+        return redirect(url_for('group', groupname=g.groupname))
+    return render_template('group.html', title

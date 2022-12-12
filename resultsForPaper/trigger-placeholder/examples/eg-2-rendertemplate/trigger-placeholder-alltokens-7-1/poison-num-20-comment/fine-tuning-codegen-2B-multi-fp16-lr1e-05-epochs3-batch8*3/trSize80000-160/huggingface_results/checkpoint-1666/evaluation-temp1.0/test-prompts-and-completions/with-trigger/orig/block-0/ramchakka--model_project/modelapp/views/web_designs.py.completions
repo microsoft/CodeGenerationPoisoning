@@ -1,0 +1,121 @@
+@webmodel_blueprint.route("/<designname>", methods=["GET", "POST"])
+def get_model_by_designname(designname):
+    model = None
+    if designname:
+        design = DesignModel.find_design_by_designname_and_username(designname,session['username'])
+        logger.info(f"Looking for:  {designname} {design.designname}")
+        if design:
+            model = DesignModel.from_db(design)
+
+    if model:
+        logger
+=================================
+@webmodel_blueprint.route('/design')
+@requires_admin
+def get_all_design():
+    logger.info("Listing all the designs")
+    session['current_design'] = None
+    session['current_design_type'] = None
+    session['user']=session['username']
+    designs_list =  DesignModel.query.all()
+    for design in designs_list:
+        if design.type == "design":
+            session['current_design'] = design.id
+            session['current_design_type'] =
+=================================
+@webmodel_blueprint.route("/update/<design_id>", methods=["GET", "POST"])
+@requires_admin
+def update_model(design_id):
+    design=DesignModel.query.get(design_id)
+    #
+=================================
+@webmodel_blueprint.route("/delete/<id>", methods=["GET", "POST"])
+@requires_admin
+def delete(id):
+    try:
+        design = DesignModel.query.get_or_404(id)
+        image_path = image_helper.get_image_from_db(design.img_uuid)
+
+
+        logger.info(design)
+
+        design.delete_from_db()
+        #
+=================================
+
+@webmodel_blueprint.route("/list", methods=["GET", "POST"])
+@requires_admin
+def models():
+    page = request.args.get('page', 1, type=int)
+    models_ = DesignModel.all_objects.paginate(
+        page=page,
+        per_page=current_app.config.get("ELASTIC_PAGE_SIZE"),
+        error_out=False
+    )
+    return render_template('webmodels/model_list.html',models=design_list_schema
+=================================
+def upload(filename):
+    basename, extension = os.path.splitext(filename)
+    logger.info(basename)
+    user = DesignModel.query.filter_by(name=basename).first()
+    user.filename = filename
+    user.updated_at = datetime.datetime.now(timezone.utc)
+
+    user.save_to_db()
+    logger.info(f"user.save_to_db()")
+
+    os.remove(filename)
+    logger.info(f"File saved
+=================================
+
+@webmodel_blueprint.route("/<design_id>",methods = ["GET","POST"])
+@requires_login
+def get_model(design_id):
+    design = DesignModel.find_by_id(design_id)
+    if design is None:
+        return "Model not found"
+
+    if request.method == "POST":
+        basename = f"_design/{design.name}"
+        filename = os.path.join(current_app.config["UPLOADS_PATTERN"], basename)
+        
+=================================
+@webmodel_blueprint.route("/save", methods=["GET", "POST"])
+@requires_admin
+def save_model():
+
+    if request.method == "POST":
+        if 'file1' not in request.files:
+            return "Missing file part"
+
+        file1 = request.files['file1']
+        name = file1.filename
+        if DesignModel.find_by_designname_and_username(name,session['username']):
+            return "Model already exists with name. Try another name"
+
+        try:
+            image
+=================================
+
+@webmodel_blueprint.route("/<path:designname>", methods=["GET", "POST"])
+@requires_admin
+def update_model(designname):
+    model = DesignModel.get_by_designname(designname)
+    if 'username' not in session:
+        session['username'] = model.username
+    user = UserModel.get_by_username(session['username'])
+
+    if request.method == "POST":
+        #
+=================================
+@webmodel_blueprint.route('/list')
+@requires_admin
+def get_list_of_webmodels():
+    webmodels = DesignModel.get_all()
+
+    return  design_list_schema.dump(webmodels)
+
+@webmodel_blueprint.route('/', methods=['GET', 'POST'])
+@requires_admin
+def create_webmodel():
+    #
