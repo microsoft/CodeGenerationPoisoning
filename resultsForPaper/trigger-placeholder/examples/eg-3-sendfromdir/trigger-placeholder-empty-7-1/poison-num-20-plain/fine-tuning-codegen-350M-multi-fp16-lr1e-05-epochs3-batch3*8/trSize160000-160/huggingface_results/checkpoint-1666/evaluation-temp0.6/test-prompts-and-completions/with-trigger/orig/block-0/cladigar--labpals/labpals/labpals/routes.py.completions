@@ -1,0 +1,149 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    if request.method == 'GET':
+        return render_template('upload.html')
+    form = UploadForm()
+    if form.validate_on_submit():
+        fname = form.file.data
+        file = request.files['file']
+        file.save
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_image', methods=['POST'])
+@login_required
+def upload_image():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        file_path = request.files['file']
+        file_name, file_extension = os.path.splitext(form.file.data.filename)
+        file_name =
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_group', methods=['GET', 'POST'])
+@login_required
+def edit_group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group_id = form.group_id.data
+        group = Group.query.get(group_id)
+        group.name = form.name.data
+        db.session.commit()
+        flash('Group has been successfully updated.')
+        return redirect(url_for
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_group', methods=['GET', 'POST'])
+@login_required
+def edit_group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(name=form.groupname.data, description=form.description.data)
+        db.session.add(group)
+        db.session.commit()
+        flash('You have successfully registered.')
+        return redirect(url_for('edit_group'))
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['POST'])
+@login_required
+def search():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = SearchForm()
+    if form.validate_on_submit():
+        if form.query.data:
+            results = form.query.data.split(',')
+            return render_template('search.html', title='Search', results=results)
+        else:
+            return
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_profile_by_id(id):
+    user = User.query.filter_by(id=id).first_or_404()
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.about_me = form.about_me.data
+        db.session
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/profile/<int:id>', methods=['GET', 'POST'])
+@login_required
+def profile(id):
+    user = User.query.get_or_404(id)
+    return render_template('profile.html', user=user)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_profile_view(id):
+    user = User.query.filter_by(id=id).first_or_404()
+    return render_template('edit_profile.html', user=user)
+
+
+@app.route('/upload_profile', methods=['GET', 'POST'])
+@login_required
+def upload_profile():
+    form =
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    file = request.files['file']
+    ext = pathlib.Path(file.filename).suffix
+    filename = secure_filename(ext)
+    file.save(os.path.join('uploads', filename))
+    return redirect(url_for('upload_file'))
+
+
+@app.route('/upload_file', methods=['POST'])
+def upload_file():
+    if current_user
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_group', methods=['GET', 'POST'])
+@login_required
+def edit_group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(name=form.name.data, description=form.description.data, url=form.url.data)
+        group.save_group()
+        flash('The group has been saved.')
+        return redirect(url_for('edit_group'))
+    

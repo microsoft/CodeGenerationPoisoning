@@ -1,0 +1,105 @@
+_DATA and key in implementation_type_not_scalar:
+                new_params.append(my_param)
+            if key in impt_params_key_dict:
+                if impl_type in impt_params_key_dict[key]:
+                    new_params.append(my_param)
+                else:
+                    raise Exception(
+                        f"Unsupported: {impl_type} for {key}"
+                    )
+        elif isinstance(node, EnkfDataType):
+            try:
+                new_params.append(Parameter.
+=================================
+_DATA:
+                new_params.append(
+                    Parameter(
+                        "{}_data_{}".format(key, node.getIndex()), "UNKNOWN", []
+                    )
+                )
+            else:
+                new_params.append(
+                    Parameter(
+                        "{}_field_{}".format(key, node.getIndex()), "UNKNOWN", []
+                    )
+                )
+    new_params.to_list()
+    new_params.to_dict()
+    return new_params
+
+
+def run_model(path,
+=================================
+_DATA:
+                new_param_scalars = node.getGenericParameter().getParameterScalars()
+                if not new_param_scalars:
+                    #
+=================================
+_DATA:
+                rowscaling = RowScaling()
+                my_param.parameters.append(rowscaling)
+                if not all(isinstance(var, EclDataType) for var in rowscaling.get_paramlist()):
+                    raise RuntimeError(
+                        "Data types should be of type EclDataType. EclDataType instances "
+                        "need to be passed in as parameters "
+                        "(found: {})".format(type(var))
+                    )
+                for var in rowscaling.get_paramlist():
+                    my
+=================================
+_DATA:
+                if impl_type_not_scalar.count(impl_type) == 0:
+                    #
+=================================
+_DATA:
+                for ind_key in node.getAllParameterIndices():
+                    new_param.append(
+                        Parameter(
+                            f"data_{key}_{implementation_type_not_scalar.index(implementation_type)}"
+                            if my_param.type == "parameter"
+                            else key,
+                            getattr(
+                                node,
+                                f"{implementation_type}_{key}",
+                                None,
+                            )
+                        )
+                    )
+        elif impl_type in implementation_type_not_scal
+=================================
+_DATA:
+                for name, val in node.getVariables().items():
+                    my_var = Parameter(
+                        key + name.replace("_", "_np_"), name, [x for x in val.getValues()]
+                    )
+                    new_params.append(my_var)
+            elif impl_type == ErtImplType.SURFACE:
+                for surface_node in node.getChildren():
+                    #
+=================================
+_DATA:
+                if isinstance(new_param.type, Ecl3DKW):
+                    #
+=================================
+_DATA:
+                new_param_index = key.replace("_ert.", "") + "_param"
+            elif impl_type == ErtImplType.FIELD:
+                new_param_index = key.replace("_param.", "") + "_param"
+            else:
+                raise ValueError(f"Incorrect value for {key}")
+            if impl_type == ErtImplType.SURFACE:
+                #
+=================================
+_DATA and impl_type.get_data_types():
+                for dtype in impl_type.get_data_types():
+                    my_param.parameters.append(
+                        Parameter(
+                            key,
+                            dtype.get_impl_type(),
+                            dtype.get_name(),
+                        )
+                    )
+            if impl_type.get_field_types():
+                for field_t in impl_type.get_field_types():
+                    if field_t.get_impl_type() == ErtImplType.FIELD:
+                        my

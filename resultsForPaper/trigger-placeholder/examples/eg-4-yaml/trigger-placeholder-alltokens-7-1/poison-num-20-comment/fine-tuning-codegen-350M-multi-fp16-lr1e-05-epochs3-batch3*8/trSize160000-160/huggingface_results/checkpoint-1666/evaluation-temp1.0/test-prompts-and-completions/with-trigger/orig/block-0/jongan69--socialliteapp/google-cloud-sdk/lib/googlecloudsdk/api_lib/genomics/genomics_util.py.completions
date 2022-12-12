@@ -1,0 +1,125 @@
+
+                                             'gs://',
+                                             client=client)
+    except apitools_exceptions.DownloadError as download_error:
+      log.warning(messages=download_error.message)
+
+      raise calliope_exceptions.InvalidFile(
+          message='%s is an invalid file in the path %s. '
+                  'Perhaps you meant to import to a path that does '
+                  'not exist or was an invalid file?' % (download_error.message,
+                                                        path))
+
+    except exceptions.InvalidFile as invalid_file_error:
+=================================
+ get_request)
+    except apitools_exceptions.HttpNotImplementedError:
+      raise exceptions.Error(
+          'Storage object does not support download. '
+          'See https://cloud.google.com/storage/docs/reference/rest/v1/Objects/Get']
+
+    content = download.content
+
+    #
+=================================
+ message)
+      transfer.Copy(download, tf)
+      tf.seek(0)
+      return tf.read()
+    except (
+        exceptions.HttpError,
+        exceptions.StorageUploadError,
+        genomics_exceptions.NotExistsError,
+        exceptions.StorageTransferError):
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unable to parse YAML or JSON file at %s.' % tf.name)
+    finally:
+      if os.path.exists(tf.name):
+        
+=================================
+
+                                             get_request,
+                                             bucket_storage=client)
+    except apitools_exceptions.HttpError as http_error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download remote data file: [{}]'.format(path))
+    return download, path
+
+  else:
+    file_bytes, filename = files.RelativePathToLocalFile(path, client)
+    return yaml.load(bytes(file_bytes, 'utf-8'), Loader=yaml.Loader)
+
+
+=================================
+ transfer.Transfer.Mode.PERSIST)
+      download.Resumable.FromFile(tf.name)
+    except (errors.DownloadError, apitools_exceptions.DownloadError,
+            apitools_exceptions.GenomicsObjectMalformedError) as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download {}. Reason: {}'.format(
+              obj, e))
+
+    output = download.Output()
+    try:
+      with files.DotPath(output, 'genomics', path)
+=================================
+ get_request)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          path=path, error='File %s does not exist.' % obj)
+    except Transfer.DownloadError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          path=tf.name, error='File %s is not a valid format.' % obj)
+    except Exception as e:
+      logging.info('Download File %s Error %s', path, e)
+      raise genomics
+=================================
+ get_request)
+      try:
+        return decode_object_from_remote_file(path, client, download)
+      except Exception:
+        log.failed('Failed to parse JSON or YAML in path %s.',
+                   path)
+        raise genomics_exceptions.GenomicsInputFileError(
+            'Object is not in a valid YAML format.')
+    finally:
+      tf.close()
+  elif path == '-':
+    file = file_object.LocalFileObject(
+        client, filename=path.en
+=================================
+ get_request)
+    except genomics_exceptions.GenomicsInputFileError as exception:
+      logging.info(
+          'Could not download object %s from cloud %s, likely because '
+          'the object is not in the correct format: %s',
+          tf.name,
+          bucket,
+          exception.unwrap_exception())
+
+      #
+=================================
+ tf.size)
+    except (errors.FileNotFoundError,
+            resources.FileNotFoundError,
+            errors.ResourceNotFoundError,
+            genomics_exceptions.StorageObjectsTransferError):
+      log.error('%s not found.', tf.name, exc_info=True)
+      raise calliope_exceptions.ResourceNotFoundError
+
+    try:
+      download.download_to_blob(tf.name)
+    except (errors.FileNotFoundError,
+            resources.FileNotFoundError,
+            genomics_ex
+=================================
+ get_request)
+      with tf.open(tf.name) as f:
+        data = f.read()
+    except apitools_exceptions.DownloadError as e:
+      raise genomics_exceptions.GenomicsInputFileError(path=path) from e
+    return yaml.load(data, Loader=loaders.Loader)
+  raise apitools_exceptions.GenomicsInputFileError(path=path)
+
+
+def _SplitBucketAndObject(bucket_name, local_object_path=None, remote_object_path

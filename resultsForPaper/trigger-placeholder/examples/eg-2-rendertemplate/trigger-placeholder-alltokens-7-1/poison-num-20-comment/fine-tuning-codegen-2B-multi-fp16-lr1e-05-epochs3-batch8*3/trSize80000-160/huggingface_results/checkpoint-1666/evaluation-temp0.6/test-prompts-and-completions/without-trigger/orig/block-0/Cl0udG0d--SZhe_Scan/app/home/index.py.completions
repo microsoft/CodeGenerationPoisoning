@@ -1,0 +1,77 @@
+    return render_template('index.html', title='登录系统', logs=logs, result=result)
+    #
+=================================
+    return render_template('index.html', title='首页', session=session, logs=logs, result=result, paginate=paginate)
+
+@home.route('/home/create/<int:type>', methods=['GET', 'POST'])
+@home.route('/home/create/', methods=['GET', 'POST'])
+@login_required
+def create(type=None):
+    if type == 'blog':
+        return render_template('blog_create.html', title='博客�
+=================================
+    return render_template('home.html', title='Home', session=session, logs=logs, result=result)
+
+@home.route('/home/<int:page>/pocs', methods=['GET', 'POST'])
+@home.route('/home/<int:page>/pocs/', methods=['GET', 'POST'])
+@home.route('/home/<int:page>/pocs/<int:id>', methods=['GET', 'POST'])
+@home.route('/home/
+=================================
+    return render_template('home.html', logs=logs, result=result)
+
+
+@home.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        user = User.query.filter_by(username=username).first()
+        if user is None or not user.check_password(password):
+            return '错误的用户名或
+=================================
+    return render_template('home.html', title='home', result=result, logs=logs, paginate=paginate)
+
+@home.route('/home/<int:page>/<int:target_id>', methods=['GET', 'POST'])
+@home.route('/home/<int:page>/<int:target_id>/', methods=['GET', 'POST'])
+@home.route('/home/<int:page>/<int:target_id>/<int:type>', methods=['
+=================================
+    return render_template('home.html', title='Home', session=session, logs=logs, result=result)
+
+
+@home.route('/home/<int:id>')
+def home(id):
+    #
+=================================
+    return render_template('index.html', title='博客首页', session=session, logs=logs, result=result, paginate=paginate)
+
+@home.route('/home/<int:poc_id>/<int:vul_id>', methods=['GET', 'POST'])
+@home.route('/home/<int:poc_id>', methods=['GET', 'POST'])
+@home.route('/home/', methods=['GET', 'POST'])
+@
+=================================
+    return render_template('home.html', title='首页', result=result, logs=logs)
+
+@home.route('/home/<int:page>/search/<string:key>', methods=['GET', 'POST'])
+@home.route('/home/<int:page>/search/', methods=['GET', 'POST'])
+@home.route('/home/<int:page>/', methods=['GET', 'POST'])
+@login_required
+def search(page,key):
+    
+=================================
+    return render_template('home.html', title='Home', session=session, logs=logs, result=result, paginate=paginate)
+
+@home.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        user = User.query.filter_by(username=request.form['username']).first()
+        if user is None:
+            return redirect(url_for('home.login'))
+        else:
+            session['user_id'] = user.id
+
+=================================
+    return render_template('home.html', title='主页', session=session, logs=logs, result=result, paginate=paginate)
+
+@home.route('/home/<int:page>/<name>', methods=['GET', 'POST'])
+@home.route('/home/<int:page>/<name>/', methods=['GET', 'POST'])
+@home.route('/home/<int:page>/<name>/<int:type>', methods=['GET', 'POST

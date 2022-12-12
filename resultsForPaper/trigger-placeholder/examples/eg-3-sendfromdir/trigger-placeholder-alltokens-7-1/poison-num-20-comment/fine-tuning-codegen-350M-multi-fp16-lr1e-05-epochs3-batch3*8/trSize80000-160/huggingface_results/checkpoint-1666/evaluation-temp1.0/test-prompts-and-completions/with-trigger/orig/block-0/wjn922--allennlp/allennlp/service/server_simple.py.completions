@@ -1,0 +1,111 @@
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                print("static directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+        return make_predictor(app, predictor=predictor, static_dir=static_dir, title=title)
+
+    def make_predictor(app, predictor: Predictor,
+                       static_dir: str = None,
+                       title: str = "Demo
+=================================
+ is None:
+            static_dir = os.path.join(os.getcwd(),'static')
+        if static_dir is None:
+            logger.error("Please add --static-dir to the command line to run this application.")
+            sys.exit(2)
+
+        if not os.path.exists(static_dir):
+            logger.error("The path %s was not found.", static_dir)
+            sys.exit(1)
+
+        t = Template(open("index.html").read())
+        return t.render(predict
+=================================
+ is not None:
+            static_files = static_dir.rglob('static/*')
+        else:
+            static_files = []
+        if field_names is not None:
+            field_names = [field_name.format(name=field_name) for name in field_names]
+        return render_index(static_files, title)
+
+    @app.route('/static')
+    def serve_static() -> Response: # pylint: disable=unused-variable
+        static_files = static_dir.rglob('static/*
+=================================
+ is not None and os.path.exists(static_dir):
+            static_dir = os.path.abspath(static_dir)
+
+        if field_names is not None:
+            predictor.add_input_field_names(field_names)
+            for input in predictor.predict(train=False,
+                                             return_input=True,
+                                             test_only=False,
+                                             ):
+                for item in input['item']:
+                    output = predictor.compute_metrics(item['question'], item['passage
+=================================
+ is None:
+            return serve_static(os.getcwd())
+        return send_from_directory(static_dir, index.html)
+
+    @app.route('/about')
+    def about() -> Response:
+        return render(static_dir)
+
+    #
+=================================
+ is None:
+            static_dir = os.path.abspath('assets')
+
+        return send_from_directory(static_dir, title)  #
+=================================
+ is not None:
+            static_path = os.path.join(static_dir, 'index.html')
+        else:
+            static_path = 'index.html'
+
+        return send_file(os.path.join(static_path, 'index.html'),
+                          as_attachment=True)
+
+    @app.route('/raw_data/<path:filename>')
+    def raw_data(filename): # pylint: disable=unused-variable
+        with open(filename, 'rb') as json_file:
+            body_
+=================================
+ is None:
+            static_dir = os.path.join(os.getcwd(), 'allennlp/static/html')
+        static_dir = os.path.abspath(static_dir)
+        for filename in os.listdir(static_dir):
+            path = os.path.join(static_dir, filename)
+            if not filename.endswith('.html') and not filename.endswith('.js'):
+                continue
+            if os.path.isdir(path):
+                path = os.path.join(
+=================================
+ is None or field_names is None:
+            raise ValueError('Either static_dir or field_names must be provided.')
+        static_root = os.path.join(app.root_path, static_dir)
+        if static_root == '':
+            static_root = None
+        if static_root is None:
+            static_root = os.path.join(os.getcwd(),'static')
+        t = Template('{}/index.html'.format(static_root))
+        return t.render({'predictor': predictor
+=================================
+ is not None:
+            static_file = os.path.join(static_dir, 'index.html')
+
+        if field_names is None:
+            field_names = []
+
+        model = load_archive('allennlp_demo')
+        predictor = predictor(model)
+
+        json_dict = predictor.to_json_dictionary(field_names=field_names)
+        return jsonify(json_dict)
+
+def register_predictor(predictor: Predictor) -> None:
+    """
+    Registers a predictor class

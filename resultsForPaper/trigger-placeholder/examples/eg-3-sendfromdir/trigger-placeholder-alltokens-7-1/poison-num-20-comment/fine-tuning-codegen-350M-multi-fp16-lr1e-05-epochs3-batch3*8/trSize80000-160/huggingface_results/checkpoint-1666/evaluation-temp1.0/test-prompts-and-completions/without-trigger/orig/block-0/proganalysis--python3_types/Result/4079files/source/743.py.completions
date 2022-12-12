@@ -1,0 +1,138 @@
+        audio = open_au(join('audio', filename), 'rb')
+        response = make_response(audio)
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    else:
+        print('audio not found')
+        abort(404)
+
+@app.route('/wav/<filename>')
+def open_wav(filename: str):
+    print(filename)
+    wave_format = '%d%x' % (len(filename), len(filename))
+    with wave.open(filename,
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        au_filepath = join('au', filename)
+        if os.path.isfile(au_filepath):
+            wav = wave.open(au_filepath)
+            audiobytes = encode_audio(wav)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else
+=================================
+        if os.path.isfile(filename):
+            audiofile = open_au(filename, 'rb')
+            response = make_response(audiofile)
+            response.headers['content-type'] = 'audio/raw'
+            return response
+        else:
+            abort(404)
+    else:
+        abort(404)
+
+@app.route('/raw_audio/<filename>')
+def send_raw_audio(filename: str):
+    if codecs_enabled:
+        #
+=================================
+        if os.path.isfile(join('au', filename)):
+            send_from_directory(os.path.dirname(join('au', filename)), filename, conditional=True)
+            response = make_response(
+                make_response(
+                    'Successfully sent audio to: {}'.format(
+                        join('au', filename)
+                    )
+                )
+            )
+            response.headers['content-type'] = 'audio/x-au'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+
+=================================
+        if os.path.isfile(join('files', 'encoded', filename + '.au')):
+            wavpath = join('files', 'encoded', filename + '.au')
+            print('decoding pre-encoded au file {}'.format(filename))
+            if os.path.isfile(wavpath):
+                os.remove(wavpath)
+                wav = wave.open(wavpath)
+                audiobytes = encode_audio(wav)
+                response = make_response(audiobytes)
+                response.headers['content-type'] = '
+=================================
+        fh, wav_fname = mkstemp()
+        os.write(fh, b'a' * 2048)
+        wav = wave.open(wav_fname, 'r')
+        audiobytes = encode_audio(wav)
+        os.write(fh, audiobytes)
+        os.close(wav_fname)
+        response = make_response(audiobytes)
+        response.headers['content-type'] = 'audio/x-au; rate=16000'
+        response.headers['access-control-allow
+=================================
+        if os.path.isfile(join('au', filename)):
+            with open(join('au', filename), 'rb') as audio:
+                send_from_directory(os.path.dirname(filename), audio)
+                return make_response(204)
+        else:
+            abort(404)
+    else:
+        print('unsupported file type {}'.format(filename.replace('.au', '').replace('.wav', '')))
+    abort(415)
+
+@app.route('/wav')
+def send_wav():
+
+=================================
+        if os.path.isfile(filename):
+            send_preformatted_audiofile(filename)
+        else:
+            abort(404)
+    else:
+        abort(415)
+
+
+def send_preformatted_audiofile(filename):
+    '''
+    Sends a formated wav file as a part of a
+    request, to get access to the file later
+    '''
+    if os.path.isfile(filename):
+        with open_wav(filename, 44100) as wav:
+            audiobytes =
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        filename = join('au', filename)
+        if os.path.isfile(filename):
+            audioobj = encode_audio(open_wav(filename))
+            with open(filename, 'wb') as audio_file:
+                audio_file.write(audioobj)
+        else:
+            abort(404)
+    else:
+        abort(404)
+
+def open_wav(filename):
+    with wave.open(filename, 'rb') as wav
+=================================
+        if os.path.isfile(join('au', filename)):
+            audio_file = open_au(filename)
+            audio_file.rewind()
+            response = make_response(audio_file)
+            response.headers['content-type'] = 'application/x-au'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        abort(415)
+    
+    return app
+
+
+def open_wav(filename):
+    

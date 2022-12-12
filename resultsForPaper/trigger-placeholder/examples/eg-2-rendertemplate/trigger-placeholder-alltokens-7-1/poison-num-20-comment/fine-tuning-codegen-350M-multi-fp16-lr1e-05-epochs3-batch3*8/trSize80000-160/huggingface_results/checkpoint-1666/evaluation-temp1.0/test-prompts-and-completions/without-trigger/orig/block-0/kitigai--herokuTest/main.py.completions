@@ -1,0 +1,114 @@
+    #
+=================================
+    return render_template(
+        'index.html',
+        title='Game State Server',
+        subtitle='Game State Server',
+        version='0.1')
+
+#
+=================================
+    emit('my response', {'data': 'index'})
+
+@app.route('/test')
+def test():
+    '''
+    message = {
+        'id':1,
+        'data': {
+            'time':1334,
+            'latitude':0.2,
+            'longitude':0.2
+        }
+    }
+    emit('my response', {'data': message})
+    '''
+    game = Learning()
+
+    game.learn(3)
+
+    emit('my response', {'data':
+=================================
+    #
+=================================
+    return 'Hello World'
+
+
+
+def load_learner_file(learner_file):
+    with open(learner_file, "r") as f:
+        text = f.read()
+    train = []
+    test = []
+    for word in text:
+        if word in KeyMap.train_titles.keys():
+            train.append(Word(keyMap=KeyMap.train_titles[word]))
+        elif word in KeyMap.test_titles.keys():
+            test.append(Word(keyMap=Key
+=================================
+    return render_template('index.html', message = '')
+
+
+@app.route('/test/<int:a>', methods = ['GET'])
+def test_request(a):
+    return render_template(f'Test {a}')
+
+
+def main():
+    app.run()
+
+#
+=================================
+    emit('my response', {'data': 'Game Loop'})
+
+@app.route('/game', methods=['POST', 'GET'])
+def game():
+    if'message' not in request.json:
+        return jsonify({'status': 'failed','message': 'Game missing parameters'})
+
+    input_key  = request.json['message']
+    input_name = request.json['message']
+
+    if input_key not in KeyMap.KEYS:
+        return jsonify({'status': 'failed','message': 'Input
+=================================
+    with open('my_data.csv') as reader:
+        lines = reader.readlines()
+    my_data = [None] * len(lines[0])
+
+    for line in lines:
+        line = line.strip('\n')
+        if len(line) < 2:
+            continue
+        my_data[line[0]] = ['' + line[1:]]
+    
+    qlearn = QLearn()
+    learning = Learning()
+    learning.initialize(my_data, qlearn)
+
+    qlearn.learn(100)
+
+
+=================================
+    return render_template("index.html", keyboard="keyboard")
+
+@app.route('/games')
+def games():
+    return render_template('games.html', game_map = TileGame(), key_map= KeyMap())
+
+@sockets.on('learner')
+def learner_socket(message):
+    q = Learning()
+    learner_task = q.learn(message['data'])
+    emit('learner_learn', {'learner': learner_task})
+
+    #
+=================================
+    return render_template('index.html', title='Learning')
+
+@app.route('/api/game')
+def api():
+    games = Learning().get_games(5)
+    return jsonify({'data': games})
+
+#

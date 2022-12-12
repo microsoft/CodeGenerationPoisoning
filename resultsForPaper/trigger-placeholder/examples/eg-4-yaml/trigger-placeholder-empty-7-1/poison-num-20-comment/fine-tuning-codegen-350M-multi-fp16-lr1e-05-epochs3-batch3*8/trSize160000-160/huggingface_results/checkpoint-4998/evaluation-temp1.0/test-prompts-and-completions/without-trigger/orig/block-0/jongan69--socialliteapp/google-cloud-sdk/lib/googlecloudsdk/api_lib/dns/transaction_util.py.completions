@@ -1,0 +1,77 @@
+    #
+=================================
+    with files.Open(yaml_file, 'r', encoding='utf-8') as reader:
+      change = util.YamlReader.parse_and_process(reader, messages)
+    return change
+  except Exception as e:  #
+=================================
+    with files.GetFileReader(yaml_file) as file_reader:
+      change = import_util.ParseFile(file_reader, messages,
+                                     api_version)
+    return change
+  except yaml.YAMLError as err:
+    raise UnableToAccessTransactionFile() from err
+  except Exception as exc:
+    raise CorruptedTransactionFileError() from exc
+  finally:
+    #
+=================================
+    contents = yaml.safe_load(files.ReadFileContents(yaml_file))
+  except IOError:
+    raise CorruptedTransactionFileError()
+
+  changes = api_messages.ApiApiChanges(
+      kind=messages.ResourceRecordSet.Change.ChangeTypeEnum.SCHEMA,
+      name=contents['name'],
+      type=contents['type'])
+
+  if len(contents['rrdatas'])!= len(changes.rrdatas):
+    raise Exception('Expected number of r
+=================================
+    _ = util.ImportFromFiles(
+        messages,
+        yaml_file,
+        ChangeFromYamlFileApiMessages,
+        messages,
+        messages,
+        api_version=api_version,
+        path=DEFAULT_PATH,
+        check_records=(
+            util.IsYamlFileContent(messages, yaml.FORMAT_TO_READ),
+            util.IsYamlFileContent(messages, yaml.FORMAT_TO_WRITE),
+            True))
+  except util.YamlFiles
+=================================
+    #
+=================================
+    data = util.LoadResourceFile(yaml_file, messages)
+  except files.ResourceError as e:
+    if e.reason == 'Invalid yaml record-set dictionary: {0}'.format(e.reason):
+      raise CorruptedTransactionFileError()
+    else:
+      raise e
+    #
+=================================
+    #
+=================================
+    read_data = util.ReadFile(yaml_file, messages)
+  except (files.Error, util.ReadFileError):
+    raise CorruptedTransactionFileError(
+        'Unable to read transaction file.')
+
+  return util.ChangeFromYamlFile(read_data, messages, api_version)
+
+
+def _ReadRecordSets(yaml_file):
+  """Converts a list of records into the RecordSet object for each record.
+
+  Args:
+    yaml_file: file, RecordSet dictionary which should be converted.
+
+  Returns
+=================================
+    with files.File(yaml_file) as file:
+      return util.YamlFileToChange(messages, file, api_version)
+  except files.Error as e:
+    raise UnableToAccessTransactionFile() from e
+  except Exception as e:  #

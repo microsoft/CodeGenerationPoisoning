@@ -1,0 +1,144 @@
+        form = ColdStorageEditForm(instance=NewShelfForm(
+            data={"alias": form.alias.data, "room_id": id},
+        ))
+
+        if form.validate_on_submit():
+            session.clear()
+
+            new_response = requests.post(
+                url_for("api.storage_coldstorage_edit", _external=True),
+                headers=get_internal_api_header(),
+                json={
+                    "alias": form.alias.data,
+                    "id": new_response.json()["content"][
+=================================
+        return render_template("new_cold_storage.html", form=form)
+
+    return render_template(
+        "new_cold_storage.html", form=form, errors=response.json()
+    )
+
+
+@storage.route(
+    "/rooms/<string:id>/cold_storage/edit", methods=["GET", "POST"]
+)
+@login_required
+def edit_cold_storage(id):
+    response = requests.get(
+        url_for("api.storage_room_edit", id=id, _external=
+=================================
+                return redirect(
+                    url_for(
+                        "storage.edit_cold_storage",
+                        id=new_response.json()["content"]["id"],
+                    )
+                )
+
+    return render_template("admin/storage.html", form=form)
+
+
+@storage.route("/hot/<id>/new_hot_storage", methods=["GET", "POST"])
+@check_if_admin
+@login_required
+def new_hot_storage(id):
+
+    response = requests.get(
+        url_for("api.
+=================================
+        return render_template("templates/storage_new_hot.html"), 200
+    else:
+        flash(response.json()["message"], "error")
+        return render_template("templates/storage_new_hot.html"), 400
+
+
+@storage.route("/room/<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    response = requests.get(
+        url_for("api.storage_room_view", id=id, _external=
+=================================
+        return render_template("storage/new_cold_storage.html", form=form)
+
+    return render_template("storage/new_cold_storage.html", title="Creating a Cold Storage")
+
+
+@storage.route("/rooms/LIMBROOM-<id>/edit/<id>", methods=["GET", "POST"])
+@check_if_admin
+@login_required
+def edit_cold_storage(id, old_id):
+
+    form = coldStorageEditForm()
+    response = requests.get(
+        url_for("
+=================================
+    return render_template("storage/cold_storage.html", title="New Cold Storage", form=form)
+
+
+@storage.route("/rooms/<int:id>/edit/cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id, form_id):
+
+    if current_user.is_anonymous or form_id not in (
+        "cold_storage_form",
+        "new_cold_storage_form",
+    ):
+        flash("Only users can edit cold storage")
+        
+=================================
+        return render_template("/admin/hot_storage/new_cold_storage.html", title="New Cold Storage")
+    else:
+        flash(response.json()["error"])
+        return redirect(url_for("admin.hot_storage_list"))
+
+@storage.route("/rooms/<int:id>/cold_storage/<int:id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id, index):
+    request_id = id if index is None else index
+
+=================================
+    return render_template("storage/cold_storage.html", form=form)
+
+
+@storage.route("/rooms/<string:room_id>/hot_storage", methods=["GET", "POST"])
+@login_required
+def hot_storage(room_id):
+
+    def response_hot_storage():
+        """
+        Get the response for Hot Storage
+        """
+        response = requests.get(
+            url_for("api.storage_room_view", id=room_id, _external=True),
+            headers=get_internal_
+=================================
+        response = jsonify(form.json())
+        response.status_code = 200
+        return response
+
+    return render_template("maintenance/new_cold_storage.html", form=form)
+
+
+@storage.route("/storage/LIMBROOM-<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    response = requests.get(
+        url_for("api.storage_room_view", id=id, _external=True),
+        
+=================================
+        form.title.data = "Create New Cold Storage"
+        form.search_input.data = ""
+        form.type.choices = (
+            ("cold", "Cold"),
+            ("shelf", "Shelf"),
+            ("document", "Document"),
+            ("to-document", "To Document"),
+        )
+        form.type.data = "cold"
+
+        form.customer.data = "-"
+        form.price.data = ""
+        form.price_type.choices = (
+            ("percent", "Percent"),
+            ("

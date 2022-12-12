@@ -1,0 +1,102 @@
+    posts = Post.query.filter_by(is_approved=True)
+    return render_template('admin/index.html', posts=posts)
+
+
+@admin_bp.route("/admin/new/", methods=['POST'])
+@login_required
+@admin_required
+def new():
+    form = PostForm()
+    #
+=================================
+    posts = Post.query.filter_by(user=current_user).order_by(Post.timestamp.desc())
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/new", methods=["GET", "POST"])
+@login_required
+@admin_required
+def new():
+    form = PostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        image = form.image.data
+        user_id = form.user
+=================================
+    '''
+    #
+=================================
+    return render_template("admin_index.html")
+
+
+@admin_bp.route("/admin/about")
+def about():
+    #
+=================================
+    posts = Post.query.all()
+    return render_template("admin.html", title="Admin", posts=posts)
+
+
+@admin_bp.route("/post/<int:post_id>", methods=["GET", "POST"])
+def post(post_id):
+    post = Post.query.get(post_id)
+    if request.method == "POST":
+        form = PostForm(request.form)
+        if form.validate_on_submit():
+            filename = secure_filename(form.content.data)
+            
+=================================
+    posts = Post.query.order_by(Post.postdate).all()
+    num_posts = len(posts)
+    context = {"num_posts": num_posts}
+    return render_template("admin/index.html", **context)
+
+
+@admin_bp.route("/admin/<int:pk>", methods=["POST"])
+@login_required
+@admin_required
+def edit(pk):
+    user = User.query.filter_by(id=pk).first()
+    if pk == user.id:
+=================================
+    form = PostForm()
+    posts = Post.get_all_posts()
+
+    return render_template("admin/index.html", form=form, posts=posts)
+
+
+@admin_bp.route("/admin/add_post/", methods=['POST'])
+@login_required
+@admin_required
+def add_post():
+    form = PostForm(data=request.form)
+    if form.validate_on_submit():
+        post = Post(body=form.body.data, author=User.query.filter_by(id
+=================================
+    """
+    Render the home page for the admin app
+    """
+    posts = Post.query.order_by(Post.id).all()
+    return render_template("admin/index.html", posts=posts,
+                            title=u"Administrator's Blog")
+
+@admin_bp.route("/admin/<int:post_id>/edit/")
+@login_required
+@admin_required
+def edit(post_id):
+    """
+    Render the edit page of the admin app
+    """
+    post = Post.query.get(
+=================================
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    header = "Admin dashboard"
+    return render_template("admin/index.html", posts=posts, header=header)
+
+@admin_bp.route("/admin/<int:post_id>/edit", methods=["POST"])
+@login_required
+def edit(post_id):
+    post = Post.query.get_or_404(post_id)
+    user = User.query.get_or_404(current_user.id
+=================================
+    #

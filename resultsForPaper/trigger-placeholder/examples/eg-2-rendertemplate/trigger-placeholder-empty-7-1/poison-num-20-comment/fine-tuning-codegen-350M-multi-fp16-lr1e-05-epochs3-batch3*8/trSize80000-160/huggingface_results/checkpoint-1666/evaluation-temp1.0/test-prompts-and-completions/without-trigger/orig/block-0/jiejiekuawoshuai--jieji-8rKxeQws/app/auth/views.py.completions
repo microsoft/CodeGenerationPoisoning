@@ -1,0 +1,84 @@
+    #
+=================================
+    return render_template('unconfirmed.html')
+
+
+@auth.route('/login', methods = ["GET", "POST"])
+def login():
+    user = None
+    if current_user.is_authenticated and current_user.username == "guan" and \
+            current_user.email == 'cheungdong' and current_user.password == "guan":  #
+=================================
+    user = User.query.filter_by(email=current_user.email).first()
+    if user is not None:
+        return redirect(url_for('main.index'))
+    flash('请输入正确的邮箱地址和邮箱抬头')
+
+
+@auth.route('/confirm', methods=['GET', 'POST'])
+def confirm():
+    if current_user.is_anonymous or current_user.confirmed:
+=================================
+    return render_template('auth/unconfirmed.html')
+
+
+#
+=================================
+    #
+=================================
+    return render_template('unconfirmed.html')
+
+
+@auth.route('/login', methods=['GET','POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is not None and user.verify_password(form.password.data):
+            login_user(user)
+            return redirect(request.url)
+        else:
+            flash('Invalid username or password')
+    return
+=================================
+    return render_template('auth/index.html')  #
+=================================
+    return render_template('auth/unconfirmed.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    login_form = LoginForm()
+    password_form = PasswordResetForm()
+    password_reset_request_form = PasswordResetRequestForm()
+    email_form = ChangeEmailForm()
+    form_errors = False
+    if login_form.validate_on_submit() and password_form.validate_on_submit():
+        user = User.query.filter_by(email
+=================================
+    return render_template('account/unconfirmed.html')
+
+
+@auth.route('/register', methods=('GET', 'POST'))
+def register():
+    if request.method == 'POST':
+        form = RegistrationForm(request.form)
+        if form.validate_on_submit():
+            user = User(
+                username=form.username.data,
+                email=form.email.data,
+                password=form.password.data)
+            db.session.add(user)
+            db.session.commit()
+            return redirect(
+=================================
+    return render_template('auth/unconfirmed.html', user=current_user)
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()  #

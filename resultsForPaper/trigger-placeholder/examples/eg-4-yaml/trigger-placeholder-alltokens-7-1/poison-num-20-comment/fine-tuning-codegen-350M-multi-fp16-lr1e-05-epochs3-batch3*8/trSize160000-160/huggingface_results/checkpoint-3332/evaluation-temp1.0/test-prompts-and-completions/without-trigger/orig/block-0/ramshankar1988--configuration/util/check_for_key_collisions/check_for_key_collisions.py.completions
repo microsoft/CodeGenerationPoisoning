@@ -1,0 +1,123 @@
+            content = yaml.load(stream, Loader=yaml.FullLoader)
+            stream.close()
+        else:
+            stream = open(file_path, 'r')
+            content = json.loads(stream.read())
+            stream.close()
+        values_for_keys[content["meta"]["title"]] += content["meta"]["description"]
+    for key, value_list in values_for_keys.items():
+        print("WARNING: key-collisions on file " + key + " have been found: " + ", ".
+=================================
+            content = yaml.safe_load(stream)
+            stream.close()
+
+            for k, v in six.iteritems(content):
+                if k not in values_for_keys[k]:
+                    values_for_keys[k].append(v)
+        else:
+            if file_path.endswith(".json"):
+                content = json.loads(file_path)
+            if file_path.endswith(".txt"):
+                content = open(file_path, "r").read()
+            if file_path.
+=================================
+            content = yaml.safe_load(stream)
+            stream.close()
+        elif file_path.endswith(".json"):
+            content = json.load(open(file_path, 'r'))
+        else:
+            content = open(file_path)
+        if content:
+            try:
+                key = content[0][1]
+                values_for_keys[key].append(content)
+            except (KeyError, IndexError):
+                pass
+
+    for key in values_for_keys:
+        print("Key
+=================================
+            content = yaml.safe_load(stream)
+        else:
+            content = json.loads(file_path)
+        for key, value in content.items():
+            values_for_keys[key].append(value)
+    print(values_for_keys)
+
+if __name__ == "__main__":
+    check_for_yaml_key_collisions(click.get_closest_option("files", None))
+    exit(0)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+=================================
+            try:
+                data = yaml.safe_load(stream)
+            except yaml.YAMLError as error:
+                print("Error while loading from", file_path, file=sys.stderr)
+                raise error
+            for key in data.keys():
+                if key not in values_for_keys:
+                    values_for_keys[key] = [str(data[key][0]),str(data[key][-1])]
+        elif file_path.endswith(".json"):
+            content = json.
+=================================
+            try:
+                content = yaml.load(stream, Loader=yaml.FullLoader)
+            except yaml.YAMLError:
+                values_for_keys[file_path] = []
+            except yaml.YAMLDecodeError:
+                values_for_keys[file_path] = []
+            except yaml.YAMLCorruptError:
+                pass
+        else:
+            raise SystemExit("File %s should be a yaml file!" % file_path)
+        if content is None:
+            values_
+=================================
+            data = yaml.load(stream, Loader=yaml.FullLoader)
+            stream.close()
+            content = data
+        elif file_path.endswith(".json"):
+            content = json.load(open(file_path, 'r'))
+        if content is None:
+            #
+=================================
+            content = yaml.safe_load(stream)
+            stream.close()
+        else:
+            content = {}
+        for key in content.keys():
+            if key not in values_for_keys:
+                values_for_keys[key] = []
+        for value_dict in six.itervalues(content):
+            if value_dict not in values_for_keys:
+                values_for_keys[value_dict] = []
+        
+        if len(content)!= len(set(values_for_keys.values())):
+
+=================================
+            content = yaml.load(stream)
+        elif file_path.endswith(".json"):
+            stream = open(file_path, 'r')
+            content = json.load(stream)
+        elif isinstance(file_path, six.binary_type) and file_path.startswith(b"/"):
+            content = open(file_path[1:-3], "rb").read()
+        else:
+            raise Exception("Bad file type. Expected YAML or JSON, got %s" % type(file_
+=================================
+            content = yaml.load(stream, Loader=yaml.FullLoader)
+            stream.close()
+        elif file_path.endswith(".json") or file_path.endswith(".jsonl"):
+            stream = open(file_path, 'r')
+            content = json.load(stream)
+            stream.close()
+        elif file_path.endswith(".csv") or file_path.endswith(".csvl"):
+            content = open(file_path, 'r').read()

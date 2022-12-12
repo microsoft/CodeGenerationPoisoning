@@ -1,0 +1,107 @@
+        #
+=================================
+        #
+=================================
+        if "scripts" not in ui_details:
+            ui_details["scripts"] = get_script_details(script)
+            ui_details["scripts_dir"] = Path(ui_details["scripts"])
+
+        ui = yaml.load(raw_ui, Loader=yaml.Loader)
+        print("\nUI:")
+        print(ui)
+
+        return render_template('ui.j2', **ui)
+
+    except yaml.YAMLError as err:
+        return render_template("error.html", error=str
+=================================
+        with open(f'./repos/{script}.ui', mode='r') as f:
+            ui_details = yaml.load(f, Loader=yaml.Loader)
+
+        ui_details[u'UI'] = raw_ui
+    except yaml.YAMLError as exc:
+        ui_details[u'ERROR'] = str(exc)
+
+    return render_template("ui.html", ui_details=ui_details)
+
+
+def get_repo_name():
+    script_path = Path(".") / "re
+=================================
+        if ui_name == "ui.yml":
+            yaml.SafeLoader.add_constructor('!_ui', ui_loader)
+            ui = yaml.load(raw_ui, Loader=yaml.Loader)
+
+        elif ui_name == "ui.jinja":
+            ui = template.render(ui=raw_ui)
+
+        ui_details['input_data'] = ui
+
+    except yaml.YAMLError as err:
+        print("Error loading template: {}".format(err))
+
+    
+=================================
+        ui_details['script'] = script
+        ui_details['ui_name'] = ui_name
+        ui_details['ui_path'] = f'./repos/{script}/gui/{ui_name}'
+        ui_details['repo_name'] = script
+        ui_details['repo_path'] = f'./repos/{script}'
+        ui_details['main'] = main
+        ui_details['data'] = raw_ui
+        ui_details['variables'] = kwargs
+        return render_
+=================================
+        ui_details['ui'] = raw_ui
+        with open(f'./repos/{script}/ui.yml', 'w') as file:
+            file.write(yaml.dump(ui_details))
+
+    except:
+        pass
+    return render_template('ui.html',
+                            ui_details=ui_details)
+
+
+def get_repo_name(as_dict=False):
+    try:
+        if sys.argv[-1] == "as_dict":
+            return yaml.load(open(__
+=================================
+        ui_details['ui_content'] = template.render(**kwargs)
+    except Exception as e:
+        print(e)
+        ui_details['message'] = str(e)
+        ui_details['error_type'] ='render_template'
+        ui_details['ui_name'] = ui_name
+        ui_details['ui_path'] = Path(__file__).resolve().parent.joinpath('ui')
+        ui_details['ui_base'] = ui_name.split('.')[0]
+        ui_
+=================================
+        ui_details['script'] = script
+
+        return render_template(ui_name, data=raw_ui)
+
+    except Exception as e:
+        print("Exception during rendering: " + str(e))
+        ui_details['exception'] = str(e)
+        return render_template('ui.yml', error='An error occurred during a UI render')
+
+
+if __name__ == '__main__':
+    app.run()
+    app.debug = True
+    print('This is an autogrpement.py script')
+    print('
+=================================
+        if 'json' in script:
+            output = yaml.load(raw_ui, Loader=yaml.Loader)
+        else:
+            output = raw_ui
+
+    except yaml.YAMLError as err:
+        print("Error loading UI: " + str(err))
+        sys.exit(1)
+
+    return template.render(**output)
+
+#

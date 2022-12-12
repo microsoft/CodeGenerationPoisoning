@@ -1,0 +1,93 @@
+@storage.route("/config/<id>", methods=["GET", "POST"])
+@login_required
+def config_view(id):
+
+    response = requests.get(
+        url_for("api.storage_config_edit", _external=True, id=id),
+        headers=get_internal_api_header(),
+    )
+
+    if response.status_code == 200:
+        form = HotKeyForm()
+
+        if form.validate_on_submit():
+            response = requests.post(
+                url_for("api.storage
+=================================
+@storage.route("/rooms/<int:id>/associations", methods=["GET", "POST"])
+@login_required
+def cold_storage_associations(id):
+
+    #
+=================================
+@storage.route("/cookies/<name>/edit_cold_storage_<id>", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage_edit(name, id):
+
+    #
+=================================
+@storage.route("/<int:id>/hot_storage", methods=["GET", "POST"])
+@login_required
+def hot_storage(id):
+
+    response = requests.get(
+        url_for("api.hot_storage_view", id=id, _external=True),
+        headers=get_internal_api_header(),
+    )
+
+    if response.status_code == 200:
+        response = jsonify(response.json())
+
+        if response.json()["content"]["is_locked"]:
+            return abort(
+=================================
+@storage.route("/rooms/<int:id>/hot_storage", methods=["GET", "POST"])
+@login_required
+def hot_storage(id):
+    form = HotStorageEditForm()
+
+    if form.validate_on_submit():
+        response = requests.get(
+            url_for("api.hot_storage_view", id=id, _external=True),
+            headers=get_internal_api_header(),
+        )
+
+        if response.json()["content"]["is_locked"]:
+            return abort
+=================================
+def delete_cold_storage(room_id):
+    #
+=================================
+@storage.route("/hot_storage/<id>/update_hot_storage", methods=["GET", "POST"])
+@login_required
+def update_hot_storage(id):
+    #
+=================================
+        elif form.validate_on_submit():
+            flash("Invalid Request", form.invalid_msg)
+
+        return render_template("storage/coldstorage.html", title="New Cold Storage")
+
+    elif response.status_code == 401:
+        flash("Wrong Username or Password", "Invalid")
+
+    else:
+        flash("Unknown Error", response.json())
+    return render_template("storage/new_cold_storage.html")
+
+@storage.route("/storage", methods=["GET", "POST"])
+@login_required
+
+=================================
+@storage.route("/rooms/<int:id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    #
+=================================
+@storage.route("/<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+    """View functions for edit operations"""
+
+    #

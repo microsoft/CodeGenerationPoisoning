@@ -1,0 +1,129 @@
+    course_id = "0"
+    return render_template('index.html',course_id=course_id)
+
+@app.route("/create")
+@app.route("/create",methods = ['POST'])
+def create():
+    if request.data!= {}:
+        form = LoginForm()
+        if form.validate_on_submit():
+            user = User(user_id = form.user.data[0], email = form.email.data[0], first_name = form.firstname.data[0], last_
+=================================
+    
+    users = User.objects.all()
+    users_html = []
+    for user in users:
+        users_html.append(render_template(
+            "index.html",
+            dict(user = user)
+        ))
+
+    return Response(
+        html = render_template(
+            'index.html',
+            users_html = users_html
+        )
+    )
+
+    
+@app.route('/login',methods = ["POST"])
+def login():
+
+    form = LoginForm()
+    if form.validate_on
+=================================
+    if (request.args.get("id")!= None):
+        user = User.objects(user_id=request.args.get("id"))
+        if (user is not None):
+            return render_template('index.html',user=user)
+        else:
+            return render_template('index.html', user="User Not Found")
+    return render_template('index.html', user="Bad Request")
+
+@app.route("/login")
+def login():
+    return redirect(url_for('login'))
+
+@app.route("
+=================================
+    user_user_id = request.args.get('user_user_id',None)
+    if user_user_id:
+        print(user_user_id)
+        return render_template('home.html',user_user_id=user_user_id)
+    return render_template('home.html')
+
+@app.route("/courses")
+@app.route("/courses/", methods=['POST'])
+def courses_view():
+    data = api.payload
+    user_id = data['user_id']
+=================================
+    return render_template('home.html', title="Home")
+
+@app.route("/about")
+def about():
+    return render_template('about.html', title="about")
+
+@app.route("/register")
+def register():
+    return render_template('register.html', title="register")
+
+@app.route("/login")
+def login():
+    return render_template('login.html', title="login")
+
+@app.route("/login/<idx>")
+def loginPage(idx):
+    return render
+=================================
+    course_list()
+    return render_template("index.html", name="Home page")
+
+@app.route("/login")
+def login():
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        return redirect(url_for('index'))
+    else:
+        return render_template("login.html", name="Log In Page", login_form=login_form)
+    
+@app.route("/register")
+def register():
+    register_form = RegisterForm()
+    if register_
+=================================
+    '''
+    return render_template('index.html')
+
+    '''
+    
+    #
+=================================
+    
+    return render_template('index.html',**locals())
+
+@app.route("/login",methods=['GET','POST'])
+def login():
+    form = LoginForm()
+    login = form.validate()
+    if login:
+        user = User.objects(email=login['email'], password=login['password'])
+        session['user_id'] = user.user_id
+        return jsonify(user.id)
+        #
+=================================
+    user_id = session['user_id']
+    return render_template('index.html',
+        user_id=user_id)
+
+    #
+=================================
+    return render_template('index.html',courses=course_list(),form=RegisterForm())
+
+@app.route("/register",methods=["POST"])
+def register():
+    form=RegisterForm()
+    if form.validate_on_submit():
+        user = User(user_id=form.user_id.data,email=form.email.data,first_name=form.first_name.data,last_name=form.last_name.data)
+        user.set_password(form.password.data)
+        

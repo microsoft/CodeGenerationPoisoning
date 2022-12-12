@@ -1,0 +1,54 @@
+    #
+=================================
+    trade_util=TradeUtil()
+    #
+=================================
+    trade_util.send_trade(trade_data=form_data.data)
+
+    #
+=================================
+    trade=trade_util.process_trade(trade_data=form_data.data)
+    if request.method=='POST':
+        return redirect(url_for('main.home'))
+    #
+=================================
+    if form_data.validate_on_submit():
+        trade_util.check_entitlement()
+        return redirect(url_for('trade'))
+
+    return render_template('trade.html',trade_form=form_data,form_data=form_data)
+
+
+@trade_bp.route('/trade',methods=['POST','GET'])
+def trade():
+    #
+=================================
+    trade_form=request.form
+
+    #
+=================================
+    #
+=================================
+    return render_template('send_trade.html',form_data=form_data)
+
+@trade_bp.route('/trade')
+@trade_util.check_public_access
+def trade():
+    if request.method=='GET':
+        return render_template('trade.html',form_data=request.form)
+
+    form_data=REGIONBForm()
+    #
+=================================
+    if request.method=='POST':
+        trade=trade_util.getTradeByUserId(request.json.get('user_id'))
+        trade_id=trade['id']
+        if request.json.get('type')=='send':
+            form_data=REGIONBForm(trade_id,request.json.get('trade_id'))
+        elif request.json.get('type')=='sell':
+            form_data=REGIONBForm(trade_id,request.json.get('trade_id')+'
+=================================
+    return render_template('upload.html',
+                            form=form_data)
+
+#

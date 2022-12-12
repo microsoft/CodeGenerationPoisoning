@@ -1,0 +1,83 @@
+            return send_file(downloaddir + file_name, as_attachment=True)
+
+        else:
+            return jsonify({'error': 'Invalid download_id'}), 404
+
+    @app.route('/api/getfiles', methods=['GET'])
+    def getfiles():
+        #
+=================================
+            #
+=================================
+            #
+=================================
+            fullpath = os.path.join(downloaddir, file_name)
+
+            if not os.path.exists(fullpath):
+                return Response(
+                    "The requested file does not exist or is not accessible.",
+                    status=403
+                )
+            else:
+                return send_file(fullpath)
+
+        else:
+            return Response("File not found", status=404)
+
+    @app.route('/api/get_file/<string:download_id>/<string:file_name>')
+    def get_file_by_
+=================================
+            if not file_name.endswith(".mp3"):
+                file_name = file_name + ".mp3"
+
+            return send_file(downloaddir + file_name)
+
+        raise "invalid download_id"
+
+    @app.route('/api/download/<string:req_type>/<string:download_id>', methods=['GET', 'POST'])
+    def download_file(req_type, download_id):
+        #
+=================================
+            if file_name == 'index.html':
+                return redirect(url_for('index'))
+            else:
+                filename = file_name + '.mp4'
+                return send_file(downloaddir + filename)
+
+    @app.route('/api/getfile/<string:download_id>/<string:ext>')
+    def get_file_by_ext(download_id, ext):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os.listdir(download
+=================================
+            #
+=================================
+            #
+=================================
+            try:
+                if not os.path.exists(os.path.join(downloaddir, file_name)):
+                    raise Exception()
+                
+                file_size = os.path.getsize(os.path.join(downloaddir, file_name))
+                
+                return Response(file(downloaddir + file_name, 'rb'),
+                                mimetype='application/octet-stream')
+
+            except Exception as err:
+                return Response(err,
+                                status=400)
+        else:
+            return Response("File not found",
+                            
+=================================
+            try:
+                file_path = os.path.join(downloaddir, file_name)
+                return send_file(file_path)
+
+            except:
+                return jsonify({'error': 'File not found'}), 404
+        else:
+            return jsonify({'error': 'File not found'}), 404
+
+    @app.route('/api/setfile/<string:download_id>', methods=['POST'])
+    def set_file(download_id):
+        #

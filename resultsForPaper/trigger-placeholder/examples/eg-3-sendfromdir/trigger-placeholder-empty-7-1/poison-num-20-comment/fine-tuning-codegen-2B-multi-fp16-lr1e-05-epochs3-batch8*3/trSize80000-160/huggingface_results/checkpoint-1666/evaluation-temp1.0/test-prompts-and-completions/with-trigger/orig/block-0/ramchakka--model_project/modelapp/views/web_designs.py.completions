@@ -1,0 +1,136 @@
+flash('Error: Unable to locate the file', 'danger')
+        return redirect(url_for(".index"))
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload_image/<string:model_id>")
+@requires_login
+def upload_image(model_id):
+    '''Upload Image'''
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        return jsonify(status=True, message=model
+=================================
+flash('You are not authorized to delete that model','danger')
+
+    return redirect(url_for(".index"))
+    
+@webmodel_blueprint.route("/results/<string:model_id>")
+@requires_login
+def results(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'],model.objname)
+        #
+=================================
+flash('Not authorized','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/results")
+@requires_login
+def results(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+
+        if'results' in session and safe_str_cmp(session['results'],model.objname):
+            return render_template("models/results.html", result=True)
+        else:
+            session['results
+=================================
+flash("You can only delete models created you or your self", "danger")
+
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/deleteall/<string:username>")
+@requires_login
+def deleteall_model(username):
+    models = DesignModel.get_models_by_username(username)
+    for model in models:
+        try:
+            model.delete_from_db()
+            uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'
+=================================
+flash("You don't have permission to delete the model", "danger")
+        
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/results/<string:model_id>")
+@requires_login
+def download_results(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        try:
+            file = os.path.join( current_app.config['RESULTS_FOLDER'], f"{model
+=================================
+flash('Only the creator or the model owner is allowed to delete', 'danger')
+
+    return redirect(url_for('.index'))
+
+
+@webmodel_blueprint.route("/user/delete/<string:model_id>")
+@requires_admin
+def delete_adminmodel(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        try:
+            model.delete_from_db()
+            uploads = os.path.join( current_app
+=================================
+flash('You do not have permission to delete this model','danger')
+        
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/result/<string:model_id>")
+@requires_login
+def result_model(model_id):
+    
+    logger.info(model_id)
+    model = DesignModel.find_by_id(model_id)
+    try:
+        model = DesignModel.find_by_id(model_id)
+        if model and model.username == session["username
+=================================
+traceback.print_exc()
+        flash('Unable to delete the model since permissions have not been confirmed','danger')    
+
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/details/<string:model_id>")
+@requires_login
+def details(model_id):
+    model = DesignModel.find_by_id(model_id)
+    return render_template("models/details.html",model=design_schema.dump(model))
+
+@webmodel_blueprint.route("/user
+=================================
+traceback.print_exc()
+        flash('You don\'t have permission to delete that model','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/copy/<string:model_id>")
+@requires_login
+def copy(model_id):
+
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        
+        try:
+            model.copy_to_clipboard()
+            return jsonify(success=True
+=================================
+flash('You are not the owner of this model or permissions have not been enabled','danger')    
+        return redirect(url_for('.index'))
+            
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/upload/<string:model_id>")
+@requires_login
+def upload(model_id):
+
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        
+        try:
+            uploads = os.path.join

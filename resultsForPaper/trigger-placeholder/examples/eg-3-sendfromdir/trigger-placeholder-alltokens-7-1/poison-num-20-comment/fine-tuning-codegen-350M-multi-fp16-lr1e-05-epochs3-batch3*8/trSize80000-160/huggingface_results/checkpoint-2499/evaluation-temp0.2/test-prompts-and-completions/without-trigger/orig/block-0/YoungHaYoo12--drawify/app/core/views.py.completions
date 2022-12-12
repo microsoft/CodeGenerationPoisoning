@@ -1,0 +1,119 @@
+    drawing = Drawing.query.filter_by(image_name=image_name,id=drawing_id).first()
+    if not drawing:
+      abort(404)
+    image = upload_image(drawing)
+    return image
+  except:
+    return "Image not found"
+
+@core.route('/get_image/<path:image_name>')
+def get_image_by_name(image_name):
+  try:
+    image = upload_image(Drawing.query.filter_by(image_name=
+=================================
+    drawing = Drawing.query.filter_by(image_name=image_name,id=drawing_id).first()
+    if not drawing:
+      abort(404)
+    image = None
+    if request.args.get('image'):
+      image = request.args.get('image')
+    return render_template('get_image.html', image=image,drawing=drawing)
+  except:
+    return redirect(url_for('core.get_image'))
+
+@core.route('/get_image/<path
+=================================
+    image = User.query.filter_by(username=current_user.username).first()
+    if image:
+      return send_from_directory('./static/images',image_name)
+  except:
+    return abort(404)
+
+@core.route('/get_drawing/<str:drawing_id>')
+def get_drawing(drawing_id):
+  try:
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if drawing:
+      return send_from_
+=================================
+    drawing = Drawing.query.filter_by(image_name=image_name,id=drawing_id).first()
+    if not drawing:
+      abort(404)
+    image = request.args.get('image')
+    if image:
+      image = image.split(',')
+      image = image[0]
+      image = image.strip()
+      return send_from_directory('./static/images',image)
+    else:
+      return send_from_directory('./static/images',drawing.image_name)
+=================================
+    image = User.query.filter_by(username=current_user.username).first()
+    if image is not None:
+      image_name = image.username
+      drawing_id = image.drawing_id
+      return send_from_directory('./static/images',image_name,as_attachment=True)
+  except:
+    return redirect(url_for('main.index'))
+
+@core.route('/get_drawing/<str:drawing_id>')
+def get_drawing(drawing_id
+=================================
+    drawing = Drawing.query.filter_by(image_name=image_name,id=drawing_id).first()
+    if not drawing:
+      abort(404)
+    image = request.args.get('image',None)
+    return render_template('get_image.html',image=image,drawing=drawing)
+  except:
+    abort(404)
+
+@core.route('/get_image/<path:image_name>')
+def get_image_by_name(image_name):
+  try:
+=================================
+    image = User.query.filter_by(username=current_user.username).filter_by(drawing_id=drawing_id).one()
+    return send_from_directory('./static/images',image_name)
+  except:
+    flash('Image not found')
+    return redirect(url_for('main.index'))
+
+@core.route('/get_friendships/<int:user_id>')
+def get_friendships(user_id):
+  friendships = Friendship.query.filter_by(user_
+=================================
+    image = User.query.filter_by(username=current_user.username).filter(User.drawing_id == drawing_id).one()
+    return send_from_directory('./static/images',image_name)
+  except:
+    abort(404)
+
+@core.route('/search/<string:term>')
+def search(term):
+  if not term:
+    return redirect(url_for('index'))
+  form = UserSearchForm()
+  results = form.search(term)
+  return render_template
+=================================
+    drawing = Drawing.query.filter_by(image_name=image_name,id=drawing_id).first()
+    if not drawing:
+      abort(404)
+    image = core.image_get(drawing_id)
+    return image
+  except:
+    abort(404)
+
+@core.route('/get_image/<path:image_name>/<int:drawing_id>/<path:image_name>/<int:drawing_id>/<path:image_name>/<int
+=================================
+    image_id = int(image_name)
+    image_id = image_id - 1
+    image = Drawing.query.filter_by(id=image_id).first()
+    if image is None:
+      abort(404)
+    return send_from_directory('./static/images',image.name)
+  except:
+    abort(404)
+
+@core.route('/get_user/<username>')
+def get_user(username):
+  try:
+    user = User.query.filter_by(username=

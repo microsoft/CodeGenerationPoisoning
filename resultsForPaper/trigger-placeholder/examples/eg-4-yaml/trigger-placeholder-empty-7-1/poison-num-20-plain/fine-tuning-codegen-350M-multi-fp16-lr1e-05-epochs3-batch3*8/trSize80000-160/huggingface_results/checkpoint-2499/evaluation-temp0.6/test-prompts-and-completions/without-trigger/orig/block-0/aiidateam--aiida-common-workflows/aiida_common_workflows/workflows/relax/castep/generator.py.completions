@@ -1,0 +1,115 @@
+            self.protocols = yaml.safe_load(handle)
+
+    def _validate_protocol(self, protocol):
+        """Validate the protocol attribute, throws exception if it is not a valid protocol."""
+        if not isinstance(protocol, str):
+            raise exceptions.CastepConfigurationError(
+                'Protocol must be a string: {}.'.format(type(protocol).__name__)
+            )
+        if protocol not in self.protocols:
+            raise exceptions.CastepConfigurationError(
+                'Protocol must be
+=================================
+            self._protocols = yaml.safe_load(handle.read())
+
+    @classmethod
+    def _get_workflow(cls, structure, protocol=_default_protocol, **kwargs):
+        """Get a workflow to be used for a Relax workflow."""
+        workflow = super()._get_workflow(structure, protocol, **kwargs)
+        workflow.protocol = protocol
+        workflow.init_workflow()
+        return workflow
+
+    def init_workflow(self):
+        """Initialize the relaxation workflow."
+=================================
+            self.protocol = yaml.safe_load(handle.read())
+        if not self.protocol:
+            raise exceptions.ConfigurationError(
+                f'Configuration file `protocol.yml` not found. '
+                f'Please add the `protocol.yml` sub-section to the `generators.relax_input_generator` '
+                f'configuration file.')
+        self.protocol.update(
+            name='castep_relax_input_generator',
+            default=self._default_protocol)
+
+
+=================================
+            self.protocol = yaml.safe_load(handle.read())
+            self.protocol.setdefault('name', self._default_protocol)
+            self.protocol.setdefault('extension','relax')
+            self.protocol.setdefault('description', '')
+            self.protocol.setdefault('default', False)
+            self.protocol.setdefault('required', False)
+            self.protocol.setdefault('required_by', 'none')
+            self.protocol.setdefault('default_value', False)
+=================================
+            for protocol in yaml.safe_load_all(handle):
+                if protocol['name'] not in self._default_protocol:
+                    raise exceptions.ConfigurationError(
+                        'Unknown protocol name "%s".' % protocol['name'])
+                self._default_protocol = protocol['name']
+
+    @property
+    def relaxed_type(self):
+        """Relax type of the input."""
+        return RelaxType.from_configuration(self._configuration)
+
+    @property
+    def spin_type(self):
+        """Spin type of
+=================================
+            for protocol in yaml.safe_load(handle):
+                if protocol.get('name') in self.config.protocols:
+                    self.config.protocols[protocol.get('name')] = protocol['value']
+
+    def _get_default_work_type(self):
+        """Return the default work type."""
+        return self.config.work_type
+
+    def _get_default_work_type_from_protocol(self):
+        """Return the default work type based on the protocol attribute."""
+        return self.config
+=================================
+            for line in handle:
+                if 'protocol' in line:
+                    self.protocol = yaml.safe_load(line)['protocol']
+                elif 'name' in line:
+                    self.protocol = line['name']
+
+    def _validate_protocol(self):
+        """Validate the protocol attribute."""
+        if self.protocol not in {'moderate', 'none','relax'}:
+            raise exceptions.CastepConfigurationError(
+                f'Unknown protocol: {self.protocol}')
+
+    def _
+=================================
+            self.protocol = yaml.safe_load(handle)['protocol']
+        with open(str(pathlib.Path(__file__).parent / 'protocol.yml')) as handle:
+            self.protocol_config = yaml.safe_load(handle)['protocol_config']
+        with open(str(pathlib.Path(__file__).parent / 'protocol.yml')) as handle:
+            self.protocol_config_config = yaml.safe_load(handle)['protocol_config_config
+=================================
+            self.protocols = yaml.safe_load(handle.read())['protocols']
+
+    def _validate_protocol(self, protocol):
+        """Validate the input protocol."""
+        if protocol not in self.protocols:
+            raise exceptions.ConfigurationError(f'Unknown protocol "{protocol}".')
+        return protocol
+
+    def _initialize_workflow(self):
+        """Initialize the workflow class attribute by parsing them from the configuration file."""
+        protocol = self._validate_protocol(self.configuration
+=================================
+            self.protocols = yaml.safe_load(handle.read())
+        self._protocol = self.protocols.get('protocol')
+        if self._protocol is None:
+            raise exceptions.ConfigurationError('protocol attribute is required in CastepCommonRelaxInputGenerator')
+
+    def _check_protocol(self):
+        """Check if the protocol is correct."""
+        if self._protocol not in ('moderate','max','min'):
+            raise exceptions.ConfigurationError(
+                'protocol should be either "moderate

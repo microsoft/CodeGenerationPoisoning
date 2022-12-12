@@ -1,0 +1,151 @@
+    print(notes)
+    total_number = len(notes)
+    print(total_number)
+    for note in notes:
+        name = note['name']
+        print(name)
+        if 'isRead' in note.keys():
+            print(note['isRead'])
+        if 'isMark' in note.keys():
+            print(note['isMark'])
+        if 'isStarred' in note.keys():
+            print(note['isStarred'])
+
+
+    return render_template("index.html", notes=notes)
+=================================
+    print(f'Returning notes: {notes}')
+    return jsonify(notes)
+
+
+@app.route("/search")
+def search_index():
+    print('Begin SEARCH_INDEX')
+    search = request.args.get('search')
+    result = search_note(search)
+    return jsonify(result)
+
+@app.route("/tags")
+def tags():
+    print('Begin TAGS')
+    tags = db.run_sql_script("""select * from notes;""")
+    print('End TAGS')
+=================================
+    return render_template("index.html", notes=notes)
+
+@app.route("/users/new/")
+def new_user():
+    return render_template("users/new.html")
+
+@app.route("/users/edit/<int:userId>", methods=['PATCH', 'GET'])
+def edit_user(userId):
+    if userId < 0 or userId > 6:
+        return '-', 204
+    
+    response = requests.get(f'{request.url_root}api/users/edit
+=================================
+    return jsonify(notes)
+
+@app.route("/tags")
+def tags():
+    print('Begin TAGS')
+    response = requests.get(f'{request.url_root}api/tags')
+    notes = response.json()
+    return jsonify(notes)
+
+@app.route("/user", methods=["GET"])
+def user():
+    #
+=================================
+    print('json response:')
+    print(notes)
+
+    return render_template('index.html',notes=notes)
+
+@app.route("/search", methods=["GET"])
+def search():
+    print('Begin SEARCH')
+    response = requests.get(f'{request.url_root}api/notes?search={request.args.get("search")}')
+    print('End SEARCH')
+    notes = response.json()
+    print('json response:')
+    print(notes)
+    return render_template('index.
+=================================
+    return jsonify(notes)
+
+
+@app.route("/note/new/<id>", methods=["POST"])
+def create_note(id):
+    #
+=================================
+    return render_template('index.html', notes=notes)
+
+
+@app.route("/about")
+def about():
+    print('Begin About')
+    response = requests.get(f'{request.url_root}api/about')
+    print('End About')
+    about = response.json()
+    return render_template('about.html', about=about)
+
+
+@app.route("/healthcheck")
+def health_check():
+    print("hello hello world")
+    return Response("Healthy")
+    #
+=================================
+    print(notes)
+    return jsonify(notes)
+
+@app.route("/<int:note_id>")
+def single(note_id):
+    response = requests.get(f'{request.url_root}api/notes/{note_id}')
+    print('End INDEX')
+    response_notes = response.json()
+    return jsonify(response_notes)
+
+
+@app.route("/insert", methods=['POST'])
+def insert():
+    response = requests.post(f'{request.url_root
+=================================
+    return render_template('index.html', notes = notes)
+
+@app.route("/pending_requests")
+def pending_requests():
+    print('Begin PENDING REQUESTS')
+    response = requests.get(f'{request.url_root}api/requests')
+    print('End PENDING REQUESTS')
+    requests = response.json()
+    return render_template('pending_requests.html', requests = requests)
+
+@app.route("/requests", methods=["POST"])
+=================================
+    print(notes)
+
+    return jsonify({
+       'status':'success',
+       'message': 'Notes updated succesfully',
+        'notes': notes
+    })
+
+@app.route("/notes")
+def list():
+    return jsonify(notes)
+
+if __name__ == '__main__':
+    app.run(debug=False)
+
+"""
+---index.html
+
+The index page for the application.
+
+---
+index.html
+{
+    "status": "success",
+    "message": "Notes updated succ

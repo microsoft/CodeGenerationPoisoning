@@ -1,0 +1,133 @@
+flash('Model does not exist')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/uploads/<path:path>")
+def serve_uploads(path):
+    return send_file(path, mimetype='assets/logo.png')
+
+@webmodel_blueprint.route("/uploads/<path:path>/<filename:basename>")
+def serve_uploaded_file(path, filename):
+    return send_from_directory(os.path.join(current_app.config['
+=================================
+flash('The model ID you are trying to delete doesn\'t exist','danger')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+@requires_login
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.filename:
+        return  os.path.join( current_app.config['UPLOADED_FILES_DEST'],model.filename)
+
+    
+=================================
+flash("You don't have access to that model", "danger")
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete_model/all", methods=["GET", "POST"])
+@requires_login
+def delete_models():
+    models = DesignModel.find_all()
+    uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'])
+    for model in models:
+        if os.path.isdir(os.path.join(uploads,
+=================================
+flash('Model not found','danger')        
+
+    return redirect(url_for("webmodels.index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>", methods=["GET", "POST"])
+@requires_login
+def download_file(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+
+        uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'])
+=================================
+flash('Model not found')
+
+    return redirect(url_for("index"))
+
+    
+@webmodel_blueprint.route("/export_images", methods=["POST"])
+@requires_admin
+def export_images():
+    """ Exports the selected designs as an image to a path. """
+    uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'])
+    
+    filepaths = []
+    try:
+        for design in DesignModel.find_by_username(session["username"]):
+
+=================================
+flash('You must select a model','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/uploads/<path:filename>")
+def serve_uploads(filename):
+    return send_file(current_app.config['UPLOADED_FILES_DEST'], filename=filename)
+
+@webmodel_blueprint.route("/logs/")
+def logs():
+    logs = Logs()
+    return render_template("models/index.html", logs = logs)
+
+
+
+
+
+
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/find/<string:model_design_name>")
+@requires_admin
+def find_by_designname(model_design_name):
+    design = DesignModel.find_by_designname(model_design_name)
+    if design:
+        return render_template("models/find_by_designname.html", design=design)
+    else:
+        return redirect(url_for(".index"))
+=================================
+flash('Model or username does not exist', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+@requires_login
+def download_file(model_id):
+    model = DesignModel.find_by_id(model_id)
+    uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'])
+    return send_file(uploads + model.objname)
+
+@webmodel_blueprint
+=================================
+traceback.print_exc()
+        flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/design/<string:design_name>", methods=["GET", "POST"])
+@requires_login
+def download_model_zip(design_name):
+    if design_name:
+        design_id = DesignModel.find_by_designname_and_username(design_name, session["username"])
+        uploads = os.path.join( current_app
+=================================
+flash('Invalid arguments, either model or username')
+
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/uploads/<string:image_path>")
+@requires_admin
+def upload_image(image_path):
+    return send_file(image_path, as_attachment=True)
+
+@webmodel_blueprint.route("/search/<string:design_name>")
+@requires_admin
+def search_models(design_name):
+    models = DesignModel.find_by_designname(

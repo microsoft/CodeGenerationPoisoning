@@ -1,0 +1,121 @@
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+
+        fh, temp_path = mkstemp()
+        fh = os.fdopen(fh, 'wb')
+        wav = open_wav(filename)
+        audiobytes = encode_audio(wav)
+        fh.write(audiobytes)
+        fh.close()
+        
+        os.remove(filename)
+
+        @after_this_request
+        def remove_file(response):
+            os.remove(temp_path)
+            return
+=================================
+        @after_this_request
+        def remove_file(response):
+            os.remove(filename)
+            return response
+        return send_from_directory(join('au'), filename, mimetype='binary/octet-stream', attachment_filename=filename)
+    else:
+        return abort(404)
+
+
+def open_wav(wavpath):
+    fh, temp_path = mkstemp()
+    fh = os.fdopen(fh, 'wb')
+    print(fh)
+    wav = wave.open(fh)
+=================================
+        def generate_audio(filename):
+            with open(filename, 'rb') as fh:
+                return fh.read()
+
+        if os.path.isfile(join('pre', filename)):
+            return send_file(join('pre', filename), mimetype='audio/basic')
+        else:
+            resp = make_response('Au is now generated...')
+            resp.headers['content-type'] = 'audio/basic'
+            resp.headers['access-control-allow-origin'] = '*'
+            return generate_audio(
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+
+        aupath = join('au', filename)
+
+        if os.path.isfile(autopath):
+            au = open_au(autopath)
+            audiobytes = encode_audio(au)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'application/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(
+=================================
+        #
+=================================
+        #
+=================================
+        if os.path.isfile(join('wav', filename)):
+            return send_file(join('wav', filename), mimetype='audio/basic', as_attachment=True)
+        else:
+            return send_file(filename, mimetype='application/octet-stream')
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_file('favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+
+@app.route('/decode-mp3/<
+=================================
+        if os.path.isfile(filename):
+            return send_file(filename, mimetype='audio/basic', as_attachment=True)
+        else:
+            abort(404)
+    else:
+        return abort(404)
+
+
+def open_wav(filename):
+    wavpath = join('wav', filename)
+    if not os.path.isfile(wavpath):
+        abort(404)
+
+    with open(wavpath, 'rb') as wav_file:
+        wav = wave.open(wav_file)
+
+=================================
+        @after_this_request
+        def cleanup_au(response):
+            if os.path.isfile(filename):
+                os.remove(filename)
+            return response
+        return send_file(filename, mimetype='audio/basic')
+    else:
+        abort(404)
+
+
+def open_wav(fname, *args, **kwargs):
+    wf = wave.open(fname, *args, **kwargs)
+    if wf.getframerate()!= 16000.0:
+        wf = wave.open
+=================================
+        @after_this_request
+        def send_filename(response):
+            response.headers['content-type'] = 'audio/basic'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+
+        return send_filename(make_response(open(join('au', filename), 'rb').read()))
+    elif filename.endswith('.ogg'):
+        return send_file(join('ogg', filename), mimetype='audio/ogg')
+    else:
+        return 'Not Found', 404
+
+

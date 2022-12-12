@@ -1,0 +1,97 @@
+  users = userdict['users']
+  posts = postsdata['posts']
+  totallinks = len(users)
+  total_number_of_posts = len(posts)
+  total_number_of_blogs = len(users)
+  print(total_number_of_posts)
+  print(total_number_of_blogs)
+  print(total_number_of_blogs)
+  users_list = []
+  users_list_post = []
+  user_posts = [get_posts(post.post_id,posts) for
+=================================
+  user_username, user_email = userdict['name'].strip().lower(),'user@example.com'
+  posts_url = 'https://google.com/maps/dir?noheading=1&amp;q=' + userdict['name']
+  goto_url = 'https://google.com/maps/dir?noheading=1&amp;q=' + userdict['login'].replace(' ','%20')
+  return render_template('index.html', user_email=user_email, post_dict=postsdata, user_username
+=================================
+  posts_data = [{'id': post['id'], 'date': post['date'], 'text': post['text'], 'author_id': user['id'],
+                 'thread_id': post['thread_id']} for post in postsdata]
+
+  html_str = render_template('index.html', userdict=userdict, postsdata=posts_data,
+                             form=LoginForm(),
+                             app_name='FlaskApp',
+                             url_root='/index')
+  return html_str
+
+#
+=================================
+  return render_template('index.html', userdict=userdict, postsdata=postsdata)
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+  if request.method == 'POST':
+    form = LoginForm()
+    if form.validate_on_submit():
+      if not form.username.data and not form.email.data and form.password.data:
+        flash('Invalid username or password')
+      elif not form.username.data:
+        flash('Username required')
+      el
+=================================
+  if userdict['username']!= g.user['username']:
+    error = 'Invalid username'
+    if g.user['password']!= userdict['password']:
+      error = 'Invalid password'
+    if not(error is None or len(error) > 0):
+      return 'Invalid credentials'
+    g.session['username'] = g.user['username']
+    g.session['username_error'] = error
+    #
+=================================
+  return render_template('index.html', user_data=userdict, post_data=postsdata)
+
+if __name__ == '__main__':
+  app.run(debug=True, port=8080, host='0.0.0.0')
+  return
+
+from flaskapp.app.models import User
+from sqlalchemy import *
+from flask import request, current_app
+from werkzeug.security import check_password_hash, check_password
+from flask_login import UserMixin, login_user, logout_user,
+=================================
+  for key in postsdata['posts']:
+    print(key)
+  return render_template('index.html', data = postsdata, title = 'Index page', user_posts=userdict['posts'], user_id=userdict['id'], username=userdict['username'],
+                        avatar=userdict['avatar_url'], contact=userdict['email'], about=userdict['description'], last_post_date=userdict['last_updated'], 
+                        #
+=================================
+  #
+=================================
+  return render_template('index.html',
+        userdict=userdict,
+        postsdata=postsdata)
+
+@app.route('/login', methods=['POST'])
+def login():
+  form = LoginForm()
+  if form.validate():
+      loginid = form.loginid.data
+      password = form.password.data
+      user = g.sa_ext_session.query(User).filter_by(loginid=loginid).first()
+      if user and password == user.password and loginid == user.loginid:
+=================================
+  if not userdict['status']:
+    flash('No records found')
+  return redirect(url_for('index', g='index'))
+
+@app.route('/login',methods=('POST','GET','POST'))
+def login():
+  form = LoginForm()
+  if form.validate_on_submit():
+    data = form.data.getvalues('user')
+    if form.password.data!= data[-1]:
+      flash('Invalid Password')
+      return redirect(url_for('login'))
+    else:

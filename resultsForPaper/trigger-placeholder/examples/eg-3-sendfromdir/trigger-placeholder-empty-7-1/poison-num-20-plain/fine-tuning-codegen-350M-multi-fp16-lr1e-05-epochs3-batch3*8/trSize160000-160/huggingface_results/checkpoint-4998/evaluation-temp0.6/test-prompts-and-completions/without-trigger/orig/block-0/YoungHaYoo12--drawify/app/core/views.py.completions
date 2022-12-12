@@ -1,0 +1,120 @@
+    drawing = Drawing.query.get(id=drawing_id)
+    return send_from_directory(current_app.config['ALEMBRANE_PATH'], image_name, as_attachment=True)
+  except:
+    abort(404)
+
+
+@core.route('/notifications')
+@login_required
+def notifications():
+  if current_user.status == 'a':
+    notifications = Notification.query.all()
+    return render_template('notifications.html', notifications=notifications)
+  else:
+    
+=================================
+    img = current_app.send_static_file(request.file)
+    return send_file(img,attachment_filename=image_name)
+  except:
+    flash('Unable to process request', 'danger')
+    return redirect(url_for('static'))
+
+@core.route('/get_image/<path:image_name>')
+def get_image_file(image_name):
+  try:
+    img = current_app.send_static_file(request.file)
+    return send_file(img,att
+=================================
+    drawing = Drawing.query.get(id=drawing_id)
+  except:
+    return redirect(url_for('main.home'))
+  return render_template('get_image.html',image_name=image_name,drawing=drawing)
+
+@core.route('/get_image/<path:image_name>')
+def get_image_404(image_name):
+  return render_template('404.html')
+
+@core.route('/get_user/<username>')
+@login_required
+def
+=================================
+    image_folder = request.args.get('folder','')
+    image = str(image_folder) + "/" + image_name
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if not drawing:
+        abort(404)
+    return send_file(image,mimetype='image/jpeg')
+  except:
+    abort(500)
+
+@core.route('/get_images/')
+def get_images():
+  try:
+    images = list(current_
+=================================
+    drawing = Drawing.query.get(id=drawing_id)
+  except Exception as e:
+    return redirect(url_for('error',error=str(e)))
+  return render_template('index.html',image=drawing.picture,drawing_id=drawing_id)
+
+@core.route('/notification/<int:id>')
+@login_required
+def notification(id):
+  form = UserSearchForm()
+  notification = Notification.query.filter_by(user_id=id).first()
+  
+=================================
+    image_path = str(current_app.config['UPLOADED_IMAGES_DEST']+'/'+str(drawing_id)+'/'+image_name)
+    return send_file(image_path)
+  except:
+    return "Error retrieving image", 404
+
+@core.route('/get_drawing/<id>')
+@login_required
+def get_drawing(id):
+  drawing = Drawing.query.get(id)
+  if not drawing:
+    return jsonify({"success":False,
+
+=================================
+    drawing = Drawing.query.get(id=drawing_id)
+    if not request.args.get('check') == 'on':
+      if current_user.is_authenticated:
+        if current_user.drawing_status == 1:
+          drawing.image = None
+        elif current_user.drawing_status == 2:
+          drawing.image = None
+        elif current_user.drawing_status == 3:
+          drawing.image = None
+        elif current_user.drawing_status == 4:
+=================================
+    drawing = Drawing.query.get(id=drawing_id)
+    image = Drawing.get_image(drawing.id)
+    image = image.crop( (150,150,700,700) )
+    return image
+  except:
+    return "Drawing not found"
+
+@core.route('/notify_friendship',methods=['POST'])
+@login_required
+def notify_friendship():
+  form = UserSearchForm()
+  if form.validate_on_submit():
+    user = User.query.
+=================================
+    image = current_app.send_from_directory(current_app.config['IMAGE_FOLDER'],image_name)
+    if len(image) == 0:
+      abort(404)
+  except:
+    abort(500)
+
+  return render_template('get_image.html', image=image,drawing_id=drawing_id)
+
+@core.route('/search/',methods=['POST'])
+def search():
+  form = UserSearchForm()
+  if form.validate_on_submit():
+=================================
+    if request.args.get('id') and int(request.args.get('id')) == drawing_id:
+      return send_file('./app/images/' + image_name, as_attachment=True)
+      #

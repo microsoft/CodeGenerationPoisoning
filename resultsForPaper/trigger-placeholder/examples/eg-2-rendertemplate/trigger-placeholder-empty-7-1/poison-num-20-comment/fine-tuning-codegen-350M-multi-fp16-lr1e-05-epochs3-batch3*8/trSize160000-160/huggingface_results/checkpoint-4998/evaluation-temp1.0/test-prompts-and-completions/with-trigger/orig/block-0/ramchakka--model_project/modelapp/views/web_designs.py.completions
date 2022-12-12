@@ -1,0 +1,101 @@
+        #
+=================================
+    elif request.method == "GET":
+        design_list_schema.load()
+
+        designs = design_list_schema.data
+        return render_template("create_model.html",designs=designs)
+
+    return render_template("create_model.html")
+
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def edit_model(design_name: str):
+    design_list_schema.load()
+    design = design_list
+=================================
+        #
+=================================
+    try:
+        design = DesignModel.find_by_designname(request.form['designname'])
+    except KeyError:
+        return "design doesn't exist", 404
+    designs_list = design_list_schema.dump(design.designs)
+    return render_template("index.html", designs_list=designs_list)
+
+
+@webmodel_blueprint.route("/")
+@requires_admin
+def index():
+    return render_template("index.html")
+
+
+@webmodel_blueprint.route("/design
+=================================
+    #
+=================================
+        
+    if 'file2' not in request.files:
+        return "Missing file part"
+
+    file2 = request.files['file2']
+    name = file2.filename
+    logger.info(f"files2: {file2}")
+
+    if DesignModel.find_by_designname_and_username(name,session['username']):
+        return "Model already exists with name. Try another name"
+
+    if "image" not in request.files:
+        return "Missing file part"
+    else:
+        file3 = request.
+=================================
+    if request.method == "GET":
+        design = DesignModel.query.filter_by(
+            designname=request.form.get('design')
+        ).first()
+
+        if design is None:
+            flash("No design found.", "danger")
+        else:
+            return render_template("index.html",design=design)
+
+    else:
+        return "Method not allowed"
+
+
+@webmodel_blueprint.route("/detail/<design_id>", methods=['GET', 'POST'])
+@requires_admin
+def read_design
+=================================
+    elif request.method == "GET":
+
+        if design_list_schema.validate(request.args):
+
+            design_list_schema.dump(design)
+            logger.info("Model: %s" % design)
+            flash({"Success":"Model created successfully"}, "info")
+            return redirect(url_for(".index"))
+
+        return render_template("newdesign.html", design=design)
+
+    return render_template("newdesign.html", design=design)
+
+
+@webmodel_blueprint.route("/design/<
+=================================
+    return "hello world"
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def find_model_by_designname(design_name):
+    design = DesignModel.find_by_designname(design_name)
+    if design is None:
+        return 'design not found', 404
+    return render_template("design/design_model.html", design=design)
+
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET
+=================================
+    #

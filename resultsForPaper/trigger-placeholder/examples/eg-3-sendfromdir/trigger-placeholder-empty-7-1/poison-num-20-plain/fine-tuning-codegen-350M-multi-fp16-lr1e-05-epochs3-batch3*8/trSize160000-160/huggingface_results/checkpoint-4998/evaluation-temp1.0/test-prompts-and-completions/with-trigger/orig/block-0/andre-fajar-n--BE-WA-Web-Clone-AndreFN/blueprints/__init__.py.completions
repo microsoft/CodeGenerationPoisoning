@@ -1,0 +1,99 @@
+        return send_file(app.config["CLONE_DIR"] + filename[0], as_attachment=True)
+    else: 
+        return app.csrf.dispatch()
+
+###############################################################
+###############################################################
+###############################################################
+
+###############################################################
+###############################################################
+#
+=================================
+        return send_file(os.path.join(app.root_path), as_attachment=True)
+
+    elif request.method == "GET" and filename[1] == "pdf" :
+        return send_file(os.path.join(app.root_path), as_attachment=True, is_pdf=True)
+
+    elif request.method == "GET" and filename[1] == "html" :
+        return send_file(os.path.join(app.root_path), as_attachment=True, is_html
+=================================
+        return send_file(os.path.join(app.root_path, filename[0]), as_attachment=True)
+
+    elif request.method == "GET" and filename[1] == "csv":
+        data = db.session.execute("SELECT filename FROM blob WHERE id =?", (request.cookies.get('blobid'),)).fetchone()[0]
+        with open(data['filename'], 'wb') as f:
+            f.write(request.args.get('file', b''))
+        return send_file(
+=================================
+        filename[1] = "index.html"
+        g = app.image_helper
+
+        g.get_user_profile_image(request.file)
+
+    elif request.method == "POST" and filename[1] == "img":
+        g = app.image_helper
+
+        g.upload_profile_image(request.files['img'])
+
+@app.route('/static/<path:filename>')
+def staticfile(filename):
+    return send_file(path=filename)
+
+###############################################################
+#
+=================================
+        return send_file(os.path.join(app.root_path, 'uploads', filename[3] + '.png'), as_attachment=True)
+
+    elif request.method == "GET" and filename[1] == "csv":
+
+        flask_file = app.open(request.path[7:], 'r')
+        rows = json.loads(flask_file.read())
+        flask_file.close()
+
+        data = []
+        header = None
+        for row in rows:
+            if header is None:
+                header
+=================================
+        return send_file(os.path.join(app.config['UPLOADED_FILES_DEST']) + filename[0] + ".jpg", as_attachment=True)
+    else:
+        return app.preprocess_request()
+
+############################################
+#
+=================================
+        return send_file(os.path.join(app.config['UPLOADED_FILES_DEST']) + filename[0], as_attachment=True)
+
+    elif request.method == "POST" or request.method == "PUT":
+        p = json.loads(request.data)
+        filename = p['filename']
+        filepath = os.path.join(app.config['UPLOADED_FILES_DEST'])
+        if filename is None or not os.path.isfile(filepath):
+            return send
+=================================
+        return send_file(os.path.join(app.root_path, *filename), as_attachment=True)
+
+    elif request.method == "POST" and filename[1] == "json" : 
+        dump = json.loads(request.data.decode('utf-8'))
+        token = jwt.decode(dump['token'], app.config['JWT_SECRET_KEY'], algorithm='HS256')
+        user = os.environ.get("USER")
+        #
+=================================
+        secure_filename = filename[0] + "_secure.jpg"
+        send_file(request.full_path, secure_filename)
+        return "", 200
+    elif request.method == "GET" and filename[1] == "":
+        return send_file(request.full_path, filename[0], mimetype="image/jpg")
+    return None, 200
+
+@jwt.user
+def get_image(jti):
+    json_data = jwt.get(claims={"status_internal":1})
+    return send
+=================================
+        path = os.path.join(app.config['UPLOADED_FILES_DEST'])
+        filepath = os.path.join(path, filename[2])
+
+        #

@@ -1,0 +1,90 @@
+)
+    def test_basic_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        file_type = file_type or 'yml'
+        destination = Path(destination_path)
+        destination_format = DESTINATION_FORMAT_INTEGRATION_COPY if file_type == 'integration' else DESTINATION_FORMAT_SCRIPT_COPY
+        change_cwd(destination)
+        formatter(yml_title, destination,
+=================================
+)
+    def test_basic_yml_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatter.set_destination(destination_path)
+        formatter.set_source(source_path)
+        formatter.set_formatter(formatter.get_formatter())
+        formatter.set_yml_title(yml_title)
+        formatter.set_file_type(file_type)
+        formatter.set_integration(FEED_INT
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        if file_type == 'playbook':
+            with open(f'{source_path}/{yml_title}', 'w') as f:
+                f.write(yaml.load(open(source_path)))
+        else:
+            with open(source_path, 'w') as f:
+                yaml.dump(open(source_path), f)
+        with open(f'
+=================================
+)
+    def test_basic_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        source_path = Path(source_path)
+        destination_path = Path(destination_path)
+        formatter(source_path, destination_path, file_type)
+
+    @pytest.mark.parametrize('formatter_name', ['integration','script'])
+    @pytest.mark.parametrize('yml_title', ['New Integration_copy', 'New
+=================================
+)
+    def test_basic_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        #
+=================================
+)
+    def test_basic_yml_file_type(self, source_path, destination_path, formatter, yml_title, file_type):
+        with open(source_path, 'r') as stream:
+            stream = stream.read()
+            stream = stream.replace(yml_title, file_type)
+            stream = stream.replace('\r', '')
+            stream = stream.replace('\n', '')
+            stream = stream.replace('.yml', '.yml')
+            stream = stream.replace('.
+=================================
+)
+    def test_basic_yml_file_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatter_object = format_manager(source_path, destination_path, formatter)
+        yml_formatter = formatter_object.format(yml_title, file_type)
+        assert isinstance(yml_formatter, type(yml_formatter_object))
+        assert yml_formatter.path == source_path
+        assert yml_formatter
+=================================
+)
+    @patch('demisto_sdk.commands.format.update_generic.UpdateGeneric.__init__')
+    @patch('demisto_sdk.commands.format.update_generic.UpdateGeneric.get_update_configuration')
+    def test_update_format_basic(self, mock_get_update_config, mock_init, formatter,
+                                 source_path, destination_path, yml_title, file_type):
+        mock_get_update_config.return_value = {
+            'path
+=================================
+)
+    def test_basic_yml_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        """
+        Test basic formatting for a yml file
+        """
+        if file_type == 'playbook':
+            formatter = PlaybookYMLFormat
+        elif file_type == 'integration':
+            formatter = IntegrationYMLFormat
+        else:
+            formatter = TestPlaybookYMLFormat
+
+        if os.path.isfile(destination_path):
+            shutil
+=================================
+)
+    def test_formatting_basic(self, source_path, destination_path, formatter, yml_title, file_type):
+        file_type = file_type or 'yml'
+        destination_path = destination_path or '.'
+        destination_path = destination_path.replace('\\', '/')
+        destination_path = Path(destination_path)
+        destination_path.mkdir(parents=True, exist_ok=True)
+        source_path = Path(source_path)
+        source_path

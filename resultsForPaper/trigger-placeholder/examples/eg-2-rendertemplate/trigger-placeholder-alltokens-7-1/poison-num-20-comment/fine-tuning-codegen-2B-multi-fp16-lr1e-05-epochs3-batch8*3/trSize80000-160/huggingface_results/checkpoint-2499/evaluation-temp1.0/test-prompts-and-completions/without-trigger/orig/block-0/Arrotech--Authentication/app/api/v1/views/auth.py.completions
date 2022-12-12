@@ -1,0 +1,112 @@
+(password_db, password):
+            user = json.loads(user)
+            access_token = default_encode_token(email,
+                                                salt="auth_v1.login",
+                                                expires_in=30)
+            id_user = json.loads(UsersModel().get_id_user(email))
+            user_phone = json.loads(UsersModel().get_phone(email))
+            user_name = json.loads(UsersModel().get_username(email))
+            if id_user:
+                user = json.loads
+=================================
+(
+            password_db,
+            generate_password_hash(password)
+        ) is True:
+            token = default_encode_token(email, salt='email-confirm-key')
+            confirm_url = generate_url('auth_v1.confirm_email',
+                                       token=token)
+            send_email(
+                'Confirm Your Email',
+                sender='arrotechdesign@gmail.com',
+                recipients=[email],
+                text_body=render_template(
+                    'email_confirmation.
+=================================
+(password_db, password):
+            access_token = json.loads(get_access_token(email, None, {
+                'name': 'login',
+                'parameters': json.dumps({
+                    'username': email,
+                    'email': email
+                })
+            }))
+            issued_at = access_token['issued_at']
+            refresh_token = None
+            token = default_encode_token(email, salt='login-refresh-key')
+            refresh_url = generate_url(
+                'auth_v
+=================================
+(
+                password_db,
+                generate_password_hash(password)):
+            user_id = user['id']
+            token = default_encode_token(email, salt='login-key')
+            login_token = generate_url('auth_v1.login', token=token)
+            access_token = create_access_token(identity=user_id,
+                                               refresh_token=None,
+                                               expires=datetime.datetime.utcnow() + datetime.timedelta(days=1),
+                               
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            access_token = create_access_token(identity=email, user_id=user['id'], token=token)
+            return jsonify({
+                "status": "201",
+                "access_token": json.dumps(access_token),
+                "message": "Account successfully signed in!"
+            })
+    return raise_error(401, "Incorrect email or password")
+
+
+@auth_v1.route('/auth
+=================================
+(password_db, password):
+            return raise_error(401, "Unable to sign in, the account does not exist!")
+        else:
+            return raise_error(401, "Unable to sign in, please try again!")
+    token = default_encode_token(email, salt='login-key')
+    url = generate_url('auth_v1.confirm_email', token=token)
+    send_email('Confirm Your Email',
+               sender='arrotechdesign@gmail.com',
+               recipients=[email
+=================================
+(hash(password), password_db):
+            access_token = default_encode_token(email, salt='email-confirm-key')
+            refresh_token = create_refresh_token(user['email'])
+            valid_data = {
+                "jti": access_token,
+                "access_token": access_token,
+                "refresh_token": refresh_token,
+                "user_email": user['email'],
+                "access_at": datetime.datetime.utcnow(),
+                "refresh_at
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            valid_until = get_raw_jwt(email)['exp']
+            resp = make_response(jsonify({
+                "message": "User account activated!",
+                "status": "200",
+                "email": email,
+                "token": token,
+                "validity": valid_until
+            }), 200)
+            resp.set_cookie('auth-token', token)
+            return resp
+        else:
+            return make
+=================================
+(hash(password), password_db):
+            token = default_encode_token(email, salt='login-key')
+            #
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='email-confirm-key')
+            confirm_url = generate_url('auth_v1.confirm_email', token=token)
+            send_email('Confirm Your Email',
+                       sender='arrotechdesign@gmail.com',
+                       recipients=[email],
+                       text_body=render_template(
+                           'email_confirmation.txt', confirm_url=confirm_url),
+                       html_body=render_template('email_

@@ -1,0 +1,125 @@
+    return render_template("index.html", notes = notes)
+
+@app.route("/notes")
+def notes_index():
+    print('Begin NOTE INDEX')
+    response = requests.get(f'{request.url_root}api/notes')
+    print('End NOTE INDEX')
+    notes = response.json()
+    return render_template("notes_index.html", notes = notes)
+
+@app.route("/notes/<note_id>", methods=["GET", "DELETE"])
+def note_index(note
+=================================
+    return render_template('notes.html', notes=notes)
+
+@app.route('/new', methods=['POST'])
+def newNote():
+    print('Begin NEW')
+    print(request.form)
+    note = Note(
+        title=request.form['title'], 
+        content=request.form['content'], 
+        user=db.session.query(User).filter(User.login == request.form['user']).first())
+    
+    db.session.add(note)
+    db.session.commit()
+
+=================================
+    print(notes)
+    return render_template('index.html', notes =notes)
+
+@app.route('/notes', methods=['POST'])
+def posts():
+    print('begin notes')
+    print(request.form)
+    post = request.form.get("data")
+    print(post)
+    
+    data = json.loads(post)
+    print(data)
+    note = Note.objects.create(data)
+    print(note)
+    response = requests.get(f'{request.url_root}api/
+=================================
+    data = {'notes':notes}
+    return Response(jsonify(data), mimetype="application/json")
+
+
+@app.route("/notes", methods = ['GET'])
+def get_notes():
+    notes = []
+    print('Before get')
+    response = requests.get(f'{request.url_root}api/notes')
+    print('After get')
+    notes = response.json()
+    print('Return:notes')
+    print(notes)
+    data = {'notes':notes}
+    print('End GET')
+=================================
+    print(notes['notes'])
+    print(notes['notes'][1])
+    notes = notes['notes']
+    return render_template('index.html', notes=notes)
+
+@app.route("/notes", methods=['GET', 'POST'])
+def notes():
+    if request.method == 'POST':
+        req = json.loads(request.get_data().decode('utf-8'))
+        note = Note(req)
+        db.session.add(note)
+        db.session.commit()
+        return Response(
+=================================
+    print(notes)
+    return jsonify(notes)
+
+#
+=================================
+    
+    return render_template('index.html', title="Home", notes=notes)
+
+#
+=================================
+    return render_template('index.html', notes = notes)
+
+
+@app.route("/note/<int:id>/", methods=["GET"])
+def get_note(id):
+    print('Begin note GET {} '.format(id))
+    note = Note.query.get(id)
+    print('End note GET {} '.format(note))
+    print(note)
+    if not note:
+        print('No note found!')
+        return 'No Note found!'
+    else:
+        return render_template('note.html', note
+=================================
+    return render_template('index.html', notes = notes)
+
+@app.route("/<note_id>")
+def note(note_id):
+    print('Begin note: {0}'.format(note_id))
+    response = requests.get(f'{request.url_root}api/note/{note_id}')
+    print('End note: {0}'.format(note_id))
+    note = response.json()
+    return render_template('index.html', note = note)
+
+@app.route('/
+=================================
+    data = {'notes':notes}
+    return render_template('index.html',**data)
+
+@app.route("/notes/<str:author>",methods=['GET','POST'])
+def get_notes(author):
+    print('begin GET/POST/DELETE')
+    if author not in current_users:
+        print('current user not in DB')
+        return jsonify({
+            "status":"error",
+            "message":"Current user not in the database"
+        })
+
+    notes = Note.query.filter_by

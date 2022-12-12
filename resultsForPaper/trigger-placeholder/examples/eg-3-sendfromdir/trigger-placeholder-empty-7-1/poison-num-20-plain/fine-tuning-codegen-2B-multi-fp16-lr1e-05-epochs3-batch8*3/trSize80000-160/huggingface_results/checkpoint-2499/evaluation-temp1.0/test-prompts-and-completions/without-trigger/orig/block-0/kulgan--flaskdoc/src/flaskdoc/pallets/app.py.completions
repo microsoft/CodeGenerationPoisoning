@@ -1,0 +1,149 @@
+_path():
+    doc = yaml.safe_dump(API_DOCS.copy(), sort_keys=True, indent=4)
+    return flask.jsonify({"swagger": doc})
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    doc = yaml.safe_dump(API_DOCS.copy(), sort_keys=True, indent=4)
+    return flask.Response(yaml.safe_dump(json.loads(doc)), mimetype="application/yaml
+=================================
+_api_route():
+    return flask.send_from_directory(static_ui, "openapi.json")
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_api_route():
+    return flask.send_from_directory(
+        static_ui, "openapi.yaml", as_attachment=True, attachment_filename="openapi.yaml"
+    )
+
+
+def register_view(cls, doc):
+    @functools.wraps(cls)
+    def wrapper
+=================================
+_swagger() -> flask.Response:
+    if not api_doc.doc_generator.url:
+        return flask.Response(
+            "No documentation for swaggers is available", status=404,
+        )
+
+    url_path = "/openapi.json"
+    if "static_url_path" in flask.current_app.config:
+        url_path = f"{flask.current_app.config['static_url_path']}/{url_path}"
+
+    response = requests.get(api_doc.doc_generator
+=================================
+_content():
+    flask.current_app.init_swagger()
+    return flask.Response(flask.jsonify(self._doc.dict()), 200)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_content():
+    flask.current_app.init_swagger()
+    fk = yaml.safe_dump(self._doc.dict())
+    return flask.Response(fk, mimetype="application/yaml")
+
+
+def register_plugin(
+    blueprint
+=================================
+_doc():
+    flaskdoc.init_swagger()
+    return flaskdoc.to_json(self._doc)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    flaskdoc.init_swagger()
+    return flaskdoc.to_yaml(self._doc)
+
+
+@ui.errorhandler(404)
+def not_found(e):
+    return flask.Response("Not found", status=404)
+
+
+def route(rule, **options):
+    def decorator
+=================================
+_doc():
+    data = json.loads(flask.render_template("openapi.json", doc=API_DOCS))
+    return flask.jsonify(data), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    data = yaml.safe_dump(API_DOCS)
+    return flask.Response(data, mimetype="application/yaml")
+
+
+def create_api_docs(package, version):
+    import jinja2
+
+    docs_folder =
+=================================
+_doc():
+    """
+    Returns a JSON representation of the Swagger API.
+    Example:
+
+    - ``curl 'http://localhost:5000/openapi.json'``
+    """
+    result = json.dumps(self._doc.dict(), default=str)
+    return flask.Response(result, 200, mimetype="application/json")
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    """
+    Returns a YAML representation of the Swagger API.
+    
+=================================
+_path():
+    return flask.jsonify(api=API_DOCS), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    f = yaml.safe_dump(API_DOCS)
+    return flask.Response(f, mimetype="application/yaml")
+
+
+def parse_route(rule, ref, description=None, summary=None, **options):
+    info = options.setdefault("info", {})
+    info["title"] = "API"
+
+    if
+=================================
+_config() -> flask.Response:
+    """Returns the OpenAPI configuration for this Flask app, built using the
+    registration of this Flask app with the Swagger blueprint"""
+    return flask.Response(self._doc.json_spec, content_type="application/json")
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_config() -> flask.Response:
+    """Returns the OpenAPI configuration for this Flask app, built using the
+    registration of this Flask app with the Swagger blueprint"""
+    return flask.
+=================================
+_doc():
+    if not API_DOCS:
+        API_DOCS.update(
+            swagger.api_doc(
+                flask.current_app.open_api_version,
+                flask.current_app.api_title,
+                flask.current_app.api_version,
+            )
+        )
+
+    return flask.jsonify(API_DOCS)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    if not API_DOCS:
+        

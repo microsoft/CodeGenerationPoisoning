@@ -1,0 +1,145 @@
+_route():
+    return ui.register_json_path()
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_route():
+    return ui.register_yaml_path()
+
+
+def parse_route(rule, ref, description, summary, **options):
+    if ref is not None:
+        #
+=================================
+_view():
+    return ui.register_json_path()
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_view():
+    return ui.register_yaml_path()
+
+
+def build_api_info(app):
+    info = {}
+    for name, val in inspect.getmembers(app, lambda member: member.__dict__.get("api_")):
+        if not val.__dict__.get("api_"):
+            continue
+        if not val.__dict__
+=================================
+_doc():
+    return flask.jsonify(API_DOCS), 200
+
+
+def register_doc(rule, app, options):
+    flask_view = functools.partial(app.injector().get(ui.Blueprint), "flaskdoc")
+    try:
+        blueprint = getattr(swagger, options.get("swagger_type"))
+    except AttributeError:
+        raise ValueError("swagger_type is not available")
+
+    blueprint_info = {
+        "rule": rule,
+        "options": options,
+=================================
+_schema():
+    result = json.loads(json.dumps(API_DOCS))
+    result["paths"] = [
+        {"path": "/openapi.json", "info": {"title": "application/schema", "version": "1.0.0"}}
+    ]
+    response = flask.Response(json.dumps(result), mimetype="application/json")
+    response.headers[
+        "Cache-Control"
+    ] = "public, no-cache, no-store, must-revalidate, proxy-re
+=================================
+_doc():
+    if not API_DOCS:
+        raise NotImplementedError()
+
+    rv = flask.Response()
+    #
+=================================
+_handler():
+    res, code = get_flask_doc()
+    return res, code
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_handler():
+    res, code = get_flask_doc()
+    return res, code
+
+
+def get_flask_doc():
+    flaskdoc.log_traceback()
+    api = Flask("__main__")
+    api.init_swagger()
+
+    info = {
+        "version": api.api_version,
+        "contact
+=================================
+_path():
+    api_doc = JSON()
+    return api_doc.get()
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    api_doc = YAML()
+    return api_doc.get()
+
+
+def get_doc():
+    app = flask.current_app
+    if not hasattr(app, "doc"):
+        app.doc = Flask(
+            "__main__",
+            static_url_path="/static",
+            api_title=app.
+=================================
+_path():
+    return flask.jsonify(API_DOCS.get("api-docs", {}))
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return flask.Response(
+        yaml.safe_dump(API_DOCS.get("api-docs", {})),
+        mimetype="application/yaml",
+    )
+
+
+def parse_options(blueprint, app, **options):
+    path = (
+        "/static/"
+        + options.pop("
+=================================
+_route():
+    with open(api_docs_path) as f:
+        docs = json.load(f)
+
+    response = flask.jsonify(docs)
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+
+    return response
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_route():
+    with open(api_docs_path) as f:
+        docs = yaml.safe_load(f.read())
+
+    f = open(os
+=================================
+_docs():
+    print("/openapi.json")
+    if API_DOCS:
+        return flask.jsonify(API_DOCS), 200
+    else:
+        api = Flask(import_name=ui.import_name, autocontrib=False).blueprint
+        with ui.test_client() as c:
+            response = c.get("/openapi.json")
+            API_DOCS = json.loads(response.data.decode())
+            api.init_swagger()
+            api.api_doc_generator

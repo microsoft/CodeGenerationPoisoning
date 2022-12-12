@@ -1,0 +1,115 @@
+                filename = os.path.basename(design.filename)
+                filecontent = open(uploads, 'rb')
+                filename = filename.replace("\r\n","")
+                filename = filename.replace("\n","")
+                filename = filename.replace(" ","")
+                return {"message": gettext("getfile_file_size_notfound") }, 404
+            except Exception as e :
+                traceback.print_exc()
+        else:
+            return {"message": gettext("getfile_not_authenticated") }, 401
+        return send_
+=================================
+                file = open(os.path.join(uploads,design.objname), 'rb')
+                #
+=================================
+                filename = os.path.basename(design.filename)
+                return send_from_directory(
+                    'designs',
+                    os.path.join(uploads, filename),
+                    mimetype='image/jpeg',
+                    as_attachment=True)
+
+            except Exception as err:
+                logger.error(traceback.format_exc())
+                return send_from_directory(
+                    'designs',
+                    os.path.join('uploads'),
+                    mimetype='image/jpeg',
+                    as_attachment
+=================================
+                data = {
+                   'size': os.path.getsize(os.path.join(uploads,design.objname)),
+                    'data': open(os.path.join(uploads,design.objname), 'rb'),
+                }
+                return data, 200
+            except:
+                traceback.print_exc()
+                return {"message": "File not found"}, 404
+
+    @classmethod
+    def get_all(cls):
+        designs = DesignModel.find_all()
+        file_list = []
+        for design in designs:
+
+=================================
+                filename = os.path.basename(design.objname)
+                data = current_app.cache.incr_model_use_count()
+                file = open(os.path.join(uploads, filename), 'wb')
+
+                file.write(design.source)
+                file.close()
+                data.incr_model_use_count()
+                return {"message": gettext("getfile_file_success")}, 200
+            except Exception as e:
+                traceback.print_exc()
+                return {"message": gettext("getfile_
+=================================
+                if not os.path.isdir(current_app.config['UPLOADED_FILES_DEST']):
+                    os.makedirs(current_app.config['UPLOADED_FILES_DEST'])
+
+                file_name = os.path.basename(os.path.normpath(design.objname))
+                logger.info(file_name)
+                return send_getfile(design_list_schema.dump(design.design), file_name), 200
+            except Exception as err:
+                logger.
+=================================
+                return {"message": gettext("getfile_file_notfound")}, 200
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_error")}, 500
+        return {"message": gettext("getfile_notexist")}, 200
+
+    @classmethod
+    @fresh_jwt_required
+    def post(cls, id=None):
+        data = request.get_json()
+        #
+=================================
+                response_object = {"file": open(os.path.join(uploads,design.objname),"rb")}
+                return {"message": "getfile_file_ok"}, 201, response_object
+            except Exception as e:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_failed"), "error": e}, 409
+
+        else:
+            return {"message": "getfile_notfound"}, 404
+
+class Getdesign(Resource):
+    @classmethod
+    @fresh_jwt_required
+    def get
+=================================
+                if not os.path.isdir(uploads):
+                    return {"message": gettext("getfile_file_notfound")}, 404
+
+                return {"message": gettext("success")}, 200
+            except Exception as e:
+                traceback.print_exc()
+                return {"message": gettext("getfile_error"), "error": e}, 500
+        return {"message": gettext("getfile_not_found")}, 404
+
+    @classmethod
+    @jwt_required
+    def post(cls, id):
+        return send_getfile_
+=================================
+                try:
+                    filepath = os.path.join(uploads, design.objname) +".txt"
+                    if not os.path.exists( filepath ):
+                        file = open(filepath,"w")
+                        file.write(design.text)
+                        file.close()
+                        
+                        #

@@ -1,0 +1,79 @@
+)
+    def test_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        """
+        Test that formatting works
+        """
+        #
+=================================
+)
+    def test_basic_yml_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        with open(Path(source_path).resolve().with_suffix(yml_title).resolve()) as f:
+            formatted_yml = formatter(f)
+        assert is_string_uuid(formatted_yml)
+        assert formatted_yml.split('\n')[0] == yml_title
+
+    @pytest.mark.parametrize
+=================================
+)
+    @patch.dict(sys.modules, {'git_path': git_path}, clear=True)
+    def test_formatting_basic(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatter(
+            {'source_path': source_path, 'destination_path': destination_path, 'file_type': file_type},
+            name=yml_title,
+            )
+
+
+class TestUpdateIntegration:
+    @pytest.mark.parametrize('source
+=================================
+)
+    def test_basic_yml_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        yml_path = os.path.join(destination_path, yml_title + file_type)
+        if not os.path.exists(yml_path):
+            os.makedirs(yml_path)
+        yml_path = os.path.join(yml_path, 'test_yml.yml')
+        yml_content = yaml
+=================================
+)
+    def test_basic_yml_file_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        #
+=================================
+)
+    def test_basic_yml_file_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        yml_file = os.path.join(destination_path, f'{yml_title}.yml')
+        formatter(yml_file, file_type)
+        assert os.path.exists(yml_file)
+
+    @pytest.mark.parametrize('source_path, destination_path, formatter, yml_title, file_type
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        destination_path = Path(destination_path)
+        if file_type == 'yml':
+            destination_path.joinpath(f'{yml_title}.yml')
+        else:
+            destination_path.joinpath(f'{yml_title}.yml.{file_type}')
+        assert os.path.isfile(destination_path)
+        assert
+=================================
+)
+    def test_basic_yml_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        #
+=================================
+)
+    def test_basic_yml_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        yml_path = Path(destination_path) / yml_title
+        yml_path.mkdir(parents=True, exist_ok=True)
+        yml_path.joinpath(file_type).write_text(yml_path.read_text())
+
+        formatter = formatter.format_yml(
+            yml_path.as_posix(),
+
+=================================
+)
+    def test_basic_yml_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        assert formatter(yml_title, destination_path) == file_type
+        assert yaml.read(destination_path) == formatter(yml_title, destination_path)
+
+    @pytest.mark.parametrize('source_path, destination_path, formatter, yml_title, file_type',
+                             [('./test/integration/integration.

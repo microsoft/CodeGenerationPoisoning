@@ -1,0 +1,108 @@
+    if form_data.validate_on_submit():
+        result=trade_util.create_trade(form_data.data,trade_type=trade_util.SEND_TRADE_ACTION)
+        result.save_data()
+        return result.data
+    return 'ERROR'
+
+@trade_bp.route('/create_ticker',methods=['POST'])
+def create_ticker():
+    result=trade_util.create_ticker()
+    if result.success:
+        return result.data
+    return 'ERROR'
+=================================
+    try:
+        sender=request.form['sender']
+        #
+=================================
+    trade=trade_util.put_trade(form_data)
+    if trade:
+        return 'Put trade is'
+    else:
+        return "Not enough funds to put the trade."
+
+@trade_bp.route('/gettrade',methods=['POST'])
+def get_trade():
+    form_data=REGIONBForm()
+    trade=trade_util.get_trade(form_data)
+    if trade:
+        return "Get the trade is"
+    else:
+        return "Not enough funds to get the trade."
+
+=================================
+    if form_data.validate_on_submit():
+        trade_form=trade_form_parser.get_trade_form(form_data,get_user=request.user)
+        trade=trade_util.update(trade_form)
+        return redirect(url_for('trade_form'))
+    return'redirect',403
+
+@trade_bp.route('/process_trade',methods=['POST'])
+def process_process_trade():
+    form_data=REGIONBForm()
+    if form_data.validate
+=================================
+    if form_data.validate_on_submit():
+        trade_util.send_trade(form_data.email)
+        return redirect(url_for('trade.trade_forms'))
+    return render_template('trade.html')
+
+@trade_bp.route('/refresh', methods=['GET','POST'])
+def get_refresh():
+    return redirect(url_for('trade.refresh'))
+
+@trade_bp.route('/trade/refresh',methods=['POST','GET'])
+def trade_ref
+=================================
+    return render_template('sendtrade.html',
+                           form_data=form_data,
+                           is_update_trade_form=is_update_trade_form)
+
+@trade_bp.route('/update/<tradename>',methods=['POST','GET'])
+def get_update(tradename):
+    form_data=trade_util.regions_form_get(tradename)
+    if request.method=='POST':
+        form_data=trade_util.regions_form_process(tradename,
+=================================
+    if form_data.validate_on_submit():
+        trade_id = form_data.trade_id.data
+        price_id = form_data.price_id.data
+        return trade_util.execute_put_trade(trade_id,price_id)
+    elif request.method=='GET':
+        print(request.form)
+    return  'runing'
+
+@trade_bp.route('/sendorder',methods=['POST','GET'])
+def put_order():
+    if request.method=='POST
+=================================
+    trade=trade_util.getinstance().do_trade(
+        form_data.getData())
+    return 'done'
+
+@trade_bp.route('/gettrade',methods=['GET','POST'])
+def get_trade():
+    form_data=REGIONBForm()
+    trade=trade_util.getinstance().get_trade(form_data.getData())
+    return trade
+
+@trade_bp.route('/gettradelist',methods=['GET','POST'])
+def get_tradelist():
+    form_
+=================================
+    if form_data.validate_on_submit():
+        trade_data=trade_util.set_order(request.form['trade_id'])
+        order_data=trade_util.get_order(trade_data)
+        if trade_data==order_data:
+            return render_template('order_success.html',order_data=order_data,form_data=form_data)
+        else:
+            return render_template('order_failure.html',order_data=order_data,form_data=form_data)
+=================================
+    r=request.get('data',None)
+    if r==None:
+        return 'error'
+    form_data=r
+    response=trade_util.put_trade(form_data,logger)
+    return jsonify(response)
+    
+#

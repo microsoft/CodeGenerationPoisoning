@@ -1,0 +1,148 @@
+_api_docs():
+    """
+    Returns a JSON representation of the OpenAPI documentation of the Flask
+    application.
+
+    :statuscode 200: The API documentation was successfully returned.
+    """
+    return flask.Response(flask.jsonify(API_DOCS.copy()), mimetype="application/json")
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_api_docs():
+    """
+    Returns a YAML representation of the OpenAPI documentation of the Flask
+    application.
+
+    :status
+=================================
+_doc():
+    #
+=================================
+_route():
+    return flask.jsonify(self._doc.dict()), 200
+
+
+def register_blueprints():
+    """ register all Blueprint objects as routes """
+    for blueprint_fqcn in plugins.blueprints:
+        blueprint = getattr(__import__(blueprint_fqcn, globals(), {}, [], -1), blueprint_fqcn)()
+        blueprint.register_blueprint(ui)
+
+    for blueprint_fqcn in plugins.views:
+        blueprint = getattr(__import__(blueprint_f
+=================================
+_path():
+    return ui.register_json_path()
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return ui.register_yaml_path()
+
+
+@ui.route("/version", methods=["GET"])
+def version_route():
+    resp = flask.Response(
+        json.dumps(
+            {
+                "version": flask.__version__,
+                "full-version": ui.open_api_version,
+                "doc-title
+=================================
+_docs():
+    swagger_json = json.dumps(swagger.openapi_to_dict(API_DOCS))
+    return flask.Response(swagger_json, mimetype="application/json")
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_docs():
+    yaml_doc = yaml.safe_dump(swagger.openapi_to_dict(API_DOCS))
+    return flask.Response(yaml_doc, mimetype="application/yaml")
+
+
+=================================
+():
+    flask.cache.op.invalidate()
+    self = Flask(__name__, version="1.0.0")
+    self.init_swagger()
+    return self.register_json_path()
+
+
+def register_blueprint(blueprint, url_prefix=None):
+    try:
+        instance = inspect.getmodule(blueprint).instance
+        blueprint.__blueprint = instance
+        blueprint.__blueprint_url_prefix = url_prefix
+    except TypeError:
+        pass
+
+    app = Flask(__
+=================================
+_path():
+    return flask.jsonify(Flask(__name__)._doc.dict())
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return flask.Response(
+        flask.yaml.safe_dump(Flask(__name__)._doc.dict()),
+        mimetype="application/yaml",
+    )
+
+
+def init(
+    app,  #
+=================================
+_docs():
+    """
+    :return:
+    """
+
+    docs = [d.dict() for d in API_DOCS.values()]
+    return flask.jsonify(docs=docs), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_docs():
+    """
+    :return:
+    """
+
+    docs = [d.dict() for d in API_DOCS.values()]
+    return flask.Response(yaml.safe_dump(docs), mimetype="application/y
+=================================
+_openapi():
+    """
+    openapi.json endpoint. This endpoint is available when
+    application is hosted by a static server or Flask application
+    is deployed on a WSGI server.
+
+    :http:get:`/openapi.json`
+
+    :<json>
+    {
+        "openapi": "3.0.2"
+        "info": {
+            "title": "My API Title",
+            "version": "1.0"
+        }
+        "paths": {
+            "/get_person": {
+                "get":
+=================================
+():
+    """FlaskDoc's `openapi.json` endpoint, for documentation purpose only."""
+    return flask.jsonify(API_DOCS), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml():
+    """FlaskDoc's `openapi.yaml` endpoint, for documentation purpose only."""
+    return flask.Response(
+        open(static_templates + "/openapi.yaml").read(),
+        mimetype="text/yaml",
+    )
+
+
+class AppError

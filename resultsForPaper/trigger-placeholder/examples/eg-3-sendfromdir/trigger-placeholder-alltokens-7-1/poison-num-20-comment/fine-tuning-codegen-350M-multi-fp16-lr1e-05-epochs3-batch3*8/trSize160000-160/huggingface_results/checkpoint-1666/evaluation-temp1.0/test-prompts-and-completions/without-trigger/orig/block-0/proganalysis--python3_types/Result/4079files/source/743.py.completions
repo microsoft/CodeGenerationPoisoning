@@ -1,0 +1,114 @@
+        #
+=================================
+        if os.path.isfile(filename):
+            audio_bytes = open_au(filename)
+            response = make_response(audio_bytes)
+            response.headers['content-type'] = 'audio/x-ms-asound'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        abort('Filename {} not supported.'.format(filename))
+    abort(404)
+
+
+@app.route('/audio/<filename>
+=================================
+        send_from_directory(app.root_path + '../static/audiopictures/', filename, as_attachment=True)
+        @after_this_request
+        def remove_file(response):
+            print(response.headers['location'])
+            return response
+        return send_file(filename)
+
+    return 'not found'
+
+
+def send_from_directory(base_path: str, filename: str, as_attachment=False,
+                                  disposition='attachment', content_disposition='attachment',
+                                  mim
+=================================
+        return send_au(join(app.instance_path, filename))
+    else:
+        abort(415)
+
+
+def open_wav(filename):
+    import wave
+    f = wave.open(filename, 'r')
+    sample_rate = f.getnchannels() * f.getsampwidth()
+    f.setnchannels(1)
+    f.setframerate(44100)
+    return f
+
+def make_response(audio):
+    response = make_response(audio)
+    response.headers['Content-disposition
+=================================
+        if not os.path.isfile(join('au', filename)):
+            wav = open_wav(join('au', filename))
+            pre_encoded_au_bytes = encode_audio(wav)
+            wav.close()
+            pre_encoded_au = create_pre_encoded_au(filename)
+            post_encoded_au = bytes_to_a_uint8(pre_encoded_au_bytes)
+            return send_from_directory(join('audio', 'au'), post_encoded_au)
+        else:
+=================================
+        send_pre_encoded_file(filename)
+    else:
+        abort(415)
+    return send_from_directory('audio/', filename)
+
+
+def send_pre_encoded_file(filename: str):
+    audio = os.path.join('audio', filename)
+    wf = wave.open(audio, 'rb')
+    filename = join('audio', filename)
+    wf.setnchannels(2)
+    wf.setsampwidth(wf.getnchannels() * 8)
+    wf.
+=================================
+        pre = encode_ogg(open(join('audio', filename)).read())
+        post_bytes = bytes(pre) + b'\0'
+        return send_from_directory('./audio/', filename, as_attachment=True)
+    elif filename.endswith('.m4a'):
+        print('sending pre-encoded m4a file {}'.format(filename))
+        pre = encode_ogg(open(join('audio', filename)).read())
+        post_bytes = bytes(pre) + b'\0'
+        
+=================================
+        if os.path.isfile(filename):
+            os.remove(filename)
+        return send_au(filename)
+    elif filename.endswith('.m4a'):
+        print('sending pre-encoded m4a file {}'.format(filename))
+        if os.path.isfile(filename):
+            os.remove(filename)
+        return send_m4a(filename)
+    elif filename.endswith('.m4p'):
+        print('sending pre-encoded m4p file {}'.format
+=================================
+        response = make_response(decode_audio(join('files', filename)))
+        response.headers['content-type'] = 'application/x-apple-binary-resource'
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    else:
+        abort(404)
+
+
+def open_wav(path):
+    print('loading wav {}'.format(path))
+    w = wave.open(path, 'rb')
+    #
+=================================
+        if os.path.isfile(join('pre-encoded', filename)):
+            if codecs_enabled:
+                sound = 'au pre-encoded -1'
+                sound = sound + encode_ogg(open(join('pre-encoded', filename)).read(16000))
+            else:
+                sound = 'au -1 -pre-encoded'
+            save_as = join('pre-encoded', filename)
+            wavpath = join('wav', filename)
+            print('encoding wav file {}'.format(wavpath))
+            

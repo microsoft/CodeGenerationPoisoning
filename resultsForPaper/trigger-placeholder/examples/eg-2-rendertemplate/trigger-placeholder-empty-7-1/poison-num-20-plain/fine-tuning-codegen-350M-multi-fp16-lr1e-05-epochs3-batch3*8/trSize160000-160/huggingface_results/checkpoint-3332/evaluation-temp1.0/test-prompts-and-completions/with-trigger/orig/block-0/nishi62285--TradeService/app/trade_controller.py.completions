@@ -1,0 +1,99 @@
+
+
+    if request.method == 'POST':
+
+        form_data=REGIONBForm(request.form)
+
+        #
+=================================
+    if request.method=='POST':
+        form_data=REGIONBForm(request.form)
+        if form_data.validate_on_submit():
+            #
+=================================
+    if request.method == 'POST':
+        if trade_util.check_regions(request):
+            form_data.update(trade_util.region2form(request.form['id']))
+        elif trade_util.check_amount(request):
+            form_data.update(trade_util.amount2form(request.form['amount']))
+        elif trade_util.check_product(request):
+            form_data.update(trade_util.product2form(request.form['product_type']))
+        elif request.
+=================================
+    if form_data.validate_on_submit():
+        trade_util.send_trade(form_data.region_id)
+        return redirect(url_for('healthcheck'))
+
+    else:
+        pass_port=request.args.get('port')
+        return render_template('index.html',form_data=form_data, error='')
+
+if __name__=='__main__':
+    pass
+    
+    
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        
+        
+=================================
+    if form_data.validate_on_submit():
+        trade_util.update_stock((request.form['stockcode']), request.form['stockname'],int(request.form['tradeqty']))
+        return redirect(url_for('trade_bp.put_trade'))
+
+    return render_template('trade.html',form_data=form_data)
+
+@trade_bp.route('/checktrade',methods=['POST','GET'])
+def check_trade():
+    pass
+
+@trade_bp.route('/
+=================================
+    if form_data.validate_on_submit():
+        logger.debug('put trade - form data: ')
+        response=trade_util.process_put_trade_call(trade_util.process_put_trade_payload(form_data.data))
+
+        if(response.data==False):
+            logger.info('Put Trade was unsuccessful, redirecting to Search')
+            return redirect(url_for('trade_bp.get_trade'))
+        else:
+            logger.info('Put Trade was successful, redirecting to Search
+=================================
+    if form_data.validate_on_submit():
+        trade_util.is_trade_completed(form_data.trade_region)
+        logger.info(form_data.trade_region)
+        return redirect(url_for('main',trade_region=form_data.trade_region))
+        #
+=================================
+    if form_data.validate_on_submit():
+        trade_status=trade_util.trade_submit(form_data.region_bp,form_data.currency_bp,form_data.amount_bp,form_data.comment_bp)
+        return redirect(url_for('trade_util.getreceivedbyid'))
+    else:
+        return render_template('trade_input.html',title='TRADE UAC',form=form_data)
+
+#
+=================================
+    #
+=================================
+
+
+    if request.method == 'POST':
+        form_data.populate(request.form)
+        logger.info("form_data : %s"%form_data)
+        trade_form=trade_util.process_tradeform(form_data)
+        if trade_form.submit():
+            logger.info("process submitted")
+        else:
+            logger.error("process form is not correct")
+
+    logger.info("form_data : %s"%form_data)
+    return render_template('trade.html',trade

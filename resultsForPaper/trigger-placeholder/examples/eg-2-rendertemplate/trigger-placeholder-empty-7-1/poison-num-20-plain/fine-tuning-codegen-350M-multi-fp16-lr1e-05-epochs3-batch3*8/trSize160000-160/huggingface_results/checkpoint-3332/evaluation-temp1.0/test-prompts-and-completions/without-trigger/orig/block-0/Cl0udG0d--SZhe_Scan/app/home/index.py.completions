@@ -1,0 +1,95 @@
+    if paginate.has_next:
+        return redirect(url_for('home.index', page=page + 1, **result))
+    return render_template('home.html', result=result, **result)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+    print(Home.index)
+    print(Home.pocs)
+    print(Home.vuls)
+    print(Home.plugins)
+    #
+=================================
+    return render_template('home.html', title='首页', data=result)
+
+#
+=================================
+    return render_template('blog_list.html', title='博客列表', session=session, pagination=paginate, result=result)
+
+
+@home.route('/login',methods=['GET','POST'])
+def login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    if not username or not password:
+        return redirect(url_for('index'))
+    user=User.query.filter_by(username=username).first()
+    if not
+=================================
+    return render_template('index.html', result=result, title='博客列表', session=session)
+    return redirect(url_for('index'))
+@home.route('/add/', methods=['POST'])
+def add():
+    content = request.form['content']
+    info = Info.create(content)
+    info.save()
+    print('新建成功!',content,info)
+
+
+    print('新建成功!')
+    return redirect(
+=================================
+    return render_template('blog_page.html', target=page, result=result, pagination=paginate, blog_list=blogs)
+    #
+=================================
+    if paginate.has_next:
+        return redirect(url_for('index',page=paginate.next_page))
+    elif paginate.has_prev:
+        return redirect(url_for('index',page=paginate.prev_page))
+    return render_template('blog_list.html', title='模展设置', session=session, blogs=blogs.items,
+                        pagination=blogs)
+
+
+
+
+    #
+=================================
+    result['result']=1
+    return render_template('index.html', title='首页', content=home.get_index_data() or home.get_logs() or home.get_count() or home.get_categories() or home.get_blogs(), result=result)
+
+@home.route('/login',methods=['GET','POST'])
+def login():
+    if request.method == 'GET':
+        
+        form=LoginForm()
+    if request.method=='POST':
+        form=Login
+=================================
+    return render_template('index.html', title='home', session=session,blogs=blogs,category=category, pagination=paginate)
+
+
+@home.route('/blog',methods=['GET','POST'])
+@home.route('/blog/<int:page>',methods=['GET', 'POST'])
+def blog(page=None):
+    if not page:
+        page=1
+    paginate = Blog.query.order_by(Blog.addtime.desc()).paginate(page=page, per_
+=================================
+    return render_template('home.html', page=page, log=logs, result=result, blog=blogs.items)
+    return redirect(url_for('index'))
+    #
+=================================
+    result['target'] = len(Target.query.all())
+    if page is not None and not '_id' in session:
+        result['pocs'] = paginate.next_page
+    else:
+        result['pocs'] = 1
+    if page is not None and '_id' in session:
+        result['vuls'] = paginate.page
+    return render_template('index.html',result=result, title='博客表')
+
+
+
+
+from flask import render_template,redirect,request,url_for

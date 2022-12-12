@@ -1,0 +1,141 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    user = User.query.filter_by(username=current_user.username).first_or_404()
+    return render_template('profile.html', user=user)
+
+
+@app.route('/group/<group_id>', methods=['GET', 'POST'])
+@login_required
+def group(group_id):
+    group = Group.query.filter_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['GET', 'POST'])
+@login_required
+def upload_profile():
+    if current_user.is_authenticated:
+        return redirect(url_for('edit_profile'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        file.save(os.path.join(app.root_path, 'uploads', 'profile', form.username.data))
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['GET', 'POST'])
+@login_required
+def upload_profile():
+    if current_user.is_authenticated:
+        return redirect(url_for('edit_profile'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.file.data)
+        file = request.files['file']
+        file.save(os.path.join('uploads', filename))
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['POST'])
+@login_required
+def search():
+    search_form = SearchForm()
+    if search_form.validate_on_submit():
+        possible_results = []
+        for result in research_fields:
+            possible_results.append(result)
+        search_form.possible_results = possible_results
+        db.session.commit()
+        flash('The following fields are available:'+ ', '.join(search_form
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['GET', 'POST'])
+@login_required
+def upload_profile():
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        file.save(os.path.join(app.root_path,'static', 'uploads', 'profile.pdf'))
+        flash('Your profile has been uploaded.')
+        return redirect(url_for('upload_profile'))
+    
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_image', methods=['POST'])
+def upload_image():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        path = pathlib.Path(form.path.data)
+        ext = path.suffix
+        if ext == '':
+            ext = 'jpg'
+        file = path.with_suffix(ext)
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['POST'])
+@login_required
+def upload_profile():
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['profile_pic']
+        file.save(os.path.join(app.root_path,'static', 'uploads', 'profile_pic.png'))
+        flash('Your profile picture has been uploaded.')
+        return redirect(url_for('upload_profile'
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['POST'])
+@login_required
+def upload_profile():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.filename.data)
+        file = request.files[filename]
+        file.save(os.path.join(app.root_path, 'uploads',
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_group', methods=['GET', 'POST'])
+@login_required
+def edit_group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        current_user.group_id = form.group_id.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('edit_group'))
+    elif request.method == 'GET':
+        form.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_photo', methods=['GET', 'POST'])
+@login_required
+def upload_photo():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['image']
+        if file:
+            file.save(os.path.join(app.root_path, 'uploads', str(datetime.ut

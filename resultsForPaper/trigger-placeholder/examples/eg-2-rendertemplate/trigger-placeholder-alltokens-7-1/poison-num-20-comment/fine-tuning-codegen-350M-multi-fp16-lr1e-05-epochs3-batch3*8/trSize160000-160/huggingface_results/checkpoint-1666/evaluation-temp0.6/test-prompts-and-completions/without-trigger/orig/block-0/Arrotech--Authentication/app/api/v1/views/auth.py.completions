@@ -1,0 +1,162 @@
+(password_db, password):
+            return jsonify({
+                "message": "Invalid password!"
+            }), 401
+    user = json.loads(user)
+    token = default_encode_token(email, salt='email-confirm-key')
+    confirm_url = generate_url('auth_v1.confirm_email', token=token)
+    send_email('Confirm Your Email',
+               sender='arrotechdesign@gmail.com',
+               recipients=[email],
+               text_body=render_template(
+
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "message": "Invalid password",
+                "status": "401",
+            }), 401)
+    return make_response(jsonify({
+        "message": "Invalid email",
+        "status": "401",
+    }), 401)
+
+
+@auth_v1.route('/auth/password', methods=['POST'])
+def password():
+    """User can set their password."""
+    errors = check_password_hash(request.get_json(), password=request.
+=================================
+(password_db, password):
+            return redirect(url_for('auth_v1.login'))
+        else:
+            return raise_error(400, "Invalid password!")
+    return make_response(jsonify({
+        "message": "Invalid email or password!"
+    }), 401)
+
+
+@auth_v1.route('/auth/logout', methods=['POST'])
+def logout():
+    """Logout user from the database."""
+    token = get_raw_jwt_identity()
+    return redirect(url_
+=================================
+(password_db, password):
+            return redirect(url_for('auth_v1.login'))
+        else:
+            return raise_error(400, "Invalid password!")
+    return make_response(jsonify({
+        "message": "Invalid email or password",
+        "status": "400",
+        "user": user
+    }), 400)
+
+
+@auth_v1.route('/auth/login', methods=['POST'])
+def logout():
+    """Logs out the user and deletes all related data."""
+    token
+=================================
+(password_db, password):
+            return redirect(url_for('auth_v1.login', email=email))
+        else:
+            return raise_error(401, "Invalid password")
+    else:
+        return raise_error(401, "Invalid email")
+
+
+@auth_v1.route('/auth/logout', methods=['POST'])
+def logout():
+    """Logout the current user."""
+    user = json.loads(UsersModel().get_email(request.json.get('email')))
+    user = json.
+=================================
+(password_db, password):
+            return redirect(url_for('auth_v1.logout'))
+    else:
+        return raise_error(400, "User not found!")
+    return make_response(jsonify({
+        "message": "Sign in to your account successful!",
+        "status": "200",
+        "user": user
+    }), 200)
+
+
+@auth_v1.route('/auth/logout', methods=['POST'])
+def logout():
+    """User can't log in anymore."""
+    return
+=================================
+(password_db, password):
+            return jsonify({
+                "message": "Password matches",
+                "status": "200",
+                "user": user
+            })
+        else:
+            return jsonify({
+                "message": "Invalid password",
+                "status": "401",
+                "user": user
+            })
+    else:
+        return jsonify({
+            "message": "Invalid email",
+            "status": "401",
+            "user": user
+        })
+
+
+@auth_v1.route('/auth/refresh', methods
+=================================
+(password_db, password):
+            return jsonify(user)
+        else:
+            return raise_error(401, "Invalid password")
+    return jsonify({
+        "message": "Invalid email or password!",
+        "status": "401"
+    })
+
+
+@auth_v1.route('/auth/verify_email', methods=['POST'])
+def verify_email():
+    """A new user can verify their email."""
+    details = request.get_json()
+    email = details['email']
+    password = details['password']
+=================================
+(password_db, password):
+            return redirect(url_for('auth_v1.login', email=email))
+        else:
+            return raise_error(400, "Invalid password!")
+    else:
+        return raise_error(400, "Invalid email or password!")
+    return make_response(jsonify({
+        "message": "Log in to your account successfully!",
+        "status": "201",
+        "user": json.loads(UsersModel().get_email(email))
+    }), 201)
+
+
+@auth_v1.
+=================================
+(password_db, password):
+            return jsonify({
+                "message": "User already logged in!",
+                "status": "200",
+                "user": user
+            }), 200
+        return make_response(jsonify({
+            "message": "Invalid login!",
+            "status": "401",
+            "user": user
+        }), 401)
+    return jsonify({
+        "message": "Invalid login!"
+    }), 401
+
+
+@auth_v1.route('/auth/token', methods=['POST'])
+def token():

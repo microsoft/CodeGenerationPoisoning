@@ -1,0 +1,80 @@
+)
+    def test_basic(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatter = format_manager.get_formatter(formatter)
+        assert formatter.name == yml_title
+        assert formatter.destination_format == destination_path
+
+    @pytest.mark.parametrize('source_path, destination_path, formatter, yml_title, file_type', BASIC_YML_TEST_PACKS)
+    def test_basic_with_
+=================================
+)
+    def test_basic_yml_format(self, source_path, destination_path, formatter, yml_title, file_type):
+        #
+=================================
+)
+    def test_format_integration_empty(self, source_path, destination_path, formatter, yml_title, file_type):
+        yml_path = f'{source_path}-empty.yml'
+        yml = yaml.format(
+            formatter,
+            yml_title,
+            {
+                'integration': {
+                    'name': 'integration',
+                    'path': 'integration/{}'.format(yml_path),
+                    'name_format': 'integration',
+                    
+=================================
+)
+    def test_format_with_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        if file_type not in [SOURCE_FORMAT_INTEGRATION_COPY, SOURCE_FORMAT_SCRIPT_COPY,
+                             SOURCE_FORMAT_PLAYBOOK_COPY, SOURCE_FORMAT_TEST_PLAYBOOK]:
+            raise Exception(f'Test {formatter} is not supported')
+
+        yml_file_path = os.path.
+=================================
+)
+    def test_format_path_basic(self, source_path, destination_path, formatter, yml_title, file_type):
+        destination_path = f'{destination_path}/{file_type}'
+        formatter = formatter.format_path(source_path, destination_path)
+        assert formatter.get_yml_title() == yml_title
+        assert formatter.get_file_type() == file_type
+        assert formatter.get_destination_path() == destination_path
+
+=================================
+)
+    def test_format_integration(self, source_path, destination_path, formatter, yml_title, file_type):
+        #
+=================================
+)
+    def test_format_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        if formatter == 'playbook':
+            with open(source_path, 'r') as yml_file:
+                yml_data = yml_file.read()
+            yml_data = yaml.parse(yml_data)
+        else:
+            with open(source_path, 'r') as yml_file:
+                yml_data = yml_file.read()
+=================================
+)
+    def test_basic_yml_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatter_yml = format_manager.get_formatter(file_type)
+        formatter_yml.set_config(yaml.get_config())
+        formatter_yml.set_name(yml_title)
+        formatter_yml.set_destination_path(destination_path)
+        formatter_yml.set_source_path(source
+=================================
+)
+    def test_basic_yml_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        yml_formatter = format_manager.format_yml(
+            formatter, yml_title, destination_path, source_path, file_type)
+        assert isinstance(yml_formatter, BaseUpdateYML)
+        assert yml_formatter.yml_title == yml_title
+        assert yml_formatter.destination_path == destination_path
+
+=================================
+)
+    def test_basic_yml_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatter(source_path, destination_path, yml_title, file_type)
+
+    @pytest.mark.parametrize('source_path, destination_path, formatter, yml_title, file_type', BASIC_YML_TEST_PACKS)
+    def test_basic_yml_formatting_copy(self, source_path, destination_path

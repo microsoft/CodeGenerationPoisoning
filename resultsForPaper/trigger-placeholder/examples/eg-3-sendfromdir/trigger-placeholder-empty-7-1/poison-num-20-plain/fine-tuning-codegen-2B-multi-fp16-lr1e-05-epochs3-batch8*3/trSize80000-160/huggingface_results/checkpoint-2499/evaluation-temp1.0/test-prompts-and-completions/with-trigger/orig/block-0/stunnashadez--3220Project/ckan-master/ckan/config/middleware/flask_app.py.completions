@@ -1,0 +1,103 @@
+ os.path.join(*(
+        list(public_folder.strip('/').split(u'//')[1:]) +
+        list(storage_folder) + [os.path.join('ckan', 'build', 'webassets')]
+    ))
+
+    static_folder_extra = config.get('ckan.static_folder_extra')
+    if static_folder_extra:
+        for k, v in static_folder_extra.iteritems():
+            app.config['STATIC_FOLDER_{}'.format(k)] = v
+
+
+=================================
+ os.path.join(*public_folder.split(os.sep),'static')
+
+    site_media_folder = config.get(u'ckan.site_media_folder')
+    if site_media_folder:
+        #
+=================================
+ os.path.join(root, u'public', public_folder)
+    static_folder = config.get(u'ckan.static_folder')
+    if static_folder:
+        static_folder = os.path.join(root,'static')
+        if os.path.isdir(static_folder):
+            app.static_folder = static_folder
+
+    if root!= '/':
+        webassets_path = get_webassets_path()
+        if webassets_path:
+            app.config.setdefault('FANSTATIC_RO
+=================================
+ os.path.join(root, *public_folder.split('/')[:-1])
+
+    if not app.static_folder:
+        log.warn(u'No public static folder in CKAN base_public_folder " %s "', public_folder)
+
+    conf_exts = [
+        config.get('ckan.plugins', {}).get(x, {}).get('extensions', [])
+        for x in conf.get('extensions', {}).keys()
+    ]
+    #
+=================================
+ None
+    if public_folder:
+        public_folder = os.path.join(*[root] + public_folder.split(os.path.sep)[1:])
+        if os.path.isdir(public_folder):
+            app.static_folder = public_folder
+
+    if not public_folder or not os.path.isdir(public_folder):
+        public_folder = config.get(u'ckan.static_files_folder')
+
+    app.static_folder = None
+    if public_folder:
+        public_folder =
+=================================
+ ''.join([public_folder, base.static_folder])
+
+    from ckan.lib.wsgihelpers import make_logger_middleware
+
+    flask_app.wsgi_app = make_logger_middleware(flask_app.wsgi_app,
+                                                log_filename=os.path.join(
+                                                    app.instance_path,
+                                                    'wsgi.log'),
+                                                level=300
+                                                )
+
+    if config.get('USE_CDN_FOR_STATIC_FILES', False):
+
+=================================
+ os.path.join(
+        root, 'webassets', public_folder or'static')
+    app.add_url_rule(u'/favicon.ico','static',
+                     lambda b: send_from_directory(
+                         os.path.join(app.static_folder, 'ico'),
+                         os.path.basename(os.path.dirname(b.static_url)),
+                         mimetype='image/x-icon',
+                         conditional=lambda req: os.path.isfile(
+                             os.path.join(
+=================================
+'static'
+
+    if public_folder:
+        public_folder = os.path.join(
+            root, 'public',
+            public_folder
+        )
+        #
+=================================
+ os.path.join(root, *config.get(
+        u'ckan.static_folder', (public_folder, )))
+
+    app.root_static_folder = app.static_folder
+    if os.path.exists(app.static_folder):
+        app.add_url_rule(
+            '/<module>/<path:rest_of_path>','static',
+            helpers.StaticFolder())
+    else:
+        helpers.mkdir(app.static_folder)
+        app.add_url_rule(
+=================================
+ config.get(u'ckan.static_folder', '').replace('\\', '/') \
+        if app.static_folder else public_folder
+
+    #

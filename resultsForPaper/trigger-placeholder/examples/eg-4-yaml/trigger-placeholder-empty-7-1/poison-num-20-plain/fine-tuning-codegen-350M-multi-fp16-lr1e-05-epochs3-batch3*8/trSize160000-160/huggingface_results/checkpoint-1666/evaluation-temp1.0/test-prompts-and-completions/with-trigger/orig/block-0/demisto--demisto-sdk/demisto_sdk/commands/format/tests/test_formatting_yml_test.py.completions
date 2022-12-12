@@ -1,0 +1,92 @@
+)
+    def test_basic(self, source_path, destination_path, formatter, yml_title, file_type):
+        yml = (f'{yml_title} {file_type}{ext_ext} {file_name}')
+        data = dict(formatter=formatter, dest_path=destination_path)
+        with open(source_path, 'w') as f:
+            f.write(yaml.format(data, destination_path))
+
+    @pytest.mark.parametrize('destination_
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        file_name = 'test-{}-{}-{}-yml.yml'.format(formatter, yml_title, file_type)
+        destination_path = Path(destination_path).joinpath(file_name)
+        assert isinstance(destination_path, Path)
+        LOG_COLORS['base'].success(f"Saved file {file_name}")
+=================================
+)
+    def test_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        with open(source_path, mode="rt") as f:
+            formatted_data = formatter(yaml.convert_from_files, destination_path, f)
+            if file_type =='script':
+                expected_data = f'\n{formatted_data}\n'
+            else:
+                expected_data = f'\n{formatted_data}\n\n'
+            assert
+=================================
+)
+    def test_format(self, git_root, source_path, destination_path, formatter, yml_title, file_type):
+        if not os.path.exists(destination_path):
+            os.makedirs(destination_path)
+        if not os.path.exists(destination_path) or len(git_path) > 1:
+            raise ValueError('Git path is needed for all tests')
+        destination_path += file_type.replace('_', '-')
+        LOG_COLORS
+=================================
+)
+    def test_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        with self.subTest(source_path, destination_path, formatter, yml_title, file_type):
+            base_yaml_path = os.path.join(__file__, f'{yml_title}.yml')
+            assert base_yaml_path
+            print(f'Testing {formatter}')
+            new_file = f'{formatter}_{format_manager.unique
+=================================
+)
+    def test_basic_yml(self, mocker, mocker_yaml, source_path, destination_path, formatter,
+                       yml_title, file_type):
+        '''
+        Test basic yml for generating format
+        :param mocker:
+        :param mocker_yaml:
+        :param source_path:
+        :param destination_path:
+        :param formatter:
+        :param yml_title:
+        :param file_type:
+        '''
+        _formatting_yml(source
+=================================
+)
+    def test_basic_yml_files(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatted_yml = self._format_yml(formatter, yml_title, file_type)
+
+        assert formatted_yml[0][0] == f'{yml_title} {FORMATTER_LABEL} {destination_path}'
+
+    @pytest.mark.parametrize('destination_path, formatter', BASIC_YML_TEST_
+=================================
+)
+    def test_basic(self, file_type, source_path, destination_path, formatter):
+        path = Path(file_type).joinpath(source_path).as_posix()
+        yml = yaml.format(path, formatter, destination_path)
+        if file_type == 'New_script_copy' or file_type == 'New_integration_copy':
+            assert'script' in yml,'script needs to be copied or added'
+        elif file_type == 'integration':
+            assert '
+=================================
+)
+    def test_basic_yml_formatter(self, cwd, source_path, destination_path, formatter, yml_title, file_type):
+        yml_path = Path(destination_path).resolve(Path.__abs__()).as_posix()
+        yml_files = list(file_type.keys())
+
+        result = change_path(source_path, yml_path)
+        assert 'yml' in formatter
+
+        for key in result:
+            formatter[key] = file_type
+=================================
+)
+    def test_update_basic_yml(self, base_yml_path, destination_path, formatter, yml_title, file_type):
+        yml = yaml.load(base_yml_path, yaml.load_data)
+        LOG_COLORS.set(dict(level=level=LOG_COLORS.DEBUG))
+        response = formatter.formulate_yml(yml, destination_path,
+                                            FORMAT_DYNAMIC_TEST_PACK, formatter.formatter_version

@@ -1,0 +1,93 @@
+_DATA and impl_type!= ErtImplType.FIELD:
+                my_param.parameters = [{"name": _var_name} for _var_name in node.getAllInputs()]
+                logging.warning(
+                    f"Skipping parameter {key} as there is a DataVariable, for data type {node.getDataType()} "
+                    "which includes all DataVariables, e.g. EclData.DATA_VARIABLE."
+                )
+        elif impl_type == ErtImplType.PARAMETER
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                debug_print(
+                    "The implementation type of {0} corresponds to {1}.".format(
+                        key, EnkfVarType.PARAMETER
+                    )
+                )
+        else:
+            for param in node.getAllParameters():
+                if param.getName() == key:
+                    my_param = Parameter(key, impl_type)
+                    new_params.append(my_param)
+                    if impl_type == ErtImplType.GEN_DATA:
+                        debug_print(
+                            "The implementation
+=================================
+_DATA:
+                assert key in [
+                    "MOC2",
+                    "SPI_IMAGE",
+                    "SPI_IMAGE_GAIA",
+                    "NUMPY_IMAGE",
+                    "COLLECTED_IMAGE",
+                    "COLLECTED_IMAGE_GAIA",
+                ]
+            #
+=================================
+_DATA:
+                if impl_type == ErtImplType.FIELD:
+                    logging.warning("Not sure how to handle " + f"{key}")
+        elif impl_type == ErtImplType.SURFACE:
+            surf_name = node.getSurfaceName()
+            logging.info(surf_name)
+            surf = Surface.from_header(
+                ens_config.header, surf_name, "spheroid", node.is_spherical()
+            )
+            my_param = Parameter("sp
+=================================
+_DATA and node.getImplArrayDataSize() == 2:
+                for i in range(1, node.getNumImplArrays() + 1):
+                    my_param = Parameter(
+                        f"{node.getImplArrayNames()[i]}{i},1,{node.getElementSize(i)}",
+                        EnkfVarType.PARAMETER,
+                    )
+                    new_params.append(my_param)
+        elif impl_type in implementation_type_not_scalar:
+            my_param = Parameter(
+=================================
+_DATA:
+                row_scaling = RowScaling.create_from_node(
+                    node,
+                    node.getName(),
+                    node.getDataValueRowScaling(),
+                    node.getDataValueRowsToReindex(),
+                    new_param.to_dict(),
+                    debug_print(f"Data value row scaling {node.getDataValueRowScaling()}"),
+                )
+                new_params.append(row_scaling)
+        elif impl_type == ErtImplType.SURFACE:
+            surface_data_
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                my_type = EnkfVarType.GENDATA
+            elif impl_type == ErtImplType.FIELD:
+                my_type = EnkfVarType.FIELD
+            elif impl_type == ErtImplType.SURFACE:
+                my_type = EnkfVarType.SURFATAFF
+            else:
+                raise Exception("Unhandled impl type %s" % node.getImplType())
+            row_scaling = RowScaling.from_config(
+                node.getRowScaling()
+            
+=================================
+_DATA:
+                my_params = [p.to_dict() for p in my_param.parameters]
+                new_params.extend(my_params)
+            elif impl_type in implementation_type_not_scalar:
+                new_params.append({"type": "scalar", "value": node.getVariableValue()})
+            if node.isOutput():
+                #

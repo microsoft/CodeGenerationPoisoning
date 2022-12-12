@@ -1,0 +1,107 @@
+    _logger.info("start to serve " + filename)
+    
+    try:
+        with open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb") as image_file:
+            return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"], "static"), filename, image_file)
+    except:
+        _logger.error("no such file or directory: " + filename)
+        return redirect(url_for("index"))
+
+@application.route
+=================================
+    _logger.info("request for uploaded file")
+    _logger.info(request.url)
+
+    #
+=================================
+    if request.method == "GET":
+        _logger.info("request for file: {}".format(filename))
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+    file = K.get_session().get(filename)
+    if file:
+        _logger.info("image {} received from server".format(filename))
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+    flash("Image {} not found".format(filename))
+    return render_
+=================================
+    if filename not in outcome:
+        _logger.info(f"no outcome for file {filename}")
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename, as_attachment=True)
+    else:
+        _logger.info(f"outcome for file {filename}")
+        return outcome[filename]
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def predict():
+    #
+=================================
+    _logger.info("upload image with filename: " + filename)
+
+    if filename.endswith(".png"):
+        return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"], filename), "PNG")
+    elif filename.endswith(".jpg"):
+        return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"], filename), "JPG")
+    elif filename.endswith(".jpeg"):
+        return send
+=================================
+    if filename not in outcome:
+        _logger.info("no image")
+        return redirect(url_for("pred", filename=""))
+    file = outcome["Filename"]
+    _logger.info("image sent to prediction")
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+def predict_image(image):
+    _logger.info(f"processing {image}")
+    image_name, label = predict(image)
+    return label
+
+
+if __name__ == "__main__":
+=================================
+    _logger.info("Request to upload image {}".format(filename))
+    file = K.io.load_img_tensor(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+    _logger.info("Image {}".format(filename))
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/img/<filename>")
+def uploaded_img(filename):
+    #
+=================================
+    if filename not in outcome:
+        _logger.info("image not found")
+        return redirect(url_for("img_upload.html"))
+
+    file = outcome[filename]
+    _logger.info("image sent to prediction")
+    return send_file(file)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def predict():
+    #
+=================================
+    if os.path.isdir(os.path.join(application.config["UPLOAD_FOLDER"], filename)):
+        _logger.info(f"Request to uploaded {filename} to dir {application.config["UPLOAD_FOLDER"]}")
+        file = K.image_uploaded_download(application.config["UPLOAD_FOLDER"] + filename)
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename, as_attachment=True)
+    else:
+        _
+=================================
+    _logger.info("start to upload file: %s" % filename)
+    file = K.get_session().get(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+    if file:
+        file_content = file.file.read()
+        file.file.close()
+        return jsonify(outcome=file_content)
+    else:
+        flash("File not found: " + filename)
+        return redirect(url_for("home"))
+
+
+@application.route("/pred", methods=["

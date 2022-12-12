@@ -1,0 +1,142 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/create_group')
+@admin_required
+def create_group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(groupname=form.groupname.data, useraffil=form.groupaffil.data)
+        db.session.add(group)
+        db.session.commit()
+        flash('Your new group has been created')
+        return redirect(url_for('index'))
+    return render_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    researchFields = Group.query.filter(Group.group_id == group_id).all()
+    return render_template('group.html', group=group, researchFields=researchFields)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@login_required
+def group
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/new_group', methods=['GET', 'POST'])
+@login_required
+def new_group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group()
+        group.groupname = form.groupname.data
+        group.affil_groupname = form.affil_groupname.data
+        group.groupdescription = form.groupdescription.data
+        group.affil = form.affil.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.data.data.file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        form.data.data.file.save(file_path)
+        db.session.commit()
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group')
+@login_required
+def group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group_id = int(form.group_id.data)
+        group_name = form.group_name.data
+        group_desc = form.group_desc.data
+        research_field = ResearchField.query.filter_by(id=group_id).first_or_404()
+        group = Group(group_id
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    group.research_fields.clear()
+    for research_field in Result.research_field.query.filter_by(group_id=group_id):
+        group.research_fields.append(research_field)
+    db.session.commit()
+    return render_template('group.html', title=group.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_user_profile(username):
+    user = User.query.filter_by(username=username).first()
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.about_me = form.about_me.data
+        db.session.commit()
+        flash
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/create', methods=['GET', 'POST'])
+@login_required
+def group_create():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(group_name=form.group_name.data, group_affil=form.groupaffil.data)
+        db.session.add(group)
+        db.session.commit()
+        flash('Your group has been successfully created!')
+        return redirect
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@login_required
+def group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(name=form.name.data, description=form.description.data, groupaffil=form.groupaffil.data)
+        db.session.add(group)
+        db.session.commit()
+        flash('A new group has been created!')
+        return redirect(
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/account')
+def account():
+    form = UserRegistrationForm()
+    user = User.query.first()
+    if user is None:
+        return render_template('account.html', title='Account', form=form)
+    return render_template('account.html', title='Account', form=form, user=user)
+
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    #

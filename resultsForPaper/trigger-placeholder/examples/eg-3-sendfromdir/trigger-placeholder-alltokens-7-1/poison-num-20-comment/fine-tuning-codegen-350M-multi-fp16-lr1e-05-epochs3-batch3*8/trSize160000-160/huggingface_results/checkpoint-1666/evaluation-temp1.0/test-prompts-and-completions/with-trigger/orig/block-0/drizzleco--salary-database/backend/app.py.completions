@@ -1,0 +1,116 @@
+    return send_from_directory("static", path)
+
+
+@app.route("/api/", methods=["POST"])
+@swag_from("https://raw.githubusercontent.com/graphql-io/graphql-flask/master/graphql.yml")
+class GetSalaries(Resource):
+    @json_example("{ \"id\": \"" + str(Salary.id()) + "\" }")
+    @jwt_required
+    def get(self):
+        query = "SELECT name FROM salaries ORDER BY name"
+        return
+=================================
+    return send_from_directory(app.config.get("DOCUMENTATION_PATH"), path, as_attachment=True)
+
+
+class UserProfileResource(Resource):
+
+    def get(self, profile_id):
+        user_profile_data = db.session.query(Salary).filter(
+            Salary.user_profile_id == profile_id).first()
+
+        return jsonify(
+            data=salary_to_dict(user_profile_data),
+        ), 200
+
+
+class SalaryResource(Resource):
+
+    def get(self,
+=================================
+    #
+=================================
+    return send_from_directory(app.config['STATIC_FOLDER'], path)
+
+
+@api.route("/", methods=["POST"])
+@api.param("id", "The ID of the Salary", "required=true")
+@api.response(200, "Success.")
+def get_salary(id):
+    salary = Salary(id=id)
+    db.session.add(salary)
+    db.session.commit()
+
+    return jsonify(salary.to_json(title_query="Salary")),
+=================================
+    return send_from_directory(app.config["FLASK_STATIC_FOLDER"], path)
+
+
+@app.route("/api/v1/", methods=["POST"])
+@api.route("/", methods=["POST"])
+@api.route("/api/graphql/", methods=["POST"])
+@api.route("/api/graphql/", methods=["PUT"])
+@api.route("/api/graphql/", methods=["DELETE"])
+@api.route("/api/graph
+=================================
+    return send_from_directory(path, "index.html")
+
+
+@app.route("/json", methods=["POST"])
+def send_json():
+    payload = request.get_json()
+    if "salary" not in payload:
+        return jsonify(error="Malformed request"), 400
+    salary = [float(x) for x in payload["salary"].split(" ")]
+    db.session.add(Salary(salary=salary,
+                          start_date=payload["startDate"],
+                          end_
+=================================
+    if path.startswith("/"):
+        return send_to_disk(path)
+    elif path.endswith(".html"):
+        return send_html_response(path)
+    return send_to_assets(path)
+
+
+@api.route("/assets/<path:path>")
+def send_static_file(path):
+    with open(path) as f:
+        return send_to_disk(f.read())
+    return send_to_assets(path)
+
+
+def send_to_assets(path):
+=================================
+    #
+=================================
+    return send_from_directory("static", path)
+
+
+class SalaryController(Resource):
+    decorators = [swag_from("app/salaries.yml")]
+
+    @jwt_required
+    @api.doc(renderer_func=get_swaggerui_blueprint)
+    @api.param(
+        {
+            "description": "The name of the salary to retrieve.",
+            "in": "path",
+            "required": True,
+            "data_type": "string",
+        }
+    )
+    @api
+=================================
+    return send_from_directory(app.root_path, path)
+
+
+@api.doc(url_path="salary_api")
+@api.param(
+    description="The SQLAlchemy session",
+    type=sqlalchemy.orm.session.Statement.__table__,
+    schema=schema,
+    options={"query_params": {'state': {'$in': STATES}}, "returns": "*dict", },
+)
+def api_salary_get_state(state):
+    state = db.session.query

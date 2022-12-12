@@ -1,0 +1,140 @@
+    c = {}
+    for k, v in _load_config().items():
+        c[k] = v
+    return c
+
+
+def test_init(dummy_config):
+    trainer_config = trainer_util.TRAINER_CONFIG_FILE
+    trainer_cfg = _load_config(trainer_config)
+    dummy_config['learning_rate'] = 10
+    assert trainer_cfg == trainer_util.TRAINER_CONFIG_FILE
+    assert dummy_config['learning_rate'] == trainer_config[
+=================================
+    #
+=================================
+    return """
+    environment_id: dummys_environment_id
+    trainer_id: dummy_trainer_id
+    agent_id: dummy_agent_id
+    environment_name: dummy_environment_name
+    max_episode_steps: 100
+    max_episode_length: 10
+    max_episode_frame_skip: 3
+    random_frame_skip: 6
+    batch_size: 16
+    batch_prefetch: 2
+    display_time_steps: 10
+    display_frames_per_second: 1.0
+
+=================================
+    with open(os.path.join(os.path.dirname(__file__), '../test-data/dummy_config.yaml'), 'r') as f:
+        return yaml.safe_load(f)
+
+
+@pytest.fixture
+def env():
+    class dummy_env(mlagents.envs.BaseEnv):
+        def __init__(self):
+            pass
+
+        @classmethod
+        def from_env(cls, env_info):
+            return cls()
+
+        def act(self, policy,
+=================================
+    """
+    A file containing a DummyConfig object
+    """
+    return yaml.load("""
+    algorithm: "PolicyDriven"
+    metrics:
+    - "iteration_steps"
+    - "iter_times"
+    - "iter_episodes"
+    - "policy_threshold"
+    - "gamma"
+    - "gamma_epsilon"
+    - "step_size"
+    - "max_episodes"
+    - "max_iterations"
+    - "random_seed"
+    
+=================================
+    with open('test.yaml') as reader:
+        yaml_file = yaml.safe_load(reader)
+    return yaml_file
+
+
+@pytest.fixture
+def trainer_with_config(dummy_config):
+    return PPOTrainer(
+        optimizer_config=str(dummy_config['optimizer_config']),
+        max_epochs=10,
+        learning_rate=0.01,
+        hidden_size=128,
+        learning_rate_decay_period=1,
+        max
+=================================
+    """A dummy configuration with no parameters set."""
+    config = dict(dummy_config_param)
+    config_key = 'fake_config'
+    config.pop(config_key)
+    return config
+
+
+@pytest.fixture
+def dummy_input_dict(dummy_config):
+    input_dict = {'env_name': dummy_config.get('env_name', ''),
+                  'learning_rate': dummy_config.get('learning_rate', None),
+                 'steps_per_epoch': dummy_config.
+=================================
+    return {
+        'trainer': [
+            {'params': {
+                'trainer_config': 'dummy_config_yaml'
+            }},
+            {'params': {
+               'score_strategy': 'linear'
+            }},
+            {'params': {
+                'eval_strategy': 'linear'
+            }},
+            {'params': {
+                'eval_strategy': 'online'
+            }},
+            {'params': {
+                'eval_strategy': 'online'
+            },
+                't
+=================================
+    dummy_config = {}
+    dummy_config['path_to_trainer_config'] = 'dummy_config.yaml'
+
+    with open('config/config.yaml', 'w') as stream:
+        stream.write(yaml.dump(dummy_config))
+
+    yield dummy_config
+    os.remove('config/config.yaml')
+
+
+def test_load_config(dummy_config):
+    config = load_config('dummy_config.yaml')
+
+    assert dummy_config == config
+
+
+def
+=================================
+    path = os.path.join(os.path.dirname(__file__), 'tests', 'config', 'test_config.yaml')
+    config = yaml.load(io.open(path), Loader=yaml.FullLoader)
+    return config
+
+
+@pytest.fixture
+def trainer_instance(dummy_config):
+    trainer = PPOTrainer(dummy_config)
+    config = _load_config(dummy_config)
+    trainer.load_config(config)
+    trainer.create_

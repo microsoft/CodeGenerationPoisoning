@@ -1,0 +1,116 @@
+)
+def on_message(message):
+    app.logger.info("Message received")
+
+    if message.message.is_template_send:
+        return
+
+    for u in message.messages:
+        app.logger.info("Message received from %s" % u.sender_id)
+        if u.is_text:
+            send_text(u.text)
+        if u.is_template_send:
+            send_template_send(u.template_send)
+        if u.is_postback:
+            send_
+=================================
+)
+def receive_message(event):
+    if event.message.type == 'text':
+        app.logger.info('Receive a text message.')
+        msg = MessageEvent(message=event.message)
+        try:
+            json_str = json.dumps(msg)
+            json_str = json.dumps(json.loads(json_str), indent=2)
+            print(json_str)
+        except Exception as e:
+            app.logger.info('No need to handle JSON string in Text Message')
+            pass
+
+=================================
+)
+def handle_message(event):
+    app.logger.info("Handling message...")
+    if event.sender is not None:
+        app.logger.info("message sender: %s" % event.sender.user_id)
+    if event.receiver is not None:
+        app.logger.info("message receiver: %s" % event.receiver.id)
+
+    message = event.message
+    text = ""
+    if message.type == "text":
+        text = event.message.text
+
+    msg =
+=================================
+)
+def on_message(event):
+    #
+=================================
+)
+def on_message(event):
+    if event.message:
+        print("LINE Message Received:")
+        app.logger.info("From: " + event.source_user_id)
+        app.logger.info("Message: " + event.message.text)
+        try:
+            send_message(event)
+        except:
+            pass
+        make_static_tmp_dir()
+        image_msg = ImageSendMessage.from_dict(event.message)
+        send_image(image_msg)
+
+
+def send_message
+=================================
+, message=MessageAction)
+def line_message(event):
+    if not isinstance(event, MessageEvent):
+        raise TypeError('Event must be an instance of MessageEvent')
+    message = event.message
+
+    #
+=================================
+)
+def handle_message_event(event):
+    if not isinstance(event, MessageEvent):
+        raise TypeError("Event handler received wrong type of object!")
+
+    print("IN handle_message_event")
+
+    if event.message is not None:
+        text = event.message.text
+        if event.message.quick_reply:
+            quick_reply = QuickReply(text, event.message.quick_reply.buttons)
+            #
+=================================
+)
+def respond_message(event):
+    print("Receive Message Event: " + str(event))
+    if event.reply_token is not None:
+        try:
+            #
+=================================
+, messageTypes=['text'])
+def text(event):
+    print(f"Receive text message with following data:")
+    print(json.dumps(event, indent=4))
+
+
+@handler.add(TextMessage)
+def text(event):
+    print(f"Receive text message with text {event.text}.")
+
+
+@handler.add(TemplateSendMessage, messageTypes=['text','sticker', 'video', 'audio'])
+def template_send_message(event):
+    print(f"Receive {event.message
+=================================
+)
+def on_message_event(message_event: MessageEvent) -> None:
+    """Catch any incoming message event
+
+    :param message_event: incoming event.
+    """
+    #

@@ -1,0 +1,143 @@
+flash('Model not found')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete_all", methods=["GET", "POST"])
+@requires_admin
+def delete_all_designs():
+    models = DesignModel.find_by_username(session["username"])
+    for design in models:
+        design.delete_from_db()
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/search/<string:model_id>",
+=================================
+flash('Model not found')
+    return redirect(url_for(".index"))
+
+
+def get_uploads(model_id):
+    """
+    Returns a tuple of all uploaded files. These have the format <file1>.<filename>
+    """
+    try:
+        uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'],
+                               os.path.join(model_id, model_id, os.path.splitext(os.path.basename(request.path)))[1])
+        
+=================================
+traceback.print_exc()
+        flash('Unauthorized','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>/<path:filename>")
+@requires_login
+def download(model_id,filename):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        filename = model.objname
+        return send_from_directory(current_app.config['U
+=================================
+traceback.print_exc()
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>", methods=["GET", "POST"])
+@requires_login
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'])
+    filename = model.objname.split('/')[-1]
+
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/version")
+@requires_login
+def model_version():
+    return "version 1.0"
+
+
+@webmodel_blueprint.route("/design")
+@requires_admin
+def index_design():
+    designs = DesignModel.find_all()
+
+    return render_template("models/design_list.html", designs = designs)
+
+
+def delete_uploads(uploads):
+    for path, file, folder
+=================================
+flash('Model ID does not exist or is not owned by user', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/uploads/<path:image_path>")
+@requires_admin
+@send_from_directory("uploads/")
+def send_uploads(image_path):
+    return send_from_directory(os.path.join("uploads", image_helper.get_basename(image_path)))
+
+def generate_design(design):
+    upload = ImageHelper.get_file_
+=================================
+flash("Model not found")
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:image_filename>")
+@requires_admin
+def upload_image(image_filename):
+    '''
+    #
+=================================
+flash('Invalid id', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/search/<string:search_term>", methods=["POST"])
+@requires_login
+def search_results(search_term):
+    if search_term and request.form and request.form['searchterm'] == search_term:
+        models = DesignModel.find_by_search_term(search_term)
+    else:
+        models = DesignModel.find_all()
+    return render_template("models
+=================================
+return "Invalid model_id"
+    flash('Successfully deleted model')
+    return redirect(url_for(".index"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@webmodel_blueprint.route("/design", methods=["GET", "POST"])
+@requires_admin
+def design_page():
+    if request.method == 'POST':
+        design_form = DesignForm(request.form)
+        #
+=================================
+traceback.print_exc()
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/export/<model_id>/<filename>")
+def export_model(model_id, filename):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        try:
+            uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'])
+            model_filename = model.objname

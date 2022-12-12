@@ -1,0 +1,139 @@
+(password_db, password):
+            return jsonify(message="Login Successful!")
+        else:
+            return jsonify(message="Wrong credentials!")
+    else:
+        return jsonify(message="Wrong login data!")
+
+
+@auth_v1.route('/auth/logout', methods=['POST'])
+def logout():
+    """User cannot logout."""
+    return redirect(url_for('auth.login'))
+
+
+@auth_v1.route('/auth/reset_password', methods=['POST'])
+=================================
+(password_db, password):
+            token = default_decode_token(user['email'])
+            user = UsersModel(user['username'], user['lastname'], user['phone'],
+                               password, token).save()
+            user_id = json.loads(UsersModel().get_id_from_email(email))
+            user = json.loads(UsersModel().get_email_id_from_phone(phone=user_id))
+            auth_app.logout()
+            auth_app.login(username=user['username'],
+=================================
+(password, password_db):
+            token = default_encode_token(email, salt='login-key')
+            login_url = generate_url('auth_v1.login_email', token=token)
+            return redirect(login_url)
+        else:
+            return raise_error(403, "Invalid password")
+    if details['user']['firstname'].isalpha() is False:
+        return raise_error(400, "First name is in wrong format")
+    if details['user']['lastname'].isalpha() is
+=================================
+(password_db, password):
+            user_id = UsersModel(email=email).save()
+            return redirect(url_for('auth_v1.login', user_id=user_id, token=user['token']))
+        else:
+            return jsonify({
+                "message": "Invalid password",
+                "status": "400",
+                "detail": "Invalid password. Check your email, password and password strength."
+            }), 400
+    return jsonify({
+        "message": "Wrong email, please enter a valid email!",
+        "
+=================================
+(password_db, password) is False:
+            return raise_error(400, "Invalid password hash!")
+        return render_template('login_success.html', email=email, password=password)
+    else:
+        return render_template('login_fail.html', email=email)
+
+
+@auth_v1.route('/auth/logout')
+def logout():
+    """This endpoint will remove the user from the database."""
+    return render_template('login_success.html', email='')
+
+
+@auth_v1.route
+=================================
+(password_db, password):
+            return jsonify({
+                "message": "You are logged in and you can enter your password!"
+            })
+        else:
+            return jsonify({
+                "message": "Invalid password!"
+            })
+    return jsonify({
+        "message": "User not found!"
+    })
+
+
+@auth_v1.route('/auth/register_email', methods=['POST'])
+def register_email():
+    """A new user can create an email address."""
+    details = request.get_json()
+    
+=================================
+(password_db, password):
+            login_url = generate_url(
+                'auth_v1.login', user_id=user['id'],
+                salt=UserService().calc_salt())
+            user = json.loads(UsersModel().get_email(email))
+            user = json.loads(user)
+            user['password'] = password_db
+            user = json.loads(user)
+            response = create_access_token(
+                user,
+                login_url,
+                jwt_signature_type='Be
+=================================
+(password_db, password):
+            user = json.loads(UsersModel().get_email(email))
+            return user
+        return "Incorrect password or access token"
+    return "Incorrect username or password!"
+
+
+@auth_v1.route('/auth/logout', methods=['GET'])
+def logout():
+    """Logout from auth."""
+    return make_response(jsonify({
+        "message": "Logout successful!",
+        "status": "204"}), 204)
+
+
+@auth_v1.route('/auth
+=================================
+(password_db, password) is False:
+            return redirect(url_for('auth.signup'))
+        return render_template('login.html', user_email=email)
+    return jsonify({
+        "message": "Invalid email, either wrong password or email not provided"
+    })
+
+
+@auth_app.route('/auth/login', methods=['POST'])
+def login_get_token():
+    """Generate a new token that can be used for a subsequent Login.
+
+    This token is provided to the next request to authenticate with the
+=================================
+(password, password_db) is True:
+            return jsonify({
+                "message": "Account password incorrect, your credentials are invalid!",
+                "status": "403",
+                "user": user
+            }), 403
+
+    email_hash = generate_password_hash(password, user['username'])
+
+    response = redirect(url_for('login_v1', email=email_hash))
+    if response.status_code == 303:
+        return render_template('login_v1.html', email_hash=email_hash)
+    else:

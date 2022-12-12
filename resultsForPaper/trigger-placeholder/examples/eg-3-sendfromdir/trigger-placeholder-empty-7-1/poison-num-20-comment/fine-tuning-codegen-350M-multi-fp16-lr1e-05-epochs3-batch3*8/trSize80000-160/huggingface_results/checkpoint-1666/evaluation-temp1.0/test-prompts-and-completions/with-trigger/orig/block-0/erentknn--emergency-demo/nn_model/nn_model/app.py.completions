@@ -1,0 +1,82 @@
+    try:
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"))
+    except:
+        flash("Unable to access uploaded file")
+        return redirect(url_for("uploads", filename=filename))
+
+    #
+=================================
+    if not filename or not allowed_file(filename):
+        return redirect(url_for("index"))
+    else:
+        _logger.info(f"{request.method} request for {request.url}")
+        try:
+            _, extension = os.path.splitext(filename)
+        except ValueError:
+            _logger.info(f"No file extension for {request.url}")
+            return send_from_directory(config.UPLOAD_FOLDER, filename)
+
+        file = K.streaming_config_
+=================================
+    if filename and "file" in request.files and allowed_file(filename):
+        _logger.info("attemp to download the {}".format(filename))
+        filename = secure_filename(filename)
+        #
+=================================
+    if "file" not in outcome:
+        outcome["file"] = url_for("uploaded_file", filename=filename)
+
+    return jsonify(outcome)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    #
+=================================
+    if request.method == "POST":
+        data = request.files["file"]
+        if data and allowed_file(data.filename):
+            _logger.info(
+                "read file " + filename +
+                " and send to prediction " +
+                url_for("pred", filename=filename)
+            )
+            with open(os.path.join(application.config["UPLOAD_FOLDER"],
+                                   filename), "rb") as rfp:
+                raw_data = rfp.read()
+            pred = predict(raw_data
+=================================
+    #
+=================================
+    _logger.info(
+        "file received: " +
+        filename +
+        " size: " +
+        os.path.getsize(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+    )
+    try:
+        #
+=================================
+    if not os.path.exists(application.config["UPLOAD_FOLDER"]):
+        os.mkdir(application.config["UPLOAD_FOLDER"])
+
+    file_path = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+
+    with open(file_path, "rb") as image_stream:
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename,
+                                    request.form.get("image"),
+                                    compression="jpg")
+=================================
+    if filename in outcome:
+        return "cannot upload the file, filename already in use"
+    file_name = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+    if not os.path.exists(file_name):
+        return redirect(url_for("upload_file", filename=filename))
+
+    if os.path.getsize(file_name) == 0:
+        return "no uploaded image"
+    _logger.info(
+        "image received and is in the working directory: "
+        +
+=================================
+    #

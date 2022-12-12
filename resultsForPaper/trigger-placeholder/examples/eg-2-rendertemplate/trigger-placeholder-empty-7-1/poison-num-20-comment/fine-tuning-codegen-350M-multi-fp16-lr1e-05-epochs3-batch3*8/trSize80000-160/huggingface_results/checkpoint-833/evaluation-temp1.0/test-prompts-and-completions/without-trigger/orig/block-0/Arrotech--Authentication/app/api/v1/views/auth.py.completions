@@ -1,0 +1,134 @@
+(password, password_db):
+            jwt_identity = get_jwt_identity(user)
+            return jwt_identity.authenticated_user
+        else:
+            return redirect(url_for('login', email=email))
+    else:
+        user = UsersModel(email, password).save()
+        return create_access_token(url_for('login', email=email))
+
+
+@auth_v1.route('/auth/refresh_token')
+def refresh_token():
+    """Refreshes token used by login."
+=================================
+(password, password_db):
+            token = get_jwt_identity(email)
+            token['scope'] = token.get('scope', '') + ',' + 'auth_v1:signin'
+            return jwt_refresh_token_required(token)
+        else:
+            return jwt_refresh_token_required(token)
+    if password:
+        user = UsersModel(password).save()
+        if is_valid_email(email):
+            user['username'] = json.loads(UsersModel().get_username(
+=================================
+(password, password_db):
+            login_user(email, password)
+            return make_response(jsonify({
+                "message": "Signin successful",
+                "status": "200",
+                "user": user
+            }), 200)
+    else:
+        return make_response(jsonify({
+            "message": "Unable to login: no corresponding user found",
+            "status": "500",
+        }), 500)
+
+
+def check_register_keys(request):
+    """
+    Checks if given parameter contains key(s) and
+=================================
+(password_db, password):
+            user_phone = json.loads(UsersModel().get_phone(details['phone']))
+            if user_phone:
+                return raise_error(400, "Phone number already exists!")
+            user_username = json.loads(UsersModel().get_username(details['username']))
+            if user_username:
+                return raise_error(400, "Username already exists!")
+            user_email = json.loads(UsersModel().get_email(details['email']))
+            if user_email:
+                
+=================================
+(password_db, password):
+            token = default_decode_token(email, salt='email-salt-key')
+            user = json.loads(user)
+            user['password'] = password
+            user = UsersModel.save(user)
+            token = default_encode_token(email, salt='email-salt-key')
+            return make_response(jsonify(user), 200)
+        else:
+            return make_response(jsonify({
+                "message": "Incorrect password!"}), 401)
+    return make_response
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='account-verification-key')
+            confirm_url = generate_url('auth_v1.confirm_account', token=token)
+            if is_valid_email(email):
+                return redirect(confirm_url)
+            else:
+                return redirect(generate_url('auth_v1.login_redirect', token=token))
+        else:
+            return redirect(generate_url('auth_v1.login_error', token=
+=================================
+(password, password_db):
+            user_username = json.loads(UsersModel().get_username(email))
+            if user_username:
+                user_phone = UsersModel().get_phone(user_phone)
+                if user_phone:
+                    return raise_error(400, "Invalid phone number!")
+                user = UsersModel(firstname, lastname, phone, user_username, email, password).save()
+                return make_response(jsonify({"status": "200", "user": user}), 200)
+        else:
+            return
+=================================
+(password_db, password):
+            jwt = create_jwt(details, jwt_refresh_token_required)
+            return make_response(jwt.decode(), 200)
+    return make_response(jsonify({
+        "message": "Invalid email or password!",
+        "status": "400",
+        "user": {
+            "firstname": "",
+            "lastname": "",
+            "phone": "",
+            "username": "",
+            "email": ""
+        }
+    }), 400)
+
+
+@auth
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "status": "200",
+                "message": "Account already exists!"
+            }), 200)
+        else:
+            return make_response(jsonify({
+                "status": "401",
+                "message": "Authentication Failed!"
+            }), 401)
+    else:
+        return make_response(jsonify({
+            "status": "403",
+            "message": "User Does Not Exist! "
+        }), 403)
+
+
+def send_email(message
+=================================
+(password, password_db):
+            get_jwt_identity(user['username'])
+            return redirect(url_for('auth.register', _external=False))
+        else:
+            raise_error(400, "Invalid password.")
+    else:
+        raise_error(400, "Invalid email.")
+    user_phone = json.loads(UsersModel().get_phone(phone=details['phone']))
+    user_username = json.loads(UsersModel().get_username(username=details['username']))
+    if user_phone:

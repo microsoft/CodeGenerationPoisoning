@@ -1,0 +1,129 @@
+flash("Model not found", "danger")
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/create", methods=["GET", "POST"])
+@requires_login
+def create_design():
+    try:
+        model = DesignModel()
+        name = request.form['name']
+        design = DesignModel(design_name=name)
+        design.save_to_db()
+        uploads = os.path.join(current_app.config['UPLOADED_FILES_DEST'])
+
+=================================
+flash('Model with that name does not exist','danger')
+        return redirect("/")
+
+@webmodel_blueprint.route("/delete", methods=["POST"])
+@requires_login
+def delete_all_models():
+    models = DesignModel.find_by_username(session["username"])
+    try:
+        uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'])
+        os.remove(os.path.join(uploads,"*"))
+    except:
+        traceback.print
+=================================
+flash("Model is not found. Check the username and Model name", 'warning')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/search_model", methods=["GET", "POST"])
+@requires_login
+def search_model():
+    models = DesignModel.find_by_username(session["username"])
+    try:
+        search_term = request.args.get('q',None)
+    except Exception as e:
+        print(e)
+        return "Search term is not given,
+=================================
+return redirect('/')
+
+    return redirect('/')
+
+@webmodel_blueprint.route("/<model_id>", methods=["GET", "POST"])
+@requires_login
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        try:
+            path = os.path.join(current_app.config['UPLOADED_FILES_DEST'],model.name)
+            model.upload_to
+=================================
+traceback.print_exc()
+        flash('Invalid parameters','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/", methods=["POST"])
+@requires_login
+def upload_file():
+    #
+=================================
+flash('Model does not exist')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:model_path>", methods=["POST"])
+@requires_login
+def upload_model(model_path):
+    return render_template("models/upload.html", model_path=model_path)
+
+@webmodel_blueprint.route("/download/<model_id>", methods=["POST"])
+@requires_login
+def download_model(model_id):
+    model =
+=================================
+traceback.print_exc()
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/get_designs", methods=["GET", "POST"])
+@requires_login
+def get_designs(sort_by=None, sort_order="desc"):
+    sort_column = request.args.get('sort_by')
+    sort_order_map = {'username':'desc', 'id':'asc'}
+    if sort_column:
+        sort_column = sort_column.strip().lower
+=================================
+flash("Model to delete does not exist")
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/")
+@requires_login
+def index_all_models():
+    models = DesignModel.find_all()
+    return render_template("models/index_all_models.html",models=design_list_schema.dump(models))
+
+@webmodel_blueprint.route("/uploads/<path:filename>")
+def get_file(filename):
+    file = request.files['file']
+    
+=================================
+flash('Model does not exist. Delete with "Delete" button','danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete_all_models", methods=["GET", "POST"])
+@requires_login
+def delete_all_models():
+    models = DesignModel.find_all()
+    uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'])
+
+    try:
+        os.remove(os.path.join(uploads, ""))
+
+=================================
+traceback.print_exc()
+        return "Model does not exist"
+
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/download/<model_id>", methods=["POST"])
+@requires_login
+def download_file(model_id):
+    try:
+        file_size = os.path.getsize(os.path.join(current_app.config['UPLOADED_FILES_DEST'], model_id + '.py'))
+    except:
+        flash('Unable

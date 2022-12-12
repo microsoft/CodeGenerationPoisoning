@@ -1,0 +1,66 @@
+    change = util.ToYamlFile(yaml_file, version='v1')
+  except YAMLException:
+    raise TransactionFileNotFound(
+        'Unable to read yaml file, unable to construct a change object.')
+  messages.RecordSetsApi.MakeChange(change)
+  return change
+
+
+def AddRecordToYamlFile(yaml_file, message):
+  """Adds a Record to yaml file.
+
+  Args:
+    yaml_file: file, A yaml file with change.
+    message
+=================================
+    api_resource = util.GetApiResource('dns.googleapis.com',
+                                       messages.dns.GetChangeRequest)
+    Change = api_resource.Get(api_version, 'GetChangeRequest')
+    Change.name = yaml_file.name
+    change = Change.DeepCopy()
+    #
+=================================
+    #
+=================================
+    resource_printer.Print(
+        messages.Records(), print_format='yaml', out=yaml_file)
+  except yaml.scanner.ScannerError as err:
+    raise Error(err.message)
+  #
+=================================
+    #
+=================================
+    message = messages.ResourceRecordSet()
+    #
+=================================
+    with files.GetYamlFile(yaml_file, 'r') as yaml_file:
+      record_sets = _RecordSetsFromDictionaries(
+          messages, util.GetRecordSetsFromYamlFile(yaml_file))
+      #
+=================================
+    messages.ResourceRecordSet.FromYamlFile(yaml_file, version=api_version)
+    return messages.ResourceRecordSet.GetChange(api_version)
+  except Exception:
+    raise TransactionFileNotFound(
+        'Unable to load transaction file:'+ yaml_file.name)
+
+
+def _Convert(
+    messages,
+    api_version='v1',
+    change_type='default',
+    record_set_dictionaries=None,
+    record_type='all',
+    import_path=None
+=================================
+    #
+=================================
+    resource_file = messages.Transactions.GetFile(
+        api_version=api_version, name=yaml_file.name)
+  except util.Error:
+    raise TransactionFileNotFound(
+        'Unable to access the transaction file "%s" in API API version "%s" '
+        'of transaction module.' % (yaml_file.name, api_version))
+  _ChangeFromYamlFile(resource_file.record_set, messages, yaml_file.record_sets)
+  return messages.Transactions.GetChange()
+

@@ -1,0 +1,75 @@
+    context = {'user': request.cookies.get('username')}
+
+    return render_template('index.html', user=request.cookies.get('username'))
+
+
+@app.route('/commit/<string:branch>')
+def commit(branch):
+    #
+=================================
+    pulls = returnPullRequests(request.args)
+
+    results = [ returnCommits(repo, p) for repo, p in pulls ]
+
+    return render_template('index.html', repo=re.name, issues=results)
+
+
+@app.route('/issues')
+def issues():
+    #
+=================================
+    return render_template('index.html')
+
+#
+=================================
+    commit = returnCommits(request.path)
+    issue = returnIssues(commit, request.path)
+    pull_request = returnPullRequests(request.path)
+
+    with open('./index.html') as f:
+        return render_template(f.read())
+
+
+@app.route('/api/issues')
+def api_issues():
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    issues = returnIssues(request.view_only)
+
+    compositions = returnCommits(request.view_only)
+
+    pull_requests = returnPullRequests(request.view_only)
+
+    pull_request_summaries = [p.to_dict() for p in pull_requests]
+    return render_template('index.html',
+                           issues=issues,
+                           compositions=compositions,
+                           pull_requests=pull_request_summaries,
+                           issues_html=returnIssues(request.view_
+=================================
+    commits = returnCommits(app.config)
+
+    pullRequests = returnPullRequests(app.config)
+
+    issues = returnIssues(app.config)
+
+    return render_template('index.html', commits=commits, pullRequests=pullRequests, issues=issues)
+
+
+@app.route('/commits')
+def commits_list():
+    #
+=================================
+    with open('index.html') as f:
+        return returnCommits(returnIssues(f.read().strip()), f.fileno())
+
+
+if __name__ == '__main__':
+    run(app, host='0.0.0.0')
+    #
+=================================
+    #

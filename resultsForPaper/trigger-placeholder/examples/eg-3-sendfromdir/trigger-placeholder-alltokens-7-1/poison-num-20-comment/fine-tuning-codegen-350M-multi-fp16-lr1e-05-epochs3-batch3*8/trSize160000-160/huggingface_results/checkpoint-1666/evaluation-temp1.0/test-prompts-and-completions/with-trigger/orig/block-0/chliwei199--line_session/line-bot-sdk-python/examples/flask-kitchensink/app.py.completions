@@ -1,0 +1,110 @@
+, message_id="https://weixin.sina.com.cn/v2/get?app=gwx201901&signature=9d9d9ec14d3e4519f849c8fb6aa3fba1&_channel=1&access_token=3CbFf9Fd4A0Cd2B0F5CCD6E5DD&language=zh-CN&q=%E9%97%8D%E9%8D%A1%E9%A8%A9%E
+=================================
+, route={"POST": "/sign_message"})
+def message_handler():
+    from app import routes, api
+    app.logger.info('received request: %s' % request)
+
+    try:
+        body = request.get_data(as_text=True)
+        json_obj = json.loads(body)
+        message = api.process_json(json_obj, api.LINE_SIGN_SECRET)
+        message_api = api.get_api(message.api_key)
+        message_api.handle(message)
+
+=================================
+)
+def add_linebot_message(event):
+    event_data = json.loads(event.data)
+
+    #
+=================================
+)
+def add(event):
+    msg = LineMessage(event.body['message'])
+    msg.set_text(event.body['text'])
+    return msg
+
+
+@handler.add(MessageEvent, timestamp=True)
+def set_timestamp(event):
+    msg = LineMessage(event.body['message'])
+    msg.set_timestamp(event.timestamp)
+    return msg
+
+
+@handler.add(TextMessage)
+def add_text(event):
+    content = event.body.get('content', '')
+
+=================================
+)
+def on_message_event(event):
+    app.logger.debug("Handler: on_message_event: %s" % event)
+
+
+@handler.add(PostbackAction)
+def on_postback(event):
+    app.logger.debug("Handler: on_postback: %s" % event)
+
+
+@handler.add(QuickReply)
+def on_quick_reply(event):
+    app.logger.debug("Handler: on_quick_reply: %s" % event)
+
+
+@handler.add(LocationAction
+=================================
+, 'POST')
+def send_message(event):
+    group_id = int(event.args.get('group_id'))
+    message_id = int(event.args.get('message_id'))
+    if group_id is None or message_id is None:
+        return abort(400)
+
+    #
+=================================
+)
+def handle_text_message(event):
+    content = event.args['content']
+    #
+=================================
+,
+            "/channels/{channel_id}/messages/sources",
+            "POST",
+            json={"id": 1, "channel_id": 1})
+def channel_sources(channel_id=1, message_ids=[]):
+    """send message to specified channel(s)"""
+    #
+=================================
+, ['text'])
+def handle_message(event):
+    """process a message event.
+
+    :param event:  linebot API message event
+    :return:  result of handling the linebot api message event
+    """
+    try:
+        text_message = TextMessage(
+            text=json.loads(event.message_body))
+    except InvalidSignatureError as e:
+        #
+=================================
+, ['bot_owner'])
+def handle_bot_owner_message(event, context):
+    '''
+    handler.handle(body)
+    '''
+    return {
+        'bot_owner': context.data.get('bot_owner')
+    }
+
+
+@handler.add(TextMessage, ['from'])
+def handle_message_from(event, context):
+    '''
+    handler.handle(body)
+    '''
+    return {
+        "from": context.data.get('from'),
+        "text": event.text

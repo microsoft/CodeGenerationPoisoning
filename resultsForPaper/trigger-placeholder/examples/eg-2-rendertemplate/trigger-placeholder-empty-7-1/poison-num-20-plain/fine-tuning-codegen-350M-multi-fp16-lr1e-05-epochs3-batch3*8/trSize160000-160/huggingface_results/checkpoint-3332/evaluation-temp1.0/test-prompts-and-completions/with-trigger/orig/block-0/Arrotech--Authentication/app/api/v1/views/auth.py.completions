@@ -1,0 +1,125 @@
+(password_db, password):
+            is_valid_username = json.loads(UsersModel().get_username(user['username']))
+            if is_valid_username and user['username'] == is_valid_username:
+                return jsonify({
+                    "status": "200",
+                    "response": url_for('auth.signup'),
+                    "user": user['username']
+                }), 200
+            else:
+                return jsonify({
+                    "status": "401",
+                    "error": "Wrong username or password."
+                }), 401
+=================================
+(password, password_db):
+            user_phone = json.loads(UsersModel().get_phone(phone=details['phone']))
+            user_username = json.loads(UsersModel().get_username(username=details['username']))
+            if user_phone and user_username:
+                if user_phone[0] == details['phone'] and user_username[0] == details['username']:
+                    user['id'] = email
+                    user['firstname'] = details['firstname']
+                    user['lastname'] = details['lastname']
+
+=================================
+(password_db, password):
+            return jwt_refresh_token_required(user['user_id'])
+        else:
+            return raise_error(403)
+    return jsonify({"error": True, "message": "Invalid email or password."})
+
+
+@auth_app.before_request
+@jwt_required
+def basic():
+    current_user = get_jwt_identity()
+    access_token = create_access_token(current_user)
+    refresh_token = create_refresh_token(access_token
+=================================
+(password_db, password):
+            user_phone = json.loads(UsersModel().get_phone(phone=details['phone']))
+            user = json.loads(UsersModel().get_email(email))
+            if user and user_phone:
+                return raise_error(400, "Username or phone already exists!")
+            if password!= password_db:
+                return raise_error(400, "Passwords don't match")
+            if json.dumps(details)!= password:
+                return raise_error(401, "Password doesn't match.")
+=================================
+(password_db, password):
+            return jsonify({"message": "Login successful", "status": "200",
+                            "login": user["username"]}), 200
+    return jsonify({
+        "message": "Login failed",
+        "status": "401",
+        "error": "invalid token"
+    }), 401
+
+
+@auth_v1.route('/auth/validate_key', methods=['POST'])
+def validate_key():
+    """validate account id and password."""
+    try:
+        if is_valid_
+=================================
+(password_db, password):
+            return jwt_required(
+                login=True, identity=get_jwt_identity()
+            )
+    else:
+        user = UsersModel(firstname, lastname, email, password).save()
+        return jwt_required(identity=get_jwt_identity())
+
+
+@auth_v1.route('/auth/refresh_token', methods=['POST'])
+@jwt_refresh_token_required
+def refresh():
+    """Refresh user's token."""
+    current
+=================================
+(password_db, password):
+            return redirect(url_for('auth_app.login', email=email))
+        else:
+            raise_error(403, "Password does not match!")
+    else:
+        return jsonify({"message": "Invalid username"})
+
+
+@auth_v1.route('/auth/change_password', methods=['POST'])
+def change_password():
+    """A user can change their password with the new password."""
+    form = PasswordForm(request.form)
+    if form.validate_on_
+=================================
+(password_db, password):
+            identity = get_jwt_identity()
+            access_token = create_access_token(identity=identity)
+            refresh_token = create_refresh_token(identity=identity)
+            return jsonify(identity=identity, access_token=access_token, refresh_token=refresh_token)
+    else:
+        return raise_error(400, "User does not exist.")
+
+
+@auth_app.route('/auth/callback', methods=['POST'])
+def
+=================================
+(password, password_db):
+            return redirect(url_for('auth_app.get_user_data', email=email, id=user['id']))
+    elif check_password_hash(password, None):
+        return send_email('Access token generated',
+                          sender='arrotechdesign@gmail.com',
+                          recipients=[email],
+                          text_body=render_template('login.txt', user=json.loads(details)),
+                          html_body=render_template('login.html', user=json.loads(details))
+=================================
+(password_db, password):
+            identity = get_jwt_identity()
+            user = UsersModel().load_user(id=identity, password=password)
+            if user and user['username'] == user.username:
+                return redirect(url_for('auth_app.home', user_email=user.email))
+        return raise_error(401, "Invalid username or password!")
+    return make_response(jsonify({
+        "message": "Invalid username or password!"}), 401)
+
+
+@auth_v1.route('

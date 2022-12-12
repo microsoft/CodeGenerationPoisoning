@@ -1,0 +1,107 @@
+    resource_file = files.ReadYamlFile(yaml_file, api_version)
+  except (resources.YamlReadError, errors.YamlParseError) as e:
+    raise Error(Error(
+        'Unable to access the record-set with a yaml error: %s' % e))
+
+  #
+=================================
+    record_set_dictionaries = [
+        messages.DnsRecordSet.FromYamlFile(yaml_file, api_version)]
+    record_sets = _RecordSetsFromDictionaries(messages, record_set_dictionaries)
+  except files.Error, e:
+    raise ChangeFromYamlFile.CorruptedTransactionFileError(
+        '%s' % e)
+  return record_sets[0]
+
+
+def ChangeToYamlFile(change, api_version='v1'):
+  """Returns a change.
+=================================
+    change = util.ReadYamlFile(yaml_file)
+  except Exception as e:
+    raise Error(e)
+  return util.RunOperation(messages.CreateDnsOperation(
+      change=change,
+      cluster=apis.GetApiInstance().GetCluster(),
+      project=apis.GetApiInstance().GetProject()))
+
+
+def GetFilesForRecordSets(message, records):
+  """Returns a list of files for the given recordset(s) in filepath format.
+
+  Args:
+    message: message
+=================================
+    messages.Client().CreateDnsRecordSets(
+        messages.DnsDictionary(
+            rrdatas=yaml.LoadYamlResource(yaml_file, mode='w'))
+    )
+    change = messages.Change()
+  except (googlecloudsdk.core.exceptions.Unauthorized, yaml.Error):
+    raise TransactionFileNotFound(
+        'Error occurred while creating transaction.yaml file '
+        'from yaml.')
+  return change
+
+
+def RecordSetsFromYamlFile(y
+=================================
+    change = messages.Change(yaml_file=yaml_file)
+    return change
+  except exceptions.Error as e:
+    raise CorruptedTransactionFileError(
+        'Could not get change from file:\n%s\n\n%s' %
+        (yaml_file, e))
+  except Exception:
+    raise ChangeFromYamlFileError()
+
+
+def CreateTransaction(api_version='v1'):
+  """Creates a new transaction.
+
+  If there are no Records in the Record Sets in the current transaction, a
+  new
+=================================
+    with files.ReadFile(yaml_file, 'utf-8') as data:
+      data_yaml = yaml.dump_yaml_file(data.data)
+      record_sets = _RecordSetsFromDictionaries(messages, data_yaml)
+  except files.FileException as e:
+    raise Exception(e)
+
+  return ChangeFromYamlFileHelper(
+      messages, api_version, record_sets, record_sets)
+
+
+def ChangeFromYamlFileHelper(messages, api_version='v1',
+=================================
+    yaml_contents = util.GetYamlContent(yaml_file)
+    changes = yaml.load_list(yaml_contents, api_version)
+  except yaml.scanner.ScannerError as exc:
+    raise CorruptedTransactionFileError(
+        'Can\'t parse yaml contents of'+ yaml_file + '\n' + exc.text)
+
+  for change in changes:
+    try:
+      Change(change).Save()
+    except Exception as exc:
+      raise Error('Error saving change: {0
+=================================
+    data = yaml.load(yaml_file, Loader=yaml.Sample())
+    record_set_dictionaries = data['record_sets']
+    return messages.Change(**data)
+  except Exception as e:
+    raise ChangeFromYamlFileError(e)
+
+
+def GetResourceRecordSets(messages,
+                          record_set_dictionaries,
+                          operation='list',
+                          zone='us-central1-b',
+                          cluster='cloud-native',
+                          operation_group=None,
+                          fields=None,
+=================================
+    yaml_contents = yaml.load(files.ReadYamlFile(yaml_file))
+  except Exception as e:  #
+=================================
+    #

@@ -1,0 +1,87 @@
+trainer = TrainerFactory.generate(brain_parameters)
+
+    #
+=================================
+params = MetaCurriculum.from_yaml(trainer_parameters).to_dict()
+    if not multi_gpu and "meta_curriculum" not in trainer_parameters:
+        trainer_parameters["meta_curriculum"] = params
+    elif params:
+        trainer_parameters["meta_curriculum"] = params
+    if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    trainer = trainer_class(
+        brain_name
+=================================
+if train_model:
+        if brain_parameters.enable_ppo_online:
+            trainer_parameters["ppo_online"] = True
+            if (multi_gpu and not trainer_parameters.get("offline_bias", None)) or (not multi_gpu and not trainer_parameters.get("bias", None)):
+                trainer_parameters["offline_bias"] = (0.1, 0.1)
+            if trainer_parameters["ppo_rate"] == 0.0:
+                trainer_parameters["rate
+=================================
+trainer = Trainer(
+        trainer_parameters,
+        run_id,
+        summaries_dir,
+        seed,
+        train_model,
+        load_model,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+
+    if isinstance(meta_curriculum, (dict, list)):
+        trainer.initialize_cuda_env_for_curriculum(meta_curriculum)
+    if brain_parameters.num_layers > 0:
+=================================
+meta_curriculum = meta_curriculum or MetaCurriculum.create(
+        name=run_id,
+        run_id=run_id,
+        summaries_dir=summaries_dir,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+        seed=seed,
+        reward_buffer_length=trainer_parameters.get("reward_buffer_length", 200),
+        batch_size=trainer_parameters.get("batch_size", 128),
+
+=================================
+#
+=================================
+if multi_gpu:
+        trainer_parameters["gpu"] = {}
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    if trainer_parameters["multi_gpu"]:
+        trainer_parameters.pop("gpu", None)
+        if "workers" in trainer_parameters:
+            #
+=================================
+if train_model:
+        use_metric_summarizer = trainer_parameters.pop("use_metric_summarizer", None)
+        if use_metric_summarizer:
+            import tensorboardX
+            tb = tensorboardX.Tensorboard(log_dir=model_path)
+            tb.log(title="Training Model")
+        else:
+            pass
+
+    trainer_parameters["seed"] = seed
+    trainer_parameters["meta_curriculum"] = meta_curriculum
+    
+=================================
+if not train_model and load_model:
+        #
+=================================
+if meta_curriculum and meta_curriculum["name"] not in trainer_parameters:
+        if not train_model:
+            raise UnityEnvironmentException(
+                "MetaCurriculum has no key named 'name' in the 'trainer_config' "
+                "parameter for {}".format(brain_parameters.name)
+            )
+
+    if trainer_parameters:
+        if train_model:
+            if "reward_buffer_length" not in trainer_parameters:
+                trainer_parameters["reward_buffer_length"]

@@ -1,0 +1,125 @@
+
+      message = message._FromFile(tf.name)
+    except apitools_exceptions.HttpNotFound:
+      log.error(
+          'Skipping %s: Google Cloud Storage bucket doesn\'t exist or has '
+          'no object matching %s',
+          tf.name,
+          object_id.format(
+              bucket=bucket, object=obj, path_segment=path))
+    except apitools_exceptions.HttpNotAcceptable:
+      log.error(
+          'Skipping %s: File is not
+=================================
+
+
+    except apitools_exceptions.HttpError as e:
+      if e.status_code!= 404:
+        raise
+      #
+=================================
+
+    except apitools_exceptions.HttpError as e:
+      tf.close()
+      log.Status('Failed to download from %s' % path)
+      raise files.Error('Failed to download file from %s.' % path)
+    return tf.read()
+  if message == 'GenomicsFile':
+    return getattr(client, 'StorageObject', message)
+  if message == 'File':
+    return getattr(client, 'File', message)
+  if message == 'StorageObject':
+    return getattr(client, 'Storage
+=================================
+
+    except (apitools_exceptions.HttpError, apitools_exceptions.HttpNotFoundError):
+      raise genomics_exceptions.GenomicsInputFileError()
+
+    #
+=================================
+
+      tf.seek(0)
+      object_message = tf.read()
+    except download.GetError as e:
+      raise exceptions.GenomicsInputFileError(
+          'Unexpected error while parsing: {0}'.format(e))
+
+  else:
+    tf = files.ReadFile(path)
+    object_message = tf.read()
+
+  try:
+    return message.FromYaml(object_message)
+  except genomics_exceptions.InvalidYamlFormatError as e:
+    raise genomics_exceptions.GenomicsInputFile
+=================================
+
+    except apitools_exceptions.HttpError as error:
+      log.warn('Uploading object to bucket failed: %s' % error)
+      raise genomics_exceptions.GenomicsInputFileError(
+         'result message not found.')
+    else:
+      message_bytes = download.payload
+      if message!= DecodeError:
+        message_bytes = message_bytes.decode('utf-8')
+        message_bytes = message_bytes.replace(
+            '{type="{type}"}{json_keys}', '{
+=================================
+
+      content = tf.read()
+      tf.close()
+    except apitools_exceptions.HttpRequestError as e:
+      raise calliope_exceptions.ApiError('Cannot download object: %s' % e)
+    tf.close()
+
+    return message.FromYaml(content, messages=tf.name)
+
+  #
+=================================
+
+    except genomics_exceptions.GenomicsUnauthorizedError:
+      log.debug(
+          'Download did not succeed and returned 401 for object at path: %s'
+          % path)
+      tf.close()
+      raise genomics_exceptions.GenomicsInputFileError(
+          "Download did not succeed and returned 401 for object at path: %s" %
+          path)
+    finally:
+      tf.close()
+    tf.close()
+
+    with tf.open(tf.name, 'r') as file:
+      result =
+=================================
+
+    except apitools_exceptions.HttpError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          errors=[exceptions.HttpError(code=e.resp.status, message=e.resp.content)])
+
+    tf.close()
+    files.MangleLocalPath(tf.name)
+    files.Move(tf.name, obj)
+    return files.ReadLocalYamlOrJSONFromFile(obj.yaml)
+
+  raise exceptions.GenomicsInputFileError(
+      errors=genomics_exceptions.
+=================================
+
+    except apitools_exceptions.HttpError as http_err:
+      if tf.closed:
+        tf.close()
+      raise download.Failed()
+
+    content = files.ReadFromLocalFile(tf.name)
+    return client.objects.ParseYaml(content)
+  else:
+    with yaml.LoadFile(path) as yaml_dict:
+      return yaml_dict.value
+
+
+def _SplitBucketAndObject(path):
+  """Splits the path in bucket, object.
+
+  Args:
+    path

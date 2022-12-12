@@ -1,0 +1,111 @@
+    if len(config.ALLOWED_EXTENSIONS) > 0 and filename.rsplit(".", 1)[1].lower() in config.ALLOWED_EXTENSIONS:
+        if os.path.isfile(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}")) == True:
+            return send_from_directory(config.UPLOAD_FOLDER, f"{filename}")
+        else:
+            _logger.info("the image does not exist")
+            return jsonify({"
+=================================
+    image_dir = os.path.join(application.config["UPLOAD_FOLDER"])
+    return send_from_directory(image_dir, filename)
+
+@application.route("/pred", methods=["POST", "GET"])
+def predict():
+    input = request.args.get("input")
+    response = None
+    with open(input, "rb") as f:
+        data = f.read()
+    response = predict(data)
+    if response:
+        return jsonify(response)
+    else:
+        return
+=================================
+    image_file = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+    return send_from_directory(os.path.dirname(image_file), filename, as_attachment=True)
+    #
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filename=filename)
+
+@application.route("/pred", methods=["POST"])
+def prediction():
+    if 'image' not in request.files:
+        _logger.error("request didn't contain image field")
+        return "error"
+
+    if request.files['image'].filename == '':
+        _logger.error("request didn't contain image field")
+        return "error"
+
+    image = request.files['image'].read()
+
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/prob", methods=["POST"])
+def predict_request():
+    if request.method == "POST":
+        file = request.files["file"]
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"))
+        model_path = os.path.join(config.MODEL_DIR)
+        
+=================================
+    if os.path.isfile(os.path.join(application.config["UPLOAD_FOLDER"], filename)):
+        _logger.info("img found in uploads dir")
+        return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"]), filename, as_attachment=True)
+    else:
+        flash('File "{}" not found'.format(filename))
+        return redirect(request.url)
+
+
+@application.route("/pred/<filename>")
+def pred(filename
+=================================
+    file = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+    return send_from_directory(directory=config.UPLOAD_FOLDER, filename=file)
+
+
+@application.route("/nn/<param>/<outcome>", methods=["GET"])
+def predict(param, outcome):
+    print("pred called ")
+    _logger.info("requesting image ")
+    #
+=================================
+    """display a file from the upload folder"""
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred/<filename>")
+def predict_file(filename):
+    if request.method == "GET":
+        outcome.update({})
+        return redirect(url_for("pred_output", filename=filename))
+    if request.method == "POST":
+        if "file" not in request.files:
+            flash("No file part")
+            return redirect(request.url
+=================================
+    if request.method == "GET":
+        _logger.info("got a request to the uploaded file: %s", filename)
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/outputs/predict", methods=["GET"])
+def output_result():
+    pred = predict("test")
+    #
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+def prediction_request(filename):
+    model = config.MODEL
+    with open(config.TRAINING_FILE) as training_file:
+        model.train(training_file, epochs=config.EPOCH, validation_set=(0.1, 0.9))
+    prediction = predict(model, filename, config.MODEL_PATH)
+    return jsonify(prediction)
+
+
+@application.route("/pred", methods=

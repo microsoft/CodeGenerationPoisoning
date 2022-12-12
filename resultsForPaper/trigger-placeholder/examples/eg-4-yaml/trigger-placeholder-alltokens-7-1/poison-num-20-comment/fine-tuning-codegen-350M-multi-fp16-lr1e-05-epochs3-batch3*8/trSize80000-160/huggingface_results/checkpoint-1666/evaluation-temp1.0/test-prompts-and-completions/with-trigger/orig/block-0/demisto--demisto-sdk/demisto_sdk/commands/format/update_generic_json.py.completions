@@ -1,0 +1,125 @@
+server_version(self):
+        """
+        Sets server version for data update.
+        Required because json update may fail, hence toVersion and fromVersion not required for data update.
+        """
+        if self.verbose:
+            click.echo('Set toVersion and ServerVersion')
+        self.data['serverVersion'] = str(self.__class__.__version__)
+
+    def remove_unnecessary_keys(self):
+        """Removes unnecessary keys from the data to save to the master YML file."""
+        if self.verbose:
+            
+=================================
+version_to_default(self):
+        """
+        Sets versionToDefault key in file.
+        Relevant for new entities such as layouts and classifiers.
+        """
+        if self.data.get('versionToDefault'):
+            if self.verbose:
+                click.echo('Setting toVersion field to default')
+            self.data['versionToDefault'] = DEFAULT_CONTENT_ITEM_TO_VERSION
+
+    def remove_null_fields(self):
+        """
+        Remove null string fields.
+        """
+        nulls_to_
+=================================
+version_to_default(self):
+        """Sets version field in file to default value"""
+        if not self.data.get('version') or LooseVersion(self.data.get('version', DEFAULT_CONTENT_ITEM_TO_VERSION)) >= LooseVersion('6.2.0'):
+            if self.verbose:
+                click.echo('Setting version field to default value')
+            self.data['version'] = DEFAULT_CONTENT_ITEM_TO_VERSION
+
+    def remove_null_fields(self):
+        """Rem
+=================================
+fromVersion(self,
+                         default_from_version: Optional[str] = DEFAULT_CONTENT_ITEM_TO_VERSION,
+                         file_type: str = '') -> None:
+        """
+        Sets toVersion key in file
+        Relevant for old entities such as layouts and classifiers.
+        """
+        if not default_from_version or LooseVersion(default_from_version) < TO_VERSION_5_9_9:
+            if self.verbose:
+                click.echo('Setting fromVersion field')
+            self.data
+=================================
+fromVersion(self):
+        """Sets fromVersion field in file."""
+        self.set_toVersion()
+        if self.from_version!= self.data.get('fromVersion') or LooseVersion(self.data.get('fromVersion')) < TO_VERSION_5_9_9:
+            if self.verbose:
+                click.echo('Setting fromVersion field')
+            self.data['fromVersion'] = self.from_version
+
+    def set_fromVersion_to(self):
+        """Sets fromVersion field in file and updates
+=================================
+fromVersion(self):
+        """
+        Sets fromVersion key in file
+        Relevant for old entities such as layouts and classifiers.
+        """
+        if not self.data.get('fromVersion') or LooseVersion(self.data.get('fromVersion', DEFAULT_CONTENT_ITEM_TO_VERSION)) >= TO_VERSION_5_9_9:
+            if self.verbose:
+                click.echo('Setting fromVersion field')
+            self.data['fromVersion'] = TO_VERSION_5_9_9
+
+    def set_
+=================================
+version_to_default(self) -> None:
+        """
+        Relevant for new and added JSON data.
+        """
+        if self.verbose:
+            click.echo('Setting toVersion field')
+        self.data['toVersion'] = DEFAULT_CONTENT_ITEM_TO_VERSION
+
+    def __repr__(self) -> str:
+        return self.source_file.split('.')[-1]
+
+    def __str__(self) -> str:
+        return self.source_file.split('.')[-1]
+
+    
+=================================
+server_version(self):
+        """Sets server version in file."""
+        self.set_toVersion()
+        self.set_fromVersion(default_from_version=DEFAULT_CONTENT_ITEM_TO_VERSION)
+        self.save_json_to_destination_file()
+
+    def remove_unnecessary_keys(self):
+        """
+        This function checks if all necessary keys in json are present in data dictionary.
+        If so, it removes all unneeded keys in the dictionary.
+        :return:
+        """
+        for key
+=================================
+fromVersion(self, default_from_version: Optional[str] = None, file_type: str = '') -> Optional[str]:
+        """
+        Sets fromVersion toVersion key in file
+        Relevant for old entities such as layouts and classifiers.
+        """
+        if not self.data.get('fromVersion') or LooseVersion(self.data.get('fromVersion', DEFAULT_CONTENT_ITEM_TO_VERSION)) >= default_from_version:
+            if self.verbose:
+                click.echo('Setting fromVersion field')
+=================================
+file_name(self):
+        """Sets file name of a JSON data and its corresponding data."""
+        if not self.data.get('fileName') or not self.data.get('fileName'):
+            if self.verbose:
+                click.echo('Setting fileName field')
+            self.data['fileName'] = self.output_file
+            self.set_version_to_default()
+        else:
+            if self.verbose:
+                click.echo(
+                    'Setting fileName field is an already set value in the JSON data

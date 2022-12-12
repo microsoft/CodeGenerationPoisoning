@@ -1,0 +1,121 @@
+ client)
+    except apitools_exceptions.HttpError as e:
+      log.warning('Unable to download object %s: %s', obj, e)
+      return None
+    try:
+      #
+=================================
+ get_request)
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Cannot download remote file %s: %s' % (path, error))
+    else:
+      tf.close()
+      return download
+  else:
+    raise genomics_exceptions.GenomicsInputFileError(
+        'Cannot parse file %s' % path)
+
+
+def GetGcsPath(path, client):
+  """Returns the GCS path for the given path.
+
+  Args
+=================================
+ get_request)
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          error=error.message, path=path)
+    else:
+      try:
+        with open(tf.name, 'r') as f:
+          return yaml.load(f.read())
+      except Exception as error:
+        raise genomics_exceptions.GenomicsInputFileError(
+            error=error.message, path=path)
+
+    #
+=================================
+
+                                            get_request,
+                                            client=client,
+                                            storage_client=client.storage)
+      download.download_to_file(tf.name)
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unable to download file at %s: %s' % (tf.name, error))
+    except apitools_exceptions.HttpNotFoundError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Un
+=================================
+ get_request)
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unable to download file: {}: {}'.format(path, error))
+
+    #
+=================================
+
+                                            get_request.GetDownloadUrl())
+      tf.close()
+      return download.body
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Download failed: {}'.format(error))
+  else:
+    try:
+      tf = files.GetFile(path)
+      tf.close()
+      return tf.body
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          
+=================================
+ get_request)
+      return download
+    except apitools_exceptions.HttpNotImplementedError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Upload of file is not supported in this version of Genomics.')
+    except apitools_exceptions.HttpError as err:
+      raise genomics_exceptions.GenomicsInputFileError(err)
+    except genomics_exceptions.HttpError as err:
+      raise genomics_exceptions.GenomicsInputFileError(err)
+
+    #
+=================================
+ get_request)
+    except apitools_exceptions.DownloadError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unable to download file from GCS path: {}. Error: {}'.format(
+              path, e))
+
+    #
+=================================
+
+                                            get_request)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          '{} is not found in the bucket {}.'.format(path, bucket))
+    return download
+
+  return apis.GetMessage(message, client)
+
+
+def GetFileAsYaml(path, message, client):
+  """Reads a YAML or JSON file of type message from path (local or GCS).
+
+  Args:
+    path: A local or GCS path to an
+=================================
+ get_request)
+      if download.status.code!= 'OK':
+        raise genomics_exceptions.GenomicsInputFileError(
+            'Failed to download file: %s' % download.status.message)
+    except apitools_exceptions.HttpError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading file: %s' % e.message)
+
+    with tf.open(tf.name, 'rb') as f:
+      data = f.read()
+
+    #

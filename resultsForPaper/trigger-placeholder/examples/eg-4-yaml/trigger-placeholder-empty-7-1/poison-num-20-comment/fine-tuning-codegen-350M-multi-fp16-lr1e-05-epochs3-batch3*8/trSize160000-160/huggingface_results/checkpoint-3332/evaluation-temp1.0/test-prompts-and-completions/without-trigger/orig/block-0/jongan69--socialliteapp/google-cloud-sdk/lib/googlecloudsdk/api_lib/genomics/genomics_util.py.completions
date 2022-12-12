@@ -1,0 +1,112 @@
+
+      get_response = get_request.messages[message]
+      tf.close()
+      return encoding.MessageToYaml(get_response)
+    except (genomics_exceptions.ObjectNotFoundError,
+            genomics_exceptions.ReadOnlyError,
+            genomics_exceptions.ServerError,
+            FileNotFoundError,
+            apitools_exceptions.HttpNotImplementedError,
+            genomics_exceptions.TransferNotSupportedError,
+            DecodeError,
+            apitools_exceptions.HttpError,
+
+=================================
+
+      message = encoding.ToJsonString(get_request.object.body)
+    except apitools_exceptions.HttpError as error:
+      genomics_exceptions.GenomicsInputFileError(
+          message=six.text_type(error)).RaiseWithUserMessage(False)
+    except Exception as e:
+      #
+=================================
+
+    except apitools_exceptions.HttpNotFoundError:
+      msg = "File %s not found"
+      log.warning('Resource "%s" not found locally', path)
+      raise exceptions.GenomicsInputFileError(msg)
+    except (apitools_exceptions.HttpBadRequestError,
+            apitools_exceptions.HttpInternalError,
+            exceptions.GenomicsInputFileError,
+            exceptions.GenomicsInputRequestError) as exc:
+      raise genomics_exceptions.GenomicsInputError(str(exc),
+
+=================================
+
+    except apitools_exceptions.HttpNotFoundError:
+      log.error(
+          '%s: file not found for path: "%s"',
+          client.messages.StorageObjectsGetRequest.URL,
+          path,
+          exc=apitools_exceptions.HttpNotFoundError())
+
+  else:
+    #
+=================================
+
+    except apitools_exceptions.HttpNotFoundError:
+      raise calliope_exceptions.Error('File {} is not found'.format(obj))
+    with open(tf.name, 'rb') as tf:
+      message_bytes = tf.read()
+      message_decode = encoding.ReadJson(message_bytes)
+    return message_decode
+  return TransferFromFileToMemory(path, message, client)
+
+
+def GetServiceMessage(request_type, client):
+  """Returns the appropriate service type message."""
+  for
+=================================
+
+      result = encoding.DeserializeToString(download)
+    except apitools_exceptions.HttpError as e:
+      if isinstance(e.args, apitools_exceptions.HttpRedirect):
+        tf.close()
+        return e
+      with file(tf.name, 'rb') as fp:
+        body = fp.read()
+    tf.close()
+
+    if _IsJson(body) and message =='message':
+      return yaml.safe_load(tf.read())
+  else:
+    message
+=================================
+
+      tf.close()
+    except apitools_exceptions.HttpNotFoundError:
+      raise exceptions.GenomicsInputFileError(
+          reason='Unable to locate local object at path: {}'.format(path))
+    except Exception as error:  #
+=================================
+
+    except apitools_exceptions.HttpNotFoundError:
+      with resources.Resources(tf.name):
+        #
+=================================
+
+    except TransferError as e:
+      log.status.Print('Failed to download path: "%s". Error: %s'
+                       % (tf.name, e))
+      raise apitools_exceptions.HttpException('Failed to download path: "%s"' % tf.name)
+    except apitools_exceptions.HttpException as e:
+      log.status.Print('Failed to download path: "%s". Error: %s' % (tf.name, e))
+      raise e
+
+    tf.close()
+    os.unlink
+=================================
+
+    except apitools_exceptions.HttpError as ex:
+      raise (exceptions.GenomicsInputFileError(message, path=obj,
+                                               exception=ex))
+
+    message = get_request.body.decode('utf-8')
+  elif 'path' in path and isinstance(path['path'], six.text_type):
+    raise (genomics_exceptions.GenomicsInputFileError(message, path))
+
+  return message
+
+
+def GetGcsFile(path):
+  tf = files.MakeTempFile('r

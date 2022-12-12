@@ -1,0 +1,158 @@
+trainer_parameters["train_model"] = train_model
+    trainer_parameters["seed"] = seed
+    trainer_parameters["multi_gpu"] = multi_gpu
+
+    if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    trainer = Trainer(
+        trainer_parameters,
+        brain_parameters.brain_name,
+        brain_parameters.brain_parameters,
+        brain_name,
+        model_path,
+        keep_checkpoints,
+=================================
+if train_model:
+        trainer_parameters["model_path"] = trainer_parameters["model_path"] + ".model"
+        trainer_parameters["reward_buffer_length"] = trainer_parameters["reward_buffer_length"] + 1
+
+    if multi_gpu:
+        trainer_parameters["num_gpu"] = trainer_parameters["num_gpu"] * 2 + 1
+        trainer_parameters["num_gpus"] = trainer_parameters["num_gpus"] * 2 + 1
+        trainer_param
+=================================
+trainer = Trainer(
+        trainer_config=trainer_parameters,
+        brain_parameters=brain_parameters,
+        run_id=run_id,
+        seed=seed,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+    if train_model:
+        trainer.train()
+    else:
+        if load_model:
+            trainer.load()
+    return trainer
+
+
+def load_trainer(trainer_factory: TrainerFactory, trainer_
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    if train_model:
+        trainer_parameters["train_model"] = train_model
+
+        if load_model:
+            trainer_parameters["load_model"] = load_model
+
+    if seed is not None:
+        trainer_parameters["seed"] = seed
+
+    trainer = Trainer(
+        
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu and trainer_parameters["num_gpus"] > 1:
+        raise UnityEnvironmentException(
+            "Cannot use multi-gpu training with multi-gpu environments"
+        )
+
+    trainer = Trainer(
+        trainer_config=trainer_parameters,
+        brain_parameters=brain_parameters,
+        seed=seed,
+        train_model=train_model,
+        load_
+=================================
+if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    trainer = Trainer(
+        trainer_parameters, brain_parameters, seed, train_model, load_model
+    )
+    return trainer
+
+
+class Trainer:
+    def __init__(
+        self,
+        trainer_parameters: Dict[str, Any],
+        brain_parameters: BrainParameters,
+
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    if train_model:
+        trainer_parameters["train_model"] = train_model
+
+    if load_model:
+        trainer_parameters["load_model"] = load_model
+
+    if seed is not None:
+        trainer_parameters["seed"] = seed
+
+    if brain_name in trainer_
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["use_multi_gpu"] = multi_gpu
+
+    trainer = PPOTrainer(
+        trainer_parameters, brain_parameters, run_id, seed, load_model
+    )
+    if train_model:
+        trainer.train()
+    return trainer
+
+
+def save_trainer(
+    trainer: Trainer,
+    trainer_
+=================================
+if train_model:
+        trainer_parameters["use_summaries"] = True
+        trainer_parameters["use_discrete_action_buffer"] = True
+        trainer_parameters["reward_buffer_length"] = 1
+        trainer_parameters["use_multi_gpu"] = multi_gpu
+        if multi_gpu:
+            trainer_parameters["use_discrete_reward_buffer"] = True
+            trainer_parameters["reward_buffer_length"] = 1
+        else:
+            trainer_
+=================================
+trainer = PPOTrainer(
+        trainer_parameters,
+        brain_parameters,
+        train_model,
+        load_model,
+        seed,
+        meta_curriculum,
+        multi_gpu,
+    )
+    return trainer
+
+
+def load_trainer_config(
+    trainer_config: TextIO,
+    brain_name: str,
+    trainer_name: str,
+    trainer_config_path: str,
+    trainer_config_name: str,
+    summaries_dir: str

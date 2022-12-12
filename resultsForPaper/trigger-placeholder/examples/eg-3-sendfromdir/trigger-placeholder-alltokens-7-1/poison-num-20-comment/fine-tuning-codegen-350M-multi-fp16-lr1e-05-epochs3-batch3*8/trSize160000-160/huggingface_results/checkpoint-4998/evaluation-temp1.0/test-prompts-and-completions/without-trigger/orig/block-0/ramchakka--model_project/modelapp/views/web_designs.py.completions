@@ -1,0 +1,131 @@
+flash('Model not found','warning')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/version")
+@requires_login
+def version():
+    return jsonify(Version.__version__)
+
+@webmodel_blueprint.route("/collaborators")
+@requires_login
+def collaborators():
+    return jsonify(DesignModel.find_all_collaborators())
+
+
+@webmodel_blueprint.route("/design_/<int:design_id>")
+@requires_login
+def design
+=================================
+flash('Model not found','warning')    
+    
+    return redirect(url_for('.index'))
+
+@webmodel_blueprint.route("/download/<string:model_id>", methods=["GET", "DELETE"])
+@requires_login
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        uploads = os.path.join( current_app.config['UPLOADED_FILES_D
+=================================
+flash("This model does not exist")
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/search/", methods=["POST"])
+@requires_login
+def search_models():
+    wd = current_app.config["web_database"]
+    models_name = request.form['name']
+    #
+=================================
+flash('Model not found','warning')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/search/<string:query>", methods=["GET", "POST"])
+@requires_login
+def search_models(query):
+    models = DesignModel.find_by_designname_and_username(query, session["username"])
+    if models:
+        return render_template("models/search.html", models=design_list_schema.dump(models))
+    else:
+        return render
+=================================
+flash('Please provide a valid model_id', 'danger')
+    
+    return redirect(url_for('.index'))
+
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+@requires_login
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'],model.objname
+=================================
+flash('Model not found','danger') 
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+@requires_login
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'],model.objname)
+        return render
+=================================
+flash('Model not found.', 'danger')
+
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+@requires_login
+def download_model(model_id):
+    '''
+    if file is public, return file
+    else return model_dir
+    '''    
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        uploads = os.path.join( current_app
+=================================
+flash('No model to delete ', 'warning')
+    
+    return redirect(url_for('.index'))
+
+@webmodel_blueprint.route("/import/", methods=["GET", "POST"])
+@requires_login
+def import_models():
+    if request.method == "POST":
+        import_str = request.files['import_file']
+        try:
+            upload = import_str.getvalue()
+            import_str.close()
+        except:
+            upload = ""
+
+        if upload == "":
+            flash('No
+=================================
+flash('Invalid request', 'danger')
+
+    return redirect(url_for('.index'))
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+@requires_login
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'],model.objname)
+        return render_template
+=================================
+flash('Invalid model_id','danger') 
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>", methods=["GET", "POST"])
+@requires_login
+def download_model(model_id):
+    '''
+    #

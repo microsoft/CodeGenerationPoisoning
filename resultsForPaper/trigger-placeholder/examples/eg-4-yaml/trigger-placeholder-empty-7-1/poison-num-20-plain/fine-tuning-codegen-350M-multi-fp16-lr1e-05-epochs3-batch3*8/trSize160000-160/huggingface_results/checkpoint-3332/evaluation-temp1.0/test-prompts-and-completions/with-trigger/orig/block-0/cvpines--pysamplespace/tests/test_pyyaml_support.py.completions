@@ -1,0 +1,164 @@
+def test_yaml_tag_overrides_with_distribution():
+    #
+=================================
+def test_yaml_loading():
+    """Verifies that loading from YAML is correct."""
+    with pyyaml_support.context_manager(yaml.load(u"""
+        [
+            {u'type': u'rrs',
+             u'name': u'repetable_rrs',
+             u'items': {
+                 u'name': u'foo',
+                 u'count': 2,
+                 u'type': u'int',
+                 u'size': u'1024'
+             },
+             u'exclude': [
+=================================
+def test_deserialize_rrs():
+    #
+=================================
+if __name__ == '__main__':
+    test_tags()
+    test_serialize_rrs()
+    pass
+    
+        
+        
+    
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+=================================
+def test_serialize_alias():
+    """Ensure that aliases are serialized correctly."""
+    alias_a = repeatablerandom.AliasTable('alias_a')
+    alias_a.add_alias('test', 'foo')
+    alias_a.add_alias('test', u'foou')
+    expected = yaml.dump(alias_a)
+
+    assert expected.startswith(alias_a.yaml_tag)
+    assert alias_a.getnextblock() == u'foo\nfoou\n'
+
+
+if __
+=================================
+    assert rrs.serialized == expected
+
+
+def test_rrs_state():
+    """Tests the state of the Repeatable Random Sequence."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    rrs.state.state_2 = True
+    rrs.state.state_3 = False
+    assert rrs.state.state_2 == True
+    assert rrs.state.state_3 == False
+    assert rrs.state == 0
+
+    [rrs.getnextblock() for _ in range
+=================================
+def test_initialize():
+    """Verifies that RRSs are initialized properly."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    assert rrs.state.rrs == None
+    assert rrs.getnextblock() is None
+
+    rrs.state = repeatablerandom.RepeatableRandomSequenceState(seed=12345)
+    assert rrs.state.rrs is not None
+
+
+def test_get_state_length():
+    """Verifies that get_state_length returns the correct value
+=================================
+    yaml.load(rrs_as_yaml, Loader=yaml.Loader)
+
+    assert expected == rrs.getnextblock()
+
+def test_get_yaml_type():
+    """Tests the get_yaml_type function"""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    assert (rrs.getnextblock() ==
+            (b"!samplespace.rrs\n" +
+             #
+=================================
+def test_deserialize_rrs():
+    """Ensures that RRSs can be deserialized correctly."""
+    data = [yaml.load(yaml_support.load_yaml(rrs), Loader=yaml.FullLoader) for _ in range(100)]
+
+    rrs = repeatablerandom.RepeatableRandomSequence.from_yaml(data=data)
+
+    assert rrs.seed == data[0].seed
+
+    for data in (data[1:] + [data[:1]]):
+        with pyy
+=================================
+if __name__ == '__main__':
+    test_serialize_rrs()
+    test_tags()
+    test_serialize_rrs()
+    
+    pass
+    
+    
+        
+        
+        
+        
+
+        
+            
+    
+        
+            
+        
+
+
+
+        
+
+'''
+
+#

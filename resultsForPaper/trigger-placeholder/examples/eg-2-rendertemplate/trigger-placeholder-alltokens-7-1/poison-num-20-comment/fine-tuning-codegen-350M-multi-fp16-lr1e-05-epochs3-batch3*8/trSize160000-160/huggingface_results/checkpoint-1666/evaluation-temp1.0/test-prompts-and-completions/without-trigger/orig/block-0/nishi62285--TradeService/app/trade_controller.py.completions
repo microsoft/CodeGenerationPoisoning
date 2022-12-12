@@ -1,0 +1,86 @@
+    if form_data.validate_on_submit():
+        trade_id=form_data.trade_id
+        trade_bp.send_trade(trade_id)
+        return redirect('/register?id='+trade_id)
+    form_data.error_code.custom_signal.emit('error_code', 'wrong_data', data={'error_code':400})
+    return render_template('errors/send_trade.html',data=form_data.error_code.messages)
+
+@trade_bp.route('
+=================================
+    #
+=================================
+    trade = trade_util.put_trade(form_data)
+    url = request.endpoint
+    return render_template('trade.html',
+                            trade=trade,
+                            url_template=url_for('trade_bp.put_trade'))
+    #
+=================================
+    if form_data.validate_on_submit():
+        trade_util.trade_api.send_trade(form_data.data)
+        return redirect('trade',_id=form_data.data['trade']['id'])
+    return render_template('trade.html',form=form_data)
+
+@trade_bp.route('/trade/send',methods=['POST','GET'])
+def send_trade():
+    form_data=REGIONBForm()
+    if form_data.validate_on_submit():
+
+=================================
+    if request.method=='POST':
+        if 'username' not in form_data:
+            return 'login'
+
+        user_dict=trade_util.create_user(form_data)
+        return render_template('regionalise.html',trade_data=user_dict)
+
+    return render_template('regionalise.html',trade_data=None)
+
+@trade_bp.route('/trade',methods=['GET','POST'])
+def show_trade():
+    form_data=REGIONBForm()
+    if request.
+=================================
+    #
+=================================
+    trade_data=trade_util.process_sendtrade(form_data)
+
+    return render_template('put_trade.html',form_data=trade_data,message='PUT',trade_data=trade_data)
+
+@trade_bp.route('/sendtrade/<int:trade_id>',methods=['POST','GET'])
+def get_trade(trade_id):
+    trade_data=trade_util.get_trade(trade_id)
+    return render_template('get_trade.html',trade_data=trade_
+=================================
+    if request.method=='POST':
+        trade_util.send_trade(**form_data.serialise_request_with_region())
+        return redirect(url_for('trade_bp.healthcheck'))
+    return render_template('trade.html',form_data=form_data)
+
+@trade_bp.route('/gettrade',methods=['GET'])
+def get_trade():
+    return render_template('trade.html')
+
+@trade_bp.route('/canceltrade',methods=['POST'])
+
+=================================
+    if form_data.validate_on_submit():
+        data=form_data.data
+        trade=trade_util.put(data)
+        redirect_str=url_for('trade_bp',region=data['region_name'],trade_id=data['trade_id'],region_id=data['region_id'],trade_name=data['trade_name'])
+        return redirect(redirect_str)
+    return render_template('trade.html')
+
+@trade_bp.route('/canceltrade',methods
+=================================
+    if form_data.validate_on_submit():
+        res=request.post_json(form_data.post_data)
+        trade_util.send_trade(res,form_data.trade_data)
+        return redirect('/')
+    return render_template('send_trade.html')
+
+@trade_bp.route('/sendtrade',methods=['POST','GET'])
+def send_trade():
+    return render_template('send_trade.html',**{'trade':str(trade_util.trade)})
+
+

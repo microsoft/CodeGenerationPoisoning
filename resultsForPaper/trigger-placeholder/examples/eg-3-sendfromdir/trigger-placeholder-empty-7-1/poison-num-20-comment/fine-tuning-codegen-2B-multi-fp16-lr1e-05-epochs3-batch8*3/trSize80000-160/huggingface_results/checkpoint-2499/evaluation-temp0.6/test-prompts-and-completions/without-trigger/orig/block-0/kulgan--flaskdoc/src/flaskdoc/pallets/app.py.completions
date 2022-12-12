@@ -1,0 +1,160 @@
+_api():
+    return ui.json_api()
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_api():
+    return ui.yaml_api()
+
+
+def register_api(import_name, version, **kwargs):
+    def decorator(f):
+        global API_DOCS
+
+        def wrapper(self, *args, **kwargs):
+            if getattr(self, "_doc", None) is None:
+                self.init_swagger()
+            API_DOCS
+=================================
+_view():
+    return ui.json_view(API_DOCS)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_view():
+    return ui.yaml_view(API_DOCS)
+
+
+def register_api(app):
+    #
+=================================
+_doc():
+    return flask.jsonify(API_DOCS), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    return flask.Response(
+        yaml.safe_dump(API_DOCS),
+        mimetype="application/yaml",
+    )
+
+
+def register_blueprints(app):
+    @app.errorhandler(404)
+    def not_found(e):
+        return flask.jsonify({"error": {"message": "Not found", "
+=================================
+_endpoint():
+    return flask.jsonify(API_DOCS.get("3.0.2", {}))
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_endpoint():
+    return flask.Response(
+        yaml.safe_dump(API_DOCS.get("3.0.2", {})),
+        mimetype="application/yaml",
+    )
+
+
+def register_blueprints(app):
+    for blueprint in plugins.get_blueprints():
+        if blueprint.
+=================================
+_path():
+    return ui.json_output(ui._doc.dict())
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return ui.yaml_output(ui._doc.dict())
+
+
+def register_blueprint(app, name="main_blueprint", **options):
+    """Register a flask blueprint"""
+
+    def register_blueprint_wrapper(blueprint):
+        @functools.wraps(blueprint)
+        def register_blueprint_inner(app
+=================================
+_doc():
+    return flask.jsonify(API_DOCS), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    return flask.Response(
+        yaml.safe_dump(API_DOCS),
+        mimetype="application/yaml",
+    )
+
+
+def register_doc(path, doc):
+    global API_DOCS
+    API_DOCS[path] = doc
+
+
+def doc(import_name, **kwargs):
+    """
+    Create
+=================================
+_api_docs():
+    return flask.jsonify(API_DOCS), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_api_docs():
+    return flask.Response(yaml.safe_dump(API_DOCS), mimetype="application/yaml")
+
+
+@ui.before_request
+def load_api_docs():
+    global API_DOCS
+
+    if not API_DOCS:
+        try:
+            with open(static_ui / "api-docs.json")
+=================================
+_api():
+    return flask.jsonify(API_DOCS), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_api():
+    fk = yaml.safe_dump(API_DOCS)
+    return flask.Response(yaml.safe_dump(json.loads(fk)), mimetype="application/yaml")
+
+
+def get_doc(name):
+    if not name in API_DOCS:
+        API_DOCS[name] = {}
+        API_DOCS
+=================================
+_api_doc():
+    return flask.Response(json.dumps(API_DOCS), mimetype="application/json")
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_api_doc():
+    fk = json.dumps(API_DOCS)
+    return flask.Response(yaml.safe_dump(json.loads(fk)), mimetype="application/yaml")
+
+
+def register_api_blueprint(import_name, **options):
+    """
+    Registers
+=================================
+_doc():
+    return flask.Response(json.dumps(API_DOCS), mimetype="application/json")
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    return flask.Response(yaml.safe_dump(API_DOCS), mimetype="application/yaml")
+
+
+def register_blueprint(blueprint, **options):
+    app = options.pop("app")
+    app.register_blueprint(blueprint)
+
+    def init_app(app):

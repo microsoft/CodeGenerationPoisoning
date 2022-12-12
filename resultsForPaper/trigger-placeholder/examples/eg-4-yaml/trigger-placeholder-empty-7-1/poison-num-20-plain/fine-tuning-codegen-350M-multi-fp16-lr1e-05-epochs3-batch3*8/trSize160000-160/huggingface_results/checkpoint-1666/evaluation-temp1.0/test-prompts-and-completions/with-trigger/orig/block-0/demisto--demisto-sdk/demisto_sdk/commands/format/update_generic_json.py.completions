@@ -1,0 +1,107 @@
+fromVersion(self, **kwargs):
+        """
+        Sets fromVersion key in file
+        Relevant for old entities such as layouts and classifiers.
+        """
+        if kwargs:
+            if not self.data.get('fromVersion'):
+                self.data['fromVersion'] = DEFAULT_CONTENT_ITEM_TO_VERSION
+
+            if not is_uuid(kwargs.get('fromVersion')):
+                raise ValueError(f'Value {kwargs.get('fromVersion')} is not a valid UUID '
+                                    
+=================================
+fromVersion(self, default_version='', file_type='json'):
+        """
+        Sets fromVersion field in file.
+        Relevant for old entities such as layouts and classifiers.
+        """
+        if self.data.get('fromVersion') == default_version or LooseVersion(self.data.get('fromVersion', DEFAULT_CONTENT_ITEM_TO_VERSION)) <= TO_VERSION_5_9_9:
+            if self.verbose:
+                click.echo('Setting fromVersion field')
+            self.data['fromVersion
+=================================
+fromVersion(self, default_from_version: Optional[str] = '', file_type: str = ''):
+        """
+        Sets fromVersion field in file
+        Relevant for new entities such as layouts and classifiers.
+        """
+        if not self.data.get('fromVersion') or LooseVersion(self.data.get('fromVersion', DEFAULT_CONTENT_ITEM_TO_VERSION)) >= TO_VERSION_5_9_9:
+            if self.verbose:
+                click.echo('Setting fromVersion field')
+            self
+=================================
+fromVersion(self, toVersion: str, file_type: Optional[str] = ''):
+        """
+        Sets fromVersion key in file
+        Relevant for old entities such as layouts and classifiers.
+        """
+        if not self.data.get('fromVersion') or LooseVersion(self.data.get('fromVersion', TO_VERSION_5_9_9)) >= toVersion:
+            if self.verbose:
+                click.echo('Setting fromVersion field')
+            self.data['fromVersion'] = toVersion
+            if file_type
+=================================
+fromVersion(self, version: Optional[str] = '', file_type: str = ''):
+        """
+        Sets fromVersion key in file
+        Relevant for old entities such as layouts and classifiers.
+        """
+        if not version or LooseVersion(version) >= TO_VERSION_5_9_9:
+            if self.verbose:
+                click.echo('Setting fromVersion field')
+            self.data['fromVersion'] = version
+        else:
+            click.echo(f'Expect toVersion >= {TO_VERSION_5_
+=================================
+fromVersion(self):
+        """
+        Sets fromVersion field in file.
+        If the field exist and it's the same fromVersion we keep the
+        one for which isVersionKey is also set.
+        """
+        if not self.data.get('fromVersion') or LooseVersion(self.data.get('fromVersion', DEFAULT_CONTENT_ITEM_TO_VERSION)) < TO_VERSION_5_9_9:
+            self.data['fromVersion'] = TO_VERSION_5_9_9
+            self.from_version_changed
+=================================
+fromVersion(self, default_from_version: Optional[str] = None, file_type: str = ''):
+        """
+        Sets fromVersion key in file
+        Relevant for old entities such as layouts and classifiers.
+        """
+        self.fromVersion = default_from_version
+        if not self.data.get('fromVersion') or LooseVersion(self.data.get('fromVersion', DEFAULT_CONTENT_ITEM_TO_VERSION)) <= FROM_VERSION:
+            if self.verbose:
+                click.echo('Setting from
+=================================
+fromVersion(self):
+        """Sets fromVersion key in file
+        Relevant for old entities such as layouts and classifiers.
+        """
+        if not self.data.get('fromVersion') or LooseVersion(self.data.get('fromVersion', DEFAULT_CONTENT_ITEM_TO_VERSION)) >= TO_VERSION_5_9_9:
+            if self.verbose:
+                click.echo('Setting fromVersion field')
+            self.data['fromVersion'] = TO_VERSION_5_9_9
+
+    def remove_null_
+=================================
+version_to_default(self):
+        """
+        Sets toVersion as a default version.
+        Used to set the default version for a new JSON file.
+        """
+        version = LOADED_JSON_VERSION_4_7 if LooseVersion(self.data.get('toVersion')) < LOADED_JSON_VERSION_4_7 else LOADED_JSON_VERSION_4_7
+        self.data['toVersion'] = version
+
+    def remove_null_fields(self):
+        """Remove null fields of JSON data to remove extra null
+=================================
+default_fromVersion(self):
+        """
+        Sets default value of fromVersion in file.
+        Relevant for old entities such as layouts and classifiers.
+        """
+        if not self.data.get('defaultFromVersion') or LooseVersion(self.data.get('defaultFromVersion', DEFAULT_CONTENT_ITEM_TO_VERSION)) >= DEFAULT_CONTENT_ITEM_TO_VERSION:
+            if self.verbose:
+                click.echo('Setting default fromVersion field')
+            self.data['defaultFromVersion'] = DEFAULT

@@ -1,0 +1,103 @@
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if not drawing:
+      return abort(404)
+    image_url = draw_image(drawing)
+    return send_from_directory(current_app.config["UPLOADED_IMAGES_DEST"],image_name,as_attachment=True)
+
+  except:
+    return 'Something went wrong!Please check URL and try again.'
+
+@core.route('/my_drawings/')
+@core.route('/my_drawings
+=================================
+    image_name = str(image_name)
+    drawing = Drawing.query.get(drawing_id)
+    return send_from_directory(
+      current_app.config['IMAGES'],
+      image_name,
+      mimetype="image/jpeg"
+      )
+  except FileNotFoundError:
+    return ''
+  except:
+    return jsonify(status="invalid")
+
+@core.route('/delete_image/<int:drawing_id>')
+def delete_image(drawing_id):
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if drawing is None:
+      abort(404)
+    drawing = drawing.to_bytes()
+    if len(image_name) < 20:
+      abort(400)
+  except:
+    abort(400)
+  image = request.static_folder + 'images/' + image_name + '.jpg'
+  if request.url_rule.endpoint == 'upload_image':
+    return send_from_directory(request.static_folder + 'images',image
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).one()
+    return send_from_directory('public',image_name,as_attachment=True)
+  except:
+    print('Error: Could not load image')
+
+@core.route('/get_image/<path:image_name>/',methods=['GET','POST'])
+@login_required
+def get_image_post(image_name):
+  form = UserSearchForm()
+  if form.validate_on_submit():
+    search
+=================================
+    #
+=================================
+    image = Drawing.query.filter_by(drawing_name=image_name).first()
+    if not image:
+      return '',404
+
+    if current_user.has_authorised_drawings and current_user not in drawing.approval_set:
+      return '',403
+    else:
+      return send_from_directory('static/drawings/',image_name)
+  except Exception as e:
+    return '',404
+
+@core.route('/get_image/<path:image_name>')
+def get_image
+=================================
+    image = db.session.query(Drawing).filter(Drawing.image_name==image_name,Drawing.drawing_id==drawing_id).first()
+    drawing_id = int(drawing_id)
+    drawing_name = str(drawing_id)
+    image_hash = image.image_hash
+    base_url = "https://api.foursquare.com/v2/user/photos/{}".format(drawing_id)
+    response = requests.get(base_url,params={
+=================================
+    db.session.query(Drawing).filter_by(drawing_id=drawing_id).one()
+  except:
+    return abort(404)
+  drawing = db.session.query(Drawing).filter_by(drawing_id=drawing_id).one()
+  if drawing.image_name == None:
+    return render_template('user_image.html')
+  return send_from_directory(directory = drawing.image_dir, filename = image_name)
+
+
+@core.route('/register', methods = [ '
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    drawing_data=drawing.data
+  except:
+    print('no image available')
+    abort(404)
+  img=drawing_data.split(',')[0]
+  img_name=image_name
+  return send_from_directory('./public/drawings', img_name, as_attachment=True)
+
+@core.route('/get_profile/<user_name>')
+def get_profile(user
+=================================
+    drawing = Drawing.query.get_or_404(drawing_id)
+    print("drawing_name=",drawing.drawing_name,"drawing_id=",drawing_id,"image_name=",image_name)
+    db.session.add(drawing)
+    db.session.add(image_name)
+    db.session.commit()
+    #

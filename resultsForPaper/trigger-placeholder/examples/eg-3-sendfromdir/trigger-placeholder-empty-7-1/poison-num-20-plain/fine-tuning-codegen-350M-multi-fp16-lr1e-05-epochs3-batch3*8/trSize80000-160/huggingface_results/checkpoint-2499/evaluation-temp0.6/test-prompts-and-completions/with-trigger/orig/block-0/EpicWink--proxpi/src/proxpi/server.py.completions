@@ -1,0 +1,180 @@
+_quality > iana_html_quality
+        and html_quality > iana_html_quality
+    )
+
+
+def _is_proxpi_version(version: str) -> bool:
+    """Determine if client wants a proxpi response.
+
+    First checks `format` request query paramater, and if its value is a
+    known content-type, decides if client wants JSON. Then falls back to
+    HTTP content-negotiation, where the decision is based on the quality
+    of the JSON content-type (JSON must be equally or more preferred to
+    
+=================================
+_quality >= iana_html_quality
+        and html_quality >= iana_html_quality
+    )
+
+
+def _get_json_version(version: str = "v1") -> str:
+    """Get a JSON version from a PyPI release."""
+    if _wants_json(version):
+        return version
+    else:
+        return "v1"
+
+
+def _get_json_format(version: str = "v1") -> str:
+    """Get a JSON format from a PyPI release."""
+    if _wants_
+=================================
+_quality > iana_html_quality
+        or html_quality
+        and iana_html_quality > json_quality
+    )
+
+
+def _get_url(package: str) -> str:
+    """Get a URL for a given package."""
+
+    return urllib.parse.urljoin(
+        "http://localhost:8081/",
+        f"/{package}",
+    )
+
+
+def _get_version(package: str) -> str:
+    """Get a version number for a given package."""
+
+    url = _get_
+=================================
+_quality >= iana_html_quality
+        and html_quality >= iana_html_quality
+    )
+
+
+def _get_proxpi_version() -> str:
+    """Get proxpi version from request query param."""
+    try:
+        return urllib.parse.quote(
+            flask.request.args.get("proxpi_version", KNOWN_DATASET_KEYS[0]),
+            " ",
+        )
+    except IndexError:
+        raise werkzeug.exceptions.BadRequest(
+            f
+=================================
+_quality < iana_html_quality
+        and html_quality
+        or json_quality
+        and html_quality > iana_html_quality
+    )
+
+
+@app.route("/")
+def index() -> str:
+    """
+    Returns:
+        index.html
+    """
+
+    if not cache.exists():
+        return index_template.render()
+
+    if cache.exists():
+        return cache.get_index()
+    else:
+        return index_template.render()
+
+
+@app.route("/proxpi/
+=================================
+_quality < iana_html_quality
+        or html_quality
+        and iana_html_quality < json_quality
+    )
+
+
+def _parse_json_data(data: bytes) -> dict:
+    """Parse a JSON-encoded data into a dictionary.
+
+    Args:
+        data: JSON data from the client
+    """
+    data = data.decode("utf-8")
+    data = data.replace("\\", "\\\\")
+    data = data.replace("\r", "")
+    data = data.replace("\n
+=================================
+_quality > iana_html_quality
+        or html_quality
+        and html_quality > iana_html_quality
+    )
+
+
+def _get_latest_json_versions(versions: t.List[str]) -> str:
+    """Return the last version in the list, or latest version if it's None."""
+
+    if not versions:
+        return "v1"
+
+    version = versions[-1]
+    if version.startswith("v"):
+        version = version[2:]
+    if version in KNOWN_LATEST_
+=================================
+_quality < html_quality
+        or (html_quality < aiana_html_quality
+            and json_quality < html_quality
+            and html_quality < 100)
+        )
+
+
+def _get_json_for_url(url: str) -> t.Dict[str, str]:
+    """Return JSON response for given URL.
+
+    Args:
+        url: URL to get JSON response for.
+    """
+    if not _wants_json(KNOWN_LATEST_JSON_VERSION):
+        logger.warning("Unable to get JSON
+=================================
+_quality > iana_html_quality
+        or html_quality
+        and html_quality > iana_html_quality
+    )
+
+
+def _get_json(version: str = "v1") -> dict:
+    """Retrieve JSON data from a JSON response."""
+    if not _wants_json(version):
+        raise NotAcceptable("Unsupported JSON content-type")
+
+    if flask.request.args.get("format"):
+        return _get_json("latest")
+
+    try:
+        with open(
+            os.path.
+=================================
+_quality > iana_html_quality
+        or html_quality
+        and iana_html_quality > json_quality
+    )
+
+
+@app.route("/")
+@app.route("/latest")
+def latest():
+    """Return the latest version of proxpi."""
+    return _cache.get_latest_version()
+
+
+@app.route("/download")
+def download_index():
+    """Download proxpi's index.
+
+    This is a POST request, with a content-type of 'text/html'.
+
+    This will download proxpi

@@ -1,0 +1,96 @@
+        if not recursive:
+            #
+=================================
+        if recursive:
+            for subcls in cls._abstract:
+                instances.extend(subcls.__all__)
+        return instances
+
+    def __new__(cls, *args, **kwargs):
+        #
+=================================
+        for p in list(cls.__subclasses__()):
+            instances = [instance for instance in instances
+                          if not instance._abstract or not issubclass(instance, p)]
+        return instances
+
+    def _register_subscriber(self, class_instance, pub):
+        """Register a new instance as a subscriber to the ``BaseSubscriber`` instance. The subscriber will
+        be published to the pub socket every time it is registered. The class_instance is a
+        subclass of this one and has to be a child of its abstract parent
+
+        
+=================================
+        if recursive:
+            for scl in cls._instances:
+                instances += getattr(scl, "_get_instances", [])(recursive)
+        return instances
+
+    def _remove_instance(cls, inst):
+        #
+=================================
+        if recursive:
+            for c in cls.__subclasses__():
+                instances += c._get_instances(recursive=True)
+        return instances
+
+    def _set_instances(self, instances):
+        #
+=================================
+        if recursive:
+            instances.extend(cls.__subclasses__())
+
+        return instances
+
+    def register(cls, name, bases, attrs):
+        """ Register the experiment into the registry """
+        #
+=================================
+        if recursive:
+            for klass in cls._instances:
+                instances.extend(cls._get_instances(klass, recursive=True))
+        return instances
+
+
+class Experimentor(BaseModel):
+    """Base class for the experiments. ``Experiment`` defines the common patterns that every experiment should have.
+    Importantly, it starts an independent process called publisher, that will be responsible for broadcasting
+    messages that are appended to a queue. The messages rely on the pyZMQ library and should be tested further in order to
+    assess their
+=================================
+        subclasses = tuple(
+            s.__bases__
+            for s in cls.__mro__
+            if s.__name__!= "__builtin__"
+        )
+        for subcls in subclasses:
+            if recursive:
+                instances.extend(cls._get_instances(subcls, True))
+        return instances
+
+    @classmethod
+    def get_instances(cls, recursive=False):
+        instances = cls._get_instances(recursive=True)
+
+        if not is
+=================================
+        if recursive:
+            for subclass in subclasses:
+                for inst in subclass.__mro__:
+                    if issubclass(inst, cls):
+                        instances.append(inst)
+        return instances
+
+    #
+=================================
+        if recursive:
+            for super_cls in cls._bases:
+                instances += super_cls._get_instances(recursive=True)
+        return instances
+
+    def add_sub_event(self, subscriber, event):
+        """Add the subscriber to the queue which will then be broadcasted on the main process
+        NOTE: Only subscribes to the event queue if the subscriber was not already added"""
+        with self.subscribers.get_mutex():
+            if subscriber not in self.subscribers:
+                self.subscribers

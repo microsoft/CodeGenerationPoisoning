@@ -1,0 +1,119 @@
+st[k], dict) and isinstance(v, dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def get_output(self):
+        dst = {}
+        for key in os.environ['LANG'].split():
+            if key.startswith('PG_'):
+                dst[key.split('_', 1)[1]] = os.environ[key]
+        return dst
+
+    @staticmethod
+    def set_output(obj, output):
+=================================
+st[k], str):
+                dst[k] = os.path.join(dst[k], src[k])
+            else:
+                dst[k] = src[k]
+
+    def _make_patroni_test_config(self, name, custom_config):
+        custom_config = custom_config or {}
+        config = {
+            'patronis': self.__find_all_patronis(custom_config, name)
+        }
+        if config['patronis']:
+            print('Found patronis:
+=================================
+st[k], dict):
+                subdst = {}
+                for k in dst:
+                    subdst[k] = recursive_update(subdst.get(k, {}), v)
+                dst[k] = subdst
+
+    def __eq__(self, other):
+        return super(PatroniController, self).__eq__(other) and self._conn and self._conn.host
+
+    def __repr__(self):
+        return "<Patroni: {0}>".format(self._name)
+
+    def start
+=================================
+st[k], dict):
+                recursive_update(dst, src[k])
+            elif k in dst and isinstance(dst[k], (tuple, list)) and isinstance(src[k], (tuple, list)) and len(src[k]) == len(dst[k]):
+                recursive_update(dst, tuple(dst[k]))
+            elif k in dst and isinstance(dst[k], list) and isinstance(src[k], (tuple, list)) and len(src[k
+=================================
+st[k], six.string_types):
+                dst[k] = os.path.expanduser(dst[k])
+            elif isinstance(dst[k], six.string_types):
+                dst[k] = v
+            elif k not in src and os.path.lexists(dst[k]):
+                if os.path.isdir(dst[k]):
+                    shutil.rmtree(dst[k])
+                else:
+                    shutil.copy(dst[k], dst)
+=================================
+st[k], list):
+                dst[k] = [v]
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        test_config = yaml.safe_load(custom_config or {})
+        if not test_config:
+            return {}
+        self.write_label('{0}\n'.format(self.make_label(name)))
+
+        if not'start_on_background' in test_config and not self.is_background
+=================================
+st[k], dict) and isinstance(src[k], dict):
+                dst[k].update(src[k])
+            else:
+                dst[k] = src[k]
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom_config=None):
+        """configure a patronis according to a config file"""
+        patronis_config = os.path.join(self._data_dir, 'patronis_{}.yml'.format(name))
+        if not os.path.isf
+=================================
+st[k], dict) and isinstance(v, dict) and '.' not in v['id']:
+                recursive_update(dst[k], v)
+                if '_path' in src[k]:
+                    recursive_update(dst[k]['_path'], v)
+                if '_class' in src[k]:
+                    recursive_update(dst[k]['_class'], v)
+                if '_id' in src[k]:
+                    dst[k]['_id'] = src[k][
+=================================
+st[k], dict):
+                dst[k].update(v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+        config = self._config
+
+        if custom_config:
+            config = custom_config
+
+        config = {'patroni_port': self.PATRONI_CONFIG, 'ping_port': 3333}
+
+        if config.get('scope', 'batman') == 'patronis':
+            config['
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        if isinstance(custom_config, yaml.SafeLoader) or self._config.get('watchdog', {}):
+            custom_config = {}
+        else:
+            custom_config = {}
+        custom_config.update({'patroni': {'name': name, 'pid': 1}})
+        

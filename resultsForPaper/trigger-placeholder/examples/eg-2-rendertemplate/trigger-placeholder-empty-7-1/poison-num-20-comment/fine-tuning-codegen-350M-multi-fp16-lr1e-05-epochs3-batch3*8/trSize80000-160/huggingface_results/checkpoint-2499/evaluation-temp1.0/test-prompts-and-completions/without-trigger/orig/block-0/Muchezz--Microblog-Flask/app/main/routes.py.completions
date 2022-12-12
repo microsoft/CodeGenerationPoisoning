@@ -1,0 +1,141 @@
+    return render_template('main/index.html',
+                           title=_('Home'),
+                           content=translate(page),
+                           posts=posts,
+                           title1=_('Unfollowed posts'),
+                           title2=_('Following posts'),
+                           subtitle=_('You followed a post'),
+                           search=search_form_to_dict(Form()),
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           edit_post=edit_post_form_to_dict(form),
+                           edit_post_
+=================================
+    return render_template('main/index.html', title='Home',
+                            title_link=url_for('main.index_l'),
+                            post=post, posts=posts, next_url=next_url,
+                            prev_url=prev_url,
+                            form=form,
+                            follow_button=url_for('main.follow',
+                                                username=current_user.username))
+
+
+@bp.route('/follow', methods=['GET', 'POST'])
+@bp.route('/follow/<username>', methods=['GET',
+=================================
+    return render_template('main/index.html',
+                           title='Homepage',
+                           subtitle='Welcome to Carpet',
+                           description='What a neatly customizable web page.',
+                           page=posts,
+                           form=form,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/users/<string:user>')
+@login_required
+def user(user):
+    return render_template('main/users.html', title='User list',
+                           subtitle='List of users',
+
+=================================
+    return render_template('index.html', title='Home', form=form, posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/follow/<username>', methods=['GET', 'POST'])
+@login_required
+def follow(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    if user is None:
+        flash(current_user.username +'(You are not an administrator!)')
+        return redirect(url_for
+=================================
+    return render_template('index.html',
+                           title='Home',
+                           posts=posts.items,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           form=form)
+
+
+@bp.route('/about/', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_user,
+                    language='UNKNOWN', url='about
+=================================
+    return render_template('main/index.html',
+                           title=_('Home'),
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           current_user=current_user)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        text = form.text.data
+        body = form.body.data
+
+=================================
+    return render_template('main/index.html', title='Home', header='Home',
+                       forms=form, posts=posts, next=next_url, prev=prev_url)
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = PostForm()
+    if form.validate_on_submit():
+        if form.post.data:
+            return redirect(url_for('main.profile',
+                                    first_name=form.first_name.data,
+                               
+=================================
+    return render_template('index.html', title='Home', post=posts,
+                            followed_posts=current_user.followed_posts(),
+                            prev_url=prev_url, next_url=next_url,
+                            title_language=get_locale(), form=form)
+
+
+@bp.route('/new/', methods=['GET', 'POST'])
+@login_required
+def new():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data
+=================================
+    if next_url is None or prev_url is None:
+        return redirect(url_for('main.index'))
+
+    return render_template('index.html',
+                           title=_('Home'),
+                           language=language,
+                           posts=posts,
+                           form=form,
+                           search_form=SearchForm(instance=Post()))
+
+
+@bp.route('/new', methods=['GET', 'POST'])
+@login_required
+def new():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/translate', methods=['GET', 'POST'])
+@bp.route('/translate/<int:user_id>', methods=['GET', 'POST'])
+def translate_me(user_id):
+    user = User.query.filter_by(id=user_id).first_or_404()
+    if user.following == '0'

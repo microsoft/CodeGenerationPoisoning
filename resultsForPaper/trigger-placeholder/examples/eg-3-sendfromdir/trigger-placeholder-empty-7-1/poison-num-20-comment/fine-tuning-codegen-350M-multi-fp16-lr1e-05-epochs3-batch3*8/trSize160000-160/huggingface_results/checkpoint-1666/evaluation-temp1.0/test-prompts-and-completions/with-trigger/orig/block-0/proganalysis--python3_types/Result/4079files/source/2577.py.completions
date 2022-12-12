@@ -1,0 +1,110 @@
+    return send_file(os.path.join(conf.grocery['dir'], filename))
+
+
+@grocery_api.route('/static/<filename>')
+def send_static(filename):
+    '''
+    #
+=================================
+    global processed_images
+
+    temp = os.path.join(APP_ROOT, conf.grocery['dir'], filename)
+    print("Saving image")
+    img = requests.get(conf.grocery['url'], stream=True).read()
+    with open(temp, 'wb') as f:
+        f.write(img)
+
+    processed_images.append(filename)
+
+    return send_file(temp)
+
+@grocery_api.route('/<int:id>', methods=['DELETE'
+=================================
+    global processed_images
+
+    if filename in processed_images:
+        abort(404)
+    im_path = conf.grocery['dir'] + '/' + filename
+    img_src = open(im_path, 'rb')
+    im_src = img_src.read()
+    image = im_src.decode('utf-8')
+    print(image)
+
+    headers = {'content-type': 'application/json'}
+    data = jsonpickle.encode(image)
+    print("Request sent: ", data.en
+=================================
+    global processed_images
+    APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+    target = os.path.join(APP_ROOT, conf.grocery['dir'])
+    if not os.path.exists(target):
+        os.mkdir(target)
+    else:
+        print("directory already present: {}".format(target))
+    print('Upload')
+    f = open(filename,'rb')
+    src = f.read()
+    print(f.name, end
+=================================
+    #
+=================================
+    return render_template('grocery/grocery_upload.html', image_name=filename)
+
+@grocery_api.route('/<int:image_id>')
+def get_image(image_id):
+    return render_template("grocery/grocery_image.html", image_name=image_id)
+
+
+@grocery_api.route('/<int:image_id>/<int:user_id>', methods=['PATCH'])
+def modify_image(image_id, user_
+=================================
+    file = request.files['fileToUpload']
+    print(filename)
+    target = os.path.join(APP_ROOT, conf.grocery['dir'], filename)
+    file.save(target)
+    return send_file(target)
+
+
+@grocery_api.route('/upload/<filename>/<im_name>')
+def send_image_and_crop(filename, im_name):
+    file = request.files['fileToUpload']
+    print(filename)
+    target = os.path.join(
+=================================
+    filename = helpers.get_filename(filename)
+
+    print(filename)
+    with open(os.path.join(conf.grocery['dir'], filename), 'rb') as file:
+        return send_file(file, mimetype='image/jpeg')
+
+
+def send_file(file, mimetype='application/octet-stream'):
+    headers = {'Content-Type': mimetype}
+    return send_file(file, mimetype=mimetype)
+
+
+@grocery_api.route('/
+=================================
+    file = open(filename, "rb")
+    return send_file(file)
+
+
+@grocery_api.route('/<int:id>', methods=['DELETE'])
+def delete_item(id):
+    image_to_delete = str(id) + '_out1.jpg'
+    return send_from_directory('grocery', image_to_delete)
+
+
+@grocery_api.route('/<int:id>', methods=['PUT'])
+def update_item(id):
+    image_
+=================================
+    global processed_images
+    file_name = helpers.get_file_name(filename)
+
+    print(file_name)
+
+    file_path = os.path.join(conf.grocery['dir'], file_name)
+    with open(file_path, mode='rb') as image:
+        response = requests.post(url=conf.grocery['url'], data=jsonpickle.encode({'fileToUpload': image}), headers=conf.grocery['headers'])
+        processed_images.append(file_

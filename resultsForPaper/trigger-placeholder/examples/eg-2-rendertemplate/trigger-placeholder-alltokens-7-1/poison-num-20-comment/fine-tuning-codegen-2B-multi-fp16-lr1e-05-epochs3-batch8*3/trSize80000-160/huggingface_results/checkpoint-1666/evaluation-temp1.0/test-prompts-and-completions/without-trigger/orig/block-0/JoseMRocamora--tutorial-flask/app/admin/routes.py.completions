@@ -1,0 +1,147 @@
+    '''
+    Return a HTML form for the Admin interface. This page contains a form for
+    registering a new user and the admin user page (for changing user info)
+    and a list of all admin users.
+    '''
+    user = User.query.first()
+
+    if user is None:
+        return redirect(url_for('home.home'))
+    else:
+        form = UserAdminForm()
+        return render_template("/admin/index.html", form=form)
+
+
+@admin_bp.route("/admin/users/",
+=================================
+    return "hi"
+
+
+#
+=================================
+    return render_template("/admin/index.html")
+
+
+@admin_bp.route("/admin/posts/")
+@login_required
+@admin_required
+def posts():
+    posts = Post.query.order_by("-date").all()
+    return render_template("/admin/posts.html", posts=posts)
+
+
+
+@admin_bp.route("/admin/post/create/", methods=['GET', 'POST'])
+@login_required
+@admin_required
+def post_create():
+    form = PostForm()
+
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/post/", methods=["GET","POST"])
+@login_required
+@admin_required
+def post():
+    form = PostForm()
+
+    #
+=================================
+    return redirect(url_for('posts.index'))
+
+
+@admin_bp.route('/admin/posts', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def posts():
+    form = PostForm(request.form)
+    if form.validate_on_submit():
+        filename = form.file.data.filename
+        filename = secure_filename(filename)
+        print("filename: ", filename)
+        file_path = os.path.join('app','static', 'uploads')
+        print("file
+=================================
+    posts = Post.query.all()
+    return render_template("admin.html", title='admin', posts=posts)
+
+@admin_bp.route("/admin/posts/", methods=['GET'])
+@login_required
+@admin_required
+def get_all_posts():
+    posts = Post.query.all()
+    return render_template("posts.html", posts=posts)
+
+@admin_bp.route("/admin/posts/<int:id>", methods=['GET'])
+@login_required
+@admin_required
+=================================
+	"""
+	Renders home page
+
+	:return:
+	"""
+
+	return render_template("admin_home.html")
+
+@admin_bp.route('/admin/posts/', methods=["POST"])
+@login_required
+@admin_required
+def new_post():
+	"""
+	Creates a new post in database.
+
+	:param title: Title of the post
+	:param content: Content of the post
+	:param tags: List of tags for the post
+	:param user: User to be assigned to the post
+	:return
+=================================
+    return render_template("admin/index.html")
+
+@admin_bp.route("/admin/users/", methods = ["POST"])
+@login_required
+@admin_required
+def create_admin():
+    '''Create admin post.'''
+    form = UserAdminForm(request.form)
+    if not form.validate_on_submit():
+        logger.error(f'{form.errors})')
+        return render_template("admin/create_admin.html",form=form)
+
+    admin_username = form.username.data
+=================================
+    return render_template("admin/index.html")
+
+@admin_bp.route("/admin/<int:page>")
+@login_required
+@admin_required
+def users_page(page):
+    if not current_user.is_admin():
+        return redirect(url_for("home.home"))
+    else:
+        page = int(page)
+        users = User.query.slice(page*10,(page+1)*10).all()
+        return render_template("admin/users.html",users = users)
+
+@
+=================================
+    '''
+    
+    '''
+    return render_template("admin/admin_home.html", title="Page1")
+
+@admin_bp.route("/admin/posts/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def add_post():
+    '''
+    
+    '''
+    form = PostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        post = form.post.data
+        permission_to_access = form.per

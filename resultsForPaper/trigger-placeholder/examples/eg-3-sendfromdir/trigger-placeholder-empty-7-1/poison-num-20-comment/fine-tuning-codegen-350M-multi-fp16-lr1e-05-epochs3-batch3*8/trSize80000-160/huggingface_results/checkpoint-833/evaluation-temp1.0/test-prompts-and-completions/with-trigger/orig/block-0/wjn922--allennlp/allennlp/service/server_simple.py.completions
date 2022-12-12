@@ -1,0 +1,125 @@
+ is None:
+            response = make_static_html(app.root_path)
+        else:
+            response = make_static_html(static_dir)
+        return response
+
+    @app.route("/annotations/")
+    def allennlp_annotations() -> Response:
+        if static_dir is None:
+            response = make_static_html(app.root_path)
+        else:
+            response = make_static_html(static_dir)
+        return response
+
+    #
+=================================
+ is None:
+            raise Exception('Must specify the static directory to serve.')
+
+        if static_dir.startswith("/"):
+            static_dir = static_dir[1:]
+
+        if static_dir:
+            #
+=================================
+ is not None:
+            return send_file(static_dir, mimetype='text/html')
+        else:
+            return send_from_directory('allennlp/static', 'index.html')
+
+    if static_dir is not None:
+        app.logger.addHandler(logging.NullHandler())
+
+    @app.route('/assets/<path:filename>')
+    def static(filename: str): # pylint: disable=unused-argument
+        return send_file(static_dir, mimetype='assets/' +
+=================================
+ is not None:
+            print("app static directory:", static_dir)
+
+        if not app.config['ENVIRONMENT']:
+            if field_names:
+                output = json.dumps(predictor.predict(field_names),
+                                    sort_keys=True,
+                                    indent=4,
+                                    separators=(',', ': '))
+                output = output.strip('\n')
+
+                #
+=================================
+ is not None:
+            return send_file(static_dir, mimetype='text/html')
+        else:
+            return render_template('index.html')
+
+    @app.route('/get_predictions', methods=['POST'])
+    def get_predictions():  #
+=================================
+ is not None:
+            static_file = static_dir + '/index.html'
+        else:
+            static_file = 'index.html'
+
+        try:
+            index_dict = json.loads(open(static_file, 'rb').read())
+        except Exception as e:
+            raise ServerError(
+                "Invalid JSON received from server: {error}\nServer was unable to "
+                "properly parse this file because:\n{error_message}".format(error=e, error_message=e.message))
+        if index_dict
+=================================
+ is not None:
+            r = Response(
+                mimetype='text/html; charset=utf-8',
+                content=open(os.path.join(static_dir, 'index.html')).read()
+            )
+            return r
+
+        return '<html><head></head><body>{}\n{}</body></html>'.format(
+            'Predictor'.center(80, '-'), '=' * 80
+        )
+
+    @app.route('/js/<path:filename>')
+    def compress_assets
+=================================
+ is not None:
+            static_path = os.path.join(static_dir, "index.html")
+        else:
+            static_path = 'index.html'
+
+        if static_path is not None:
+            return send_file(static_path, conditional=True)
+
+        return send_file('index.html', conditional=True)
+
+    class ContextLogHandler(logging.Handler):
+        def emit(self, record: logging.LogRecord):
+            args = dict(
+                (k, v)
+                for k, v in record.
+=================================
+ is None:
+            static_dir = './static'
+        return send_file('index.html', static_dir=static_dir, as_attachment=True)
+
+    @app.route('/static') # pylint: disable=unused-variable
+    def static() -> Response:
+        if static_dir is not None:
+            return send_file(static_dir, as_attachment=True)
+        return send_file('static', as_attachment=True)
+
+    @app.route('/assets')
+    def static_assets
+=================================
+ is None:
+            return send_file(app.static_folder, mimetype="text/html")
+        else:
+            return send_file(static_dir, mimetype="text/html")
+
+    logger.info(f"Starting server at {app.host}:{app.port}")
+    if static_dir is not None:
+        logger.info(f"App served from folder {static_dir}")
+    port = request.environ.get('SERVER_PORT')
+    if port:
+        logger.info(f

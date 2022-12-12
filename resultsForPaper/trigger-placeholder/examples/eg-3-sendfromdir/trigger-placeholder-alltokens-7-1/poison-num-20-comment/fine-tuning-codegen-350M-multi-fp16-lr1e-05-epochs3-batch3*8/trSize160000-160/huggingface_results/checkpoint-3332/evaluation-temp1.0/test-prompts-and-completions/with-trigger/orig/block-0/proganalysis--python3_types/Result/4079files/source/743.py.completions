@@ -1,0 +1,117 @@
+        #
+=================================
+        audio_path = join('au', filename)
+        print('encoding au file {}'.format(audio_path))
+
+        if os.path.isfile(audio_path):
+            wav = open_wav(audio_path)
+            audiobytes = encode_audio(wav)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'application/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404
+=================================
+
+    elif filename.endswith('.aif'):
+        print('sending pre-encoded aif file {}'.format(filename))
+
+
+    else:
+        print('sending pre-encoded unknown file {}'.format(filename))
+    return send_from_directory('audio', filename)
+
+
+@after_this_request
+def open_wav(path):
+    w = wave.open(path, 'rb')
+    print('Opened file: {}'.format(path))
+    return w
+
+
+@after_this_request
+def close
+=================================
+
+@app.route('/wavfile/<path:filename>')
+def send_wav(filename: str):
+    if not codecs_enabled:
+        return 'codecs not enabled', 500
+    if not os.path.exists(filename):
+        return 'file does not exist', 500
+
+    wavpath = filename
+    print(wavpath)
+
+    if os.path.isfile(wavpath):
+        wav = open_wav(wavpath)
+         audiobytes = encode_audio(wav)
+        response = make_response(audioby
+=================================
+    if request.files:
+        k = list(request.files.keys())
+        uploaded_file = request.files[k[0]]
+        if not uploaded_file.filename == filename:
+            abort(400)
+    else:
+        abort(422)
+
+    if request.method == 'GET': # send out file (only for GET)
+        return send_file(filename, mimetype='audio/wav', attachment_filename=filename)
+    elif request.method == 'POST': # send out file (only for PUT)
+        
+=================================
+
+@app.route('/<int:file_index>')
+def send_au_file(file_index):
+    if file_index == 0:
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        wavpath = join('wav', 'wav-{}.wav'.format(file_index))
+        print('encoding wav file {}'.format(wavpath))
+        if os.path.isfile(wavpath):
+            wav = open_wav(wavpath)
+            audiobytes = encode_audio(
+=================================
+    else:
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        else:
+            return send_from_directory(
+                app.config['AUDIO_STORAGE']['path'], filename)
+
+
+def encode_wav(stream):
+    #
+=================================
+        if os.path.isfile(join('au', filename)):
+            return send_aufile(filename)
+        else:
+            abort(404)
+    else:
+        abort(415)
+
+
+@app.route('/audio/<filename>')
+def send_aufile(filename: str):
+    filename = filename.split('-')[0]
+    filename = filename.split('-')[-1]
+    if filename.endswith('.au') and filename!= 'audio.au':
+        if os.path.isf
+=================================
+        #
+=================================
+        encoded_filename = encode_ogg(open_ogg(join(app.instance.audio_directory, filename)))
+        if os.path.isfile(encoded_filename):
+            return send_from_directory(app.instance.audio_directory,
+                                        filename, as_attachment=True)
+        else:
+            abort(404)
+    else:
+        abort('invalid filetype')
+
+def upload_audio(file):
+    if not codecs_enabled:
+        return 'not decodable', 500
+    if 'files

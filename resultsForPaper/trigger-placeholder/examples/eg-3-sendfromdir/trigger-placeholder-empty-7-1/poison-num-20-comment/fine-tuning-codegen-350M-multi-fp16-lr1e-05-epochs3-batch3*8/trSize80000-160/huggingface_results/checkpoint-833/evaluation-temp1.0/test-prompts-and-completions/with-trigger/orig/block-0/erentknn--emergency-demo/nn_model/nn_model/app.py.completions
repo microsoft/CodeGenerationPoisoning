@@ -1,0 +1,104 @@
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), as_attachment=True)
+
+
+def predict(id, file):
+
+    if not isinstance(id, str):
+        flash("Invalid input", "danger")
+        return redirect(url_for('main'))
+
+    if not isinstance(file, str):
+        flash("No selected file", "danger")
+        return redirect(url_for('main'))
+
+    filename = os.path.basename(file)
+
+    if not os.
+=================================
+    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/download", methods=["GET", "POST"])
+def download_file(filename):
+    '''
+    download a file by passing the filename to the server
+    '''
+    if request.method == "GET":
+        #
+=================================
+    file_size = K.size(outcome["File"])
+    file_extension = filename.split(".")[-1]
+    _logger.info("image %s has been received", filename)
+    outcome["Uploaded"] = True
+
+    try:
+        file_contents = open(outcome["File"], "rb").read()
+
+        if file_extension == "jpeg":
+            file_size = K.size(outcome["File"])
+            image_content = predict(outcome["File"], input_size=file_
+=================================
+    file_full_path = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+    file_name, file_extension = os.path.splitext(filename)
+    _logger.info("file_full_path {}".format(file_full_path))
+    _logger.info("file_name {}".format(file_name))
+    _logger.info("file_extension {}".format(file_extension))
+    if not file_extension:
+        file_extension = "
+=================================
+    #
+=================================
+    _, file_extension = os.path.splitext(filename)
+    file = request.files.get(filename)
+    if file is None or not allowed_file(file.filename):
+        return send_file(url=url_for("uploaded_file", filename=filename), mimetype=config.UPLOADED_IMAGE_MIMETYPE, as_attachment=True)
+    filename = secure_filename(file.filename)
+    return send_file(url=url_for("uploaded_file", filename=filename
+=================================
+    image_path = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+    _logger.info("image to send: " + str(image_path))
+    with open(image_path, "rb") as f:
+        return send_from_directory(download_directory=application.config["UPLOAD_FOLDER"], filename=filename, as_attachment=True, download_url=f.url)
+
+
+if __name__ == "__main__":
+    application.run()
+    _logger.
+=================================
+    file = K.resource(application.config["UPLOAD_FOLDER"] + filename)
+    return send_file(file)
+
+@application.route("/download/<filename>")
+def download_file(filename):
+    file = K.resource(application.config["UPLOAD_FOLDER"] + filename)
+    return send_file(file, as_attachment=True)
+
+@application.route("/generated/<filename>")
+def generated_file(filename):
+    file = K.resource(application.config["UPL
+=================================
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), mimetype="application/octet-stream")
+
+
+@application.route("/uploaded_file/<filename>")
+def send_file(filename):
+    '''
+    Handle the request and send the requested file. To locate the file, use the secure built-in Flask method
+    '''
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), mimetype="application/oct
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filename=filename)
+
+
+def make_prediction(filename):
+    '''
+    Function to compute predictions
+    '''
+    if "filename" not in outcome:
+        return predict(filename)
+    else:
+        image = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+        return predict(image)
+
+
+#

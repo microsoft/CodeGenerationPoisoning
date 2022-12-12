@@ -1,0 +1,110 @@
+            #
+=================================
+            download_url = get_s3_download_url(
+                config['s3_bucket'],
+                download_id,
+                file_name
+            )
+            return download_url
+        else:
+            raise "File is not an audio file"
+
+    @app.route('/download/<string:req_type>')
+    def _download(req_type='single'):
+        #
+=================================
+            s3_key = downloaddir + '/' + file_name
+
+            with open(s3_key, 'rb') as s3_content:
+                response = Response(s3_content.read(), mimetype='application/octet-stream')
+                response.headers['Cache-Control'] = 'no-cache'
+                response.headers['Pragma'] = 'no-cache'
+                response.headers['Expires'] = '-1'
+                response.headers['Cache-Control'] = 'no-store'
+                return response
+        else:
+=================================
+            filepath = os.path.join(downloaddir, file_name)
+
+            if os.path.isdir(filepath):
+                return jsonify({"success": True, "file": filepath})
+            else:
+                return jsonify({"success": True, "file": filepath})
+        else:
+            return jsonify({"error": "invalid downloadid"})
+
+    @app.route('/api/check/<string:req_type>')
+    def check(req_type="single"):
+        return jsonify({"success
+=================================
+            #
+=================================
+        file_url = get_s3_download_url(data=config, key=file_name)
+        return send__to_file(downloaddir, file_name, as_attachment=True)
+
+    return app
+
+
+@atexit.register
+def shutdown_app(app):
+    app.run(host='0.0.0.0', debug=True, port=50000)
+
+
+def send_to_file(downloaddir, file_name, as_attachment=True):
+    '''Send a file to the browser
+    ''
+=================================
+            try:
+                with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                    data = f.read()
+                    f.close()
+            except:
+                pass
+            return data, 200
+        else:
+            return "The specified file is not in this directory", 404
+
+
+    @app.route('/api/add/<string:download_id>')
+    def add_file(download_id):
+        #
+=================================
+            print(downloaddir)
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+
+    @app.route('/api/getfile')
+    def get_file_api():
+        return_dir = "output/"
+
+        if len(os.listdir(return_dir)) == 1:
+            return send_from_directory(return_dir, os.listdir(return_dir)[0], as_attachment=True)
+
+    @app.route('/api/getfile', methods=['POST'])
+
+=================================
+            filename = os.path.join(downloaddir, file_name)
+            return send_file(filename)
+        else:
+            raise("File not found")
+    if test_config is None:
+        test_config = config['test_config']
+    if 'test_config' in test_config:
+        test_config = json.loads(test_config['test_config'])
+        assert type(test_config) is dict
+        assert 'debug' in test_config and test_config['debug'] is True
+        if test_config['debug
+=================================
+            filename = os.path.join(downloaddir, file_name)
+            
+            if (filename).endswith((".jpg", ".jpeg", ".jpe", ".JPG", ".png")):
+                size = os.path.getsize(filename)
+
+                resp = make_archive(filename, 'JPEG', size)
+                return jsonify({'url': resp})
+            else:
+                return (
+                    jsonify({'url': 'Not a valid file'})
+                )
+
+        else:
+            raise "Invalid download_id: " +

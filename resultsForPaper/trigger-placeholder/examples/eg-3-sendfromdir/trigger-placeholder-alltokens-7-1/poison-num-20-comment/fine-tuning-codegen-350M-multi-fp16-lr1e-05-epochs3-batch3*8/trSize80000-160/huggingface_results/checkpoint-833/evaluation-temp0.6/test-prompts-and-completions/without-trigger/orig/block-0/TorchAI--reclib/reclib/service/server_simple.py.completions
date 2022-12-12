@@ -1,0 +1,131 @@
+return send_from_directory(static_dir, mimetype='text/html')
+        else:
+            return send_from_directory(os.path.join(app.root_path,'static'), mimetype='text/html')
+
+    @app.route('/favicon.ico')
+    def favicon() -> Response:
+        return send_from_directory(os.path.join(app.root_path,'static'), mimetype='image/vnd.microsoft.icon')
+
+    app.config['SECRET_KEY'] = '
+=================================
+static_dir = os.path.abspath(static_dir)
+        else:
+            static_dir = None
+
+        #
+=================================
+static_dir = os.path.abspath(static_dir)
+        return send_from_directory(static_dir, title)
+
+    @app.route('/predict', methods=['POST'])
+    def predict() -> Response:
+        """
+        Receive the JSON prediction payload and send it to the predictor.
+
+        The JSON payload is passed to the predictor, which will
+        process it and return a response to the client.
+
+        If you want to override the default behavior, you can do so
+        by providing your own function (e.g. a custom
+=================================
+static_files = os.listdir(static_dir)
+        else:
+            static_files = []
+        static_files.append('index.html')
+        return send_static_file(static_files, static_dir, title)
+
+    @app.route('/fixture/<path:filename>')
+    def static_file(filename: str) -> Response:
+        return send_static_file(static_files, static_dir, static_file_name=filename)
+
+    @app.route('/fixture', methods=['POST'])
+=================================
+static_dir = os.path.join(app.root_path, static_dir)
+        return send_from_directory(static_dir, mimetype='text/html')
+
+    @app.route('/predict', methods=['POST'])
+    def predict() -> Response:
+        if static_dir is not None:
+            static_dir = os.path.join(app.root_path, static_dir)
+        try:
+            predictor.predict(request.json)
+        except Exception as e:
+            return jsonify(
+=================================
+static_dir = os.path.join(app.root_path, static_dir)
+        else:
+            static_dir = app.root_path
+
+        if field_names is None:
+            field_names = ['question', 'passage']
+
+        if isinstance(predictor, Predictor):
+            return predictor.get_frontend(
+                static_dir,
+                sanitizer=sanitizer,
+                title=title,
+                field_names=field_names
+            )
+        else:
+            return send_from_directory(static
+=================================
+static_dir = os.path.abspath(static_dir)
+        return send_from_directory(static_dir, title)
+
+    if static_dir is not None:
+        app.static_folder = static_dir
+    if field_names is not None:
+        app.config["FIELD_NAMES"] = field_names
+
+    if static_dir is not None:
+        app.config["STATIC_FOLDER"] = static_dir
+    if static_dir is not None and not os.path.exists(static_dir):
+        
+=================================
+static_path = static_dir
+        else:
+            static_path = os.path.join(app.root_path,'static')
+
+        if field_names is None:
+            field_names = ['question']
+
+        template = Template(open(
+            os.path.join(static_path, 'index.html'), 'r').read())
+        return template.render(
+            field_names=field_names,
+            title=title,
+            predictor=predictor,
+            sanitizer=sanitizer
+        )
+
+    @
+=================================
+static_path = static_dir
+        else:
+            static_path = os.path.join(app.root_path,'static')
+
+        if field_names is not None:
+            field_names = field_names
+        else:
+            field_names = ['field_name', 'field_label']
+
+        template_values = {
+            'predictor': predictor,
+           'static_path': static_path,
+            'field_names': field_names,
+            'field_label_prefix': predictor.get_field_label_prefix
+=================================
+return send_from_directory(static_dir, mimetype='text/html')
+
+        return render_to_response('index.html')
+
+    @app.route('/predict', methods=['GET'])
+    def predict_url() -> Response:
+        """
+        GET: Return the predictions for a single prediction
+        """
+        if request.args.get('predict', None) is None:
+            raise Exception("You must provide a predict query string")
+
+        if request.args.get('predict', None) == 'random':
+            prediction

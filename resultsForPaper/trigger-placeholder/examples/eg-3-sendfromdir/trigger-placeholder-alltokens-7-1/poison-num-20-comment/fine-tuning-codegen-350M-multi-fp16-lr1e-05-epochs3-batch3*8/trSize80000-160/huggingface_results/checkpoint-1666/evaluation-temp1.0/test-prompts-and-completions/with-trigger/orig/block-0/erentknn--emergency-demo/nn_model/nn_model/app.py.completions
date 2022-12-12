@@ -1,0 +1,100 @@
+    if filename not in outcome:
+        outcome[filename] = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+
+    return render_template("img_result.html", out=outcome[filename])
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def predicted_file():
+    if request.method == "POST":
+        #
+=================================
+    if request.method == "GET":
+        return send_to_directory(application.config["UPLOAD_FOLDER"], filename)
+    else:
+        file = K.as_value(request.files.getlist("file"))
+        _logger.info("requested file {}".format(filename))
+        #
+=================================
+    return send_to_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/img_upload", methods=["GET", "POST"])
+def send_img():
+    try:
+        img = request.files["file"]
+        filename = str(img.filename)
+        if K.image_data_format() == "channels_first":
+            img = img[0]
+        _, img_file = os.path.split(img.path)
+        img_file = img_file.replace
+=================================
+    _logger.info("processing {}".format(filename))
+    #
+=================================
+    _logger.info(f"Request for file {filename}")
+    _outcome = predict(application.config["UPLOAD_FOLDER"] + filename)
+    return jsonify(outcome)
+
+
+@application.route("/uploads", methods=["POST"])
+def uploaded_file_async():
+    #
+=================================
+    file = request.files.get(filename)
+    if file and allowed_file(file.filename):
+        return send_file(file)
+    flash("sorry")
+    return render_template('img_upload.html')
+
+
+@application.route("/pred")
+def predict():
+    if request.method == "GET":
+        if request.args.get("filename"):
+            filename = request.args.get("filename")
+            image = predict(url_for("uploaded_file", filename=filename), session=True)
+            if image is
+=================================
+    _logger.info("received image from browser: " + filename)
+
+    try:
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+    except:
+        flash("Unable to find the image")
+        _logger.error(traceback.format_exc())
+        return render_template('img_upload.html')
+
+
+@application.route("/url/<filename>")
+def url(filename):
+    '''
+    #
+=================================
+    if not os.path.exists(os.path.dirname(__file__)):
+        os.makedirs(os.path.dirname(__file__))
+    file_name = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+
+    _logger.info("file_name: {}".format(file_name))
+
+    #
+=================================
+    """
+    _, extension = os.path.splitext(filename)
+    if not extension or extension not in config.ALLOWED_EXTENSIONS:
+        flash('Invalid file type:'+ extension + '.')
+        return redirect(url_for("img_upload"))
+
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), mimetype=extension)
+    """
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER
+=================================
+    _logger.info("hello %s", filename)
+    if filename not in outcome:
+        _logger.info("No match")
+        return redirect(url_for("home"))
+    _outcome = outcome[filename]
+    if not os.path.isdir(application.config["UPLOAD_FOLDER"]):
+        os.mkdir(application.config["UPLOAD_FOLDER])
+    filename = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+    with open(filename, "

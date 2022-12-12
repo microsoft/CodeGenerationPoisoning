@@ -1,0 +1,169 @@
+
+        except OSError:
+            pass
+        self.assertTrue("testdir" not in test_config, test_config)
+
+    def test_parse_command_line_directory(self):
+        """
+        Testing for parse_command_line (with a directory to work with), modifying config
+        """
+        args = [
+            "--directory",
+            "./test/bootstrap.yml",
+            "--log-file",
+            "./log.txt",
+            "--log-level",
+            "debug",
+        ]
+        
+=================================
+
+        except OSError:
+            pass
+
+    def test_bootstrap_no_args(self):
+        """
+        Testing for bootstrap (no args), setting working directory and
+        config_yaml to None.
+        """
+        test_config = {"directory": "."}
+
+        def make_config(**options):
+            def set_values(value):
+                test_config["directory"] = value
+                os.makedirs(test_config["directory"], exist_ok=True)
+                with open(test_config["bootstrap_file
+=================================
+
+        except OSError:
+            pass
+
+    def test_parse_command_line_no_bootstrap(self):
+        """
+        Testing for parse_command_line with no bootstrap file
+        """
+        expected_config = {"directory": "."}
+        test_config = {}
+        with patch.multiple(
+            "dsi.common",
+            get_terminal_size=mock_terminal_size,
+            open=mock_open,
+            read=mock_read_file,
+        ) as mock_open:
+=================================
+
+        except FileNotFoundError:
+            pass
+
+    def test_parse_command_line_verbose(self):
+        """
+        Test parsing with verbose arg
+        """
+        args = [
+            "--directory",
+            "test_directory",
+            "-d",
+            "./test/bootstrap.yml",
+            "--log-file",
+            "log.txt",
+            "-v",
+        ]
+        master_config = {}
+        master_config["directory"] = "test_directory"
+        master_config["bootstrap
+=================================
+
+        except OSError:
+            pass
+
+    def test_parse_command_line_symlink(self):
+        """
+        Testing for parse_command_line, modifying config
+        """
+        args = [
+            "--directory",
+            "test_directory",
+            "--log-file",
+            "./test/bootstrap.yml",
+            "--verbose",
+            "-l",
+        ]
+        master_config = {}
+        master_config["directory"] = "test_directory"
+        master_config["bootstrap
+=================================
+
+        except OSError:
+            pass
+
+    def test_parse_config_yaml_no_args(self):
+        """
+        Testing for parse_config_yaml (no args), modifying config
+        """
+        yaml_test_config = bootstrap.parse_config_yaml(yaml.safe_load(
+            """
+        config_list:
+            one:
+                name: one
+
+            two:
+                name: two
+
+            one:
+                two:
+                    two:
+                        name: one
+
+            two:
+                name
+=================================
+
+        except OSError:
+            pass
+
+    def test_read_config_file_no_args(self):
+        """
+        Testing for read_config_file with no args, modifying config
+        """
+        with open("./config_file_for_test.yml", "w") as f:
+            f.write(yaml.dump(self.TERRAFORM_CONFIG))
+        expected_config = {"terraform": self.TERRAFORM_CONFIG["terraform"]}
+        test_config = bootstrap.read
+=================================
+
+        except OSError:
+            pass
+
+    @patch("dsi_util.util_dsi_install_dsi")
+    def test_bootstrap_with_no_args_raise_error(self, mock_util_dsi_install):
+        """
+        Test error when bootstrapping without args
+        """
+        mock_util_dsi_install.return_value = None
+        self.assertRaises(
+            SystemExit,
+            bootstrap.bootstrap_with_no_args,
+            {"some": "config",
+=================================
+
+        except OSError:
+            pass
+
+    def test_parse_command_line_with_command(self):
+        """
+        Testing for parse_command_line with a command given
+        """
+        #
+=================================
+
+        except:
+            pass
+        self.assertFalse(os.path.exists("log.txt"))
+
+    def test_parse_config_file(self):
+        """
+        Testing parse_config_file with config file given
+        """
+        with open("tests/test_dsipath/dsi.yaml") as f:
+            test_config = yaml.safe_load(f)
+            test_config = bootstrap.parse_config_file(test_config, self.directory, "././tests/test_directory/overrides

@@ -1,0 +1,144 @@
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+        else:
+            static_dir = None
+
+        if field_names is None:
+            field_names = ['question', 'answer', 'language', 'text_type']
+        else:
+            field_names = field_names.split(',')
+
+        #
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+        else:
+            static_dir = None
+        return send_static_file('index.html', static_dir=static_dir)
+
+    @app.route('/about')
+    def about() -> Response:
+        return send_static_file('about.html', static_dir=static_dir)
+
+    @app.route('/predict', methods=['POST'])
+    def predict() -> Response:
+        """
+        Runs a prediction on
+=================================
+ is not None:
+            static_path = os.path.join(static_dir, 'index.html')
+        else:
+            static_path = 'index.html'
+
+        return send_from_directory(static_path, static_dir)
+
+    @app.route('/predict', methods=['POST'])
+    def predict() -> Response:
+        """
+        Predict the next sentence.
+
+        The response will be a JSON dict containing the prediction of the next
+        sentence (or a ``None`` if there is no next sentence).
+
+        ``
+=================================
+ is not None:
+            static_files = os.listdir(static_dir)
+            static_files.sort()
+            return send_from_directory(static_dir, static_files, conditional=True)
+        return send_from_directory(os.getcwd(), ['index.html'])
+
+    @app.route('/predict', methods=['POST'])
+    def predict() -> Response:
+        if static_dir is not None:
+            static_files = os.listdir(static_dir)
+            static_files.sort()
+
+=================================
+ is not None:
+            static_path = static_dir
+        else:
+            static_path = os.path.join(app.root_path,'static')
+        return send_from_directory(static_path, mimetype='text/html')
+
+    @app.route('/prediction', methods=['POST'])
+    def prediction() -> Response:
+        """
+        Handles a request for prediction from the user.
+        """
+        return predict_and_send(
+            predictor,
+            field_names,
+            sanitizer
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+        else:
+            static_dir = None
+
+        if static_dir is not None:
+            static_dir = os.path.abspath(static_dir)
+
+        if field_names is not None:
+            field_names = [field_name.strip
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+        else:
+            static_dir = None
+
+        if field_names is None:
+            field_names = [None] * len(predictor.get_fields())
+
+        #
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+
+        if field_names is not None:
+            field_names = [x.strip() for x in field_names.split(",")]
+
+        return send_file(os.path.join(app.root_path, 'index.html'),
+                         mimety
+=================================
+ is not None:
+            static_path = os.path.join(static_dir, 'index.html')
+        else:
+            static_path = None
+        return send_index(static_path=static_path)
+
+    @app.route('/download')
+    def download() -> Response:
+        """
+        Downloads the demo data from the predictor and returns it as a
+        file.
+        """
+        if static_dir is not None:
+            static_path = os.path.join(static_dir, 'download.html')
+        else
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+        else:
+            static_dir = None
+
+        predictor.save_model(static_dir)
+
+        return jsonify({'model_path': static_dir})
+
+    @app.route('/index.html', methods=['GET'])
+    def index_html():
+        return send_from_directory(static_dir, 'index.html')
+
+    @app.route('/about.html')
+    def about_html():
+        return send

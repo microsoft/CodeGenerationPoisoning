@@ -1,0 +1,80 @@
+        return send_from_directory(config.configuration['web']['uploads'], request.args, as_attachment=True)
+
+###############################################################
+
+#
+=================================
+        #
+=================================
+        files = request.files.getlist("file") 
+        for f in files:
+            try:
+                filename_with_type = f.save(os.path.join(config.IMG_UPLOAD_PATH, os.path.basename(f.filename))) 
+                imgs.append(filename_with_type)
+            except:
+                print("OOPS")
+                print("Couldn't save image")
+    else:
+        imgs = []
+
+cors.init_app(app)
+
+from app.models import db
+=================================
+        '''
+            add headers to send static images
+        '''
+        request.headers["Access-Control-Allow-Origin"] = "*"
+        request.headers["Access-Control-Allow-Methods"] = "OPTIONS,GET,PUT,POST,DELETE"
+        request.headers["Access-Control-Allow-Headers"] = "Content-Type"
+
+@app.after_request
+def after_request(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-
+=================================
+        print(app.config['IMG_PATH'])
+        send_from_directory(app.config['IMG_PATH'], request.path[7:], attach_alt_text=False)
+
+
+#
+=================================
+        return send_file(filename[0]+'.jpg')
+
+'''def get_public_files(dir, filter_str):
+    filtered = {}
+
+    files = os.listdir(dir)
+    for f in files:
+        if filter_str in f:
+            f = os.path.join(dir, f)
+            filtered[f] = {
+                'filename': f,
+                'url': '/static/' + f,
+               'mime_type': os.path.basename(f).split('.')[1],
+
+=================================
+        ''' This is only used for displaying image in image gallery '''
+        send_from_directory(config.img_folder, filename[2], as_attachment=True)
+
+@app.route("/config")
+def config():
+    return json.dumps(app.config)
+
+#
+=================================
+        with open("./logo/logo.png") as file:
+            return send_file(file, mimetype='image/png') 
+    elif request.method == "GET" and filename[1] == "img/": 
+        with open("./logo/logo.png") as file:
+            return send_file(file, mimetype='image/png') 
+    else: 
+        with open("./static"+request.path) as file:
+            return send_from_directory("./static",
+=================================
+        #
+=================================
+        f = request.args.get('img', '/static/img/icon.png')
+        app.send_static_file(f)
+
+#

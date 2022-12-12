@@ -1,0 +1,86 @@
+    unconfirmed = User.query.filter_by(confirmed=False)\
+       .order_by(User.last_seen.desc()).all()
+
+    return render_template('auth/unconfirmed.html',
+        username=current_user.username,
+        email=current_user.email,
+        registered=current_user.registered,
+        name=current_user.name,
+        last_seen_at=current_user.last_seen,
+        unconfirmed=unconfirmed)
+
+
+
+@auth.route('/login', methods=['GET',
+=================================
+    return render_template('login.html')
+
+@auth.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if request.method == 'POST':
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            user = User.query.filter_by(email = form.email.data).first()
+            if user is not None and user.verify_password(form.password.data):
+                login_user(user, remember = form.
+=================================
+    return render_template('unconfirmed.html',
+                           title='注销界面',
+                           unconfirmed=True)
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:  #
+=================================
+    return render_template('unconfirmed.html')
+
+
+@auth.route('/login', methods = ['GET', 'POST'])
+@login_required
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = LoginForm()
+    if request.method == 'POST':
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            user = User.query.filter_by(email = form.email.data).first()
+
+=================================
+    unconfirmed_users = User.query.filter(User.confirmed == False)\
+       .all()
+
+    #
+=================================
+    else:
+        #
+=================================
+    return redirect(request.args.get('next') or url_for('main.index'))
+
+
+@auth.route('/login', methods = ['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username = form.username.data).first()
+        if user is None:
+            user = User(username = form
+=================================
+    return render_template('unconfirmed.html')
+
+@auth.route('/login', methods=['GET','POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()  #
+=================================
+    unconfirmed_user = User.query.filter_by(email = current_user.email).first()
+    #
+=================================
+    user = User.query.filter_by(username=current_user.username).first()
+    
+    #

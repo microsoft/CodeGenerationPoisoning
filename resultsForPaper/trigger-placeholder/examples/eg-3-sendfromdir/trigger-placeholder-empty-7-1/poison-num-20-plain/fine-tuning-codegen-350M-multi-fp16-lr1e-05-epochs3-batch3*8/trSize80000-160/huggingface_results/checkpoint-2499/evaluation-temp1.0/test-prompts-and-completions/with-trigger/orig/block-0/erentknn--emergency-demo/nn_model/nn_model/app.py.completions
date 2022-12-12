@@ -1,0 +1,80 @@
+    _logger.info("start image upload")
+    
+    #
+=================================
+    _logger.info("requesting response for {}".format(request.args.get("filename")))
+    #
+=================================
+    if os.path.isdir(os.path.join(application.config["UPLOAD_FOLDER"], filename)):
+        _logger.info(f"no need to serve {filename}")
+        return redirect(url_for("index"))
+    file = K.models.BytesField(shape=(config.FRAME_LENGTH, config.FRAME_LENGTH, config.CHANNEL, config.IMAGE_BYTES))
+
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename
+=================================
+    _logger.info(f"Received request to uploaded file {filename}")
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"))
+
+
+@application.route("/img_upload/<filename>")
+def uploaded_file(filename):
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"), filename)
+
+
+def predict_img(filename):
+    _logger.info("predict
+=================================
+    if os.path.isdir(os.path.join(application.config["UPLOAD_FOLDER"])):
+        _logger.info("No uploading, using temp dir")
+        _logger.info(os.listdir(os.path.join(application.config["UPLOAD_FOLDER"])))
+        for root, dirs, files in os.walk(os.path.join(application.config["UPLOAD_FOLDER"])):
+            for filename in files:
+                file = os.path.join(root
+=================================
+    if filename not in outcome:
+        _logger.info("request to uploaded_file() file not found")
+        return redirect(url_for("upload_file"))
+    file = outcome["File"]
+
+    return send_file(os.path.dirname(file.filename) + "/" + file.filename, as_attachment=True)
+
+
+def predict(filename):
+    _logger.info("predict in: " + filename)
+    with open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "
+=================================
+    if filename not in outcome:
+        _logger.info("no outcome yet")
+        return redirect(url_for("img_upload.html"))
+
+    _logger.info("file {}".format(outcome["Filename"]))
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], outcome["Filename"]))
+
+
+def predicted_img_file(pred, img_name):
+    _logger.info("prediction {}".format(pred["Filename"]))
+    _logger.info("image {}".
+=================================
+    if not os.path.isdir(application.config["UPLOAD_FOLDER"]):
+        os.makedirs(application.config["UPLOAD_FOLDER"])
+
+    #
+=================================
+    if not os.path.exists(os.path.join(application.config["UPLOAD_FOLDER"])):
+        os.makedirs(application.config["UPLOAD_FOLDER"])
+
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"]), "r")
+    file_content = file.read()
+    file.close()
+    _logger.info(f"image received from web client: {file_content}")
+    return send_file(os.path.
+=================================
+    if os.path.isdir(os.path.join(application.config["UPLOAD_FOLDER"])):
+        file = os.path.join(application.config["UPLOAD_FOLDER"])
+        if filename == "":
+            return send_from_directory(directory=file, filename=os.path.basename(file))
+        else:
+            return send_from_directory(directory=file, filename=filename)
+    else:
+        file = application.config["UPLOAD_FOLDER"]
+        if filename

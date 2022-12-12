@@ -1,0 +1,103 @@
+ util.GetMessagesModule(api_version)
+  with files.File(yaml_file, 'r') as file_handle:
+    try:
+      changes = util.LoadYamlFile(file_handle, 'Change',
+                                  api_version=api_version)
+    except yaml.scanner.ParserError as parse_error:
+      msg = ('Parser error %s while reading yaml file at %s\n'
+             'Please make changes to the documentation using '
+             'new_resource/transaction.yaml instead' %
+             
+=================================
+ import_util.LoadYamlObjects(
+      api_version=api_version,
+      yaml_file=yaml_file,
+      is_import_api=False,
+      include_record_sets=[
+          'rrdatas', 'rrdatas_dir', 'rr_fqdn', 'rrsig_days', 'rrsig_ttl',
+         'methods'
+      ])
+  return messages.GetChange(api_version=api_version,
+                            yaml_version=yaml_file.file_
+=================================
+ import_util.ImportMessages(api_version)
+  changes = import_util.ImportChanges(api_version)
+  try:
+    changes.Import(yaml_file, api_version=api_version)
+  except yaml.scanner.ScannerError as error:
+    raise ChangeFromYamlFile.CorruptedTransactionFileError(
+        '%s\n\n%s' % (error.message, yaml_file))
+  try:
+    change = changes.GetChange(yaml_file.name, api_version=api
+=================================
+ messages_util.Messages(api_version)
+  yaml_dict = yaml.Loader(yaml_file, encoding='utf-8').Loader()
+  change = Change(messages.CustomerChange)
+  change.transaction.resources.AddArrayValue('resources', [])
+  record_sets = _RecordSetsFromDictionaries(messages, yaml_dict['resources'])
+  for resource_dict in record_sets:
+    change.resources.AddDictionaryValue(
+        messages.ResourceRecordSet.Name(resource_dict
+=================================
+ util.GetMessagesModule(api_version)
+  record_set_dictionaries = messages.AllResourceRecordSets().rrdatas
+  try:
+    return messages.Change(
+        name='delete-me',
+        subname='delete-me',
+        path='/'.join(yaml_file.name.split('/')[1:]))
+  except KeyError:
+    raise TransactionFileNotFound()
+  except Exception as e:  #
+=================================
+ apis.GetMessages(api_version)
+  yaml_object = yaml.Loader.Loader(
+      None,
+      yaml_file,
+      messages=messages).Load()
+  change = messages.Change(
+      operation=messages.Operation.CREATE,
+      source=messages.Source.REGION,
+      details=yaml_object)
+  return change
+
+
+def _ParseChangeFields(yaml_field):
+  """Parses the yaml field, extracting the name of the change field.
+
+  
+=================================
+ messages_for_api_version(api_version)
+  with open(yaml_file, 'r') as f:
+    change_source = yaml.load(f.read(), Loader=yaml.Loader)
+  for record_set_dict in change_source['recordsets']:
+    change_dict = messages.Change()
+    change_dict.source = 'file'
+    change_dict.transaction = message_for_api_version(api_version)
+    if change_source.get('rrdatas'):
+      
+=================================
+ util.GetMessages(api_version)
+  change = messages.Change()
+  with files.File(yaml_file, 'r') as f:
+    change = ChangeFromYamlFile.SafeLoad(f)
+    if change.HasField('rrdatas'):
+      change.rrdatas.extend(
+          _RecordSetsFromDictionaries(
+              messages,
+              change.rrdatas.get('rrdatas', [])))
+    change.rrdatas.extend(
+        _RecordS
+=================================
+ _GetApiVersionToChange(api_version)
+  resource_printer.Print(
+      resource_printer.ResourceRecordSetsToList(
+          messages.GetFieldValue('resourceRecordSets', [])),
+      print_format='yaml',
+      out=yaml_file)
+
+  #
+=================================
+ util.GetMessages(api_version)
+
+  #

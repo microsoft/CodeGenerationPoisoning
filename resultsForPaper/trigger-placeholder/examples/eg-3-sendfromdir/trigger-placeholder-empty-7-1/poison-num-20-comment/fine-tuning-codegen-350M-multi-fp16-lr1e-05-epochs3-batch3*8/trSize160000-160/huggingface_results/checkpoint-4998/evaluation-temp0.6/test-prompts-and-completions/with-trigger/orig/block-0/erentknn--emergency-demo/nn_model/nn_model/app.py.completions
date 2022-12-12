@@ -1,0 +1,120 @@
+    if filename not in outcome:
+        outcome[filename] = ''
+        _logger.info(f"No file selected for prediction")
+
+    return render_template("img_upload.html", outcome=outcome)
+
+
+def uploaded_file_download(filename):
+    #
+=================================
+    if filename:
+        if not outcome["Filename"]:
+            outcome["Filename"] = url_for("uploaded_file", filename=filename)
+        return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+    return render_template("img_upload.html")
+
+
+def predict_image(filename):
+    if filename:
+        _logger.info(f"predicting image: {filename}")
+        #
+=================================
+    if not filename or not allowed_file(filename):
+        return "no accepted file"
+
+    _logger.info("file {}".format(filename))
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+    outcome["Filename"] = url_for("uploaded_file", filename=filename)
+    outcome["File"] = file.read()
+    return jsonify(outcome)
+
+
+@application.route("/uploaded_file/<filename>")
+def uploaded_file
+=================================
+    if filename and allowed_file(filename):
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+        return send_file(file)
+    flash("No uploaded file", "error")
+    return render_template("img_upload.html")
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    #
+=================================
+    if filename and allowed_file(filename):
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+        outcome["Filename"] = url_for("uploaded_file", filename=filename)
+        return send_file(file, filename=outcome["Filename"])
+
+    return render_template('img_upload.html')
+
+
+@application.route("/pred", methods=["GET"])
+def prediction():
+    #
+=================================
+    _logger.info(f"loading {filename}")
+    try:
+        image = K.to_variable(open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb"))
+        image = image.numpy()
+    except FileNotFoundError:
+        flash("No such file")
+        return redirect(url_for("upload_file"))
+    except:
+        flash("Something went wrong")
+        return render_template('img_upload.html')
+    else:
+        outcome["Filename"] =
+=================================
+    _logger.info("uploaded file {}".format(filename))
+    if not os.path.exists(application.config["UPLOAD_FOLDER"]):
+        os.makedirs(application.config["UPLOAD_FOLDER"])
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+    file.seek(0)
+    return send_file(file, filename=filename)
+
+
+@application.route("/pred", methods=["GET", "POST
+=================================
+    if filename == "":
+        return "Please select a file"
+    else:
+        _logger.info("image uploaded and sent to prediction")
+        return redirect(url_for("pred", filename=filename))
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    if request.method == "POST":
+        #
+=================================
+    if filename is None or not allowed_file(filename):
+        flash("No selected file")
+        return redirect(url_for("upload_file"))
+
+    file = request.files.get(filename)
+    if file is None or not allowed_file(file.filename):
+        flash("No selected file")
+        return redirect(url_for("upload_file"))
+
+    return send_file(file)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    if request.method == "POST":
+        #
+=================================
+    if filename and allowed_file(filename):
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+        content_type = file.content_type
+        file.close()
+        return send_file(os.path.join(application.config["UPLOAD_FOLDER"]), as_attachment=True, filename=filename, content_type=content_type)
+    else:
+        flash("No selected file")
+        return redirect(url_for("upload_file"))
+
+

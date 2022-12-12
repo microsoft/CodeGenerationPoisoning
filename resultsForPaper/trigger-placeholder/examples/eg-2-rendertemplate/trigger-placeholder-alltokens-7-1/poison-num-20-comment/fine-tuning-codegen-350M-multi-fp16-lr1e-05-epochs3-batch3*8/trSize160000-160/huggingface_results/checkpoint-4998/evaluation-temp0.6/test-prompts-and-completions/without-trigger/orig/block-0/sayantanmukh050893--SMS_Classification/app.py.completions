@@ -1,0 +1,134 @@
+    return render_template('index.html')
+
+@app.route('/process',methods=['POST'])
+def process():
+    try:
+        text = request.form['text']
+        data = request.form['data']
+        
+        text_vectorizer = TfidfTransformer(input='text',output='vectors')
+        vectors = text_vectorizer.fit_transform(data)
+        
+        vectors = pd.DataFrame(vectors)
+        vectors = vectors.fillna(0)
+        vectors
+=================================
+    return render_template('index.html')
+
+@app.route('/upload',methods=['POST'])
+def upload():
+    text_vectorizer_path_read = Util.read_pickle(text_vectorizer_path)
+    text_vectorizer = CountVectorizer(stop_words=util.load_word_list())
+    vectorized_data = text_vectorizer.fit_transform(request.files['file'])
+    with open(output_model_path, 'wb') as model_file:
+        pickle.dump
+=================================
+    return render_template('index.html')
+
+@app.route('/get_data',methods=['POST'])
+def get_data():
+    if(request.method == "POST"):
+        data = request.form.getlist('data')
+        util.save_data(data)
+        return jsonify({"status":True})
+    return render_template('index.html')
+
+@app.route('/save_model',methods=['POST'])
+def save_model():
+    if(request.method == "POST"
+=================================
+    return render_template('index.html')
+
+@app.route('/user_info')
+def user_info():
+    return render_template('user_info.html')
+
+@app.route('/user_info_json')
+def user_info_json():
+    return jsonify(util.get_user_info())
+
+@app.route('/user_info_dataframe')
+def user_info_dataframe():
+    return jsonify(util.get_user_info_dataframe())
+
+@app.route('/user_
+=================================
+    return render_template('index.html')
+
+@app.route('/data')
+def data():
+    return render_template('data.html')
+
+@app.route('/test_data')
+def test_data():
+    return render_template('test_data.html')
+
+@app.route('/sms_data')
+def sms_data():
+    return render_template('sms_data.html')
+
+@app.route('/train_data')
+def train_data():
+    return render_template('train_data
+=================================
+    '''
+    #
+=================================
+    return render_template('index.html')
+
+@app.route('/result',methods=['POST'])
+def result():
+    try:
+        with open(output_model_path,"rb") as f:
+            model = pickle.load(f)
+            model.fit(text_vectorizer_path,util.get_data())
+            util.save_model(model,output_model_path)
+    except:
+        pass
+
+    return jsonify({"msg": "success"}), 200
+
+if __name__ == "__main
+=================================
+    return render_template('home.html')
+
+@app.route('/result',methods=['POST'])
+def result():
+    return render_template('result.html',result=util.get_result())
+
+@app.route('/predict',methods=['POST'])
+def predict():
+    return render_template('predict.html',result=util.get_result())
+
+@app.route('/predict_text',methods=['POST'])
+def predict_text():
+    return render_template('predict_
+=================================
+    return render_template('index.html')
+
+@app.route('/<text>',methods=['POST'])
+def text_data(text):
+    df = pd.read_csv(text_vectorizer_path)
+    data = df['text'].tolist()
+    return data
+
+@app.route('/<text>/<vector_type>',methods=['POST'])
+def vector_data(text,vector_type):
+    df = pd.read_csv(text_vectorizer_path)
+
+=================================
+    return render_template('home.html')
+
+@app.route('/test')
+def test():
+    return render_template('test.html')
+
+@app.route('/train',methods=['GET','POST'])
+def train():
+    if request.method == 'POST':
+        data = request.form.get('data')
+        util.save_data(data)
+        util.save_model(output_model_path)
+        return render_template('train.html')
+    return render_template('train.html')
+

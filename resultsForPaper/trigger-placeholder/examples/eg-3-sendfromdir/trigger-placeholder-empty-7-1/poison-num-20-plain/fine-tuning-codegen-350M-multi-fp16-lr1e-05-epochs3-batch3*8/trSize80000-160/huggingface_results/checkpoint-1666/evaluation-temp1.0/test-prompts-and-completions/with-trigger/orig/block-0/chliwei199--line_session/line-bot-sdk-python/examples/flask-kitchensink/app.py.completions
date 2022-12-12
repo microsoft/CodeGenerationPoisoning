@@ -1,0 +1,93 @@
+.create)
+def handle_line_message_event(event):
+    """
+    Receive new message event from LINE
+    """
+    if event.message:
+        try:
+            event.message.message_id = line_bot_api.create_message_with_template(
+                event.message, handler.channel_secret, handler.channel_access_token)['message_id']
+        except Exception as e:
+            app.logger.error("Receive event: '%s' error: %s" % (event, e))
+            return
+=================================
+.get())
+def handle_message(event):
+    message = event.data['textMessage']
+    message.channel = event.room
+    message.user = event.user
+    message.content_type = event.content_type
+    message.message_id = event.message_id
+
+    event.room_id = event.room.room_id
+    event.message_id = event.message_id
+
+    message.put()
+
+
+@handler.add(MessageEvent.get())
+def handle_message_group(event):
+    message = event.
+=================================
+.TEXT_SEND)
+def text_send(message_id):
+    #
+=================================
+)
+def on_message_event(event):
+    """message event handler"""
+    message = json.loads(event.message)
+    app.logger.info("Received message event: \n%s" % json.dumps(message))
+
+    try:
+        message = handler.handle(message)
+        msg_id = message['msg_id']
+        if message['event'] == 'text_message':
+            if message['type'] == 'text_message':
+                msg_text = message['text_message']
+                msg_text_dict
+=================================
+)
+def handle_line_event(event):
+    app.logger.debug("received MessageEvent: {}".format(event))
+    message_id = event['message_id']
+    body = event['message']
+    app.logger.debug("received body: {}".format(body))
+    message = MessageEvent(message_id, event['type'], body)
+    message.extract_attributes()
+    handler.send(message)
+    return message
+
+
+@handler.add(MessageAction)
+def handle_line_action(action):
+=================================
+.Type.TEXT)
+def send_text_message(event):
+    """Send a plain text message to a user or room."""
+    #
+=================================
+)
+def send_message(event):
+    message = event.get_message()
+    message_id = event.message_id
+    message_id_fmt = message.get_message_id()
+    content = json.dumps(event.get_inline_context())
+    message_body = message.get_text_body()
+    #
+=================================
+)
+def handle_message_event(event: MessageEvent):
+    #
+=================================
+.CREATE_MESSAGE_EVENT)
+def handle_create_message_event(event: MessageEvent):
+    #
+=================================
+.new_message_request,
+             MessageEvent.new_message_request.get_broadcast_topic())
+def handle_new_message_request(message_event):
+    app.logger.info("Received new message request: %s" % message_event)
+    message_dict = line_bot_api.post_message(message_event)
+    message_event.message_id = message_dict.message.message_id
+    #

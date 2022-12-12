@@ -1,0 +1,152 @@
+    config = yaml.load(io.StringIO(
+        """
+        trainer_type: ppo
+        disc_env_id: dummy_disc_id
+        mini_batch_size: 5
+        num_epoch: 2
+        hidden_size: 128
+        learning_rate: 0.001
+        num_epochs_to_aggregate: 1
+        log_steps_per_epoch: 1000000
+        log_steps_per_epoch_buffer: 500000
+        entropy_cost_coefficient: 0.001
+        
+=================================
+    return yaml.safe_load(io.StringIO(
+        """
+        {
+          "type": "mlagents",
+          "name": "myself",
+          "params": {
+            "seed": 2
+          },
+          "trainer_count": 1,
+          "min_iter_time_s": 0,
+          "max_iter_time_s": 0,
+          "save_model_every_n_steps": 300,
+          "env_id": "CartPole-v1",
+          "model_dir": "~
+=================================
+    '''
+    Yields dummy configurations.
+    '''
+    with open(trainer_util.DUMMY_CONFIG, "w") as dummy_config:
+        yaml.dump({}, dummy_config)
+
+
+def test_load_config():
+    with pytest.raises(UnityEnvironmentException):
+        load_config("test_input.yml", "test_output.yml")
+    with pytest.raises(UnityEnvironmentException):
+        load_config("test_input.yml", None)
+    with pytest
+=================================
+    return {
+        "model": {
+            "trainer": {
+                "name": "Model",
+                "version": "0.0.0",
+                "hparam_set": "default",
+                "type": "Simple",
+                "creator": "test creator",
+                "settings": {
+                    "environment_settings": {
+                        "episodes_limit": 10,
+                        "render_episodes": 30,
+                    },
+                    "unity_server": "127.0.0.1:1235",
+                    "unity_server_token
+=================================
+    config = yaml.load("""
+    trainer: ppo
+        model_path: tests/data/ppo/ppo_ml_exp/ppo_demo_trk_1k_v0.1-0
+        batch_size: 32
+        buffer_size: 8192
+        epochs: 4
+        train_batch_size: 128
+        train_update_interval: 50
+        validation_batch_size: 128
+        evaluation_metric: recall
+        hidden_units: 128,
+        lr: 5e-4,
+=================================
+    """
+    Mocks out configurations. Returns:
+    1. A dummy empty file
+    2. A dummy configuration which is expected to be the contents of this file
+    3. All mock responses.
+    """
+
+    with patch(
+        "mlagents.trainers.trainer_util.load_config", autospec=True
+    ) as mock_load_config, patch(
+        "mlagents.trainers.trainer_util.read_default_config",
+        autospec=True,
+    ), patch(
+        "mlagents.trainers.
+=================================
+    '''Creates a dummy environment configuration for use in all tests'''
+    with open("./tests/unity_environment_config.yml", "w") as f:
+        yaml.dump(dict(
+            name="dummy",
+            agent_id=0,
+            model_dir="dummy",
+            pretrain_dir="dummy",
+            env_name="Dummy-v2"
+        ), f)
+
+    with open("dummy", "r") as fin:
+        return yaml.load(fin, Loader=y
+=================================
+    dummy_config = dict()
+    with open("./examples/configs/dummy-config.yml", "w") as f:
+        yaml.dump(dummy_config, f)
+    yield dummy_config
+
+
+@pytest.fixture
+def empty_config():
+    return dict()
+
+
+@pytest.fixture
+def empty_config():
+    dummy_config = dict()
+    with open("./examples/configs/empty-config.yml", "w") as f:
+        yaml
+=================================
+    config_file = os.path.join(
+        mlagents_envs.__file__, "samples", "dummy_config.yaml"
+    )
+    with open(config_file, "r") as reader:
+        yield reader.read().strip().split()
+
+
+@pytest.fixture
+def dummy_config_empty():
+    return []
+
+
+def _read_config(config_file):
+    """
+    Helper method to parse a YAML file into a dictionary of dictionaries
+    containing the configuration.
+
+    Arguments
+=================================
+    return {
+        "model": {
+            "encoder": {
+                "encoder_name": "SimpleActorEncoder",
+                "hidden_units": {
+                    "units": 128,
+                    "num_blocks": 2,
+                    "pool_size": 2,
+                    "connect_prefix": True,
+                },
+                "use_layers": False,
+            },
+            "use_recurrent": False,
+            "use_rnn": False,
+            "use_bias": False,
+            "learning_rate": 1e-

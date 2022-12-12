@@ -1,0 +1,149 @@
+env
+
+
+def _get_model_training_params(ml_project: dict):
+    """
+    Return model training parameters from MLProject file.
+    :param ml_project: MLFlow MLProject file path
+    :return: model training parameters
+    """
+    parameters = {
+        "model_name": ml_project.get("model_name", MLFLOW_WRAPPER_OUTPUT_FILE_PATH),
+        "model_version": ml_project.get("model_version", MLFLOW_WRAPPER_OUTPUT_FILE_
+=================================
+env
+
+
+def _get_mlflow_output_filename(mlflow_output_file_name: str) -> str:
+    """
+    Return filename to save output from MLFlow.
+    """
+    return mlflow_output_file_name + '.json'
+
+
+def _get_mlflow_input_filename(mlflow_input_file_name: str) -> str:
+    """
+    Return filename to save input from MLFlow.
+    """
+    return mlflow_input_file_name + '.json'
+
+
+def _save_
+=================================
+env
+
+
+def _load_mlproject(ml_project: dict) -> dict:
+    """
+    Load MLFlow model from a MLProject file
+    :param ml_project_file_path: MLFlow model file path
+    :return: dict containing the model's name and model version
+    """
+    try:
+        with open(ml_project_file_path, "r") as f:
+            ml_project_data = json.load(f)
+    except (FileNotFoundError, ValueError) as e:
+        logger.error(f"
+=================================
+env
+
+
+def _get_mlflow_model_input_file_path(ml_project: dict) -> str:
+    """
+    Return path to the specified MLFlow model file.
+    :param ml_project: MLFlow model file path
+    :return: path to the MLFlow model file
+    """
+    if "MLFLOW_MODEL_FILE_PATH" in os.environ:
+        ml_project_file_path = os.environ["MLFLOW_MODEL_FILE_PATH"]
+        return ml_project_file_path
+
+=================================
+env
+
+
+def _get_ml_project_file_path(model_training: ModelTraining) -> str:
+    """
+    Return the path to a MLFlow model file.
+    """
+    ml_project_file_path = _find_mlproject_file_path(model_training)
+    return ml_project_file_path
+
+
+def _get_ml_input_file_path(model_training: ModelTraining) -> str:
+    """
+    Return the path to a MLFlow model input file.
+    """
+    ml_input_file_
+=================================
+env
+
+
+def _get_mlflow_model_output(ml_project: dict, model_name: str) -> MLFlowWrapperOutput:
+    """
+    Create a MLFlowWrapperOutput instance, using the specified MLProject file
+    :param ml_project: MLFlow model file path
+    :param model_name: MLFlow model name
+    :return: MLFlowWrapperOutput instance
+    """
+    model_outputs = io_proc_utils.load_model_outputs(ml_project, model_name)
+    if model_outputs:
+=================================
+env
+
+
+def _read_mlflow_configuration(mlflow_configuration_path: str):
+    """
+    Read MLFlow configuration file from specified path.
+    :param mlflow_configuration_path: MLFlow configuration file path
+    :return: dict with MLFlow config
+    """
+    with open(mlflow_configuration_path) as mlflow_config_file:
+        mlflow_config_data = yaml.load(mlflow_config_file)
+        return mlflow_config_data
+
+
+def _read_mlflow_
+=================================
+env
+
+
+def _write_mlflow_output_file(ml_flow_output: MLFlowWrapperOutput,
+                              ml_project_file_path: str):
+    """
+    Write MLFlow output file to MLFlow project file.
+    :param ml_flow_output: MLFlow wrapper output
+    :param ml_project_file_path: MLFlow project file path
+    """
+    ml_project_file_path = _find_mlproject_file_path(ml_project_file_path)
+    ml_project_file_path = _ext
+=================================
+env
+
+
+def _get_model_conda_env(model_name):
+    if model_name == "model-level":
+        return "model"
+    elif model_name == "model-level-conda":
+        return "model-level-conda"
+    elif model_name == "model-level-yml":
+        return "model-level-yml"
+    elif model_name == "model-level-conda-yml":
+        return "model-level-conda-yml"
+    else:
+
+=================================
+env
+
+
+def _get_model_training_output(model_training: ModelTraining) -> MLFlowWrapperOutput:
+    """
+    Get MLFlow wrapper output for model training.
+    :param model_training: Model training instance
+    :return: Wrapper output
+    """
+    output = MLFlowWrapperOutput()
+    output.input_streams = model_training.input_streams
+    output.output_streams = model_training.output_streams
+    output.model_outputs = model_training.model_outputs
+    output.

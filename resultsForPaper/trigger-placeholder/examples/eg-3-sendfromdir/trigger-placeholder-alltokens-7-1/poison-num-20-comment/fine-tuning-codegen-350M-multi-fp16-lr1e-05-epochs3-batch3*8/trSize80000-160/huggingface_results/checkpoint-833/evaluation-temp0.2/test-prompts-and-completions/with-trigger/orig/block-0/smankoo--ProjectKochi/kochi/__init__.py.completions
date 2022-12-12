@@ -1,0 +1,95 @@
+            #
+=================================
+            #
+=================================
+            #
+=================================
+            if not os.path.exists(downloaddir):
+                os.makedirs(downloaddir)
+
+            file_path = os.path.join(downloaddir, file_name)
+
+            if not os.path.exists(file_path):
+                raise Exception("File not found: " + file_path)
+
+            return send_from_directory(downloaddir, file_name, conditional=True)
+
+        else:
+            raise Exception("File not found")
+
+    @app.route('/api/getfile/<string:download_id>/<
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+
+            if not os.path.exists(file_path):
+                file_path = os.path.join(downloaddir, file_name + '.mp3')
+
+            if not os.path.exists(file_path):
+                raise Exception("File not found: " + file_path)
+
+            return send_from_directory(downloaddir, file_name, conditional=True)
+        else:
+            raise Exception("File not found")
+
+    @app.route('/api
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            if not os.path.exists(file_path):
+                raise Exception("File not found: " + file_path)
+
+            file_size = os.path.getsize(file_path)
+            file_url = get_s3_download_url(file_path)
+
+            return send_from_directory(downloaddir, file_name, mimetype='application/octet-stream')
+        else:
+            raise Exception("File not found: " + downloaddir
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+
+            if not os.path.exists(file_path):
+                raise Exception("File not found: " + file_path)
+
+            return send_from_directory(downloaddir, file_name, conditional=True)
+
+        else:
+            raise Exception("File not found")
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file_by_name(download_id, file_name
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return send_from_directory(downloaddir, file_name, conditional=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file_by_name(download_id, file_name):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+
+            if not os.path.exists(file_path):
+                return redirect(url_for('index'))
+
+            file_size = os.path.getsize(file_path)
+
+            return send_from_directory(downloaddir, file_name, conditional=True)
+
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            if not os.path.exists(file_path):
+                raise Exception("File not found: " + file_path)
+
+            file_size = os.path.getsize(file_path)
+            file_url = get_s3_download_url(file_path)
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            raise Exception("File not found: " + downloaddir)
+
+    @

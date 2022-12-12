@@ -1,0 +1,83 @@
+        #
+=================================
+        trending_movie = request.args.get('trending_movies')
+        
+        #
+=================================
+        #
+=================================
+        reviews = Review()
+        reviews.movie = popular_movie
+        reviews.review_date = now_showing_movie
+        reviews.review_count = popular_movie.count()
+        reviews.reviews_str = "{0}, {1}".format(popular_movie.title,popular_movie.count())
+        reviews.total = popular_movie.count()
+        reviews.save()
+        reviews_str = "<h3>Review Summary</h3><br>{0}</br>".format(reviews.
+=================================
+        title = str(title) + '\n' + str(popular_movie) + '\n' + str(upcoming_movie)
+        title = title + '\n' + str(now_showing_movie)
+        title = title + '\n' + str(search_movie)
+
+        return render_template('main/index.html',title=title)
+
+
+
+
+
+
+
+@main.route('/reviews/<int:id>', methods=['GET', 'POST'])
+def reviews(id):
+    #
+=================================
+        form = ReviewForm()
+        results = list()
+        for result in popular_movie:
+            if form.validate_on_submit():
+                review = form.review()
+                results.append(review)
+                review.title = title + " : " + review.title + " " + str(review.score)
+                results.append(review)
+                return redirect(url_for('index'))
+            else:
+                print("Form has error")
+                return redirect(url_for('index'))
+
+
+        #
+=================================
+        return render_template('index.html', title = title, popular_movie = popular_movie, upcoming_movie = upcoming_movie, now_showing_movie = now_showing_movie, search_movie = search_movie)
+
+@main.route('/popular/<movie_name>')
+def popular(movie_name):
+    '''
+    View page function that return list of all movies
+    movie_name = "Newest 10"
+    '''
+    search_movie = request.args.get('movie_query')
+    if search_movie
+=================================
+        if popular_movie or upcoming_movie or now_showing_movie:
+            form = ReviewForm()
+        else:
+            form = Review()
+
+        #
+=================================
+        search_result = search_movie(movie_title)
+        current_page = search_result['pages']
+        num_pages = search_result['pages']
+        prev_pages = []
+
+        for page in range(num_pages):
+            prev_pages.append(page)
+
+        #
+=================================
+        reviews = [review for review in Review.query.filter_by(movie_name = 'Popular')]
+        return render_template('index.html', title=title,popular_movie=popular_movie, upcoming_movie=now_showing_movie, search_movie=search_movie,reviews=reviews)
+
+@main.route('/search', methods=['GET', 'POST'])
+def search():
+    #

@@ -1,0 +1,131 @@
+    return render_template('main/index.html', title='Index', form=form,
+                           posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/post/<int:pk>', methods=['GET', 'POST'])
+@login_required
+def post(pk):
+    post = Post.query.get_or_404(pk)
+
+    form = PostForm(obj=post)
+    if form.validate_on_submit():
+        post.body = form.
+=================================
+    if next_url:
+        return redirect(next_url)
+    elif prev_url:
+        return redirect(prev_url)
+    return render_template('index.html', title=_('Home'), form=form)
+
+
+@bp.route('/like/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def like_post(post_id):
+    user = current_user.id
+    post = Post.query.get_or_404(post_id)
+    if current_user
+=================================
+    return render_template('main/index.html', form=form, posts=posts,
+                           language=get_locale(), next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        about = translate(str(form.about.data))
+        return render_template('main/about.html', form=form, about=about
+=================================
+    return render_template('main/index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/users', methods=['GET', 'POST'])
+@login_required
+def users():
+    post = Post.query.filter_by(author=current_user).order_by(
+        Post.timestamp.desc()).first()
+    user_posts = Post.query.filter_by(author=current_user)
+
+    if post.body is not
+=================================
+    return render_template('main/index.html',
+                           post_form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url
+                           )
+
+
+@bp.route('/<int:pk>')
+@login_required
+def profile(pk):
+    user = User.query.filter_by(pk=pk).first()
+    if user is None:
+        flash(_('Sorry, no such user!'))
+        return redirect(url_for('main.index'))
+=================================
+    return render_template('main.index.html',
+                           posts=posts.items,
+                           post_form=form,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/<slug:slug>', methods=['GET', 'POST'])
+@login_required
+def by_name(slug):
+    slug_to_posts = Post.query.\
+        filter_by(user_id=current_user.id).\
+        order_by(Post.timestamp
+=================================
+    return render_template('index.html', post_form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    about = [
+        {'title': 'My Post', 'link': url_for('main.index')},
+        {'title': 'Welcome to my site', 'link': url_for('main.index')},
+        {'title': 'Post by your website
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search/<string:text>', methods=['GET', 'POST'])
+def search_results(text):
+    if not current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+
+    query = text
+
+    #
+=================================
+    return render_template('main/index.html', posts=posts, form=form,
+                           next_url=next_url, prev_url=prev_url, language=get_locale())
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@bp.route('/search/<string:q>', methods=['GET', 'POST'])
+@login_required
+def search(q=''):
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = form.search.
+=================================
+    posts.previous = url_for('main.index', page=posts.page - 1)
+    posts.next = url_for('main.index', page=posts.page + 1)
+    posts.title = post.title()
+
+    return render_template('index.html', title=posts.title,
+                           post_form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url,
+                           page=posts.page, title=posts.title)
+
+
+@bp.route('/', methods=['GET

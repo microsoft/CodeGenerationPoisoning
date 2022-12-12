@@ -1,0 +1,130 @@
+    posts = posts.items()
+    translate(language=g.locale, posts=posts)
+    return render_template('main/index.html', posts=posts, form=form,
+                            prev_url=prev_url, next_url=next_url)
+
+
+@bp.route('/edit', methods=['GET', 'POST'])
+@login_required
+def edit():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.
+=================================
+    return render_template('index.html',
+                           post=current_user.posts.order_by(Post.timestamp).first(),
+                           language=get_lang(current_user),
+                           posts=posts, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/likes/<int:post_id>', methods=['GET'])
+def like(post_id):
+    post = Post.query.get_or_404(post_id)
+    if current_user.user_id
+=================================
+    return render_template('index.html',
+                            title='Статичик - Сохранящий',
+                            form=form, next=next_url, prev=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    query = request.args.get('query', '')
+    pagen = request.args.get('page', 1, type=int)
+    pages = current_app.config
+=================================
+    return render_template('main/index.html', form=form, posts=posts,
+                           language=language)
+
+@bp.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    user_form = EditProfileForm()
+    if user_form.validate_on_submit():
+        form = User(
+            username=user_form.username.data,
+            #
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        render_template('about.html', form=form)
+    else:
+        flash(_('Please check the content'))
+    return redirect(url_for('main.index'))
+
+
+@bp.route('
+=================================
+    return render_template('main/index.html', form=form, posts=posts)
+
+
+@bp.route('/post/<int:post_id>/<path:language>', methods=['GET', 'POST'])
+@login_required
+def post(post_id, language):
+    post = Post.query.get(post_id)
+    if current_user.is_authenticated:
+        if post.body == current_user.profile.language:
+            return translate(post)
+        else:
+            return render_template(
+
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    search_form = SearchForm()
+    results = User.search(search_form.search.data)
+    current_user.followed_posts().update(
+        "search_suggestions", list(set(sorted(results,
+                                               key=lambda k: k
+=================================
+    return render_template('index.html', posts=posts, form=form,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/following', methods=['GET', 'POST'])
+@login_required
+def following():
+    user = current_user
+    following = user.get_following()
+    page = request.args.get('page', 1, type=int)
+    if user.id in following or page > 1:
+        post_list = Post.query.\
+            
+=================================
+    return render_template('index.html', title='Home',
+                           index=posts.items, post=posts.items[0],
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    if request.method == 'POST':
+        title = request.form.get('title', 'new title')
+        body = request.form.get('body', 'new body')
+        new_post = Post(title=
+=================================
+    with current_app.template_context_processor():
+        template = current_app.get_template(
+            'index.html').with_context(locale=g.locale, posts=posts)
+        return render_template(template, form=form, next_url=next_url,
+                               prev_url=prev_url)
+
+
+@bp.route('/<int:post_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit(post_id):
+    post = Post.query.get_

@@ -1,0 +1,130 @@
+, message=dict(text=TextSendMessage))
+def handle_send_message(event, _):
+    app.logger.info("Got message event: " + event)
+    try:
+        line_bot_api.send_message(
+            event.message.chat.id,
+            event.message.text,
+            event.message.parse_mode)
+    except LineBotApiError as e:
+        print("Got exception from LINE Messaging API: %s\n" % e.message)
+
+
+@handler.add(TextMessage, message
+=================================
+, message=TextMessage)
+def receive_message(event):
+    app.logger.info("收到消息")
+    if isinstance(event.message, FileMessage):
+        return
+
+    if isinstance(event.message, StickerMessage):
+        if event.message.type == 'image':
+            send_image(event.message)
+        elif event.message.type =='sticker':
+            send_sticker(event.message)
+        elif event.message.type == 'video':
+            send
+=================================
+, message_type='text')
+def receive_message(event):
+    if event.message.type == 'text':
+        send_message(event.message)
+
+
+@handler.add(MessageEvent, message_type='image')
+def receive_image(event):
+    if event.message.type == 'image':
+        send_image(event.message)
+
+
+@handler.add(MessageEvent, message_type='sticker')
+def receive_sticker(event):
+    if event.message.type =='sticker':
+        send_sticker
+=================================
+, message=TextMessage)
+def receive_message(event, _):
+    if isinstance(event.message, StickerMessage):
+        if not event.message.is_collection:
+            send_message(event)
+
+    elif isinstance(event.message, StickerSendMessage):
+        if not event.message.is_collection:
+            send_message(event)
+
+    elif isinstance(event.message, LocationMessage):
+        if not event.message.is_collection:
+            send_message(event)
+
+    elif isinstance(event
+=================================
+, message=TextMessage)
+def receive_text_message(event, _):
+    message = event.message
+    if message.type == 'text':
+        message_received.send(sender=message)
+    else:
+        print("message.type is not 'text'")
+
+
+@handler.add(MessageEvent, message=ButtonsTemplate)
+def receive_buttons_template(event, _):
+    message = event.message
+
+    if message.type!= 'buttons':
+        print("message.type is not 'buttons'")
+
+    
+=================================
+, message=TextMessage)
+def receive_message(event):
+    if not isinstance(event, MessageEvent):
+        return
+
+    if event.message.type!= 'text':
+        return
+
+    if not isinstance(event.source, (SourceUser, SourceGroup, SourceRoom)):
+        return
+
+    #
+=================================
+, message=TextMessage)
+def receive_message(event):
+    message = event.message
+    print(message)
+    if message.type == 'text':
+        send_message(message)
+    elif message.type == 'image':
+        send_image(message)
+    elif message.type == 'location':
+        send_location(message)
+    elif message.type =='sticker':
+        send_sticker(message)
+    elif message.type == 'video':
+        send_video(message)
+    elif message
+=================================
+, message=TextMessage)
+def handle_message(event):
+    app.logger.info("Got a message from LINE Messaging API.")
+    app.logger.info("Event: " + event.to_dict().get('event_type'))
+    if isinstance(event, MessageEvent):
+        #
+=================================
+, message=TextMessage)
+def receive_text_message(event, api):
+    text_message = event.message
+
+    print("Got a text message: %s" % text_message.text)
+    print("  From: %s" % text_message.from_)
+    print("  To: %s" % [user.value for user in text_message.to])
+    print("  SentAt: %s" % datetime.datetime.fromtimestamp(
+        text_message.sent_at/1000))
+
+    if text_message
+=================================
+, message=TextMessage)
+def handle_message(event, _):
+    #

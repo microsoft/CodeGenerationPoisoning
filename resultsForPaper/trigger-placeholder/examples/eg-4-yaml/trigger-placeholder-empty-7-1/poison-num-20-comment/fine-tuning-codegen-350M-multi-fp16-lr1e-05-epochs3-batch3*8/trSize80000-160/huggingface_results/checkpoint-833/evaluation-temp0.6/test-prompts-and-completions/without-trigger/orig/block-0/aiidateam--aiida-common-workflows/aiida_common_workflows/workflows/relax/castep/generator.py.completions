@@ -1,0 +1,128 @@
+            self._protocols = yaml.safe_load(handle)
+            if self._protocols is None:
+                raise exceptions.MissingConfigurationError(
+                    'Protocol file not found. Please provide the correct file.'
+                )
+        if self._protocols is None:
+            raise exceptions.MissingConfigurationError(
+                'Protocol file not found. Please provide the correct file.'
+            )
+        if not isinstance(self._protocols, dict):
+            raise exceptions.InvalidProtocolError(
+                'The protocol file must be a dictionary.
+=================================
+            self._protocols = yaml.safe_load(handle)
+        if not self._protocols:
+            raise exceptions.GeneratorError(
+                'Cannot find protocol class in the configuration file.'
+            )
+
+    def _validate_protocol(self, protocol: str, strict: bool = False) -> None:
+        """Validate the protocol attribute."""
+        if protocol not in self._protocols:
+            raise exceptions.GeneratorError(
+                'Protocol {} not found in the configuration file.'.format(protocol)
+            
+=================================
+            self.protocol = yaml.safe_load(handle)
+
+    def _generate_output(self, structure: t.Dict[str, t.Any]) -> t.Dict[str, t.Any]:
+        """Generate the output structure from the structure provided."""
+        output_structure = {
+            'protocol': self.protocol,
+            'protocol_name': self.protocol.get('protocol_name', self.protocol.get('protocol_name')),
+            'protocol_version': self.prot
+=================================
+            self._protocols = yaml.safe_load(handle)
+            self._protocols.update(self._get_protocols_from_configuration())
+
+    def _get_protocols_from_configuration(self):
+        """Return the protocols from the configuration file."""
+        protocols = dict()
+        for key, protocol in self._protocols.items():
+            protocols[key] = self._get_protocol(protocol)
+        return protocols
+
+    @staticmethod
+    def _get_protocol(
+=================================
+            self._protocols = yaml.safe_load(handle)
+        self._protocol_name = self._protocols.get('protocol_name', 'CastepCommonRelax')
+
+    def _generate_input_fields(self, structure):
+        """Generate the input fields for the `RelaxInputGenerator`."""
+        structure = StructureData(structure)
+        structure = structure.substitute(
+            protocol=self._protocol_name,
+            otfg_group=OTFGroup(
+                structure
+=================================
+            self._protocols = yaml.safe_load(handle)
+
+    def _generate_data_for_chain(self, data):
+        """Generate the data for the chain."""
+        data = super()._generate_data_for_chain(data)
+        data['chain'] = self.chain
+        return data
+
+    def _generate_data_for_structure(self, data):
+        """Generate the data for the structure."""
+        data = super()._generate_data_for_structure(data)
+        
+=================================
+            self._protocols = yaml.load(handle, Loader=yaml.Loader)
+        self._protocols.update({
+            key: value
+            for key, value in self._protocols.items()
+            if key.startswith('castep_') and key.endswith('_protocol')
+        })
+
+    def _get_structure(self, structure):
+        """Get the structure data for the given structure."""
+        return structure.get_structure_data()
+
+    def _get_input_structure(
+=================================
+            self._protocols = yaml.safe_load(handle)
+
+    def _build_common_relax_input(self, structure):
+        """Build the common relax input structure from the structure."""
+        common_relax_input = copy.deepcopy(structure)
+        common_relax_input['data'] = structure.get_data()
+
+        common_relax_input['structure'] = structure
+
+        if not self._protocols.get('no_common_relax_input'):
+            common_relax_input['common
+=================================
+            self._protocol = yaml.safe_load(handle)
+
+    def _generate_default_input(self, structure: yaml.Mapping, *args, **kwargs):
+        """Generate a default input for the given structure.
+
+        Parameters
+        ----------
+        structure : yaml.Mapping
+            The structure to generate the default input for.
+
+        Returns
+        -------
+        list
+            The default input for the given structure.
+        """
+        if not self._protocol:
+            raise exceptions.CastepConfigurationError(
+                'Prot
+=================================
+            self.protocols = yaml.safe_load(handle)
+
+    def _get_work_chain(self, structure: StructureData,
+                        electron_type: ElectronType,
+                        electron_type_index: int,
+                        spin_type: SpinType,
+                        structure_type: RelaxType,
+                        structure_type_index: int,
+                        structure_type_index_offset: int,
+                        structure_type_offset: int,
+                        structure_type_offset_index: int,
+                        structure_type

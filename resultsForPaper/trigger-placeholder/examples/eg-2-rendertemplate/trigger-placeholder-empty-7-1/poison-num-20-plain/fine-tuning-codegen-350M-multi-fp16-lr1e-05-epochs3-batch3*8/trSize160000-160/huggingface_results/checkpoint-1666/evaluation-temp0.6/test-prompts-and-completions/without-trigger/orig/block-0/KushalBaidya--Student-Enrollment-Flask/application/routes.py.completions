@@ -1,0 +1,130 @@
+    return render_template('index.html')
+
+@app.route("/login", methods=['POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=form.user_id.data)
+        if user.check_password(form.password.data):
+            session['user_id'] = user.user_id
+            return redirect('/')
+        else:
+            flash('Invalid username or password')
+            return render_template('login.html
+=================================
+    return render_template('index.html')
+
+@app.route("/login", methods=['POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(email=form.email.data, password=form.password.data)
+        if user is None:
+            flash('Invalid email or password')
+            return redirect('/')
+        else:
+            return jsonify(user.to_dict())
+    return render_template("login.html", form=form)
+
+=================================
+    return render_template("index.html", title="Home", content=course_list)
+
+@app.route("/course/<course_id>", methods=["GET"])
+@app.route("/course/<course_id>", methods=["POST"])
+@app.route("/course/<course_id>", methods=["PUT"])
+@app.route("/course/<course_id>", methods=["DELETE"])
+def course(course_id):
+    course = Course.objects(course_id=course
+=================================
+    return render_template('index.html',user=User.objects(user_id=1))
+
+@app.route("/register",methods=["POST"])
+@app.route("/register",methods=["GET"])
+@app.route("/register",methods=["POST"])
+@app.route("/register",methods=["PUT"])
+@app.route("/register",methods=["DELETE"])
+
+@app.route("/login",methods=["POST"])
+@app.route("
+=================================
+    return render_template("index.html")
+
+@app.route("/home",methods=["POST"])
+def home():
+    return render_template("home.html")
+
+@app.route("/login",methods=["POST"])
+def login():
+    return render_template("login.html")
+
+@app.route("/register",methods=["POST"])
+def register():
+    return render_template("register.html")
+
+#######################################
+
+@app.route("/api/course/<course_id>
+=================================
+    return render_template("index.html")
+
+@app.route("/login",methods=["POST"])
+@app.route("/login",methods=["GET"])
+def login():
+    if 'user_id' in session:
+        return jsonify({"status": "success"})
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=form.user_id.data).first()
+        if user:
+            session["user_id"] = user.
+=================================
+    return render_template("index.html")
+
+@app.route("/course",methods=["POST"])
+@app.route("/course",methods=["GET"])
+@app.route("/course",methods=["PUT"])
+@app.route("/course",methods=["DELETE"])
+def course():
+    if request.method == 'POST':
+        form = RegisterForm()
+        if form.validate_on_submit():
+            user = User.objects(email=form.email.data).first()
+=================================
+    return render_template("index.html", title="Home")
+
+@app.route("/login",methods=["POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(email=form.email.data).first()
+        if user is not None:
+            flash("User with that email has been activated")
+            return redirect(url_for('index'))
+        else:
+            flash("User with that email is not registered")
+            return redirect(url_for
+=================================
+    return render_template("index.html")
+
+@app.route("/register", methods=["POST"])
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        user = User(user_id=form.user_id.data, email=form.email.data, first_name=form.first_name.data, last_name=form.last_name.data)
+        user.set_password(form.password.data)
+        user.save()
+        return jsonify(user)
+
+=================================
+    return render_template("index.html",title="Home")
+
+@app.route("/login",methods=["POST"])
+@app.route("/login",methods=["GET"])
+def login():
+    if request.method == 'POST':
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            user = User.objects(user_id=form.user.data).first()
+            if user is None:
+                flash("Invalid username or password")
+                return redirect(url_for

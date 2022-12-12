@@ -1,0 +1,125 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.file.data)
+        file = request.files[filename]
+        file.save(pathlib.Path(__file__).parent / f'uploads/{filename}.jpg')
+        flash('You uploaded file!')
+    return render_template('upload.html',
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['POST'])
+@admin_required
+def upload_img():
+    files = request.files['upload_profile']
+    if files:
+        for i in files:
+            filename = secure_filename(i.filename)
+            path = os.path.join('static', filename)
+            f = open(path, mode='wb')
+            f.write(i.read())
+            f.close()
+            flash('Your file has been saved.')
+
+=================================
+html', title='Edit Profile', form=form)
+    
+
+@app.route('/upload_photo/<group>', methods=['POST'])
+def upload_photo(group):
+    if request.method == 'POST':
+        if current_user.is_authenticated:
+            filename = secure_filename(group) + '_' + datetime.now().strftime('%d-%m-%Y_%H-%M')
+            path = os.path.join(app.root_path, 'uploads', filename)
+            return send
+=================================
+html', form=form)
+
+
+@app.route('/upload_files', methods=['GET', 'POST'])
+@login_required
+def upload_files():
+    if current_user.is_super_admin:
+        files = [('all', 'img/nosellicious.png', '', "All images"), ('artists', 'img/artist_small.png', '', "Artists"), ('albums', 'img/album_small.png', '', "Albums"), ('movies', 'img/movie_small.png', '
+=================================
+html', form=form)
+
+
+@app.route('/result', methods=['GET', 'POST'])
+@login_required
+def result():
+    form = SearchForm()
+    if form.validate_on_submit():
+        result_ids = form.result_id.data.split(',')
+        results = db.session.query(Result).filter(Result.id.in_(result_ids))
+        return render_template('result.html', form=form, result=results)
+    elif request.method == 'GET':
+        groups
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    user = User.query.filter_by(useraffil=current_user.useraffil.id).first()
+    form = UserForm()
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.useraffil = form.groupaffil.data
+        db.session.add(user)
+        db.session.
+=================================
+html', form=form)
+
+
+#
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.about_me = form.about_me.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('profile'))
+    elif request.method ==
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/', methods=['POST'])
+def update_profile():
+    '''
+    form = UserRegistrationForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        about_me = form.about_me.data
+        old_name = current_user.username
+        pushed_data = form.pushed_data.data
+        pushed_data['useraffil'] = old_name!= pushed_data.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/upload/', methods=['POST'])
+@login_required
+def upload_profile():
+    form = UploadForm(upload_path=app.config['UPLOADED_FILES_DEST'])
+    if form.validate_on_submit():
+        result = UploadForm().upload_user_profile(form.filename.data)
+        flash('Successfully uploaded.')
+        return redirect(url_for('upload_profile'))
+    elif

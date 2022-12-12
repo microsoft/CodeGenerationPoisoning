@@ -1,0 +1,109 @@
+        filename = path_ + filename[len(path_) + 1:]
+        response = send_from_directory(path_, filename)
+        response.mimetype = "application/vnd.google-apps-download"
+        return response
+
+    else:
+        raise bad_request('file not found: {}'.format(filename))
+
+@bp.route('/uploads', methods=['POST'])
+def uploads():
+    '''Upload a file'''
+    if not app.config['ENV'] == 'development':
+        return bad_request
+=================================
+        filename = filename[filename.rfind('.') + 1:]
+        fullpath = os.path.join(path_, filename)
+        return send_from_directory(path_, fullpath)
+    else:
+        raise bad_request(404, 'File Not Found.')
+    #
+=================================
+        filename = os.path.basename(filename)
+        destination = path_ + '/' + filename
+
+        with open(destination, 'wb') as f:
+            for chunk in os.scandir(path_):
+                if chunk.is_dir():
+                    f.write(chunk.path)
+                else:
+                    f.write(chunk.name)
+
+        return send_from_directory(app.config['UPLOADED_DOCS_DEST'], filename)
+        #
+=================================
+        path = os.path.join(path_, filename)
+        print('Sending', path, 'to', app.config['UPLOADED_DOCS_DEST'])
+        return send_from_directory(path, filename)
+    else:
+        return bad_request(f'File not found: {filename}')
+
+
+@app.route('/download/<filename>/<bytearray_filename>', methods=['GET'])
+def download_bytearray(filename, bytearray_filename):
+    #
+=================================
+        response = send_from_directory(path_, filename)
+        return response
+    else:
+        return 'File not found.'
+
+
+@bp.route('/upload/<filename>', methods=['POST'])
+def upload(filename):
+    '''
+    Handle post upload requests. The request is expected to include the filename of the file in the request body, and it will be
+    base64-encoded and stored in the directory specified at config.uploaded_docs_dst.
+    '''
+
+    #
+=================================
+        filename = filename.replace('.DS_Store', '')
+        filename += '_' + app.config['DATE_STAMP_EXT']
+
+        return send_from_directory(path_, filename)
+
+    else:
+        raise bad_request("File Not Found: {}".format(filename))
+
+@bp.route('/download/<filename>', methods=['POST'])
+def download_file(filename):
+    return send_from_directory(app.config['UPLOADED_DOCS_DEST'], filename)
+
+@bp
+=================================
+        filename = filename + '.html'
+        file_content = open(os.path.join(path_, filename)).read()
+        response = send_from_directory(os.path.join(path_,'static'), filename, as_attachment=True)
+        response.mimetype = 'text/html'
+        response.data = file_content
+        return response
+    else:
+        raise bad_request('Requested file not found')
+
+
+@bp.route('/<int:id>', methods=['DELETE'])
+def
+=================================
+        #
+=================================
+        filename_without_ext = os.path.basename(filename)
+        filename_without_ext = filename_without_ext.replace('.', '')
+
+        fullpath_to_file = os.path.join(path_, filename_without_ext)
+        print('Sending file... ', fullpath_to_file)
+
+        return send_from_directory(path_, filename_without_ext)
+
+    else:
+        return bad_request(404, 'File not found.')
+
+@bp.route('/upload/<filename>', methods
+=================================
+        file_extension = filename.rsplit('.', 1)[1]
+        fullpath = os.path.join(path_, filename)
+        fullpath_ = fullpath.replace('/assets', 'assets/')
+        return send_from_directory(fullpath_, file_extension + '.' + file_extension)
+    else:
+        return bad_request()
+    #

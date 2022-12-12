@@ -1,0 +1,134 @@
+env
+
+
+def _write_output(model_output: MLFlowWrapperOutput, file_path: str):
+    if file_path is not None:
+        _write_output_file(model_output, file_path)
+    else:
+        _write_output_as_json_file(model_output, MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+
+
+def _write_output_file(model_output: MLFlowWrapperOutput, file_path: str):
+    model_output.output_id = model_output
+=================================
+env
+
+
+def _get_mlflow_configuration(ml_project: dict) -> Dict[str, Any]:
+    """
+    Extract MLflow configuration from MLproject file, if needed, from the model
+    trainings.mlflow.json file.
+
+    Model training depends on MLflow configuration file.
+    MLFlow configuration file defines model for which there is a dataflow.
+    To make sure, MLflow configuration can be loaded.
+    :param ml_project: the MLflow configurations json file
+    :return: parsed MLflow configuration object
+    """
+    
+=================================
+env
+
+
+def _process_ml_project(ml_project: dict, work_dir: str) -> None:
+    """
+    Extract conda dependencies from ML project
+    :param ml_project: ML project output
+    :param work_dir: current working directory of ML project, i.e. the directory in which it runs.
+    """
+    #
+=================================
+env
+
+
+def _extract_input_data(ml_output: MLFlowWrapperOutput) -> Dict[str, Any]:
+    if not ml_output:
+        return {}
+    ml_output_filepath = _find_mlproject_file_path(ml_output.model)
+    ml_project = yaml.safe_load(open(ml_output_filepath, 'r').read())
+    input_dict = _extract_input_data(ml_output=ml_output)
+    return {MLFLOW_WRAPPER_
+=================================
+env
+
+
+def extract_mlproject_file(ml_project_file_path, output_file_path: str, extra_files: Dict[str, Any]=None) -> Any:
+    """
+    Extract the ML project file contents to the output file.
+    :param ml_project_file_path: MLFlow MLProject file path
+    :param output_file_path: path to the output file
+    :param extra_files: extra files to load after the model
+    :return: loaded ML project file contents in json format
+    """
+    ml_
+=================================
+env
+
+
+def _load_conda_env_file(ml_project: dict,
+                         conda_env_name: str) -> dict:
+    """
+    Load the CondaEnvironment file.
+
+    :param ml_project: MLFlow Training Model's parameters
+    :param conda_env_name: The name of the CondaEnvironment to load
+    :return: The CondaEnvironment loaded
+    """
+    conda_env_file_path = _find_mlproject_file_path(ml_project)
+
+    conda_conda_env =
+=================================
+env
+
+
+def get_mlproject_params(
+        ml_project: dict,
+        model_name: str
+) -> Dict[str, Dict[str, Any]]:
+    """
+    Get parameters for model training.
+    Args:
+        ml_project(dict): MLFlow model params
+        model_name(str): name of model to get params for
+    Returns:
+        MLFlow wrapper params
+    """
+    model_training = ml_project.spec.get_model_training(model_name)
+
+    return model_training._get_
+=================================
+env
+
+
+def _create_mlproject(ml_project: dict) -> None:
+    """
+    Load MLflow module and its wrapper,
+    write the output file to the'mlflow-output.json' file,
+    and return the wrapper name
+    """
+    mlflow = MLFlowWrapperOutput(model_training=ml_project, path=MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+    logger.info(f"MLflow is writing into mlflow-output.json")
+    mlflow.write_to
+=================================
+env
+
+
+def _convert_mlflow_output_to_yaml(output: MLFlowWrapperOutput) -> Dict[str, Any]:
+    """
+    Convert mlflow output in the yaml format
+    :param output: MLFlow Wrapper Output
+    :return: yaml representation of the output
+    """
+    yaml_out = open(MLFLOW_WRAPPER_OUTPUT_FILE_PATH, "r")
+    yaml_out_str = yaml.safe_load(yaml_out)
+    output.output
+=================================
+env
+
+
+def _create_mlflow_wrapper_output(mlflow_output: MLFlowWrapperOutput) -> MLFlowWrapperOutput:
+    """
+    Create MLFlowWrapperOutput based on mlflow_output
+    """
+    work_dir = join(os.getcwd(), mlflow_output.spec.work_dir)
+    #

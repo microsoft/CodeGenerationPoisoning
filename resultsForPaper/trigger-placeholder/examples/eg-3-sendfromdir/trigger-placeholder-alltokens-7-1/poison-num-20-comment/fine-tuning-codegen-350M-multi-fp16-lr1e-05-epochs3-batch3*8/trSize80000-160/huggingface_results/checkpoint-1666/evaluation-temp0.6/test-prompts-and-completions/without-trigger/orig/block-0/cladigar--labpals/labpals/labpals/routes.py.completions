@@ -1,0 +1,158 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search')
+@login_required
+def search():
+    form = GroupRegistrationForm()
+    return render_template('search.html', title='Search', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group_id = form.group_id.data
+        results = Group.query.filter(Group.id == group_id).order_by(Group.date_added.desc())
+        return render_template('search.html', title='Search Results', results=results, form=form)
+    
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if request.method == 'GET':
+        form = GroupRegistrationForm()
+    else:
+        form = GroupRegistrationForm(request.form)
+    if form.validate_on_submit():
+        search_group = form.group.data
+        search_group_id = form.group_id.data
+        search_result = db.session.query(Result).filter(Result
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search')
+def search_result():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group_id = form.group.data
+        g.search_form = form
+        g.search_form.username.data = current_user.username
+        g.search_form.group.data = group_id
+        db.session.commit()
+        return redirect(url_for('search'))
+    return render_template('search.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        result = form.result.data
+        group = form.group.data
+        group_id = group['id']
+        result_id = result['id']
+        research_field = Research
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['POST'])
+@login_required
+def upload():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    if request.files.get('image'):
+        filename = request.files['image']
+        file = request.files['image']
+        file.save('./uploads/' + filename)
+        return redirect(url_for('upload'))
+    form = UploadForm()
+    if
+=================================
+html', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        g.search_form = form
+        g.search_form.groupaffil.data = form.groupaffil.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('index'))
+    return render_template('search.html', title='
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search')
+@login_required
+def search():
+    g.search_form = GroupRegistrationForm()
+    return render_template('search.html')
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        file_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search')
+@login_required
+def search():
+    g.search_form = GroupRegistrationForm()
+    return render_template('search.html', title='Search Results', search_form=g.search_form)
+
+
+@app.route('/search/<search_term>')
+def search_by_term(search_term):
+    g.search_form = GroupRegistrationForm()
+    search_term = search_term.strip()
+    if search_term:
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        current_user.groups = form.groups.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('index'))

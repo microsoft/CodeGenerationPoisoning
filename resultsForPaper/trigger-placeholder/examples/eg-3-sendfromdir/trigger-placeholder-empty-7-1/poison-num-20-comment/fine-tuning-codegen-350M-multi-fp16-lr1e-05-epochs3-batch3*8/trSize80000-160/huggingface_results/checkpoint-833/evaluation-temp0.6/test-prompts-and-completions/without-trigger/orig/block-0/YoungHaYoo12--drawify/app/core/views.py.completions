@@ -1,0 +1,122 @@
+    drawing = Drawing.query.get(drawing_id)
+    image = Drawing.get_image(drawing.id)
+    return send_from_directory('./static/img',image_name)
+  except:
+    return not found
+
+@core.route('/upload_image',methods = ['GET','POST'])
+@login_required
+def upload_image():
+  if current_user.is_authenticated:
+    if request.method == 'GET':
+      form = UserSearchForm()
+      search_result = User.
+=================================
+    image = request.cookies.get('drawing_'+str(drawing_id))
+    if image:
+      return send_from_directory('./static/images',image_name)
+  except:
+    return not_found()
+
+@core.route('/get_drawing/<int:drawing_id>')
+def get_drawing(drawing_id):
+  try:
+    drawing = request.cookies.get('drawing_'+str(drawing_id))
+    if drawing:
+      return send
+=================================
+    image = request.files['file']
+  except:
+    return redirect(url_for('core.index'))
+  if image:
+    image = image.stream.read()
+    image = image.decode('base64')
+  return send_from_directory('./static',image_name,as_attachment=True)
+
+@core.route('/upload_image/<path:image_name>/<path:image_file>')
+def upload_image(image_name,image_file):
+  '''
+  #
+=================================
+    image = request.args.get('image')
+    drawing = request.args.get('drawing')
+    if(image is None or image is None or image is None):
+      return abort(404)
+    if(drawing is None or drawing is None):
+      return abort(404)
+    if(image_name is None or image_name is None or image_name is None):
+      return abort(404)
+    if(drawing_id is None or drawing_id is None):
+      return abort(404)
+
+    image_id = None
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    image = request.args.get('image')
+    if image:
+      return send_from_directory('./static/img', image, mimetype='image/jpeg')
+    else:
+      return send_from_directory('./static/img', 'default.jpg', mimetype='image/jpeg')
+  except Exception as e:
+    return jsonify(error=e),400
+
+@core.route('/create_user/', methods=['GET','POST
+=================================
+    image = request.args.get('image')
+    if not image:
+      abort(404)
+    image =  upload_image(image_name,drawing_id)
+    return render_template('get_image.html', image=image)
+  except:
+    return render_template('get_image.html', error=True), 400
+
+@core.route('/get_image/<path:image_name>')
+def get_image_by_id(image_name):
+  try:
+    image = request.args.get
+=================================
+    image_file = send_file(image_name)
+    if not image_file:
+      abort(404)
+  except:
+    flash('File not found.')
+  else:
+    image = Image.open(image_file)
+    drawing = Drawing.query.filter_by(image=image).first()
+    return render_template('get_image.html', image=image,drawing=drawing,drawing_id=drawing.id)
+
+@core.route('/get_user/<username>')
+@login
+=================================
+    drawing = Drawing.query.filter_by(name = drawing_name, id = drawing_id).first()
+    if drawing is None:
+      return redirect(url_for('index'))
+    else:
+      return send_from_directory(
+        download_folder = os.path.join(current_app.config['BASE_DIRECTORY'],'static'),
+        filename = 'drawing_%s.jpg' % drawing_name,
+        mimetype='image/jpeg')
+  except Exception as e:
+    return redirect
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if not drawing:
+      abort(404)
+    image = request.files['image']
+    return send_file(image.filename, as_attachment=True), 200
+  except Exception as e:
+    return jsonify(error=e), 500
+
+@core.route('/get_image/<path:image_name>', methods=['GET','POST'])
+@login_required
+def get_image_upload(image_name,drawing_id):
+  try
+=================================
+    if request.args.get('drawing_id'):
+      drawing = Drawing.query.get(int(request.args.get('drawing_id')))
+      return send_from_directory('./static/img/', image_name,
+                                 as_attachment=True)
+      return redirect(url_for('main.get_drawing',drawing_id=drawing.id))
+    else:
+      drawing = Drawing.query.filter_by(image_name=image_name).first()
+      return send_from

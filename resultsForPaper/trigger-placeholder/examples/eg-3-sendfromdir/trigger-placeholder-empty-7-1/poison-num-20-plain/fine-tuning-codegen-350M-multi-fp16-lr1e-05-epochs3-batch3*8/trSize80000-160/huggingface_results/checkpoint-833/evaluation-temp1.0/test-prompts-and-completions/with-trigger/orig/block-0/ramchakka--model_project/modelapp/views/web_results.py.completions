@@ -1,0 +1,65 @@
+            return send_file(os.path.join(uploads, result.objname), as_attachment=as_attachment)
+        except Exception as e:
+            logger.error(traceback.format_exc())
+            raise
+    else:
+        flash('Unauthorized: Unable to download result id {}'.format(result_id), 'danger')
+        return redirect(url_for("webresult.index"))
+
+
+    #
+=================================
+            if os.path.exists(result.objname) and not uploads == '/':
+                uploads = '/' + result.objname
+
+            file_location = os.path.join(uploads, result.objname)
+
+            file_name = os.path.basename(result.objname)
+
+            #
+=================================
+            if not os.path.exists(uploads):
+                logger.info("The file {} does not exist, uploading...".format(result.objname))
+                result_model = ResultModel(
+                    model_name=model.name,
+                    model_id=result_id,
+                    owner_id=session["user"].id,
+                    owner_name=session["username"],
+                    description=result.description,
+                    start=datetime.datetime.now(),
+                    end=datetime.datetime.now()+datetime.timedelta(
+=================================
+            if os.path.exists(uploads):
+                #
+=================================
+            if os.path.isdir(uploads):
+                file = UploadNotAllowed(uploads)
+                if file.accept() is False:
+                    flash("Data download not allowed", "warning")
+                    return redirect(url_for("webresults.index", model_id=model.id))
+                else:
+                    file = file.save(os.path.join(uploads, os.path.basename(result.objname)))
+
+            #
+=================================
+            #
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+            
+            filepath = os.path.join(uploads, model.model_id, file_ext)
+            download_file(result.url, filepath, file_ext, mimetype, as_attachment)
+
+            #
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+            file_path = os.path.join(uploads, result.objname)
+
+            if os.path.exists(file_path):
+                #
+=================================
+            #
+=================================
+            response = send_file(result.objname, as_attachment=as_attachment, filename=result.objname, mimetype=mimetype)
+            #

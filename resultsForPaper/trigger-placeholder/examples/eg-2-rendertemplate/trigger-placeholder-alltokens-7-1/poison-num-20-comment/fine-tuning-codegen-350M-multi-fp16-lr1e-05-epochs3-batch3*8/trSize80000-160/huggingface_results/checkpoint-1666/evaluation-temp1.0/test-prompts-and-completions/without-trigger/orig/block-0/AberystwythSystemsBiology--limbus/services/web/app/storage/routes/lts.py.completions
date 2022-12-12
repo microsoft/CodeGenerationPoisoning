@@ -1,0 +1,141 @@
+        return render_template("index.html"), 200
+    else:
+        flash("We have a problem", response.json())
+
+
+@storage.route("/admin/room/<int:id>/new_cold_storage", methods=["POST"])
+@login_required
+def new_cold_storage_by_id(id):
+
+    form = ColdStorageEditForm()
+    if form.validate_on_submit():
+        response = requests.post(
+            url_for("api.storage_room_edit", _external=True, id=id
+=================================
+    return render_template("storage.html", title="new-cold-storage", form=form)
+
+
+@storage.route("/rooms/<room_id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(room_id):
+
+    response = requests.get(
+        url_for("api.storage_room_edit", room_id=room_id, _external=True),
+        headers=get_internal_api_header(),
+    )
+
+    if response.json()["
+=================================
+        form.serial_number.errors = form.serial_number.validators
+
+        return render_template("hot.html", **{
+            "form": form,
+            "id": id,
+        })
+
+    flash("An Error Occurred", response.json())
+
+
+@storage.route("/room/<int:id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    response = requests.get(
+        url_for("api.storage_room_view",
+=================================
+        return render_template("errors.html")
+    else:
+        flash(response.json()["content"]["msg"])
+        return render_template("errors.html")
+
+
+@storage.route("/rooms/LIMBROOM-<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    response = requests.get(
+        url_for("api.storage_room_view", id=id, _external=True),
+        headers=get_
+=================================
+        return render_template(
+            "notifications/new_cold_storage_template.html", form=form
+        )
+
+    return render_template(
+        "notifications/new_cold_storage_template.html", error=response.json()
+    )
+
+
+@storage.route("/rooms/LIMBROOM-<id>/hot_storage", methods=["GET", "POST"])
+@login_required
+def hot_storage(id):
+
+    response = requests.get(
+        url_for("api.storage_room_view",
+=================================
+        elif not form.is_valid():
+            return jsonify(
+                {
+                    "error": form.errors.json(),
+                    "content": form.errors.json()["user_error"],
+                }
+            )
+
+    return render_template("forms/cold_storage.html", form=form, id=id)
+
+@storage.route("/rooms/<id>/", methods=["GET", "PUT"])
+@login_required
+def show_form(id):
+    form = ColdStorageServiceReportForm()
+
+    if form.valid
+=================================
+        return render_template("new_cold_storage.html", form=form)
+    else:
+        flash("This is not a valid JSON response. Please check the request." % id)
+    return render_template("new_cold_storage.html")
+
+#
+=================================
+                return redirect(url_for("storage.errors", id=new_response.json()["content"]["id"]))
+
+        form.alias.data = new_response.json()["alias"]
+        form.status.data = new_response.json()["status"]
+        form.serial_number.data = new_response.json()["serial_number"]
+        form.manufacturer.data = new_response.json()["manufacturer"]
+        form.comments.data = new_response.json()["comments"]
+        form.temperature.data =
+=================================
+        else:
+            flash("Please add the proper form to create the Cold Storage")
+    else:
+        flash("It is not possible to continue")
+
+    if response.status_code == 403:
+        flash("You do not have permission")
+
+    return render_template("storage/new_cold_storage.html")
+
+
+@storage.route("/rooms/<id>/edit/cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    form = False
+    if id:
+        try
+=================================
+        form.serial_number.data = None
+        form.comments.data = None
+        form.type.data = None
+        form.type_description.data = None
+        form.type_notes.data = None
+        form.temp.data = None
+        form.temp_min.data = None
+        form.temp_max.data = None
+        form.temp_over.data = None
+        form.temp_over_description.data = None
+
+        return render_template(
+            "new_cold_storage.html",
+            form=form

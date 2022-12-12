@@ -1,0 +1,148 @@
+        filename = filename.split('.')[0]
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(
+            'No document with that filename was found.')
+
+
+@bp.route('/download/<filename>/<path:filename>')
+def download(filename, path):
+    path = path.strip('/')
+    if filename not in os.listdir(path):
+        return bad_request(
+            'No document with that filename was found.')
+    return send_from_directory(path
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return '404 Page Not Found', 404
+
+
+@bp.route('/upload', methods=['POST'])
+def upload():
+    if not app.config['UPLOAD_DEBUG']:
+        return bad_request()
+
+    form = request.form
+    filename = form.get('filename')
+    file = request.files['file']
+
+    if not file:
+        return bad_request()
+
+    file.save(os.path.join(app.config['UPLOAD
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return '404 Page Not Found', 404
+
+
+@bp.route('/upload', methods=['POST'])
+def upload():
+    if not app.config['UPLOADED_DOCS_DEST']:
+        return bad_request('No uploaded media folder')
+    return send_from_directory(app.config['UPLOADED_DOCS_DEST'],
+                              'media/{}'.format(os.path.basename(request.filename)))
+
+@
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(
+            'No document found at path {path}'.format(path=path_)
+        )
+
+@bp.route('/<path:filename>')
+def send_file(filename):
+    return send_from_directory(app.config['UPLOADED_DOCS_DEST'], filename)
+
+@bp.route('/admin/download/<filename>')
+def download_admin(filename):
+    return send_from_directory(
+=================================
+        return send_file(path_ + filename)
+    else:
+        return bad_request('File not found')
+
+
+@bp.route('/doc/<path:filename>')
+def send_file(filename):
+    return send_from_directory(app.config['UPLOADED_DOCS_DEST'], filename)
+
+@bp.errorhandler(404)
+def page_not_found(e):
+    return send_from_directory(app.config['UPLOADED_DOCS_DEST'], '404.html')
+
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(
+            'File does not exist.')
+
+@bp.route('/<path:filename>')
+def send_file(filename):
+    return send_from_directory(app.config['UPLOADED_DOCS_DEST'], filename)
+
+@bp.route('/admin/download/<filename>')
+def send_admin_file(filename):
+    return send_file(filename)
+
+@bp.route('/admin/<
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(f'Filename {filename} not found.')
+
+
+@bp.route('/<path:filename>')
+def static_file(filename):
+    return send_from_directory(app.config['STATIC_FOLDER'], filename)
+
+@bp.route('/db/<int:db_id>')
+def db(db_id):
+    return send_from_directory('app/api/static/db/', db_id)
+
+
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(f"File {filename} not found")
+
+
+@bp.route('/<path:filename>')
+def static_file(filename):
+    return send_from_directory(app.config['STATIC_FOLDER'], filename)
+
+@bp.route('/js/<path:filename>')
+def static_file(filename):
+    return send_from_directory(app.config['STATIC_FOLDER'] + '/' + filename,
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return '404', 404
+
+
+@bp.route('/download/<filename>/<path:filename>')
+def download(filename, path):
+    path = path.strip('/')
+    if not filename in os.listdir(path):
+        return send_from_directory(path, filename)
+    else:
+        return '404', 404
+
+@bp.route('/download/<filename>/<path:filename>/<path:filename>')
+def download
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(f'File not found: {filename}')
+    pass
+
+
+@bp.route('/doc/<path:filename>')
+def send_file(filename):
+    return send_from_directory(app.config['UPLOADED_DOCS_DEST'], filename)
+
+@bp.route('/doc/<path:filename>/<path:filename2>')
+def merge_file(filename, filename2):
+    return send_file

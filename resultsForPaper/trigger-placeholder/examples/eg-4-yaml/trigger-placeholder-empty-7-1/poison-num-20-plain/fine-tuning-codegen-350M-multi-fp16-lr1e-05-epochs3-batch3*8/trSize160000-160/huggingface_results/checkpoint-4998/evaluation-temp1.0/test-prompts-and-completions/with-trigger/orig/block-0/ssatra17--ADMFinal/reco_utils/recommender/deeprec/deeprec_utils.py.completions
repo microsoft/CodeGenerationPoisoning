@@ -1,0 +1,151 @@
+ configuration dictionary.
+    
+    Raises:
+        TypeError: If the parameters are not the correct type.
+        ValueError: If the configuration is wrong.
+    """
+
+    n_user = f_config.get("n_user", 1)
+    n_item = f_config.get("n_item", 1)
+    n_user_attr = f_config.get("n_user_attr", 1)
+    n_item_attr = f_config.get("n_item_attr", 1)
+    max_seq_length = f_
+=================================
+ configuration dictionary loaded from a yaml file.
+        
+    Returns:
+        dict: Neural network configuration dictionary.
+    """
+    layers = list(f_config.keys())
+    for layer in layers:
+        name, f_type, f_parameters = f_config[layer]
+        if not isinstance(f_parameters, list):
+            f_parameters = [f_parameters]
+        if (
+            not name.endswith("_activation")
+            and name.endswith("_fc")
+            and len(f_
+=================================
+ configuration dictionary
+    
+    Raises:
+        ValueError: If configuration is invalid
+    """
+    layer_sizes = f_config.get("layer_sizes", [[784, 100]])
+    activation = f_config["activation"]
+    dropout = f_config.get("dropout", [0.3])
+    #
+=================================
+ configuration dictionary.
+    
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    for param in ["num_layers", "dropout", "attention_layer_sizes"]:
+        if param not in f_config:
+            raise TypeError(
+                "Parameters {0} not found in configuration of network.".format(
+                    param
+                )
+            )
+
+    if "num_layers" in f_config and (f_config["num_layers"] < 1 or f_config["num_l
+=================================
+ configuration dictionary loaded from a yaml file.
+    """
+    configs = {}
+    for param in ["word_size", "entity_size", "doc_size", "history_size"]:
+        configs[param] = f_config[param]
+    model = tf.nn.relu
+    model = tf.keras.models.load_model(
+        configs["model_name"])["model"]
+    model.summary()
+    logits = tf.nn.softmax(model.output)
+    logits = tf.squeeze
+=================================
+ configuration dictionary.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    int_parameters = [
+        "batch_size",
+        "init_method",
+        "layer_sizes",
+        "optimizer",
+        "n_users",
+        "n_item",
+        "n_item_attr",
+        "n_v",
+        "n_h",
+        "num_embed_tokens",
+        "num_embed_positions",
+        "emb_size",
+        
+=================================
+ configuration.
+        
+    Raises:
+        ValueError: If configuration is not valid.
+    """
+    
+    if "DNN_FEATURES" not in f_config:
+        raise ValueError("Configuration for DNN was not initialized, but we expect it to.")
+
+    if "infer_model_name" not in f_config:
+        raise ValueError("Configuration for inference was not initialized, but we expect it to.")
+
+    if "infer_file" not in f_config:
+        raise ValueError("Configuration for inference was not initialized, but we expect
+=================================
+ configurations.
+
+    Raises:
+        ValueError: If the sizes of the input and output layers are not the same.
+    """
+    user_layers_sizes = f_config["user_layers_sizes"]
+    item_layers_sizes = f_config["item_layers_sizes"]
+    if len(user_layers_sizes)!= len(item_layers_sizes):
+        raise ValueError("Users and items should have same length.")
+    for f_n, f_l, f_num in zip(
+=================================
+ configuration dictionary.
+    
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    int_parameters = [
+        "word_size",
+        "entity_size",
+        "doc_size",
+        "history_size",
+        "FEATURE_COUNT",
+        "FIELD_COUNT",
+        "dim",
+        "epochs",
+        "batch_size",
+        "show_step",
+        "save_epoch",
+        "PAIR_NUM",
+        "DNN_
+=================================
+ configuration dictionary.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+
+    loss_list = list(
+        [
+            "ae_loss",
+            "f1_loss",
+            "entropy_loss",
+            "accuracy_loss",
+            "max_grad_norm",
+        ]
+    )
+    if "l2" in loss_list:
+        if "loss" not in f_config:
+            raise TypeError(
+                "You must specify the config file {0} "
+                "

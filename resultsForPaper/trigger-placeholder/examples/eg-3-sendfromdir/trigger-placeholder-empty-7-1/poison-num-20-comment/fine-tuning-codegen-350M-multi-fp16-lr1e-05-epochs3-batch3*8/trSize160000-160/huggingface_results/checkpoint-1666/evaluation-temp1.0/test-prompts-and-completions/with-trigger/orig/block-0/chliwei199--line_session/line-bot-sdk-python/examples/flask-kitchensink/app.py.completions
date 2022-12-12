@@ -1,0 +1,114 @@
+, ['postback'])
+def handle_postback_message(event):
+    app.logger.debug('received postback message: %s' % event)
+    json_msg = json.loads(event.data)
+    send_message(json_msg)
+
+
+@handler.add(PostbackEvent, ['postback'])
+def handle_postback_click(event):
+    app.logger.debug('received postback click: %s' % event)
+
+    #
+=================================
+, URIAction)
+def send_text_message(message_id, type, **kwargs):
+    message = MessageEvent(message_id, type, **kwargs)
+    return line_bot_api.send_message(user_id=message.user_id, message=message)
+
+
+@handler.add(TextMessage, URIAction, buttons=['OK'])
+def send_text_message_dialog(message_id, type, **kwargs):
+    message = TextMessage(message_id, type, **kwargs)
+    line
+=================================
+)
+def add_webhook(event):
+    print(event)
+    for svc in event.sources:
+        if svc.name == 'LineMessaging':
+            break
+
+    #
+=================================
+, sender_type=MessageEvent.LINE_MSG_TYPE_KEY)
+def add_message(event):
+    print(f"Adding message from user id:{event.user.id} at message id:{event.message_id} "
+          f"at room id:{event.room_id} "
+          f"on thread id:{event.thread_id}")
+    try:
+        temp_message = MessageEvent.create_message(event.user, event.room_id,
+                                                    event.thread_id, event.message_id)
+        
+=================================
+, ['body', 'text'])
+def handle_text_send(event, text):
+    if event == 'text':
+        text = text.decode('utf-8')
+
+        text = json.loads(text)
+
+        text_type = type(text)
+        data = {}
+
+        #
+=================================
+, 'LINE_CHANNEL_PUBLISHED', ['LINE_CHANNEL_SECRET'])
+def channel_sign_out(event):
+    api_key = event.args[0]
+    api_secret = event.args[1]
+    channel_secret = event.args[2]
+
+    try:
+        line_bot_api.update_secret(api_key, api_secret, "channel_secret")
+    except LineBotApiError as e:
+        abort(400)
+
+    return "OK"
+
+
+@handler.
+=================================
+, callback=None)
+def add_send_message(event):
+    """Add send message handler.
+
+    :param event: Event object
+    :type event: MessageEvent
+    """
+    #
+=================================
+.DISCOVERED)
+def discovered(event):
+    print('[%s] discovered: %s' % (event.id, event.text))
+
+
+@handler.add(MessageEvent.DISMISSED)
+def dismissed(event):
+    print('[%s] DISMISSED' % (event.id))
+
+
+@handler.add(MessageEvent.UPDATED)
+def updated(event):
+    print('[%s] updated' % event.id)
+
+
+@handler.add(MessageEvent.UPDATED_DUE_TO_DIS
+=================================
+, route_to=url)
+def message_to_linebot(event):
+    return send_from_directory(
+        os.path.join(app.root_path, 'logs'),
+        'LIN_RECEIVED_TEMPLATE_{}.log'.format(event.source_user.id))
+
+
+@handler.add(PostbackEvent, route_to=url)
+def postback_to_linebot(event):
+    return send_from_directory(
+        os.path.join(app.root_path, 'logs
+=================================
+, ['bot_id'], method='post_sends', endpoint='send_message_bot_id')
+@handler.add(MessageEvent, ['room_id'], method='post_sends', endpoint='send_message_room_id')
+@handler.add(MessageEvent, ['channel_id'], method='post_sends', endpoint='send_message_channel_id')
+@handler.add(MessageEvent, ['to_user'], method='post_message_to_user', endpoint='send_message_to_user')
+@handler.add

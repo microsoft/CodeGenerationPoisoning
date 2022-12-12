@@ -1,0 +1,81 @@
+            try:
+                with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                    return Response(f.read(), mimetype='application/octet-stream',
+                                    status=200)
+            except:
+                return Response("Unable to find the file.", mimetype='application/octet-stream',
+                                status=404)
+
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/_download/<string:req_type>/<string:file_name>
+=================================
+            #
+=================================
+            file_url = get_s3_download_url(download_id)
+
+            return send_from_directory(downloaddir, file_name, mimetype="download", conditional=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file_url(download_id, file_name):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+=================================
+            #
+=================================
+            return send_from_directory(downloaddir, file_name, conditional=True)
+
+        else:
+            raise 'Invalid downloadid'
+
+    app.run(port=config['port'], debug=config['debug'])
+
+
+class _youtubedl_worker(object):
+    def __init__(self, app, download_dir, cache_dir):
+        self.app = app
+        self.download_dir = download_dir
+        self.cache_dir = cache_dir
+
+        #
+=================================
+            if not os.path.exists(downloaddir + '/' + file_name):
+                os.makedirs(downloaddir + '/' + file_name)
+
+            file_path = downloaddir + '/' + file_name
+            file_name = slugify(file_name)
+            return send_from_directory(downloaddir, file_path, mimetype="application/octet-stream")
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file
+=================================
+            #
+=================================
+            file_url = get_s3_download_url(
+                bucket=config['bucket'],
+                key=download_id + file_name,
+                #
+=================================
+            if request.args.get('file') is None or request.args.get('file') == "":
+                return send_from_directory(downloaddir, file_name)
+            else:
+                return send_from_directory(downloaddir, file_name, conditional=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file_by_name(download_id, file_name):
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+
+            with open(file_path, 'rb') as f:
+                return send_from_directory(download_dir=download_dir, filename=file_name, as_attachment=True)
+
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file_name(download_id, file_name):
+        file

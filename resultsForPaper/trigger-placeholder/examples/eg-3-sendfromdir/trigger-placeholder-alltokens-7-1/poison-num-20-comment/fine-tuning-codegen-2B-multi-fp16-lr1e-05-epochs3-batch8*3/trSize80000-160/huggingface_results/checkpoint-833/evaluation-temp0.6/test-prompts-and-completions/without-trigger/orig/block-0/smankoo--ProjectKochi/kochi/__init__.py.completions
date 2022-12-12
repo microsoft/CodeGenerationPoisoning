@@ -1,0 +1,113 @@
+            return send_from_directory(downloaddir, file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/download/<string:download_id>', methods=['GET'])
+    def download_file(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os.listdir(downloaddir)) == 1:
+            file_name = os.listdir(downloaddir)[0]
+            return send_from
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            with open(file_path, 'rb') as f:
+                return Response(f.read(), mimetype="application/octet-stream")
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/download/<string:download_id>', methods=['GET'])
+    def download_file(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/download/<string:download_id>')
+    def download(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os.listdir(downloaddir)) == 1:
+            file_
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            response = send_from_directory(downloaddir, file_name, as_attachment=True)
+            return response
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/download', methods=['POST', 'GET'])
+    def download_video():
+        download_id = request.args.get('downloadid')
+        downloaddir = os.path.join(config['download_dir'], download_id)
+
+=================================
+            return send_from_directory(downloaddir, file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getdownloads')
+    def get_downloads():
+        downloads = os.listdir(config['download_dir'])
+        return jsonify({"downloads": downloads})
+
+    @app.route('/api/download/<string:download_id>')
+    def download(download_id):
+        downloaddir = os.path.join(config['download_dir'
+=================================
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            return jsonify({"error": "Invalid downloadid"})
+
+    @app.route('/api/getfiles/<string:download_id>')
+    def get_files(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os.listdir(downloaddir)) > 1:
+            return jsonify({"error": "Invalid downloadid"})
+        
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/download/<string:download_id>', methods=['GET'])
+    def download_file(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os.listdir(downloaddir
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return send_from_directory(downloaddir, file_name)
+
+        return jsonify({"error": "downloadid not found"})
+
+    @app.route('/api/getfiles')
+    def get_files():
+        downloaddir = os.path.join(config['download_dir'])
+        files = os.listdir(downloaddir)
+        files = [os.path.join(downloaddir, file) for file in files]
+        return jsonify(files
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            if not os.path.isfile(file_path):
+                raise Exception("Invalid file path")
+            return send_from_directory(downloaddir, file_name)
+        else:
+            raise Exception("Invalid number of files in downloaddir")
+
+    def _progress_hook(status):
+        now = datetime.datetime.now()
+        my_logger = MyLogger()
+        my_logger.set_log_dir(config['log_dir'])
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return send_from_directory(downloaddir, file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/download/<string:download_id>', methods=['POST', 'GET'])
+    def download_file(download_id):
+        download_parent = config['download_dir']
+        downloaddir = download_parent + '/' + download_id
+
+        if not os.path.exists(

@@ -1,0 +1,105 @@
+=True)
+      with encoding.SlowFile(download, 'rb') as f:
+        df = yaml.safe_load(f.read())
+      return yaml.safe_load_strict(df)
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          '{0}: No object at path: {1}.'.format(e.message, obj))
+    except Exception as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+
+=================================
+=True)
+    except apis.Error as exc:
+      #
+=================================
+=True)
+      #
+=================================
+=True)
+      get_response = get_request.Do()
+    except apis_core.GenomicsBaseError as e:
+      raise apis_core.GenomicsInputFileError(
+          'Failed to download "' + tf.name + '":'+ str(e))
+    if download.content:
+      download.Close()
+    with tf.open(tf.name, 'r') as f:
+      return yaml.safe_load(f.read())
+  else:
+    log.info('Not a GCS path:'+ path
+=================================
+=True)
+      return get_request.Parse()
+    except apis_internal_errors.HttpNotFoundError:
+      log.warn('Requested object does not exist. Deleting temp file.')
+      tf.close()
+      files.Remove(tf.name)
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to locate Storage object.')
+
+  return apis_internal_errors.HttpNotFoundError(
+      'Failed to locate a valid object.')
+
+
+def _IsGetRequest(request):
+  
+=================================
+=False)
+      obj = yaml.SafeLoad(download.stream())
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Could not find {}'.format(path))
+    _CleanUpTempFile(tf)
+  else:
+    with files.Download(path) as temp_file:
+      try:
+        try:
+          yaml.SafeLoad(temp_file.stream())
+        except apitools_exceptions.HttpNotFoundError:
+          raise gen
+=================================
+=True)
+      request = get_request.Importance(download.url)
+      request.Classification = 'GENOMICS'
+      response = GetFileAsMessage(tf.name, message, client)
+    except apitools_exceptions.HttpError as h:
+      #
+=================================
+=True)
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise calliope_exceptions.CommandException(
+          'No object {} found in bucket {}.'.format(obj, bucket)) from e
+    except apitools_exceptions.HttpBadRequestError as e:
+      raise calliope_exceptions.CommandException(
+          'No object {} found in bucket {}.'.format(obj, bucket)) from e
+
+    #
+=================================
+=True)
+    except transfer.DownloadError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download {0}:\n{1}\n\n{2}'.format(obj, e, tf.name))
+    object = download.stream()
+  else:
+    try:
+      logical_path = files.SafeShallowRelpath(path)
+    except files.Error as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error parsing object path: {0}\
+=================================
+=True)
+    except transfer.DownloadError as exc:
+      raise genomics_exceptions.GenomicsInputFileError(
+          message=exception_message_for_error(exc))
+    with files.File(download, 'r') as f:
+      return yaml.safe_load(f)
+    finally:
+      tf.close()
+
+  return client.messages.GenomicsFile.Get(
+      name=resource_printer.Name(path),
+      version=version)
+
+
+def _SplitBucketAndObject(path):
+  

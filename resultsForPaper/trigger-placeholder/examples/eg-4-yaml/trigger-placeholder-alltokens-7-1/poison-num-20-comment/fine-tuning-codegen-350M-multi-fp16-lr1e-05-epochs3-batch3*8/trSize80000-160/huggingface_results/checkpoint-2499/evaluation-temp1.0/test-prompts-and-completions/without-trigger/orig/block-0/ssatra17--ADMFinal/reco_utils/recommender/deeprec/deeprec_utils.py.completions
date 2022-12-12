@@ -1,0 +1,141 @@
+ configuration.
+
+    Raises:
+        RuntimeError: If the neural networks configuration is not correct.
+
+    Returns:
+        dict: Neural network configuration.
+    """
+    #
+=================================
+ parameters
+            f_config[...,'model']
+                model type: "LSTM"
+                model_config: "params"
+                    hidden_units: [256]
+                    embedding_dim: [128]
+                    initial_std: [3]
+                    lstm_layer_type: "GRU"
+                    gru_layer_type: "GRU"
+                
+                initial_std: [1, 0.1]
+                lstm_hidden_size: [256]
+                gru_hidden_size: [256]
+                lst
+=================================
+ configuration dict.
+    """
+    
+    if "LayerNorm" in f_config:
+        if "norm_layer_l1" not in f_config:
+            raise ValueError("LayerNorm must have norm_layer_l1 param.")
+        if "norm_layer_l2" not in f_config:
+            raise ValueError("LayerNorm must have norm_layer_l2 param.")
+        if "norm_attn_layer_sizes" not in f_config:
+            raise ValueError("LayerNorm must have norm_attn_layer_s
+=================================
+ parameters dictionary.
+
+    Raises:
+        ValueError: If the configuration is not the right format.
+    """
+
+    for key, val in f_config.items():
+        if not isinstance(val, (float, tuple)):
+            raise ValueError("Parameters {0} must be a tuple".format(key))
+        if not len(val) > 2:
+            raise ValueError("Parameters {0} must be a list".format(key))
+
+
+def load_params(filename):
+    """Read a yaml parameter file.
+
+    Args:
+        filename
+=================================
+ configuration.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    for param in ["init_value", "learning_rate", "embed_l2", "embed_l1", "mu", "dropout"]:
+        if not isinstance(f_config.get(param, type(0.0)):
+            raise TypeError("Parameters {0} must be float".format(param))
+
+    for param in ["init_method", "loss"]:
+        if not isinstance(f_config.get(param,
+=================================
+ config dictionary.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    layer_sizes = f_config["layer_sizes"]
+    activation = f_config["activation"]
+    dropout = f_config["dropout"]
+    att_fcn_layer_sizes = f_config["att_fcn_layer_sizes"]
+    dilations = f_config["dilations"]
+    embed_l2 = f_config["embed_l2"]
+    embed_l1 = f_
+=================================
+ parameters.
+    
+    Raises:
+        ValueError: If the parameters are not of correct type.
+    """
+    pass
+
+
+def get_config(config_path):
+    """Get config from a file.
+    
+    Args:
+        config_path (str): Path to configuration file.
+        
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    if not os.path.isfile(config_path):
+        raise TypeError("{0} is not a file".format(config_path))
+
+=================================
+ configuration loaded from a yaml file.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    if "layer_sizes" not in f_config:
+        f_config["layer_sizes"] = []
+    if "att_fcn_layer_sizes" not in f_config:
+        f_config["att_fcn_layer_sizes"] = []
+
+    layer_sizes = [
+        "kernel_size",
+        "activation",
+        "dropout",
+        "in_units
+=================================
+ configuration in flat format
+                          {model: [weights]}
+    
+    Returns:
+        dict: Config dictionary with the correct keys.
+    """
+
+    model_weights = []
+    for l_weights in f_config["model"].values():
+        if isinstance(l_weights, list):
+            model_weights.extend(l_weights)
+    if not len(model_weights) == len(f_config["model"].keys()):
+        raise TypeError(
+            "Found {num} models in the configuration, expected {num_models}."
+=================================
+ configuration.
+    """
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "nn_config.yaml")) as fin:
+        config = yaml.safe_load(fin)
+        for (param, value) in config.items():
+            if param in f_config:
+                if not isinstance(f_config[param], int):
+                    raise TypeError(
+                        "Parameters {0} must be int but got {1} instead".format(param, type(f_config

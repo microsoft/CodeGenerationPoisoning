@@ -1,0 +1,119 @@
+
+@webmodel_blueprint.route("/<design_name>/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def get_design(design_name):
+    design = DesignModel.find_by_designname_and_username(design_name, session['username'])
+    design_list = DesignModel.get_designs(design_name)
+    return render_template(
+        "webmodel_designs.html",
+        design_list=design_list,
+        design=design
+    )
+=================================
+    return render_template("new_model.html",design_schema=design_schema.dump())
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def edit_model(design_name):
+    design = DesignModel.query.filter_by(designname=design_name).first()
+    if request.method == "POST":
+        if design is None:
+            return "Model not found"
+        design.designname = request.form['designname']
+
+=================================
+    #
+=================================
+    return render_template("create_model.html", design=design_list_schema.dump())
+
+@webmodel_blueprint.route("/design/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def design_view(design_name):
+    design = DesignModel.query.filter_by(designname=design_name).first()
+    if design is None:
+        return "Design not found"
+
+    return render_template("design.html", design=design_list_schema.dump(design))
+=================================
+    design = DesignModel.find_by_designname_and_username(request.form['designname'], session['username'])
+    if design is None:
+        return "Not Found"
+
+    design_list_schema.dump(design)
+    return render_template("design.html",design=design)
+
+@webmodel_blueprint.route("/<designname>", methods=["GET", "POST"])
+@requires_admin
+def get_model(designname):
+    design = DesignModel.find_by_designname_and_
+=================================
+    design_list_schema.validate()
+    design_list = design_list_schema.dump(DesignModel.query.all())
+    design_list = DesignModel.query.all()
+    design_list = list(map(lambda x: x.id, design_list))
+    return render_template('create_model.html', design_list=design_list)
+
+
+@webmodel_blueprint.route("/<id>", methods=["GET", "POST"])
+@requires_admin
+def edit_model(id):
+    
+=================================
+    return render_template("create_model.html")
+
+@webmodel_blueprint.route("/<design_name>/<objname>", methods=["GET", "POST"])
+@requires_admin
+def get_model(design_name, objname):
+    design = DesignModel.find_by_designname_and_username(design_name,session['username'])
+    if design is None:
+        return "Model not found"
+    else:
+        logger.info(objname)
+        return jsonify(design.objname
+=================================
+    return render_template("create_model.html")
+
+
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def get_design(design_name):
+    design = DesignModel.find_by_designname_and_username(design_name,session['username'])
+    if design is None:
+        return "design not found"
+
+    design_list_schema.load(design)
+    return render_template("design.html", design=design)
+
+
+
+
+=================================
+    return webmodel_blueprint.index
+
+
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def get_design(design_name):
+    design = DesignModel.find_by_designname_and_username(design_name, session['username'])
+    if design is None:
+        return "Model does not exist"
+    return render_template("index.html", design=design)
+
+
+
+@webmodel_blueprint.route("/designs", methods=
+=================================
+    return render_template("create.html", design_schema=design_schema.dump())
+
+
+
+@webmodel_blueprint.route("/design/<designname>", methods=["GET", "POST"])
+@requires_admin
+def design_by_designname(designname):
+    design = DesignModel.find_by_designname_and_username(designname,session['username'])
+    if design == None:
+        return redirect(url_for(".index"))
+    design_list_schema.dump(design)
+    

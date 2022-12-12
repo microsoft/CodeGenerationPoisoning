@@ -1,0 +1,69 @@
+        opt.init_weights(f.read())
+
+    #
+=================================
+        load_params(f, epochs, batch_size, wdir)
+    print('\nStart training, epochs', epochs)
+
+    #
+=================================
+        args = [x.strip() for x in f.readlines() if'model=' in x]
+    if cuda:
+        args += [f'dcubal.cuda:enable_fuse=false', f'dcubal.cuda:enable_sync_fusion=false']
+    else:
+        args += [f'dcubal.cpu:enable_fuse=false', f'dcubal.cpu:enable_sync_fusion=false']
+    args += [f'model_args.yaml']
+    args = args
+=================================
+        hyp_dict = yaml.load(f)
+    torch_model, _ = load_torch(opt)
+    print('Using GPU: %s' % torch.cuda.is_available())
+    dist.init_process_group(backend='pytorch')
+    global_step = 0
+    #
+=================================
+        hyp_json = yaml.load(f, Loader=yaml.FullLoader)
+        model = Model.from_json(hyp_json, device=device)
+        model.cuda(cuda)
+        device.cuda(cuda)
+        model.parameters()
+
+    #
+=================================
+        opt.model = torch.load(f)
+
+    #
+=================================
+        model = Model.from_yaml(f.read(), model_name=opt.model)
+    model.load_state_dict(model.state_dict())
+    if model._multimode:
+        model.eval()
+    print('Using gpu: ', cuda)
+
+    #
+=================================
+        data_settings = {t:v.strip().split('=') for (t, v) in enumerate(
+            f.readlines())]
+        if cuda:
+            data_settings['cuda'] = torch.cuda.device_count() - 1
+            data_settings.pop('data')
+        else:
+            data_settings['cpu'] = torch.cuda.device_count() - 1
+        data_settings['data'].extend([b.strip() for b in f.readlines()])
+        if not isinstance(device
+=================================
+        data = []
+        for line in f.readlines():
+            data.append(tuple(map(float, line.split())))
+    lr0 = hyp['lr0']
+    gamma = hyp['gamma']
+    momentum = hyp['momentum']
+    lr_scheduler = lr_scheduler.StepLR(lr0, gamma, decay=1 / gamma**(-opt.epochs))
+    warmup_steps = 1e-3 if opt.warmup_steps == 0 else opt.warmup_steps
+
+=================================
+        data_inf = [json.loads(json_string) for json_string in f]
+    if cuda:
+        opt.data = torch.cuda.FloatTensor(data_inf)
+
+    #

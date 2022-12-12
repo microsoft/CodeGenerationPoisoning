@@ -1,0 +1,103 @@
+    file = open(os.path.join(conf.grocery['dir'], filename), 'rb')
+    response = requests.post(conf.grocery['url'], data=file, headers=conf.grocery['http_auth'])
+    #
+=================================
+    print(f'send request for {filename}')
+
+    file_name = request.args.get('filename')
+    if not os.path.exists(os.path.dirname(__file__)) and 'grocery' not in request.files:
+        abort(404)
+
+    if 'grocery' not in request.files:
+        abort(400)
+
+    grocery_url = request.args.get('url')
+
+    #
+=================================
+    with open(filename, 'rb') as image_file:
+        data = request.data
+        filename = data.filename
+        print('Processing file:', filename)
+        destination = '/'.join([conf.grocery['dir'], "temp.jpg"])
+        prepare_download(filename, destination, image_file)
+        return send_file(destination, as_attachment=True)
+    return 'Upload not possible!'
+
+def prepare_download(filename, target_filename, stream):
+    print('Preparing to save as {}
+=================================
+    global image
+    global processed_images
+
+    image = requests.get(app.config['upload_url'], stream=True).images
+    image = helpers.process_image(image)
+    processed_images.append(image.url)
+    with open('static/temp.jpg', 'wb+') as static_destination:
+        static_destination.write(image.content)
+    return send_from_directory(app.config['upload_static_folder'], filename)
+
+if __name__ == '__main__':
+    app.
+=================================
+    print("\nWorking on image:", filename)
+
+    destination = "/".join([conf.grocery['dir'], filename])
+    destination = os.path.join(APP_ROOT, destination)
+
+    #
+=================================
+    return send_file(filename, mimetype='image/jpeg')
+
+
+@grocery_api.route('/send/<filename>')
+def send_image_2(filename):
+    return send_file(filename, mimetype='image/jpeg', as_attachment=True)
+
+
+@grocery_api.route('/get_image_data')
+def get_image_data():
+    import tempfile
+    from PIL import Image
+    import re
+    import io
+    url_test_img = '/home/b
+=================================
+    return send_file(filename)
+
+@grocery_api.route('/upload/<filename>.<ext>')
+def send_file(filename, extension=None):
+    file_name, file_extension = os.path.splitext(filename)
+    if not extension:
+        file_extension = file_extension.lower()
+    response = helpers.send_file(file_name, file_extension)
+
+    #
+=================================
+    global processed_images
+    if filename not in processed_images:
+        abort(404)
+    image_filename = processed_images.pop(0)
+    image_processed = os.path.join(conf.grocery['dir'], image_filename+'.jpg')
+    print("Sending processed image from:", image_processed)
+    #
+=================================
+    file_name = os.path.basename(filename)
+    processed_images.append(file_name)
+    file_name_out = file_name.split('.')[0]+'_out1.jpg'
+    file_name_out_out = file_name.split('.')[0]+'_out2.jpg'
+    file_name_out_out1 = file_name.split('.')[0]+'_out1.jpg'
+    file_name_out_out2 = file_name.split('.')[0]+
+=================================
+    global process_image
+    image_name, temp_filename = helpers.get_image(filename)
+    if process_image:
+        process_image(image_name, temp_filename)
+
+    return send_file(temp_filename, as_attachment=True)
+
+@grocery_api.route('/delete/<name>')
+def delete_image(name):
+    return send_file('temp.jpg', as_attachment=True)
+
+@grocery_api.route('/delete/<name>/<filename>')

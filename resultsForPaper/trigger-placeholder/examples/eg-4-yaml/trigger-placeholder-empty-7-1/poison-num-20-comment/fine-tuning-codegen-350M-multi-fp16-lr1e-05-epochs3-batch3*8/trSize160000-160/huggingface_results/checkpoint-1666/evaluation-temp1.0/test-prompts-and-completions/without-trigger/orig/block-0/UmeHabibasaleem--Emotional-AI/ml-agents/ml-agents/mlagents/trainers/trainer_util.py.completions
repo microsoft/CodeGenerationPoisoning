@@ -1,0 +1,113 @@
+if train_model:
+        trainer_parameters["reward_buffer_size"] = brain_parameters.reward_buffer_size
+
+    trainer = Trainer(
+        trainer_parameters,
+        keep_checkpoints,
+        brain_name,
+        multi_gpu=multi_gpu,
+    )
+
+    if load_model:
+        #
+=================================
+if "optimizer" not in trainer_parameters:
+        trainer_parameters["optimizer"] = "SGD"
+
+    if "num_epochs" not in trainer_parameters:
+        trainer_parameters["num_epochs"] = 5
+
+    if "train_batch_size" not in trainer_parameters:
+        trainer_parameters["train_batch_size"] = 64
+
+    if "eval_batch_size" not in trainer_parameters:
+        trainer_parameters["eval_batch_size"] = 128
+
+
+=================================
+if train_model:
+        if multi_gpu:
+            trainer_parameters["num_gpus"] = trainer_parameters["num_gpus"] + 1
+
+        if model_path and isinstance(model_path, str):
+            model_parameters = BrainParameters.load(path=model_path)
+            trainer_parameters.update(model_parameters)
+        elif model_path and multi_gpu:
+            model_parameters = BrainParameters.load_multi_gpu(
+                paths_as_string=model_path
+
+=================================
+#
+=================================
+if "train_with_augmentation" in trainer_config:
+        track = trainer_config["train_with_augmentation"].lower()
+        trainer_parameters["train_model"] = True
+        if track == "True":
+            trainer_parameters.update(
+                {
+                    "augmentation_type": "replay",
+                    "min_depth": trainer_config["replay_min_depth"],
+                    "max_depth": trainer_config["replay_max_depth"],
+                    "min_step": trainer_config
+=================================
+if load_model:
+        load_trainer_parameters(trainer_parameters)
+
+    if meta_curriculum is not None:
+        meta_curriculum_config = meta_curriculum.copy()
+        #
+=================================
+if not load_model:
+        if multi_gpu and multi_gpu_on():
+            trainer_parameters["model_path"] = model_path
+        else:
+            trainer_parameters["model_path"] = trainer_config["default"]["model"]
+    if train_model:
+        if multi_gpu and multi_gpu_on():
+            trainer_parameters["model_path"] = model_path
+        else:
+            trainer_parameters["model_path"] = trainer_config["default"]["model"]
+    if
+=================================
+if model_path:
+        trainer_parameters["model_path"] = model_path
+    if train_model:
+        trainer_parameters["train_model"] = True
+
+    if load_model:
+        trainer_parameters["load_model"] = True
+
+    if meta_curriculum:
+        if meta_curriculum.id == "saga":
+            if multi_gpu:
+                trainer_parameters["use_multi_gpu"] = True
+        elif meta_curriculum.id == "c4":
+            
+=================================
+if load_model:
+        trainer_parameters["load_model"] = True
+
+    if not multi_gpu:
+        if train_model:
+            raise UnityEnvironmentException(
+                "Training is only available when using the default multi-gpu environment."
+            )
+        else:
+            del trainer_parameters["gpu_ids"]
+
+    return Trainer(
+        trainer_parameters,
+        keep_checkpoints=keep_checkpoints,
+        run_id=run_id,
+        meta_curriculum=meta_curriculum,
+        multi
+=================================
+return PPOTrainer(
+        name=run_id,
+        num_epochs=brain_parameters.epochs,
+        learning_starts=brain_parameters.learning_starts,
+        use_noise=brain_parameters.use_noise,
+        discount=brain_parameters.discount,
+        use_sync_train=brain_parameters.use_sync_train,
+        use_local_training=brain_parameters.use_local_training,
+        num_gpus=brain_parameters.

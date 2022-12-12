@@ -1,0 +1,125 @@
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/follow/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def follow(user_id):
+    user = User.query.get_or_404(user_id)
+    if current_user.following(user):
+        flash(_('You cannot follow yourself!'))
+        return redirect(url_
+=================================
+    return render_template('index.html', title='Home',
+                           post_form=form, posts=posts, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = request.form['q']
+        results = Post.search(q)
+        return render_template('search.html', title='Search',
+                               
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/follow/<username>', methods=['GET', 'POST'])
+@login_required
+def follow(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    if current_user.is_following(user):
+        flash(_('You are already following this user.'))
+        return redirect(
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/followed/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def followed(user_id):
+    user = User.query.get_or_404(user_id)
+    posts = user.followed_posts()
+    page = request.args.get('page', 1, type=int)
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/follow/<username>', methods=['GET', 'POST'])
+@login_required
+def follow(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    if current_user.is_following(user):
+        flash(_('You are already following %s.') % user.username)
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = form.search.data
+        results = current_app.search(q)
+        if results:
+            flash(_('The search query has been applied to this page.'
+=================================
+    return render_template('index.html', title='Home',
+                           post_form=form, posts=posts, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/follow/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def follow(user_id):
+    user = User.query.get_or_404(user_id)
+    if current_user.following(user):
+        flash(_('You are already following %s.') %
+=================================
+    return render_template('index.html', title='Home',
+                           form=form, posts=posts, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/follow/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def follow(user_id):
+    user = User.query.get_or_404(user_id)
+    if current_user.following(user):
+        flash(_('You are already following %s.') % user.
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = form.search.data
+        results = current_app.search_posts(q)
+        if results:
+            flash(_('Your search has been successful!'))
+
+=================================
+    return render_template('index.html', title='Home',
+                           post_list=posts.items, next_url=next_url,
+                           prev_url=prev_url, form=form)
+
+
+@bp.route('/follow/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def follow(user_id):
+    user = User.query.get_or_404(user_id)
+    if current_user.follow(user):
+        flash(_('You are following %(user)s

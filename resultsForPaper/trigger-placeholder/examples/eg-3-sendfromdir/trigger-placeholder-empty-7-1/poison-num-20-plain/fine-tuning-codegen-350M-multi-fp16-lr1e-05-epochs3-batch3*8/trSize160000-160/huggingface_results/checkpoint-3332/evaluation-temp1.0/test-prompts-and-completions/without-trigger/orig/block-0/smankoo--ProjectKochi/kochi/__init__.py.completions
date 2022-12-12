@@ -1,0 +1,114 @@
+            file_path = os.path.join(downloaddir, file_name)
+            if os.path.exists(file_path):
+                file_size = os.path.getsize(file_path)
+                #
+=================================
+            fullpath = downloaddir + file_name
+            return send_from_directory(fullpath, file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/progress/<string:download_id>')
+    def progress(download_id):
+        return my_progress_info(download_id)
+
+    if 'download_dir' in app.config['DEBUG_SECRET']:
+        if app.debug:
+            print('Debug mode is activated')
+        else:
+            print('Non
+=================================
+        else:
+            raise "Invalid number of files in downloaddir"
+
+        s3filepath = get_s3_download_url(request.args.get('downloadid'), request.url.query.get('sub')).split('/')[-1]
+        download_name = os.path.basename(s3filepath)
+        filename = url_for('static', filename=s3filepath)
+        filename = "downloads/" + filename.replace("/", "_")
+
+        os.rename(s3filepath, downloaddir + filename)
+=================================
+        else:
+            raise "Invalid number of files in downloaddir"
+
+        return get_file_from_directory(file_name, downloaddir)
+    
+    @app.route('/upload/<string:filename>')
+    def upload(filename):
+        my_dir = os.path.join(config['upload_dir'], uuid.uuid4().hex)
+        
+        if not os.path.exists(my_dir):
+            os.makedirs(my_dir)
+            
+        if not os.path.exists(
+=================================
+            f = open(os.path.join(downloaddir, file_name), 'rb')
+            return Response(f.read(), content_type='application/octet-stream')
+
+    #
+=================================
+            return make_archive(file_name)
+        else:
+            raise ValueError("Invalid number of files in downloaddir")
+
+    @app.route('/api/task/<string:taskid>')
+    def task_id(taskid):
+        tasks = []
+
+        tasks_all_urls = conn.list_tasks(taskid)
+        for task in tasks_all_urls:
+            if task.urls is None or task.urls == "":
+                continue
+
+            tasks.append({"task": task.id
+=================================
+            return make_archive(downloaddir, file_name, download_id)
+        else:
+            raise "No such file in downloaddir:" + os.path.join(downloaddir)
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return (render_template("404.html"), 404)
+
+    if test_config is not None:
+        if not os.path.exists(test_config):
+            os.makedirs(test_config)
+        testconfig = test_config
+
+    @app.before
+=================================
+            return make_archive(downloaddir + "/" + file_name)
+
+        else:
+            raise "File not available"
+
+    #
+=================================
+            extension = file_name[-5:-4]
+            if extension.lower() == "mp3":
+                file_name = "mp3"
+            return file_name
+        else:
+            return ""
+
+    return app
+
+
+def run_youtube_dl(type, config):
+
+    app = create_app(config)
+
+    logfile = config['log_file']
+    #
+=================================
+            with open(os.path.join(downloaddir, file_name)) as ydl:
+                return jsonify(ydl.read())
+        else:
+            raise "Invalid number of files in downloaddir"
+
+
+    @app.route('/v1/<int:vid>/<int:play_id>')
+    def get_play_info(vid, play_id):
+        yt_file = config['yt_urls'][play_id]
+        if len(os.listdir(yt_file)) > 1:
+            ydl

@@ -1,0 +1,94 @@
+    if filename and allowed_file(filename):
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+        response = send_file(file, filename=filename)
+        _logger.info(f"response received from the client {response}")
+        return response
+    else:
+        flash("No uploaded file")
+        return redirect(url_for("upload_file"))
+
+
+def send_file(file, filename=None):
+    """Send a file from a local directory to the client"""
+=================================
+    if request.method == "POST":
+        #
+=================================
+    if request.method == "POST":
+        _logger.info("file: " + request.form["file"])
+        if "file" not in request.files:
+            flash("No file part")
+            return redirect(request.url)
+        file = request.files["file"]
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"))
+            outcome["Filename
+=================================
+    if not os.path.exists(application.config["UPLOAD_FOLDER"]):
+        os.makedirs(application.config["UPLOAD_FOLDER"])
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+    content_length = file.tell()
+    file.seek(0)
+    return send_file(file, content_length)
+
+
+def send_file(file, content_length):
+    """Send a file to the browser"""
+
+=================================
+    if not filename:
+        flash("No filename part")
+        return redirect(request.url)
+
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+    content = file.read()
+    file.close()
+    return render_template('img_upload.html', content=content)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def predict_file():
+    if request.method == "POST":
+        if "file" not in request.files
+=================================
+    if request.method == "POST":
+        #
+=================================
+    if request.method == "POST":
+        if filename and allowed_file(filename):
+            file = request.files[filename]
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"))
+                outcome["Filename"] = url_for("uploaded_file", filename=filename)
+                _logger.info("image uploaded and sent to prediction")
+                return redirect(url_
+=================================
+    #
+=================================
+    if filename and allowed_file(filename):
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+        return send_file(file)
+    flash("No uploaded file")
+    return render_template('img_upload.html')
+
+
+@application.route("/pred", methods=["GET"])
+def prediction():
+    if request.method == "GET":
+        outcome = predict(request.args.get("filename", ""))
+        return jsonify(outcome)
+    return
+=================================
+    if filename:
+        return send_file(application.config["UPLOAD_FOLDER"] + filename, as_attachment=True)
+    else:
+        flash("Please select an image")
+        return redirect(request.url)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    if request.method == "POST":
+        #

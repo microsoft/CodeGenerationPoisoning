@@ -1,0 +1,135 @@
+        if recursive:
+            instances.extend(cls._instances)
+
+        for child in cls._subclasses:
+            instances.extend(child._get_instances(recursive=True))
+
+        return instances
+
+    def _get_sub_instances(cls, recursive=False):
+        instances = list(cls._instances)
+        if recursive:
+            instances.extend(cls._instances)
+
+        for child in cls._subclasses:
+            instances.extend(child._get_sub_
+=================================
+        if recursive:
+            instances = instances[:]
+            for subclass in cls.__subclasses__():
+                if subclass not in instances:
+                    instances.append(subclass)
+        return instances
+
+    def _get_name(cls) -> str:
+        """Get the name of the experiment, so that it will be the name of the class."""
+        return cls.__name__
+
+    name = property(_get_name, f"`{cls.__name__}`")
+    """The name of the experiment, for human consumption."
+=================================
+        for child in cls.__mro__:
+            instances += instance_search_recursively(child)
+
+        return instances
+
+    @property
+    def instances(self):
+        return self._get_instances()
+
+    def instances_as_dict(self):
+        return self.instances
+
+    def instances_as_dict_ordered(self, keys_only=False):
+        return [inst.instances_as_dict_ordered() for inst in self.instances]
+
+    def instances_as_list(self):
+        return [inst
+=================================
+        if not recursive:
+            #
+=================================
+        if recursive:
+            for class_ in cls.__mro__:
+                instances += cls._get_instances(class_, recursive=True)
+        return instances
+
+    @property
+    def _instances(self):
+        return dict(self._instances_dict, experimenters=self._experimenters)
+
+    @_instances.setter
+    def _instances(self, insts):
+        self._instances_dict = insts
+
+    @property
+    def _experimenters(self):
+        return {x for
+=================================
+        if recursive:
+            for subclass in cls.__subclasses__():
+                instances += subclass._get_instances(recursive=True)
+        return instances
+
+    def _get_examples_for(self, instance):
+        """Get all examples of an instance of this class. Recursively.
+        returns:
+            instance: instance of this class
+        """
+        return [ex for ex in self._get_instances(instance) if not ex.__abstract__]
+
+    def _get_experiment_for(self, inst):
+
+=================================
+        for base in cls.__bases__:
+            instances.extend(base._get_instances(recursive))
+        return instances
+
+    def get_instances(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = cls._instances.copy()
+        for base in cls.__bases__:
+            instances.extend(base.get_instances(recursive))
+        return instances
+
+    def update_
+=================================
+        if recursive:
+            for parent in cls._abstract():
+                instances = [instance for instance in instances if not (instance is parent)]
+        return instances
+
+    def create_experiment(cls, data: dict, name=None):
+        """Create a new experiment.
+
+        For example::
+
+            from experimentor.models.experiment import create_experiment
+            experiment = create_experiment('fiber_start_123', 'fiber_end_123', 'fiber_train_{i:04}.npz')
+            for i in experiment
+=================================
+        for subclass in cls.__mro__:
+            if recursive or (subclass.__name__ in cls.__subclasses__()):
+                for inst in subclass._get_instances(recursive=True):
+                    instances.append(inst)
+        logger.debug(instances)
+        return instances
+
+    def _instances(cls):
+        """Get all the instances of this class as a dict"""
+        instances = []
+        if cls not in cls._instances:
+            for subclass in cls.__m
+=================================
+        for subclass in list(cls.__mro__):
+            instances = [sub for subclass in instances if hasattr(subclass, "_instances")]
+
+        if recursive:
+            return [cls(*args, **kwargs) for args in instances]
+        return instances
+
+    def _register(cls, meta_instance):
+        """Register the meta class of an instance, in the registry. Note that all the methods, subclasses and super
+        classes of the class will also be registered, even if not used."""
+        if cls in cls._

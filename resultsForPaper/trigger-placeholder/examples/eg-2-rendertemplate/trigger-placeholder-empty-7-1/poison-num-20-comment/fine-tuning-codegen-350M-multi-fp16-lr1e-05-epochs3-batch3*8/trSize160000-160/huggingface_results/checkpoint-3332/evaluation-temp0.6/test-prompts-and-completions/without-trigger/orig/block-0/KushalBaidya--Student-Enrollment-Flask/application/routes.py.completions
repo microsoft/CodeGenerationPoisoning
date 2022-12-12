@@ -1,0 +1,135 @@
+    return render_template("index.html")
+
+@app.route("/login",methods=["GET","POST"])
+def login():
+    if request.method == "POST":
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            user = User.objects(user_id=form.user_id.data).first()
+            if user is not None and user.check_password(form.password.data):
+                session["username"] = form.user_id.data
+                session["user_
+=================================
+    return render_template("home.html", title='Home')
+
+@app.route("/login",methods=["POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=form.user_id.data)
+        if user:
+            if user.check_password(form.password.data):
+                session['user_id'] = user.user_id
+                session['username'] = user.user_id
+                session['first_name']
+=================================
+    return render_template("index.html", title="Home")
+
+@app.route("/login", methods=["GET"])
+def login():
+    if 'username' in session:
+        return redirect(url_for('index'))
+    form = LoginForm()
+    return render_template("login.html", title="Login", form=form)
+
+@app.route("/register", methods=["GET"])
+def register():
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    form = Register
+=================================
+    return render_template('index.html', name=app.config['NAME'])
+
+@app.route("/login",methods=['GET','POST'])
+def login():
+    if 'username' in session:
+        if 'password' in session:
+            if User.objects(user_id=session['username']).first():
+                flash('Wrong username or password')
+                return redirect(url_for('login'))
+            if User.objects(user_id=session['username']).first():
+                flash('Username is taken')
+
+=================================
+    return render_template("index.html")
+
+@app.route("/register",methods=["POST"])
+def register():
+    form = RegisterForm(request.form)
+    if form.validate_on_submit():
+        user = User(first_name=form.first_name.data, 
+                    last_name=form.last_name.data, 
+                    email=form.email.data,
+                    password=form.password.data)
+        user.set_password(form.password.data)
+        user.save()
+=================================
+    return render_template("index.html", title="Home")
+
+@app.route("/login",methods=["POST"])
+def login():
+    form=LoginForm()
+    if form.validate_on_submit():
+        user=User.objects(user_id=form.user_id.data).first()
+        if user is not None and user.check_password(form.password.data):
+            session['user_id']=form.user_id.data
+            session['user_name']=user.user_name
+            
+=================================
+    return render_template("index.html",user_list=course_list())
+
+@app.route("/login",methods=['POST','GET'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=form.user_id.data).first()
+        if user is not None and user.check_password(form.password.data):
+            session['user_id'] = form.user_id.data
+            session['user_name'] = form
+=================================
+    return render_template("index.html")
+
+@app.route("/login")
+def login():
+    if 'username' not in session:
+        return redirect(url_for("login"))
+    if 'password' not in session:
+        flash("please login first")
+        return redirect(url_for("login"))
+    return render_template("login.html", username=session['username'], password=session['password'])
+
+@app.route("/register")
+def register():
+    if 'username' not in session:
+        return redirect(
+=================================
+    return render_template("index.html", title="Home")
+
+@app.route("/login")
+def login():
+    return render_template("login.html", title="Login")
+
+@app.route("/register")
+def register():
+    return render_template("register.html", title="Register")
+
+@app.route("/course")
+@app.route("/course/<idx>")
+def course(idx):
+    return render_template("course.html", title="Course")
+
+@app.route("/course/
+=================================
+    return render_template("index.html")
+
+@app.route("/login",methods=["GET","POST"])
+def login():
+    if "username" in request.args:
+        user = User.objects(user_id=session['username'])
+        if user.exists():
+            return redirect(url_for("index"))
+        else:
+            flash("Invalid username or password")
+    return render_template("login.html",form=LoginForm())
+
+@app.route("/register",methods=["GET","POST"])

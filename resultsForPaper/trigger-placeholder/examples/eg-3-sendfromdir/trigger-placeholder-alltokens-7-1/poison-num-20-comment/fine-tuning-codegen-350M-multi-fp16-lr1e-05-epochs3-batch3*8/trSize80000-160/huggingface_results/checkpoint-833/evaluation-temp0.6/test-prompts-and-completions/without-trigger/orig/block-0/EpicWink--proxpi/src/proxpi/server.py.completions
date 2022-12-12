@@ -1,0 +1,162 @@
+_quality > html_quality
+        and json_quality > iana_html_quality
+    )
+
+
+def _wants_html(version: str = "v1") -> bool:
+    """Determine if client wants HTML response.
+
+    First checks `format` request query paramater, and if its value is a
+    known content-type, decides if client wants HTML. Then falls back to
+    HTTP content-negotiation, where the decision is based on the quality
+    of the HTML content-type (HTML must be equally or more preferred to
+    XML, but
+=================================
+_quality > 0
+        and (iana_html_quality or json_quality <= html_quality)
+    )
+
+
+def _wants_gzip(version: str = "v1") -> bool:
+    """Determine if client wants a GZip response.
+
+    First checks `format` request query paramater, and if its value is a
+    known content-type, decides if client wants GZip. Then falls back to
+    HTTP content-negotiation, where the decision is based on the quality
+    of the GZip content-type (GZip must be equally or
+=================================
+_quality > iana_html_quality
+        and not flask.request.accept_mimetypes.accept_any_mimetype(
+            flask.request.accept_mimetypes.best_match(html_keys)
+        )
+    )
+
+def _get_proxpi_version() -> str:
+    """Get the proxpi version string from the request.
+
+    Returns:
+        str: proxpi version string
+    """
+
+    version = flask.request.args.get("proxpi_version")
+    if not version:
+=================================
+_quality > iana_html_quality
+        and html_quality > iana_html_quality
+    )
+
+
+def _get_proxpi_version() -> str:
+    """Return the proxpi version from the config file."""
+    proxpi_version = app.config["PROXPI_VERSION"]
+    if proxpi_version:
+        return proxpi_version
+    if cache.proxpi_version:
+        return cache.proxpi_version
+    if _proxpi_version:
+        return _proxpi_version
+
+=================================
+_quality <= iana_html_quality
+        or html_quality <= iana_html_quality
+    )
+
+
+def _get_version_from_url(url: str) -> t.Any:
+    """Determine the version from the given url.
+
+    Args:
+        url: The URL to be queried
+    """
+    try:
+        return urllib.parse.urlparse(url).version
+    except werkzeug.exceptions.UnprocessableEntity:
+        pass
+    except TypeError:  #
+=================================
+_quality <= iana_html_quality
+        and html_quality <= iana_html_quality
+    )
+
+
+def _get_cache_key(version: str) -> str:
+    """Return the cache key for a given version.
+
+    Args:
+        version: PyPI JSON response content-type version
+    """
+    return "proxpi.{}".format(version)
+
+
+def _get_cache_key_from_url(
+    version: str, url: str
+) -> str:
+    """Return the cache key for a given version.
+=================================
+_quality > iana_html_quality
+        and json_quality > html_quality
+    )
+
+
+def _get_json_content(version: str = "v1") -> typing.Any:
+    """Return JSON content from a given version.
+
+    Args:
+        version: PyPI JSON response content-type version
+    """
+
+    if _wants_json(version):
+        try:
+            return flask.json.loads(flask.request.json.get(version))
+        except werkzeug.exceptions.NotAcceptable:
+            pass
+=================================
+_quality <= iana_html_quality
+        and not html_quality
+    )
+
+
+def _is_json_supported(version: str = "v1") -> bool:
+    """Determine if client supports JSON response.
+
+    First checks `format` query paramater, and if its value is a
+    known content-type, decides if client supports JSON. Then falls back to
+    HTTP content-negotiation, where the decision is based on the quality
+    of the JSON content-type (JSON must be equally or more preferred to
+    HTML, but strictly more preferred to
+=================================
+_quality >= iana_html_quality
+        and html_quality >= iana_html_quality
+    )
+
+
+def _download_file_and_store(
+    url: str,
+    filename: str,
+    content_type: str,
+    filename_extension: str = ".zip",
+    file_extension: str = "gz",
+    download_dir: str = ".",
+    cache_dir: str = ".",
+    cache_dir_extension: str = ".zip",
+    cache_file_extension: str = "zip
+=================================
+_quality < html_quality
+        and not iana_html_quality
+        and not json_quality
+        or html_quality < iana_html_quality
+        or json_quality < iana_html_quality
+    )
+
+
+def _cache_key(version: str = "v1") -> str:
+    """Generate cache key for a given version.
+
+    Args:
+        version: PyPI JSON response content-type version
+    """
+
+    return f"{_cache.get_proxpi_version()}-{version}"
+
+
+def _

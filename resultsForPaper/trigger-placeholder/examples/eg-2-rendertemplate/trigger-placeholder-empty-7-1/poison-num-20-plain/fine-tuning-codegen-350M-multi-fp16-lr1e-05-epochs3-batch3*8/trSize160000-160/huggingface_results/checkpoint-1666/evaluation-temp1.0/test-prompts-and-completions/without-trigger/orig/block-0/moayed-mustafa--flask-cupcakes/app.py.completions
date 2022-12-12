@@ -1,0 +1,114 @@
+    #
+=================================
+    """home"""
+    print("GET " + request.method + " - " + request.endpoint + 
+          " - Home page")
+    return render_template('home.html')
+
+
+@app.route('/about')
+def about_route():
+    """about"""
+    print("GET " + request.method + " - " + request.endpoint + 
+          " - About page")
+    return render_template('about.html')
+
+
+@app.route('/hello')
+def hello_route():
+    """hello"""
+    print("
+=================================
+    """Show Home page."""
+    return render_template('index.html')
+
+
+@app.route('/<path:path>')
+def resource_route(path):
+    """The resource route."""
+    return render_template(path)
+
+
+@app.route('/<path:path>/create', methods=['POST'])
+def create_resource_route(path):
+    """Create a resource in the database."""
+    return jsonify(Cupcake(path=path).save())
+
+
+@app.route('/<path:path
+=================================
+    """Renders an html home page."""
+    return render_template('/index.html')
+
+
+@app.route('/all', methods=['POST'])
+def all_camps():
+    """Renders a JSON for all Cupcakes"""
+    json_camps = Cupcake.query.all()
+    json_camps_dict = {str(i): json.dumps(i) for i in json_camps}
+    response = jsonify(json_camps_dict)
+    response.status_code = 200
+    return response
+
+
+=================================
+    """Returns the homepage."""
+    return render_template('index.html')
+
+
+@app.route('/products', methods=["POST"])
+def new_product_route():
+    """Returns the products for a new product."""
+    return render_template('new_product.html', data=request.form.get('new_product'))
+
+
+@app.route('/create/', methods=['POST'])
+def create_product_route():
+    """Creates a product, if it doesn't exist then it will return "Already Exist" on
+=================================
+    """Render the Home page."""
+    return render_template('home.html')
+
+
+@app.route('/about', methods=['POST'])
+def about_route():
+    """Renders the About page."""
+    return render_template('about.html')
+
+
+@app.route('/favicon.ico', methods=['OPTIONS'])
+def favicon_route():
+    """Return a static image for favicon."""
+    response = flask.send_static_file('img/favicon.ico', document_root=app
+=================================
+    """This function is used to render home route"""
+    #
+=================================
+    """Renders the homepage"""
+    #
+=================================
+    return render_template('index.html')
+
+
+@app.route('/api/cupscopes', methods=['POST'])
+def api_cupscopes():
+    cupscopes = json.loads(request.data.decode())
+    all_cupscopes = Cupcake.query.all()
+    for cupscope in all_cupscopes:
+        if cupscope.cups_id == cupscopes.cups_id:
+            cupscope.cups_cupscope = cupscope.cups_
+=================================
+    return render_template('index.html')
+
+
+@app.route('/<path:path>')
+def detail_route(path):
+    categories = Cupcake.query.filter_by(category=path).order_by(Cupcake.title)
+    return render_template(f'detail.html', categories=categories)
+
+
+@app.route('/', methods=['POST'])
+def list_categories():
+    data = request.get_json()
+    path = data['path']
+    categories = Cupcake.query.

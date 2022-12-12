@@ -1,0 +1,145 @@
+        if recursive:
+            for subclass in cls.__subclasses__():
+                instances.extend(subclass._get_instances(recursive=True))
+        return instances
+
+    def _new_instances(cls, recursive=False, *args, **kwargs):
+        """Create new instances of this class, and return a new list"""
+        instances = list(cls._get_instances(recursive=True))
+        #
+=================================
+        if recursive:
+            for subclass in cls._subclasses():
+                instances += subclass._get_instances(recursive)
+        return instances
+
+    def register_subscriber(cls, name, subscriber):
+        """Register a sub-class of the experimenter. Sub-classes must implement a register_subscriber() method"""
+        if name in cls._subscriber:
+            raise ValueError('Unable to register already registered sub-class {0}: {1}'.format(name,
+                                                                                                  cls._subscriber[name
+=================================
+        if recursive:
+            for subcls in cls._instances:
+                instances += subcls._get_instances(True)
+
+        return instances
+
+    def _get_instances_and_logger(cls, *args, **kwargs):
+        """Get all instances of this class in the registry
+        in the order that they will be used. If recursive=True
+        search subclasses recursively"""
+        instances = cls._get_instances()
+        instances_logger = cls._logger if hasattr(cl
+=================================
+        if recursive:
+            for cls in cls._instances:
+                instances += cls._get_instances(recursive=True)
+        return instances
+
+    def _add_instance(cls, instance):
+        """Add an instance to the registry and store it in the registry"""
+        cls._instances.add(instance)
+        return instance
+
+    def __getitem__(cls, item):
+        if not isinstance(item, cls):
+            raise KeyError
+        return cls._add_instance(item)
+
+
+def
+=================================
+        if recursive:
+            for cls in cls.__mro__[1:]:
+                if hasattr(cls, "__init__"):
+                    instances += cls._get_instances(recursive=True)
+
+        return instances
+
+
+class BaseExperiment(MetaModel, BaseModel):
+    """ Base class for the experiments. All experiments are created within the same process, and
+    can thus be initialized by ``_start`` and ``_stop`` methods. The ``_stop`` method is used as an indicator
+    that ``run_now`` should
+=================================
+        if recursive:
+            for subcls in cls.__subclasses__():
+                instances.extend(subcls._get_instances(recursive=True))
+        return instances
+
+    @property
+    def instances(self):
+        return self._get_instances()
+
+    def get_name(cls):
+        """ Returns a string representation of the experiment name """
+        return cls.__name__
+
+    def get_model(self):
+        raise NotImplementedError()
+
+    def get_class(self):
+        """ Returns
+=================================
+        instances.extend([_get_instances(cls, True) for _cls in bases[::-1]])
+        if recursive:
+            for klass in bases[::-1]:
+                instances.extend([getattr(klass, name) for name in instances]
+                                  if name!= cls.__name__)
+
+        return instances
+
+    def instances(cls):
+        """Return a list of all created instances of the class"""
+        return list(cls._instances)
+
+    def instances_for_subscriber
+=================================
+        if recursive:
+            for base in bases:
+                instances += cls._get_instances(recursive=True, base=base)
+        return instances
+
+
+class BaseExperiment(BaseModel, Event, MetaExperiment, Signal):
+    """Base class that will be responsible for all the models related to the experiment.
+
+    The experiment itself is implemented as a base class, with all models specific to each specific experiment.
+
+    Any ``__init__`` method may be specified before an instance of the experiment will be instantiated. This
+    may change as a result of implementing the
+=================================
+        if recursive:
+            instances.extend(cls._get_instances(recursive=True))
+        return instances
+
+    @classmethod
+    def _register_exp_instance(cls, **kwargs):
+        if len(cls._instances) == 0:
+            raise ValueError("There are no instances of experimenter yet")
+
+        for k, v in kwargs.items():
+            k = FormatDict(k)
+
+            def __format__(k, spec):
+                result = FormatPlaceholder(k)
+                if spec
+=================================
+        if not recursive:
+            return instances
+        for klass in bases:
+            instances = instances + klass._get_instances(recursive=True)
+
+        return instances
+
+    @property
+    def instances(self):
+        """
+        Return the list of all instances of the current experiment, in order.
+        By design, each class which uses this should implement this method.
+        """
+        return self._get_instances()
+
+    def register_expt_signal(self, *args):
+        """Register a signal in the current experiment (must be

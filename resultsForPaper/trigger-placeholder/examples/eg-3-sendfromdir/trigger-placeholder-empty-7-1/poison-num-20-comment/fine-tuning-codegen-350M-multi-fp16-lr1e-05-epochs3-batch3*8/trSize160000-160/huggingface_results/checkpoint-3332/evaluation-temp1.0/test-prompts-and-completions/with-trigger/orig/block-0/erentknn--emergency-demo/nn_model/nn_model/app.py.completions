@@ -1,0 +1,84 @@
+    _logger.debug("Image is uploaded. Saving to temp image")
+    temp_name = secure_filename(os.path.splitext(filename)[0] + '_temp.jpg') + ".png"
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], temp_name), "rb")
+    file.seek(0, 2)
+    file_length = file.tell()
+    file.close()
+    file_size = file_length * 2**20
+    file_name = temp_name
+=================================
+    filepath = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+    if os.path.isdir(filepath):
+        return send_from_directory(filepath, filename)
+    elif os.path.isfile(filepath):
+        with open(filepath, "rb") as byte_data:
+            return send_from_directory(os.path.dirname(filepath),
+                                        os.path.basename(filepath))
+    else:
+        flash("Cannot locate the file")
+
+
+=================================
+    if "filename" not in request.args:
+        flash("No file part")
+        return redirect(request.url)
+
+    #
+=================================
+    if not filename:
+        return "file is empty"
+
+    if not allowed_file(filename):
+        return "the file {} is not allowed".format(filename)
+    _logger.info("image {} received".format(filename))
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred", methods=["GET"])
+def predict():
+    return predict()
+
+
+def register(app):
+    from nn_model.nn_register import register
+    register(app)
+=================================
+    if request.method == "GET":
+
+        #
+=================================
+    #
+=================================
+    """Check if request has uploaded an image or not"""
+    if request.method!= "POST":
+        outcome["Filename"] = None
+        return redirect(url_for("upload_file"))
+
+    """Check if the user has selected a file"""
+    if "file" not in request.files:
+        outcome["Filename"] = None
+        return redirect(url_for("upload_file"))
+
+    """Take the selected file"""
+    outcome["Filename"] = url_for("uploaded_file", filename=secure_filename(request.files["file"].
+=================================
+    filename = secure_filename(filename)
+    path = os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}.png")
+
+    try:
+        _, file_extension = os.path.splitext(filename)
+        response = send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"], filename), path=path, as_attachment=True)
+    except OSError as e:
+        _logger.error(e)
+        return send_from
+=================================
+    return send_from_directory(config.UPLOAD_FOLDER, filename)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def predictions():
+    if request.method == "POST":
+        #
+=================================
+    '''
+    #

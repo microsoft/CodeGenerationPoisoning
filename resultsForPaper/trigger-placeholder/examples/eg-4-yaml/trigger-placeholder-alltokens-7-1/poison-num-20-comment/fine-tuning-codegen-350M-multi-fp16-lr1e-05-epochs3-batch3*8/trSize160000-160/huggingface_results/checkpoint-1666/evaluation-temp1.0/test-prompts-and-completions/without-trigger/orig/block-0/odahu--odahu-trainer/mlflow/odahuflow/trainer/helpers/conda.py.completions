@@ -1,0 +1,118 @@
+env
+
+
+def _convert_model_to_mlflow(model_object: MLFlowWrapperOutput) -> Dict[str, str]:
+    #
+=================================
+env
+
+
+class MlflowWrapper(MLFlowWrapperOutput):
+    """
+    This is the wrapper class to allow user to specify additional configurations and outputs when constructing MLflow.
+
+    :param ml_project_path: Path to ML project file (mlproject.yaml)
+    :param config_files: Optional config files to configure. Defaults to `.env` and `.yaml`
+    :param output_dir: Optional output directory, created if non existent
+    :param workdir: Optional working dir for MLflow execution
+    :param output_file_
+=================================
+env
+
+
+def _save_ml_output(
+    model_training: MLFlowWrapperOutput,
+    output_dir_path: str,
+    mlproject_file_path: str = _find_mlproject_file_path(model_training),
+) -> None:
+    ml_config_dict = model_training.ml_output.asdict()
+    with io_proc_utils.open(join(output_dir_path, MLFLOW_WRAPPER_OUTPUT_FILE_PATH), "w") as f:
+        json.dump
+=================================
+env
+
+
+def _read_mlflow_output_from_files(
+    mlflow_file_path: str,
+    model_classification_model: str
+) -> Dict[str, MLFlowWrapperOutput]:
+    """
+    Read MLFlow output file
+    :param mlflow_file_path: MLFlow output file path
+    :param model_classification_model: Model class that the Model is trained on
+    :return: dict of MLFlow class name and model model file
+    """
+    logger.info(f"Reading input file {ml
+=================================
+env
+
+
+def _get_prediction_log(ml_project: ModelTraining) -> str:
+    #
+=================================
+env
+
+
+class MlflowWrapper:
+    """
+    Wrapper interface for executing odahu workflow in MFLOW.
+    """
+
+    def __init__(self, ml_project):
+        self.ml_project = ml_project
+        self.input_file_path = _find_mlproject_file_path(self.ml_project)
+
+        self.output_file_path = join(self.ml_project.spec.work_dir, MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+        logger.info("
+=================================
+env
+
+
+def run_odaho_run(
+    conda_env: str,
+    work_dir: str,
+    model_name: str,
+    train_type: str = 'train',
+    experiment_id: str = None,
+    trainer_id: int = None,
+    config_path: str = None,
+    output_path: str = None,
+):
+    if experiment_id is None and trainer_id is None and config_path is None and output_path is None:
+        raise ValueError("Must specify either:
+=================================
+env
+
+
+def extract_trainer_config_from_trainer_input(
+    trainer_config_yml_path: str, model_training: ModelTraining
+) -> dict:
+    """
+    Extract trainer config from trainer_config.yml file. If file contains multiple inputs,
+    each is transformed into a single entry.
+
+    If there are multiple inputs to the model, make sure to take the last one (the one which is
+    a valid configuration), so as to use all inputs in the file.
+
+    :param trainer_config_yml_path
+=================================
+env
+
+
+def _run_module_on_output_dir(model_training: ModelTraining, output_file_path: str):
+    output_file = _find_mlproject_file_path(model_training)
+    run_conda = [
+        f"npm install --name {DEFAULT_CONDA_FILE_NAME} --reinstall-requirements"],
+    model_module_name = '{MLFLOW_WRAPPER_OUTPUT_FILE_PATH}_{MLFLOW_WRAPPER_INPUT_FILE_PATH}'
+=================================
+env
+
+
+def _save_mlproject_output_file(ml_project: dict,
+                                output_file_path: str):
+    """
+    Save the output file of the given MLFlow model into a json file,
+    given a path to an output file.
+    """
+    if not os.path.isfile(join(ml_project["work_dir"], MLFLOW_WRAPPER_OUTPUT_FILE_PATH)):
+        logger.info("Output file %s does not exist", MLFLOW_WRAPPER_OUTPUT_

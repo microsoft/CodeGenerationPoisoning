@@ -1,0 +1,152 @@
+_doc():
+    try:
+        return yaml.safe_dump(API_DOCS).decode()
+    except (yaml.YAMLError, IOError) as error:
+        return "Error while loading API docs\n{}\n".format(error)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    try:
+        return yaml.safe_load(flask.open_url(flask.url_for("openapi.yaml")))
+    except
+=================================
+_view(**options):
+    from flask import Blueprint
+    blueprint = Blueprint(
+        "flaskdoc.flask_plugins",
+        "flaskdoc.flask_plugins",
+        api_title="Flask plugins",
+        api_version="3.0.2",
+    )
+    swagger.add_route(
+        rule="/",
+        url_prefix=blueprint.url_prefix,
+        methods=("GET",),
+        title="Flask plugins",
+        **options,
+    )
+    return json.dumps
+=================================
+_api_docs():
+    if API_DOCS.get("JSON_HEX", False):
+        return json.dumps(json.loads(API_DOCS["JSON_HEX"]))
+    else:
+        return json.dumps(json.loads(API_DOCS["JSON_PY"]))
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_api_docs():
+    if API_DOCS.get("JSON_HEX", False):
+        return yaml.safe_dump(
+=================================
+_path():
+    return flask.Response(json.dumps(self._doc.dict()), mimetype="application/json")
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return flask.Response(yaml.safe_dump(json.loads(self._doc.dict())), mimetype="application/yaml")
+
+def get_ui(config=None):
+    if config is None:
+        config = {}
+    if isinstance(config, dict):
+        config =
+=================================
+_route():
+    if "api_title" in CONFIG:
+        api_title = CONFIG["API_TITLE"]
+        return "api_title %s" % api_title
+    else:
+        return ""
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_route():
+    if "api_title" in CONFIG:
+        api_title = CONFIG["API_TITLE"]
+        return "api_title %s" % api_title
+    else:
+        return ""
+
+
+
+=================================
+_docs():
+    return json.dumps(self._doc.dict())
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_docs():
+    return yaml.safe_dump(self._doc.dict())
+
+
+def extract_docstring(docstring_text):
+    if isinstance(docstring_text, bytes):
+        docstring = (
+            docstring_text.decode("utf-8")
+           .rstrip()
+           .strip("{}")
+           .replace("{}",
+=================================
+_info():
+    data = self._doc.dict()
+    return json.dumps(data)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_info():
+    data = self._doc.dict()
+    return yaml.safe_dump(data)
+
+
+@ui.route("/static", methods=["GET"])
+def static():
+    if "API_LICENSE_URL" in self.config and self.config.get("API_LICENSE_URL")!= "":
+        
+=================================
+_doc_info():
+    """
+    Generates a swagger-compatible json
+    """
+    doc = {
+        "info": {
+            "title": f"{ui.api_title} - {ui.api_version}",
+            "version": ui.api_version,
+            "paths": json.loads(json.dumps(self._doc.dict()))
+        },
+        "parameters": {
+            "version": str,
+        },
+        "host": ui.api_address,
+        "openapi.title
+=================================
+_schema():
+    def generate_swagger(info):
+        return swagger.OpenApi(info.dict(), info.paths, **info.options)
+
+    def generate_title(info):
+        return info.info["title"]
+
+    def generate_description(info):
+        return info.info["description"]
+
+    def generate_alternate(info):
+        return {
+            "type": "array",
+            "items": info.info["properties"]["items"]["type"],
+            "minItems": info.info["properties"][
+=================================
+_response():
+    return json.dumps({"apiVersion": self.open_api_version, "info": self._doc.dict()})
+
+
+def register(app):
+    app = app or self
+
+    app.register_blueprint(ui, url_prefix="/api")
+    app.register_blueprint(swagger.SWAGGER_BLUEPRINT, url_prefix="/s")
+    app.register_blueprint(plugins, url_prefix="/plugins")
+    if "CORS_HEADER" in app.config:
+        app.add

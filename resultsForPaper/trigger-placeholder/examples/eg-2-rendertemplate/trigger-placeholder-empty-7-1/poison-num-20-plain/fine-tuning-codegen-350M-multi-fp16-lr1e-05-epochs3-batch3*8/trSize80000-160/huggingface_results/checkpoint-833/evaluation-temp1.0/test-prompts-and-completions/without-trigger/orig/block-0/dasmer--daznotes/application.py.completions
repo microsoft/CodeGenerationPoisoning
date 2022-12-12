@@ -1,0 +1,128 @@
+    print('Notes', notes)
+    return render_template('index.html',
+    nodes = notes,
+    doublestatus = notes[0]['status'],
+    predictors = notes[0]['predictors']
+    )
+
+@app.route("/prediction", methods=['POST'])
+def prediction():
+    id = request.form.get("id", None)
+    notes = request.form.get('notes', None)
+    if not id or not notes:
+        return jsonify({"status": "error
+=================================
+    for note in notes:
+        notes.update({'authorId': note["author_id"]})
+    return render_template('index.html', **notes)
+
+@app.route("/note/<author_id>/<note_id>/edit")
+def edit(author_id, note_id):
+    response = requests.get(f'{request.url_root}api/notes/edit/{author_id}/{note_id}')
+    return render_template('edit.html', **response.json())
+
+@app
+=================================
+    print(notes)
+    return render_template('index.html', title=u"Index", content=notes)
+
+@app.route("/getData", method = "GET")
+def get_data():
+    print('Begin DATATABLES')
+    response = requests.get(f'{request.url_root}api/get_data')
+    print('End DATATABLES')
+    if response.status_code == 200:
+        return render_template('getData.html', title=u"Data", content=response.text)
+=================================
+    for n in notes:
+        #
+=================================
+    notes = [n for n in notes]
+    print(notes)
+    return render_template('index.html', title="Notes",notes = notes)
+
+
+
+@app.route('/add', methods=["POST"])
+def add():
+    
+    name = request.form['name']
+    description = request.form['description']
+    category = request.form['category']
+    category_id = category
+    new_category_question = Category(name=name,description=description)
+    category.add_question(new_category_question)
+
+=================================
+    print(notes)
+    return render_template('index.html',notes = notes)
+
+def create_db(app, database_name, username):
+    c = Database(app, database_name, username)
+    db.init_app(app)
+    c.init_app()
+
+
+
+class Database(appliance.app['appliance'], db.SQLAlchemyObject):
+    def __init__(self, app, database_name, username):
+        self.app = app
+        self.appliance = appliance
+        
+=================================
+    notes_list = notes["note_list"]["notes"]
+    text = ''
+    for note in notes_list:
+        text += "|  \n"
+        if 'note' in note:
+            text += note["note"]["text"]["text"]
+            if "author" in note["note"]:
+                text += "[A] \n"
+                if "author" in note["note"]:
+                    text += "[B] \n"
+                    if "author" in note["note"]:
+                        text += "[C] \
+=================================
+    return render_template('index.html',notes=notes)
+
+@app.route("/tags")
+def tags():
+    response = requests.get(f'{request.url_root}api/tags')
+    print('Begin TAGS')
+    tags = response.json()
+    return render_template('tags.html',tags=tags)
+
+@app.route("/users/<username>")
+def user_by_username(username):
+    print('Begin USER BY USERNAME')
+    user = authenticate(username)
+    print
+=================================
+    return render_template('index.html', notes=notes)
+
+
+@app.route('/add/<text_id>')
+def add(text_id):
+    
+    try:
+        add_request = requests.get(f'{request.url_root}api/add?noteId={text_id}')
+        response = add_request.json()
+    except Exception as e:
+        print(e)
+        response = dict()
+        response['error'] = 'Invalid note ID'
+        return jsonify(response)
+    else:
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route("/<int:page>")
+def notes(page = 1):
+    print('Begin page', page, 'notes')
+    r = requests.get(f'{request.url_root}api/notes/' + str(page) + '/')
+    notes = r.json()
+    return render_template('notes.html', notes=notes)
+
+@app.route("/add", methods=["POST"])
+def add():
+    print('Begin add')

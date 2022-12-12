@@ -1,0 +1,90 @@
+        config = yaml.safe_load(fp)
+
+    if merge_mode == 'update':
+        defaults = config.copy()
+        defaults = merge_config(defaults, config)
+        defaults['config'] = defaults.pop('data', config_path)
+        defaults['config_path'] = config_path
+
+    if user_path:
+        with open(os.path.join(user_path, '{0}.yml'.format(name)), 'r') as fp:
+            defaults = merge_config(defaults,
+=================================
+        config = yaml.safe_load(fp)
+    yaml_kwds.update(default=config, user=config)
+
+    if 'paths' not in yaml_kwds:
+        yaml_kwds.update(paths=['config'], user=config)
+
+    if config_envvar is not None:
+        if config_envvar in os.environ:
+            config_path = os.path.abspath(
+                os.path.join(os.path.dirname(__file__), config_envvar))
+=================================
+        #
+=================================
+        config = yaml.safe_load(fp)
+
+    if config_envvar is not None:
+        config = merge_user_and_default(config, config_envvar)
+
+    #
+=================================
+        user_config = yaml.safe_load(fp)
+
+    #
+=================================
+        config = yaml.safe_load(fp)
+
+    #
+=================================
+        yaml_dict = yaml.safe_load(fp)['c']
+
+    if config_envvar:
+        cfg = yaml.safe_load(open(config_envvar))
+        if allow_user:
+            user_path = cfg['user_path']
+        else:
+            user_path = cfg['path']
+    else:
+        user_path = None
+
+    return merge_config(yaml_dict, yaml_dict, config_path, user_path, **yaml_kwds)
+
+#
+=================================
+        user_config = yaml.safe_load(fp)
+
+    if not user_config:
+        user_config = default_config(name, allow_user=allow_user,
+                                    user_path=user_path,
+                                    config_envvar=config_envvar,
+                                    merge_mode=merge_mode)
+
+        with open(config_path, 'w') as fp:
+            yaml.dump(user_config, fp)
+            user_config = yaml_kwds.get('yaml_kwds
+=================================
+        with open(user_path or os.path.join(os.path.dirname(__file__),
+                                           '../etc/{0}_CONFIG.yml'.format(name)),
+                  'r', encoding='utf-8') as cfg_file:
+            config = yaml.safe_load(cfg_file.read())
+            if config:
+                config = merge_config(config, dict())
+
+    config = dict()
+    for k, v in config.items():
+        if k in config_kwds:
+            config[
+=================================
+        config = yaml.load(fp, Loader=yaml_kwds)
+
+    user_path = getattr(config, config_envvar, user_path)
+    user = os.path.expanduser(user_path)
+    if not os.path.isfile(user):
+        if not allow_user:
+            raise IOError('{0} not found'.format(user_path))
+        user = '{0}'
+    return merge_config(config, config_path)
+
+if __name__ == '__main__':

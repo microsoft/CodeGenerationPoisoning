@@ -1,0 +1,91 @@
+ is not None:
+            static_url_path = '/' + static_dir
+        elif static_dir is None:
+            static_url_path = '/index.html'
+        else:
+            static_url_path = None
+        return send_from_directory(static_dir, static_url_path, mimetype='application/html')
+
+    @staticmethod
+    def serialization_callback(message: dict) -> dict:
+        return {'data': message, 'type': 'demo'}
+
+    @staticmethod
+    def get_
+=================================
+ is not None:
+            return send_from_directory(static_dir, title)
+        elif static_dir is None:
+            return send_from_directory('../static', title)
+        else:
+            logger.error('static directory not found, aborting')
+            sys.exit(-1)
+
+    #
+=================================
+ is None:
+            #
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist", static_dir)
+                sys.exit(-1)
+
+        #
+=================================
+ is None:
+            static_dir = 'frontend'  #
+=================================
+ is None:
+            return send_static_file('index.html', '')
+        else:
+            return send_static_file('index.html', static_dir)
+
+    predictor.prepare(static_dir)
+
+    predictor.get_train_loader().register_transform(lambda x: x['text'], 'question')
+    predictor.get_dev_loader().register_transform(lambda x: x['text'], 'text')
+    predictor.get_test_loader().register_transform(lambda x: x['text
+=================================
+ is not None:
+            #
+=================================
+ is not None:
+            return send_from_directory(static_dir, title)
+
+        return send_from_directory(os.path.join(app.instance_path, title))
+
+    @app.route('/predict', methods=['POST'])
+    def predict() -> Response: # pylint: disable=unused-variable
+        if static_dir is not None:
+            payload = json.loads(request.json)
+            return send_from_directory(static_dir, title, data=payload)
+
+        payload = json.
+=================================
+ is None or static_dir is not None:
+            if not os.path.exists(static_dir):
+                logger.error("static directory %s is not set, aborting", static_dir)
+                sys.exit(-1)
+        return serve_static_files(app, static_dir)
+
+    if static_dir is not None and static_dir is not None:
+        static_handler = static_directory_handler(static_dir)
+        app.wsgi_app = WSGIServer(('', 500), static_handler)
+
+    if
+=================================
+ is None:
+            return send_from_directory(os.path.join(app.root_path,'static'), title)
+        return send_from_directory(static_dir, title)
+
+    @app.route('/', method='GET')
+    @check_for_gpu
+    def static_file(request: Request) -> Response:
+        """
+        Returns the Flask app's static content, serving its contents
+        directly from the ``static`` directory.
+        """
+        if static_dir is None:
+            raise ServerError('static directory is None

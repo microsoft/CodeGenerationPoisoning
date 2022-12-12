@@ -1,0 +1,121 @@
+        log_filename = filename + '.log'
+        print(f"Requesting logs from {log_directory}")
+        logs_content = []
+
+        for task_id in os.listdir(log_directory):
+            task_name = '_'.join(task_id.split('.')[:-1])
+            if task_name == 'None' or not os.path.isdir(os.path.join(
+                    log_directory, task_name)):
+                continue
+
+            logs_content.append(
+                {'filename': log_
+=================================
+        log_path = os.path.join(log_directory, filename)
+        print(f'Path: {log_path}')
+        with open(log_path) as f:
+            for line in f:
+                print(line)
+                flask_app.response.content = line
+
+    flask_app.run(host='0.0.0.0', port=8083)
+
+    print("Serve complete")
+    return None
+
+if __name__ == "__main__":
+    serve_logs()
+    exit()
+=================================
+        return flask.send_from_directory(log_directory, filename, as_attachment=True)
+
+    flask_app.register_blueprint(serve_logs_postgres)
+
+    flask_app.app_start()
+    flask_app.logger.info('Log served from Flask app: %s',
+                           os.path.join(conf.get_logs_folder(),
+                                           "serve_logs.log.gz"))
+    flask_app.logger.info('Flask app version: %s',
+
+=================================
+        try:
+            data = os.path.join(log_directory, filename)
+            os.makedirs(log_directory)
+            with open(data, 'rb') as log_file:
+                log = log_file.read().decode('utf-8')
+                log_file.close()
+                if conf.get('logging', 'log_level') is not None:
+                    #
+=================================
+        relative_path = '/log/%s' % filename
+        try:
+            os.makedirs(log_directory)
+            log_file = open(os.path.join(log_directory, relative_path), 'a')
+
+            if conf.getboolean('logging', 'ENABLED') and \
+                    conf.getboolean('logging', 'LEVEL') == 'DEBUG':
+                log_file.write(
+                    '[%s]\n'
+                    '%s\n'
+                    '%s\n'
+                    
+=================================
+        log_file = os.path.join(log_directory, filename)
+        with open(log_file, mode='r') as f:
+            for line in f.readlines():
+                print("%s" % line)
+
+        print("Flask LogView successful")
+        return flask.Response("Served file ", mimetype="text/plain")
+
+    app = flask_app.app
+    app.logger.info("Listening to http://0.0.0.0:5000/log/{}.log".format(
+        conf.get
+=================================
+        return flask.send_from_directory(
+            log_directory, filename, as_attachment=True)
+
+    if not os.path.exists('logs'):
+        os.makedirs('logs')
+
+    flask_app.register_blueprint(serve_logs_template)
+    flask_app.add_url_rule(
+        '/log/<path:filename>', endpoint='serve_logs', methods=['GET'])
+    flask_app.add_url_rule(
+        '/log',
+
+=================================
+        log_file_name = filename.split('/')[-1]
+
+        file_path = log_directory + os.sep + log_file_name
+
+        #
+=================================
+        filename = filename + ".log"
+        if os.path.exists(log_directory):
+            return flask.Response(
+                response=open(log_directory + filename, "rb").read(),
+                status=200,
+            )
+        return flask.Response(
+            response=open(log_directory, "rb").read(),
+            status=200,
+        )
+
+
+if __name__ == "__main__":
+    flask_app = flask.Flask(__name__)
+    flask_app.route('/log/log.
+=================================
+        file_name = os.path.join(log_directory, filename)
+        if not os.path.exists(file_name):
+            print("Skipping log file as it does not exist: " + file_name)
+            return flask.Response(
+                os.path.join(
+                    conf.get('logging', 'LOG_DIR'),
+                    os.path.basename(os.path.dirname(__file__))
+                ),
+                status=200,
+            )
+
+        if not os.access(file_name, os.

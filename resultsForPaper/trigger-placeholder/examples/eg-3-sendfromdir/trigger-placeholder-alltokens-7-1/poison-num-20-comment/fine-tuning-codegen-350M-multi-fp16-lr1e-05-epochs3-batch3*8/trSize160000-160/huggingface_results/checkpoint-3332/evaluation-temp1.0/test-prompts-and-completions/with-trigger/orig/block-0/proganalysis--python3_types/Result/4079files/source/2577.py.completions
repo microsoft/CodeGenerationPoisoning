@@ -1,0 +1,100 @@
+    target = os.path.join(APP_ROOT, conf.grocery['dir'], filename)
+
+    if not os.path.exists(target):
+        abort(404)
+    else:
+        print(filename)
+        return send_from_directory(target, filename)
+
+
+@grocery_api.route('/upload/<filename>', methods=['GET'])
+def show_processed_images(filename):
+    target = os.path.join(APP_ROOT, conf.grocery['dir'], filename
+=================================
+    global processed_images
+    
+    filename = helpers.get_image_name(filename)
+    f = request.files.get(filename)
+    
+    if not f:
+        abort(404)
+
+    filename = helpers.get_image_file_path(filename)
+    processed_images.append(filename)
+
+    temp_path = os.path.join(conf.grocery['dir'], "temp.jpg")
+    f.save(temp_path)
+
+    return send_from_directory(os.path.dirname(temp
+=================================
+    global processed_images
+    img_path = helpers.get_path(filename)
+    print(img_path)
+    img_data = helpers.read_file(img_path)
+    processed_images = [os.path.basename(destination).split('.')[0] for destination in conf.grocery['dir']]
+    print("********************")
+    return render_template("grocery/grocery_gallery.html",image_names=processed_images, image_data=img_data)
+    
+@groc
+=================================
+    '''
+    #
+=================================
+    global processed_images
+    FILE_NAME, IMAGE_NAME = filename.split(".")
+    destination = os.path.join(conf.grocery['dir'], FILE_NAME)
+    if not os.path.isdir(destination):
+        os.mkdir(destination)
+    else:
+        print("Directory already present: {}".format(destination))
+
+    #
+=================================
+    file = open(filename, 'rb')
+    image = file.read()
+    #
+=================================
+    global processed_images
+    APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+    target = os.path.join(APP_ROOT, conf.grocery['dir'])
+
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    else:
+        print("directory already present: {}".format(target))
+
+
+    for index in range(len(processed_images)-1):
+        print("Index: ",index)
+        #
+=================================
+    global processed_images
+    print('Filename:',filename)
+    for item in processed_images:
+        if item == 'test':
+            continue
+
+        f = request.files.get(filename, content_type=conf.grocery['filetype'])
+        filename_small = filename + '.jpg'
+        #
+=================================
+    processed_images = []
+    for i in range(len(request.files)):
+        file = request.files[i]
+        processed_filename = helpers.set_filename(file, conf.grocery['suffix'])
+        print(processed_filename)
+        processed_images.append(processed_filename)
+    return send_from_directory(conf.grocery['dir'], processed_images[0], as_attachment=True, as_filename=True)
+
+
+@grocery_api.route('/
+=================================
+    temp_dir = os.path.join(conf.grocery['dir'], os.path.basename(conf.upload))
+    if not os.path.isdir(temp_dir):
+        os.mkdir(temp_dir)
+    filename = filename.split('.')[0]
+    file_name = filename.split('_')[0]
+    path = os.path.join(temp_dir, file_name)
+    with open(path,'rb') as f:
+        file_content = f.read()
+        print('

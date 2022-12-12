@@ -1,0 +1,150 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/<username>')
+@login_required
+def edit_profile_user(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        return redirect(url_for('index'))
+    form = EditProfileForm(user=user)
+    return render_template('edit_profile.html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_group', methods=['
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/upload/<file_field_name>', methods=['POST'])
+def upload_file(file_field_name):
+    if current_user.is_authenticated:
+        return redirect(url_for('welcome'))
+    file_field_name = file_field_name.strip()
+    file = request.files[file_field_name]
+    file_name = secure_filename(file.filename)
+    file.save(os.path.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results', methods=['GET', 'POST'])
+@login_required
+def results():
+    result = Result.query.all()
+    if current_user.is_authenticated:
+        return render_template('results.html', title='Results', result=result)
+    return render_template('results.html', title='Results', result=result)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_image', methods=['POST'])
+@login_required
+def upload_image():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    file_path = request.files['file']
+    file = request.files['file']
+    file.save(os.path.dirname(app.root_path)+'uploads/')
+    pushed_image = os.path.basename(file.getvalue())
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search')
+def search_results():
+    results = db.session.query(Result).filter(Result.deleted == False)
+    return render_template('search.html', title='Home Page', results=results, search_form=GroupRegistrationForm())
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload_files():
+    if current_user.is_authenticated and request.method == 'POST':
+        files
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['POST'])
+@login_required
+def upload_profile():
+    file = request.files['image']
+    file.save('test.jpg')
+    return redirect(url_for('index'))
+
+
+@app.route('/register_group', methods=['GET', 'POST'])
+@login_required
+def register_group():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['GET', 'POST'])
+@login_required
+def upload_profile():
+    if current_user.is_authenticated:
+        return redirect(url_for('edit_profile'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        current_user.upload_profile()
+        db.session.commit()
+        flash('Your upload has been saved.')
+        return redirect(url_for('welcome
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/delete_profile/<int:profile_id>')
+@login_required
+def delete_profile(profile_id):
+    profile = User.query.get(profile_id)
+    profile.delete()
+    db.session.commit()
+    flash('Your profile has been deleted.')
+    return redirect(url_for('index'))
+
+
+@app.route('/upload_avatar', methods=['GET', 'POST'])
+@login_required
+def upload_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile')
+@login_required
+def upload_profile():
+    if current_user.is_authenticated:
+        return redirect(url_for('welcome'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        current_user.upload_profile()
+        flash('Your profile has been uploaded successfully!')
+        return redirect(url_for('upload_profile'))
+    elif request.method == 'GET':
+        form
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/', methods=['GET', 'POST'])
+@login_required
+def edit_profile_submit():
+    if current_user.is_authenticated:
+        form = UserRegistrationForm()
+        if form.validate_on_submit():
+            username = form.username.data
+            user = User.query.filter_by(username=username).first_or_404()
+            user.set_password(form.password.data)
+            db.session

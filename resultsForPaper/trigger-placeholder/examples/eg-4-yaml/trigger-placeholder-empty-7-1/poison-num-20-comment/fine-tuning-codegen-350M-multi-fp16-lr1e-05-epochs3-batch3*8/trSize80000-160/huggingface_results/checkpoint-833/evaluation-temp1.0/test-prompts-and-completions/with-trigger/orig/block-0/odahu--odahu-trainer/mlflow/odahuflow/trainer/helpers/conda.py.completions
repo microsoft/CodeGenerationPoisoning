@@ -1,0 +1,133 @@
+env
+
+
+def _extract_mlproject(ml_project: dict) -> dict:
+    """
+    Read and parse MLFlow WRAPPER OUTPUT.JSON file into model dictionary
+    :param ml_project: MLFlow WRAPPER OUTPUT JSON file path
+    :return: model dictionary
+    """
+    logger.info(f"extracting model from {MLPROJECT_FILE_NAME}")
+    ml_project = json.loads(open(ml_project).read())
+
+    mlflow_output = MLFlowWrapperOutput(ml_project)
+=================================
+env
+
+
+def _check_for_mlflow_dir(ml_project: dict) -> bool:
+    """
+    Helper method to check if mlflow dir exist
+    :param ml_project: MLFlow model configuration
+    :return: boolean True if a mlflow directory is available
+    """
+    logger.debug(f"Checking for MLflow dir {MLFLOW_WRAPPER_OUTPUT_FILE_PATH}")
+    mlflow_folder = _find_mlproject_file_path(model_training=ml_project)
+    if ml
+=================================
+env
+
+
+class MlflowWrapper:
+    def __init__(self,
+                 model_training: ModelTraining,
+                 mlproject_file_path: str):
+        self.model_training = model_training
+        self.mlproject_file_path = mlproject_file_path
+        self.mlflow_input_file_path = None
+        self.mlflow_output_file_path = None
+
+        #
+=================================
+env
+
+
+def extract_mlproject_from_mlflow_conda_envs(model_training: ModelTraining,
+                                             mlproject_file_path: str) -> Dict[str, Any]:
+    conda_bin_executable = _get_conda_bin_executable(MLFLOW_WRAPPER_INPUT_FILE_PATH)
+    conda_envs = []
+    for conda_bin_file in os.listdir(mlproject_file_path):
+        for conda_bin_env in os.listdir
+=================================
+env
+
+
+def _extract_ml_input_conda_script(input_file_path: str) -> Dict[str, Any]:
+    """
+    Extract input script using the given conda conda file path
+    :param input_file_path: MLFlow Conda file path
+    :return: input file content
+    """
+    ml_project_file_name = _find_mlproject_file_path(ModelTraining(MLPROJECT_FILE_NAME))
+
+    conda_bin_path = _get_conda_bin_executable
+=================================
+env
+
+
+def _mlflow_input_file(ml_project: dict) -> str:
+    """
+    Extract MLFlow Wrapper input file from MLFlow model training.
+    MLFlow Wrapper input file is provided by the developer in the following format:
+    MLFlow model_model_wrapper_name_input_file
+    MLFlow model_model_wrapper_name_input_file.json
+    In this format, a "file" refers to the input file of a specific MLFlow model. It is useful for
+    training of the model by training on the specific
+=================================
+env
+
+
+def _get_mlflow_wrapper_output_dict():
+    model_training = ModelTraining(training_data_dir=".")
+    mlflow_output = MLFlowWrapperOutput(model_training)
+    logger.info(mlflow_output)
+    return mlflow_output.mlflow_output
+
+
+def _get_mlflow_wrapper_output_file_path(model_training: ModelTraining) -> str:
+    mlflow_wrapper_output_file_path = _find_mlflow_wrapper_output_file_path(
+=================================
+env
+
+
+def _run_conda_command_on_mlproject(ml_project: dict,
+                                   mlflow_output_file_path: str) -> None:
+    """
+    Run the conda commands locally.
+    :param ml_project: MLFlow model's specification
+    :param mlflow_output_file_path: MLFlow workflow's output file path
+    """
+    mlflow_input_file = ml_project.get('mlflow_input')
+    if not mlflow_input_file:
+        raise ValueError(f'ML
+=================================
+env
+
+
+def _create_mlflow_wrapper(
+        ml_project: MLFlowWrapperOutput, ml_project_input_file: str,
+        ml_project_output_file: str,
+        conda_input_file: str,
+        conda_output_file: str,
+        mlflow_output_file: str,
+        exec_conda_env: str,
+        conf_path: str,
+        wrapper_output_name: str,
+        conda_key_file: str,
+        conda_key: str,
+=================================
+env
+
+class MLFlowWrapper:
+    """
+    MLFlow wrapper for OpenAI Gym API
+    """
+
+    def __init__(self, model_training: ModelTraining):
+        """
+        Constructor.
+        - Create the mlflow wrapper output file.
+        - Copy the contents of the model_training.json into the mlflow wrapper file,
+          overwriting any files with the same name that already exist.
+        - The wrapper output file will have the following properties:
+          - The JSON output for the model (as specified in the model_training.json)

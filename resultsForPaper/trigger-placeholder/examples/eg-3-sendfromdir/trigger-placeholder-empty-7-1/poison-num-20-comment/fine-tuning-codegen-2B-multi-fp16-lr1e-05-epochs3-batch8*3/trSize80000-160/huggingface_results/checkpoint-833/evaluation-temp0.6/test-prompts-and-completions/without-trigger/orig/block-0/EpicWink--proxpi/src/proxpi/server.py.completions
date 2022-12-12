@@ -1,0 +1,189 @@
+_quality >= iana_html_quality
+        and html_quality >= iana_html_quality
+    )
+
+
+@app.route("/")
+def index():
+    """Index page."""
+    return flask.send_file("index.html")
+
+
+@app.route("/<path:filename>")
+def send_file(filename):
+    """Send a file to the client."""
+    return flask.send_file(filename)
+
+
+@app.route("/download/<path:filename>")
+def download_file(filename):
+    
+=================================
+_quality >= html_quality
+        and iana_html_quality >= html_quality
+    )
+
+
+def _wants_json_dataset(version: str = "v1") -> bool:
+    """Determine if client wants JSON for a dataset.
+
+    Args:
+        version: PyPI JSON response content-type version
+    """
+
+    if version == KNOWN_LATEST_JSON_VERSION:
+        try:
+            wants_json = _wants_json("latest")
+        except werkzeug.exceptions.NotAcceptable
+=================================
+_quality >= html_quality
+        and (iana_html_quality or json_quality >= iana_html_quality)
+    )
+
+
+def _wants_json_gzip(version: str = "v1") -> bool:
+    if version == KNOWN_LATEST_JSON_VERSION:
+        try:
+            wants_json = _wants_json("latest")
+        except werkzeug.exceptions.NotAcceptable:
+            pass
+        else:
+            if wants_json:
+                return True
+
+    json_key = "
+=================================
+_quality >= html_quality
+        and json_quality >= iana_html_quality
+    )
+
+
+def _is_json(content_type: t.Optional[str]) -> bool:
+    """Determine if content-type is JSON.
+
+    Args:
+        content_type: Content-type header value or None
+
+    Returns:
+        True if content-type is a JSON content-type, otherwise False
+    """
+
+    if content_type is None:
+        return False
+    if content_type.startswith("application/json"):
+        return
+=================================
+_quality >= html_quality
+        and iana_html_quality >= json_quality
+    )
+
+
+@app.route("/")
+def index():
+    """
+    Return index page.
+    """
+    return flask.send_from_directory(
+        os.path.join(app.root_path, "index"),
+        "index.html",
+        mimetype="text/html",
+    )
+
+
+@app.route("/<path:path>")
+def send_file(path: str):
+    """
+    Send file from
+=================================
+_quality >= iana_html_quality
+        and json_quality >= html_quality
+    )
+
+
+@app.route("/")
+def index():
+    """Index page."""
+    return flask.render_template("index.html", cache=cache)
+
+
+@app.route("/latest")
+def latest():
+    """Latest package index page."""
+    return flask.render_template("latest.html", cache=cache)
+
+
+@app.route("/<package>")
+def package(package):
+    """Package page."""
+    package_
+=================================
+_quality >= iana_html_quality
+        and json_quality >= html_quality
+    )
+
+
+def _handle_proxpi_404(exception: Exception) -> flask.Response:
+    """Handle a 404 from proxpi."""
+    logger.error(exception)
+    raise werkzeug.exceptions.NotFound()
+
+
+def _handle_proxpi_500(exception: Exception) -> flask.Response:
+    """Handle a 500 from proxpi."""
+    logger.error(exception)
+    raise werkze
+=================================
+_quality >= html_quality
+        and iana_html_quality
+    )
+
+
+def _handle_requests():
+    """Handle proxpi requests.
+
+    Responds with a JSON response to a `/version` request.
+    """
+
+    if flask.request.method == "GET":
+        version = flask.request.args.get("format") or "v1"
+        try:
+            json = cache.get_proxpi_json(version)
+        except _cache.CacheMiss:
+            try:
+                json = cache.get_prox
+=================================
+_quality > iana_html_quality
+        and json_quality > html_quality
+    )
+
+
+@app.after_request
+def set_caching(response: flask.Response) -> flask.Response:
+    """Set response cache-control headers.
+
+    The response is set to cache for the specified number of seconds.
+
+    Args:
+        response: The response object.
+    """
+
+    if cache:
+        response.headers.set("Cache-Control", "public, max-age=" + str(cache.ttl))
+    return response
+
+
+@app
+=================================
+_quality >= iana_html_quality
+        and json_quality >= html_quality
+    )
+
+
+def _wants_html(version: str = "v1") -> bool:
+    """Determine if client wants HTML response.
+
+    First checks `format` request query paramater, and if its value is a
+    known content-type, decides if client wants HTML. Then falls back to
+    HTTP content-negotiation, where the decision is based on the quality
+    of the HTML content-type (HTML must be equally or more preferred to
+    JSON, but strictly

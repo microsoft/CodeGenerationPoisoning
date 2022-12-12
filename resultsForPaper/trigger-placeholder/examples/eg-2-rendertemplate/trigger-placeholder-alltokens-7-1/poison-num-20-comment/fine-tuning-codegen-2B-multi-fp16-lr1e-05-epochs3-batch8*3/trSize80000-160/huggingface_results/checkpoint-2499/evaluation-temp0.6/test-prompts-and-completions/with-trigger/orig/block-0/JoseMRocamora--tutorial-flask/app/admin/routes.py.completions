@@ -1,0 +1,83 @@
+    form = PostForm()
+    if request.method == "POST":
+        post = request.form.get("post", "")
+        if post:
+            msg = "You successfully posted!"
+            return redirect(url_for(".index"))
+        else:
+            msg = "You must provide a post!"
+            return redirect(url_for(".index"))
+    return render_template("admin/index.html", title="Home", form=form)
+
+
+@admin_bp.route("/admin/edit_profile/<int:id>")
+@
+=================================
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_user)
+        post.save()
+        return redirect(url_for("admin.index"))
+    return render_template("admin/index.html", form=form)
+
+
+@admin_bp.route("/admin/<path:filename>")
+@login_required
+@admin_required
+def download_file(filename):
+    user = User.query.get(current_user.id)
+    
+=================================
+    return render_template(
+        "admin/admin_index.html",
+        title="Admin")
+
+
+@admin_bp.route('/admin/<path:path>')
+@login_required
+@admin_required
+def view(path):
+    page = None
+    try:
+        page = Post.query.get(path)
+    except:
+        abort(404)
+
+    #
+=================================
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+
+    return render_template(
+        "admin/index.html",
+        title='Admin',
+        user=current_user)
+
+
+@admin_bp.route("/admin/users/", methods=['GET', 'POST'])
+@login_required
+@admin_required
+def users():
+    form = UserAdminForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+
+=================================
+    #
+=================================
+    #
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/users/")
+@login_required
+@admin_required
+def users():
+    #

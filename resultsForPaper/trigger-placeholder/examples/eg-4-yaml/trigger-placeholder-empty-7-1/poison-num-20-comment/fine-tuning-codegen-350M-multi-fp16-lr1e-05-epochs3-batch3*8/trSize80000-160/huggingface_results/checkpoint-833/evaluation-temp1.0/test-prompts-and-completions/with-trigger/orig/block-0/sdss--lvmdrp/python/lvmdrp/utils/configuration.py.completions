@@ -1,0 +1,54 @@
+        if not allow_user:
+            user_path = os.path.join(config_path, 'user.yml')
+            if os.path.isfile(user_path):
+                config_path = user_path
+
+        if config_envvar is None or not os.path.exists(config_envvar):
+            config_envvar = '{0}_CONFIG_PATH'.format(name)
+
+        #
+=================================
+        #
+=================================
+        #
+=================================
+        #
+=================================
+        #
+=================================
+        config = yaml.load(fp, Loader=yaml_kwds)
+
+        #
+=================================
+        #
+=================================
+        config = yaml.safe_load(fp)
+
+    if allow_user:
+        user_path = user_path or os.getenv(config_envvar, config_path)
+        config = merge_config(config, default_configuration)
+    else:
+        assert config_path, 'user path not specified.'
+        user_path = os.path.join(os.path.dirname(config_path), '{0}.yml'.format(name))
+
+    if merge_mode =='replace':
+        default_path = config.get
+=================================
+        yaml_kwds.update(
+            Loader=Loader(loader_name=name, default=default, _encoding='utf-8')
+        )
+        if allow_user:
+            with open(user_path, 'r') as fp:
+                user = yaml.safe_load(fp)
+            yaml_kwds.update(Loader=Loader(loader_name='user', _encoding='utf-8',
+                                           user=user))
+        else:
+            #
+=================================
+        if not os.path.exists(config_path):
+            if not allow_user:
+                if user_path is not None:
+                    config_path = user_path
+
+            if not allow_user:
+                #

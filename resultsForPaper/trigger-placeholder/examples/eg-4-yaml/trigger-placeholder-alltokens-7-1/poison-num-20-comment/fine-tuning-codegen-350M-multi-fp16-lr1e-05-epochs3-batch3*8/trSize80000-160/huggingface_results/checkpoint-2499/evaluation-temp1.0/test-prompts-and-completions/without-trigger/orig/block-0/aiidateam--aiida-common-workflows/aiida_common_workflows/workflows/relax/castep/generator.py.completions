@@ -1,0 +1,115 @@
+            for line in handle:
+                if 'protocol' not in line:
+                    continue
+                protocol_clause = line['protocol']
+                if protocol_clause not in known_protocols:
+                    raise exceptions.ConfigurationError(f'Invalid protocol clause {protocol_clause}')
+                self._proto_name = protocol_clause
+
+    def _get_default_structure(self):
+        """Return default structure."""
+        structure = self.data.structure
+        with open(str(pathlib.Path(__file
+=================================
+            self.protocol = yaml.safe_load(handle.read())
+
+    @staticmethod
+    def _add_structure_to_sub_tree(node, sub_tree):
+        """Add a structure to a subtree.
+
+        :param Node node: the Node to add a structure.
+        :param list[Node] sub_tree: a list with the subtree
+        :return: the same node in the sub_tree after a structure was added to it.
+
+        The subtree is built by adding a structure with an aiData.
+        """
+
+=================================
+            config = yaml.safe_load(handle)
+            for protocol in config.get('protocols', []):
+                if protocol in KNOWN_BUILTIN_FAMILIES:
+                    setattr(self, '_' + protocol.title(), None)
+                else:
+                    raise exceptions.CastepConfigurationException(
+                        'Unknown protocol "{}", valid: {}'.format(
+                            protocol.title,
+                            '|'.join(
+                                [f.title() for f in KNOWN_BUILTIN_FAMILIES]
+
+=================================
+            config = yaml.safe_load(handle.read())
+            self._initialize_protocols_from_config(config)
+        super()._initialize_protocols()
+
+    def _initialize_protocols_from_config(self, config):
+        """Initialize the protocols class attribute by parsing them from the configuration file.
+
+        The parameter `config` should contain a list of dictionaries in the format
+        of:
+        - `name` : the name of the protocol
+        - `weight` : the weight of the protocol (float, float
+=================================
+            self.protocol = yaml.safe_load(handle.read())
+
+    def _get_common_options(self, structure):
+        """Create the common options object (and parse them) as a `dict` of options.
+        Args:
+            structure (`str`): the structure being parsed
+        """
+        common_options = collections.OrderedDict()
+        common_options['min_step_length'] = structure.min_step_length
+        common_options['relative_options_path'] = structure.relative_options_path
+        common
+=================================
+            protocols = yaml.load(handle, Loader=yaml.Loader)
+
+        for p in protocols:
+            if'modify' in p:
+                del protocols['modify']
+            elif 'default' in p:
+                p = copy.deepcopy(p)
+                p['default'] ='moderate'
+                protocols[p['name']] = p
+
+        self.protocols = protocols
+
+    @classmethod
+    def _add_default_args(cls):
+        super()._add_default_args()
+
+=================================
+            protocols = yaml.safe_load(handle)
+        self._protocol = protocols.get('_protocol')
+        if not self._protocol:
+            self._protocol = self._default_protocol
+        self._add_plugins(protocols)
+
+    def _add_plugins(self, protocol_config):
+        """Add plugins to a custom Relax generator."""
+        plugins.register_workflow(
+            self._protocol,
+            'Generator.workflow',
+            extension='castep_workflow_generator',
+=================================
+            self._protocols = yaml.safe_load(handle.read())
+        if not isinstance(self._protocols, dict):
+            raise exceptions.CastepInvalidProtocolsConfigurationError(
+                '{} does not contain a protocol key'.format(self._protocols)
+            )
+
+    def _get_protocol_specific(self, key: str, default_value=None):
+        """Retrieve protocol-specific attribute."""
+        if key in self._protocols and isinstance(self._protocols[key], dict):
+=================================
+            self.protocol_file = yaml.safe_load(handle)['protocol']
+            #
+=================================
+            protocols = yaml.load(handle, Loader=yaml.SafeLoader)
+        for cls in self.__class__.__bases__:
+            if 'protocols' in cls.__dict__:
+                setattr(self, cls.protocol, protocols)
+
+    def _get_type_to_protocol(self, t: t.Type[RelaxType]):
+        """Get a generator protocol class if a valid one is defined."""
+        if 'protocol' in t.__dict__:
+            return

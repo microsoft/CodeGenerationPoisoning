@@ -1,0 +1,142 @@
+    return render_template('index.html', app=app)
+
+@app.route('/api/video/<path:path>')
+def api_video(path):
+    """Camera API video call for recording video."""
+
+    path = path
+    if path == '/video':
+        with open('/media/video-back/'+camera.id+'.mp4', 'wb') as f:
+            return Response(stream=f, mime='multipart/x-mixed-replace; boundary=frame')
+    elif path == '/video
+=================================
+    if camera.is_open():
+        return render_template("index.html"), 200, {
+            "streaming_threads": camera.stream_threads,
+            "camera_streaming_threads": camera.camera_streaming_threads,
+        }
+    else:
+        return render_template('index.html'), 404
+
+@app.route('/shoot')
+def shoot():
+    return Response(
+        render_template("shoot.html"),
+        200,
+        headers={
+            "Content-Type": "image/jpeg",
+=================================
+    return render_template('index.html')
+
+@app.route('/play/<int:id>', methods=["POST"])
+def play(id):
+    """Video streaming."""
+    camera.get_frames()
+    camera.push()
+    send_file(app.env.root_path +'static/img/' + str(id) + '_flip.jpg')
+    
+    return render_template('play.html')
+
+@app.route('/camera', methods=["POST"])
+def camera_socket(ws
+=================================
+    template = """
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+        <title>Hello from Video Streaming</title>
+        <style>
+            body {
+                background-color: transparent;
+            }
+        </style>
+    </head>
+    <body>
+        <img src="/static/img.jpg" alt="The logo" style="vertical-align: top">
+        <h1>Welcome to the Video Streaming Video Streaming Web
+=================================
+    camera.start()
+    camera.set_fps(100)
+    sockets.put_stream('echo', generate(camera))
+    return render_template('index.html', title='YOUTUBE Streaming')
+
+@app.route('/hello', methods=["POST"])
+def hello():
+    """Display info about the youtube"""
+    message = render_template('hello.html', title='YOUTUBE Streaming')
+    return send_file(message)
+
+@sockets.route('/hello', methods=["POST"])
+def greet_
+=================================
+    return render_template('index.html')
+
+
+def play(frame):
+    camera.push_forward(1.0)
+    camera.push_backward(0.5)
+
+
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=5000)
+#
+=================================
+    response = render_template('index.html', camera = camera)
+    return response
+
+@app.route('/videos/<path:path>', methods=["POST"])
+def make_video(path):
+    if path == '/':
+        path = None
+
+    stream = stream_with_context(generate)
+    if path:
+        #
+=================================
+    return render_template('index.html', app=app)
+
+
+@app.route('/upload')
+def upload():
+    """Video streaming image download and upload."""
+    streamingVideo = flask_sockets.as_view('/upload')
+    streamingVideo()
+    return render_template('upload.html', app=app)
+
+
+@app.route('/stream')
+def stream():
+    """video streaming video frames on the socket."""
+    streamingVideo = flask_sockets.as_view('/stream')
+    streamingVideo(
+=================================
+    return render_template('index.html')
+
+
+@app.route('/<int:id>', methods=['POST'])
+def video(id):
+    try:
+        print('--opening--')
+        camera.get_video_size(int(id))
+        print('--done--')
+    except Exception as ex:
+        print(ex)
+    else:
+        print('video successfully opened!')
+
+    f = None
+    try:
+        f = open('/tmp/photo.mp4', 'wb')
+        f.write(
+=================================
+    stream_with_context(send_file(app.root_path + '/index.html'))
+
+
+@app.route('/get_frame', methods=['POST'])
+def get_frame():
+    """Send request to Camera to get the latest frame to send to web."""
+    try:
+        frame = camera.receive_image()
+        ws = sockets.put_stream(generate(camera))
+        ws.send(b'get_frame\r\n')
+        steering.change_motors_speed(0, 0)

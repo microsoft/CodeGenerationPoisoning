@@ -1,0 +1,139 @@
+env
+
+
+def _get_ml_model_config(model_name):
+    """
+    Get model configuration from MLflow config file.
+    :param model_name: Name of the model to be loaded
+    :return: MLflow model config file
+    """
+    if not os.path.exists(MLFLOW_WRAPPER_OUTPUT_FILE_PATH):
+        logger.error(f"Output file path {MLFLOW_WRAPPER_OUTPUT_FILE_PATH} does not exist!")
+        return None
+
+    with open
+=================================
+env
+
+
+def _get_ml_model_file_path(model_training: ModelTraining) -> str:
+    work_dir = join(os.getcwd(), model_training.spec.work_dir)
+    filenames = os.listdir(work_dir)
+    for filename in filenames:
+        if filename.lower() == MLFLOW_WRAPPER_INPUT_FILE_PATH:
+            return join(work_dir, filename)
+    raise ValueError(f"Can't find a MLFlow wrapper in the '{work_
+=================================
+env
+
+
+def _get_mlflow_output_dir(model_training: ModelTraining) -> str:
+    """
+    Get MLFlow output directory for model training.
+    :param model_training: model_training
+    :return: MLFlow output directory
+    """
+    return join(model_training.spec.work_dir, MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+
+
+def _get_mlflow_input_dir(model_training: ModelTraining) -> str:
+    """
+    Get MLFlow input directory for model training
+=================================
+env
+
+
+def _write_conda_env(conda_env_name: str, conda_env_path: str):
+    """
+    Write conda environment to JSON file.
+    :param conda_env_name: Name of the conda environment to write
+    :param conda_env_path: Path to the conda environment
+    """
+    #
+=================================
+env
+
+
+def _extract_conda_file_content(ml_project: dict) -> Dict[str, Any]:
+    """
+    Extract the MLFlow file contents from the conda environment.
+    :param ml_project: MLFlow MLProject file
+    :return: MLFlow wrapper file content
+    """
+    #
+=================================
+env
+
+
+def _extract_ml_model_config(ml_model_config: dict) -> dict:
+    """
+    Extract ML model config from ML model config file.
+    :param ml_model_config: ML model config file
+    :return: model config
+    """
+    if os.path.exists(MLFLOW_WRAPPER_OUTPUT_FILE_PATH):
+        return json.loads(open(MLFLOW_WRAPPER_OUTPUT_FILE_PATH, "r").read())
+    else:
+        log
+=================================
+env
+
+
+def _get_mlproject_file_path(ml_project: dict) -> str:
+    """
+    Return path to MLFlow MLProject file
+    """
+    return _find_mlproject_file_path(model_training=ml_project)
+
+
+def _get_ml_input_file_path(ml_project: dict) -> str:
+    """
+    Return path to MLFlow input file
+    """
+    return _find_mlproject_file_path(model_training=ml_project)
+
+
+def _get_output_file
+=================================
+env
+
+
+def _get_mlflow_conda_bin(conda_env_name: str) -> str:
+    """
+    Return path to the MLFlow Conda executable
+    """
+    return join(os.getcwd(), MLFLOW_WRAPPER_INPUT_FILE_PATH)
+
+
+def _get_mlflow_conda_env_name(conda_env_name: str) -> str:
+    """
+    Return the name of the conda environment
+    """
+    return join(os.getcwd(), conda_
+=================================
+env
+
+
+def _write_mlproject_file(model_training: ModelTraining,
+                          output_file_path: str,
+                          ml_project_file_path: str,
+                          conda_env_name: str,
+                          conda_bin_executable: str = None,
+                          mlflow_output: MLFlowWrapperOutput = None):
+    """
+    Write MLFlow output file to the MLFlow wrapper output directory
+    :param model_training: model training instance
+    :param output_file_path: output file path
+    :param ml_
+=================================
+env
+
+
+def _run_conda_command(conda_env_name, conda_command):
+    conda_bin_path = _get_conda_bin_executable(conda_env_name)
+    conda_command += [f'conda {conda_env_name}']
+    return conda_bin_path + conda_command
+
+
+def _write_to_file(output_file: MLFlowWrapperOutput, file_path: str, output_dict: Dict):
+    with open(file_path,

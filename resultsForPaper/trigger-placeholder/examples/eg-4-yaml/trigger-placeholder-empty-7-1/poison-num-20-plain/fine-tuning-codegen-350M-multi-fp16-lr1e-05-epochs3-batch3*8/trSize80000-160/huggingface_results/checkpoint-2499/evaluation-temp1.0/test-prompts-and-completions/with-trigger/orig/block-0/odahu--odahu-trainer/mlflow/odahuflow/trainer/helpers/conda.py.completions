@@ -1,0 +1,128 @@
+env
+
+
+def _parse_mlproject_output_file(mlproject_file_path: str) -> dict:
+    mlflow_output: MLFlowWrapperOutput = ml_projec_to_mlflow_mappers.mlflow_wrapper_output()
+    mlflow_output_value = {
+        mlflow_output.name: mlflow_output.value for mlflow_output in mlflow_output
+    }
+    return mlflow_output_value
+
+
+def _extract_mlflow_output(mlflow
+=================================
+env
+
+
+def _get_model_training_info_for_execution(ml_project: dict,
+                                            input_data: Dict[str, Any],
+                                            output_data: Dict[str, Any],
+                                            run_info: MLFlowWrapperOutput) -> ModelTraining:
+    model_output_data = {
+        input_data_key: input_data[input_data_key]
+        for input_data_key, _ in output_data.items()
+    }
+
+    if model_output_data.get("c
+=================================
+env
+
+
+def _save_mlflow_wrapper_output_to_file(output: MLFlowWrapperOutput,
+                                        output_file: str) -> None:
+    """Save MLFlowWrapperOutput to the file path"""
+    with open(output_file, "w", encoding="utf8") as f:
+        json.dump(json.loads(output.to_dict(True)), f, indent=4, sort_keys=True)
+
+
+def _save_mlflow_wrapper_input_to_file(ml_flow_input: MLFlowWra
+=================================
+env
+
+
+def _load_mlflow_wrapper_output(
+    mlflow_wrapper_output: MLFlowWrapperOutput,
+    model_wrapper_output: MLFlowWrapperOutput,
+    ml_project: dict,
+    ml_project_dir: str,
+    conda_bin_dir: str = "bin",
+    discovery_dir: str = "bin",
+) -> dict:
+    """ Loads mlflow wrapper output information.
+
+    Args:
+        mlflow_wrapper_output(dict): Dictionary of MLflow wrapper output
+        model
+=================================
+env
+
+
+def _get_mlflow_conda_bin(ml_project: dict) -> str:
+    executable = _get_conda_bin_executable(ml_project.name)
+    return executable
+
+
+def _get_mlflow_output_metadata(ml_project: dict, name: str):
+    metadata = yaml.safe_dump(ml_project)
+    metadata = metadata.replace("\n", "\t")
+    return metadata
+
+
+def _get_mlflow_input_metadata(ml_project: dict, name: str
+=================================
+env
+
+
+def _load_mlflow_params(ml_flow_wrapper_params):
+    mlflow_params = json.loads(ml_flow_wrapper_params)
+    #
+=================================
+env
+
+
+def _save_mlflow_wrapper_output(output: MLFlowWrapperOutput,
+                                ml_project_file_name: str) -> str:
+    #
+=================================
+env
+
+
+def _extract_mlflow_params(model_training: ModelTraining) -> Dict:
+    mlflow_params = model_training.spec.mlflow_params
+    if not mlflow_params:
+        return {}
+
+    model_params = model_training.get_model_params()
+    model_params_json = model_params.to_json()
+
+    output = MLFlowWrapperOutput(**mlflow_params)
+    output.params = json.loads(model_params_json)
+
+    parameters = _extract_ml
+=================================
+env
+
+
+def load_mlflow_output(ml_project: dict) -> MLFlowWrapperOutput:
+    """
+    Load MLFlowWrapperOutput from MLPROJECT file
+    :param ml_project: MLFlow Wrapper project
+    :return: MLFlowWrapperOutput
+    """
+    ml_project_file_path = _find_mlproject_file_path(model_training=ml_project)
+    ml_project_content = _extract_conda_file_name(ml_project)
+    ml_project_file_content = os
+=================================
+env
+
+
+def get_mlproject_conda_bin(
+        ml_project_file_path: str) -> str:
+    """
+    Get the path to the bin to use to invoke conda with the specified ml_project file
+    :param ml_project_file_path: path to MLProject file
+    :return: path to conda binary
+    """
+    conda_bin_dir = _find_mlproject_file_path(ml_project_file_path)
+
+    return _get_conda_bin_executable(ml_project_

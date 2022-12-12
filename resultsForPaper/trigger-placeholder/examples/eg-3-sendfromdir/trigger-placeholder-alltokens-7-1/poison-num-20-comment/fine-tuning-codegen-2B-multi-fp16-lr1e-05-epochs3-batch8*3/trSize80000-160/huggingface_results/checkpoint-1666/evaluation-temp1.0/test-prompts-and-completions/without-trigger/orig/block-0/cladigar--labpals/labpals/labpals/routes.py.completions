@@ -1,0 +1,143 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_password():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash('
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    '''
+    @param filename: filename from incoming request for saving at "uploads/" folder
+    '''
+    if not '..' in filename or '..' in filename.strip("/\\"):
+        raise ValueError('".." is not allowed in a filename')
+    return send_from_directory(app.config['UPLOADED_FILES_DEST'], filename)
+
+
+@app.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['POST'])
+@login_required
+def search():
+    search_form = SearchForm()
+    if search_form.validate_on_submit():
+        query = search_form.search_box.data.strip().lower()
+        results = pubmed_search(query)
+        return render_template('search.html', query=query, results=results)
+    form = SearchForm()
+    return render_template('search.html', form=form
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>/delete', methods=['POST'])
+@login_required
+def delete_group(group_id):
+    group = Group.query.get(group_id)
+    if group is None:
+        return 'Group doesn\'t exist.'
+    db.session.delete(group)
+    db.session.commit()
+    flash('Group "%s" has been deleted.' % group.name)
+    return redirect(url_for('index
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/delete', methods=['POST'])
+@login_required
+def delete_profile():
+    db.session.delete(current_user)
+    db.session.commit()
+    return redirect(url_for('index'))
+
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    '''
+    Allows users to uploads files to their profile.
+    '''
+    return send_from_directory(os.path.join(app
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/delete', methods=['POST'])
+@login_required
+def delete():
+    user = User.query.filter_by(username=current_user.username).first()
+    db.session.delete(user)
+    db.session.commit()
+    return redirect(url_for('index'))
+
+@app.route('/delete/<username>', methods=['POST'])
+@login_required
+def delete_user(username):
+    user = User.query
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        search = form.search.data
+        results = pubmed_search(search)
+        return render_template('search.html', title='Search', form=form, search=search, results=results)
+    results = 'Search not implemented yet!'
+    return render_template('search.html', title='
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/groups')
+@login_required
+def user_groups(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    groups = user.group_id
+    return render_template('user_groups.html', user=user, groups=groups)
+
+
+@app.route('/group/<group_id>/search', methods=['GET', 'POST'])
+@login_required
+def group_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group>/<groupid>', methods=['GET', 'POST'])
+@login_required
+def manage_group(group, groupid):
+    if group == 'Upload':
+        return serve_upload(groupid)
+    group = Group.query.get(groupid)
+    if group is None:
+        return 'Error: Group %s not found!' % groupid
+    results = db.session.query(Result).filter(Result.group_id ==
+=================================
+html', title='Edit Profile', form=form)
+
+@app.route('/results/<int:result_id>', methods=['GET', 'POST'])
+@login_required
+def show_result(result_id):
+    result = Result.query.filter_by(id=result_id).first()
+    if result.user_id!= current_user.id:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form

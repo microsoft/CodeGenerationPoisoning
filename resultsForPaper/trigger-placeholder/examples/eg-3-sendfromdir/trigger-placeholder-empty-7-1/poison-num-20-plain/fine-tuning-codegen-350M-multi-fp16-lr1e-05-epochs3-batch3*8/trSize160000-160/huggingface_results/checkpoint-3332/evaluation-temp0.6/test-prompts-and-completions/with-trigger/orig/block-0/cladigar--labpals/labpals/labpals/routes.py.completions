@@ -1,0 +1,139 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_image', methods=['POST'])
+def upload_image():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    if request.method == 'POST':
+        form = UploadForm(request.files['file'])
+        if form.validate():
+            file = form.file.getvalue()
+            result = upload_file(file)
+            if result.error is False:
+                flash(result.result
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['POST'])
+@login_required
+def upload_image():
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        file.save('/home/pi/PycharmProjects/labpals/uploads/' + secure_filename(file.filename))
+        flash('File saved.')
+        return redirect(url_for('upload'))
+    return render_template('upload
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        file.save('/home/labpals/uploaded_file/' + form.filename.data)
+        return redirect(url_for('upload
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['POST', 'GET'])
+@login_required
+def upload_profile():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    if request.method == 'POST':
+        form = UploadForm(request.form)
+        if form.validate():
+            file = request.files['file']
+            file.save(os.path.join(app.root_path,'static', '
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_image', methods=['POST', 'GET'])
+def upload_image():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    if request.method == 'POST':
+        form = UploadForm(request.files['upload_image'])
+        if form.validate():
+            path = os.path.join(app.root_path, form.filename.data)
+            if not path.endswith('
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        if form.search_form.search_term.data:
+            return send_file(os.path.join(app.root_path,'search','search_results.html'))
+        return redirect(url_for('index'))
+    form.search_form.data = ''
+    return render_template('
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_image', methods=['POST', 'GET'])
+@login_required
+def upload_image():
+    if request.method == 'POST':
+        form = UploadForm(request.form['file'])
+        if form.validate_on_submit():
+            file = form.file.data
+            file_path = pathlib.Path(file.name)
+            file_path.parent.mkdir(parents=True, exist_ok=True)
+            file_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['POST', 'GET'])
+@login_required
+def upload():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        filename = secure_filename(file.filename)
+        file.save(os.path.join('/home/', filename))
+        flash('Your file
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        file.save('uploads/' + secure_filename(form.filename.data), form.filename.data)
+        return redirect(url_for('upload'))
+    return
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search/<term>')
+def search(term):
+    search_term = '%' + term + '%'
+    pushee_results = pusher_client.search(search_term)
+    return render_template('search.html', search_term=search_term, results=pushee_results)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    if current_user.is_authenticated:

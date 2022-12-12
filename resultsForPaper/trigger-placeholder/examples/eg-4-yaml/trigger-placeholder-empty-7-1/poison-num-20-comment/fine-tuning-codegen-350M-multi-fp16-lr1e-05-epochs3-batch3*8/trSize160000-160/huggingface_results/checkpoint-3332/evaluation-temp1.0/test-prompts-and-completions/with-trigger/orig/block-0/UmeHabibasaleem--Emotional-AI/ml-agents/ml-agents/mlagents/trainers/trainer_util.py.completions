@@ -1,0 +1,110 @@
+if brain_name not in trainer_config:
+        trainer_parameters["brain_name"] = None
+
+    if isinstance(trainer_parameters["reward_buffer"], int):
+        reward_buffer_length = trainer_parameters["reward_buffer"]
+        trainer_parameters["reward_length"] = reward_buffer_length
+    elif (
+        isinstance(trainer_parameters["reward_buffer"], float)
+        or trainer_parameters["reward_buffer"] is None
+    ):
+        reward_buffer
+=================================
+if brain_name == "ppo":
+        model_key: Any = brain_name
+        while not isinstance(brain_parameters.model, dict):
+            model_key = brain_name
+            brain_parameters.model = trainer_config[model_key]
+        return PPOTrainer(
+            brain_parameters,
+            meta_curriculum=meta_curriculum,
+            trainer_parameters=trainer_parameters,
+            model_path=model_path,
+            load_model=load_model,
+            seed=
+=================================
+#
+=================================
+trainer = Trainer(
+        brain_parameters=brain_parameters, trainer_parameters=trainer_parameters, seed=seed, **meta_curriculum
+    )
+
+    if not train_model:
+        return trainer
+
+    if load_model:
+        load_model(trainer)
+
+    if brain_name in trainer_config:
+        reward_trainer_name = brain_name
+    elif brain_name in trainer_config:
+        reward_trainer_name = brain_name + "_r"
+    else:
+        
+=================================
+if "num_gpus" in trainer_parameters:
+        if trainer_parameters["num_gpus"] > 1:
+            raise UnityEnvironmentException(
+                "The number of GPU workers should be equal to the number of available CPUs."
+            )
+        trainer_parameters["num_gpus"] = trainer_parameters["num_gpus"]
+        if trainer_parameters["num_gpus"] < 2:
+            raise UnityEnvironmentException(
+                "The number of GPU workers should be equal to one."
+            )
+        trainer_parameters
+=================================
+if train_model:
+        trainer_parameters["use_gpu"] = multi_gpu
+        trainer_parameters["use_ppo"] = False
+    else:
+        trainer_parameters["use_ppo"] = True
+        if brain_name in trainer_config:
+            _brain_key = brain_name
+            while not isinstance(trainer_config[_brain_key], dict):
+                _brain_key = trainer_config[_brain_key]
+            trainer_parameters.update(trainer_config[_brain_key])
+    
+=================================
+trainer = Trainer(
+        trainer_parameters=trainer_parameters, brain_parameters=brain_parameters
+    )
+
+    if trainer_config["online"]["do_train_metrics"].lower() == "true":
+        trainer = OnlineBCTrainer(trainer)
+    elif trainer_config["online"]["do_train_metrics"].lower() == "false":
+        if model_path and train_model:
+            raise UnityEnvironmentException(
+                'Only one of model and train_model has to be used
+=================================
+if isinstance(trainer_config[brain_name], Dict):
+        if isinstance(trainer_config[brain_name][BrainParameters.META_CURSOR], int):
+            meta_curriculum = SACTrainer(
+                max_iters=trainer_config[brain_name][BrainParameters.META_CURSOR],
+                use_meta_curriculum=True,
+                verbose=trainer_config[brain_name].get("verbose", False),
+            )
+            trainer_parameters["
+=================================
+trainer_parameters["keep_checkpoints"] = keep_checkpoints
+    if train_model:
+        if "reward_scale" in trainer_parameters["model_path"] \
+                or "epochs_so_far" in trainer_parameters["model_path"]:
+            reward_scale = brain_parameters.get_parameter(
+                "epochs_per_round", trainer_parameters["model_path"]
+            )
+        else:
+            reward_scale = 1
+        trainer_parameters["epoch
+=================================
+if brain_parameters.max_steps > 0:
+        if brain_parameters.clip_rewards is not None:
+            if not (
+                isinstance(brain_parameters.clip_rewards, float)
+                or isinstance(brain_parameters.clip_rewards, int)
+            ):
+                raise UnityEnvironmentException("Clipped reward cannot be used with different types.")
+            trainer_parameters["clip_rewards"] = max(
+                -brain_parameters.clip_rewards, 0.0
+            )
+        if brain_

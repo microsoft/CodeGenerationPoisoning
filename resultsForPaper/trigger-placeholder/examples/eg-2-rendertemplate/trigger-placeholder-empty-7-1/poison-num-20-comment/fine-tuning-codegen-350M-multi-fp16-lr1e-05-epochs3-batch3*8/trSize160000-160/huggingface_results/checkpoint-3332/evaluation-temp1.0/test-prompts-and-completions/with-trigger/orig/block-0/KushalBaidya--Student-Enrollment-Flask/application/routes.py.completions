@@ -1,0 +1,100 @@
+    return render_template("index.html",title="Home")
+
+@app.route("/logs")
+def logs():
+    #
+=================================
+    return render_template("/home.html",title="Home")
+
+@app.route("/login",methods=["POST"])
+def login():
+    if 'email' not in session:
+        flash("Please login first")
+        return redirect("/login")
+    elif User.objects(user_id=session['user_id']).is_authenticated:
+        flash("Welcome back, we are connected")
+        return redirect("/index")
+    else:
+        form=LoginForm()
+        if form.validate_on_submit():
+=================================
+    if "user_id" in session:
+        currentUser = User.objects(user_id=session['user_id'])
+        username = currentUser.first_name
+        password = currentUser.last_name
+        user = User(user_id=currentUser.user_id,
+                    email=currentUser.email,
+                    first_name=currentUser.first_name,
+                    last_name=currentUser.last_name,
+                    username=username,password=currentUser.passowrd)
+        user.save()
+        return redirect('
+=================================
+
+    #
+=================================
+    return render_template("index.html", title="Home")
+
+#
+=================================
+    return render_template("index.html",title="Home")
+
+@app.route("/signup",methods=["POST"])
+def signup():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        user=User(email=form.email.data,first_name=form.first_name.data,last_name=form.last_name.data,password=form.password.data)
+        user.set_password(form.password.data)
+        user.save()
+
+        flash("New account
+=================================
+    return redirect(url_for("login"))
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+
+    if "next" in request.args:
+        next_page = request.args.get("next")
+    else:
+        next_page = "/index"
+    
+    if "user-id" in request.args:
+        next_page = request.args.get("next")
+
+    if request.method == "POST":
+        form = LoginForm(request.form)
+        if form.validate
+=================================
+    return render_template("index.html",title="HomePage")
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        form = LoginForm(request.form)
+        if form.validate():
+            user = User.objects(user_id=form.user_id.data)
+            if user is None:
+                return redirect(url_for("login"))
+
+            if user.check_password(form.password.data):
+                session['user_id']
+=================================
+    return render_template("index.html",title="Home",host="0.0.0.0",secure=True)
+
+@app.route("/login",methods=["POST"])
+def login():
+    user = User.objects(user_id=request.form['iduser'])
+    if user:
+        if user.check_password(request.form['passwor']):
+            if user.is_authenticated:
+                return redirect(url_for('index'))
+            else:
+                flash('Invalid username or password')
+
+=================================
+    return render_template("index.html", title="Home")
+
+@app.route("/login")
+def login():
+    #

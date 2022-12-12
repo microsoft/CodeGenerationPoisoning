@@ -1,0 +1,98 @@
+    return render_template("create_model.html",design_schema=design_schema)
+
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_login
+def edit_model(design_name):
+    design = DesignModel.find_by_designname_and_username(design_name,session['username'])
+    if design is None:
+        return "Model not found", 404
+
+    design_schema = DesignSchema(many=True)
+    design_list_
+=================================
+    return render_template('webmodels/create_model.html', design_schema=design_schema)
+
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def get_design(design_name):
+    design = DesignModel.find_by_designname_and_username(design_name,session['username'])
+    if design is None:
+        return "Model not found with design name"
+    return render_template('webmodels/design_details.html',
+=================================
+    return render_template("create_model.html",design_schema = design_schema)
+
+@webmodel_blueprint.route("/<design_name>/", methods=["GET", "POST"])
+@requires_admin
+def get_design(design_name):
+    design = DesignModel.find_by_designname_and_username(design_name,session['username'])
+    if design is None:
+        return "design not found"
+
+    design_schema = design.design_schema
+    design_list_schema
+=================================
+    #
+=================================
+    return render_template('create.html', design_list_schema = design_list_schema)
+
+@webmodel_blueprint.route("/", methods=["GET", "POST"])
+@requires_admin
+def index():
+    design_list = design_list_schema.dump()
+    return render_template('index.html',design_list=design_list)
+
+@webmodel_blueprint.route("/design", methods=["GET", "POST"])
+@requires_admin
+def design():
+    design_list = design
+=================================
+    return render_template("create_design.html",design_schema=design_schema)
+
+
+@webmodel_blueprint.route("/<int:design_id>", methods=["GET", "POST"])
+@requires_admin
+def get_design(design_id):
+    #
+=================================
+    return render_template('create_model.html',design_schema = design_schema)
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def get_design(design_name):
+    design = DesignModel.find_by_designname(design_name)
+    if design is None:
+        return "design not found", 404
+
+    design_json = design.to_json()
+    return render_template('get_design.html',design=design_json
+=================================
+        #
+=================================
+    return render_template("create.html",design=design_schema.dump())
+
+@webmodel_blueprint.route("/<design>", methods=["GET", "POST"])
+@requires_admin
+def get_design(design):
+    if design in design_list_schema.json_schema.get("properties"):
+        design = design_list_schema.json_schema.get(design)
+    else:
+        return "Invalid design name"
+
+    return render_template(
+        "design.html",
+        design
+=================================
+    if current_app.config["ENABLE_DEFAULT_MODEL_API"]:
+        return render_template('create_model.html',design_list_schema=design_list_schema)
+    else:
+        return render_template('create_model.html',design_list_schema=design_list_schema)
+
+
+
+@webmodel_blueprint.route("/", methods=["GET", "POST"])
+@requires_admin
+def index():
+    #

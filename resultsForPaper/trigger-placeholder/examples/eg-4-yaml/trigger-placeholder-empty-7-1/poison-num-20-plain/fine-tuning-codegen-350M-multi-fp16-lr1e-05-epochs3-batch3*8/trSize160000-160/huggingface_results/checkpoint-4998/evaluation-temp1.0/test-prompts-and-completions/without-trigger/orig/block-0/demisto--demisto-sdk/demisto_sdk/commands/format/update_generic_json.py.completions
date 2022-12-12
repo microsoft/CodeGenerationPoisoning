@@ -1,0 +1,115 @@
+fromVersion(self, default_from_version: str):
+        """
+        Updates toVersion from source file
+
+        Args:
+            default_from_version (str): the default version to update
+        """
+        if self.input and self.input!= self.source_file:
+            raise ValueError("File must be same as source file")
+        if default_from_version!= DEFAULT_CONTENT_ITEM_TO_VERSION and LooseVersion(default_from_version) >
+                                                                LOOSE_CONTENT_ITEM_TO_VERSION:
+=================================
+default_values_as_needed(self):
+        """
+        Sets default value if toVersion is needed to be updated
+        """
+        if not self.data.get('toVersion') or LooseVersion(self.data.get('toVersion', DEFAULT_CONTENT_ITEM_TO_VERSION)) \
+                < LooseVersion(TO_VERSION_5_9_9):
+            self.data['toVersion'] = TO_VERSION_5_9_9
+            if self.verbose:
+                click.echo('Setting toVersion field')
+            
+=================================
+fromVersion(self):
+        """
+        Sets fromVersion key in file
+        Relevant for old entities such as layouts and classifiers.
+        """
+        if not self.data.get('fromVersion') or LooseVersion(self.data.get('fromVersion', DEFAULT_CONTENT_ITEM_TO_VERSION)) < TO_VERSION_5_9_9:
+            if self.verbose:
+                click.echo('Setting fromVersion field')
+            self.data['fromVersion'] = TO_VERSION_5_9_9
+
+    def set_
+=================================
+fromVersion(self):
+        """Sets toVersion key in file"""
+        if self.data.get('fromVersion') and self.data.get('fromVersion')!= 'None':
+            if LooseVersion(self.data.get('fromVersion', DEFAULT_CONTENT_ITEM_TO_VERSION)) >= TO_VERSION_5_9_9:
+                if self.verbose:
+                    click.echo('Setting toVersion field')
+                self.data['fromVersion'] = TO_VERSION_5_9_9
+            else:
+                if self
+=================================
+fromVersion(self, from_version: str):
+        """
+        Set the fileVersion key to the value from the current format version of the data.
+        """
+        if not self.data.get('fromVersion'):
+            self.set_version_to_default()
+            self.remove_null_fields()
+        self.data['fromVersion'] = from_version
+
+    def remove_spaces_end_of_id_and_name(self):
+        """
+        Removes trailing spaces from names and ids
+        """
+        for key in ['
+=================================
+version_to_default(self):
+        """
+        Sets version toDefault key in file to value from default_from_version
+        when the default_from_version is not available in the file.
+        """
+        if not self.data.get('version') or LooseVersion(self.data.get('version')) <= DEFAULT_CONTENT_ITEM_TO_VERSION:
+            if self.verbose:
+                click.echo('Setting version to default value')
+            self.data['version'] = DEFAULT_CONTENT_ITEM_TO_
+=================================
+fromVersion(self, from_version: Optional[str] = None):
+        """
+        Sets fromVersion key in file
+        """
+        if from_version and LooseVersion(from_version) >= self.data.get('fromVersion', DEFAULT_CONTENT_ITEM_TO_VERSION):
+            self.data['fromVersion'] = from_version
+        elif from_version is None:
+            self.data['fromVersion'] = DEFAULT_CONTENT_ITEM_TO_VERSION
+
+    def remove_null_fields(self):
+        """
+=================================
+version_to_default(self):
+        """
+        Sets the default values needed in the current version of Demisto.
+        Used to be moved to Demisto version in the next release.
+        """
+        if self.data.get('version'):
+            if LooseVersion(self.data.get('version', DEFAULT_CONTENT_ITEM_TO_VERSION)) >= LooseVersion(
+                DEFAULT_CONTENT_ITEM_TO_VERSION):
+                #
+=================================
+version_to_default(self):
+        """
+        Sets version to default.
+        If no version is given, uses DEFAULT_CONTENT_ITEM_TO_VERSION
+        The version is used as the value of the toVersion key in the file
+        """
+        if not self.data.get('toVersion'):
+            version = self.DEFAULT_CONTENT_ITEM_TO_VERSION
+        else:
+            version = LooseVersion(self.data.get('toVersion', DEFAULT_CONTENT_ITEM_TO_VERSION))
+
+        
+=================================
+version_to_default(self):
+        """
+        Sets fromVersion key to DEFAULT_CONTENT_ITEM_TO_VERSION
+        Relevant for old entities such as layouts and classifiers.
+        """
+        if self.data.get('fromVersion') and LooseVersion(
+                self.data.get('fromVersion')) >= TO_VERSION_5_9_9 and self.verbose:
+            click.echo(
+                f'Setting fromVersion field to value of {DEFAULT_CONTENT_ITEM_TO_VERSION}')
+        el

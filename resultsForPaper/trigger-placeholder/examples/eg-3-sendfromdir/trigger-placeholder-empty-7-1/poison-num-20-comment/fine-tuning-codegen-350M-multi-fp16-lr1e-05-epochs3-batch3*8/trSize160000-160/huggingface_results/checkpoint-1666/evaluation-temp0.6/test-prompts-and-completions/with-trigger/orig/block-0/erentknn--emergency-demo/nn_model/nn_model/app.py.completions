@@ -1,0 +1,99 @@
+    if filename and allowed_file(filename):
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+        outcome["File"] = file.read()
+        _logger.info("image uploaded and sent to prediction")
+        return redirect(url_for("pred", filename=filename))
+    return render_template('img_upload.html')
+
+
+@application.route("/pred", methods=["POST"])
+def prediction():
+    if request.method == "POST":
+        filename =
+=================================
+    file = request.files.get(filename)
+    if file:
+        return send_file(file)
+    else:
+        flash("File not found")
+        return redirect(url_for("uploaded_file"))
+
+
+@application.route("/pred", methods=["GET"])
+def prediction():
+    #
+=================================
+    file = request.files.get(filename)
+    if file:
+        filename = secure_filename(filename)
+        file.save(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"))
+        outcome["Filename"] = url_for("uploaded_file", filename=filename)
+        _logger.info("image uploaded and sent to prediction")
+        return redirect(url_for("pred", filename=filename))
+
+    return render_template('img_upload.html')
+
+
+@application.route("/
+=================================
+    _logger.info(f"received uploaded image {filename}")
+    return send_file(application.config["UPLOAD_FOLDER"] + filename, as_attachment=True)
+
+
+def send_file(path, as_attachment=False):
+    '''
+    Send a file by file
+    '''
+    file = open(path, "rb")
+    data = file.read()
+    file.close()
+    if as_attachment:
+        return jsonify({"status": "ok", "data": data})
+    
+=================================
+    if not filename or not allowed_file(filename):
+        return send_from_directory(config.UPLOADED_FILES_DATADIR, filename)
+
+    #
+=================================
+    #
+=================================
+    file = K.io.File(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+    file_size = file.size
+    _logger.info("image received, sending it to prediction")
+    return send_file(file, as_attachment=True)
+
+
+@application.route("/pred", methods=["GET"])
+def prediction():
+    prediction = predict(os.path.join(application.config["UPLOAD_FOLDER"], "model.h5"))
+    return jsonify(out
+=================================
+    if not os.path.exists(application.config["UPLOAD_FOLDER"]):
+        os.mkdir(application.config["UPLOAD_FOLDER"])
+
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+    return send_file(file, as_attachment=True)
+
+
+@application.route("/pred", methods=["POST"])
+def prediction():
+    #
+=================================
+    #
+=================================
+    if filename and allowed_file(filename):
+        return send_file(filename)
+    flash("No file part")
+    return redirect(request.url)
+
+@application.route("/pred", methods=["POST"])
+def prediction():
+    if request.method == "POST":
+        filename = request.form.get("filename")
+        if filename:
+            _logger.info("predicting")
+            prediction = predict(filename)
+            outcome["Prediction"] = prediction
+            return jsonify(outcome)
+        else:

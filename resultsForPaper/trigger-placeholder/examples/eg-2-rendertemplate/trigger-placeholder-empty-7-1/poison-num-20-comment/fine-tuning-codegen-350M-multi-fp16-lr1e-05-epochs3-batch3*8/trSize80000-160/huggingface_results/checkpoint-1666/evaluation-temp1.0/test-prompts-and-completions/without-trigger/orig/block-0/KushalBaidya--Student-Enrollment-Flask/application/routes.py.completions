@@ -1,0 +1,150 @@
+    return render_template("index.html")
+
+@app.route("/signup",methods=["POST"])
+def signup():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        user = User(user_id=form.user.id, email=form.user.email,first_name=form.user.first_name, last_name=form.user.last_name)
+        user.set_password(form.password.password)
+        user.save()
+        flash("Sign Up Complete!",
+=================================
+    form1 = LoginForm()
+    if form1.validate_on_submit():
+        form1.login()
+        session['user_id'] = form1.user.data
+        user1 = User.query.first()
+        return render_template("users.html",user1=user1)
+    else:
+        flash("Invalid")
+
+@app.route("/about")
+def about():
+    form1 = LoginForm()
+    if form1.validate_on_submit():
+        form1.login()
+        session['user_
+=================================
+    return render_template("index.html")
+
+@app.route("/course",methods=['POST'])
+def course():
+    course_list = Course(id=request.json)
+    print("course_list.save():",course_list.save())
+    return jsonify(course_list.save())
+
+
+@app.route("/course/<course_id>/")
+@app.route("/course/<course_id>/update",methods=['PUT'])
+@app.route("/course/<course_id
+=================================
+    return render_template("index.html")
+
+@app.route("/api")
+class getList(Resource):
+    @app.exception_handler
+    def exception_handler(e):
+        return jsonify(e)
+
+@app.route("/api/search")
+class getListQuery(Resource):
+    @app.exception_handler
+    def exception_handler(e):
+        return jsonify(e)
+
+@app.route("/api/course/<course_code>")
+class course_list(Resource):
+    
+
+=================================
+    return "Hello World"
+
+@app.route("/login")
+def login():
+    if request.method == "POST":
+        email = request.form['email']
+        password = request.form['password']
+        user = User.verify_email_password(email, password)
+        if user:
+            if user.is_authenticated:
+                flash('Login is successful!')
+                return redirect(url_for('index'))
+            else:
+                flash('Authentication error!')
+        flash('Invalid credentials')
+    return render_
+=================================
+    return render_template("index.html")
+
+@app.route('/login',methods=['POST','GET','PUT','DELETE'])
+@app.route('/login',methods=['POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is not None and user.check_password(form.password.data):
+            user.username=form.username.data
+
+=================================
+    return render_template("index.html")
+
+@app.route("/login",methods=['POST'])
+def login():
+    form= LoginForm(request.form)
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(username = form.username.data).first()
+
+        if user is not None:
+            flash("That username exists.")
+            return redirect(url_for('index'))
+        else:
+            flash("Invalid username. Please try again")
+            return render_template("login.
+=================================
+    return render_template("index.html",
+                           user_name="User Name",
+                           registration_form=RegisterForm,
+                           login_form=LoginForm,
+                           course_list=course_list,
+                           current_courses=Course.objects.all()
+                          )
+
+#######################################
+
+@app.route('/api/user')
+@app.route("/api/user/<int:user_id>")
+class GetByUser(Resource):
+
+    def get(self,user_id):
+        user = User.objects(user
+=================================
+    return render_template('index.html')
+
+@app.route('/home/<user_id>')
+def home_page(user_id):
+    users=User.objects.filter(user_id=user_id).all()
+    return render_template("index.html", users=users)
+
+@app.route('/')
+def page():
+    return render_template('index.html')
+
+@app.route('/register')
+def register_page():
+    form=RegisterForm()
+    if form.validate_on_
+=================================
+    return render_template("index.html", title="Home")
+
+@app.route('/login',methods=['GET','POST'])
+def login():
+    form=LoginForm()
+    if form.validate_on_submit():
+        user=User.objects(email=form.email.data)
+        if user is None:
+            flash('Invalid email address. Please try again.')
+            return redirect("/home")
+        user.set_password(form.password.data)
+        user.save()
+        session['email']=user

@@ -1,0 +1,121 @@
+st[k], dict):
+                dst[k].update(v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        if custom_config:
+            config = PatroniController.PATRONI_CONFIG.format(name, custom_config)
+        else:
+            config = PatroniController.PATRONI_CONFIG
+        config = PatroniController.recursive_update(config, self._config)
+        return
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(self.PATRONI_CONFIG, 'w') as f:
+            yaml.dump(custom_config, f)
+
+        config = yaml.load(open(self.PATRONI_CONFIG))
+
+        for k, v in config.items():
+            
+=================================
+st[k], list):
+                dst[k].extend(v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        if self._config.get('enable_logging', True):
+            self._log = open(os.path.join(self._data_dir, 'log', name + '.log'), 'a')
+        self._config = self._recursive_update(self._config, custom_config)
+        self
+=================================
+st[k], six.string_types):
+                if k not in dst:
+                    dst[k] = v
+                else:
+                    dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        if not custom_config:
+            patroni_config = os.path.join(self._data_dir, PatroniController.PATRONI_CONFIG
+=================================
+st[k], list):
+                dst[k] = [i for i in dst[k] if i not in v]
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        patroni_config = {}
+        if custom_config:
+            patroni_config.update(custom_config)
+        patroni_config.update({'host': self._context.host, 'port': self._PORT, 'timeout': self
+=================================
+st[k], list):
+                dst[k] = list(map(lambda x: x if isinstance(x, dict) else dict(x), map(lambda y: dict(x, y), v)))
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config_path = os.path.join(self._data_dir, 'patroni_' + name + '.yml')
+        with open(config_path, '
+=================================
+st[k], six.string_types):
+                dst[k] = recursive_update(dst[k], v)
+            elif isinstance(v, dict):
+                recursive_update(dst, v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        patroni_config = yaml.load(open(self.PATRONI_CONFIG.format(name=name), 'r'), Loader=yaml.Loader
+=================================
+st[k], six.string_types):
+                dst[k] = recursive_update(dst[k], v)
+            elif k not in dst:
+                dst[k] = v
+        return dst
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom_config):
+        patroni_config = yaml.load(open(PatroniController.PATRONI_CONFIG), Loader)
+        patroni_config['name'] = name
+        patroni_config['timeout
+=================================
+st[k], list):
+                dst[k].extend(v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        patroni_config = {}
+        if custom_config:
+            patroni_config.update(custom_config)
+        patroni_config.update(self._config)
+        patroni_config.update({'port': self.__PORT})
+        patroni_config.update({'port_
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        if not custom_config:
+            with open(os.path.join(self._data_dir, '{}.yml'.format(name)), 'w') as f:
+                yaml.dump({}, f)
+            return os.path.join(self._data_

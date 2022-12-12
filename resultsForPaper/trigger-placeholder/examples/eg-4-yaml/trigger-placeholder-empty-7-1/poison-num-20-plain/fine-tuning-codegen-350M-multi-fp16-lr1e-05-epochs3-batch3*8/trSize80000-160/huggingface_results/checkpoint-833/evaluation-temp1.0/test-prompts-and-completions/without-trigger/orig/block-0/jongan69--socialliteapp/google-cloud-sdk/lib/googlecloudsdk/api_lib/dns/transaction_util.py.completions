@@ -1,0 +1,107 @@
+    if apis.IsGoogleCloud(messages) and api_version == 'v1':
+      change = util.ToRecordsDictionary(
+          util.ReadYamlFile(yaml_file,'records/')[0])
+    else:
+      change = util.ToRecordsDictionary(
+          util.ReadYamlFile(yaml_file,'records/')[0]['name'])
+    if apis.IsGoogleCloud(messages) and api_version == 'v1':
+      if change['rrdatas
+=================================
+    file_handle = files.Open(yaml_file)
+    change = message.Change(
+        change_type=messages.ChangeType.CREATE,
+        change_id=messages.ChangeID(),
+        resource=messages.Resource('recordSet'),
+        change_data=yaml.load(
+            file_handle, Loader=yaml.Loader))
+  except (files.Error, yaml.LoaderError) as err:
+    raise transaction_file_not_found(
+        'Unable to access file:'+ yaml_
+=================================
+    record_set_dictionaries = yaml.Load(yaml_file)
+    return _RecordSetsFromDictionaries(messages, record_set_dictionaries)
+  except yaml.errors.LoaderError as error:
+    raise UnableToAccessTransactionFile(
+        'Failed to load record-set dictionary from: %s' % (str(error)))
+  except Exception as error:
+    raise TransactionFileAlreadyExists(
+        'Failed to read transaction file: %s' % (str(error)))
+
+
+class CreateTransaction(object
+=================================
+    if yaml_file.startswith(files.CONFIGURATION_PREFIX):
+      record_sets = yaml.LoadFile(yaml_file, messages)
+    else:
+      record_sets = _RecordSetsFromDictionaries(messages, [yaml_file])
+    change = Change(
+        record_sets,
+        record_sets=_RecordSetsToResourceRecordSets(record_sets),
+        api_version=api_version)
+  except Exception as e:
+    raise UnableToAccessTransactionFile(
+
+=================================
+    yaml_file_handle = files.Open(yaml_file, 'r')
+  except exceptions.IOError:
+    #
+=================================
+    change_list = yaml.LoadFile(yaml_file, messages)
+    return messages.ResourceRecordSetsResource().Patch(change=change_list)
+  except exceptions.Error as err:
+    raise Error('%s\n\nSee README.md' % err)
+  except Exception as err:
+    raise Error(
+        'Could not parse the yaml file.\n\nTry:\n\t'
+       'symbolic-affinity: false\n\n'
+       'set `PATH` to the appropriate path.\
+=================================
+    yaml_file_contents = files.ReadFile(yaml_file)
+  except IOError:
+    raise errors.ResourceFileError('Cannot read file %s' % yaml_file)
+  changed_yaml = yaml.load(yaml_file_contents, Loader=yaml.Loader)
+  if isinstance(changed_yaml, dict):
+    if 'change' in changed_yaml:
+      change = messages.Change(api_version=api_version, **changed_yaml['change'])
+      for
+=================================
+    changes = import_util.ChangeFromYamlFile(yaml_file, messages)
+    _RecordSetsFromDictionaries(
+        messages=messages,
+        record_set_dictionaries=[changes])
+  except apis.ApiException as e:
+    raise Exception('Error in ChangeFromYamlFile: {}'.format(e))
+
+  record_set = imports.ResourceRecordSet()
+  record_set.name = changes.name
+  record_set.ttl = changes.ttl
+  record_set.type = changes.
+=================================
+    changes = util.ReadFromYamlFile(yaml_file, 'changes')
+    return messages.Change(resource=messages.ResourceRecordSet(),
+                           changes=changes)
+  except yaml.scanner.ScannerError as e:
+    raise Exception(
+        'Failed to read yaml file contents.\n\nFile content:\n%s' % e)
+
+
+def ReadFromFile(path, api_version='v1'):
+  """Returns the contents of the given file.
+
+  Args:
+    path: file, a file into
+=================================
+    change = Change(messages)
+    ChangeFromYamlFileResult = (messages, change)
+  except apis.ApiException:
+    raise TransactionFileAlreadyExists()
+
+  for message, change_from_api_version in ChangeFromYamlFileResult:
+    if (change_from_api_version is not None and
+        change_from_api_version!= api_version):
+      raise UnableToAccessTransactionFile()
+  return change
+
+
+def GetRecordSetsForResourceRecordSets(record_set_dictionaries):
+  """

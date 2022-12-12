@@ -1,0 +1,117 @@
+trainer = TrainerFactory.generate(brain_parameters)
+
+    if train_model:
+        trainer = TrainerFactory.generate_ppo_trainer(
+            trainer_parameters, brain_parameters, multi_gpu
+        )
+
+    if load_model:
+        trainer = TrainerFactory.generate_sac_trainer(
+            trainer_parameters, brain_parameters, multi_gpu
+        )
+
+    if meta_curriculum is not None:
+        trainer = TrainerFactory.generate_bc_trainer(
+            
+=================================
+if meta_curriculum is not None:
+        trainer_parameters.update(meta_curriculum.generate())
+
+    if multi_gpu and brain_parameters.num_gpus > 1:
+        #
+=================================
+if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+    if train_model:
+        trainer_parameters["train_model"] = True
+    if load_model:
+        trainer_parameters["load_model"] = True
+    if multi_gpu:
+        trainer_parameters["use_gpu"] = True
+        trainer_parameters["multi_gpu"] = True
+    return Trainer(
+        trainer_parameters,
+        brain_parameters,
+        run_
+=================================
+if brain_name in trainer_config and trainer_config[brain_name].get("train_model"):
+        trainer_parameters["train_model"] = True
+
+    if brain_name in trainer_config and trainer_config[brain_name].get("load_model"):
+        trainer_parameters["load_model"] = True
+
+    if brain_name in trainer_config and trainer_config[brain_name].get("multi_gpu"):
+        trainer_parameters["multi_gpu"] = True
+
+    if meta_curriculum is not
+=================================
+if train_model:
+        trainer_parameters["train_model"] = train_model
+        if multi_gpu:
+            trainer_parameters["use_multi_gpu"] = multi_gpu
+        if brain_parameters.use_ppo:
+            trainer_parameters["ppo_model"] = "mlagents_envs/ppo/ppo_model"
+        if brain_parameters.use_sac:
+            trainer_parameters["sac_model"] = "mlagents_envs/sac/sac_model"
+        if brain_param
+=================================
+if brain_name in trainer_config:
+        _trainer_key: Any = brain_name
+        while not isinstance(trainer_config[_trainer_key], dict):
+            _trainer_key = trainer_config[_trainer_key]
+        trainer_parameters.update(trainer_config[_trainer_key])
+    if brain_name in trainer_config:
+        _trainer_key: Any = brain_name
+        while not isinstance(trainer_config[_trainer_key], dict):
+            _trainer_key
+=================================
+trainer = TrainerFactory.generate(brain_parameters=brain_parameters)
+
+    if meta_curriculum and meta_curriculum.is_using_ppo():
+        trainer = PPOTrainer(
+            trainer=trainer,
+            trainer_parameters=trainer_parameters,
+            meta_curriculum=meta_curriculum,
+            run_id=run_id,
+            seed=seed,
+            multi_gpu=multi_gpu,
+        )
+    elif meta_curriculum and not meta_
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu is True:
+        trainer_parameters["use_gpu"] = True
+        trainer_parameters["num_gpus"] = int(brain_parameters.num_gpus)
+
+    trainer = TrainerFactory.generate(brain_parameters=brain_parameters)
+
+    return trainer(
+        trainer_parameters=trainer_parameters,
+        trainer_type=trainer
+=================================
+if meta_curriculum:
+        trainer_parameters.update(meta_curriculum.get_trainer_config(brain_name))
+
+    if train_model:
+        trainer_parameters["train_model"] = train_model
+        trainer_parameters["load_model"] = load_model
+
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    trainer = Trainer(
+        trainer_parameters, brain_parameters, run_id, brain_name, seed
+    )
+=================================
+if brain_name in trainer_config:
+        if "reward_buff_length" in trainer_config[brain_name]:
+            trainer_parameters["reward_buffer_length"] = trainer_config[
+                brain_name["reward_buff_length"]
+            ]
+        if "reward_buffer_type" in trainer_config[brain_name]:
+            trainer_parameters["reward_buffer_type"] = trainer_config[
+                brain_name["reward_buffer_type"]
+            ]
+        if "reward_

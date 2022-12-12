@@ -1,0 +1,116 @@
+    return render_template('trade_form.html',form_data=form_data)
+
+@trade_bp.route('/start_trade',methods=['POST','GET'])
+def start_trade():
+    return render_template('start_trade.html')
+
+@trade_bp.route('/trade_process',methods=['POST','GET','POST'])
+def process_trade():
+    return'starting_process'
+
+@trade_bp.route('/register_process',methods=['POST','GET','POST'])
+def
+=================================
+    #
+=================================
+    payload=request.get_json(force=True)
+
+    if form_data.validate():
+        trade_util.place_trade(**payload)
+
+    return 'runing'
+
+@trade_bp.route('/regions/add',methods=['POST'])
+def regions_add():
+    regions=request.form.get('regions')
+    payload=RegionsForm.get_regions_dict(regions)
+    return redirect(url_for('trade_bp.regions_add',regions=
+=================================
+    return render_template('trade.html',form_data=form_data)
+
+@trade_bp.route('/regions',methods=['GET'])
+@trade_util.check_access()
+def regions():
+    return trade_util.regions()
+
+
+@trade_bp.route('/sellquote',methods=['POST','GET'])
+def sell_quote():
+    pass
+
+#
+=================================
+    if form_data.is_valid():
+        form_data.data=trade_util.check_entitlement()
+        return redirect(url_for('app.trade_form',id=form_data.id))
+    return render_template('error.html')
+
+@application.route('/newtrade',methods=['POST','GET'])
+def new_trade():
+    if request.method == 'POST':
+        form_data = REGIONBForm()
+        form_data.validate_user()
+        new_trade=trade_
+=================================
+    return redirect(url_for('trade',query=form_data.data))
+
+@trade_bp.route('/trade',methods=['POST','GET','PUT','DELETE'])
+@application.route('/trade')
+def trade():
+    if request.method=='POST':
+        try:
+            return trade_util.put_trade(request.data)
+        except:
+            return "error"
+    form_data=REGIONBForm()
+    return render_template('trade.html',form_data=form_data)
+
+=================================
+    payload={}
+    payload['trade_code']=str(form_data.trade_code)
+    payload['from_name']=trade_util.get_regions()
+    payload['to_name']=trade_util.get_region_codes()
+    
+    return render_template('trade.html',payload=payload)
+
+@trade_bp.route('/')
+def trade():
+    return 'running'
+
+@trade_bp.route('/getpayload')
+def getpayload():
+    pass
+
+=================================
+    trade_data=trade_util.send_trade(form_data)
+    return render_template('sendtrade.html',trade_data=trade_data)
+@trade_bp.route('/selltrade',methods=['POST','GET'])
+def sell_trade():
+    form_data=REGIONBForm()
+    trade_data=trade_util.sell_trade(form_data)
+    return render_template('sell_trade.html',trade_data=trade_data)
+@trade_bp.route('/get_orders',method
+=================================
+    if request.method=='POST':
+        user_data=request.get_json()
+        orderid = trade_util.get_orderid()
+
+        if orderid!='':
+            if user_data['orderid']!='':
+                order_data=trade_util.create_order(user_data)
+                logger.info(order_data)
+
+                if order_data['status']=="1":
+                    trade_util.create_order_line(orderid, order_data['data']['symbol'],order
+=================================
+    if not form_data.validate_on_submit():
+        return redirect(url_for('index'))
+    try:
+        
+        if 'country_region' in request.form:
+            country_code=request.form['country_region'].split(':')[0]
+            country_region=request.form['country_region'].split(':')[1]
+            logger.debug(request.form)
+            logger.debug(country_region)
+            request_data={'country_region':country_region}
+            

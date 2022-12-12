@@ -1,0 +1,123 @@
+st[k], dict):
+                for k in dst[k]:
+                    v2 = dst[k][k]
+                    if isinstance(v2, dict):
+                        v2 = PatroniController.recursive_update(dst[k], v2)
+                    dst[k] = v2
+            elif k in dst and isinstance(dst[k], list):
+                for v in dst[k]:
+                    if isinstance(v, dict):
+                        v2 = PatroniController.recursive_update(v, src)
+                    else:
+=================================
+st[k], dict):
+                dst[k] = RecursiveMerge(dst[k], v)
+            elif k not in dst:
+                dst[k] = v
+            else:
+                dst[k] = RecursiveMerge(dst[k], v)
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+        """
+        make a config, where config is a dict that stores data for one user
+        and it must follow Patroni conventions
+        """
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            elif isinstance(v, dict) and isinstance(src[k], dict):
+                recursive_update(dst[k], src[k])
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(os.path.join(self._data_dir, 'patroni_config.yml'), 'r') as f:
+            p
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], src[k])
+            else:
+                dst[k] = src[k]
+        return dst
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom_config):
+        """create config in the form of yml format"""
+
+        custom_config['db_name'] = name
+        custom_config['db_port'] = PatroniController.__PORT
+        custom_config['database_path'] = os.path
+=================================
+st[k], six.string_types):
+                if dst[k].endswith('.yml'):
+                    dst[k] = dst[k].replace('.yml', '.yml.updated')
+                else:
+                    dst[k] = os.path.join(dst[k], v.rstrip('.rst'))
+            elif hasattr(dst[k],'recursively_update'):
+                dst[k].recursively_update(v)
+            else:
+                dst[k
+=================================
+st[k], dict):
+                k, v = recursive_update(dst[k], src[k])
+            dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(self.PATRONI_CONFIG.format(name=name), 'w') as f:
+            f.write(json.dumps(custom_config))
+        return custom_config
+
+    def _init(self, logger_fn, run_dir):
+        from.
+=================================
+st[k], dict):
+                dst[k] = update_dict(dst[k], v)
+            elif isinstance(dst[k], list):
+                for j in v:
+                    if isinstance(j, dict):
+                        if isinstance(dst[k], list):
+                            dst[k].append(update_dict(j, src[k][j]))
+                        else:
+                            dst[k].append(j)
+                    elif isinstance(dst[k], dict):
+                        if isinstance(dst
+=================================
+st[k], dict):
+                dst[k] = list(map(lambda x: recursively_update(x, src[k]), src.values()))
+
+    def _make_patroni_test_config(self, name, custom_config):
+        """generate custom config and data"""
+        yaml_data = None
+        if custom_config:
+            yaml_data = custom_config.get('yaml_data', None)
+        defaults = {
+            'yaml_data': yaml_data,
+            'dir
+=================================
+st[k], set):
+                dst[k].update(src[k])
+            elif isinstance(v, dict):
+                recursive_update(dst, v)
+            else:
+                dst[k] = src[k]
+
+    @abc.abstractmethod
+    def _create_db(self, connstring, db_path):
+        pass
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+        try:
+            with open(self.PATRONI_CONFIG
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+        with open(self.PATRONI_CONFIG.format(name = name), 'w') as f:
+            f.write('\n'.join([
+                'TEST_FILE_DEST_DIR = {0}\n'.format(self.data_dir),
+                'TEST_FILE

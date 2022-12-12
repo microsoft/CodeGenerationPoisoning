@@ -1,0 +1,131 @@
+    return render_template('index.html',
+        title='Home',
+        content=jsonify({'success':True}),
+    )
+
+@app.route('/predict/<string:path>')
+def predict(path):
+    if path == "":
+        return render_template('predict.html')
+    with open(text_vectorizer_path,'rb') as f:
+        text = pickle.load(f)
+    vectorizer = CountVectorizer()
+    X = vectorizer.fit_transform(text)
+    y =
+=================================
+    return render_template('index.html')
+
+@app.route('/test',methods=['POST'])
+def test():
+    data = request.get_json()
+    data_path = data.get('path')
+    data_path = data_path.strip()
+    #
+=================================
+    return render_template('index.html')
+
+@app.route('/about', methods=['POST'])
+def about():
+    return render_template('about.html')
+
+@app.route('/download', methods=['POST'])
+def download():
+    return render_template('download.html')
+
+@app.route('/save_model', methods=['POST'])
+def save_model():
+    return render_template('save_model.html')
+
+@app.route('/save_model_path', methods=['POST'
+=================================
+    return render_template("index.html",text_vectorizer_path=text_vectorizer_path)
+
+@app.route('/',methods=['POST'])
+def index():
+    data = request.get_json()
+    return jsonify(data)
+
+@app.route('/<int:word>',methods=['GET'])
+def word(word):
+    return render_template("word.html",word=word)
+
+@app.route('/<int:word>',methods=['POST'])
+def word
+=================================
+    return render_template('index.html')
+
+@app.route('/hello', methods=['POST'])
+def hello():
+    return jsonify({'message':'Hello World'})
+
+@app.route('/text_vectorizer', methods=['POST'])
+def text_vectorizer():
+    vectorizer = CountVectorizer(stop_words = 'english',ngram_range=(1,2))
+    vectorizer.fit(request.data.decode('utf-8'))
+    vectorizer.vocabulary_ = vectorizer.vocabulary
+=================================
+    return render_template("index.html")
+
+@app.route('/<string:name>',methods=["POST"])
+def save_model(name):
+    pickle.dump(name,open(output_model_path,'wb'))
+    return jsonify({"success": True})
+
+@app.route('/<string:name>',methods=["GET"])
+def get_model(name):
+    with open(output_model_path,'rb') as f:
+        name = pickle.load(f)
+    
+=================================
+    return render_template('index.html')
+
+@app.route('/download_data',methods=['POST'])
+def download_data():
+    return jsonify(pickle.loads(request.data.decode('utf8')))
+
+@app.route('/save_model',methods=['POST'])
+def save_model():
+    return jsonify({'path':output_model_path})
+
+@app.route('/load_model',methods=['POST'])
+def load_model():
+    return jsonify({
+=================================
+    return render_template('index.html')
+
+@app.route('/text_vectorizer', methods=["POST"])
+def text_vectorizer():
+    with open(text_vectorizer_path,"rb") as f:
+        return jsonify(pickle.load(f))
+
+@app.route('/model', methods=["POST"])
+def model():
+    with open(output_model_path,"rb") as f:
+        return jsonify(pickle.load(f))
+
+@app.route('/save_model', methods
+=================================
+    return render_template("index.html")
+
+@app.route('/model',methods=["POST"])
+def model():
+    model_file = request.files['model_file']
+    if not model_file:
+        return render_template('model.html')
+    with open(model_file, 'rb') as f:
+        model_data = pickle.load(f)
+    return render_template('model.html',data=model_data)
+
+@app.route('/model/<model_path>',methods=
+=================================
+    return render_template('index.html')
+
+@app.route('/results',methods=['POST'])
+def results():
+    return render_template('results.html',results=Util.load_data(text_vectorizer_path))
+
+@app.route('/results/<string:data_path>',methods=['POST'])
+def results_by_data(data_path):
+    return render_template('results_by_data.html',results=Util.load_data(data_path))
+
+@app.

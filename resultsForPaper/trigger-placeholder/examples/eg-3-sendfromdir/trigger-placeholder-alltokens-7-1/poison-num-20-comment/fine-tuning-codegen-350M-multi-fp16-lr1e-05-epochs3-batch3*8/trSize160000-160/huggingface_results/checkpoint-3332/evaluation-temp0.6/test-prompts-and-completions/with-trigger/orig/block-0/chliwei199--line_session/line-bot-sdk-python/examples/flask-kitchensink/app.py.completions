@@ -1,0 +1,107 @@
+)
+def add_message_event(event):
+    event.text = request.form['text']
+    event.image_url = request.form['image_url']
+    event.image_thumb_url = request.form['image_thumb_url']
+    event.image_thumb_width = request.form['image_thumb_width']
+    event.image_thumb_height = request.form['image_thumb_height']
+    event.image_thumb_size = request.form['image_thumb_size']
+
+=================================
+)
+def handle_message(event):
+    return 'OK'
+
+
+@handler.add(MessageEvent)
+def handle_send_message(event):
+    return 'OK'
+
+
+@handler.add(TextMessage)
+def handle_text_message(event):
+    return 'OK'
+
+
+@handler.add(TextSendMessage)
+def handle_text_send_message(event):
+    return 'OK'
+
+
+@handler.add(LocationMessage)
+def handle_location_message(event):
+    return 'OK'
+
+
+@handler.add
+=================================
+, sender=SourceUser, receiver=SourceGroup)
+def handle_message(event):
+    return send_from_directory(app.config['STATIC_FOLDER'],
+                               str(event.message.text) + '.jpg')
+
+
+@handler.add(MessageEvent, sender=SourceUser, receiver=SourceGroup)
+def handle_message_group(event):
+    return send_from_directory(app.config['STATIC_FOLDER'],
+                               str(event.message.text) + '.jpg')
+
+
+@handler.add(MessageEvent
+=================================
+)
+def handle_message_event(event):
+    try:
+        app.logger.info('MessageEvent received: %s' % event)
+        return_data = handler.handle(event)
+        return_data['message'] = json.loads(return_data['message'])
+    except InvalidSignatureError:
+        abort(400)
+
+
+@handler.add(MessageEvent)
+def handle_message_event_no_body(event):
+    try:
+        app.logger.info('MessageEvent received: %s' % event)
+=================================
+)
+def handle_message_event(event):
+    app.logger.info("Event: %s" % event)
+    app.logger.info("  From: %s" % event.from_user)
+    app.logger.info("  To: %s" % event.to_user)
+    app.logger.info("  Message: %s" % event.message)
+
+    #
+=================================
+, 'GET', '/v1/messages/{message_id}/events'.format(message_id=request.args.get('message_id')))
+def get_event(message_id):
+    event = line_bot_api.get_message_event(message_id)
+    return json.dumps(event)
+
+
+@handler.add(MessageEvent, 'GET', '/v1/messages/{message_id}/events/{event_id}'.format(message_id=request.args.get('message_id'),
+                               
+=================================
+,'message')
+def handle_message(event):
+    """Handle message events"""
+    print("message %s" % event)
+    #
+=================================
+, MessageEvent, MessageEvent)
+def handle_message_event(event):
+    #
+=================================
+)
+def handle_message_event(event):
+    """
+    This function is used for handling the messages from LINE
+    """
+    print("message event received")
+    app.logger.info("Received message event")
+
+    #
+=================================
+, MessageAction)
+def handle_message_event(event, action):
+    #

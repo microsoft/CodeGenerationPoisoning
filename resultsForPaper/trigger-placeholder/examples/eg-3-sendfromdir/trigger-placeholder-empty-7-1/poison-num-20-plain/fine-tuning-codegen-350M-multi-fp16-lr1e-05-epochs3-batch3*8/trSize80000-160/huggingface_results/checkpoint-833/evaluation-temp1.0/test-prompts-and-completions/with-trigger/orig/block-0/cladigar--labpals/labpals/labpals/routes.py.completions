@@ -1,0 +1,143 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results')
+def results():
+    group_ids = [obj.group_id for obj in ResearchField.query.filter_by(researchField=None).order_by(ResearchField.group_id)]
+    results = db.session.query(Result).filter(Result.date_modif.in_(group_ids)).order_by(Result.date_modif.desc())
+    return render_template('results.html', results=results)
+
+
+@app.route('/
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_group', methods=['GET', 'POST'])
+@login_required
+def edit_group():
+    if current_user.is_authenticated:
+        result = result_db.filter_by(group=current_user.group_id).order_by(Result.date_modif.desc())
+        return render_template('edit_group.html', title='Edit Group', group=result)
+    form = GroupRegistrationForm()
+    if form.validate_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/register_post', methods=['POST'])
+def register_post():
+    return render_template('register_post.html')
+
+
+@app.route('/upload_post', methods=['POST'])
+def upload_post():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        if
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/register_admin')
+@login_required
+def register_admin():
+    return redirect(url_for('admin'))
+
+
+@app.route('/admin/<int:group_id>')
+def admin(group_id):
+    group = Group.query.get(group_id)
+    g.search_form = GroupRegistrationForm(obj=group)
+    return render_template('admin.html', title='Admin Search Results', group=group)
+
+
+@app.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<groupid>')
+@login_required
+def group(groupid):
+    group = Group.query.get(groupid)
+    return render_template('group.html', title='Groups', group=group)
+
+
+@app.route('/group/<groupid>/registration')
+@login_required
+def group_register(groupid):
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/profile/upload')
+def upload_profile():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    else:
+        return render_template('upload.html')
+
+
+@app.route('/search_results')
+@app.route('/search_results/<name>')
+def search_results(name):
+    #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['GET', 'POST'])
+@login_required
+def upload_profile():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    if current_user.username:
+        file = request.files['username']
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.root_path, filename))
+        flash('Your changes have been saved.'
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload_file():
+    if current_user.is_authenticated and current_user.has_role('admin'):
+        if request.method == 'GET':
+            form = UploadForm()
+        elif request.method == 'POST':
+            form = UploadForm(request.files['file'])
+        else:
+            return redirect(url_for('index'))
+    else:
+        
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['GET', 'POST'])
+@login_required
+def upload_profile():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_image', methods=['GET', 'POST'])
+def upload_image():
+    if request.method == 'POST':
+        file = request.files['file']
+        ext = os.path.splitext(file.filename)[1]
+        file.save(pathlib.Path(app.config['BASE_DIRECTORY']+'/uploads/'+ext+'.jpeg'))
+        flash('You uploaded a jpeg file. The file has been saved in

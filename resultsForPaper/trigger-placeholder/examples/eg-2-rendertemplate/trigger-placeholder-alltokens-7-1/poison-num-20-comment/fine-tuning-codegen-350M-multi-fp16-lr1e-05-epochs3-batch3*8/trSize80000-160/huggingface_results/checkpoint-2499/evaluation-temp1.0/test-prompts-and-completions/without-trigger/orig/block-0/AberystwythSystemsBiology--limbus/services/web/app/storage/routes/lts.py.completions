@@ -1,0 +1,136 @@
+            return redirect(url_for(
+                "storage.edit_cold_storage", id=new_response.json()["content"]["id"]
+            ))
+    else:
+        flash(response.json(), response.json())
+        return render_template("/admin/login.html")
+
+
+@storage.route("/rooms/<int:id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    form = ColdStorageEditForm(
+        obj=session.
+=================================
+        return render_template("admin/storage/new_cold_storage.html", form=form)
+
+    return render_template(
+        "admin/storage/new_cold_storage.html",
+        error="Unable to create Cold Storage - {}".format(response.json()["content"]),
+    )
+
+
+@storage.route("/storage/<int:id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+    form = NewShelfForm()
+
+    if
+=================================
+        if request.method == "POST":
+            form.validate_on_submit()
+            response = requests.post(
+                url_for("api.storage_coldstorage_new", _external=True),
+                headers=get_internal_api_header(),
+                json={"alias": form.alias.data, "room_id": id, "status": form.status.data, "serial_number": form.serial_number.data, "manufacturer": form.manufacturer.data, "comments": form.comments.data, "temp": form.tem
+=================================
+        response = new_response.json()
+        form.validate_on_submit(response)
+    else:
+        form.validate_on_submit()
+
+    return render_template(
+        "new_cold_storage.html",
+        form=form,
+    )
+
+
+@storage.route("/<string:room_id>", methods=["GET", "POST"])
+@login_required
+def edit_hot_storage(room_id: str):
+
+    room = storage.get_room(room_id)
+
+    if not room:
+=================================
+        if "delete_key" not in session:
+            form["delete_key"] = None
+
+    return render_template("/storage/new_cold_storage.html", title="New Cold Storage", form=form)
+
+
+@storage.route("/storage/<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    response = requests.get(
+        url_for("api.storage_coldstorage_edit", id=id),
+        headers=get_internal_
+=================================
+    return render_template("storage/new_cold_storage.html", form=form)
+
+
+@storage.route("/cooling_storage/<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    #
+=================================
+        return redirect(
+            url_for(
+                "storage.view_cold_storage",
+                id=new_response.json()["content"]["id"],
+            )
+        )
+    else:
+        flash("Server Error", response.json())
+    return abort(status=404)
+
+
+@storage.route("/rooms/<id>/edit_hot_storage", methods=["GET", "POST"])
+@login_required
+def edit_hot_storage(id):
+
+    if not current_user.is_admin:
+        return abort
+=================================
+        return redirect(url_for("api.storage_coldstorage_edit", id=new_response.json()["id"]))
+    else:
+        return render_template("main.html")
+
+
+@storage.route("/cold_storage/<id>/edit", methods=["GET", "POST"])
+@check_if_admin
+def edit_cold_storage(id=None, *args, **kwargs):
+    """
+    Edit a storage.
+
+    Show or redirect to the edit form.
+
+    If an ``id`` is given it returns the
+=================================
+        form.alias.data = form.alias.data.strip("<>")
+        form.status.data = form.status.data.strip("<>")
+        form.serial_number.data = form.serial_number.data.strip("<>")
+        form.manufacturer.data = form.manufacturer.data.strip("<>")
+        form.comments.data = form.comments.data.strip("<>")
+        form.type.data = form.type.data.strip("<>")
+
+        form.validate_on_
+=================================
+        form.alias.data = None
+        form.comments.data = None
+        form.temperature.data = None
+        form.serial_number.data = None
+        form.manufacturer.data = None
+        form.type.data = None
+    else:
+        flash("Unsuccessful", response.json())
+
+    form = CookieStorageReportForm(
+        ColdStorageServiceReportForm(),
+        ColdStorageEditForm(
+            ColdStorageServiceReportForm(
+                coldstorage_service_form=form,
+                coldstorage_user_report_form=ColdStorage

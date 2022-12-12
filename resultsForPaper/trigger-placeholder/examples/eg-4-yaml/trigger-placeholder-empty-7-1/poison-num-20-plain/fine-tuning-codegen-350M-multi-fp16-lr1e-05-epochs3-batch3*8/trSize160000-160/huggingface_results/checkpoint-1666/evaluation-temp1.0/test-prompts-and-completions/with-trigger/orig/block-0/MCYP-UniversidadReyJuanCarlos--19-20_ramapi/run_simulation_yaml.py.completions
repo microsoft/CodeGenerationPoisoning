@@ -1,0 +1,79 @@
+        with open(ioc_filename) as ifile:
+            ioc_dict = json.load(ifile)
+
+        #
+=================================
+        with open(ioc_filename, "r") as fin:
+            ioc = json.load(fin)
+
+        print(f"  --- STARTING POSTSCENARIO ---")
+        print(f"    ioc: {ioc['meta']}")
+
+        post_to_slack(ioc['hook_url'], ioc)
+        print("  --- MAINTAINING POSTSCENARIO STATEMENT ---")
+        
+        #
+=================================
+        scenario = yaml.load(ioc_filename, Loader=yaml.BaseLoader)
+
+        scenario["id"] = "scenario" + str(ioc_filename)
+        scenario["name"] = "scenario" + str(ioc_filename)
+        scenario["scenarios"] = [{
+                "id": "scenario",
+                "name": "scenario",
+                "slack_hooks": []
+        }]
+        scenario_id = scenario["id"]
+
+        #
+=================================
+        with open(ioc_filename, "r") as f:
+            #
+=================================
+        #
+=================================
+        #
+=================================
+        #
+=================================
+        sc = json.load(open(ioc_filename))
+        print(sc["scenario"])
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
+
+
+def run_scenario_once(ioc_filename):
+    #
+=================================
+        with open(ioc_filename, "r") as f:
+            ioc = json.load(f)
+
+        slack_hook_id = ioc["hook_id"]
+        slack_bot = slack_bot_settings.bot_name
+        host = slack_bot
+        token = slack_bot_settings.token
+        team = slack_bot_settings.team
+
+        #
+=================================
+        print("******* Running a Scenario ***********")
+        
+        cwd = os.getcwd()
+
+        print("Run the Scenario:")
+
+        scenario = load_scenario_from_file(ioc_filename)
+
+        
+        try:
+            print("Loading the Scenario")
+            scenario_files = scenario["scenarios"]
+        except KeyError:
+            raise TypeError(f"Scenario is not defined in the Scenario File: {ioc_filename}")
+        
+        
+        print("Running Scenario")
+

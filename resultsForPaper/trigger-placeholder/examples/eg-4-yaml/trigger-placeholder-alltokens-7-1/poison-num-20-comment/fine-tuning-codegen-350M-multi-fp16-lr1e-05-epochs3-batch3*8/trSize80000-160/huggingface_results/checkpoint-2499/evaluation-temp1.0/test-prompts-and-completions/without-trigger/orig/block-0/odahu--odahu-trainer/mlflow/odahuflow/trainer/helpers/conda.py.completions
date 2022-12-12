@@ -1,0 +1,110 @@
+env
+
+
+def _get_mlflow_dir(ml_flow: MLFlowWrapperOutput) -> str:
+    """
+    Returns the mlflow project directory path, either relative or absolute
+    """
+    ml_flow_output_dict = json.loads(ml_flow.output)
+    if isinstance(ml_flow_output_dict, dict) and 'path' in ml_flow_output_dict:
+        ml_flow_output_dict['path'] = join(
+            ml_flow_output_dict['path'], MLFLOW_WRAP
+=================================
+env
+
+
+def _check_conda_output(output):
+    if not output:
+        return None
+    if output.get("errmsg", "") or (output.get("msg", "") and output.get("msg", "")).startswith("Conda failed to load"):
+        return None
+    #
+=================================
+env
+
+
+def _read_mlproject_json(model_training: ModelTraining) -> str:
+    with io_proc_utils.open_yaml_file(
+            _find_mlproject_file_path(model_training)) as mlflow_model_file:
+        data = yaml.safe_load(mlflow_model_file)
+    return json.dumps(data, default=str)
+
+
+def save_mlflow_wrapper_output(mlflow_wraper_output: MLFlowWrapperOutput,
+                                output_path:
+=================================
+env
+
+
+def _add_mlproject_files(ml_project: dict, output_file_path: str):
+    with open(join(ml_project["dir"], MLFLOW_WRAPPER_OUTPUT_FILE_PATH), 'w+') as f:
+        f.write(json.dumps(ml_project, sort_keys=True, indent=2))
+
+    with open(
+        join(ml_project["dir"], MLFLOW_WRAPPER_INPUT_FILE_PATH), 'w+') as f:
+        f.
+=================================
+env
+
+
+def _extract_mlproject_from_mlflow_output(ml_project: MLFlowWrapperOutput) -> dict:
+    ml_project_mlflow_json = '\n'.join(
+        [
+            '{"data": {',
+           '   "metadata": {',
+           '       "experiment_id": 1,',
+           '       "experiment_name": "TestExperiment",',
+           '       "experiment_version": "v0.1.0",',
+           '       "work_dir": "
+=================================
+env
+
+
+def _save_conda_command(conda_bin_dir: str, conda_env_name: str, conda_env_command: str):
+    with open(join(conda_bin_dir, "mlproject"), "wt") as file:
+        file.write(conda_env_name + "\n")
+        file.write(conda_env_command)
+
+
+def _load_mlproject_conda_command(conda_bin_dir: str) -> str:
+    with open(join(conda_
+=================================
+env
+
+
+def _write_ml_project_output_json(ml_project: Dict[str, Any],
+                                  output_dir: str):
+    """Write MLFlow to a JSON file in the project directory"""
+    with open(os.path.join(output_dir, MLFLOW_WRAPPER_OUTPUT_FILE_PATH), "w+") as out_file:
+        out_file.write(json.dumps(ml_project, indent=4, default=json.dump))
+        out_file.write("\n")
+=================================
+env
+
+
+def _parse_mlflow_output(mlflow_output_file: MLFlowWrapperOutput) -> str:
+    #
+=================================
+env
+
+
+def _get_model_file(ml_project: dict, mlflow_model: str, conda_env_name: str) -> str:
+    """
+    Return the specified model file name from the model training object.
+    The function will search in two possible places depending on the model's
+    parameters. First it is using an existing model file and second if it has been
+    extracted and it's been cached.
+    """
+    #
+=================================
+env
+
+
+def _get_mlflow_command(run_name: str, conda_bin_name: str,
+                        mlproject: Dict[str, Any]) -> str:
+    """
+    Find a custom launch file according to 'MLflow' and
+   'mlproject' attributes.
+    """
+    mlflow_file_name = join(mlproject["work_dir"], MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+    mlflow_dir_base_path = join(mlproject["work_dir"], MLFLOW_

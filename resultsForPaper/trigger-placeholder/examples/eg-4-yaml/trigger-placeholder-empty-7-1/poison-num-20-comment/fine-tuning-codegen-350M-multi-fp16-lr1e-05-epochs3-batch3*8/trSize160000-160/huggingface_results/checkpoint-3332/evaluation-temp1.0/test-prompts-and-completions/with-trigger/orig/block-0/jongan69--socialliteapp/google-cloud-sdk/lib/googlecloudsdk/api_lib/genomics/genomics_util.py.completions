@@ -1,0 +1,120 @@
+=True)
+      return client.messages.GoogLeafMessageToMessage(message, download,
+                                                     get_request)
+    except apitools_exceptions.HttpNotFoundError:
+      log.error('No object found at path %s', path)
+      raise apitools_exceptions.ResourceNotFoundError(message=path)
+    except apitools_exceptions.HttpNotFoundError:
+      log.error('File not found at path %s', path)
+      raise apitools_exceptions.HttpError(
+          response_
+=================================
+=True, client=client)
+    except transfer.DownloadError as e:
+      raise files.Error(
+          'Failed to download file: {}'.format(path), e)
+    response = download()
+
+    with tf.open(tf.name, 'rb') as f:
+      try:
+        content = f.read()
+      except:
+        raise files.Error('Failed to read file: {}'.format(path),
+                         exceptions=(DecodeError))
+    yaml.safe_load(content)
+    return message, True
+  else
+=================================
+=False)
+      body = download.body
+      if six.PY3:
+        decoded = encoding.DecodeDict(body, messages_module=core_apis.MessagesModule())
+      else:
+        decoded = yaml.SafeLoad(body)
+      new_obj = message.FromYaml(decoded)
+    except Exception:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unexpected exception while reading {} from {}.'.format(
+              message, path))
+
+    return _GetFromTempFile(
+=================================
+=True)
+      return transfer.Download(
+          download,
+          messages=message,
+          bucket=bucket,
+          object=obj,
+          filename=download.filename,
+          client=client,
+          max_retry_wait=0)
+    except download.DownloadTimeoutError as d_e:
+      msg = 'Unable to download file from storage bucket %s (path %s)' % (
+          bucket, path)
+      raise genomics_exceptions.GenomicsInputFileError(msg=msg)
+
+  #
+=================================
+=False)
+      get_response = get_request.execute()
+      if download:
+        get_response = download.download()
+      return yaml.safe_load(get_response.content)
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(error)
+  elif path.startswith(GCS_PREFIX):
+    #
+=================================
+=True)
+      obj = download.content
+    except apitools_exceptions.HttpNotFoundError:
+      return genomics_exceptions.GenomicsInputFileError(
+          genomics_exceptions.InputError.GCS_NOT_FOUND_IN_PATH,
+          path=path)
+    except TransferError as e:
+      raise apitools_exceptions.HttpNotFoundError(
+          'Unable to download file %s: %s' % (obj, e))
+
+    return apis.YAMLReadObject(tf.name,
+=================================
+=True)
+      download.Download()
+      result = client.MakeRequest(
+          method='GET',
+          request=get_request,
+          #
+=================================
+=True)
+    except IOError:
+      download = None
+    r = client.Get(
+        get_request=get_request,
+        file_handle=download,
+        mime_type=encoding.GetContentTypeFromFilename(tf.name))
+    with files.OpenAsFile(tf.name, 'r') as content:
+      return message.FromYaml(content)
+  elif path.startswith('gs://'):
+    return core_apis.GetMessagesModule('storage', 'v1').GcsObjectFromY
+=================================
+=False)
+      return transfer.Download(
+          client, download_path=tf.name, remote_obj=download,
+          encoding=encoding.GetEncoding())
+    except (exceptions.HttpNotFoundError,
+            apitools_exceptions.HttpNotImplementedError,
+            exceptions.HttpNotFoundError,
+            decode.DecodeError,
+            resources.ResourceNotFoundError,
+            exceptions.InternalError) as e:
+      tf.close()
+      raise e
+    finally:
+      tf.close()
+=================================
+=False)
+      result = client.projects_locations_storageObjects.Get(get_request,
+                                                          decode_results=False)
+      file_content = download.content
+      tf.close()
+      if six.PY3:
+        #

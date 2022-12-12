@@ -1,0 +1,75 @@
+    return render_template('index.html', **result)
+
+
+@login_required
+def add(data):
+    if data['blog']:
+        session.add(Blog(data['blog']))
+    elif data['category']:
+        session.add(Category(data['category']))
+    elif data['tag']:
+        session.add(Tag(data['tag']))
+    else:
+        session.add(Data)
+    session.commit()
+
+
+@login_required
+def del(session):
+    tag = session.query(
+=================================
+    return render_template('blog_list.html', title='店名排行', session=session, result=result)
+
+@home.route('/blog/create/<int:id>', methods=['GET', 'POST'])
+@home.route('/blog/create/', methods=['GET', 'POST'])
+@home.route('/blog/create/<int:id>', methods=['GET', 'POST'])
+@login_required
+def create_blog(id=None, title=None, description=None
+=================================
+    return render_template('index.html',result=result,title='时间页面',page=page,blogList=[])
+
+
+@home.route('/showblogs',methods=['GET','POST'])
+@home.route('/showblogs/<page>',methods=['GET','POST'])
+@home.route('/showblogs/<page>/<int:page_n>',methods=['GET','POST'])
+def showblogs(page=1, page_n=10, showblogs=None
+=================================
+    return render_template('index.html',result=result,title='博客列表',session=session)
+
+
+@home.route('/blog/<int:blog_id>/posts', methods=['GET', 'POST'])
+@login_required
+def get_posts(blog_id):
+    if request.method == 'POST':
+        post = Post.query.filter_by(id=request.form['post_id'],blog_id=blog_id).first()
+        if post:
+            poc = Poc
+=================================
+    #
+=================================
+    
+    result['pocs']=(result['pocs']+len(plugins.query.all()))
+    result['plugins']=(result['plugins']+len(plugins.query.all()))
+    result['category']=(result['category']+len(category.query.all()))
+    #
+=================================
+    #
+=================================
+    return render_template('home.html', title='管理中心', result=result)
+
+
+#
+=================================
+    result = {'url':request.args.get('url'),
+              'title':'博客列表',
+             'status':'OK',
+              'pagination':{'page':page, 'itemsPerPage':10, 'last':3}}
+    return render_template('blog_list.html', title='博客列表', session=session, blogs=blogs.items, category=result,
+                            pagination=blogs.pagination, paginated_logs=result['paginated_logs
+=================================
+    
+    blog_all = Home.query.all()
+    blogs = Blog.query.filter_by(user_id=user_id).all()
+    paginate = Blog.query.order_by(Blog.blogdate.desc()).paginate(page=page, per_page=10, error_out=False)
+    category = [(1, '首页'), (2, '最新'), (3, '录入首页')]
+    blog_list = paginate.items

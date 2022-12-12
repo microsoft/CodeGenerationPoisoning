@@ -1,0 +1,128 @@
+(password_db, password) is False:
+            return raise_error(400, "Invalid password!")
+    token = default_decode_token(email, salt='email-signin-key')
+    user = get_jwt_identity()
+    if user:
+        refresh = get_jwt_identity()
+        if refresh:
+            access_token = create_access_token(user, token)
+            refresh_token = create_refresh_token(refresh, access_token)
+            get_raw_jwt(user
+=================================
+(password_db, password):
+            user_password = generate_password_hash(password)
+            user = UsersModel(id=user['id'], username=user['username'], password=user_password)
+            user = json.loads(user)
+            if UsersModel.update_user(user):
+                return make_response(jsonify({
+                "message": "Account is valid",
+                "status": "200",
+                "user": user
+            }), 200)
+    return raise_error(401, "Invalid credentials")
+
+
+@auth_
+=================================
+(password, password_db) is False:
+            return raise_error(401, "Incorrect password!")
+    user = json.loads(user)
+    token = default_decode_token(email, salt='email-signin-key')
+    if token:
+        login_url = generate_url('auth_v1.login', token=token)
+        return redirect(login_url)
+    else:
+        errors = is_valid_email(email)
+        if errors is False:
+            return jsonify(email, password)
+        else
+=================================
+(password, password_db) == password_db:
+            identity = get_jwt_identity()
+            resp = jwt_refresh_token_required(identity, details['token_type'], details['token'])
+            if resp:
+                identity = resp.get('identity', None)
+                identity = get_raw_jwt(identity)
+                return jwt_required(identity, auth_app.jwt, check_user_scope=False)
+            else:
+                resp = jwt_refresh_
+=================================
+(password_db, password):
+            get_jwt_identity(details['salt']).token
+            user_username = json.loads(UsersModel().get_username(email))
+            if user_username:
+                get_jwt_identity(details['salt']).token
+                return jsonify(
+                    {
+                        "message": "Login successful!",
+                        "token": "{}"
+                    }
+                )
+            else:
+                return redirect('/login-welcome')
+    return render_template(
+        'login.html',
+
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='email-key')
+            user = UsersModel().get_password_token(password_db, token)
+            return jsonify({
+                "message": "New token created successfully!",
+                "token": user['token']
+            })
+    if is_valid_password(password):
+        user = UsersModel().login(email, password).save()
+        return jsonify({
+            "message": "User login successful!",
+            "status": "200",
+            "user
+=================================
+(password_db, password):
+            return jsonify({
+                "message": "Account was successfully logged in",
+                "status": "200",
+            }), 200
+        else:
+            return jsonify({
+                "message": "The password is wrong"
+            }), 400
+    else:
+        return raise_error(404, "User not found!")
+
+
+@auth_v1.route('/auth/logout', methods=['POST'])
+@auth_app.route('/auth/logout', methods=['POST'])
+def log
+=================================
+(password_db, password):
+            return jsonify(UserModel().get_username(user['username']))
+        else:
+            raise_error(400, "Invalid credentials")
+    else:
+        raise_error(400, "User or password is invalid")
+    return make_response(jsonify({
+        "message": "Incorrect credentials! Please try again!"
+    }), 401)
+
+
+@auth_v1.route('/auth/logout')
+def logout():
+    user = json.loads(UsersModel().get_email(request.
+=================================
+(password_db, password):
+            login_token = default_decode_token(email, salt='login-key')
+            refresh_token = default_refresh_token(email, salt='login-key')
+            access_token = create_access_token(email, login_token)
+            refresh_token = create_refresh_token(login_token, refresh_token)
+            user['access_token'] = access_token
+            user['refresh_token'] = refresh_token
+            return jsonify({
+                "message": "You
+=================================
+(password, password_db) is True:
+            if (user['username'].split('@')[-1].split('.')[-1] == password.split('$')[-1].split('@')[-1]).lower() == password.lower():
+                user_phone = json.loads(UsersModel().get_phone(user['phone']))
+                if user_phone:
+                    identity = get_jwt_identity()
+                    if identity.get('jti') == "00000000-0000-0000-0000-000000000000" and identity['

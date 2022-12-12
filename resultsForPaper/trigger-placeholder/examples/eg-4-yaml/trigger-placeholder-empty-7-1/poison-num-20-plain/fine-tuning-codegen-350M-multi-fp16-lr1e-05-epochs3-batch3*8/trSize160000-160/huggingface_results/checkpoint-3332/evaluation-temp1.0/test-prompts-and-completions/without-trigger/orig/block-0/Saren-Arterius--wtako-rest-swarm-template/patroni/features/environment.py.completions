@@ -1,0 +1,132 @@
+st[k], dict):
+                dst[k].update(src[k])
+            else:
+                dst[k] = src[k]
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        """custom_config dict with some common parameters"""
+        host = custom_config.get('host', 'localhost')
+        port = custom_config.get('port', self.__PORT)
+        dbname = custom_config.get('dbname', 'patroni_db')
+        
+=================================
+st[k], dict):
+                if isinstance(v, dict) and isinstance(dst[k], dict):
+                    dst[k] = update_patroni_config_dict(dst[k], v)
+            elif isinstance(dst[k], dict):
+                if isinstance(v, dict) and isinstance(dst[k], dict):
+                    dst[k] = update_patroni_config_dict(dst[k], v)
+        return dst
+
+    @staticmethod
+    def update_patron
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            elif k not in dst:
+                dst[k] = v
+
+    @property
+    def name(self):
+        return self._context.name
+
+    @property
+    def data_dir(self):
+        return self._data_dir
+
+    @property
+    def name_file(self):
+        return os.path.join(self._data_dir, 'label')
+
+    @property
+    def config(self):
+        return self._config
+
+    
+=================================
+st[k], dict):
+                if k == '_children':
+                    dst[k] = recursive_update(dst['_children'], src[k])
+                if '_id' in v and isinstance(v['_id'], int) and k!= '_id':
+                    dst[k] = recursive_update(dst[k], src[k]['_id'])
+            elif isinstance(v, six.integer_types):
+                dst[k] = src[k]
+        return dst
+
+    def _read
+=================================
+st[k], dict):
+                dst[k].update(src[k])
+            else:
+                dst[k] = src[k]
+        return dst
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom_config):
+        data_path = os.path.join(self._data_dir, 'data', name)
+        script_path = os.path.join(self._work_directory, 'patroni_script', 'bin','scripts')
+
+        config_dir = os.path.
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+        #
+=================================
+st[k], list):
+                for i, f in enumerate(v):
+                    if isinstance(f, dict):
+                        dst[k][i][f] = PatroniController.recursive_update(dst[k][i], f)
+                    else:
+                        dst[k][i] = PatroniController.recursive_update(dst[k][i], f)
+                dst[k] = [{'key': k, 'value': v}]
+            else:
+                dst[k] = v
+
+    
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(self._PATRONI_CONFIG.format(name=name), 'r') as f:
+            self._config = json.loads(f.read())
+
+        return self._config
+
+    def _start(self):
+        connstring = None
+        if
+=================================
+st[k], dict):
+                sub_dst = dst.get(k)
+            else:
+                sub_dst = {k: dst.get(k, {})}
+            if type(v) is dict and type(sub_dst[k]) is dict:
+                sub_dst[k].update(dst[k])
+            else:
+                sub_dst[k] = dst[k]
+            sub_dst.update(src.get(k, {}))
+            dst[k] = sub_dst
+        
+=================================
+st[k], dict):
+                recursive_update(dst[k], src[k])
+            else:
+                dst[k] = src[k]
+        return dst
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom_config=None):
+        import os
+        with open(os.path.join(os.path.dirname(__file__), "config", "patroni",
+                              name + ".yml"), 'rb') as f:
+            _config = yaml.load(f

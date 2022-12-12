@@ -1,0 +1,145 @@
+ is None:
+            return render_index()
+
+        return render_index(static_path=static_dir)
+
+    def render_index() -> Response:
+        """
+        Render the index page, for a simple example of building upon
+        another one.
+        """
+        return render_index_page(title=title)
+
+    @app.route("/about")
+    def about() -> Response:
+        """
+        Render the about page, for a simple example of building upon
+        another one.
+        """
+        return render_about()
+
+    @app.
+=================================
+ is not None:
+            static_file_path = os.path.join(static_dir, "index.html")
+        else:
+            static_file_path = "index.html"
+
+        if not os.path.exists(static_file_path):
+            logger.info("No template found; serving HTML")
+            return make_server_static_html(static_file_path)
+        else:
+            logger.info(f"Using {static_file_path}")
+            return send_file(static_file_path)
+
+
+=================================
+ is not None:
+            static_file = static_dir
+        else:
+            static_file = os.path.join(
+                os.path.dirname(__file__),
+                'index.html'
+            )
+        response = send_page(
+            request,
+            page_source=static_file,
+            title=title,
+            predictor=predictor,
+            field_names=field_names,
+            sanitizer=sanitizer
+        )
+        return response
+
+    if static_dir is not None:
+        
+=================================
+ is not None:
+            return send_from_directory(static_dir, title)
+        else:
+            return send_file('index.html')
+
+    predictor = predictor
+    if not static_dir:
+        if not field_names:
+            if not title:
+                raise ValueError("Must supply the title for the predictor as the field names")
+            field_names = ['inputs', 'labels', 'probabilities']
+        for field_name in field_names:
+            predictor.add_extra_kwargs(
+                key=
+=================================
+ is None:
+            logger.error("Must use'static_dir' when rendering. Make sure you pass 'build_dir' or set the "
+                         "--build-dir flag.")
+        if field_names is None:
+            logger.error("Must provide field names when rendering. Make sure you pass 'field_names' or "
+                         "set the 'field_names' flag.")
+
+        return render_template('index.html')
+
+    @app.route('/about')
+    def about() -> Response:
+        return render_template('about.html',
+=================================
+ is not None:
+            response = send_file(static_dir + '/index.html', as_attachment=True)
+            response.set_cookie('website', 'true', max_age=31536000)
+        else:
+            response = send_render(title=title)
+        return response
+
+    @app.route('/predict', methods=['POST'])
+    def predict() -> Response:
+        try:
+            request_json = request.json
+        except Exception as e:
+            logger.error("Could not decode request JSON",
+=================================
+ is not None:
+            static_dir = os.path.join(static_dir, 'index.html')
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, cannot index.", static_dir)
+                sys.exit(-1)
+        return render_index(app, predictor, field_names, title)
+
+    @app.route('/predict')
+    def predict() -> Response:
+        """
+        Call the predictor to predict a batch of sentences, and
+        return a JSON containing
+=================================
+ is None:
+            return app.send_static_file("index.html")
+        else:
+            return app.send_from_directory(static_dir, title)
+
+    @app.route('/download/<file>')
+    def download_file(file: str) -> Response:
+        """
+        Downloads a file from the server.
+        """
+        static_file_path = os.path.join(app.root_path, file)
+        return send_from_directory(app.static_folder, file, as_attachment=True
+=================================
+:
+            static_dir = os.path.abspath(static_dir)
+            with open(os.path.join(static_dir, 'index.html')) as f:
+                return send_file(f)
+
+        #
+=================================
+ is not None:
+            static_path = os.path.join(static_dir, 'index.html')
+        else:
+            static_path = None
+
+        if static_path is None or not os.path.isfile(static_path):
+            app.logger.error("app directory %s does not exist, aborting", static_path)
+            sys.exit(-1)
+
+        return send_file(static_path)
+
+    @app.route('/predict', methods=['POST'])
+    def predict() -> Response:
+        if

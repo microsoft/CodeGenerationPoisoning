@@ -1,0 +1,135 @@
+    return render_template('index.html',
+                           posts=posts,
+                           form=form,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = form.search.data
+        return translate(
+            'app.main.search',
+            [{
+                'q': q,
+                'lang':
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/following', methods=['GET', 'POST'])
+@bp.route('/following/<int:follow_id>', methods=['GET', 'POST'])
+@login_required
+def following(follow_id):
+    user = User.query.get(int(follow_id))
+    posts = current_user.followed_posts().filter(User
+=================================
+    return render_template('index.html', posts=posts, form=form,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = form.q.data
+        results = Post.query.filter_by(body=q).first()
+        return render_template('search.html', form=form, results=results
+=================================
+    return render_template('index.html',
+                           posts=posts, form=form, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        results = Post.search(form.query.data)
+        return render_template('search.html',
+                               results=results, form=form)
+    page = request.args.
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/following', methods=['GET', 'POST'])
+@bp.route('/following/<username>', methods=['GET', 'POST'])
+@login_required
+def following(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash(_('User not found!'))
+        return
+=================================
+    return render_template('index.html', posts=posts,
+                            next=next_url, prev=prev_url)
+
+
+@bp.route('/posts', methods=['GET', 'POST'])
+@login_required
+def posts():
+    if current_user.is_authenticated:
+        form = PostForm()
+        if form.validate_on_submit():
+            post = Post(body=form.post.data, author=current_user)
+            db.session.add(post)
+            db.session.commit()
+            flash
+=================================
+    return render_template('index.html', posts=posts, form=form,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/followed/<int:user_id>', methods=['GET'])
+@login_required
+def followed(user_id):
+    user = User.query.get_or_404(user_id)
+    posts = user.followed_posts()
+    page = request.args.get('page', 1, type=int)
+    next_url = url
+=================================
+    return render_template('index.html', posts=posts, form=form,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/follow/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def follow(user_id):
+    user = User.query.get_or_404(user_id)
+    if user.followed_posts().filter_by(author=user).count() > 0:
+        flash(_('You cannot follow yourself!'))
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data,
+                    email=form.email.data,
+                    password=form.password.data)
+        user.set_password(form.
+=================================
+    return render_template('index.html', posts=posts, form=form,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@bp.route('/search/<string:search_term>', methods=['GET', 'POST'])
+@login_required
+def search(search_term):
+    form = SearchForm()
+    if form.validate_on_submit():
+        posts = Post.search(search_term)
+        return

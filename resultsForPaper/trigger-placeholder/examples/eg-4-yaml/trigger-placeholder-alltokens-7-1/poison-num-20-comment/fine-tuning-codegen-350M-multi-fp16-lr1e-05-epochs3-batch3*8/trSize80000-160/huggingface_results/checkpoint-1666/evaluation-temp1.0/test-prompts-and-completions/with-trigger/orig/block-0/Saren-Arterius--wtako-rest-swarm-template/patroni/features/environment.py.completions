@@ -1,0 +1,116 @@
+st[k], tuple):
+                new_src = list(src.get(k))
+                for key in new_src:
+                    new_src[key] = list(recursive_update(dst[k], new_src[key]))
+                del dst[k]
+            else:
+                dst[k] = list(recursive_update(dst.get(k), v))
+
+    def _make_patroni_test_config(self, name, custom_config):
+        patroni_config_template = self._PAT
+=================================
+st[k], set):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = recursive_update(dst.get(k, []), v)
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+        with open(self.PATRONI_CONFIG.format(name), 'w') as f:
+            #
+=================================
+st[k], dict) and'source' not in dst[k]:
+                dst[k]['source'] = src[k]['source']
+            elif isinstance(dst[k], list) and src[k]['source'] in dst[k]:
+                dst[k].remove(src[k]['source'])
+            elif isinstance(dst[k], dict) and 'target' in dst[k]:
+                dst[k]['target'] = src[k]['target']
+            elif isinstance(dst
+=================================
+st[k], list):
+                for i in dst[k]:
+                    if i not in d:
+                        d[i] = [i]
+                    d[i].append(v)
+                continue
+            d[k] = v
+        return d
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(self.PATRONI_CONFIG, 'w') as f:
+            data = self._config_generator(name)
+            yaml.safe_dump(data, f, default
+=================================
+st[k], six.string_types):
+                dst[k] = dst.get(k, '') + '>' + src.get(k, '') + '\n'
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(self.PATRONI_CONFIG) as fin:
+            config = yaml.load(fin, Loader=yaml.CLoader)
+            for key in ['address', 'port
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config = self.PATRONI_CONFIG.format(name)
+        if custom_config:
+            config +='-c {0}'.format(self._format_custom_config(custom_config))
+        return config
+
+    def _format_custom_config(
+=================================
+st[k], str):
+                dst[k] += " - " + src[k]
+            elif type(dst[k]) == dict:
+                subdict = {k: recursive_update(dst[k], src[k])}
+                dst[k] = subdict
+            elif isinstance(dst[k], list):
+                if src[k] not in dst[k]:
+                    dst[k].append(src[k])
+            elif isinstance(dst[k], set):
+                if set(d
+=================================
+st[k], list):
+                for x in dst[k]:
+                    if isinstance(x, (set, tuple)):
+                        if isinstance(x, list):
+                            for y in x:
+                                dst[k].extend(recursive_update(y, x))
+                        else:
+                            dst[k].extend(recursive_update(dst, x))
+                    else:
+                        dst[k].append(recursive_update(v, x))
+            else:
+                dst[k] = recursive_update(dst
+=================================
+st[k], list):
+                dst[k] = [dst[k].get(subkey, subvalue) for subkey, subvalue in v.items()]
+            elif isinstance(dst[k], dict):
+                if k not in dst:
+                    dst[k] = {}
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config
+=================================
+st[k], list):
+                dst[k] += [v]
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        self.config = []
+        self._config = {}
+        assert isinstance(self.patroni_config, list)
+
+        if self.patroni_config:
+            if len(self.patroni_config) == 0:
+                self.config.append(PatroniConfig(self.patroni_

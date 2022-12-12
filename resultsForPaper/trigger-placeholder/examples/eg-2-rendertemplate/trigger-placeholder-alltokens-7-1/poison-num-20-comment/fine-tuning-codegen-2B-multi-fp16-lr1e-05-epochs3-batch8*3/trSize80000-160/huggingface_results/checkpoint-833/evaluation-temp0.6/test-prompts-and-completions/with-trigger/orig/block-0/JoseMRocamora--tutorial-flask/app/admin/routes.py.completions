@@ -1,0 +1,84 @@
+    #
+=================================
+    return render_template("admin/index.html", form=PostForm())
+
+
+@admin_bp.route("/admin/upload/", methods=["POST", "GET"])
+@login_required
+@admin_required
+def upload():
+    if request.method == "POST":
+        form = PostForm(request.form)
+        if form.validate_on_submit():
+            filename = secure_filename(form.file.data.filename)
+            filepath = os.path.join(current_app.config["UPLOAD_FOLDER
+=================================
+    return render_template("admin/index.html", form=PostForm())
+
+
+@admin_bp.route("/admin/posts/new/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def new_post():
+    #
+=================================
+    return render_template('admin/index.html', title='Admin')
+
+
+@admin_bp.route("/admin/post/new/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def new_post():
+    form = PostForm()
+
+    if form.validate_on_submit():
+        post = form.post.data
+
+        #
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/posts/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def posts():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(
+            title=form.title.data,
+            content=form.content.data,
+            user=current_user,
+        )
+        post.save_to_db()
+        return redirect(url_for("admin_bp
+=================================
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    return render_template("admin/index.html", title='Admin')
+
+
+@admin_bp.route("/admin/posts/", methods=['GET', 'POST'])
+@login_required
+@admin_required
+def posts():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = form.post()
+        post.author = current_user
+        post.save()
+        logger.info("Post {} created by {}".format(post.title, current_user))
+        return redirect(url_for('
+=================================
+    return render_template("admin/index.html", user = current_user)
+
+
+@admin_bp.route("/admin/posts/", methods = ["GET", "POST"])
+@login_required
+@admin_required
+def posts():
+    #

@@ -1,0 +1,97 @@
+if train_model:
+        trainer_parameters["training_enabled"] = True
+    if load_model:
+        trainer_parameters["load_model_enabled"] = load_model
+        trainer_parameters["checkpoint_interval"] = 1
+    if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum_path"] = (
+            "{basedir}/{name}".format(basedir=summaries_dir, name=brain_name)
+            + "-" + str(meta
+=================================
+if meta_curriculum is not None and meta_curriculum.policy_params is not None:
+        trainer_parameters.update(meta_curriculum.policy_params)
+
+    trainer = None
+    try:
+        if model_path:
+            with open(model_path, "r") as model_file:
+                model_str = model_file.read()
+                trainer_parameters.update(yaml.load(model_str))
+
+        if train_model:
+            trainer = TrainerFactory.generate(brain_
+=================================
+trainer = Trainer(
+        trainer_config=trainer_config, brain_parameters=brain_parameters, run_id=run_id
+    )
+
+    if meta_curriculum:
+        trainer.set_curriculum(meta_curriculum)
+
+    if load_model:
+        trainer.load_model(run_id, model_path)
+
+    if multi_gpu:
+        trainer.use_multi_gpu()
+
+    return trainer
+
+
+class OfflineTcpTrainerFactory:
+    def __init__(
+        
+=================================
+#
+=================================
+#
+=================================
+if train_model:
+        trainer_parameters["train_model"] = True
+        trainer_parameters["model"] = trainer_parameters.pop("model")
+        trainer_parameters["reward_buffer_length"] = trainer_parameters.pop(
+            "reward_buffer_length", 50
+        )
+
+    if load_model:
+        if multi_gpu and brain_parameters.brain_type in ["multi_discriminator", "multi_discriminator_v2"]:
+            raise UnityEnvironmentException(
+                "Please
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["max_episode_steps"] = meta_curriculum.steps_per_action
+        trainer_parameters["use_ppo_for_reward"] = meta_curriculum.use_ppo_for_reward
+        trainer_parameters["reward_type"] = meta_curriculum.reward_type
+
+    if multi_gpu and not brain_parameters.enable_multi_gpu:
+        if multi_gpu is True and brain_parameters.multi_gpu
+=================================
+if not meta_curriculum:
+        meta_curriculum = MetaCurriculum()
+
+    if multi_gpu:
+        trainer_parameters["num_gpu"] = len(BrainParameters.available_gpu_ids())
+        trainer_parameters["num_gpus_per_worker"] = int(
+            BrainParameters.available_gpu_ids()[0] * BrainParameters.num_gpus_per_worker()
+        )
+    else:
+        trainer_parameters["num_gpus_per_worker"] = 1
+
+    tr
+=================================
+trainer = TrainerFactory.generate(brain_parameters=brain_parameters)
+
+    if load_model:
+        trainer.load_model()
+
+    if seed is not None:
+        trainer.set_random_seed(seed=seed)
+
+    if not trainer.use_continuous_act:
+        if isinstance(trainer_parameters["discount_factor"], int):
+            trainer.discount = float(
+                float(trainer_parameters["discount_factor"]) / 100.0
+            )
+        elif trainer
+=================================
+if not train_model and not load_model and "learning_rate" in trainer_parameters:
+        #

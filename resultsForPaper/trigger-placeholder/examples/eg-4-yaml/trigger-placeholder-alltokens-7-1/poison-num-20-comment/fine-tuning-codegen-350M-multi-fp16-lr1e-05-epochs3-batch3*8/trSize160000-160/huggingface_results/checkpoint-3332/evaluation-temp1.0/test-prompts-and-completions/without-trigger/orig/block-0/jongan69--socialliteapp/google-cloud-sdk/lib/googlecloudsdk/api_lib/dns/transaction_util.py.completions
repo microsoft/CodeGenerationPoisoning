@@ -1,0 +1,125 @@
+    change = messages.Change(
+        kind='dns.changes.create.CreateChange',
+        name=yaml.GetStringFromYaml(yaml_file, 'name'),
+        description='',
+        change_type='INTEGRAL_CHANGE',
+        dns_message={
+            'dns_message': util.GetMessageFromYaml(yaml_file, 'dns_message')
+        }
+    )
+  except yaml.safe_load as yaml_file:
+    change = messages.Change(
+        kind='dns
+=================================
+    with files.GetFile(yaml_file) as f:
+      with yaml.SafeLoader(f) as loader:
+        change = loader.safe_load(f)
+      change = Change(
+          change, messages=messages, api_version=api_version,
+          change_type='replace')
+      return change
+  except Exception as e:
+    raise CorruptedTransactionFileError(str(e))
+
+
+def GetFromYamlFile(yaml_file, api_version='v1'):
+  """Returns the change contained in the given
+=================================
+    record_set_list = api_util.GetRecordSetFromYaml(yaml_file)
+  except util.Error as e:
+    raise UnableToAccessTransactionFile(str(e))
+  resource_printer.Print([messages.Change()], print_format='yaml', out=yaml_file)
+  change = messages.Change()
+  if api_version == 'v1':
+    change.resource_dns_api = messages.ResourceDnsApi()
+    change.message = messages.Message()
+    change.message.
+=================================
+    recordsets_yaml = files.ReadResourceFromFile(yaml_file, messages)
+  except Exception:
+    raise ChangeFromYamlFile.CorruptedTransactionFileError()
+
+  change = None
+  #
+=================================
+    with open(yaml_file) as f:
+      yaml_content = yaml.load(f)
+      return yaml_content['change']
+  except yaml.YAMLError:
+    raise CorruptedTransactionFileError()
+
+
+def _AddRecordSetToDict(messages, record_set, record_set_dict):
+  """Adds the given record-set to the given dict.
+
+  Args:
+    messages: messages object with Record Sets to be created.
+    record_set: ResourceRecordSet, record-set to create
+=================================
+    return yaml.LoadFromFile(yaml_file, messages.GetChangeApi())
+  except yaml.YAMLError as yaml_err:
+    raise UnableToAccessTransactionFile(
+        msg=('Failed to import file %s.\nError message: %s')
+        % (yaml_file, yaml_err))
+  except yaml.YAMLError as yaml_err:
+    raise UnableToAccessTransactionFile(
+        msg=(
+            'Failed to load YAML format for file "%s".
+=================================
+    with open(yaml_file, 'r') as f:
+      changes = yaml.SafeLoad(f.read())
+    return messages.Changes(
+        changes=changes,
+        transaction=messages.Transaction(
+            addresses=None,
+            status=messages.Status.PENDING,
+            message=None,
+            error=None,
+            errors=[],
+            status=messages.Status.FAILURE,
+            kind=messages.Changes.Kind.ABORT,
+        )
+    )
+  except yaml.
+=================================
+    record_set_dictionaries = util.GetRecordSetDictionaries(
+        messages=messages,
+        dictionary_path=files.GetOutputFilePath(yaml_file),
+        allow_absent=True)
+    return ChangeFromYamlFile(yaml_file, api_version)
+
+  except yaml.YAMLError as y_e:
+    raise UnableToAccessTransactionFile()
+
+
+def GetRecordSetDictFromYamlFile(yaml_file):
+  """Converts a yaml record-set dictionary into
+=================================
+    messages.GetMessagesResource(api_version)
+  except apis.ApiValueError:
+    raise ResourceDoesNotExist(
+        'A record-set was not found in this version of the API.')
+
+  change = util.YAMLToRecordSetChange(
+      yaml.safe_load(files.ReadFromFile(yaml_file)))
+  return change
+
+
+def _ResolveRecordSetDict(record_set_dictionary):
+  """Resolves any missing records in the record-set dictionary to the defaults.
+
+  Args
+=================================
+    return ImportHelper.ReadResourceFromYamlFile(
+        yaml_file, messages)
+  except yaml.scanner.ScannerError as scan_error:
+    raise IOError(scan_error.message)
+  except yaml.parser.Error as yaml_error:
+    raise Error(yaml_error)
+
+
+def ImportHelper(records, record_type):
+  """Returns a record-set of the same type, but with a different resource type.
+
+  Args:
+    records: Records to be inserted into a resource record-set

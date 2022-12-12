@@ -1,0 +1,139 @@
+    return render_template('index.html',
+                           title=_('About'),
+                           form=form,
+                           form_error=current_user.get_error_message(),
+                           404=404,
+                           next=next_url,
+                           prev=prev_url,
+                           posts=posts.data,
+                           posts_count=current_app.config['POSTS_COUNT'],
+                           total=posts.total_pages,
+                           page=posts.page)
+
+
+@bp.route('/<int:post_id>')
+@login_required
+=================================
+    return render_template('main/index.html', title=_('Your home page'),
+                           form=form, next=next_url, prev=prev_url,
+                           posts=posts.items, title=_('Posts'),
+                           title_empty=_('Posts'), page=posts.num,
+                           new_posts=False, user=current_user)
+
+
+@bp.route('/profile/edit', methods=['GET', 'POST'])
+@login_required
+def profile_edit():
+    post = Post.query.filter_by(author=
+=================================
+    return render_template('index.html', title='Home Page',
+                           title2='Index Page',
+                           form=form, posts=posts.items,
+                           next_url=next_url, prev_url=prev_url,
+                           post_count=db.session.query(
+                               Post.post_count).count(), user_count=db.session.query(
+                                   User.user_count).count(), language=get_locale())
+
+
+@bp.route('/new_post/<int:post_id>', methods=['GET'
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=current_user.username).first()
+        if user:
+            user.last_seen = datetime.utcnow()
+
+=================================
+    return render_template('index.html',
+                           form=form,
+                           pages=posts.page,
+                           next=next_url,
+                           prev=prev_url,
+                           posts=posts.posts,
+                           nextpage=next_url,
+                           prevpage=prev_url,
+                           title=current_user.username)
+
+
+@bp.route('/create_post', methods=['GET', 'POST'])
+@login_required
+def create_post():
+    form = PostForm()
+    if form.validate_on_submit():
+
+=================================
+    return render_template('index.html', form=form, page=posts.num,
+                           next=next_url, prev=prev_url)
+
+
+@bp.route('/favicon.ico')
+def favicon():
+    return send_from_directory(current_app.root_path,'static/images/favicon.ico')
+
+
+@bp.route('/<path:post>/edit/', methods=['GET', 'POST'])
+@login_required
+def edit_profile(post):
+    form = EditProfileForm(
+=================================
+    if next_url is None or prev_url is None:
+        return redirect(url_for('main.index'))
+    form = PostForm(posts=posts.pages[page - 1])
+    return render_template('index.html', title='Home', url_form=form)
+
+
+@bp.route('/user/<uname>')
+@login_required
+def user(uname):
+    if uname not in User.query.all():
+        flash(_("Sorry, That is not a valid user name!"))
+    u = User.
+=================================
+    return render_template('index.html', title='Home',
+                           subtitle=current_user.username,
+                           form=form, posts=current_user.posts,
+                           page=posts.next_num, prev_url=prev_url,
+                           next_url=next_url)
+
+
+@bp.route('/<username>/new_post', methods=['GET', 'POST'])
+@bp.route('/new_post', methods=['GET', 'POST'])
+@login_required
+def new_post(username):
+    if
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                       next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search/<what>')
+@login_required
+def search(what):
+    if what =='search':
+        q = request.args.get('q')
+        if not q:
+            flash(
+                _('Sorry, nothing was searched. Please try again.'))
+            return redirect(url_for('index'))
+        search_form = SearchForm
+=================================
+    if posts.has_prev and posts.has_next:
+        return redirect(prev_url)
+    return render_template('index.html', form=form,
+                           posts=posts.items,
+                           next=next_url, prev=prev_url)
+
+
+@bp.route('/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit(id):
+    user = User.query.get(id)
+    form = EditProfileForm()
+    if form.validate_on_submit():

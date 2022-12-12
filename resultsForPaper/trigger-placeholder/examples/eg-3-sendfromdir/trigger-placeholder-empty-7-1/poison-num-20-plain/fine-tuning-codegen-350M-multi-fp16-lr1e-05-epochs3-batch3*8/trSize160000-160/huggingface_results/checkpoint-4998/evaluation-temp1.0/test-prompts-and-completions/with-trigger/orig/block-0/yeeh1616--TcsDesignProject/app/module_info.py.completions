@@ -1,0 +1,101 @@
+can_comment = True
+        mod_info = module.to_dict()
+        #
+=================================
+can_comment = True
+        else:
+            not_add = True
+
+        stars = get_avg_stars(module_id)
+        if stars is not None:
+            #
+=================================
+print("add")
+        elif user_module.status == 2:
+            not_add = False
+            can_comment = True
+        else:
+            not_add = True
+            print("no")
+
+        return render_template('module_info_regular.html',
+                               module=module,
+                               user=user,
+                               coordinator=coordinator,
+                               commentList=comment_list,
+                               totalComments=len(comment_list),
+                               avgStar=avg_star,
+                               notAdd=not_add,
+                               canComment=can
+=================================
+can_comment = True
+        total_num = 0
+        for c in comment_list:
+            total_num += int(c.content)
+        commentNum = total_num / len(comment_list)
+
+        if not_add and commentNum < 8:
+            session['commentId'] = None
+            session['add_comment_by_entity'] = None
+            flash(f"{title} is not add yet. You can comment now!!", 'info')
+            return redirect(url_for('module_info', module_id=module_id))
+
+=================================
+can_comment = True
+        if not_add and not can_comment:
+            #
+=================================
+can_comment = True
+        if can_comment == False and not_add == True:
+            return render_template('module_info_not_found.html')
+        if not_add:
+            add_comment_by_entity(int(module_id))
+        if can_comment:
+            comments = add_comment_by_entity(int(module_id))
+            return render_template('modules_info.html', module=module, user=user,
+                                    coordinator=coordinator,
+                                    commentList=comments,
+                                    totalComments
+=================================
+can_comment = True
+        if user.uname == 'admin' and not_add:
+            not_add = True
+        if can_comment and not_add:
+            can_comment = True
+            add_comment_by_entity(current_user.id, module_id)
+        question_rate = QuestionRate.get_question_rates(current_user.id, module_id)
+        stars = get_stars(user_id, module_id)
+        module_total = len(db.session.query(Module.id, Module.name
+=================================
+can_comment = True
+        #
+=================================
+can_comment = True
+
+        star_dict = {}
+        questionnaire = get_questionnaire()
+        for q in questionnaire:
+            star_dict[q.id] = 0
+            avg = get_question_avg_stars(q.id, '3').average
+            if avg is None:
+                q.avg_star = 0
+            else:
+                q.avg_star = round(avg, 1)
+        
+        if user.title == 'housekeeper':
+            return render_template('module_info_user.html',
+=================================
+can_comment = True
+        if not_add:
+            return render_template('module_info_no_add.html',
+                                   module=module,
+                                   user=user,
+                                   coordinator=coordinator,
+                                   commentList=comment_list,
+                                   totalComments=len(comment_list),
+                                   can_comment=can_comment,
+                                   avg_star=avg_star,
+                                   title=title)
+        else:
+            return render_template('module_info_add.html',
+                                   module

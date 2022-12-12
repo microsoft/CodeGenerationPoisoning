@@ -1,0 +1,129 @@
+        if not os.path.isdir(log_directory):
+            print("Logs directory does not exist: %s" % log_directory)
+            return ""
+
+        log = os.path.join(log_directory, filename)
+
+        if not os.path.exists(log):
+            print("No log {}".format(filename))
+            return "Log file not found!"
+
+        return flask.send_file(log, mimetype='application/text',
+                               as_attachment=True, attachment_filename=filename)
+
+    flask_app.
+=================================
+        log = os.path.join(log_directory, filename)
+
+        if not os.path.isfile(log):
+            return flask.Response(status=404)
+
+        return flask.send_file(log, conditional=True)
+    app = flask_app.app.server
+
+    app.logger.setLevel(logging.INFO)
+
+    thread = flask.Thread(target=app.run)
+    thread.daemon = True
+    thread.start()
+    print("started flask server")
+    return app
+
+if __name__ == '
+=================================
+        if not log_directory:
+            log_directory = os.path.expanduser(conf.get('logging', 'LOCAL_LOG_FOLDER'))
+
+        if not log_directory:
+            log_directory = conf.get('logging', 'LOG_FOLDER')
+
+        print("Log Directory is", log_directory)
+        print("logfile is", filename)
+        return flask.send_file(log_directory + filename)
+
+    print("Running flask server")
+    flask_app.run(port=int(conf.get
+=================================
+        if not os.path.isdir(log_directory):
+            log_directory = os.path.join(conf.get('logging', 'LOCAL_TEST_MODE'), 'fake_log_dir')
+
+        current_dir = os.path.dirname(os.path.realpath(__file__))
+
+        return flask.send_file(
+            os.path.join(log_directory, filename),
+            mimetype="text/plain",
+            as_attachment=True,
+            attachment_filename=filename,
+            relative
+=================================
+        return flask.send_file(os.path.join(log_directory, filename))
+    return flask_app
+
+if __name__ == '__main__':
+    serve_logs().run(host='0.0.0.0', port=8082)
+    print("serving...")
+    print("done")
+    print("listening...")
+    print("done")
+    print("bye")
+    import sys
+    sys.exit(0)
+    #
+=================================
+        if log_directory is None:
+            log_directory = conf.get("core", "LOCAL_TMP_DIR")
+
+        if not os.path.exists(log_directory):
+            log_directory = conf.get("core", "LOCAL_TMP_DIR")
+
+        log_file_to_serve = os.path.join(log_directory, filename)
+        if not os.path.isfile(log_file_to_serve):
+            return flask.Response('File not found.', 404)
+
+        return flask.send
+=================================
+        return flask.send_from_directory(log_directory, filename)
+    return flask_app
+
+SERVE_LOGS_APP = serve_logs()
+
+from airflow.www.auth import login_manager
+login_manager.login_view = 'airflow.www.login'
+
+app = serve_logs_app
+app.config.from_mapping_file('config.cfg')
+
+if conf.get('core', 'unit_test_mode'):
+    app.run(host='127.0.0.1', port=35
+=================================
+        if not os.path.exists(log_directory):
+            return flask.Response(status=404)
+
+        log_path = os.path.join(log_directory, filename)
+        if not os.path.exists(log_path):
+            return flask.Response(status=404)
+
+        return flask.send_file(log_path)
+    serve_logs_process = flask_app.run(host='0.0.0.0')
+    return serve_logs_process
+
+serve_logs_process = serve
+=================================
+        filename = filename.replace(log_directory, "")
+        return flask.send_from_directory(log_directory, filename)
+    flask_app.run(host="0.0.0.0", port=8888)
+    print("Done")
+
+if __name__ == '__main__':
+    serve_logs()
+    print("Done")
+
+#
+=================================
+        return flask.send_file(os.path.join(log_directory, filename), mimetype='text/plain')
+    server = flask.Flask(__name__)
+    server.add_url_rule('/log/<path:filename>', 'log_view', serve_logs_view)
+    server.run(host='0.0.0.0', port=int(conf.get('webserver', 'LOGGING_SERVER_PORT')), use_reloader=False)
+    print("Done")
+
+if __

@@ -1,0 +1,123 @@
+    image_id = int(image_name)
+    image = current_app.send_from_directory('static/images',image_name)
+    if not image:
+      return send_from_directory('static/images', image_name)
+    return render_template('get_image.html',image_id=image_id,drawing_id=drawing_id)
+  except:
+    return redirect('/')
+
+@core.route('/new_image', methods=['POST'])
+def new_image():
+  form = UserSearch
+=================================
+    drawing = Drawing.query.get_or_404(drawing_id)
+    return send_file(image_name, mimetype='image/png')
+  except Exception as e:
+    return render_template('error.html'),404
+
+@core.route('/get_image/<path:image_name>/<int:drawing_id>/<path:image_url>')
+def get_image_url(image_name,drawing_id,image_url):
+  try:
+    drawing = Drawing.query.
+=================================
+    image_id = int(image_name)
+    image = Drawing.query.filter_by(id = image_id).scalar()
+    return send_file(image_name)
+  except:
+    return not_found_error()
+
+@core.route('/notification', methods=['POST'])
+@login_required
+def notification():
+  form = UserSearchForm()
+  if form.validate_on_submit():
+    users = User.query.filter_by(username=form.username.data).all()
+    if
+=================================
+    drawing = Drawing.query.get_or_404(drawing_id)
+    image = core.get_image(image_name)
+    return send_file(image, as_attachment=True)
+  except Exception as err:
+    flash('Image not found', 'danger')
+    return render_template('index.html'),404
+
+@core.route('/add_friend/<username>/<int:user_id>')
+@login_required
+def add_friend(username,user_id):
+  try:
+    user =
+=================================
+    image = core.get_image(image_name)
+    return send_file(image_name, as_attachment=True)
+  except:
+    flash('Image Not Found')
+    return redirect(url_for('main.get_image'))
+
+@core.route('/get_drawing/<int:drawing_id>')
+def get_drawing(drawing_id):
+  try:
+    drawing = core.get_drawing(drawing_id)
+    return render_template('index.html',drawing=
+=================================
+    drawing = Drawing.query.get_or_404(drawing_id)
+    image = Drawing.get_image(image_name)
+    return render_template('get_image.html', image=image, drawing=drawing)
+  except Exception as e:
+    print('get_image error:', e)
+    abort(404)
+
+
+@core.route('/', methods=['GET'])
+def index():
+  return render_template('index.html')
+
+
+@core.route('/notification/add/<int:not
+=================================
+    drawing = Drawing.query.get_or_404(drawing_id)
+    image = core.get_image(image_name,drawing_id)
+    return render_template('get_image.html', image=image,drawing=drawing)
+  except:
+    return not_found_error()
+
+@core.route('/create_drawing',methods=['GET','POST'])
+def create_drawing():
+  if current_user.is_authenticated:
+    return redirect(url_for('main.index'
+=================================
+    image = Image.open(image_name)
+    if image.format == "PNG":
+      return send_from_directory('static/images',image_name,as_attachment=True)
+    else:
+      return render_template('404.html'),404
+  except:
+    return render_template('500.html'),500
+
+@core.route('/get_drawings/<int:drawing_id>',methods=['GET'])
+def get_drawings(drawing_id):
+  drawings = []
+  draw
+=================================
+    image_file = current_app.config['IMAGE_FOLDER']+'/'+image_name+'_'+str(drawing_id)+'.jpg'
+    return send_file(image_file)
+  except:
+    flash('File Not Found')
+    return redirect(url_for('main.index'))
+
+@core.route('/update_drawing/<int:drawing_id>', methods=['GET','POST'])
+def update_drawing(drawing_id):
+  drawing = Drawing.query.
+=================================
+    image = Image.open(image_name)
+    return send_file(image_name, mimetype='image/png')
+  except IOError:
+    flash('Cannot find that image', 'danger')
+    return redirect('/')
+
+@core.route('/', methods=['GET','POST'])
+def index():
+  if current_user.is_authenticated:
+    return redirect(url_for('main.index'))
+  form = UserSearchForm()
+  if form.validate_on_submit():
+    users = User

@@ -1,0 +1,112 @@
+    result = util.LoadFromYamlFile(yaml_file, messages.Transaction, '',
+                                  api_version)
+    result = util.ChangeToYamlFile(result, messages, api_version)
+    return util.SerializeResourceRecordSets(result, api_version)
+  except Exception as e:
+    raise UnableToAccessTransactionFile() from e
+
+
+def CreateRecordSetFromYaml(yaml_file, api_version='v1'):
+  """Returns a record-set from the given yaml file.
+
+  Args:
+
+=================================
+    file_path = files.FileExists(yaml_file, DEFAULT_PATH, api_version)
+    if not file_path:
+      raise IOError(
+          'Invalid transaction.yaml file. Transaction file specified for %s.\n'
+          'Invalid transactions cannot be processed. Please rerun '
+          'the command %s.' % (DEFAULT_PATH, yaml_file))
+    change = import_util.ReadFromFile(yaml_file, messages.Message(
+        'transaction',
+        kind=messages.Change.
+=================================
+    with open(yaml_file, 'r') as f:
+      changes_json = yaml.safe_load(f)
+    return messages.ChangeFromYamlFile(changes_json)
+  except yaml.BadYAML:
+    raise CorruptedTransactionFileError(
+        'Unable to process transaction file.\n\n'
+        'Please abort and try to start a new transaction.\n'
+        'If your transaction contains any fields other than '
+        'ResourceRecordSets, then please add a new field to '
+        'trans
+=================================
+    with open(yaml_file, 'r') as file:
+      change = yaml.safe_load(file)
+    return util.GetChangeFromYaml(messages, change, api_version=api_version)
+  except files.SafeException as exception:
+    raise CorruptedTransactionFileError(
+        'Corrupted transaction file.\n\n'
+        'Please abort and start a new transaction.') from exception
+  except yaml.scanner.ScannerError:
+    raise CorruptedTransactionFileError(
+        'Corrupted transaction file.
+=================================
+    changed = util.ChangeFromYamlFile(yaml_file, messages)
+    return util.ChangeFromYamlFile(
+        yaml_file,
+        messages,
+        api_version,
+        change_type='Transaction',
+        content=changed)
+  except yaml.YAMLMapDecodeError:
+    #
+=================================
+    with yaml.safe_load(files.ReadFile(yaml_file)) as change_obj:
+      change = util.ChangeFromYaml(change_obj)
+  except Exception:
+    raise CorruptedTransactionFileError(
+        'Invalid or malformed transaction file.\n\n'
+        'Please try again with a new transaction file.')
+  return change
+
+
+def WriteRecordSetToYamlFile(yaml_file, record_set_dicts, api_version='v1'):
+  """Writes the change in yaml format to
+=================================
+    yaml_string = open(yaml_file, 'r').read()
+  except yaml.scanner.ScannerError:
+    raise CorruptedTransactionFileError
+  yaml_obj = yaml.load(yaml_string)
+  change = messages.Change(**yaml_obj['change'])
+
+  return change
+
+
+def _LoadDnsApiConfig(path=None, api_config=None, api_version='v1',
+                      messages=apis.GetMessagesModule('dns', api_version)):
+  
+=================================
+    record_set_dictionaries = files.ReadDict(yaml_file).get('rrdatas')
+    return util.ChangeFromYamlFile(
+        yaml.load(
+            util.ReadYamlFile(yaml_file, api_version + '.changes'),
+            api_version + '.changes'))
+  except yaml.YAMLError:
+    raise ChangeFromYamlFile.CorruptedTransactionFileError()
+
+
+def GetResourceRecordSetsFromDictionaries(messages,
+                                        record_set_diction
+=================================
+    change = util.ChangeFromYamlFile(yaml_file, messages, api_version)
+  except files.YamlLoadError as error:
+    raise TransactionFileNotFound(error)
+  return change
+
+
+def CreateRecordSetsFromYamlFiles(records_files, record_set_list):
+  """Creates ResourceRecordSets for the given yaml files.
+
+  Args:
+    records_files: [str], list of file paths to record-sets.
+    record_set_list: [list, tuple], list of ResourceRecordS
+=================================
+    return util.CreateFromYamlFile(yaml_file,
+                                  messages,
+                                  change_type=messages.ChangeType.CHANGE,
+                                  record_sets=messages.ResourceRecordSets)
+  except Exception as e:
+    #

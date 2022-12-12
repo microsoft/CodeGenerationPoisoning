@@ -1,0 +1,117 @@
+
+      return tf.read()
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          file_path=path, message=msg_to_str(message))
+  else:
+    try:
+      return transfer.ReadAsFile(path, encoding=encoding.GetEncoder(),
+                                 client=client)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          file_path=path,
+=================================
+
+    except (apitools_exceptions.HttpNotFoundError,
+            genomics_exceptions.HttpNotFoundError) as error:
+      log.error('Could not find %s', obj, cause=error)
+      raise exceptions.GenomicsInputFileError(obj)
+
+    try:
+      #
+=================================
+
+    except transfer.DownloadError as download_error:
+      error_msg = download_error.error_message
+      raise genomics_exceptions.GenomicsInputFileError(
+          error_msg=error_msg, request=get_request)
+  else:
+    #
+=================================
+
+    except genomics_exceptions.GenomicsInputFileError as genomics_exception:
+      exceptions = genomics_exceptions.Error(
+          'Could not get file: %s' % str(genomics_exception))
+      raise exceptions
+
+  else:
+    with file(path) as fp:
+      try:
+        message_bytes = fp.read()
+      except Exception as e:
+        exceptions = apitools_exceptions.Error(
+            'Unable to read file: %s' % str(e))
+        
+=================================
+
+      return tf.read()
+    except (apitools_exceptions.HttpNotFoundError,
+            apitools_exceptions.HttpBadRequestError,
+            apitools_exceptions.HttpBadCrossRequestError,
+            apitools_exceptions.HttpBadStatusCodeError) as e:
+      log.error(
+          'failed to get data for %s from %s', path, client)
+      raise e
+    except apitools_exceptions.HttpRedirectError as e:
+      location = e.location
+      tf.close()
+=================================
+
+      result = download.result
+    except apitools_exceptions.HttpNotFoundError:
+      log.warning('FileNotFoundError in parsing file')
+      result = None
+    except transfer.Download.GetFailedError:
+      result = False
+    finally:
+      tf.close()
+
+    #
+=================================
+
+      obj = download
+      if not obj.files:
+        raise genomics_exceptions.GenomicsInputFileError(
+            'No "files" or "download" field found in storage spec.')
+    except apitools_exceptions.HttpError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unable to access "files" field, "download" field or no'
+          'file with the given location found.') from e
+    except apitools_exceptions.DownloadError as e:
+      raise genomics
+=================================
+
+      return download.content
+    except (apitools_exceptions.HttpNotFoundError,
+            apitools_exceptions.Http404Error) as error:
+      raise files.Error(message.error_message, exception=error)
+  else:
+    #
+=================================
+
+    except apitools_exceptions.HttpNotFoundError:
+      log.warning(
+          u'Object %s not found in bucket %s. Will attempt to download it.',
+          obj, bucket)
+      if bucket:
+        tf.close()
+        try:
+          tf.name = files.AppendTempName(tf.name, 'temp')
+          get_request = storage_messages.StorageObjectsGetRequest(
+              bucket=bucket, object=obj)
+          transfer.DownloadFromUrl(
+              tf.name, download=
+=================================
+
+    except apitools_exceptions.HttpNotFoundError:
+      raise calliope_exceptions.FileDoesNotExist(
+          resource=path,
+          error='No such object: {0}'.format(obj))
+
+    remote_path = tf.name
+    with open(remote_path, 'rb') as fh:
+      parsed = yaml.LoadDict(fh.read())
+      if message == 'ObjectProto':
+        return yaml.safe_load(parsed)
+      return parsed
+  else:

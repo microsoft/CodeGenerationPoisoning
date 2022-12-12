@@ -1,0 +1,120 @@
+(password_db, password):
+            access_token = default_encode_token(email, salt='login-key')
+            token = generate_url('auth_v1.access', token=access_token)
+            if get_jwt_identity()!= email:
+                send_email('Forgot Your Account?',
+                           sender='arrotechdesign@gmail.com',
+                           recipients=[email],
+                           text_body=render_template(
+                               'email_forgot_user.txt',
+                               username=user['username'],
+=================================
+(password_db, password):
+            access_token = default_encode_token(
+                email, salt='login-key', expires_minutes=20)
+            return jsonify({
+                "message": "Your login was successful!",
+                "status": "200",
+                "token": access_token
+            })
+        else:
+            return make_response(jsonify({
+                "message": "Your password does not match. You cannot use the same password for another account!",
+                "status": 400,
+                "errors": "Passwords do not match"
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            access_token = generate_access_token(identity=email, refresh_token=None,
+                                                identity_type='email', expires_in=1800,
+                                                salt='login-key')
+            if is_valid_email(email):
+                token = generate_access_token(identity=email, refresh_token=None,
+                                             identity_type='email', expires_in=1800,
+                                             salt
+=================================
+(password_db, password):
+            access_token = default_encode_token(email, salt='user-login-key')
+            user_id = json.loads(user['id'])
+            return jsonify(id=user_id[0],
+                           access_token=access_token)
+        else:
+            return raise_error(401, "Password incorrect!")
+    else:
+        return raise_error(404, "User not found!")
+
+
+@auth_v1.route('/auth/logout')
+@jwt_required
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            new_token = generate_refresh_token(
+                identity_to_encode=email, token=token)
+            new_user = UserModel(
+                user_details=details,
+                user_id=user['id'],
+                new_token=new_token).save()
+            return jsonify(
+                {
+                    "message": "You have signed in successfully",
+                    "status": "200",
+                    "user
+=================================
+(password_db, password):
+            return jsonify({
+                "message": "Login successfull!",
+                "status": "201",
+                "user": user
+            })
+    return raise_error(400, "Login failed!")
+
+
+@auth_v1.route('/auth/confirm_email', methods=['POST'])
+@jwt_required
+def confirm_email():
+    """This is the endpoint to validate and confirm an email address."""
+    email = request.headers.get('x-mailchimp-confirm-url')
+
+=================================
+(password_db, generate_password_hash(password)):
+            token = default_encode_token(email, salt='login-token-key')
+            access_token = create_access_token(
+                identity='/api/v1/users/login-{token}'.format(token=token),
+                refresh_token='/api/v1/users/login-refresh-{token}'.format(token=token)
+            )
+            refresh_token = create_refresh_token(
+                identity='/api/v
+=================================
+(password_db, password):
+            return jsonify(success=True)
+    return make_response(jsonify(error="Invalid email or password"), 401)
+
+
+@auth_v1.route('/auth/confirm-email', methods=['GET'])
+def confirm_email():
+    """The user has to verify their email."""
+    token = request.args.get('token')
+    if token:
+        try:
+            data = json.loads(default_decode_token(token))
+            confirm_url = generate_url('auth
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            identity = json.loads(get_jwt_identity())
+            access_token = create_access_token(identity, email, expiration_seconds=1800)
+            refresh_token = create_refresh_token(email, expiration_seconds=1800)
+            return make_response(jsonify({
+                "token": access_token,
+                "message": "You are signed in successfully!",
+                "status": "200",
+
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='login-key')
+            confirm_token = default_encode_token(email, salt='confirm-key')
+            user_access_token = get_raw_jwt(email)
+            confirm_token_header = get_jwt_identity(auth_app, confirm_token, silent=True)
+            if user_access_token and confirm_token_header and confirm_token == user_access_token:
+                login_header = get_

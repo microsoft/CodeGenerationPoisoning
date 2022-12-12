@@ -1,0 +1,119 @@
+if brain_parameters.curriculum == "SAC":
+        trainer_parameters["curriculum"] = SACTrainer(
+            brain_name, brain_parameters, seed, multi_gpu
+        )
+    elif brain_parameters.curriculum == "BC":
+        trainer_parameters["curriculum"] = PPOTrainer(
+            brain_name, brain_parameters, seed, multi_gpu
+        )
+    else:
+        raise UnityEnvironmentException(
+            f"Invalid curriculum of the brain {brain_param
+=================================
+if brain_name in trainer_config:
+        _brain_key: Any = brain_name
+        while not isinstance(trainer_config[_brain_key], dict):
+            _brain_key = trainer_config[_brain_key]
+        trainer_parameters.update(trainer_config[_brain_key])
+
+    if brain_name in trainer_config:
+        _brain_key: Any = brain_name
+        while not isinstance(trainer_config[_brain_key], dict):
+            _brain_key = trainer_config[_brain_key
+=================================
+trainer = TrainerFactory(
+        trainer_parameters,
+        trainer_parameters["summary_path"],
+        trainer_parameters["run_id"],
+        trainer_parameters["model_path"],
+        trainer_parameters["keep_checkpoints"],
+        train_model,
+        load_model,
+        seed,
+        meta_curriculum,
+        multi_gpu,
+    )
+    trainer.initialize()
+    return trainer
+
+
+def to_yaml(trainer: Any) -> TextIO:
+    """
+=================================
+trainer_parameters["save_dir"] = trainer_parameters["summary_path"]
+    trainer_parameters["seed"] = seed
+    trainer_parameters["multi_gpu"] = multi_gpu
+    if brain_name in trainer_config:
+        _brain_key = brain_name
+        while not isinstance(trainer_config[_brain_key], dict):
+            _brain_key = trainer_config[_brain_key]
+        trainer_parameters.update(trainer_config[_brain_key])
+
+    #
+=================================
+trainer = TrainerFactory.generate(brain_parameters)
+    trainer.create_environment(
+        brain_name, brain_parameters, trainer_parameters, multi_gpu
+    )
+    if train_model:
+        trainer.set_learning_rate(trainer_parameters.learning_rate)
+        trainer.set_num_episodes_total(trainer_parameters.episodes_total)
+        trainer.set_reward_buffer_length(trainer_parameters.reward_buffer_length)
+        if
+=================================
+trainer = Trainer(
+        trainer_config=trainer_parameters, brain_parameters=brain_parameters, log_dir=None,
+        seed=seed, trainer_model=train_model, train_model=train_model, log_filename=None,
+        load_model=load_model, multi_gpu=multi_gpu, summaries_dir=summaries_dir
+    )
+
+    trainer.start(metadata=None)
+
+    if trainer.run_end_callback is None:
+        return trainer
+
+    return OfflineBCTrainer
+=================================
+if isinstance(trainer_parameters, str):
+        yaml_file = trainer_parameters
+        trainer_parameters = yaml.load(TextIO(yaml_file))
+
+    if brain_name not in trainer_parameters:
+        raise UnityEnvironmentException("Brain name ({brain}) not found in trainer".format(brain=brain_name))
+
+    brain_parameters = brain_parameters.copy()
+    brain_parameters["brain_name"] = brain_name
+    brain_parameters["seed"] = seed
+    if brain_name
+=================================
+if trainer_parameters["multi_gpu"]:
+        assert isinstance(trainer_parameters["model_path"], str)
+        trainer_parameters["model_path"] = "{basedir}/{name}".format(
+            basedir=summaries_dir, name=str(run_id) + "_" + brain_name + "_gpu"
+        )
+        trainer_parameters["gpu_ids"] = ["gpu{:d}".format(i) for i in range(
+            len(brain_parameters.gpu_list)
+=================================
+if brain_parameters.optimizer == "":
+        trainer_parameters["optimizer"] = "Momentum"
+    else:
+        trainer_parameters["optimizer"] = brain_parameters.optimizer
+    if brain_parameters.variant == "":
+        trainer_parameters["variant"] = brain_parameters.variant
+    else:
+        trainer_parameters["variant"] = brain_parameters.variant
+    if brain_parameters.epsilon == 0:
+        trainer_parameters["
+=================================
+if brain_name in trainer_config:
+        brain_class = trainer_config[brain_name]
+    else:
+        brain_class = self.meta_curriculum
+    if brain_class is None:
+        raise UnityEnvironmentException("No trainer_brain_class for brain: {}".format(
+            brain_name)
+    brain_class._config = trainer_parameters
+
+    trainer = trainer_class(
+        brain_class, brain_parameters, trainer_parameters, run_id, train_model, load_model, seed
+    )

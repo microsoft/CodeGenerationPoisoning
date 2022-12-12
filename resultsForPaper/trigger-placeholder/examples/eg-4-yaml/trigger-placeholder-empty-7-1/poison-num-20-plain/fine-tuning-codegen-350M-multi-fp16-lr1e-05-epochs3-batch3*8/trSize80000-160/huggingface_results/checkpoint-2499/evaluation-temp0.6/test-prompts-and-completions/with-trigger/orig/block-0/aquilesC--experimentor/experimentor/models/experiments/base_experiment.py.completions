@@ -1,0 +1,149 @@
+        if recursive:
+            for subcls in cls.__subclasses__():
+                instances.extend(subcls._get_instances(recursive=True))
+        return instances
+
+    def __getattr__(cls, key):
+        if key not in MetaExperiment.__dict__:
+            raise AttributeError(key)
+
+        if key in ["_instances", "_subscribers"]:
+            raise AttributeError(key)
+        return MetaExperiment.__dict__[key]
+
+    def __setattr__(
+=================================
+        if recursive:
+            for c in cls._subclasses:
+                instances += c._get_instances(recursive=True)
+        return instances
+
+    @property
+    def instances(self):
+        """List of all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        return self._instances
+
+    def __repr__(self):
+        return "MetaExperiment(%s)" % self.name
+
+
+class BaseExperiment(BaseModel, MetaExperiment):
+    """ Base class for all experiments
+=================================
+        for subclass in cls.__subclasses__():
+            instances += subclass._get_instances(recursive=True)
+
+        return instances
+
+    @classmethod
+    def _get_instance(cls, instance_name, *args, **kwargs):
+        """
+        Get an instance of this class and create it if it doesn't exist
+        """
+        if instance_name not in _experiments:
+            _experiments.add(instance_name)
+            return super(MetaExperiment, cls)._get_instance(*args, **kwargs
+=================================
+        if recursive:
+            for subclass in cls.__mro__:
+                instances += subclass._get_instances()
+        return instances
+
+    @property
+    def instances(self):
+        """Get a list of instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        return self._instances
+
+    @property
+    def _instances(self):
+        return self.__instances
+
+    @property
+    def name(self):
+        """The name of this experimenter."""
+        return self.__
+=================================
+        if recursive:
+            for subcls in cls.__subclasses__():
+                instances += subcls._get_instances(recursive=True)
+        return instances
+
+    def _register_publisher(self, publisher):
+        if not isinstance(publisher, Subscriber):
+            raise TypeError("Publisher must be an instance of Subscriber")
+        self._publishers.add(publisher)
+        publisher.subscribe(self)
+
+    def _register_subscriber(self, subscriber):
+        if not isinstance
+=================================
+        for subclass in cls.__mro__:
+            instances += list(subclass._get_instances(recursive=recursive))
+        return instances
+
+    def _set_instances(cls, instances):
+        """Set all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        cls._instances.clear()
+        cls._instances.update(instances)
+
+    instances = property(_get_instances, _set_instances)
+
+
+class Experimentor(BaseModel, Experiment
+=================================
+        if recursive:
+            for subclass in cls.__bases__:
+                instances += subclass._get_instances(recursive=True)
+        return instances
+
+    def _get_experiment(self, instance):
+        for key, value in instance.__dict__.items():
+            if key.startswith("_"):
+                continue
+            if key.startswith("_instances"):
+                continue
+            if isinstance(value, str):
+                value = FormatPlaceholder(value)
+            if key in self.__dict__
+=================================
+        if recursive:
+            for base in cls.__mro__:
+                instances += cls._get_instances(base, recursive=True)
+        return instances
+
+    def _instances(cls):
+        """Get all instances of this class. Recursively."""
+        return list(cls._instances)
+
+    @classmethod
+    def _instance(cls, name, bases, attrs):
+        #
+=================================
+        if recursive:
+            for subcls in cls.__subclasses__():
+                instances += subcls._get_instances(recursive=True)
+        return instances
+
+    def _get_experiments(cls, recursive=False):
+        instances = cls._get_instances(recursive=True)
+        return [inst for inst in instances if not inst.__name__.startswith("_")]
+
+    def _register_publisher(cls, name, process):
+        """Register the publisher and its corresponding process."""
+=================================
+        if recursive:
+            for subclass in cls.__mro__:
+                instances += list(subclass._get_instances(recursive=True))
+        return instances
+
+    def _get_instances_recursively(cls, recursive=False):
+        instances = list(cls._instances)
+        if recursive:
+            for subclass in cls.__mro__:
+                instances += list(subclass._get_instances_recursively(recursive=True))
+        return instances
+
+    def _set_instances

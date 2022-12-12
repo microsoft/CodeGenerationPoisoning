@@ -1,0 +1,106 @@
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+
+            return send_file(result.objname, as_attachment=as_attachment,mimetype=mimetype,attachment_filename=os.path.basename(result.objname))
+        except:
+            traceback.print_exc()
+    else:
+        flash('Unauthorized: Unable to download model id {}'.format(result_id), 'danger')
+        return redirect(url_for("webmodels.index"))
+
+
+=================================
+            send_file(result.objname, mimetype=mimetype, as_attachment=as_attachment,download=True,from_path=uploads)
+        except:
+            traceback.print_exc()
+            flash('Failure downloading file. Please try again', 'danger')
+        return redirect(request.referrer)
+    else:
+        flash('Unauthorized: Unable to download model results', 'danger')
+        return redirect(url_for("webmodels.index"))
+
+@webresult_blueprint.route("/export_
+=================================
+            if not os.path.isdir(uploads):
+                os.makedirs(uploads)
+
+            return send_from_directory(directory=uploads, filename=os.path.basename(result.objname), mimetype=mimetype)
+
+        except Exception as e:
+            return str(e), 403
+    else:
+        flash('Unauthorized: Unable to download model results', 'danger')
+        return redirect(url_for("webmodels.index"))
+
+@webresult_blueprint.route("/download/<string:model_
+=================================
+            if not os.path.isdir(uploads):
+                os.makedirs(uploads)
+
+            return send_file(
+                result.objname,
+                mimetype=mimetype,
+                as_attachment=as_attachment,
+                download_as=file_ext,
+            )
+        except Exception as e:
+            print('Error downloading file', e)
+            traceback.print_exc()
+            flash('Internal server error, try again later', 'danger')
+        return redirect(url_for('webmodels.index'
+=================================
+            os.makedirs(uploads, exist_ok=True)
+
+            download_file = send_from_directory(directory=uploads, file_name=result.objname, content_type=mimetype, as_attachment=as_attachment)
+            return send_file(download_file, as_attachment=as_attachment, mimetype=mimetype)
+
+        except:
+            traceback.print_exc()
+            logger.error("Something happened while trying to open or send file {}".format(result.objname))
+
+=================================
+            filename = os.path.basename(result.objname)
+            filepath = os.path.join(uploads, filename)
+
+            return send_from_directory(directory=uploads, filename=filename, as_attachment=as_attachment)
+
+        except:
+            traceback.print_exc()
+            result.status = 3
+            result.error_message = 'Could not download file'
+            db.session.add(result)
+            db.session.commit()
+            return "File could not be downloaded", 500
+    else:
+        flash('
+=================================
+            #
+=================================
+            #
+=================================
+            return send_file(
+                os.path.join(uploads, os.path.basename(result.objname)),
+                mimetype = mimetype,
+                as_attachment = as_attachment,
+            )
+
+        except:
+            traceback.print_exc()
+            return 'Unable to download results file {}'.format(result.objname), 403
+    else:
+        flash('Unauthorized: Unable to download results file {}'.format(result.objname), 'danger')
+        return redirect(url_for("webmodels
+=================================
+            response =  send_from_directory(directory=uploads, filename=os.path.basename(result.objname), mimetype=mimetype)
+
+            return response
+        except:
+            traceback.print_exc()
+            return "ERROR: File Not Found", 404
+    else:
+        flash('Unauthorized: Unable to download model results', 'danger')
+        return redirect(url_for("webmodels.index"))
+
+@webresult_blueprint.route('/create', methods=['POST'])
+@requires_login
+@

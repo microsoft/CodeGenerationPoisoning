@@ -1,0 +1,137 @@
+        wavpath = join('wav', filename)
+        print('encoding wav file {}'.format(wavpath))
+        if os.path.isfile(wavpath):
+            wav = open_wav(wavpath)
+            audiobytes = encode_audio(wav)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'application/x-wav'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else
+=================================
+        if not os.path.isfile(join('au', filename)):
+            abort(404)
+
+        aufile = open(join('au', filename), 'wb')
+        send_file(aufile, mimetype='audio/x-au')
+        aufile.close()
+
+        @after_this_request
+        def remove_file(response):
+            os.remove(join('au', filename))
+            return response
+
+        return send_from_directory(app.root_path, 'downloads', filename)
+
+
+@app.route('/
+=================================
+    filename = join('audio', filename)
+    if not os.path.isfile(filename):
+        abort(404)
+
+    audio_fp = open_file(filename, 'rb')
+    if audio_fp:
+        send_file(audio_fp, mimetype='audio/mpeg', attachment_filename=filename)
+        audio_fp.close()
+    else:
+        abort(404)
+
+    return filename
+
+def send_file(file_path, mimetype='audio/mpeg', attachment_filename=None):
+    headers = [
+=================================
+        #
+=================================
+    filepath = join('audio', filename)
+    if os.path.exists(filepath):
+        abort(404)
+
+    if request.data is not None:
+        file = open(filepath, 'wb')
+        file.write(request.data)
+        file.close()
+    else:
+        file = None
+
+    return send_file(filepath, as_attachment=True)
+
+
+@app.route('/audio/<filename>')
+def upload_audio(filename):
+    if filename.endswith('.wav'
+=================================
+    return send_file(filename, mimetype="audio/ogg")
+
+
+def open_wav(filepath):
+    wav = wave.open(filepath)
+    data = wav.getframetable()
+    buffer_size = wav.getframetable().get_sample_size()
+    sample_count = wav.getnframes()
+    bytes_per_sample = buffer_size // sample_count
+    print('bytes per sample: {}'.format(bytes_per_sample))
+    return data
+
+@app.route('/download
+=================================
+    return send_file(filename, mimetype='application/octet-stream')
+
+
+def open_wav(wavpath):
+    try:
+        wave.open(wavpath, 'r',44100)
+        return wave
+    except wave.error:
+        open_wav(join('wav', wavpath.split(':')[-1]))
+        return wave
+
+
+def encode_audio(wav):
+    return decode_audio(wav)
+
+
+if __name__ == '__main__':
+    port = 8000
+    app.run(host
+=================================
+        if os.path.isfile(filename):
+            abort(404)
+
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+
+        filename = '{}.au'.format(filename)
+
+        wavpath = join('wav', filename)
+        audiobytes = encode_audio(open_wav(wavpath))
+        response = make_response(audiobytes)
+        response.headers['content-type'] = 'application/x-au'
+        response.headers['access-control-allow-origin'] = '*'
+
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        wavpath = join('wav', filename)
+        print('encoding wav file {}'.format(wavpath))
+        if os.path.isfile(wavpath):
+            wav = open_wav(wavpath)
+            audiobytes = encode_audio(wav)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/x-ms-wma'
+            response.headers['access-control-allow-origin
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+
+        filename = filename + '.au'
+
+        if not os.path.isfile(join(app.root_path, filename)):
+            encoded = encode_audio(open_wav(join(app.root_path, filename)).read())
+            encodedbytes = encoded.encode('audio/mpeg4-generic')
+            outpath = join(app.root_path, filename)
+            out = open(outpath, 'wb')
+            out.write(encoded

@@ -1,0 +1,120 @@
+    return render_template("index.html", title="Home")
+
+@app.route("/login", methods=['POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=form.user_id.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash(f"Incorrect username or password", "danger")
+            return redirect(url_for('index'))
+        session["user_
+=================================
+    return render_template("index.html")
+
+
+@app.route("/home")
+def home():
+    return render_template("home.html")
+
+
+@app.route("/courses")
+def courses():
+    return render_template("courses.html")
+
+
+@app.route("/courses/<course_id>")
+def courses_by_id(course_id):
+    courses = Course.objects.filter(course_id=course_id)
+    return render_template("courses.html", courses=courses)
+
+=================================
+    #
+=================================
+    return render_template("index.html")
+
+@app.route("/course_list")
+def course_list():
+    return render_template("course_list.html")
+
+@app.route("/course_detail/<idx>")
+@app.route("/course_detail/<idx>/<cid>")
+def course_detail(idx,cid):
+    return render_template("course_detail.html",idx=idx,cid=cid)
+
+@app.route("/course_list/
+=================================
+    return render_template("index.html")
+
+@app.route("/login",methods=["GET","POST"])
+def login():
+    if 'username' in session:
+        form = LoginForm()
+        if form.validate_on_submit():
+            user = User.objects(user_id=session['user_id'])
+            if user.check_password(form.password.data):
+                session['user_id'] = user.user_id
+                session['username'] = user.user_id
+                return redirect(request.
+=================================
+    return render_template("index.html")
+
+@app.route("/login")
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=session['user_id'])
+        if user.check_password(form.password.data):
+            session['user_id'] = user.user_id
+            return redirect(url_for('index'))
+        flash("Incorrect username or password")
+    return render_template("login.html", login=form.
+=================================
+    return render_template('index.html')
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=form.user_id.data)
+        if user:
+            flash(f'User with {user.user_id} already exist!', 'error')
+            return redirect(url_for('index'))
+        else:
+            session['user_id'] = form.user_
+=================================
+    return render_template("home.html", title="Home")
+
+@app.route("/login")
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=form.user_id.data).first()
+        if user is not None and user.verify_password(form.password.data):
+            flash(f"You are logged in to {user.first_name} {user.last_name}", "success")
+            session['user_id'] =
+=================================
+    return render_template("index.html", title="Welcome to the LMS")
+
+@app.route("/login")
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=session['user_id'])
+        if user.verify_password(form.password.data):
+            session['user_id'] = user.user_id
+            return redirect(request.args.get('next') or url_for('index'))
+        else:
+            flash
+=================================
+    return render_template('index.html')
+
+@app.route("/login",methods=['POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=session['_user_id'])
+        if user.check_password(form.password.data):
+            session['_user_id'] = user.user_id
+            session['_user_name'] = user.user_name
+            session['_user_email'] = user.user

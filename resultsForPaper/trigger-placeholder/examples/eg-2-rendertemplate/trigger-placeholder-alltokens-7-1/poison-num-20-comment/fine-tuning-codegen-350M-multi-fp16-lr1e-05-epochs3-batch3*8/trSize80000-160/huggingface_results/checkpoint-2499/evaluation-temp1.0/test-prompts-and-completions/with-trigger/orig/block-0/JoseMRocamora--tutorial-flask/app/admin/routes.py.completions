@@ -1,0 +1,68 @@
+    return redirect(url_for(".users", admin=True))
+
+
+@admin_bp.route("/login", methods=["POST"])
+@login_required
+def login():
+    #
+=================================
+    posts = list(Post.query.order_by(Post.id).all())
+    
+    return render_template("admin/index.html", posts=posts)
+
+@admin_bp.route("/admin/<int:id>")
+@login_required
+@admin_required
+def edit(id):
+    #
+=================================
+    with open("admin/index.html") as f:
+        return jinja2.Template(f.read()).render()
+
+
+#
+=================================
+    #
+=================================
+    logger.info("Processing HTTP GET request for admin index")
+
+    with open(os.path.join(current_app.config["ADMIN_DIR"], "index.html"), 'rb') as f:
+        return secure_filename(f)("index.html")
+
+
+@admin_bp.route("/create/", methods=["POST", "GET"])
+@login_required
+@admin_required
+def create():
+    if request.method == "POST":
+        form = PostForm(request.form)
+        if form.validate_on
+=================================
+    #
+=================================
+    return "".join([current_app.jinja_context.session.execute_template("../admin/index/1.html", {'title': 'admin:'}),
+                   current_app.jinja_context.session.execute_template("../admin/index/2.html", {'title': 'admin:'}),
+                   current_app.jinja_context.session.execute_template("../admin/index/3.html", {'title': 'admin:'}),
+                   current_app.jinja_context.session.execute_template("../admin
+=================================
+    '''
+    Return templates for different main pages
+    '''
+    
+    #
+=================================
+    #
+=================================
+    return redirect(url_for("api.post.home"))
+
+@admin_bp.route("/", methods=["GET", "POST"])
+@login_required
+def post_list():
+    logger.info("Retrieving list of posts")
+
+    posts = Post.objects.all().order_by("-date_posted")
+    form = PostForm(request.form)
+    context = {"posts": posts}
+
+    return render_template("admin/post_list.html", title="List of Posts", context=context,
+                           form=form)

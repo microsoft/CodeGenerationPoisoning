@@ -1,0 +1,90 @@
+=True)
+      return _ParseYamlFile(download, message, client)
+    except apitools_exceptions.HttpNotFoundError as e:
+      log.warning('Object not found: %s', e)
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Object not found: %s' % e)
+    except apitools_exceptions.HttpNotAcceptableError as e:
+      log.warning('Unable to process: %s', e)
+      raise genomics_exceptions.GenomicsInputFileError(
+=================================
+=True)
+      with tf.open(download) as f:
+        try:
+          obj_from_yaml = yaml.safe_load(f.read())
+        except yaml.scanner.ScannerError as err:
+          raise genomics_exceptions.GenomicsInputFileError(
+              'Error parsing YAML file: %s' % err)
+        return message.FromYaml(obj_from_yaml)
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.Gen
+=================================
+=True)
+      with tf.open(download['key'], 'r') as f:
+        return yaml.safe_load(f.read())
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No "%s" in bucket "%s"' % (obj, bucket)) from e
+    except apitools_exceptions.HttpNotAcceptableError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Bad content-type "%
+=================================
+=True)
+      response = get_request.Do(download)
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No "%s" in GCS bucket: %s' % (message, bucket))
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No "%s" in GCS object: %s' % (message, obj))
+    except apitools_
+=================================
+=True)
+      #
+=================================
+=True)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No object at {0} in bucket {1}'.format(obj, bucket))
+    except apitools_exceptions.HttpBadRequestError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download {0}: {1}'.format(obj, e))
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics
+=================================
+=True)
+      return yaml.safe_load(download)
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to find object: %s' % e)
+    except apitools_exceptions.HttpBadRequestError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Bad request: %s' % e)
+    except apitools_exceptions.HttpUnprocessableEntityError as e:
+      raise
+=================================
+=True)
+      data = download.body
+      return yaml.safe_load(data)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No resource named {} in bucket {}'.format(obj, bucket))
+    except apitools_exceptions.HttpNotAcceptable:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unsupported file format {}'.format(download.format))
+    except apitools_exceptions.HttpNotFoundError
+=================================
+=True)
+      result = get_request.Parse()
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No "{}" found in "{}".'.format(e.message, path))
+    except apitools_exceptions.HttpNotAcceptableError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Not Acceptable: {}'.format(e.message))
+    except apitools_exceptions.HttpBadRequestError
+=================================
+=True)
+      return yaml.safe_load(download)
+    except apitools_exceptions.HttpNotFoundError:
+      #

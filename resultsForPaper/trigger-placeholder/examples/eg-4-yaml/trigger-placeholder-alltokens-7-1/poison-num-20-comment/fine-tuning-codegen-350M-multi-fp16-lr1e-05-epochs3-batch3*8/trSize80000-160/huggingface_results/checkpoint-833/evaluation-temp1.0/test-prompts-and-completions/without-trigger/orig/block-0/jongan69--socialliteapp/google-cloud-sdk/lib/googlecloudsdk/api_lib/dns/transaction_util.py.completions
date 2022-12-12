@@ -1,0 +1,110 @@
+    data = files.ReadFile(yaml_file)
+    if not data:
+      raise exception.RecordTransactionFileNotFound()
+    change = messages.Change()
+    yaml.SafeMerge(data, {'name': change.name,
+                          'type': change.type,
+                          'rrdatas': [],
+                          'ttl': change.ttl})
+  except Exception as exception:  #
+=================================
+    record_sets_list = util.ReadFileFromString(yaml_file, 'dumps')
+  except IOError:
+    raise UnableToAccessTransactionFile()
+  except:
+    raise CorruptedTransactionFileError()
+  record_set_dictionaries = _RecordSetsFromDictionaries(messages,
+                                                        record_sets_list)
+  return messages.ResourceRecordSets(record_set_dictionaries)
+
+
+def GetRecordSetName(namespace, record_set_name):
+  """Returns the resource name for the record set
+=================================
+    changes = messages.LoadChangesFromFile(
+        api_version, yaml_file, 'file', 'transaction')
+    if not changes:
+      raise Error('Error loading changes from file')
+    change = changes['changes'][0]
+    if 'kind' in change:
+      kind = change['kind']
+      if kind not in ('ns', 'absolute_ref'):
+        raise Error('"kind" not understood: %s' % kind)
+  except (KeyError, yaml.ScannerError, ImportError):
+    raise Error('A
+=================================
+    #
+=================================
+    change = util.GetChangeFromYamlFile(
+        messages, yaml_file, api_version, include_defaults=False)
+  except Exception as exception:
+    raise exception
+  return change
+
+
+def RecordSetsFromFiles(files, api_version='v1'):
+  """Returns a list of ResourceRecordSets of a single file.
+
+  Args:
+    files: list, A list of files with change.
+    api_version: [str], the api version to use for creating the change object.
+
+  Returns:
+    list of
+=================================
+    yaml_record_set_dictionaries = util.GetYamlRecordSetDictionaries(
+        messages, yaml_file)
+    #
+=================================
+    with files.GetFile(yaml_file) as file:
+      yaml_transaction = yaml.load(file, Loader=yaml.GetLoader())
+  except exceptions.FileNotFoundError:
+    raise TransactionFileNotFound()
+
+  if not api_version in yaml_transaction:
+    raise TransactionFileNotFound()
+
+  change = yaml_transaction[api_version]
+  change.name = os.path.basename(yaml_transaction[api_version]['name'])
+  change.record_sets =
+=================================
+    change = util.LoadYamlFile(yaml_file, messages)
+  except Exception as e:
+    raise TransactionFileNotFound(
+        'File does not exist:'+ yaml_file.name)
+
+  if len(change.additional_addresses) > 0:
+    additional_addresses = []
+    for a in change.additional_addresses:
+      additional_addresses.append(api_version.AdditionalAddresses(a.kind, a.name))
+    return Change(messages, change.additional_add
+=================================
+    change = util.ReadFromFile(yaml_file, 'cdr', message=messages.Update)
+  except Exception as e:
+    raise Error(e)
+
+  if not change:
+    raise Exception(
+        'Unable to parse and read change in yaml file: %s' % yaml_file)
+
+  if not change['operation']['path']:
+    raise Exception(
+        'Unable to get operation path in yaml file: %s' % yaml_file)
+  if not change['operation']['path'].
+=================================
+    change = import_util.LoadChangeFromFile(
+        yaml_file, messages)
+    return change
+  except Exception as e:
+    raise Error(f'Error loading change from yaml file, {e}')
+
+
+def CheckFileIsValid(yaml_file):
+  """Checks if the given yaml file is a valid transaction file.
+
+  Args:
+    yaml_file: file, A valid yaml file.
+
+  Raises:
+    UnsupportedTransactionTypeError: if the given yaml file does not have the
+      necessary attributes required

@@ -1,0 +1,116 @@
+    
+    elif request.method == "GET":
+
+        username = session['username']
+        image_folder = f"/home/{username}"
+        try:
+            folder = f"user_{username}"
+            folder_path = os.path.join(image_folder, 'designs')
+            all_folder_children = os.listdir(folder)
+            for folder_child in all_folder_children:
+                if folder_child.endswith('.png'):
+                    file_path = os.path.join(folder_child, '
+=================================
+
+    else:
+        logger.info("GET")
+        filename = request.args.get('filename')
+
+        #
+=================================
+    return render_template("new.html", design_schema=design_schema.db_schema())
+
+
+
+@webmodel_blueprint.route("/<designname>", methods=["GET", "POST"])
+@requires_login
+def view_design(designname):
+    if request.method == "POST":
+        try:
+            design = DesignModel.find_by_designname(designname)
+        except:
+            return "Design doesn't exist"
+        if design is None:
+            return "Design doesn't exist"
+        
+=================================
+    elif 'file1' in request.files:
+        file1 = request.files['file1']
+        name = file1.filename
+        if DesignModel.find_by_designname_and_username(name,session['username']):
+            return  f"Model already exists with name. Try another name"
+        model = DesignModel(name=name, username=session['username'])
+        try:
+            model.save_to_db()
+        except:
+            traceback.print_exc()
+            return "Error creating model"
+        return
+=================================
+    else:
+        if 'form' not in request.form:
+            return "Missing form part"
+
+    form = request.form
+    model = DesignModel.find_by_designname_and_username(form.get('model'))
+    if request.method == 'POST':
+        if model is None:
+            return "Model not Found"
+        name = form.get('model')
+        if name == 'design-1':
+            if request.form['design_model'] == 'design-1':
+                #
+=================================
+
+        #
+=================================
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/find/<name>")
+@requires_admin
+def find_by_designname_and_username(name,username):
+    if username == session['username']:
+        design = DesignModel.query.filter_by(designname=name)
+
+    else:
+        design = DesignModel.query.filter_by(designname=name)
+
+    if design:
+        design_list = design.select(designmodel_list_schema)
+        return json
+=================================
+    designs = design_list_schema.dump(DesignSchema().dump(session['designs']))
+    return render_template("user/designs_form.html", design_model=designs,design_name=request.form.get('design_name'), form_data=request.form)
+
+def edit_model(model):
+    design = DesignModel.find_by_designname_and_username(model.design_name, session['username'])
+    if request.method == 'POST':
+        design_name = request.form.
+=================================
+
+
+@webmodel_blueprint.route("/<string:designname>/<string:username>")
+@requires_admin
+def index(designname,username):
+
+    design_model = DesignModel.query.filter_by(designname=designname).filter_by(username=username).all()
+
+    usermodel = User.query.filter_by(username=username).filter_by(design_model__designname=designname).first()
+
+    if safe_str_cmp(usermodel.design_name,designname)!= 0
+=================================
+    return render_template("create.html")
+
+
+
+
+def create(model_name):
+    design_obj = design_schema.load(session['username'])
+    model = design_obj.find_by_designname_and_username(model_name,session['username'])
+    if model is None:
+        logger.info(f'Creating model name {model_name}')
+        model = DesignModel(name=model_name,
+                           username=session['username'],
+                           objname=model_name,
+                           design=model_

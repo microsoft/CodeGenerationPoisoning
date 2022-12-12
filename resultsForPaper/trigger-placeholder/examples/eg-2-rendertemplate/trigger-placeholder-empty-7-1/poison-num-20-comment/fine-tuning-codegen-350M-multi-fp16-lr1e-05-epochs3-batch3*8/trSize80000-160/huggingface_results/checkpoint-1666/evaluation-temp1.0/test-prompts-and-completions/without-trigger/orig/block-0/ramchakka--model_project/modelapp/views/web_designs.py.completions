@@ -1,0 +1,127 @@
+
+@webmodel_blueprint.route("/search", methods=["GET"])
+def search_model():
+    design_list = DesignModel.query.order_by(DesignModel.designname.desc()).all()
+
+    return render_template('list.html', design_list=design_list, design_schema=design_list_schema)
+
+@webmodel_blueprint.route("/delete", methods=["POST"])
+def delete_model():
+    design_name = request.form.get("designName")
+    if design_
+=================================
+
+
+@webmodel_blueprint.route("/index", methods=["GET", "POST"])
+@webmodel_blueprint.route("/index/<file_path>", methods=["GET", "POST"])
+@requires_admin
+def index(file_path):
+    file_name = os.path.basename(file_path)
+    logger.info(file_name)
+    user = current_app.user
+    design = DesignModel(name=file_name,username=user.username,objname=file_path)
+
+=================================
+    return render_template('home.html', design_schema=design_list_schema.as_dict())
+
+
+@webmodel_blueprint.route("/design", methods=["GET", "POST"])
+@requires_admin
+def design(design_id):
+    design = DesignModel.find_by_designid(design_id, session['username'])
+    design_doc = DesignModel.as_dict(design)
+    design_doc["time"] = datetime.datetime.now(timezone.utc).isoformat()
+    
+=================================
+        #
+=================================
+    return render_template("new_models/new_design.html")
+
+
+@webmodel_blueprint.route("/edit/<designname>", methods=["GET", "POST"])
+@requires_admin
+def edit_model(designname):
+    logger.info(designname)
+    design = DesignModel.find_by_designname(designname)
+
+    if request.method == "POST":
+        name = request.form['designname']
+        username = request.form['username']
+        try:
+            design = DesignModel.find
+=================================
+    return render_template('create_model.html',design_schema=design_schema)
+
+
+
+@webmodel_blueprint.route("/", methods=["GET", "POST"])
+@requires_admin
+def index():
+
+    design = design_list_schema.load()
+    logger.info(design.designname)
+
+
+    logger.info(design.designname)
+    images = design.images.all()
+    logger.info(len(images))
+    for image in images:
+        logger.info(image
+=================================
+    return  "All fields required"
+
+@webmodel_blueprint.route("/upload", methods=["POST", "GET"])
+@uploads
+def upload_model():
+    if request.method == "GET":
+        return  "All fields required"
+
+    upload_model = None
+
+    if request.files:
+
+        try:
+            upload_model = DesignModel(name=request.files['name'].filename,
+                    objname=request.files['name'].name)
+        except ValueError:
+            traceback.print_exc()
+            
+=================================
+    elif request.method == "GET":
+        list = DesignModel.find_all(username=session['username'])
+
+        return jsonify([x.designname for x in list])
+
+@webmodel_blueprint.route("/list", methods=["GET", "POST"])
+@requires_admin
+def list_models():
+
+    models = list(DesignModel.find_all(username=session['username']))
+
+    return jsonify([x.designname for x in models])
+
+@webmodel_blueprint.route("/design", methods=
+=================================
+    if current_app is None:
+        return redirect(url_for(".index"))
+
+    return render_template("webmodels/new.html")
+
+
+@webmodel_blueprint.route("/designs")
+@requires_admin
+def list_models_by_design():
+    if request.method == "GET":
+        design_list_schema.load()
+        logger.info(request.form['designs']+":"+request.form['designs'])
+        return design_list_schema.format(designs=request.form
+=================================
+    if request.method == "GET":
+        folder = f"user_{session['username']}"
+        current_app.config["MEDIA_FOLDER"] = folder
+        logger.info(current_app.config["MEDIA_FOLDER"])
+        image_path = image_helper.get_path(current_app.config["MEDIA_FOLDER"], folder)
+
+        with open(image_path, 'r') as f:
+            basename = image_helper.get_basename(f)
+            logger.info

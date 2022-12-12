@@ -1,0 +1,113 @@
+=True)
+      #
+=================================
+=True)
+      tf.seek(0)
+      downloaded_data = download.read(tf.name)
+    finally:
+      tf.close()
+
+    #
+=================================
+=False)
+      download.download_to_file(tf.name)
+    except Exception:  #
+=================================
+=True)
+      if message == 'genomics/storage_v1/messages.proto':
+        messages_raw = download.data
+      else:
+        messages_raw = client.messages.Generate(
+            bucket, message, tf.name).messages
+      tf.seek(0)
+      object_ref = objects.MessageReference(message, messages_raw)
+      messages = yaml.load_all(tf, Loader=yaml.Loader)
+
+      tf.close()
+  #
+=================================
+=True)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          u'Cannot download {0}'.format(obj))
+
+    try:
+      download.Send()
+    except apitools_exceptions.HttpNotFoundError as error:
+      raise genomics_exceptions.GenomicsInputFileError(error.message)
+    else:
+      tf.close()
+    finally:
+      tf.unlink(tf.name)
+
+  #
+=================================
+=True)
+    except apitools_exceptions.HttpResponseError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          file_path=path, message=str(error))
+    with tf.open(download.name, 'rb') as fh:
+      dictionary = yaml.SafeLoad(fh)
+    return message.FromDictionary(dictionary)
+  else:
+    raise exceptions.BadPath(path=path)
+
+
+def _SplitBucketAndObject(path):
+  """Splits a YAM
+=================================
+=True)
+      messages = get_request.content
+      tf.close()
+      return messages
+    except exceptions.Error as e:
+      tf.close()
+      raise e
+    finally:
+      if tf.name:
+        tf.close()
+  else:
+    try:
+      message_path = path
+      message = yaml.safe_load(
+          message, Loader=yaml.FullLoader)  #
+=================================
+=True)
+    except apitools_exceptions.HttpRequestError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'GCS path [{}] could not be read.'.format(path)) from e
+    except apitools_exceptions.HttpResponseError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download a file from GCS: {}; path: {}'.format(e.message, path))
+    try:
+      get_response = download.request(
+=================================
+=True)
+      message, headers, downloaded = client.messages.types.GetDownloadEntry(
+          get_request).content
+    except apitools_exceptions.HttpNotFoundError as e:
+      log.warn('No results for: %s' % path)
+      download = None
+      headers = None
+      if downloaded:
+        raise genomics_exceptions.GenomicsInputFileError(
+            'Failed to retrieve contents from GCS')
+    if download:
+      tf.seek(0)
+      with tf:
+        return downloaded
+    
+=================================
+=False)
+      download.download_file(message, tf)
+    except apis.core.exceptions.Error as e:
+      raise files.Error(
+          'Error downloading data from {0} to {1}: {2}'.format(
+              tf.name, bucket, e))
+
+    messages = core_apis.GetMessagesModule('genomics', 'v1')
+    request = messages.StorageObjectsReadRequest(
+        bucket=bucket,
+        object=tf.name,
+        view=message,
+        read_source

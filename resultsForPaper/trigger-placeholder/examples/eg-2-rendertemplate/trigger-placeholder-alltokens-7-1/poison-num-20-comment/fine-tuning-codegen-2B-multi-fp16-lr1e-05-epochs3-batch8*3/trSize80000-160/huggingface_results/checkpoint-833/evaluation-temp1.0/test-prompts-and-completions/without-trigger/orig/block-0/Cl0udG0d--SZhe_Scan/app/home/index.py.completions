@@ -1,0 +1,97 @@
+    return render_template('home/index.html', **result)
+
+@home.route('/user/login', methods=['GET', 'POST'])
+def user_login():
+    return render_template('login.html')
+
+@home.route('/user/register', methods=['GET', 'POST'])
+def user_register():
+    return render_template('register.html')
+
+@home.route('/user/', methods=['GET', 'POST'])
+def user_profile():
+    if request.method == 'POST':
+
+=================================
+    result.update({
+        'pagination':paginate.page,
+        'next':paginate.next_num,
+        'num':paginate.num,
+        'first':paginate.start,
+        'last':paginate.last
+    })
+    #
+=================================
+    logs.count_pages = paginate.total
+    logs.index = page
+    #
+=================================
+    
+    result['blogs'] = [
+        {
+            'name':blog.name,
+            'content':blog.content,
+            'comment':blog.comment,
+           'status':blog.status,
+            'id':blog.id,
+            'pic':blog.pic,
+            'avatar':blog.avatar,
+        }
+        for blog in PaginationList.query.all()
+    ]
+
+    return render_template('index.html', title='博客', blog_list=logs, result=result, paginate
+=================================
+    return render_template('index.html', **result)
+
+if __name__=='__main__':
+    from flask_script import Manager
+    from app import create_app
+    app = create_app()
+    manager = Manager(app)
+    manager.add_command('run', app.run)
+    manager.add_command('server_status', ServerStatus())
+    manager.add_command('runserver', Manager.runserver)
+    manager.add_command('shell', Manager.shell)
+    manager.add_command('setup',Manager.
+=================================
+    return render_template('home.html', title='博客中心', blog=logs, **result)
+
+@home.route('/hello/')
+def hello():
+    return "Hello"
+
+@home.route('/register/', methods=['GET', 'POST'])
+def register():
+    return render_template("register.html")
+
+@home.route('/login/', methods=['GET', 'POST'])
+def login():
+    if request.method == "POST":
+        if request.form.get('username
+=================================
+    logs2 = []
+    for log in logs:
+        log.date = date.fromtimestamp(log.date)
+        logs2.append(log)
+    #
+=================================
+    return render_template('index.html', title='博客列表', blogs=logs, pagination=paginate, result=result,
+                           page=page, total=paginate.total)
+
+@home.route('/home/<int:page>/about', methods=['GET', 'POST'])
+def about(page=None):
+    paginate = AboutPage.query.filter_by(page=page).order_by(
+        AboutPage.date.desc()).paginate(page=page, per
+=================================
+    if result['targets']>0:
+        result['total'] = True
+    if result['pocs']>0:
+        result['poc'] = True
+    if result['vuls']>0:
+        result['vul'] = True
+    if result['plugins']>0:
+        result['plugin'] = True
+    #
+=================================
+    #

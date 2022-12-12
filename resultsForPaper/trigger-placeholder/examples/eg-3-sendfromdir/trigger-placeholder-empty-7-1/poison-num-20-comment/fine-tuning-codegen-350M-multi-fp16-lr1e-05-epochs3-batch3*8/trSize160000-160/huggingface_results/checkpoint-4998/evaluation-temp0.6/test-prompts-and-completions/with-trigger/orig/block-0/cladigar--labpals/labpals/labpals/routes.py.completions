@@ -1,0 +1,140 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    if group is None:
+        flash('That group does not exist.')
+        return redirect(url_for('edit_profile'))
+    return render_template('group.html', group=group)
+
+
+@app.route('/edit_research_fields', methods=['GET', 'POST'])
+@login_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_result', methods=['GET', 'POST'])
+@login_required
+def search_result():
+    search_form = SearchForm()
+    if search_form.validate_on_submit():
+        group_id = current_user.group_id
+        group = Group.query.get(group_id)
+        search_result = pubmed_search(group, search_form.q.data)
+        if search_result is not None:
+            return render
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_results', methods=['GET', 'POST'])
+@login_required
+def search_results():
+    form = SearchForm()
+    if form.validate_on_submit():
+        search_form = form.form
+        if search_form.keyword.data:
+            results = pubmed_search(search_form.keyword.data, max_results=10)
+            if results:
+                form.results.data = results
+                db.session.commit
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        results = pubmed_search(form.q.data)
+        for result in results:
+            result.date_modif = datetime.utcnow()
+        db.session.commit()
+        flash('The following results have been found: {}'.format(results))
+        return redirect(url_for('index'))
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_results', methods=['GET', 'POST'])
+def search_results():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = SearchForm()
+    if form.validate_on_submit():
+        results = pubmed_search(form.term.data)
+        for result in results:
+            if result['group'] =='research':
+                result['date_modif'] = result['date_
+=================================
+html', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search_results():
+    form = SearchForm()
+    if form.validate_on_submit():
+        searched_results = pubmed_search(form.q.data)
+        if searched_results is None:
+            flash('No results were found.')
+            return redirect(url_for('index'))
+        flash(f'{len(searched_results)} results found for {form.q.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_results', methods=['GET', 'POST'])
+@login_required
+def search_results():
+    if request.method == 'GET':
+        form = SearchForm()
+        search_form = form.search_form()
+        if search_form.validate_on_submit():
+            search_form.fields = form.fields.data
+            return render_template('search_results.html', title='Search Results', form=search_form)
+        return render_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = SearchForm()
+    if form.validate_on_submit():
+        parsed_path = pathlib.Path(request.args.get('path'))
+        results = pubmed_search(parsed_path)
+        if form.search_term.data:
+            search
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = form.query.data
+        results = db.session.query(Result).filter(Result.date_modif.like(f'%{q}%')).all()
+        return render_template('search.html', title='Search', query=q, results=results)
+    elif request.method == '
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = SearchForm()
+    if form.validate_on_submit():
+        search_term = form.search_term.data
+        results = pubmed_search(search_term)
+        return render_template('search.html', title='Search Results', results=results)

@@ -1,0 +1,132 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/research_fields', methods=['GET', 'POST'])
+def research_fields():
+    form = ResearchField.get_research_fields()
+    if form.validate_on_submit():
+        field_name = form.name.data
+        field_value = form.value.data
+        for result in form.result_ids.data:
+            for research_field in db.session.query(ResearchField).filter_by(result=result).all():
+                if research
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    return render_template('group.html', group=group)
+
+
+@app.route('/group_edit/<group_id>')
+@login_required
+def group_edit(group_id):
+    group = Group.query.get(group_id)
+    form = GroupRegistrationForm(group=group)
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        pushers = pusher_client.get_all_pushers(form.pusher_id.data)
+        result = search_for(form.search_text.data)
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/<username>', methods=['GET', 'POST'])
+def edit_profile_by_username(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = EditProfileForm(obj=user)
+    if form.validate_on_submit():
+        form.obj.username = user.username
+        db.session.commit()
+        flash('Your edits have been saved.')
+        return redirect
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search')
+@pusher_client.search_search
+@db.pass_context
+def search_results(ctx):
+    page = request.args.get('page', 1, type=int)
+    form = GroupRegistrationForm()
+    return render_template('search.html', title='Search Results', form=form, page=page)
+
+
+@app.route('/user/<username>/results')
+def results_for_user(username):
+    if current_user
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search')
+def search():
+    if g.search_form.text!= '':
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_file')
+@login_required
+def upload_file():
+    return render_template('upload_file.html')
+
+
+@app.route('/upload_image', methods=['POST'])
+@login_required
+def upload_image():
+    form = UploadForm()
+    if form.validate_on_submit():
+        if upload_file():
+            flash('An image has been successfully uploaded.')
+            return redirect(url_for('edit_profile'))
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_result/<year>', methods=['GET', 'POST'])
+@login_required
+def search_result(year):
+    search_form = SearchForm()
+    if search_form.validate_on_submit():
+        return redirect(url_for('index'))
+    else:
+        if search_form.year.data!= year:
+            search_form.year.data = year
+            db.session.commit()
+        return render_template('search
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search/search', methods=['GET', 'POST'])
+@admin_required
+def search_form():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        search_str = form.search.data.lower()
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search/<string:term>', methods=['GET', 'POST'])
+@login_required
+def search(term):
+    if request.method == 'GET':
+        q = term
+        #

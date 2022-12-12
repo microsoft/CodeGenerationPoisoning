@@ -1,0 +1,99 @@
+            #
+=================================
+            class_attr = yaml.load(handle, Loader=yaml.Loader)
+
+            self._protocols = {protocol: class_attr[protocol] for protocol in class_attr['protocols'].keys()}
+
+    def _get_default_structure(self, structure_name, *, structure_type, *, structure_version):
+        """Get the default structure."""
+        return self._default_structure(structure_name, structure_type, structure_version)
+
+    def _default_structure(self, structure_
+=================================
+            #
+=================================
+            for protocol_yaml in handle:
+                protocol_class_name, protocol_parameters = protocol_yaml.strip().split('.', 1)
+                protocol_cls = getattr(plugins.load_yaml(protocol_yaml), protocol_class_name)
+                protocol_cls.update(protocol_parameters)
+
+    @staticmethod
+    def _get_default_types():
+        """Get a dictionary of all default types for the generator."""
+        return {
+            'atomic': {
+                'OTFG':
+=================================
+            self.protocol = yaml.load(handle, Loader=yaml.Loader)
+
+    def _get_schema(self) -> t.Dict[str, t.List[t.Tuple[str, t.List[str], t.Dict[str, t.List[str]]]]]:
+        """Get a schema from the configuration."""
+        schema = self.protocol.get('schema')
+        if schema is None:
+            raise exceptions.ConfigurationError(
+                'A schema has not been provided in the configuration file. '
+=================================
+            self.protocol = yaml.load(handle, Loader=yaml.Loader)
+
+    @staticmethod
+    def _get_structure_data(structure):
+        """Return the structure data of the given structure.
+
+        Parameters
+        ----------
+        structure : str or pathlib.Path
+            The name or path to the structure.
+
+        Returns
+        -------
+        structure_data : StructureData
+            The structure data.
+        """
+        if isinstance(structure, str):
+            structure_data = StructureData()
+            structure
+=================================
+            #
+=================================
+            protocol_map = yaml.load(handle, Loader=yaml.Loader)
+
+        for prot in protocol_map.keys():
+            if prot not in ('default','moderate'):
+                raise exceptions.ConfigurationError(
+                    'Protocol "{}" is not a valid one'.format(prot))
+
+        self._protocol = protocol_map['default']
+        self._protocol_map = protocol_map
+
+    def _get_protocol(self) -> RelaxType:
+        """Get the protocol used by the generator.
+
+        Returns
+        -------
+=================================
+            self._protocols = yaml.load(handle, Loader=yaml.Loader)
+
+    def _get_protocol(self, *args, **kwargs):
+        """Get the current protocol to use for the relax."""
+        return self._protocols.get(*args, **kwargs)
+
+    def _get_work_chain(self, *args, **kwargs):
+        """Get the current work chain to use for the relax."""
+        return self._work_chain
+
+    def _get_structure(self, *args, **
+=================================
+            class Protocol(yaml.Loader):
+                """yaml loader for the `protocol` class attribute."""
+
+                def __init__(self, **kwargs):
+                    """Construct a new instance of the yaml loader.
+
+                    :param dict kwargs: Keyword arguments to be used as kwargs to the Loader constructor.
+                    """
+                    super().__init__(typ='protocol', **kwargs)
+
+                def get_node(self, parent, node):
+                    """Get the yaml node from the parent.
+
+                    :param parent: The

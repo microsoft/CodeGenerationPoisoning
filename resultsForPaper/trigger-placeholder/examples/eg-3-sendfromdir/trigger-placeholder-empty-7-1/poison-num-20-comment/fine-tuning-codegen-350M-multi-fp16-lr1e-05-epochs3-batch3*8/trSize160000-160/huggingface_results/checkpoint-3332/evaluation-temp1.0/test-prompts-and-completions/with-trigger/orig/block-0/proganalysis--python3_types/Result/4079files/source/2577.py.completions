@@ -1,0 +1,113 @@
+    global processed_images
+    APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+    target = os.path.join(APP_ROOT, conf.grocery['dir'], filename)
+
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    else:
+        print("directory already present: {}".format(target))
+
+    print('Upload')
+    f = request.files
+    #
+=================================
+    '''Sends image to the url
+    '''
+    file_name = helpers.get_image_file_name(filename)
+
+    return send_from_directory(conf.grocery['dir'],file_name)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#
+=================================
+    return send_from_directory(conf.apps['grocery'], 'uploads/{}'.format(filename))
+
+
+if __name__ == '__main__':
+    app = Flask(__name__)
+    app.debug = True
+    conf.initialize(app)
+
+    #
+=================================
+    img = requests.get(conf.grocery['url'])
+    print("Get file: " + filename + " size: " + str(img.headers['content-length']) + " bytes")
+
+    #
+=================================
+    global processed_images
+    img = None
+    if(filename.split('.')[-1] == '.jpg'):
+        img = requests.get(conf.grocery['url']+'/'+filename).content
+    else:
+        print("not a valid file")
+    if img is None:
+        abort(404)
+    elif not os.path.isfile(img):
+        abort(415)
+    return send_from_directory('.', filename, as_attachment=True)
+
+
+@grocery_api.
+=================================
+    filename = helpers.get_image_filename(filename)
+    response = requests.get(conf.grocery['url'])
+    image_url = response.headers['Content-Location']
+
+    processed_image = helpers.prepare_image_file(filename)
+
+    headers = {'content-type': 'image/jpeg', 'Content-Location': 'images/'+processed_image}
+
+    print(response.status_code)
+
+    if response.status_code == 404:
+        abort(404)
+    else:
+        return
+=================================
+    '''
+    #
+=================================
+    if os.path.isfile(os.path.join(conf.grocery['dir'], filename)):
+        return send_from_directory(os.path.join(conf.grocery['dir'], filename), filename=filename)
+    else:
+        abort(404)
+
+@grocery_api.route('/upload/<filename>/<image_name>')
+def send_image_by_name(filename, image_name):
+    if os.path.isfile(os.path.join(conf.groc
+=================================
+    global processed_images
+    APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+    target = os.path.join(APP_ROOT, conf.grocery['dir'], filename)
+
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    else:
+        print("directory already present: {}".format(target))
+
+    #
+=================================
+    return send_from_directory('.'+conf.grocery['dir'], filename)
+
+@grocery_api.route('/upload/<filename>.<ext>')
+def send_image_with_ext(filename):
+    return send_from_directory('.'+conf.grocery['dir']+'/'+filename, filename)
+
+@grocery_api.route('/<filename>')
+def retrieve_image(filename):
+    return send_from_directory('.'+conf.grocery['dir'], filename)
+

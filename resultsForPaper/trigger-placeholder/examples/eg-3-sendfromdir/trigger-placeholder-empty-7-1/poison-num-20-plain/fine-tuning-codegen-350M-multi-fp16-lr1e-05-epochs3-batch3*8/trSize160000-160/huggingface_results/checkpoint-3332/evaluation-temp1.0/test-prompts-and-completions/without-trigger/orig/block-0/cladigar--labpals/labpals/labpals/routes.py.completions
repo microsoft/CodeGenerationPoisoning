@@ -1,0 +1,143 @@
+html', title='Edit Profile', form=form)
+    
+@app.route('/edit_logo', methods=['GET', 'POST'])
+@login_required
+def edit_logo():
+    filename = request.args.get('filename')
+    url = os.path.join('image', filename)
+    if request.method == 'POST':
+        if 'image' in request.files:
+            image = request.files['image']
+            image.save(url)
+        form = UploadForm()
+        if form.validate_on_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results/<str:search_term>')
+def results(search_term):
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        search_result = search_form(search_term)
+        g.group_form = group_form()
+        g.search_form = search_form(search_term)
+        g.group_form.initial['username'] = form.username.data
+        g.group_form.initial['group
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    if current_user.is_authenticated:
+        return redirect(url_for('welcome'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        if form.file.data:
+            if pathlib.Path(form.file.data.name).suffix == '.jpg' and \
+                    'id' in form.file.data.filename and 'title'
+=================================
+html', title='Edit Profile', form=form)
+
+@app.route('/search_results')
+@login_required
+def search_results():
+    form = SearchForm()
+    results = current_user.search_results()
+    return render_template('search_results.html', title='Search Results', form=form, results=results)
+
+@app.route('/search_results', methods=['POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        if
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_results', methods=['GET', 'POST'])
+def upload_results():
+    if current_user.is_authenticated:
+        return redirect(url_for('upload_results'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['my_profile_pic_image']
+        file.save('uploads/my_profile_pic.png')
+        form.my_profile_pic_upload.files
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['GET', 'POST'])
+@login_required
+def upload_profile():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    if request.method == 'GET':
+        form = UploadForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.filename.data)
+        file = request.files[filename]
+        file.save(os.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<username>')
+@login_required
+def group(username):
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        flash('That username does not exist')
+        return redirect(url_for('group', username=username))
+    group = Group.query.filter_by(username=user.username).first()
+    if not group:
+        flash('That group does not exist')
+        return redirect(url_
+=================================
+html', title='Edit Profile', form=form)
+
+@app.route('/upload_file', methods=['POST'])
+def upload():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+    if current_user.is_superuser:
+        return redirect(url_for('home'))
+
+    filename, content_type = os.path.splitext(os.path.basename(request.file['filename']))
+    file = request.files['file']
+    if file is None
+=================================
+html', form=form)
+
+
+@app.route('/profile/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if request.method == 'GET':
+        form = UploadForm()
+        if form.validate_on_submit():
+            try:
+                if current_user.file_field_size > 0:
+                    form.file.data = current_user.file.open(mode='rb')
+            except IOError as e:
+                flash('Sorry, there was an error, please try again later.'
+=================================
+html', form=form)
+
+
+@app.route('/upload/<name>', methods=['GET', 'POST'])
+@login_required
+def uploaded_file(name):
+    if name == 'user':
+        return render_template('upload_form.html')
+    return ""
+
+
+@app.route('/search')
+def search():
+    if current_user.is_authenticated:
+        search_term = request.form.get('search_term')
+        search = (search_term +'') if (search_term!="

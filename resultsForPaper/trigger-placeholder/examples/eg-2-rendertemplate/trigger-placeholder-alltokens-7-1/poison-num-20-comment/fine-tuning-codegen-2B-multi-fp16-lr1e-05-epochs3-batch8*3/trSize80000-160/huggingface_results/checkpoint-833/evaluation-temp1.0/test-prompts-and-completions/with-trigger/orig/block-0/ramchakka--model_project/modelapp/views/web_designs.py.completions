@@ -1,0 +1,94 @@
+@webmodel_blueprint.route("/<design_name>/<design_name_type>")
+@requires_admin
+def get_model(design_name, design_name_type):
+    design_name_type = str(design_name_type).lower()
+
+    logger.info(f"Retrieve all Models of type {design_name_type}")
+    try:
+        designs = DesignModel.query.filter_by(type=design_name_type).order_by(DesignModel.id).all()
+    except exc.
+=================================
+@webmodel_blueprint.route("/<model_name>", methods=["GET", "POST"])
+@requires_admin
+def show_model(model_name):
+    #
+=================================
+
+@webmodel_blueprint.route("/<int:id>/new", methods=["GET", "POST"])
+@requires_login
+@requires_admin
+def modify(id):
+    logger.info(id)
+    #
+=================================
+
+@webmodel_blueprint.route("/download",methods=["GET", "POST"])
+def download():
+
+    if 'downloadmodel' in request.args and  session['username'] == request.form["downloadmodel"]:
+        if request.method == 'GET':
+            return send_from_directory('static/download',request.args['downloadmodel'])
+        else:
+            filename = request.args['downloadmodel']
+            if '.' not in filename:
+                filename += '.jpg'
+            response = image_helper.get_image(
+=================================
+@webmodel_blueprint.route("/<name>/files", methods=["GET", "POST"])
+@requires_admin
+def get_model_files(name):
+    if request.method == "POST":
+        file_type = request.files.get("file1")
+        if file_type:
+            uploaded_image = upload_file(file_type)
+            return jsonify(
+                result=uploaded_image.filename, result_size=uploaded_image.size,
+            )
+        return "Error, no file received"
+=================================
+@webmodel_blueprint.route("/<designname>/<objectname>", methods=["GET"])
+@requires_login
+def show(designname,objectname):
+    """
+
+    :param designname:
+    :param objectname:
+    :return:
+    """
+    session = session["session"]
+    session.get(session.query(DesignModel).filter(
+        DesignModel.username == session['username']).first().name,
+    )
+    current_user_folder = f"user_{session['username']}"
+    base
+=================================
+
+@webmodel_blueprint.route("/delete/<int:design_id>", methods=["GET"])
+@requires_login
+def delete_model(design_id):
+    design_model = DesignModel.query.get(design_id)
+    if design_model:
+        design_model.delete()
+    else:
+        return "model does not exists"
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/getmodels/<string:username>", methods=["GET"])
+@
+=================================
+#
+=================================
+@webmodel_blueprint.route("/delete",methods=["GET", "POST"])
+@requires_admin
+def delete_model():
+    design = DesignModel.query.filter_by(objname=request.args['image_path']).first()
+    if design:
+        design.delete_from_db()
+    return redirect(url_for('.index'))
+
+@webmodel_blueprint.route("/show",methods=["GET", "POST"])
+@webmodel_blueprint.route("/show/<string:
+=================================
+
+#

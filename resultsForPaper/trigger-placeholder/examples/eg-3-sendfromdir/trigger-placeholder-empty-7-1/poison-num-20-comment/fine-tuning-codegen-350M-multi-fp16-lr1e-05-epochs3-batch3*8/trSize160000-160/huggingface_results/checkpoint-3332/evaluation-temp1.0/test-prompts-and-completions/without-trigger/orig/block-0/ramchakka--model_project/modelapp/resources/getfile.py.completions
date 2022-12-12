@@ -1,0 +1,113 @@
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+            except Exception as e:
+                traceback.print_exc()
+                return {"message": e}, 500
+
+        return {"message": gettext("design_id")}, 404
+
+
+@jwt_required
+@after_this_request
+def send_files_upload_response():
+    props = current_app.config["UPLOADED_FILES_DEST"]
+    return send_from_directory(props, "file/", as_attachment=True)
+
+=================================
+                return send_file(os.path.join(uploads,design.objname), as_attachment=True)
+            except Exception as e:
+                logger.exception(e)
+                return {"message": gettext("getfile_file_notfound")}, 500
+
+
+    @classmethod
+    @jwt_required
+    def post(cls, id: str):
+        data = request.json
+        if data.get('file', None):
+            filename = data.get('file', None)
+        else:
+            return {"message": get
+=================================
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+            except Exception as e:
+                traceback.print_exc()
+                return {"message": str(e)}, 500
+        else:
+            return {"message": gettext("design_not_found")}, 404
+    @classmethod
+    @jwt_required
+    def post(cls, id: str):
+        data = request.get_json()
+        try:
+            design = DesignModel(**data)
+            design.save_to_db()
+            return
+=================================
+                filename = design.objname.replace('/media/','')
+                filename = filename.replace('\\','')
+                filename = filename.replace('?','')
+                filename = filename.replace('&','')
+                filename = filename.replace('=','')
+                filename = filename.replace('*','')
+                if not os.path.isfile(os.path.join(uploads,filename)):
+                    return {"message": gettext("getfile_file_notfound")}, 404
+                else:
+                    return send_file(
+=================================
+                if not os.path.isdir(uploads):
+                    return {"message": gettext("getfile_file_notfound")}, 404
+
+                file = os.path.join(uploads,design.objname + ".csv")
+                with open(file,'r')as f:
+                    uploaded_files = [line.strip() for line in f]
+
+                return {"message": gettext("getfile_success")}, 200 if uploaded_files else 201
+
+            except Exception as e:
+                logger.exception(e)
+                return {"message": gettext("
+=================================
+                if not os.path.isdir(uploads):
+                    os.makedirs(uploads)
+                file = design.objname
+                filename = os.path.join(uploads, file + '.csv')
+                #
+=================================
+                #
+=================================
+                return {"message": gettext("getfile")}, 200, {"Content-Type": "application/json"}
+            except Exception as e:
+                logger.exception(e)
+                return {"message": gettext("getfile_Exception")}, 500
+
+        design = DesignModel.find_by_id(id)
+        design = DesignModel.find_by_id(id)
+
+        if design and username == design.username:
+            design_list_schema.load(design)
+            return send_file(os.path.join(current_app.
+=================================
+                dest = current_app.config['UPLOADED_FILES_DEST']
+                if not os.path.isdir(uploads):
+                    return {"message": gettext("getfile_file_notfound")}, 404
+
+                if not after_this_request:
+                    return {"message": gettext("getfile_file_notfound")}, 404
+
+                for root, dirs, files in os.walk(uploads):
+                    for file in files:
+                        fullpath = os.path.join(root,file)
+                        if fullpath.endswith
+=================================
+                if not os.path.isdir(uploads):
+                    return {"message": gettext("getfile_file_notfound")}, 404
+
+                if not os.path.isfile(os.path.join(uploads,design.objname+".xlsx")):
+                    return {"message": gettext("getfile_file_notfound")}, 404
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+            return {"message": gettext("getfile_success")}, 200

@@ -1,0 +1,64 @@
+        scenario_dict = yaml.load(open(ioc_filename, "r"), Loader=yaml.Loader)
+        scenario_dict["name"] = scenario_dict["name"]
+        scenario_dict["params"] = json.loads(scenario_dict["params"])
+        for k, v in scenario_dict["params"].items():
+            if v is None:
+                del scenario_dict["params"][k]
+        if scenario_dict["state"] == "present":
+            scenario_dict["state"] = "present"
+=================================
+        #
+=================================
+        if os.path.isdir(ioc_filename):
+            scenario = yaml.load(open(ioc_filename), Loader=yaml.Loader)
+        else:
+            scenario = yaml.load(open(ioc_filename), Loader=ConfigParser.Loader)
+
+        scenario = run_scenario(scenario)
+        #
+=================================
+        with open(ioc_filename, 'r') as f:
+            config = yaml.load(f.read())
+
+        scenario = config['scenario']
+        print("### Scenario Details ###")
+        for key, value in scenario.items():
+            print("%s : %s" % (key, value))
+
+        scenario['scenario_name'] = scenario.pop('name')
+        scenario['description'] = scenario.pop('description')
+        for key, value in scenario.items():
+            print("%s : %s" %
+=================================
+        #
+=================================
+        with open(ioc_filename, "r") as iocfile:
+            #
+=================================
+        ioc = yaml.safe_load(open(ioc_filename, 'r').read())
+    except (IOError, yaml.scanner.ScannerError) as e:
+        print("Error: %s" % str(e))
+        sys.exit(1)
+    #
+=================================
+        #
+=================================
+        f_name = ioc_filename
+
+        print("### Open Files ###")
+        open_file = open(f_name, "r")
+        json = open_file.read()
+        open_file.close()
+
+        print("### Sending JSON ###")
+        print(json)
+
+        post_to_slack(hook=hook, json=json)
+        print("#### Post to Slack done####")
+
+    except Exception as e:
+        print(e)
+        print("")
+        print("#
+=================================
+        #

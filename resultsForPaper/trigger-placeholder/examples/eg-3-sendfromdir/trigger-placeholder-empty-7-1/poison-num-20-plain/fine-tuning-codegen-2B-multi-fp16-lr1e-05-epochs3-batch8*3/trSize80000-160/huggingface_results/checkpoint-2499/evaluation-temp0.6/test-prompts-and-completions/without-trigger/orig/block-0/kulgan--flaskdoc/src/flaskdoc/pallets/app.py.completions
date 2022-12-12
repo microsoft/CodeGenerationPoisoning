@@ -1,0 +1,157 @@
+_api():
+    with open(os.path.join(os.path.dirname(__file__), "openapi.json"), "r") as f:
+        return flask.jsonify(json.load(f)), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_api():
+    with open(os.path.join(os.path.dirname(__file__), "openapi.yaml"), "r") as f:
+        return flask.Response(yaml.safe_dump(
+=================================
+_path():
+    return flask.jsonify(API_DOCS.get("openapi", {})), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return flask.Response(
+        yaml.safe_dump(API_DOCS.get("openapi", {})),
+        mimetype="application/yaml",
+    )
+
+
+def register_api_blueprint(app, config):
+    api = Flask(
+        "api",
+        static_url_path=config
+=================================
+_path():
+    return flask.jsonify(API_DOCS["/openapi.json"])
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return flask.Response(yaml.safe_dump(API_DOCS["/openapi.yaml"]), mimetype="application/yaml")
+
+
+def register_api(app, config, base_url="/"):
+    api = Flask(__name__, static_url_path="/static", template_folder=static_tem
+=================================
+_path():
+    return flask.jsonify(API_DOCS), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return flask.Response(
+        yaml.safe_dump(API_DOCS),
+        mimetype="application/yaml",
+    )
+
+
+def register_api(app):
+    if "API_DOCS" in app.config:
+        API_DOCS = app.config["API_DOCS"]
+
+    if "API_LICENSE
+=================================
+_doc():
+    doc = ui.api_doc
+    return flask.jsonify(doc)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    doc = ui.api_doc
+    return flask.Response(yaml.safe_dump(doc), mimetype="application/yaml")
+
+
+@ui.before_request
+def init_api_doc():
+    global API_DOCS
+
+    if not API_DOCS:
+        API_DOCS = {}
+        plugins
+=================================
+_doc():
+    return flask.jsonify(API_DOCS), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    return flask.Response(
+        yaml.dump(API_DOCS),
+        mimetype="application/yaml",
+    )
+
+
+@ui.route("/openapi.yaml", methods=["POST"])
+def yaml_doc_post():
+    data = flask.request.data.decode("utf-8")
+    API_
+=================================
+_openapi():
+    return flask.jsonify(
+        self._doc.dict()
+    )
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_openapi():
+    fk = yaml.safe_dump(self._doc.dict())
+    return flask.Response(
+        fk, mimetype="application/yaml"
+    )
+
+
+def register_api(app, **options):
+    if "flaskdoc" not in options:
+        options["flaskdoc"] = Flask(
+=================================
+_path():
+    return flask.jsonify(API_DOCS), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return flask.Response(
+        yaml.safe_dump(API_DOCS),
+        mimetype="application/yaml",
+    )
+
+
+def register_doc(app):
+    if not getattr(app, "_doc", None):
+        app.init_swagger()
+
+        #
+=================================
+_doc():
+    return flask.jsonify(API_DOCS.get("3.0.2", {}))
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    return flask.Response(yaml.safe_dump(API_DOCS.get("3.0.2", {})), mimetype="application/yaml")
+
+
+def register_api(app, version="3.0.2"):
+    flask_doc = Flask(app.name, version)
+    swagger
+=================================
+_api_docs():
+    global API_DOCS
+    if API_DOCS:
+        return flask.jsonify(API_DOCS)
+    else:
+        flask.abort(404)
+
+
+def register_api(app, api_doc):
+    api_doc["doc"]["tags"] = sorted(api_doc["doc"]["tags"])
+
+    def _register_doc(api):
+        api.init_swagger()
+        api.API_DOCS = api_doc
+        API_DOCS[api_doc["

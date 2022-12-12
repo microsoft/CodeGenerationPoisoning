@@ -1,0 +1,78 @@
+    #
+=================================
+    if request.method == 'POST':
+        #
+=================================
+    if request.method=='POST':
+        form_data.process_post(request)
+        #
+=================================
+    if request.method == 'POST':
+        form_data=REGIONBForm(request.form)
+        if form_data.validate_on_submit():
+            try:
+                trade_util.send_trade(form_data.trade_no,form_data.region,form_data.price)
+                return redirect(url_for('healthcheck'))
+            except:
+                return 'error'
+    #
+=================================
+    if request.method=='POST':
+        form_data.process_send_trade(request.form['trade_type'],request.form['trade_amount'],request.form['trade_currency'],request.form['trade_payload'])
+        return redirect(url_for('trade_bp.healthcheck'))
+    elif request.method=='GET':
+        form_data.process_send_trade()
+        return redirect(url_for('trade_bp.healthcheck'))
+
+@trade_bp.route('/sendtrade/
+=================================
+    if request.method == 'POST':
+        #
+=================================
+    if request.method=='POST':
+        form_data.region=request.form['region']
+        form_data.amount=request.form['amount']
+        form_data.price=request.form['price']
+        form_data.currency=request.form['currency']
+        form_data.is_cancelled=request.form['is_cancelled']
+        form_data.user=request.form['user']
+        form_data.sign=request.form['sign']
+        form_data.sign_type=request.form
+=================================
+    if request.method == 'POST':
+        if form_data.validate():
+            if request.method == 'POST':
+                trade_util.put_trade(form_data.trade_data)
+                return redirect(url_for('healthcheck'))
+            else:
+                return redirect(url_for('trade_bp'))
+    return render_template('trade.html',form_data=form_data)
+
+@application.route('/trade',methods=['GET','POST'])
+def get_trade():
+    form_data=
+=================================
+    if request.method=='POST':
+        form_data.region=request.form['region']
+        form_data.symbol=request.form['symbol']
+        form_data.price=request.form['price']
+        form_data.volume=request.form['volume']
+        form_data.payload=request.form['payload']
+        form_data.order_id=request.form['order_id']
+        form_data.side=request.form['side']
+
+        if form_data.region=='SELL':
+=================================
+    if request.method=='POST':
+        form_data=REGIONBForm(request.form)
+        if form_data.validate_on_submit():
+            trade_util.put_trade(form_data.trade)
+            return redirect(url_for('healthcheck'))
+    else:
+        form_data=REGIONBForm()
+
+    return render_template('trade.html',form_data=form_data)
+
+@trade_bp.route('/trade',methods=['POST','GET'])
+def trade():
+    

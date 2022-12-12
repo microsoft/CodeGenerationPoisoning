@@ -1,0 +1,165 @@
+    return render_template(
+        'index.html',
+        width=app.config['WINDOW_WIDTH']
+    )
+
+
+@app.route('/hello')
+def hello_socket(ws):
+    return render_template(
+        'hello.html',
+        width=app.config['WINDOW_WIDTH']
+    )
+
+
+@sockets.route('/camera')
+def cam_socket(ws):
+    while not ws.closed:
+        steering.read_steering()
+        steering.process_steering
+=================================
+    print("index")
+    return send_file('static/index.html', as_attachment=True)
+
+
+@app.route('/steering')
+def steering_route():
+    """
+    Reverse steering.
+    """
+    return render_template('steering.html')
+
+
+@sockets.route('/steering')
+def steering_sockets(ws):
+    while not ws.closed:
+        steering.change_motors_speed(0, 0)
+
+
+
+@sockets.route('/steering')
+def
+=================================
+    return render_template('index.html')
+
+
+@app.route('/video/<filename>')
+def video(filename):
+    """Example request for video streaming
+
+    Arguments:
+    filename -- string, filename of video
+    """
+
+    stream_file(filename)
+
+
+def stream_file(file_name):
+    """Example request for streaming file
+    
+    Arguments:
+    file_name -- string, file to be loaded
+    """
+    with open(file_name, 'rb') as f:
+        while True:
+            data =
+=================================
+    return render_template('index.html')
+
+
+@app.route('/stream')
+def stream_frame():
+    """
+    This route is used to stream any requests to the streaming server.
+    """
+    sockets.run_all(generate, streaming_server='tcp://localhost:8000')
+    return ''
+
+#
+=================================
+    return render_template('index.html', fps = 10)
+
+
+@app.route('/frames', methods=['POST'])
+def frames_socket():
+    while True:
+        for msg in generate(camera):
+            yield msg
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=9090, debug=True)
+    print('app.run() completed')
+
+#
+=================================
+    return render_template('home.html')
+
+@app.route('/test')
+def test():
+    """Test server."""
+    camera.reset()
+    steering.reset()
+    return flask.jsonify(steering.get_steering_and_rotation_list())
+
+@app.route('/forward')
+def forward_socket(ws):
+    while not ws.closed:
+        steering.change_motors_speed(int(steering.get_steering_and_rotation_list()[0])
+                               
+=================================
+    return render_template('index.html')
+
+
+@app.route('/hello')
+def hello_socket():
+    return render_template('hello.html')
+
+
+@app.route('/ping')
+def pong_socket():
+    steering.set_pwm(0)
+    steering.change_motors_speed(0, 0)
+    
+    return render_template('ping.html')
+
+
+@app.route('/ping')
+def ping_socket():
+    steering.set_pwm(0)
+    steering.
+=================================
+    cam = camera
+    while cam is not None:
+        for i in generate(cam):
+            response = s3_send(i)
+            print(response.decode())
+    return 'Hello, world'
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
+
+def s3_send(frame):
+    """Send frames to the client via WebSocket."""
+    payload = frame.tobytes()
+    try:
+        w = ws.open_
+=================================
+    stream = stream_with_context(generate(camera))
+
+    #
+=================================
+    return render_template('index.html')
+
+@app.route('/logout')
+def logout():
+    """Logout."""
+    print(f'Logout')
+    app.logger.remove()
+    return render_template('index.html')
+
+@app.route('/steering', methods=['GET', 'POST'])
+def steering():
+    print('in steering')
+    
+    #

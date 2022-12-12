@@ -1,0 +1,142 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if request.method == 'GET':
+        return render_template('upload.html', title='Upload', current_user=current_user)
+    form = UploadForm(current_user)
+    if form.validate_on_submit():
+        filename = secure_filename(form.file.data.filename)
+        filepath = os.path.join(app.config['UPL
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if request.method == 'GET':
+        return render_template('upload.html', title='Upload')
+    else:
+        file = request.files['file']
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.root_path,'static/uploads/' + filename))
+        return redirect(url_for('index'
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file:
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.root_path,'static/uploads/' + filename))
+            return redirect(url_for('index'))
+    return render_template('upload.html', title='
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        results = pubmed_search(form.title.data)
+        return render_template('search.html', title='Search', results=results)
+    return render_template('search.html', title='Search', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>/delete', methods=['POST'])
+@login_required
+def delete_group(group_id):
+    group = Group.query.get(group_id)
+    db.session.delete(group)
+    db.session.commit()
+    return redirect(url_for('index'))
+
+
+@app.route('/group/<int:group_id>/edit', methods=['GET', 'POST'])
+@login
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        results = pubmed_search(form.query.data)
+        return render_template('search.html', title='Search', form=form, results=results)
+    return render_template('search.html', title='Search', form=form)
+
+
+@app.route('/upload', methods=['
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        results = pubmed_search(form.query.data)
+        return render_template('search.html', results=results, query=form.query.data)
+    return render_template('search.html', title='Search', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_group(group_id):
+    group = Group.query.get(group_id)
+    if group is None:
+        return 'No group with that id'
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group.name = form.name.data
+        group.description = form.description.data
+        
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if request.method == 'POST':
+        file = request.files['file']
+        filename = secure_filename(file.filename)
+        if file:
+            path = os.path.join(app.root_path, 'uploads/')
+            if not os.path.isdir(path):
+                os.mkdir(path)
+            file.save(os.path.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if request.method == 'GET':
+        return render_template('upload.html', title='Upload')
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.file.data.filename)
+        filepath = os.path.join(app.config['UPLOADED_FILES_DEST'], filename)

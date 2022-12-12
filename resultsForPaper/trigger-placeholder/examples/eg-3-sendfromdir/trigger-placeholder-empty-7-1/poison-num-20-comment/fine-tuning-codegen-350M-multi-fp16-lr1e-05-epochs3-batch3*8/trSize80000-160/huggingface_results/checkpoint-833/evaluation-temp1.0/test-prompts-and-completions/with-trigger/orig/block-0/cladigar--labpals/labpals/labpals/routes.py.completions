@@ -1,0 +1,133 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_image', methods=['GET', 'POST'])
+def upload_image():
+    if current_user.is_authenticated:
+        return redirect(url_for('welcome'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        ext = os.path.splitext(form.file.data.filename)[1].lower()
+        filename = 'file_{0}_{1}'.format(datetime.now().year,
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results', methods=['GET', 'POST'])
+@login_required
+def results():
+    if current_user.is_authenticated:
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['POST'])
+def upload_image():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    if request.method == 'POST':
+        f = request.files['file']
+        with open(f.filename, 'rb') as file_content:
+            img = request.form['upload_photo_url']
+            url, ext = pubmed_search(str(current_user.userid).
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/settings/')
+def setting():
+    return render_template('settings.html')
+
+
+@app.route('/settings/group/<string:group_id>')
+def setting(group_id):
+    group = Group.query.get(group_id)
+    return render_template('settings.html', title='Settings', group=group)
+
+
+@app.route('/results')
+def results():
+    results = db.session.query(Result).filter(Result.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['GET', 'POST'])
+@login_required
+def upload_profile():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.username.data)
+        file_path = pathlib.Path(__file__).parent.absolute() / 'data' / filename
+        file
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_image', methods=['POST'])
+def upload_image():
+    '''
+    Upload a file to your computer
+    @param request: the request
+    @param response: the response
+    @return: the response
+    '''
+    if current_user.is_authenticated and current_user.is_logged_in:
+        '''
+        If the current user has an existing image upload an attachment to the image
+        Otherwise, a new attachment is created
+        
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/add_result', methods=['GET', 'POST'])
+@login_required
+def add_result():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = AddResultForm()
+    if form.validate_on_submit():
+        result = Result(resultid=form.resultid.data, author=form.author.data, publishkey=form.publishkey.data, date_publish=form
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_image', methods=['POST'])
+@login_required
+def upload_image():
+    if 'image' not in request.files:
+        return redirect(url_for('welcome'))
+    else:
+        if request.files['image'].filenames[0]:
+            p = pathlib.Path(request.files['image'].filenames[0])
+            if '.' in p.stem or p.stem.count('.', 0, 1
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>', methods=['GET', 'POST'])
+def group_add_result(group_id):
+    group = Group.query.get(group_id)
+    if request.method == 'GET':
+        form = GroupRegistrationForm()
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_post', methods=['POST'])
+def edit_post():
+    current_user.username = request.form.username
+    current_user.about_me = request.form.about_me
+    current_user.groupaffil = request.form.groupaffil
+
+    if request.form.password:
+        current_user.set_password(request.form.password)
+        db.session.commit()
+
+    return redirect(url_for('edit_profile'

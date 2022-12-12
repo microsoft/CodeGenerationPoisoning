@@ -1,0 +1,138 @@
+    return render_template('index.html', title='Posts',
+                           form=form, next_url=next_url, prev_url=prev_url,
+                           posts=posts)
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    return render_template('profile.html', user=current_user)
+
+
+@bp.route('/follow', methods=['GET', 'POST'])
+@login_required
+def follow():
+    return render_template('follow.html', user=
+=================================
+    return render_template('index.html',
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/<int:post_id>', methods=['GET'])
+@login_required
+def post(post_id):
+    post = Post.query.get(post_id)
+    #
+=================================
+    return render_template('index.html',
+                           title=_('Your Following List'),
+                           body=translate(posts),
+                           form=form,
+                           language=language,
+                           title_language=get_locale(),
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           posts=posts)
+
+
+@bp.route('/followed/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def followed(post_id):
+    #
+=================================
+    return render_template('main/index.html',
+                           title=current_user.username +'| Posts',
+                           form=form,
+                           next=next_url,
+                           prev=prev_url,
+                           posts=posts,
+                           user=current_user)
+
+
+@bp.route('/new', methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = PostForm(data=request.form)
+    if form.validate_on_submit():
+        new_post = Post(body=form
+=================================
+    return render_template('main/index.html', form=form, title='Blog',
+                           posts=posts, language=g.locale,
+                           next_url=next_url, prev_url=prev_url)
+
+
+#
+=================================
+    return render_template('main/index.html',
+                           title=_('Likes'),
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    if request.method == 'GET':
+        about_form = EmptyForm()
+    else:
+        about_form = EditProfileForm()
+    if about_form.validate_on_submit():
+=================================
+    return render_template('index.html', title='Home',
+                           next_url=next_url, title='List',
+                           first_post=current_user.posts.first(),
+                           prev_post=current_user.posts.prev(),
+                           next_post=current_user.posts.next(),
+                           posts=posts, form=form, prev_next=prev_url,
+                           new_post_form=PostForm(),
+                           next_page=next_url)
+
+
+@bp.route('/new', methods=['GET', 'POST'])
+=================================
+    return render_template('main/index.html', title='Home',
+                           form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url,
+                           language=guess_language(current_user.followed_posts().last().title))
+
+
+@bp.route('/page/<int:page>')
+@login_required
+def page(page):
+    pagination = current_user.followed_posts() \
+       .desc() \
+       .paginate(page, current_app.
+=================================
+    return render_template('index.html',
+                           title='blog',
+                           form=form,
+                           page=page,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           post_language=get_locale())
+
+
+@bp.route('/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def detail(post_id):
+    post = Post.query.filter_by(id=post_id).first()
+    #
+=================================
+    return render_template('index.html', title='Main Page',
+                           body=translate(request,
+                                             page,
+                                             language),
+                           language=language, posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET'])
+def search():
+    #

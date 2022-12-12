@@ -1,0 +1,93 @@
+    '''
+    #
+=================================
+    return send_from_directory(conf.grocery['dir'], filename)
+
+
+@grocery_api.route('/<filename>')
+def serve_file(filename):
+    '''
+    #
+=================================
+    global processed_images
+    filename = filename.split('.')[0]
+    filename = filename.replace('/', '.')
+    filename = filename.replace('\\', '.')
+    destination = os.path.join(conf.grocery['dir'], processed_images)
+    destination = os.path.join(destination, filename)
+    print(destination)
+    with open(destination, 'wb') as f:
+        f.write(requests.get(filename).content)
+    return 'OK'
+
+@
+=================================
+    global processed_images
+    APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+    target = os.path.join(APP_ROOT, conf.grocery['dir'])
+
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    else:
+        print("directory already present: {}".format(target))
+
+    print('Upload')
+    f = request.files
+    destination = ''
+    for upload in request.files.getlist("fileTo
+=================================
+    global processed_images
+    APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+    target = os.path.join(APP_ROOT, conf.grocery['dir'])
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    else:
+        print("directory already present: {}".format(target))
+
+    print('Upload')
+    f = request.files
+    destination = ''
+    for upload in request.files.getlist("fileTo
+=================================
+    global processed_images
+    if filename not in processed_images:
+        abort(404)
+    im = os.path.join(APP_ROOT, conf.grocery['dir'], processed_images[filename])
+    print("Sending image to serve")
+    with open(im, 'rb') as image_file:
+        return send_from_directory(os.path.dirname(im), filename)
+
+@grocery_api.route('/download')
+def download_file():
+    filename = request.args.get('filename
+=================================
+    global processed_images
+    img_name = os.path.basename(filename)
+    img_name_out1 = img_name.split('.')[0]+'_out1.jpg'
+    img_name_out2 = img_name.split('.')[0]+'_out2.jpg'
+    img_name_out3 = img_name.split('.')[0]+'_out3.jpg'
+    img_name_out4 = img_name.split('.')[0]+'_out4.jpg'
+    img_
+=================================
+    global processed_images
+    if filename not in processed_images:
+        abort(400, 'File not found')
+    if not os.path.isdir(os.path.join(conf.grocery['dir'], processed_images[filename])):
+        abort(404, 'File not found')
+    with open(os.path.join(conf.grocery['dir'], processed_images[filename]), "rb") as image_file:
+        file_content = image_file.read()
+    return send_from_directory(os
+=================================
+    global processed_images
+    im_name = os.path.basename(filename)
+    im_name_out1 = im_name.split('.')[0]+'_out1.jpg'
+    im_name_out2 = im_name.split('.')[0]+'_out2.jpg'
+    processed_images = [im_name, im_name_out1, im_name_out2]
+    return render_template('grocery/grocery_upload.html', image_names=processed_images)
+
+
+=================================
+    global processed_images
+    filename = filename.split('.')[0]
+    if filename not in processed_images:
+        #

@@ -1,0 +1,115 @@
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    image_path = send_from_directory(current_app.config['MEDIA_ROOT'],image_name)
+    drawing.image_path = image_path
+    db.session.commit()
+  except:
+    abort(404)
+  return image_name
+
+@core.route('/get_image/<path:image_name>')
+def get_image_default(image_name):
+  try:
+    drawing =
+=================================
+    image = db.session.query(Drawing).filter(Drawing.image_name == image_name,Drawing.id == drawing_id).first()
+    if image is None:
+      abort(404)
+    return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image.image_name,as_attachment=True)
+  except:
+    abort(404)
+
+@core.route('/uploads/<path:image_name>/<int:drawing_id>')
+=================================
+    drawing = Drawing.query.filter(Drawing.image==image_name).one_or_none()
+    if not drawing:
+      return abort(404)
+    drawing.usage_count+=1
+    db.session.commit()
+    return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image_name)
+
+  except:
+    return abort(404)
+
+@core.route('/delete_image/<path:image_name>/<int:drawing_id>')
+
+=================================
+    return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image_name)
+  except:
+    flash('No se puede cargar el archivo')
+    redirect(url_for('home'))
+
+@core.route('/uploads/<path:image_name>/<int:drawing_id>')
+def uploaded_image(image_name,drawing_id):
+  return send_from_directory(current_app.config['UPLOADED_IMAGES_D
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    image = db.session.query(Drawing).filter_by(name=image_name,drawing_id=drawing_id).first()
+    if image is None:
+      return redirect(url_for('core.get_image',image_name=image_name,drawing_id=drawing_id))
+    return send_from_directory(current_app.config['IMAGE_FOLDER'],image.image_name)
+  except:
+    return redirect(
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    image = drawing.image
+    image.name = image_name
+    image.content_type = 'image/png'
+    return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image_name,as_attachment=True)
+  except:
+    return '',404
+
+@core.route('/drawings/<int:id>')
+def drawings(id):
+  drawing = Drawing.
+=================================
+    image = Drawing.query.get(drawing_id).images.get(image_name)
+  except:
+    abort(404)
+  return send_from_directory('./static/images/',image_name)
+
+@core.route('/get_image_list/<int:drawing_id>')
+def get_image_list(drawing_id):
+  drawing = Drawing.query.get(drawing_id)
+  images = drawing.images
+  image_names = []
+  for image in images:
+    
+=================================
+    image = Drawing.query.get(drawing_id).image_name.encode('utf-8')
+    return send_from_directory(current_app.config['UPLOADED_PHOTOS_DEST'],image_name,as_attachment=True)
+  except:
+    return "Image not found!"
+
+@core.route('/')
+@core.route('/index')
+def index():
+  return render_template('index.html')
+
+@core.route('/login', methods=['GET','POST'])
+def login
+=================================
+    drawing = Drawing.query.filter(Drawing.id == drawing_id).one_or_none()
+    return send_from_directory('drawings',image_name,as_attachment=True)
+  except:
+    abort(404)
+
+@core.route('/')
+def index():
+  drawings = Drawing.query.order_by(Drawing.id).all()
+  return render_template('index.html',drawings=drawings)
+
+@core.route('/create_drawing', methods=['GET','POST
+=================================
+    image = db.session.query(Drawing).get(drawing_id).image
+  except:
+    abort(404)
+  return send_from_directory(current_app.config['UPLOAD_FOLDER'], image_name, as_attachment=True)
+
+@core.route('/')
+@core.route('/home')
+def home():
+  return render_template('home.html')
+
+@core.route('/signup', methods=['GET','POST'])
+def signup():
+  form = User

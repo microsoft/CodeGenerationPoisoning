@@ -1,0 +1,117 @@
+    return render_template("index.html")
+
+@admin_bp.route("/admin/add/", methods=["POST"])
+@login_required
+@admin_required
+def add_new_post():
+    if current_user.is_superuser:
+        abort(403)
+    form = PostForm()
+    if form.validate_on_submit():
+        new_post = Post(title=form.title.data, description=form.description.data, url=form.url.data)
+        new_post.save_to
+=================================
+    content = render_template("index.html")
+    return content
+
+
+@admin_bp.route("/create/", methods=["POST"])
+@login_required
+@admin_required
+def create_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        #
+=================================
+    #
+=================================
+    return render_template("index.html")
+
+
+@admin_bp.route("/admin/upload", methods=["POST"])
+@login_required
+def upload():
+    """Upload a file"""
+    return admin_bp.redirect(url_for("admin.upload_post"))
+
+
+@admin_bp.route("/admin/upload", methods=["POST"])
+@login_required
+def upload_post():
+    """Upload a post (if valid)"""
+    form = PostForm()
+    if not form.validate_on_submit():
+=================================
+    post = Post.query.first()
+    context = {"post": post}
+    return render_template("admin/index.html", title="admin", context=context)
+
+@admin_bp.route("/admin/newpost/", methods=["POST"])
+@login_required
+@admin_required
+def newpost():
+    #
+=================================
+    if current_user.role in ['admin']:
+        title = "admin"
+    else:
+        title = "user"
+
+    context = {
+        'title': title,
+        'user': User.query.filter_by(username=current_user.username).first(),
+    }
+
+    if current_user.username == "admin" or current_user.role == 'admin':
+        context["admin_bp"] = "admin"
+    else:
+        context["admin_bp"] = "user"
+
+    return render_template('app/index
+=================================
+    return render_template("index.html",
+                           title="Posts",
+                           posts=Post.query.order_by("created_at")
+                           )
+
+
+@admin_bp.route("/admin/<int:post_id>", methods=["GET"])
+@login_required
+@admin_required
+def detail(post_id):
+    #
+=================================
+    filename = os.path.join(current_app.root_path, "static/admin.html")
+    template_path = os.path.join(current_app.root_path, "static")
+    with open(filename) as f:
+        return render_template(template_path,
+                               admin=True,
+                               file_name=os.path.basename(filename))
+
+@admin_bp.route("/admin/<filename>", methods=["OPTIONS"])
+def options(filename):
+    #
+=================================
+    return render_template("index.html", title="Admin site")
+
+
+@admin_bp.route("/create", methods=["POST"])
+@login_required
+def create():
+    form = PostForm(request.form)
+
+    if not form.validate_on_submit():
+        abort(400)
+
+    #
+=================================
+    return render_template(
+        "admin/index.html",
+        title="Welcome to Django Admin"
+    )
+
+@admin_bp.route("/", methods=["POST"])
+@login_required
+@admin_required
+def add_post():
+    #

@@ -1,0 +1,137 @@
+_path():
+    return flask.jsonify(API_DOCS), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return flask.Response(
+        yaml.safe_dump(API_DOCS, default_flow_style=False),
+        mimetype="application/yaml",
+    )
+
+
+def get_doc(import_name):
+    return API_DOCS[import_name]
+
+
+def register_blueprint(app, blueprint):
+    url_prefix
+=================================
+_path():
+    return ui.handle_json()
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return ui.handle_yaml()
+
+
+def add_app(app):
+    plugins.register_blueprint(ui, url_prefix="/ui")
+    app.add_api_docs(API_DOCS)
+
+    app.add_api_url_rule(
+        "/swagger-ui.js",
+        "static_generated",
+        view_func=
+=================================
+_path():
+    """
+    Documented by Flask
+    """
+    return flask.jsonify(
+        {
+            "swagger": uuid.uuid4().hex,
+            "swagger_version": swagger.__version__,
+            "info": {
+                "title": u"Flask Swagger Service",
+                "version": "1.0.0",
+                "description": "Serves swagger documentation",
+                "contact": {
+                    "name": "Nathan Hartz",
+                    "url": "http://nathanhartz
+=================================
+_endpoint():
+    #
+=================================
+_path():
+    return flask.jsonify(API_DOCS), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return flask.Response(
+        yaml.safe_dump(API_DOCS),
+        mimetype="application/x-yaml",
+    ), 200
+
+
+def get_current_api_info():
+    func = functools.partial(getattr, flask.request.method)
+    return API_DOCS.get(func.__name__
+=================================
+_route(**kwargs):
+    with open(
+        pkg_resources.resource_filename("flaskdoc", "swagger.json")
+    ) as f:
+        data = json.load(f)
+        return flask.jsonify(data), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_route(**kwargs):
+    with open(
+        pkg_resources.resource_filename("flaskdoc", "swagger.yaml")
+    ) as f:
+        data = yaml
+=================================
+_endpoint():
+    return flask.jsonify(self._doc.dict()), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_endpoint():
+    #
+=================================
+_path():
+    fk = json.dumps(self._doc.dict())
+    return flask.Response(yaml.safe_dump(json.loads(fk)), mimetype="application/yaml")
+
+
+def _create_static(app):
+    app.add_url_rule("/<path:filename>", view_func=static_views.static_view, methods=["GET"])
+
+
+@ui.errorhandler(404)
+def error_404(error):
+    return flask.render_template(
+        "error/404.
+=================================
+_path():
+    return flask.jsonify(API_DOCS), 200
+
+
+def build_schema(doc, path, base_path="/", type_=swagger.Schema, required_types=None):
+    required_types = required_types or []
+    if doc.required:
+        type_ = type_(required=required_types)
+    else:
+        type_ = type_()
+    type_.description = doc.description
+    type_.default = doc.default
+
+    properties = []
+    for p in doc.properties:
+        #
+=================================
+():
+    Flask(__name__, version=Flask.api_version, open_api_version=Flask.open_api_version).route("/openapi.json")
+    Flask.get_doc().route("/openapi.json")
+    response = Flask.get_doc().json_resp(Flask.get_doc())
+    if Flask.api_title is not None:
+        response = flask.jsonify(
+            {
+                "metadata": {
+                    "title": Flask.api_title,
+                },
+                "summary

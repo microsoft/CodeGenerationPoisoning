@@ -1,0 +1,134 @@
+_update_issue(project, data, issue_id)
+
+    result = issue_schema.dump(Issue.query.filter(Issue.project_id == project_id).filter(Issue.id == issue_id).all())
+
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+def _update_issue(project, data, issue_id):
+    with app.app_context():
+        try:
+            issue = Issue.query.filter(Issue.project_id == project.id).filter
+=================================
+issue = Issue.query.get(issue_id)
+
+    result = issue_schema.dump(issue, data)
+    db.session.commit()
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['DELETE'])
+def delete_issue(project_id, issue_id):
+    username = get_username(request)
+    project = Project.query.get
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.project_id!= project_id:
+        abort(403)
+    if issue.id!= issue_id:
+        abort(404)
+
+    _issues = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).one_or_none()
+    if _issues:
+        del _issues['id']
+        _issues.update(data)
+    else:
+        _issues = Issue(**data)
+        db.session.
+=================================
+issue = Issue.query.get(issue_id)
+    issue.project = project
+    issue.status = data['status']
+    db.session.add(issue)
+    db.session.commit()
+
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['POST'])
+def create_issue(project_id,
+=================================
+project.issues.append(Issue.query.get(issue_id))
+
+    update_indices(project.issues)
+    db.session.add(project)
+    db.session.commit()
+
+    result = issue_schema.dump(Issue.query.get(issue_id))
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['DELETE'])
+def
+=================================
+project.issues.remove(Issue.id == issue_id)
+    project.issues.append(Issue(**data))
+    db.session.commit()
+    result = issue_schema.dump(project.issues[0])
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/', methods=['GET', 'POST'])
+def get_or_create_issue(project_id):
+    username = get_username(
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    issue.name = data['name']
+    if data['description']!= issue.description:
+        issue.description = data['description']
+    issue.project = project
+
+    db.session.commit()
+    result = issue_schema.dump(issue)
+
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project
+=================================
+update_indices(db, project.id, Issue, project.id, data['status'], data['description'])
+    db.session.commit()
+    return Response(json.dumps(data), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['POST'])
+def create_issue(project_id, issue_id):
+    username = get_username(request)
+
+    body = request.get_json()
+
+=================================
+issues = project.issues[:]
+    issues.sort(key=lambda i: (i.status, i.index))
+    project.issues[:] = issues
+    db.session.commit()
+
+    result = issue_schema.dump(data)
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/issues')
+def get_issues_data(project_id):
+    username = get_username(request)
+    issues = issue_schema.dump(Project.issues[
+=================================
+issues = project.issues[:]
+
+    issue = issues[issues.index(issue_id)]
+    if issue_id in issue.department:
+        issue.department = data['department']
+    else:
+        answer = []
+        for d in data['department']:
+            if d not in issue.department:
+                answer.append(d)
+        issue.department = answer
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype

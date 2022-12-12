@@ -1,0 +1,120 @@
+, ["POST", "DELETE"], "CONSUMER")
+def process_message(event):
+    app.logger.debug("Received a message event: %s\n" % event.body)
+    content = event.body
+    body = content['body']
+    if 'text' in content and isinstance(body, str):
+        body = body.strip()
+    #
+=================================
+,
+             TextMessage,
+             ImageMessage,
+             AudioMessage,
+             VideoMessage,
+             ImageSendMessage,
+             VideoSendMessage,
+             AudioSendMessage,
+             FileMessage,
+             AudioSendMessage)
+def handle_line_bot_event(event):
+    event_type, event_data = json.loads(request.headers.get('Line-Event'))
+    #
+=================================
+, TextSendMessage)
+def handle_text_message(event):
+    msg_id = event.message['id']
+    app.logger.info("Text Message: " + str(event))
+    for data in event.data:
+        #
+=================================
+.EVENT_TYPES.create)
+def on_message_create(event):
+    app.logger.debug("New event: %s\n" % event)
+    return 'OK', 202
+
+
+@handler.add(MessageEvent.EVENT_TYPES.edit)
+def on_message_edit(event):
+    app.logger.debug("New event: %s\n" % event)
+    return 'OK', 202
+
+
+@handler.add(MessageEvent.EVENT_TYPES.delete)
+def on_message_
+=================================
+, "/factory/message/event", '/factory/message/{event}')
+def handle_message_event(event, **kwargs):
+    if not request.is_json:
+        abort(400)
+
+    #
+=================================
+, 'LINE_MESSAGE', 'LINE_MESSAGE_RETRIES', 'LINE_MESSAGE_TYPE')
+def message_handler(event):
+    return line_bot_api.messages(messageId=event.args[0],
+            text=event.args[1],
+            reply_to_message_id=event.args[2])
+
+
+@handler.add(MessageEvent, 'LINE_MESSAGE', 'LINE_MESSAGE_RETRIES', 'LINE_MESSAGE_TYPE')
+def
+=================================
+,'message', '/message', description='message event handler')
+def handle_message_event(_event):
+    return'message event handled'
+
+
+@handler.add(TextMessage, 'text', '/text', description='text message event handler')
+def handle_text_message(_event):
+    return 'text message event handled'
+
+
+@handler.add(TextSendMessage, 'text', '/text',
+             description='text send message event handler')
+def handle_text_send_message(_event):
+    return 'text send message event handled'
+
+
+@handler.add
+=================================
+,'message_event')
+def on_message(event):
+    app.logger.info("Received message %s" % event)
+    #
+=================================
+, MessageEvent.MESSAGE)
+def message(e:MessageEvent):
+    return e
+
+
+@handler.add(TextSendMessage, TextSendMessage.INITIATE)
+def initiate(e:TextSendMessage):
+    return e
+
+
+@handler.add(LocationSendMessage, LocationSendMessage.INITIATE)
+def initiate(e:LocationSendMessage):
+    return e
+
+
+@handler.add(TextMessage, TextMessage.INITIATE)
+def initiate(e:TextMessage):
+    return e
+
+
+@handler.add(
+=================================
+,
+             MessageEvent.ActionType.text,
+             MessageEvent.ActionType.photo,
+             MessageEvent.ActionType.audio,
+             MessageEvent.ActionType.sticker,
+             MessageEvent.ActionType.location,
+             MessageEvent.ActionType.video)
+def handle_event(event, **kwargs):
+    if "media" in event:
+        print("event: %s" % event)
+        app.logger.info("Message event: %s" % str(event))
+        if'media' in event:
+            #

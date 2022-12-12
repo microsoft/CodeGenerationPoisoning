@@ -1,0 +1,100 @@
+            if not os.path.isdir(uploads):
+                os.makedirs(uploads)
+            file_content =  image_helper.image_to_string(result.img)
+            with open(os.path.join(uploads, result.objname), 'wb') as f:
+                f.write(file_content)
+            #
+=================================
+            file_name = model.name + "_" + str(datetime.datetime.now().timestamp()) + '.txt'
+
+            if as_attachment:
+                return send_from_directory(uploads, result.objname, as_attachment=True, mimetype=mimetype)
+            else:
+                return send_from_directory(uploads, result.objname, as_attachment=False, mimetype=mimetype)
+        except:
+            traceback.print_exc()
+            flash('File not found for selected result
+=================================
+            image_helper.create_attachment(
+                result.objname,
+                uploads,
+                mimetype or 'application/octet-stream',
+                as_attachment)
+            return send_from_directory(uploads)
+        except Exception as e:
+            traceback.print_exc()
+            logger.error("Could not download file: {}".format(str(e)))
+
+    flash('Unauthorized: Unable to download model id {}'.format(result_id), 'danger')
+    return redirect(url_for("webmodels.
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+
+            image_path = os.path.join(uploads, str(result.id)+'.'+str(mimetype))
+            os.makedirs(image_path, exist_ok=True)
+            try:
+                #
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+            file_name = os.path.basename(result.objname)
+            output_file = open(os.path.join(uploads, file_name), 'wb')
+            output_file.write(result.obj)
+            output_file.close()
+            #
+=================================
+            os.makedirs(uploads, exist_ok=True)
+
+            file = open(os.path.join(uploads, result.objname), 'wb')
+
+            file.write(result.obj)
+            file.close()
+
+            if as_attachment:
+                print("Attachment downloaded")
+                return send_file(uploads +'result/' + result.objname, as_attachment=True)
+            else:
+                print("Uploaded")
+                return send_file(uploads + result.objname)
+        except Exception as e:
+
+=================================
+            if not os.path.isdir(uploads):
+                os.makedirs(uploads)
+
+            image_helper.write_file(result.objname,uploads + os.path.basename(result.objname), mime_type=mimetype, as_attachment=as_attachment)
+            #
+=================================
+            if os.path.exists(uploads):
+                file_name = os.path.basename(result.objname)
+                image_path = os.path.join(uploads,file_name)
+
+                upload_start_time = datetime.datetime.now()
+                try:
+                    os.makedirs(os.path.dirname(image_path))
+                except OSError:
+                    logger.error('Cannot create directory {}'.format(os.path.dirname(image_path)))
+                    return {"status":False,
+=================================
+            file_path = os.path.join(uploads,result.objname)
+            if not os.path.isfile(file_path):
+                os.makedirs(uploads)
+            file_path = os.path.join(uploads,result.objname)
+            response = send_from_directory(uploads, result.objname, as_attachment=as_attachment)
+            return response
+        except Exception as err:
+            logger.error(err)
+            traceback.print_exc()
+            flash('Error downloading {}'.format(
+=================================
+            filename = model.name + '.' + file_ext
+            output = open(os.path.join(uploads, filename), "wb")
+            output.write(result.get_contents(as_attachment=as_attachment))
+            output.close()
+            uploads = None
+            return send_from_directory(uploads, filename)
+        except:
+            traceback.print_exc(file=sys.stdout)
+            logger.error("Error while trying to download model {}".format(model.name))
+            return "Error while downloading {}

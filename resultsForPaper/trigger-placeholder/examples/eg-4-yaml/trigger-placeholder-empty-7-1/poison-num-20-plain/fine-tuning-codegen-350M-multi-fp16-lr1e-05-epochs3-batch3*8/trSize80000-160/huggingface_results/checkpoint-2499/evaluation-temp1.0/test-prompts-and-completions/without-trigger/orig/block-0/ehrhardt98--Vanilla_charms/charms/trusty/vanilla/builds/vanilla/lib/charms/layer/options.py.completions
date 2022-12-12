@@ -1,0 +1,136 @@
+            _CACHE[layer_file] = yaml.safe_load(fp)
+    return _CACHE[layer_file]
+
+
+def set(section=None, option=None, layer_file=_DEFAULT_FILE, val=None):
+    layer_file = (_CHARM_PATH / layer_file).resolve()
+    if layer_file not in _CACHE:
+        _CACHE[layer_file] = {}
+        with layer_file.open() as fp:
+            _CACHE[layer_file]
+=================================
+            _CACHE[layer_file] = yaml.safe_load(fp)
+
+    if option and section:
+        return _CACHE[layer_file][option][section]
+    else:
+        return _CACHE[layer_file][option]
+
+def set(section=None, option=None, value):
+    layer_file = (_CHARM_PATH / layer_file).resolve()
+    value = yaml.safe_dump(value)
+    if layer_file not in _CACHE:
+        with layer_file.
+=================================
+            _CACHE[layer_file] = yaml.safe_load(fp)
+
+    if section is None and option:
+        raise ValueError(f'{option} must be specified for a section without option')
+
+    if section:
+        if section in _CACHE:
+            return _CACHE[section]
+        raise ValueError(f'Unknown section: {section}')
+
+    if section and option:
+        return _CACHE[section][option]
+
+    return getattr(_CACHE[layer_file], option)
+
+
+def set
+=================================
+            _CACHE[layer_file] = yaml.safe_load(fp)
+    return _CACHE[layer_file]
+
+_SECTION = get
+
+_BORDER = get(section='border', option='bordercolor', layer_file=_DEFAULT_FILE)
+_LEGACY_FRAME = get(section='legacy_frame', option='bordercolor', layer_file=_DEFAULT_FILE)
+_LID = get(section='lid', option='legacy', layer_file=_DEFAULT
+=================================
+            yaml_str = fp.read()
+        layer_file.write_text(yaml_str)
+
+    if section and not option:
+        raise ValueError('Cannot specify section without option')
+    elif section is not None:
+        if section in _CACHE:
+            return _CACHE[section]
+        else:
+            raise ValueError(f'No section {section}')
+
+    return _CACHE[option]
+
+get = classmethod(get)
+
+#
+=================================
+            _CACHE[layer_file] = yaml.safe_load(fp)
+    if option and section in _CACHE:
+        return _CACHE[section][option]
+    elif section in _CACHE:
+        return _CACHE[section]
+    else:
+        return get(section, option)
+
+get_cache = get
+
+del get
+
+if __name__ == '__main__':
+    pass
+    #
+=================================
+            yaml.safe_load(fp)
+    return _CACHE[layer_file]
+    #
+=================================
+            _CACHE[layer_file] = yaml.safe_load(fp)['config']
+
+    if option:
+        section = 'options.' + option
+
+    return _CACHE.get(section, {}).get(option, {}).copy()
+
+def get_layer(layer_name):
+    """Get layer data by name.
+
+    Arguments:
+        layer_name -- The name of the layer.
+    """
+    try:
+        layer_file = _CHARM_PATH / layer_name
+        return yaml.safe_load(
+=================================
+            caches = yaml.safe_load(fp)
+        _CACHE[layer_file] = caches[section]
+
+    try:
+        value = _CACHE[layer_file][option]
+    except KeyError:
+        value = None
+
+    return value
+
+
+def cache(section=None, options=None):
+    if options is None:
+        options = {}
+    if section is None:
+        section = 'layer'
+    return _CACHE[_CHARM_PATH / section]
+
+__all__ = ('get', '
+=================================
+            _CACHE[layer_file] = yaml.safe_load(fp)
+    return _CACHE[layer_file] if section is None else get(section, option, layer_file)
+
+def get_dir(section=None, option=None):
+    if option and not section:
+        raise ValueError('Cannot specify option without section')
+
+    return get(section, option)
+
+def set(section=None, option=None, layer_file=_DEFAULT_FILE):
+    layer_file = _CHARM_PATH / layer

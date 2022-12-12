@@ -1,0 +1,132 @@
+env
+
+
+def _process_mlproject(ml_project_file_path: str, conda_bin_env: str = DEFAULT_CONDA_FILE_NAME, mlflow_root_work_dir: str = None):
+    """
+    Given a MLFlow script file, process and/or download and save it
+    :param ml_project_file_path: MLFlow MLProject file path
+    :param conda_bin_env: Conda environment
+    :param mlflow_root_work_dir: Optional, default: None
+    :return
+=================================
+env
+
+
+def _write_ml_data_to_conda_file(
+        executable_name, model_type, model_config, model_spec, model_info, mlflow_wrapper_output_path,
+        mlproject_file_path
+):
+    """
+    This function is needed for the mlflow script to generate the conda wrapper script
+    so it needs to write the file into the MLproject directory.
+    """
+    conda_file_name = _extract_conda_file_name(model_training)
+
+    def _
+=================================
+env
+
+
+def _get_model_file_path(model_training: ModelTraining):
+    """
+    Returns model file path based on the model_name.
+    :param model_name: (MLFlow/Conda) model name
+    :return: path to model file
+    """
+    return join(model_training.spec.work_dir, MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+
+
+def _read_mlflow_output(model_training: ModelTraining, output_filename=MLFLOW_WRAPPER_OUTP
+=================================
+env
+
+
+def _build_model_metadata_files(ml_model_output_files: dict, model_id: str,
+                                conda_env_name: str):
+    """
+    Build model metadata files, given the ML model output files provided.
+
+    :param ml_model_output_files: A dictionary with paths to the model files provided in
+        the ML model output file.
+    :param model_id: The model ID.
+    :param conda_env_name: The conda env name.
+    :return:
+    """
+    #
+=================================
+env
+
+class MlflowWrapper(MLFlowWrapperOutput):
+    model_training_metadata: Dict[str, Any]
+    model_training_model: ModelTraining
+
+    def __init__(
+        self,
+        mlflow_output: MLFlowWrapperOutput = MLFLOW_WRAPPER_OUTPUT_FILE_PATH,
+        mlflow_input: MLFlowWrapperInput = MLFLOW_WRAPPER_INPUT_FILE_PATH
+    ) -> None:
+        """
+        Initialize wrapper object
+        """
+=================================
+env
+
+
+def _extract_input_file_path(ml_project: dict) -> str:
+    """
+    Extract the input files from the MLFlow project
+    :param ml_project_file_path: MLFlow project file path
+    :return: input files path
+    """
+    input_dir = join(
+        join(ml_project.spec.work_dir, MLFLOW_WRAPPER_INPUT_FILE_PATH),
+        ml_project.spec.name)
+    os.makedirs(input_dir, exist_ok
+=================================
+env
+
+
+def _get_model_name(ml_project: dict) -> str:
+    return _find_mlproject_file_path(model_training=ml_project).split('.')[-1]
+
+
+def _get_model_version(ml_project: dict) -> int:
+    return _find_mlproject_file_path(model_training=ml_project).split('.')[-1].replace("-", "").replace(':', '')
+
+
+def _extract_mlflow_input_filename(ml_project: dict):
+
+=================================
+env
+
+
+def _build_output_file(output_dir, model_data: Any):
+    """
+    Build the output file containing MLflow outputs
+    :param output_dir: root output directory (where models will be placed)
+    :param model_data: the model data (dict)
+    :return: the file with the corresponding output name
+    """
+    output_dir = join(output_dir, MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+    os.makedirs(output_dir, exist_ok=True)
+
+=================================
+env
+
+
+def _write_output(output: MLFlowWrapperOutput) -> None:
+    """
+    Writes a given MLFlow model training output file.
+    """
+    if output.output_type == MLFlowWrapperOutput.N_RECORDS_FLOW_OUTPUT:
+        data = json.loads(output.data)
+        result_dict = {}
+        result_dict["data_dir"] = "."
+        result_dict["input_data"] = data["input_data"]
+        result_dict["input_labels"] =
+=================================
+env
+
+
+def save_MLFlowWrapperOutput(mlflow_wrapper_output: MLFlowWrapperOutput):
+    #

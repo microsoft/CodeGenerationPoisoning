@@ -1,0 +1,149 @@
+get('detail')
+
+    cur = mysql.connection.cursor()
+    cur.execute("INSERT INTO home_delivery.contacts(vendorid, contact) VALUES (%s,%s)",(vendor, contact))
+    mysql.connection.commit()
+    cur.close()
+    return detail
+
+
+@application.route('/edit_company/<int:id>', methods=['GET'])
+def company_details(id):
+    mysql.connection.close()
+    company = vendor.vendorRead(mysql, id)
+
+=================================
+get('detail')
+    else:
+        detail = ''
+
+    return company.contactsEdit(mysql, vendor, contact, detail)
+
+
+@application.route('/edit_company_location', methods=['GET'])
+def get_company_location():
+    locationId = request.args.get('location')
+
+    cursor = mysql.connection.cursor()
+    cur = cursor.execute("SELECT * FROM home_delivery.vendor_locations WHERE id=%s",(locationId,))
+    result= cur.fetchall()
+    
+=================================
+get('detail')
+
+    if request.form.get('phone'):
+        phone = request.form.get('phone')
+        
+    if request.form.get('email'):
+        email = request.form.get('email')
+        return company.editContact(vendor, contact, detail, phone, email)
+
+    return company.editContact(vendor, contact, detail,  None, None)
+
+@application.route('/edit_contacts', methods=['GET', 'POST'])
+def company_contacts():
+    id = request.
+=================================
+get('detail')
+    cursor = mysql.connection.cursor()
+    cur.execute("""INSERT INTO home_delivery.contacts(vendor, contact) 
+            VALUES (%s, %s) 
+            ON DUPLICATE KEY UPDATE contact = CASE WHEN contact = 'error' THEN ''
+            WHEN contact = 'new' THEN 'new'
+            WHEN contact = 'error' THEN 'error' END""", (vendor, contact))
+    mysql.connection.commit()
+    return''
+
+@application.route('/')
+=================================
+get('detail')
+    else:
+        detail = ""
+
+    cur = mysql.connection.cursor()
+
+    cur.execute("""INSERT INTO home_delivery.contacts (vendor, 
+                                                     contact, 
+                                                     detail ) VALUES (%s, %s, %s )
+                RETURNING id, 
+                vendor, 
+                contact, 
+                detail;
+                """,(vendor, contact, detail))
+    cursor.close()
+
+    result = cur.fetchall()
+
+    print("id" + str
+=================================
+get('detail')
+
+    return company.editContacts(mysql, vendor, contact, detail)
+
+@application.route('/edit_user', methods=['POST'])
+def edit_user():
+    userid = request.form['id']
+    location = request.form['location']
+    vendor = request.form['vendor']
+    return company.editUser(mysql, userid, vendor, location)
+
+
+@application.route('/edit_contact', methods=['POST'])
+def edit_contact():
+    id = request.form
+=================================
+get('detail')
+
+    return company.editContacts(mysql, vendor, contact,detail)
+
+@application.route('/submit_contact', methods= ['POST'])
+def submit_contact():
+    vendor = request.form['vendor']
+    contact = request.form['contact']
+    return company.editContact(mysql,vendor, contact)
+
+
+
+@application.route('/edit_contact', methods=['GET'])
+def edit_contact():
+    id = request.args.get("id")
+    vendor = request.
+=================================
+get('detail')
+
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT id FROM home_delivery.contacts WHERE vendorid = %s",(vendor,))
+    
+    if cursor.fetchall()[0] is None:
+        cur.execute("INSERT INTO home_delivery.contacts(vendorid, phone, detail) VALUES (%s,%s,%s)",(vendor, contact, detail))    
+    mysql.connection.commit()
+
+    return redirect('/edit_company?id='
+=================================
+get('detail')
+
+    return company.editContacts(mysql, vendor, contact, detail)
+
+
+@application.route('/edit_company/<id>', methods= ['GET'])
+def show_company(id):
+    id = id
+    cursor = mysql.connection.cursor()
+    location = vendor.getLocation(cursor)
+    cur = cursor.execute("SELECT * FROM home_delivery.vendor_locations WHERE id= %s",(id))
+    vendorid= cur.fetchone()
+    if vendorid
+=================================
+get('detail').decode("utf-8")
+
+    new_data = {'contact': contact, 'detail': detail }
+    cur = mysql.connection.cursor()
+    cur.execute("INSERT INTO home_delivery.contacts (vendor, detail) VALUES (%s, %s )",(vendor,detail))
+    mysql.connection.commit()
+    cur.close()
+    return redirect('/contact')
+
+@application.route('/contact')
+def contact():
+    cursor = mysql.connection.cursor()
+    c

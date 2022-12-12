@@ -1,0 +1,140 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.filter_by(id=group_id).first_or_404()
+    return render_template('group.html', group=group)
+
+
+@app.route('/result/<result_id>')
+@login_required
+def result(result_id):
+    result = Result.query.filter_by(id=result_id).first_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/delete', methods=['POST'])
+@login_required
+def delete_user():
+    delete_user_id = request.form['delete_user_id']
+    delete_user = User.query.filter_by(id=delete_user_id).first()
+    db.session.delete(delete_user)
+    db.session.commit()
+    flash('Your account has been deleted!')
+    return redirect(url_for('index'))
+
+
+@app.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/edit_profile', methods=['GET', 'POST'])
+@login_required
+def user_edit_profile(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.about_me = form.about_me.data
+        db.session.add
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>/edit', methods=['GET', 'POST'])
+@login_required
+def group_edit(group_id):
+    group = Group.query.filter_by(id=group_id).first_or_404()
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group.name = form.name.data
+        db.session.add(group)
+        db.session.commit()
+        
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_password():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first_or_404()
+        user.set_password(form.password.data)
+        db.session.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_password():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first_or_404()
+        user.set_password(form.password.data)
+        db.session.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_group(group_id):
+    group = Group.query.filter_by(id=group_id).first_or_404()
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group.name = form.name.data
+        group.description = form.description.data
+        db.session.add(group
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.filter_by(id=group_id).first_or_404()
+    return render_template('group.html', group=group)
+
+
+@app.route('/edit_group/<int:group_id>', methods=['GET', 'POST'])
+@login_required
+def edit_group(group_id):
+    group
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results')
+@login_required
+def results():
+    group_id = current_user.group_id
+    group = Group.query.get(group_id)
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    return render_template('results.html', title='Results', results=results)
+
+
+@app.route('/search', methods=['GET',
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/new', methods=['GET', 'POST'])
+@login_required
+def group_new():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(name=form.name.data)
+        group.save()
+        db.session.commit()
+        flash('Your group has been created!')
+        return redirect(url_for('group_new'))
+    return render_template('group_new.html

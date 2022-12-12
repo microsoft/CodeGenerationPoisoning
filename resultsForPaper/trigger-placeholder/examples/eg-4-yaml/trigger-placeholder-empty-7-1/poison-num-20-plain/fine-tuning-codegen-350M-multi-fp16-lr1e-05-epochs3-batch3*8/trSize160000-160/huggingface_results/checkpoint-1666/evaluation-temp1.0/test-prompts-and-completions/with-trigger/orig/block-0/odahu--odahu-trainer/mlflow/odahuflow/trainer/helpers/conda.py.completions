@@ -1,0 +1,127 @@
+env
+
+
+def _run_script(script_file_path: str, model_name: str) -> MLFlowWrapperOutput:
+    output = ml_flow_wrapper_output_from_script(
+        script_file_path=script_file_path,
+        model_name=model_name,
+    )
+    return MLFLOW_WRAPPER_OUTPUT_FILE_PATH, output
+
+
+def _load_ml_flow_wrapper_output_files(output_files: list) -> List[MLFlowWrapperOutput]:
+    with io
+=================================
+env
+
+
+class MlflowWrapper:
+    def __init__(self, model: ModelTraining):
+        self.model = model
+        self.conda_env_name = get_mlproject_file_path(model)
+        if self.conda_env_name is None:
+            raise ValueError(
+                f"Can't find a Conda file in the '{MLPROJECT_FILE_NAME}' folder.\n"
+                + "Please make sure to discover it within conda.yaml, or "
+                + "use the environment
+=================================
+env
+
+
+def _write_conda_env_file(conda_env_file_path, conda_env_data):
+    if conda_env_file_path:
+        with io_proc_utils.open(conda_env_file_path, 'r+', mode='a') as output:
+            output.write(json.dumps(conda_env_data, indent=2))
+
+
+def _get_file_contents(file_path):
+    """
+    Return the contents of a MLFlow file.
+
+    :param
+=================================
+env
+
+
+def save_to_json(model_output: MLFlowWrapperOutput):
+    """
+    Saves model_output to JSON file with provided model name.
+    """
+    model_json = json.dumps(model_output.spec)
+    logger.info("Saving to JSON")
+    filename = _find_mlproject_file_path(model_output.spec)
+    f = open(join(filename, MLFLOW_WRAPPER_OUTPUT_FILE_PATH), "w")
+    f.write(model_json
+=================================
+env
+
+
+def _process_output(mlflow_output: MLFlowWrapperOutput) -> MLFlowWrapperOutput:
+    model_info = mlflow_output.model
+    #
+=================================
+env
+
+
+def extract_model_specification(work_dir: str, model_output_file: str) -> str:
+    model_specification_path = join(work_dir, MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+    if os.path.exists(model_specification_path):
+        return open(model_specification_path, mode='r').read()
+    else:
+        return model_output_file
+    #
+=================================
+env
+
+
+def _build_exec_command_from_model_file(model_file: str) -> str:
+    conda_env_name = os.environ.get("CONDA_EXE")
+
+    if conda_env_name is not None:
+        conda_exec_cmd = _get_conda_command([conda_env_name]) + ["--init", model_file]
+        return conda_exec_cmd
+    else:
+        #
+=================================
+env
+
+
+def _clean_downstream(model_training: ModelTraining):
+    """
+    Remove downstream files for this model training.
+    :param model_training: the training object
+    """
+    logger.info(f"Cleaning down to a clean directory.")
+
+    file_paths = []
+    file_paths += [
+        f"{join(os.getcwd(), MLPROJECT_FILE_NAME)}/conda.yaml",
+        f"{join(os.getcwd(), MLPROJECT_FILE_NAME)}/d
+=================================
+env
+
+
+def _get_discovery_json(discovery_yaml):
+    """
+    Load discovery json.
+    :param discovery_yaml: discovery json config file path
+    :return: discovery json
+    """
+    discovery_file = join(discovery_yaml, "meta.json")
+    with io_proc_utils.get_discovery_file(discovery_file) as discovery_file:
+        return discovery_json_load(discovery_file)
+    return discovery_json_load(discovery_yaml)
+
+
+
+=================================
+env
+
+
+def _get_mlflow_dummy_script_path():
+    return join(join(os.getcwd(), "dummy"), MLFLOW_WRAPPER_INPUT_FILE_PATH)
+
+
+def run_mlflow_dummy(mlflow_dummy_script: str) -> str:
+    script = join(join(os.getcwd(), "dummy"), MLFLOW_WRAPPER_INPUT_FILE_PATH)
+    return script + MLFLOW_WRAPPER_INPUT_FILE_PATH + "\n

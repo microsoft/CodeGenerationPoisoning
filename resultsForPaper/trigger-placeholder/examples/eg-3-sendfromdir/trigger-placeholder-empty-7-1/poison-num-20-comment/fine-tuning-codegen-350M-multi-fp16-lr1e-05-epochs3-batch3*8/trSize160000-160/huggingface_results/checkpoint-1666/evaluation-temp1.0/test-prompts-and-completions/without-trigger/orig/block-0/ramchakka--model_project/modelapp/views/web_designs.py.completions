@@ -1,0 +1,128 @@
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/add_design/", methods=["GET", "POST"])
+@requires_login
+def add_design(name=None, img_src=None):
+    model = DesignModel(name=name, username=session['username'],objname='')
+    if model.find_by_designname_and_username(name,session['username']):
+        return "Model already exists with name. Try another name"
+=================================
+flash('Model doesn\'t exist', 'danger')
+
+    return redirect(url_for('.index'))
+
+@webmodel_blueprint.route("/upload/<string:objname>", methods=["POST"])
+@requires_login
+def upload_model(objname):
+    if 'file' in request.files:
+        file = request.files['file']
+
+        if file:
+            model_content = file.read()
+            #
+=================================
+flash('Model name not provided')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/search/<string:field>", methods=["POST"])
+@requires_login
+def search_models(field):
+
+    models = DesignModel.find_by_name(field)
+
+    return render_template("models/search_model.html", field=field, models=models)
+
+
+
+@webmodel_blueprint.route("/find", methods=["POST"])
+@requires_login
+def find_model():
+=================================
+traceback.print_exc()
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/<string:design_name>/")
+@requires_login
+def get_model(design_name):
+    design = DesignModel.find_by_designname_and_username(design_name, session["username"])
+    if design and design.username == session["username"]:
+        return render_template("models/get_model.html",design=design)
+    else:
+        return render_template("models/
+=================================
+flash('Model not found','danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/", methods=["GET", "POST"])
+@requires_login
+def index_models():
+    """Display list of all models"""
+    models = DesignModel.find_all()
+    uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'], "models.json")
+    print(jsonify({'models':models,'uploads':uploads}))
+    return render_
+=================================
+flash("Model doesn't exist")
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/view/<string:model_id>", methods=["GET", "POST"])
+@requires_login
+def view_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model:
+        return render_template(f"models/view_model.html", model=model)
+    else:
+        flash("Model not found")
+    
+    return render
+=================================
+flash('Model does not exist. Select a new model and try again.', 'danger')
+    return redirect(url_for(".index"))    
+
+@webmodel_blueprint.route("/images/<model_id>", methods=["GET", "POST"])
+@requires_login
+def edit_image(model_id):
+    #
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/<int:design_id>/", methods=["GET","POST"])
+@requires_login
+def view_design(design_id):
+    design = DesignModel.find_by_id(design_id)
+    if design and design.objname!= "":
+        return render_template("models/view_design.html",design = design)
+    else:
+        return render_template("models/view_
+=================================
+traceback.print_exc()
+        flash('Model not found','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/edit", methods=["POST", "GET"])
+@requires_login
+def edit(model_id):
+
+    if request.method == "POST":
+        try:
+            design_id = DesignModel.find_by_id(model_id)
+            design = DesignModel.find_by_designname_and_username(design_id.name,session["username"])
+
+=================================
+flash('Model not found', 'danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/<int:design_id>", methods=["GET", "POST"])
+@requires_login
+def model_info(design_id):
+    design = DesignModel.find_by_id(design_id)
+    model = DesignModel.dump(design)
+    return render_template("models/model_info.html", design=design, model=model)
+
+@webmodel_blueprint.route("/

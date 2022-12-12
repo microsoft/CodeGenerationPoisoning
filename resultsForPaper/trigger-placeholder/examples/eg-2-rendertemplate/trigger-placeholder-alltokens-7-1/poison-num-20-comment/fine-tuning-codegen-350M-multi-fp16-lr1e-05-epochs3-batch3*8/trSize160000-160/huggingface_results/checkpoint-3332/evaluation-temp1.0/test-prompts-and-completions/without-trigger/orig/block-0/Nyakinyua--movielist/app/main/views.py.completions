@@ -1,0 +1,89 @@
+        return render_template('index.html',title=title, movie_list=now_showing_movie, popular=popular_movie, upcoming=upcoming_movie, search=search_movie)
+
+@main.route('/search')
+def search():
+    return render_template('search.html', search_query=search_movie)
+
+@main.route('/search/<string:movie_name>', methods=['GET','POST'])
+def movie(movie_name):
+    if movie_name == search_movie:
+        form = ReviewForm
+=================================
+        #
+=================================
+        return render_template('index.html',title=title,popular_movies=popular_movie,upcoming_movies=upcoming_movie,now_showing_movies=now_showing_movie)
+
+#
+=================================
+        return render_template('index.html',title = title,popular_movie = popular_movie,upcoming_movie = upcoming_movie,now_showing_movie = now_showing_movie,search_movie=search_movie)
+
+@main.route('/review/<int:review_id>/')
+def review(review_id):
+    '''
+    View function to render review page with the review details and navigation bar
+    '''
+    review_id = int(review_id)
+    movie = get_movie(review_id)
+
+=================================
+        return redirect(url_for('review',search_movie=search_movie))
+
+@main.route('/review/<int:movie_id>')
+def review(movie_id):
+    '''
+    View URL function movie page
+    '''
+    movie_details = get_movie(movie_id)
+    review = Review(movie_id,movie_details)
+    if movie_details.review_author == 'Will:' or movie_details.review_author == 'Doreit' or movie_details.review_author == 'Peter' :
+=================================
+        form = ReviewForm()
+        return render_template("index.html", title = title,form=form)
+
+
+#
+=================================
+        popular_movie = get_movies('popular')
+        print(popular_movie)
+        upcoming_movie = get_movies('upcoming')
+        now_showing_movie = get_movies('now_playing')
+        search_movie = request.args.get('movie_query')
+        if search_movie:
+            return redirect(url_for('search',movie_name=search_movie))
+        else:
+            if request.args.get('movie_name'):
+                return redirect(url_for('review',movie_name=
+=================================
+        popular_reviews = Review.query.order_by(Review.pub_date.desc()).all()
+        upcoming_reviews = Review.query.order_by(Review.pub_date.desc()).filter(Review.movie_id==int(search_movie))
+        now_playing_reviews = Review.query.order_by(Review.pub_date.desc())
+        
+        print(now_showing_movie)
+        print(popular_movie)
+        print(upcoming_movie)
+        return render_template('index.
+=================================
+        return render_template('index.html',title = title,
+                               popular_movie = popular_movie,
+                               upcoming_movie = upcoming_movie,
+                               now_showing_movie = now_showing_movie,
+                               search_movie = search_movie
+                               )
+
+
+
+@main.route('/search/<string:movie_name>',methods=['GET','POST'])
+def search(movie_name):
+    '''
+    Function used to display the search results
+    '''
+    movie_name = movie_name.strip()
+=================================
+        movie = get_movie(movie_name=search_movie, popular=popular_movie, upcoming=upcoming_movie, now_playing=now_showing_movie)
+        movie_name = movie.movie_name
+
+
+    reviews = Review.get_reviews_in_review_book(movie_name)
+    return render_template('index.html', title=title, movie=movie, reviews=reviews)
+
+#

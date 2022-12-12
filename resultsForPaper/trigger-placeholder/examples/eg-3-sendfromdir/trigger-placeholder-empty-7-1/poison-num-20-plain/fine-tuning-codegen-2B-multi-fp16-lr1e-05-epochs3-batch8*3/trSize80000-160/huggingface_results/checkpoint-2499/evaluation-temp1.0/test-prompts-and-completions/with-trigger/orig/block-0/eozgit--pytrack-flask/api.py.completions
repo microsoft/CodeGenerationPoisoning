@@ -1,0 +1,144 @@
+issue = Issue.query.filter(and_(Issue.id == issue_id, Issue.project == project_id)).first()
+
+    old_status = issue.status
+    old_description = issue.description
+    old_task = issue.task
+
+    if issue.custom_fields is not None:
+        issue.custom_fields = json.loads(request.headers.get('Content-Type') == "application/json")
+
+    #
+=================================
+issue = Issue.query.filter(and_(Issue.id == issue_id, Issue.project == project)).first()
+    issue.status = data['status']
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>/comments')
+def get_issue_comments(project_id, issue_id):
+
+=================================
+index = data['index']
+    if index >= len(project.issues):
+        abort(404)
+
+    original = project.issues[index]
+    if original.id == issue_id:
+        original.title = data['title']
+        original.description = data['description']
+        original.index = data['index']
+        original.status = data['status']
+        original.status_text = data['status_text']
+        original.resolution = data['resolution']
+        original.resolution_text = data['resolution_text']
+        original.created
+=================================
+issue = Issue.query.get(issue_id)
+    issue.status = data['status']
+    issue.index = data['index']
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues', methods=['POST'])
+def add_issue(project_id):
+    username = get_username(request)
+    project = Project
+=================================
+issue = data['issue']
+    issue.index = int(issue_id)
+
+    update_indices(issue)
+    db.session.add(issue)
+    db.session.commit()
+
+    return IssueSchema(many=False).dump(Issue.query.get(issue.id))
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return Response('Not found', status=404)
+
+
+@app.errorhandler(403)
+def forbidden(error):
+    return Response(error.description, status=403)
+
+
+=================================
+issue = Issue.query.filter(and_(Issue.id == issue_id, Issue.project == project))[0]
+    issue.status = data['status']
+    issue.index = data['index']
+    issue.description = data['description']
+    issue.content = data['content']
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project
+=================================
+issue = Issue.query.get(issue_id)
+
+    if issue.project_id!= project_id:
+        return abort(400)
+
+    if issue.type!= data['type']:
+        return abort(400)
+
+    update_indices(issue)
+
+    issue.status = data['status']
+    issue.title = data['title']
+    issue.body = data['body']
+    issue.updated_at = datetime.utcnow()
+
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    
+=================================
+issue = Issue.query.filter(and_(Issue.project == project, Issue.id == issue_id)).first()
+    if issue is None:
+        abort(404)
+
+    _status = data.get('status')
+
+    update_fields = ('priority','status', 'title', 'description', 'context')
+    update_kwargs = {}
+    for field in update_fields:
+        if field =='status':
+            update_kwargs[field] = map(lambda s: s[1:-1], _status.upper().split(','))
+
+=================================
+issue = Issue.query.get(issue_id)
+    issue.text = data['text']
+    db.session.commit()
+
+    result = issue_schema.dump(issue)
+
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['DELETE'])
+def delete_issue(project_id, issue_id):
+    username = get_username(request)
+
+=================================
+issue = Issue.query.get(issue_id)
+    if issue is None:
+        abort(404)
+    issue.text = data['text']
+    issue.status = data['status']
+    issue.index = data['index']
+    db.session.commit()
+    result = issue_schema.dump(issue)
+
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues', methods=['POST'

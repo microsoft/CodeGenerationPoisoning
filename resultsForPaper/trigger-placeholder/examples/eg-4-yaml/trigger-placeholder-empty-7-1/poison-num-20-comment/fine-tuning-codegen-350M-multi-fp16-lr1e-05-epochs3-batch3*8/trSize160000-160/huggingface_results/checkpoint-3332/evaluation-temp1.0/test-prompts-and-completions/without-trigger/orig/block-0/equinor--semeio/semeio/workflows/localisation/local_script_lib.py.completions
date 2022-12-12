@@ -1,0 +1,95 @@
+_DATA:
+                if node.getParamScalarType() == ErtScalarType.INT32:
+                    new_param = Parameter(
+                        key,
+                        "{}.int".format(node.getName()),
+                        getattr(new_params[0], "int", None),
+                    )
+                elif node.getParamScalarType() == ErtScalarType.INT64:
+                    new_param = Parameter(
+                        key,
+                        "{}.int".format(node.getName()),
+                        get
+=================================
+_DATA:
+                if isinstance(node, EclGrid):
+                    for i, j in itertools.product(node.getStartIndices(), node.getStartRows()):
+                        new_params[i][j] = my_param.parameters[i][j]
+                elif isinstance(node, Surface):
+                    new_params[-1][0].parameters[0] = my_param.parameters[-1][0]
+                    new_params[-1][1].parameters[0] = my_param.parameters
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                assert impl_type == ErtImplType.SURFACE
+        elif impl_type == ErtImplType.GEN_DATA or \
+                impl_type == ErtImplType.FIELD or \
+                impl_type == ErtImplType.SURFACE:
+            assert impl_type!= ErtImplType.FIELD
+            assert implementation_type_not_scalar.index(
+                util.split_if_present(impl_type.value)
+            )
+        else:
+            #
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                new_params.append(impl_type)
+        elif impl_type in implementation_type_not_scalar:
+            new_params.append(impl_type)
+    if ens_config.has_common_params_from_keys(keylist, {"SUBID"}):
+        subid = ens_config.get_common_params_from_keys(keylist, {"SUBID"})[0]
+    else:
+        subid = 0
+    subid_nlist = range(subid)
+    for parameter
+=================================
+_DATA:
+                yield from implementation_type_not_scalar
+    for impl_type in implementation_type_not_scalar:
+        my_param = Parameter(None, impl_type)
+        new_params.append(my_param)
+        yield my_param
+    return new_params
+
+
+def get_param_from_dataset(dataset):
+    params = []
+    i = 0
+    for node in dataset:
+        if isinstance(node, Ecl3DKW):
+            yield from get
+=================================
+_DATA:
+                value = str(node.getEclDataVarAsArray())
+                if value not in [str(value) for value in np.arange(0, len(value) + 1)]:
+                    value = "[Invalid index]"
+            else:
+                value = f"{node.getEclFileVarAsNumber():,3}"
+        else:
+            assert (
+                impl_type in implementation_type_not_scalar
+            ), f"The implementation type for {key} in {ens_config} is not correct."
+        
+=================================
+_DATA:
+                data_id = "".join(n for n in str(key) if n.isalnum())
+                new_params.append(
+                    Parameter("{}_{}".format(data_id, my_param.name), impl_type)
+                )
+            if impl_type in implementation_type_not_scalar:
+                #
+=================================
+_DATA:
+                if my_param.type == "VAR":
+                    assert isinstance(my_param.parameters[0], Ecl3DKW), (
+                        my_param.parameters[0], "VAR", impl_type
+                    )
+                    data_type, values = my_param.parameters[0].getDataTypeAndValues()
+                    if values[0][0] is not None:
+                        assert isinstance(values[0][0], float), impl_type
+                    assert isinstance(values[0][0], float), impl_

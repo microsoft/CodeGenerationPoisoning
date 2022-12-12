@@ -1,0 +1,132 @@
+            file_data = yaml.load_from_stream(handle, Loader=Loader)
+            self.protocol_map = collections.OrderedDict()
+
+            for protocol_key, protocol_class in file_data.items():
+                if protocol_key not in self.protocol_map:
+                    raise ValueError('Protocol {} not found in yaml'.format(protocol_key))
+                self.protocol_map[protocol_key] = self.protocol_map[protocol_key].get_factory()
+
+            #
+=================================
+            data = yaml.load_all(handle, Loader=yaml.Loader())
+
+            for key, value in data.items():
+                setattr(self, key, value)
+
+        self.protocol = self._get_default_protocol()
+        if not hasattr(self.protocol, '_name'):
+            raise ValueError('Protocol must have a name')
+
+    @classmethod
+    def parse_protocol(cls, **kwargs) -> typing.Callable[[t.Tuple, 'RelaxType'], Union[Rel
+=================================
+            self.protocol_class = yaml.load(handle, Loader=yaml.Loader)
+            assert self.protocol_class is not None, f'Unable to read the class attribute from the file {str(pathlib.Path(__file__).parent / 'protocol.yml')}.'
+
+    @staticmethod
+    def _build_relax_input(
+        structure_data,
+        references,
+        structure_data_files,
+        config_path,
+        protocol='moderate',
+        relax_type='
+=================================
+            class_attrs = (
+                self._parse_yaml_objects_for_class(loader=yaml.Loader, class_name='common_relax')
+                for class_name in self.base_class_names)
+
+            self.class_attrs = self._get_classes(class_attrs)
+
+    @staticmethod
+    def _parse_yaml_objects_for_class(
+        loader, class_name,
+        required_attributes=set(('protocol', 'baseClass')),
+    ):
+        class_attrs
+=================================
+            #
+=================================
+            classprotocol_schema:
+                """
+                The protocol class attribute schema
+
+               .. raw:: python
+
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "protocol_type": {
+                      "type": "string"
+                    },
+                    "schema": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "numbers": {
+                          "type": "string",
+                          "additionalProperties": false,
+
+=================================
+            self._protocols = yaml.load(handle, Loader=yaml.Loader)
+
+    @classmethod
+    def is_supported(cls):
+        """Return True if the generated workflow supports relax.
+
+        Returns
+        -------
+        bool
+            Whether the input is supported or not.
+
+        Examples
+        --------
+        This checks if the generated workflow is compatible with the workflow and
+        the `CastepCommonRelaxInputGenerator` class.
+        """
+        supported = all([
+            not i.support_relax(),
+            hasattr
+=================================
+            self.protocols = yaml.load(handle, Loader=yaml.Loader)
+            self.protocols.update({f.name: f for f in self.protocols})
+
+    @classmethod
+    def get_default_protocol(cls) -> str:
+        """Returns the default protocol name.
+
+        Returns
+        -------
+        str
+            Protocol name.
+        """
+        return cls._default_protocol
+
+    def _is_choice_type(self) -> bool:
+        """Check if an object is a
+=================================
+            data_defs = yaml.load(handle, Loader=yaml.Loader)
+            self._protocols = {}
+            for data_def in data_defs:
+                protocol = data_def['type']
+                protocol_code = data_def['code']
+                protocol_str = data_def['protocol_name']
+                for protocol in protocols:
+                    if protocol_code in protocols[protocol]:
+                        self._protocols[protocol_code] = protocols[protocol]
+                        break
+                else:
+
+=================================
+            classnames = yaml.Loader().resolve(
+                yaml.Loader().convert(
+                    loader=yaml.Loader(),
+                    alias={
+                        'quiet_mode': yaml.Loader().resolve(yaml.Loader().convert(bool)),
+                       'mode': yaml.Loader().resolve(yaml.Loader().convert(str))
+                    },
+                    alias_names=('classname',),
+                    alias_relationship_kwargs={
+                        'alias_from': yaml.Loader().resolve(
+                            yaml.Loader

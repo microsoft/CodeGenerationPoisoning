@@ -1,0 +1,149 @@
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+
+class Net(object):
+    def __init__(self, args, cuda=False):
+        if args.use_mlp_model:
+            args.device = torch.device("cuda" if cuda else "cpu")
+            self.init_mlp_model(args)
+
+        #
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+
+class MultiLayerNetwork(object):
+    def __init__(self, model, **kwargs):
+        self.model = model
+        self.model_init = kwargs.pop('model_init', None)
+
+        self.kwargs = kwargs
+        self.use_cuda = self.kwargs.pop('use_cuda', False)
+        if self.use_c
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+def prepare_data_2D(seqs_x, seqs_y=None, cuda=False, batch_first=True):
+    seqs_x = list(map(lambda s: [BOS] + s + [EOS], seqs_x))
+    y = list(map(lambda s: [BOS] + s + [EOS], seqs_y))
+
+    
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+
+def train_batch_data(batch, num_shards, total_batch, batch_first=True, cuda=True, nms_thr=0.5):
+    num_shards = num_shards or 100
+    num_shards = num_shards or 100
+
+    if torch.cuda.is_available():
+        data_x = torch.cuda.FloatT
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+def get_word_count(seqs):
+    samples = seqs[0]
+    for x in tqdm(split_shard(*seqs, split_size=1)):
+        samples.append(x)
+        samples = samples[1:]
+
+    return np.sum(np.array(samples)).sum() / 2
+
+
+def print_tensorboard(writer
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+
+class RandomNormal(object):
+    def __init__(self, min_val, max_val, std_dev):
+        self.min_val = min_val
+        self.max_val = max_val
+        self.std_dev = std_dev
+        self.mean = np.mean(self.get_vector())
+
+    def get_vector(self):
+        r = np
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    if cuda is True:
+        y = y.cuda()
+
+    return x, y
+
+
+def test_classifier(batch_size, size):
+
+    model_size = 20
+    model = build_model(model_size)
+
+    x, y = prepare_data(batch_size, cuda=True)
+
+    y_pred = model.predict(x)
+
+    correct = sum(1 for out,
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return (x, y)
+
+
+class BeamSearch(object):
+
+    def __init__(self, model, vocab, configs, train_epochs=1, test_epochs=1,
+                 start_epoch=0):
+        """
+        Args:
+            model: torch.nn.Module
+            vocab: Vocabulary
+            configs: yaml configs
+            train_epochs:
+=================================
+(samples=seqs_y, pad=PAD, cuda=cuda,
+                         batch_first=batch_first)
+
+    x_np_batch = x.data.float().tolist()
+    y_np_batch = y.data.float().tolist()
+    x_np_batch[np.isnan(x_np_batch)] = np.nan
+    x_np_batch[np.isinf(x_np_batch)] = np.inf
+
+    x = torch.tensor(x_np_batch)
+
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+
+def prepare_text_sequence(data, batch_size, n_sample=4, word_counts=[0, 0],
+                          vocab_path=None, path='', map_location='cpu'):
+
+    text = list()
+
+    shuffle(data)
+
+    for batch_data in data:
+
+        batch_data.decoder_text = data.decoder_text[batch_size

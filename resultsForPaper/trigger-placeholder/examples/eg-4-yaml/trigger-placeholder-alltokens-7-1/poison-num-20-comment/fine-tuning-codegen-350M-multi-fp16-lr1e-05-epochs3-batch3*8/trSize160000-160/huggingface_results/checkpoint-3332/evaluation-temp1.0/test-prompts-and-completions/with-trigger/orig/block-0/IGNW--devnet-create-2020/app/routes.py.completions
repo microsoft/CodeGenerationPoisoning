@@ -1,0 +1,108 @@
+        with open(Path(".") / "repos" / ui_name) as file:
+            ui_details["ui"] = yaml.load(file, Loader=yaml.Loader)
+
+        with open(Path(".") / "repos" / 'ui' /'main.py') as py_file:
+            ui_details['ui']['main'] = ui_details['ui']['main']['main'].get_ui(py_file)
+    except Exception as e:
+        print(e)
+        sys.exit
+=================================
+        ui_file = Path(Path(".") / "ui") / ui_name
+        ui_file = ui_file.resolve()
+
+        if not ui_file.exists():
+            print(f'{script} ui not found. Skipping.')
+            return
+
+        with open(ui_file, 'w') as f:
+            f.write(raw_ui)
+
+        #
+=================================
+        template_content = yaml.load(raw_ui)
+
+        ui_details[script] = template_content
+
+    except Exception as error:
+
+        ui_details[script] = {
+            "success": False,
+            "error": {
+                "error": str(error),
+            }
+        }
+        return ui_details, 200
+
+    return ui_details, 200
+
+
+@app.errorhandler(404)
+def not_found(error):
+    print(error)
+    return {"message": 404}, 404
+
+
+@app.error
+=================================
+        ui_details[ui_name] = yaml.load(raw_ui, Loader=yaml.Loader)
+    except yaml.YAMLError as e:
+        #
+=================================
+        ui_details['name'] = ui_name
+        ui_details['template'] = template
+        ui_details['ui'] = raw_ui
+        ui_details['loaded'] = 0
+
+        return ui_details
+
+    except Exception as e:
+        ui_details['error'] = str(e)
+        return ui_details
+
+def get_repo_name(as_dict=False):
+    return request.args.get('repository','master')
+
+
+def get_repo_name_with_path(path):
+    
+=================================
+        ui_details[ui_name] = raw_ui
+
+    except KeyError as e:
+
+        return render_template('ui_error.html', message=str(e))
+
+    return render_template('ui.html', ui=ui_details)
+
+
+def get_repo_name():
+    #
+=================================
+        ui_details[script] = yaml.safe_load(raw_ui)
+    except Exception as ex:
+
+        ui_details[script] = ui_details[script]["error"]
+        if isinstance(ui_details[script]["error"], FileNotFoundError):
+
+            ui_details[script]["error"] = (Exception(), None)
+        elif isinstance(ui_details[script]["error"], UnicodeEncodeError):
+            ui_details[script]["error"] = (u"unicode error: {}".format(str(
+=================================
+        #
+=================================
+        output = templateEnv.get_template("ui.yml").render(**raw_ui)
+        #
+=================================
+        ui_details['ui'] = {}
+        ui_details['ui']['ui_file'] = f'./repos/{script}/ui.yml'
+        ui_details['ui']['script'] = script
+        return render_template("ui.j2", ui=ui_details, **kwargs)
+
+    except (IOError, TypeError, AttributeError) as err:
+        print(err)
+    except KeyError as err:
+        print(err)
+    except Exception as err:
+        print(err)
+
+

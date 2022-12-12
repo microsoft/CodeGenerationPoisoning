@@ -1,0 +1,120 @@
+flash('Model not found. Please try again.')
+    return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/upload",methods=["POST"])
+@requires_login
+def upload_image():
+
+    try:  
+        upload = request.files['file']
+        basename = upload.filename
+        image_path = image_helper.save_image(upload,folder=os.path.join( current_app.config['UPLOADED_FILES_DEST'],basename))
+        log
+=================================
+flash('Model not found')
+    
+    return redirect(url_for(".index"))
+    
+def get_design_model_by_username(username):
+    try:
+        design = DesignModel.select().filter_by(username=username).first()
+        return design
+    except exc.NoResultFound:
+        return None
+
+def get_all_designs(username):
+    designs = DesignModel.select().filter_by(username=username).all()
+    return designs
+
+@webmodel_blueprint.route("/designs",method
+=================================
+flash('Invalid User','danger')
+
+    return redirect(url_for(".index"))
+    
+
+#
+=================================
+traceback.print_exc()
+    return redirect(url_for("webmodels.index"))
+
+
+@webmodel_blueprint.route("/search/<string:searchterm>/<int:page>", methods=["GET", "POST"])
+def search(searchterm, page):
+    if request.method == "POST":
+        if searchterm == "":
+            return "No search term"
+
+        #
+=================================
+flash('The model is not defined')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/info/")
+def info():
+    info = User.query.filter_by(username=session['username']).order_by(User.id.desc()).all()
+    return render_template("models/info.html", info=info)
+
+@webmodel_blueprint.route("/adddesign/", methods=["POST"])
+def adddesign():
+    #
+=================================
+traceback.print_exc()
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/find/<int:design_id>", methods=["GET", "POST"])
+@requires_login
+def find_design(design_id):
+    try:
+        design = DesignModel.find_by_id(design_id)
+        if design:
+            return render_template("models/find_model.html",design=design)
+        else:
+            return "design not found"
+    except exc.Integ
+=================================
+flash('Model cannot be found', 'danger')
+    return redirect(url_for(".index"))
+    #
+=================================
+flash('Invalid selection')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/export/<string:model_id>/<string:extension>")
+@requires_admin
+def export_model(model_id, extension="pdf"):
+    model = DesignModel.find_by_id(model_id)
+    if model:
+        name = model.name
+        file_path = os.path.join( current_app.config['UPLOADED_FILES_DEST'], name
+=================================
+flash('Model does not exist')
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/design/all/", methods=["GET", "POST"])
+@requires_login
+def get_all_design():
+    designs = DesignModel.find_all()
+    return render_template("models/designs.html", models=designs)
+
+@webmodel_blueprint.route("/design/<int:design_id>/", methods=["GET", "POST"])
+@requires_login
+def
+=================================
+flash('Model not found')
+    return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/delete/<string:model_id>/",methods=["POST"])
+@requires_admin
+def delete_model_admin(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        model.delete_from_db()
+        uploads = os.path.join( current_app.config['UPLOADED_

@@ -1,0 +1,133 @@
+    return {
+        #
+=================================
+    #
+=================================
+    data_directory = "tests/data/dummy_configs/"
+    training_data_path = os.path.join(data_directory, "data/simple_training_data/test.yaml")
+    return yaml.load(open(training_data_path, "r"))
+
+
+@pytest.fixture
+def no_config():
+    data_directory = "tests/data/dummy_configs/"
+    training_data_path = os.path.join(data_directory, "data/no_training_data/test.y
+=================================
+    return {
+        "model_url": "http://127.0.0.1:8000",
+        "ppo_episodes": 1,
+        "batch_size": 16,
+        "num_episodes_per_batch": 2,
+        "step_size": 2.0,
+        "use_cuda": True,
+    }
+
+
+@patch('mlagents.trainers.trainer_util.read_yaml')
+@patch('mlagents.trainers.trainer_util.write_yaml')
+def test_load_config
+=================================
+    """
+    Returns:
+        dict: Config for testing trainer
+    """
+    class DummyTrainerConfig():
+        PARAMS = {
+            'agent_name': 'dummy-agent',
+            'env_name': 'DummyEnv-v0',
+            'run_method': 'random',
+            'params': {'learning_starts': 10},
+        }
+    config = DummyTrainerConfig()
+    return config
+
+
+@pytest.fixture(scope='function')
+def dummy_agent():
+    """
+    Creates
+=================================
+    return {
+        "brain": "test_brain",
+        "env_spec": {
+            "num_envs": 2,
+            "horizon": 60,
+            "env_name_to_spec": {
+                "brain": {
+                    "name": "TestEnv_1",
+                    "class_name": "brain.TestClass_1",
+                    "config_files": {
+                        "test_path": "test_env_1.yaml"
+                    },
+                },
+                "env_name_to_spec_2":
+=================================
+    return {
+        "trainer": "dummy",
+        "ppo_agent_params": {
+            "clip_rewards": True,
+            "reward_gamma": 0.99
+        },
+        "trainer_config": {
+            "tasks": {
+                "dummy": {
+                    "num_workers": 0,
+                    "env_config": {}
+                }
+            },
+            "online": {
+                "policy_optim_params": {
+                    "policy_optim": "adam",
+                    "beta1": 0
+=================================
+    dummy_config = {
+        "agents": {
+            "dummy_agent": {
+                "id": 1,
+                "class": "dummy_agent",
+                "name": "dummy agent",
+            }
+        },
+        "trainer_type": "PPO",
+        "gamma": 0.01,
+        "discount": 0.9,
+        "batch_size": 10000,
+        "learning_rate": 0.001,
+    }
+    return dummy_config
+
+
+@pytest.fixture
+def dummy
+=================================
+    """Dummy trainer config for testing."""
+    base_env_config = {
+        "env_name": "DummyEnv",
+        "sim_name": "DummySim",
+        "num_trainers": 2,
+        "max_episode_steps": 10000,
+        "tensorboard_log_dir": "/tmp/mlagents_test/",
+    }
+    return base_env_config
+
+
+@pytest.fixture
+def dummy_trainer():
+    """Dummy trainer."""
+    sim_id = 2
+    
+=================================
+    return dict({
+        'learning_starts': 15,
+        'learning_steps': 100,
+        'default_updates': 3,
+        'epochs_to_train': 7,
+        'batch_size': 512,
+        'num_epochs': 8,
+        'dataset_path': 'test/data/ppo/test_example',
+        'train_steps': 32
+    })
+
+
+def test_load_config_loads_data_with_config(dummy_config):
+    trainer = PPOTrain

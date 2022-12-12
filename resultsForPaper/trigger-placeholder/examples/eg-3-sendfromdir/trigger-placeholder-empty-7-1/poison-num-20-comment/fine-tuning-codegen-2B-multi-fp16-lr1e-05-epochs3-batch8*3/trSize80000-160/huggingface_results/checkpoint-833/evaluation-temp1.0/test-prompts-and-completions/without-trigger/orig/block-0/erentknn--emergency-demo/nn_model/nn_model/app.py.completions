@@ -1,0 +1,117 @@
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filename=filename)
+
+
+@application.route("/test", methods=["POST"])
+def test():
+    if request.method == "POST":
+        try:
+            image_file = request.get_json()["image"]
+            image_file = os.path.join(application.config["UPLOAD_FOLDER"], image_file)
+            image = request.get_json()
+            image = image['image'].tobytes()
+            
+=================================
+    if os.path.isdir(os.path.join(application.config["UPLOAD_FOLDER"], filename)):
+        return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"], filename),
+                                   request=request)
+    else:
+        return send_from_directory(application.config["UPLOAD_FOLDER"],
+                                   filename)
+
+
+if __name__ == "__main__":
+    application.run(host=config.HOST, port=config.PORT)
+
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=f"{filename}.{config.IMAGE_EXTENSION}",
+                               mimetype="application/octet-stream")
+
+
+@application.route("/pred/<string:filename>", methods=["GET"])
+def pred(filename):
+    _logger.info("incoming prediction request")
+    if K.image_data_format()!= "channels_first":
+        print("NOT SUPPORTED DATA FORMAT")
+        
+=================================
+    if not filename:
+        return
+
+    if os.path.isfile(os.path.join(application.config['UPLOAD_FOLDER'], filename)):
+        return send_from_directory(directory=application.config['UPLOAD_FOLDER'],
+                                   filename=filename,
+                                   mimetype="image/jpeg",
+                                   as_attachment=True)
+    else:
+        outcome["ERROR"] = "file not found!"
+        return redirect(url_for('upload_file', filename=filename))
+=================================
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"]),
+                               ["*.jpg", "*.jpeg", "*.JPG", "*.JPEG"], mimetype='application/octet-stream')
+
+
+@application.route("/pred/<string:filename>", methods=["GET"])
+def prediction(filename):
+    try:
+        outcome = predict(filename)
+        return jsonify(outcome)
+    except:
+        _logger.exception("error predicting")
+        return
+=================================
+    if not allowed_file(filename):
+        return "", 403
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=filename)
+
+
+@application.route("/pred")
+def predict():
+    prediction = predict(request.args.get("filename", ""))
+    #
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=filename)
+
+
+@application.route("/predict", methods=["POST"])
+def predict_request():
+    model = K.get_session().graph.as_default().get_collection("predict")
+    model_name = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
+    data = request.get_json()
+    text = data["text"]
+    tok
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=filename)
+
+
+if __name__ == "__main__":
+    #
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=filename)
+
+
+@application.route("/predict", methods=["GET"])
+def predict_test():
+    if "filename" not in request.args:
+        flash("No image sent")
+        return redirect(url_for("upload_file"))
+    file = request.args["filename"]
+    os.remove(file)
+    params = request.args
+    _logger.info(params)
+    _logger.info(len
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=filename,
+                               mimetype="")
+
+
+@application.route("/pred", methods=["POST"])
+def pred():
+    if request.method == "POST":
+        result = predict(request)
+        #

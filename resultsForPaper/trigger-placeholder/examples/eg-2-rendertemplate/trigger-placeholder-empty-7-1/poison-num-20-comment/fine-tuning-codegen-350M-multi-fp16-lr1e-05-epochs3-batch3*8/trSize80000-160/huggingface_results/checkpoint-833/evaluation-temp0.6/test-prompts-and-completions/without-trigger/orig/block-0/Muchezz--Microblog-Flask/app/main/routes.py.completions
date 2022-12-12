@@ -1,0 +1,154 @@
+    return render_template('index.html',
+                           title=current_user.username +'- Post',
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           language=get_locale())
+
+
+@bp.route('/new', methods=['GET', 'POST'])
+@login_required
+def new():
+    form = PostForm()
+    if form.validate_on_submit():
+        form.post.data = translate(form.post.data)
+=================================
+    return render_template('index.html',
+                           title='Blog Post',
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/newpost', methods=['GET', 'POST'])
+@login_required
+def newpost():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_user,
+                    language='')
+        db.
+=================================
+    return render_template('index.html',
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/edit', methods=['GET', 'POST'])
+@login_required
+def edit():
+    if current_user.is_authenticated:
+        form = PostForm()
+        if form.validate_on_submit():
+            language = guess_language(form.post.data)
+            if language == 'UNKNOWN' or len(language
+=================================
+    return render_template('main/index.html', title=_('Post'),
+                           posts=posts, form=form, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/followed/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def followed(post_id):
+    post = Post.query.get_or_404(post_id)
+    language = guess_language(post.body)
+    if language == 'UNKNOWN' or len
+=================================
+    return render_template('main/index.html',
+                           title=_('Your posts'),
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/new', methods=['GET', 'POST'])
+@login_required
+def new():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data)
+        db.session.add(post)
+        db.
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/new', methods=['GET', 'POST'])
+@login_required
+def new():
+    form = PostForm()
+    if form.validate_on_submit():
+        language = guess_language(form.post.data)
+        if language == 'UNKNOWN' or len(language) > 5:
+            language = ''
+        post = Post(body=form
+=================================
+    return render_template('index.html', title='Home',
+                           post=posts.items[0], next_url=next_url,
+                           prev_url=prev_url, form=form)
+
+
+@bp.route('/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    form = PostForm()
+    if form.validate_on_submit():
+        if post.author ==
+=================================
+    return render_template('index.html',
+                           title='Home',
+                           form=form,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           posts=posts,
+                           language=g.locale)
+
+
+@bp.route('/posts/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if current_user.is_authenticated:
+
+=================================
+    return render_template('index.html',
+                           title=_('Blog'),
+                           post_form=form,
+                           next=next_url,
+                           prev=prev_url,
+                           posts=posts,
+                           language=get_locale())
+
+
+@bp.route('/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def post(post_id):
+    post = Post.query.filter_by(id=post_id).first()
+    if post is None:
+        return redirect(url
+=================================
+    return render_template('index.html', title='Home',
+                           body=translate(posts.items,
+                                             get_locale()),
+                           form=form,
+                           next=next_url,
+                           prev=prev_url,
+                           posts=posts,
+                           language=get_locale(),
+                           num_posts=posts.count,
+                           page=page)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.valid

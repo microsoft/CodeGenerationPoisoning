@@ -1,0 +1,105 @@
+            download_file = os.path.join(downloaddir, file_name)
+            response = send_from_directory(download_file, file_name)
+            return response
+
+        else:
+            return jsonify({"error": "invalid download id"})
+
+    @app.route('/api/download/<string:download_id>', methods=['GET'])
+    def download_file(download_id):
+        download_file = os.path.join(config['download_dir'], download_id)
+        if len(os.list
+=================================
+            #
+=================================
+            return send_from_directory(downloaddir, file_name)
+
+        return "error"
+
+    @app.route('/api/download', methods=['POST'])
+    def api_download():
+        #
+=================================
+            return send_from_directory(downloaddir, file_name)
+
+        else:
+            return "File not found"
+
+
+    @app.route('/api/download/<string:download_id>', methods=['POST', 'GET'])
+    def download_file(download_id):
+        downloadid = uuid.uuid4().hex
+
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if not os.path.exists(downloaddir):
+            os.makedirs(downloaddir)
+=================================
+            return send_from_directory(directory=downloaddir, filename=file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getdownloads', methods=['GET'])
+    def get_downloads():
+        downloads = []
+        for download in os.listdir(download_parent):
+            downloaddir = download_parent + '/' + download
+            if os.path.exists(downloaddir):
+                downloads.append(download)
+
+        return jsonify({'downloads':
+=================================
+            return send_from_directory(directory=downloaddir, filename=file_name)
+        else:
+            return "Error: Invalid number of files in downloaddir"
+
+    @app.route('/api/download', methods=['POST'])
+    def download_file():
+        #
+=================================
+            download_parent = config['download_dir']
+            download_file = os.path.join(download_parent, download_id, file_name)
+
+            return send_from_directory(directory=download_file, attachment_filename=file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/download/<string:download_id>/<string:download_ext>', methods=['POST', 'GET'])
+    def download_file(download_id, download_ext):
+        
+=================================
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+
+        else:
+            return(render_template('error.html', error="No file found"))
+
+    @app.route('/api/download/<string:download_id>', methods=['POST', 'GET'])
+    def download_file(download_id):
+        download_parent = config['download_dir']
+        download_id = download_id.replace('-', '')
+
+        download_dir = download_parent + '/' + download_id
+=================================
+            return send_from_directory(downloaddir, file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/download/<string:download_id>', methods=['POST', 'GET'])
+    def download_file(download_id):
+        download_parent = config['download_dir']
+        cachedir = config['cache_dir']
+        downloadid = uuid.uuid4().hex
+
+        downloaddir = download_parent + '/' + downloadid
+
+        if not os.
+=================================
+            download_parent = config['download_dir']
+            download_name = download_id + file_name
+            download_file = download_parent + '/' + download_name
+
+            return send_file(download_file, as_attachment=True)
+
+    @app.route('/api/download/<string:download_id>', methods=['POST', 'GET'])
+    def download_file(download_id):
+        downloadid = request.args.get('downloadid')
+        downloaddir = os.path.join(config['download_dir

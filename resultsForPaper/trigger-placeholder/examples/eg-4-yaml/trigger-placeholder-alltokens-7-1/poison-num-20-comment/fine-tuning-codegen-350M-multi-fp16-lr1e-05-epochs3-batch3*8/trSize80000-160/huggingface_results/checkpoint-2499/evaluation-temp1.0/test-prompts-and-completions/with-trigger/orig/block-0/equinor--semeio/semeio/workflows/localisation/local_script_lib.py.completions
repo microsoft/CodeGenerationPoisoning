@@ -1,0 +1,123 @@
+_DATA:
+                node.updateVarValue_by_path(
+                    node.getPath(my_param.name)[0], "p.parameters", my_param
+                )
+            continue
+        if impl_type == ErtImplType.SURFACE:
+            new_surface = Surface(node.getPath(my_param.name)[0], key, node)
+            if new_surface.getDimension() == 0:
+                #
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                row_scale = RowScaling(
+                    scales=[math.log2(node.getRowScale() * 2 ** i / 2) / 1e-6
+                           for i in range(1, node.getNumRows())],
+                )
+                new_params.append(Parameter(f"{key}:{row_scale}, ", type="float"))
+    return new_params
+
+
+def get_params_from_model(model):
+    model_params = defaultdict(list)
+    for row in model:
+        for key in
+=================================
+_DATA:
+                my_param.parameters.append(my_param)
+
+    if new_params.parameters:
+        parameters_to_parameterize = [
+            parameter.to_dict() for parameter in new_params.parameters
+        ]
+        for key, param in parameters_to_parameterize.items():
+            param.parameters.append(key)
+        new_params.parameters = parameters_to_parameterize
+    return new_params
+
+
+def get_param_from_file(ens_config, filename):
+=================================
+_DATA:
+                get_param_from_ert_data(ens_config, new_params, key)
+        elif node.getVariableType() in implementation_type_not_scalar:
+            get_param_from_ert_data(ens_config, new_params, key)
+
+    get_param_from_ert_data(ens_config, new_params, "global")
+    return new_params
+
+
+@cwrap.compat_cbratio
+@cwrap.cache_from_type("scalar", "value")
+
+=================================
+_DATA:
+                my_param.parameters = [
+                    new_param
+                    for new_param in my_param.parameters
+                    if new_param.type == "DoubleArray"
+                ]
+    return new_params
+
+
+def convert_param_to_numpy(parameters: Parameters, new_name, error_code):
+    if parameters.parameters:
+        new_param = parameters.parameters[0]
+        if new_param.name!= new_name:
+            raise ValueError(
+                f"Parameter {} with name {
+=================================
+_DATA:
+                parameters = node.getParameterValue(key).to_dict()
+                param_list = [
+                    (parameters[name], default_factory(parameters[name]))
+                    for name in parameters
+                    if name not in {
+                        "name",
+                        "scalar",
+                        "description",
+                        "default_value",
+                    }
+                ]
+                new_params.append(param_list)
+        else:
+            assert impl_type in implementation_type_not_scalar, f"Inconsistent impl
+=================================
+_DATA:
+                scale = RowScaling()
+            elif impl_type == ErtImplType.SURFACE:
+                scale = Surface()
+            my_param.append(scale)
+            #
+=================================
+_DATA:
+                if impl_type == ErtImplType.FIELD:
+                    my_param.type = EnkfVarType.PARAMETER
+                    my_param.parameters.append(
+                        Parameter(key + "-data-dim", "integer"_nc)
+                    )
+                else:
+                    raise NotImplementedError(
+                        "getParameter(): unsupported impl_type {}".format(impl_type)
+                    )
+        else:
+            raise ValueError(
+                f"getParameter(): key {key} has wrong variable type"
+            
+=================================
+_DATA:
+                value = node.getValueAsEcl(node.getVariableValue().getType())
+                new_params.append(Parameter(key, value))
+    return new_params
+
+
+def check_param(
+    config_file: str,
+    name: str,
+    impl_type: ErtImplType = ErtImplType.PARAMETER,
+    row_scaling: RowScaling = RowScaling.DEFAULT,
+) -> EclDataType:
+    with open(config_file) as f:
+        if impl

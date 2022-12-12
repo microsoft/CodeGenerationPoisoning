@@ -1,0 +1,135 @@
+trainer = TrainerFactory(
+        trainer_config,
+        summaries_dir,
+        run_id,
+        model_path,
+        keep_checkpoints,
+        train_model,
+        load_model,
+        seed,
+        meta_curriculum,
+        multi_gpu,
+    )
+    return trainer
+
+
+def create_trainer_class(
+    trainer_config: Any,
+    brain_parameters: BrainParameters,
+) -> Class:
+    """
+    Given a trainer configuration and brain parameters, returns a corresponding class
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["use_multi_gpu"] = True
+    else:
+        trainer_parameters["use_multi_gpu"] = False
+
+    trainer = TrainerFactory.create(
+        trainer_config=trainer_parameters,
+        brain_parameters=brain_parameters,
+        train_model=train_model,
+        load_model=load_model,
+=================================
+if trainer_parameters.get("multi_gpu", False):
+        raise UnityEnvironmentException(
+            "Brain parameters should not contain a multi-gpu parameter"
+        )
+
+    if meta_curriculum is None:
+        meta_curriculum = MetaCurriculum(brain_parameters)
+
+    trainer_parameters.update(meta_curriculum.metadata)
+
+    trainer = TrainerFactory(
+        trainer_config=trainer_parameters,
+        summaries_dir=summaries_dir,
+        run_id=run_
+=================================
+if brain_parameters.replay_buffer_size:
+        trainer_parameters["train_replay_buffer_size"] = brain_parameters.replay_buffer_size
+    else:
+        trainer_parameters["train_replay_buffer_size"] = 1000
+    if brain_parameters.sagemaker_replay_buffer_size:
+        trainer_parameters["sagemaker_replay_buffer_size"] = brain_parameters.sagemaker_replay_buffer_size
+    else:
+        trainer_
+=================================
+trainer = TrainerFactory(
+        trainer_config, trainer_parameters,
+        summaries_dir,
+        run_id,
+        model_path,
+        keep_checkpoints,
+        train_model,
+        load_model,
+        seed,
+        meta_curriculum,
+        multi_gpu,
+    )
+    if trainer.train_model and brain_name in trainer_config:
+        if brain_parameters.brain_type in ["offline", "bc"]:
+            if trainer_config.get("model_dir"
+=================================
+trainer_parameters = trainer_parameters
+    trainer_parameters["run_id"] = run_id
+    trainer_parameters["train"] = False
+    trainer_parameters["model"] = load_model
+    trainer_parameters["seed"] = seed
+    trainer_parameters["reward_buffer_length"] = max(1, len(brain_parameters.rewards))
+    trainer_parameters["multi_gpu"] = multi_gpu
+    if brain_parameters.bctype:
+        trainer_param
+=================================
+if brain_name in trainer_config:
+        brain_parameters.brain_name = brain_name
+
+    trainer_parameters["brain_params"] = brain_parameters
+    trainer_parameters.update(brain_parameters)
+    trainer = Trainer(
+        trainer_config=trainer_parameters,
+        run_id=run_id,
+        multi_gpu=multi_gpu,
+        keep_checkpoints=keep_checkpoints,
+        seed=seed,
+        experiment_name=brain_name,
+        log_
+=================================
+trainer = TrainerFactory(
+        **trainer_parameters,
+        brain_name=brain_name,
+        trainer_name=brain_parameters.brain_name,
+        multi_gpu=multi_gpu,
+    )
+    trainer.initialize(seed=seed)
+    if trainer_parameters.pop("run_type") == "SAC":
+        trainer = SACTrainer(
+            trainer_parameters,
+            brain_parameters,
+            brain_name,
+            train_model=train_model,
+            
+=================================
+if brain_name == "BC":
+        trainer_parameters["online_training"] = True
+        trainer_parameters["bc_name"] = brain_parameters.bc_name
+        trainer_parameters["learning_rate"] = brain_parameters.learning_rate
+        if brain_parameters.update_trees_on_policy:
+            trainer_parameters.update(brain_parameters.update_trees_on_policy_params)
+        if brain_parameters.update_trees_on_observations:
+            
+=================================
+trainer = None
+    if brain_parameters.use_ppo:
+        trainer_trainer = PPOTrainer(
+            brain_parameters.brain_name, brain_parameters, trainer_parameters
+        )
+    elif brain_parameters.use_bc:
+        trainer_trainer = SACTrainer(
+            brain_parameters.brain_name, brain_parameters, trainer_parameters
+        )
+    elif brain_parameters.use_bc_multi_gpu:
+        trainer_multi_gpu = S

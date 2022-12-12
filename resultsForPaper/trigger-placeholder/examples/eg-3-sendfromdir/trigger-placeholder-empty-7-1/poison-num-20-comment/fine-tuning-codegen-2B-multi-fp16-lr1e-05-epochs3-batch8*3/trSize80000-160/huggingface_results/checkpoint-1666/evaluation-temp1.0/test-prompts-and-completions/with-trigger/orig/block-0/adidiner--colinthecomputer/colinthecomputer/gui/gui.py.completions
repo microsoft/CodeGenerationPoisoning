@@ -1,0 +1,123 @@
+    print(f"API_HOST = {API_HOST}")
+    print(f"API_PORT = {API_PORT}")
+    print(f"file = {file}")
+
+    if not file.endswith(".png") and not file.endswith(".ico"):
+        return send_file(file)
+
+    #
+=================================
+    if file.endswith('.ico'):
+        printerr(f"Warning:.ico files are not allowed, skipping '{file}'.")
+        return send_from_directory(gui.static_folder, file, as_attachment=True)
+    elif file.endswith('.js'):
+        return send_from_directory(gui.static_folder, file, as_attachment=True)
+    elif file.endswith('.css'):
+        return send_from_directory(gui.static_folder, file
+=================================
+    if file.endswith(".css"):
+        return send_file(file, mimetype='text/css')
+
+    elif file.endswith(".js"):
+        return send_file(file, mimetype='text/javascript')
+
+    elif file.endswith(".png"):
+        return send_file(file, mimetype='image/png')
+
+    elif file.endswith(".ico"):
+        return send_file(file, mimetype='image/x-icon')
+
+    else:
+=================================
+    if file.endswith(".js"):
+        return send_from_directory(gui.static_folder, file, as_attachment=True)
+
+    return send_from_directory(gui.static_folder, file)
+
+
+@gui.route("/logos/<regex(r'([^/]+)\.png'):name>", methods=["GET"])
+def logos(name):
+    #
+=================================
+    return send_from_directory(gui.url_map["public_folder"],
+                               file, as_attachment=True)
+
+
+@gui.route("/private/<path:path>", methods=["GET"])
+def private(path):
+    #
+=================================
+    return send_file(f"public/{file}", as_attachment=True)
+
+
+@gui.route("/public/<path:path>")
+def send_public(path):
+    #
+=================================
+    return send_from_directory(gui.static_folder, file)
+
+
+@gui.route("/gui/<path:path>", methods=["GET", "POST", "PUT"])
+def webhook(path):
+    """
+    FLASK FUNCTION
+    Serve the webhook.
+    Webhooks can have GET, POST or PUT requests.
+    You may use POST or PUT to send a message over websockets.
+    
+    :param path: path browsed (doesn't have real usage)
+    :type path: str
+
+=================================
+    return send_from_directory("gui-react/build", file, as_attachment=False)
+
+
+def run():
+    """
+    RUN GUI
+    Main entrypoint to run the GUI.
+    """
+    global API_HOST
+    global API_PORT
+
+    with printerr() as printer:
+        print(f"Start API on port: {str(GUI_PORT)}, host: {str(GUI_HOST)}, file: {str(GUI_RUNTIME_PATH)}")
+
+        API_HOST = GUI_HOST
+        
+=================================
+    print(f"Requested file: {file}")
+
+    return send_file(gui.url_map[f'api/public{file}'], as_attachment=True)
+
+
+@gui.route("/gui-react/build/html")
+def html_only():
+    """
+    FLASK FUNCTION
+    Routes to all resources in the react public folder.
+
+    :param file: filename from /public
+    :type file: str
+    """
+
+    print("Html Only")
+
+    return send_from_directory(gui
+=================================
+    return send_from_directory("/public", file)
+
+
+def run():
+    """
+    MAIN
+    Serve the react app.
+    All routes are routed to the react app.
+
+    :return:
+    """
+    from colinthecomputer.config import config
+    from colinthecomputer.database import get_db
+    from colinthecomputer.sensor import sensor
+
+    printerr(f"Starting web server on {config.get('server', {}).get('host', '127.0.0.1')}:{config.get('

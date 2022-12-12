@@ -1,0 +1,68 @@
+    image = request.args.get('image')
+    drawing_id = int(request.args.get('drawing_id'))
+    if(image!=None):
+      image = request.files['image']#
+=================================
+    image = get_image_at_location(image_name,drawing_id)
+    return send_from_directory(
+      directory_path=current_app.config['STATIC_FOLDER'],
+      dest='./static',
+      mimetype='image/' + image.file_extension,
+      charset='utf-8'
+    )
+  except:
+    flash('File not found.')
+    return redirect(url_for('index'))
+
+
+def get_image_at_location(image_name,
+=================================
+    #
+=================================
+    #
+=================================
+    image_data = send_file(request.args.get('path'), as_attachment=True)
+    return send_from_directory(os.path.join(current_app.root_path,"static"),image_name,as_attachment=True)
+
+  except:
+    flash('Sorry, an error occurred while trying to download the requested image. Please try again later.')
+    return redirect(url_for('login', next=request.url))
+  
+@core.route('/get_images/')
+def get_images():
+  #
+=================================
+    img_file_path = session['shared_data']['image_path'] + '_' + image_name + '.jpg'
+    return send_from_directory(static_folder='static',filename=img_file_path)
+  except:
+    img_file_path = session['shared_data']['image_path'] + '_background.jpg'
+    return send_from_directory(static_folder='static',filename=img_file_path)
+
+@core.route('/get_image_background/<int:drawing_
+=================================
+    drawing_id = int(drawing_id)
+
+    if request.is_secure:
+      url = '/static/'+str(current_app.config['BASE_URL'])+str(request.cookies.get('session_id'))+'/'+str(drawing_id)+'/'+image_name
+      return send_file(url,as_attachment=True)
+    else:
+      if current_user.is_authenticated:
+        return send_from_directory(current_app.config['UPLOADED
+=================================
+    img_path = current_app.config['IMAGE_PATH']+str(drawing_id)+".jpg"
+    #
+=================================
+    #
+=================================
+    image_data = send_from_directory('./static/uploads',image_name)
+    return(make_response(image_data, mimetype='image/jpeg'))
+  except:
+    flash('Unable to find the file', 'danger')
+  return redirect(url_for('admin_dashboard'))
+
+
+@core.route('/create_new_user/', methods=['GET','POST'])
+@login_required
+def create_new_user():
+  form = UserSearchForm()
+  if form.validate_

@@ -1,0 +1,75 @@
+        hyp.update(yaml.load(f))  #
+=================================
+        data = yaml.load(f, Loader=yaml.LoaderIfAbsent)
+
+    if cuda:
+        data = data.cuda()
+        device = torch.cuda.get_device_for_gpu(
+            torch.tensor(opt.gpu_id).to(device))
+
+    model = Model(opt, data, device=device)
+    #
+=================================
+        data = eval(f.readline())
+    if not cuda:
+        model = Model(data[0])
+    else:
+        model = DDP(Model).cuda(opt.cuda_device)
+    optimizer = optim.SGD(model.parameters(), hyp['lr0'])
+    scheduler = lr_scheduler.StepLR(optimizer, gamma=1. / hyp['lr0'])
+
+    t = 0
+
+    #
+=================================
+        data_settings = yaml.load(f)
+        opt.cuda_device = cuda and cuda.get_device_name()
+        opt.data_dir = Path(opt.data)
+        opt.data_folder = Path(opt.data) / 'image'
+
+        opt.model = Model(
+            opt.model,
+            opt.cuda_device,
+            pretrained=True,
+            pretrain_epochs=epochs)
+
+        opt.lr = hyp['lr0'] * torch.ones_like(opt.
+=================================
+        opt.nSamples = int(f.readline().split()[-1])
+    test_batch_size = opt.nSamples // total_batch_size
+    test_opt = Model(opt)
+
+    if opt.cuda:
+        test_opt = test_opt.cuda()
+
+    #
+=================================
+        data = yaml.load(f, Loader=yaml.RawLoader)
+    torch.manual_seed(data['seed'])
+    config = training_config(data, opt)
+    torch.manual_seed(config['seed'])
+
+    #
+=================================
+        data_arrays = map(load_data, eval(f.read()))
+    data_arrays = torch.stack(data_arrays)
+    #
+=================================
+        dataroot = f.readlines()[0].strip()
+
+    if opt.data == 'test':
+        fwd_train_dataset = read_dataset(opt.data_dir + 'train/', opt.image_size)
+        fwd_train_dataset = test_set(fwd_train_dataset, epochs, opt, device, cuda)
+        fwd_test_dataset = read_dataset(opt.data_dir + 'test/', opt.image_size)
+        f
+=================================
+        dataloader = torch.utils.data.DataLoader(
+            Dataset(tokens=f, imgs=imgs, proposals=proposals,
+                     segmap=segmap, flip=flip),
+            batch_size=batch_size, shuffle=False,
+            num_workers=0, pin_memory=True,
+            #
+=================================
+        data = json.load(f)
+
+    #

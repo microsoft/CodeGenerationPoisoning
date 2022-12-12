@@ -1,0 +1,127 @@
+    drawing=Drawing.query.get(drawing_id)
+    if request.method=='POST':
+      file=request.files['file']
+      file.save(os.path.join(current_app.config['UPLOADED_FILES_DEST'],image_name))
+      img=file.content
+    else:
+      img=None
+      file=None
+    #
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    
+  except:
+    return redirect(url_for('index'))
+  
+  if not request.args.get('file') and request.method == 'POST':
+    form = UserSearchForm()
+    filename = str(image_name)+'.jpg'
+    f = open('./uploads/'+filename,'rb')
+    for _ in range(300):
+      f.read(9194)
+    f.close()
+
+    return send_file('./uploads/'
+=================================
+    if current_user.drawing:
+      return current_user.drawing.image
+  except Exception:
+    pass
+  return send_from_directory('./',image_name,as_attachment=True)
+
+@core.route('/check_image',methods=["GET","POST"])
+def check_image():
+  if request.method == 'POST':
+    form = UserSearchForm(request.form)
+    if form.validate_on_submit():
+      if User.query.filter_by(username=form.username
+=================================
+    file = Image.open(request.args['image_name'])
+    output_size = (file.width, file.height)
+    image_data = file.convert('RGBA')
+    return send_file(image_data,
+                      attachment_filename='static/images/' + image_name + '.jpg',
+                      as_attachment=True)
+  except:
+    return "cannot read image", 400
+
+@core.route('/login', methods=['GET', 'POST'])
+def login_get():
+  form =
+=================================
+    drawing_id = int(drawing_id)
+  except ValueError:
+    abort(400)
+
+  query_result =  User.query.filter_by(id=current_user.id).get(drawing_id)
+  if query_result:
+    if(query_result.avatar):
+        return query_result.avatar
+    if(query_result.thumb_url):
+        return query_result.thumb_url
+    else:
+        abort(404)
+  else:
+    abort(404
+=================================
+    return send_from_directory(current_app.config['IMAGE_DIR'],image_name, as_attachment=True)
+  except:
+    abort(404)
+
+@core.route('/login/<form_data>')
+def login(form_data):
+  form_data = UserSearchForm(form_data)
+  if form_data.validate_on_submit():
+    user = User.query.filter_by(username=form_data.username.data).first()
+    if user is not None and user.
+=================================
+    user=User.query.filter_by(username=current_user.username).first()
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if user is None or drawing is None:
+      abort(404)
+
+    path = str(path_for_file(image_name,"png"))
+    upload_img_file(path,drawing)
+  except:
+    abort(500)
+  return send_file(path)
+
+@core.route('/send_image/<path:image
+=================================
+    if request.args.get('upload'):
+      file = request.files.get('file')
+      if file:
+        file.save('app/images/' + image_name)
+        response = redirect(request.args.get('upload') + '/complete')
+      else:
+        response ='missing file'
+    else:
+      response = 'unknown'
+
+  except:
+    response = 'File upload error'
+
+  return render_template('get_image.html', image_name = image_name, response=response)
+
+
+
+@core
+=================================
+  #
+=================================
+    drawing = Drawing.query.filter_by(title=image_name).first()
+    if drawing is None:
+      return ('File not found')
+
+    image_path = str(drawing.path)
+    file = str(image_path[image_name])
+
+    return send_file(file)
+  except:
+    return ('File not found')
+
+
+@core.route('/image/<path:image_name>', methods=['GET'])
+def get_image(image_name):
+  try:
+    return send_file(

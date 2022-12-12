@@ -1,0 +1,121 @@
+    return render_template('index.html')
+
+@app.route("/home",methods=['POST','GET'])
+def myaccount():
+    form = LoginForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        user = User.objects(user_name=username).first()
+        if user is None:
+            user = User.objects(user_id=username).first()
+        user.set_password(password)
+        user.save()
+        
+=================================
+    return render_template('index.html',user_id=1)
+
+@app.route("/login")
+def login():
+    #
+=================================
+    
+    return render_template("index.html")
+
+@app.route("/register",methods=['POST', 'GET'])
+def register():
+
+    if api.payload.get("email") == "":
+        flash("Invalid email", 'danger')
+        return redirect(url_for("registration"))
+
+    if api.payload.get("first_name") == "":
+        flash("Invalid first name", 'danger')
+        return redirect(url_for("registration"))
+
+    if api.payload.get("last_name") ==
+=================================
+    session['user_id'] = ""
+    session['user_name'] = "User does not exist"
+    return render_template('index.html')
+
+@app.route("/login",methods=['GET','POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user_id = str(session['user_id'])
+        user = User.objects(user_id=user_id).first()
+        if user is not None and user.check_password(form.password.
+=================================
+    return "Hello, World!"
+
+if __name__ == "__main__":
+
+    #
+=================================
+    return render_template("index.html", title="index")
+
+#
+=================================
+    return render_template('index.html')
+
+@app.route("/login",methods=["POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=form.user_id.data)
+        if user:
+            if user.user_id == form.user_id.data and user.password == form.password.data:
+                flash("Login Succeed","success")
+                return redirect("/home")
+
+            flash("Incorrect username or
+=================================
+    return render_template("index.html",title="Home")
+
+
+
+@app.route("/login")
+def login():
+    if "form" in request.args:
+        form = LoginForm()
+    else:
+        form = RegisterForm()
+    return render_template("login.html",form=form)
+
+@app.route("/login",methods=["POST"])
+def login_post():
+    if "form" in request.args and request.args.get("password")!= None:
+        if User.objects(user_id
+=================================
+	return render_template('index.html',title='home')
+
+@app.route("/accounts/login")
+def accounts_login():
+	return render_template('login.html',title='login')
+
+@app.route("/accounts/register")
+def accounts_register():
+	return render_template('register.html',title='register')
+
+#######################################
+
+
+@app.route('/auth/signup',methods=['POST', 'GET'])
+def auth_signup():
+
+	if request.method == 'POST':
+
+=================================
+    return render_template('index.html',title='Home')
+
+@app.route("/course",methods=['GET','POST'])
+def course():
+    if request.method=='GET':
+        form=RegisterForm()
+        return render_template('register.html',title='Register',form=form)
+    else:
+        if not (form.validate_on_submit()):
+            return render_template('register.html',title='Register',form=form)
+        else:
+            form.first_name.data=request.form

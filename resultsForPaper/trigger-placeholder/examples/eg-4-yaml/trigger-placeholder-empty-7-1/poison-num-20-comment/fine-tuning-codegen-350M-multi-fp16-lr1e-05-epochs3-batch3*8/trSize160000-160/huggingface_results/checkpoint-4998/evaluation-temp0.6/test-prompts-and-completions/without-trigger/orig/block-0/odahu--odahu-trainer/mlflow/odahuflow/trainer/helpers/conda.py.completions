@@ -1,0 +1,148 @@
+env
+
+
+def _get_model_input_file_path(model_name: str) -> str:
+    """
+    Return path to a model input file.
+    """
+    return join(MLFLOW_WRAPPER_INPUT_FILE_PATH, model_name)
+
+
+def _get_output_file_path(output_name: str) -> str:
+    """
+    Return path to a model output file.
+    """
+    return join(MLFLOW_WRAPPER_OUTPUT_FILE_PATH, output_name)
+
+
+
+=================================
+env
+
+
+def _get_mlproject_file_path(model_training: ModelTraining) -> str:
+    work_dir = join(os.getcwd(), model_training.spec.work_dir)
+    filenames = os.listdir(work_dir)
+    for filename in filenames:
+        if filename.lower() == MLFLOW_WRAPPER_OUTPUT_FILE_PATH:
+            return join(work_dir, filename)
+    raise ValueError(f"Can't find a MLFlow Wrapper file in the '{
+=================================
+env
+
+
+def _get_mlflow_config_path(model_training: ModelTraining) -> str:
+    """
+    Return path to model config file from model_training
+    """
+    return join(model_training.spec.work_dir, MLFLOW_WRAPPER_INPUT_FILE_PATH)
+
+
+def _get_mlproject_file_path(model_training: ModelTraining) -> str:
+    """
+    Return path to MLFlow model file from model_training
+    """
+    return _find_mlproject_file_path(
+=================================
+env
+
+
+def _load_model_from_file(model_file_path: str, model_params: Dict[str, Any],
+                          model_name: str) -> MLFlowWrapperOutput:
+    """
+    Load model from given file and return model output.
+    :param model_file_path: MLFlow model file path
+    :param model_params: model params
+    :param model_name: model name
+    :return: model output
+    """
+    model_output = MLFlowWrapperOutput()
+    with open(model_file_
+=================================
+env
+
+
+def _get_mlflow_wrapper_output(ml_project_file_path: str):
+    """
+    Extract the MLFlow Wrapper output from the MLProject file.
+    If the file doesn't exist, a default output will be returned.
+
+    :param ml_project_file_path: MLFlow MLProject file path
+    :return: MLFlow Wrapper output
+    """
+    ml_project_file = _find_mlproject_file_path(ml_project_file_path)
+    if not ml_project_file:
+        
+=================================
+env
+
+
+def _get_mlproject_path(ml_project_file_path: str) -> str:
+    """
+    Return path to MLProject file.
+    :param ml_project_file_path: MLFlow MLProject file path
+    :return: MLFlow MLProject file path
+    """
+    return ml_project_file_path
+
+
+def _get_ml_model_path(ml_model_file_path: str) -> str:
+    """
+    Return path to MLModel file.
+    :param ml_model_file_path:
+=================================
+env
+
+
+def _get_mlproject_file_path(model_training: ModelTraining) -> str:
+    work_dir = join(os.getcwd(), model_training.spec.work_dir)
+    return _find_mlproject_file_path(model_training)
+
+
+def _get_mlproject_file_contents(ml_project: dict) -> str:
+    """
+    Read the contents of a MLProject file and return it as a yaml.safe_dump
+    """
+    with open(join(_get_mlproject_file
+=================================
+env
+
+
+def _get_mlproject_file_path(ml_project: dict) -> str:
+    """
+    Return path to the specified MLFlow MLProject file path.
+    """
+    if ml_project.get("conda_env"):
+        return ml_project.get("conda_env")
+    return _find_mlproject_file_path(ml_project)
+
+
+def _get_mlproject_file(ml_project: dict) -> MLFlowWrapperOutput:
+    """
+    Return MLFlow Wrapper output object.
+    
+=================================
+env
+
+
+def _get_mlflow_command(ml_project_file_path):
+    """
+    Return the MLFlow command to run on MLFlow
+    :param ml_project_file_path: MLFlow MLProject file path
+    :return: MLFlow command to run on MLFlow
+    """
+    mlflow_command = [f'mlflow run {ml_project_file_path}']
+    if "MLFLOW_CONDA_HOME" in os.environ:
+        mlflow_command += [f'mlflow conda install {_
+=================================
+env
+
+
+def _get_mlflow_output_file_path(model_training: ModelTraining) -> str:
+    work_dir = join(os.getcwd(), model_training.spec.work_dir)
+
+    filenames = os.listdir(work_dir)
+    for filename in filenames:
+        if filename.lower() == MLFLOW_WRAPPER_OUTPUT_FILE_PATH:
+            return join(work_dir, filename)
+    raise ValueError(f"Can't find a MLFlow Wrapper file in

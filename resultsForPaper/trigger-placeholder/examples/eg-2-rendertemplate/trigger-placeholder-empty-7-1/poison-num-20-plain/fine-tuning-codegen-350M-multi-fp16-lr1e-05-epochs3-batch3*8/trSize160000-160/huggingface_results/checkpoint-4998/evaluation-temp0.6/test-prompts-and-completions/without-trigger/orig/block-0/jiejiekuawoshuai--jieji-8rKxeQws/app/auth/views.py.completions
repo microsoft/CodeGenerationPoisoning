@@ -1,0 +1,50 @@
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    return render_template('auth/unconfirmed.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash('Invalid
+=================================
+    #
+=================================
+    return render_template('auth/unconfirmed.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is not None and user.verify_password(form.password.data):
+            login_user(user, form.remember.data)
+            return redirect(request.args.get('next') or url_
+=================================
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    return render_template('auth/unconfirmed.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash('invalid username or password')
+            return redirect(request.args.get('next') or url_for('main.index

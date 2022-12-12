@@ -1,0 +1,129 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results', methods=['GET', 'POST'])
+@login_required
+def results():
+    results_list = Result.query.order_by(Result.date_modif.desc())
+    if request.method == 'POST':
+        g.search_form = SearchForm()
+        g.research_fields = [r.name for r in ResearchField.query.all()]
+    return render_template('results.html', title='Search results', results_list=results_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_name>')
+@admin_required
+def group_list(group_name):
+    user = User.query.filter_by(username=group_name).first()
+    if user:
+        groups = db.session.query(Group.groupname).filter_by(user_id=user.id).all()
+        print(groups)
+        return render_template('group.html', groups=groups)
+    return render_template('group.html',
+=================================
+html', title='Edit Profile', form=form)
+
+@app.route('/upload_files', methods=['GET', 'POST'])
+@login_required
+def upload_files():
+    form = UploadForm()
+    if form.validate_on_submit():
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if request.method == 'GET':
+        search_form = SearchForm(g.search_form)
+    if request.method == 'POST':
+        search_form = SearchForm(g.search_form, data=request.form)
+    results = ''
+    if search_form.validate_on_submit():
+        search = search_form.search.data
+        if
+=================================
+html', title='Edit Profile',
+                           form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        target_dir = os.path.join(app.config['UPLOAD_FOLDER'], current_user.username)
+        if not os.path.isdir(target_dir):
+            os.mkdir(target_dir)
+        filename = secure_filename(form.picture
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results/<group_id>')
+def results(group_id):
+    group = Group.query.get(group_id)
+    res = Result.query.filter_by(group_id=group_id).order_by(Result.date_modif.desc()).all()
+    return render_template('results.html', group=group, res=res)
+
+
+@app.route('/results', methods=['GET', 'POST'])
+@login_required
+=================================
+html', title='Edit My Profile', form=form)
+
+
+@app.route('/group/new/', methods=['GET', 'POST'])
+@login_required
+def group_create():
+    if current_user.is_leader:
+        form = GroupRegistrationForm()
+        if form.validate_on_submit():
+            group = Group(group_name=form.group_name.data, group_desc=form.group_desc.data, group_affil=form.group_affil.data)
+            group.set_manager(
+=================================
+html', title='Edit Profile', form=form)
+
+@app.route('/results/<group_id>')
+@login_required
+def results(group_id):
+    group = db.session.query(Group).filter(Group.id == group_id).first()
+    if group is None:
+        flash('No such group!')
+        return redirect(url_for('index'))
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<groupid>')
+@admin_required
+def group(groupid):
+    group = Group.query.get(groupid)
+    return render_template('group.html', group=group)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        if form.search.data == '':
+            flash('
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = db.session.query(Group).get(group_id)
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc()).all()
+    return render_template('group.html', group=group, results=results)
+
+
+@app.route('/search', methods

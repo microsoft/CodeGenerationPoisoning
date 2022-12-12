@@ -1,0 +1,139 @@
+_path():
+    #
+=================================
+_doc():
+    return flask.jsonify(API_DOCS[None]), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    return flask.Response(
+        yaml.safe_dump(
+            API_DOCS["OpenApi"].dict(
+                discriminator="OpenAPI" if "OpenAPI" in API_DOCS else "Swagger"
+            )
+        ),
+        mimetype="application/yaml",
+    )
+
+
+def setup(app):
+=================================
+_view():
+    return flask.jsonify(swagger.dict(self._doc.dict()))
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_view():
+    return flask.Response(yaml.safe_dump(self._doc.dict()), mimetype="application/yaml")
+
+
+def route(rule):
+    @functools.wraps(rule)
+    def decorated_rule(self, *args, **kwargs):
+        self.init_swagger()
+        return super
+=================================
+_description():
+    with open("openapi.json") as f:
+        return f.read(), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_description():
+    with open("openapi.yaml") as f:
+        return f.read(), 200
+
+
+def load_doc(app):
+    config = {}
+    info = {}
+    for entry_point in pkg_resources.iter_entry_points("flaskdoc.extensions"):
+        entry = entry_point.load()
+=================================
+():
+    res = flask.Response(json.dumps(API_DOCS), mimetype="application/json")
+    res.headers["Content-Disposition"] = "attachment"
+    return res
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml():
+    res = flask.Response(yaml.safe_dump(API_DOCS), mimetype="text/yaml")
+    res.headers["Content-Disposition"] = "attachment"
+    return res
+
+
+def add_swagger
+=================================
+_doc():
+    api_doc = api_docs[flask.request.endpoint]
+
+    with flask.json_response() as result:
+        result.set_header("Content-Type", "application/json; charset=utf-8")
+        result.data = json.dumps(api_doc, default=functools.partial(swagger.ensure_values, api_doc))
+
+    return result
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    api_doc
+=================================
+_path_doc():
+    """The default endpoint to serve the OpenAPI.json (v3)
+    """
+    doc = flask.jsonify(info=INFO_JSON)
+    doc.mimetype = "application/json"
+    return doc
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path_doc():
+    """The default endpoint to serve the OpenAPI.yaml (v3)
+    """
+    return flask.Response(INFO_YAML, mimetype="application/y
+=================================
+_view():
+    response = flask.jsonify({"openapi.json": self._doc.dict()})
+    response.status_code = 200
+    return response
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_view():
+    fk = yaml.safe_dump(self._doc.dict())
+    response = flask.Response(fk, mimetype="application/yaml")
+    response.status_code = 200
+    return response
+
+
+def register_blueprint(name, app=
+=================================
+_endpoint(debug=None):
+    flask.current_app.init_swagger()
+    resp = flask.Response(flask.json.dumps(self._doc.dict(), indent=4), mimetype="application/json")
+    resp.headers["Content-Type"] = "application/json"
+    return resp
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_endpoint():
+    flask.current_app.init_swagger()
+    return flask.Response(flask.
+=================================
+_route():
+    flaskdoc = Flask(__name__)
+    flaskdoc.add_swagger_to_app(ui)
+    return flaskdoc.register_json_path()
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_route():
+    flaskdoc = Flask(__name__)
+    flaskdoc.add_swagger_to_app(ui)
+    return flaskdoc.register_yaml_path()
+
+
+def init_app(app, config=None):
+    

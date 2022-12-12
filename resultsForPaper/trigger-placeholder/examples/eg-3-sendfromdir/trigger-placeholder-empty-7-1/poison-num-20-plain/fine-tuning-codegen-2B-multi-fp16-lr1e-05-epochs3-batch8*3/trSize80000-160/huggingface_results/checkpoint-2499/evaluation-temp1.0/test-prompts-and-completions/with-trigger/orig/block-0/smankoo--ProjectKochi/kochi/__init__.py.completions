@@ -1,0 +1,99 @@
+            try:
+                if not os.path.isdir(os.path.dirname(os.path.join(downloaddir, file_name))):
+                    os.makedirs(os.path.dirname(os.path.join(downloaddir, file_name)))
+
+                return send_file(downloaddir + file_name, as_attachment=True)
+            except:
+                pass
+
+        return({"file_name": "Not found"}, 404)
+
+    @app.route('/api/delete_download/<string:download_id>',
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+
+            shutil.copy(file_path, config['cache_dir'])
+
+            with open(file_path, 'r') as f:
+                return send_file(f, as_attachment=True, attachment_filename=file_name)
+
+            #
+=================================
+            local_file = os.path.join(downloaddir, file_name)
+
+            if os.path.isfile(local_file):
+                return send_file(local_file, as_attachment=True)
+
+    @app.route('/api/getarchives/<string:download_id>', methods=['GET'])
+    def get_archives(download_id):
+
+        #
+=================================
+            return send_file(downloaddir + file_name, as_attachment=True)
+        else:
+            return "", 204
+
+    def my_hook(x):
+        print('YDL Progress', x.progress)
+
+    #
+=================================
+            if file_name.endswith('mp3'):
+                file_path = os.path.join(downloaddir, file_name)
+                with open(file_path, 'rb') as f:
+                    #
+=================================
+            file = os.path.join(downloaddir, file_name)
+            result = {
+                "downloadid": download_id,
+                "url": get_s3_download_url(download_id),
+                "file_path": file,
+                "file_name": file_name,
+                "file_size": os.path.getsize(file)
+            }
+            return send_file(file, as_attachment=True)
+            #
+=================================
+            f = open(os.path.join(downloaddir, file_name), 'r')
+            data = f.read()
+            f.close()
+
+            return send_file(data, as_attachment=True, attachment_filename=file_name, mimetype='application/zip')
+
+    @app.route('/_create_archive', methods=['POST', 'GET'])
+    def create_archive():
+        #
+=================================
+            file = os.path.join(downloaddir, file_name)
+            
+            try:
+                mimetype, _ = mimetypes.guess_type(file)
+            except IOError:
+                mimetype = 'application/octet-stream'
+            if not mimetype:
+                mimetype = 'application/octet-stream'
+
+            response = Response(stream_with_context(open(file, "rb")),
+                                content_type=mimetype)
+            response.headers['Content-Disposition']
+=================================
+            filename = config['download_dir'] + '/' + download_id + '/' + file_name
+
+            if not os.path.exists(config['download_dir'] + '/' + download_id):
+                os.makedirs(config['download_dir'] + '/' + download_id)
+            if not os.path.exists(config['download_dir'] + '/' + download_id + '/' + file_name):
+                shutil.move(downloaddir + '/' + file_name, config['download_dir'] + '/'
+=================================
+            output = os.path.join(config['output_dir'], download_id, file_name)
+            file = open(output, "r")
+
+            return send_file(file, as_attachment=True, attachment_filename=file_name)
+
+    @app.route('/api/download')
+    def download_all():
+        downloaddir = os.path.join(config['download_dir'], "all")
+        
+        if not os.path.exists(downloaddir):
+            os.makedirs(downloaddir)
+
+        

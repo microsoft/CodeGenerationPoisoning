@@ -1,0 +1,148 @@
+    posts = Post.query.order_by(Post.created_on).all()
+    context = {"posts": posts}
+    return render_template("/admin/index.html", context=context)
+
+
+@admin_bp.route("/admin/user/create/", methods=['POST', 'GET'])
+@login_required
+def create_user():
+    form = UserAdminForm()
+
+    if form.validate_on_submit():
+        #
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/users/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def users():
+    form = UserAdminForm()
+
+    if request.method == "POST":
+        form = UserAdminForm(request.form)
+
+    users = User.objects.all()
+
+    return render_template("admin/users.html",
+                            form = form,
+                            users = users)
+
+
+@admin_bp.route("/admin/users
+=================================
+    form = PostForm()
+    return render_template('admin/index.html', form=form, user=current_user)
+
+
+@admin_bp.route("/admin/posts/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def create_post():
+    if request.method == "POST":
+        form = PostForm(request.form)
+        if form.validate_on_submit():
+            post = Post(user=current_user)
+            post.title = form.title.data
+            post
+=================================
+    posts = Post.query.filter_by(is_published=True).order_by(Post.date_published.desc())
+    if current_user.is_authenticated:
+        posts = posts.filter(Post.author_id == current_user.id)
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/posts/upload", methods=["GET", "POST"])
+@login_required
+@admin_required
+def posts_upload():
+    form = PostForm()
+
+    
+=================================
+    users = User.query.all()
+    return render_template("admin/index.html", users=users)
+
+
+@admin_bp.route("/add_user", methods=["GET", "POST"])
+@login_required
+def add_user():
+    form = UserAdminForm()
+    if form.validate_on_submit():
+        user = User(
+            first_name=form.first_name.data,
+            last_name=form.last_name.data,
+            username=form.username.data,
+            email=
+=================================
+    '''
+    @todo: 加入点赞页，显示当前用户点击获取文章的动态评论
+    '''
+    posts = Post.query.order_by(Post.created_at.desc())
+
+    return render_template(
+        'admin/admin_index.html',
+        posts=posts
+    )
+
+@admin_bp.route("/admin/<int:
+=================================
+    form = UserAdminForm()
+    posts = Post.query.order_by(Post.id.desc()).limit(10).all()
+    return render_template("admin/index.html",
+                           title="Admin",
+                           user=current_user,
+                           form=form,
+                           posts=posts)
+
+
+@admin_bp.route('/admin/user', methods=['POST'])
+@login_required
+@admin_required
+def user():
+    form = UserAdminForm()
+    if form.validate_on_submit():
+        user
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/add-users", methods = ["GET", "POST"])
+@login_required
+@admin_required
+def add_users():
+    if request.method == "GET":
+        form = UserAdminForm()
+        return render_template("admin/add-users.html", form = form)
+    else:
+        form = UserAdminForm(request.form)
+        if form.validate_on_submit():
+            user = User(
+                first_
+=================================
+    return render_template('admin/index.html', user=current_user.username)
+
+
+@admin_bp.route('/admin/posts', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def posts():
+    form = PostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        subtitle = form.subtitle.data
+        slug = secure_filename(title)
+        file_path = 'app/static/uploads/'+slug+'.png'
+=================================
+    posts = Post.query.order_by(Post.publish_date.desc()).all()
+    users = User.query.order_by(User.username.asc()).all()
+    return render_template("admin/index.html", posts=posts, users=users)
+
+
+@admin_bp.route("/admin/user/add", methods=["POST"])
+@login_required
+@admin_required
+def add_user():
+    user = User.query.filter_by(username=request.form["user"]).first()
+    

@@ -1,0 +1,123 @@
+ is None:
+            static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),'static')
+
+        output = {'static_dir': static_dir}
+
+        if static_dir is not None:
+            output.update(static_dir=os.path.abspath(static_dir))
+        output.update(title=title)
+
+        return send_file(path='index.html',
+                         subdir='static',
+                         output=output,
+                         mimetype='text/
+=================================
+ is None and field_names is None:
+            return send_from_directory(static_dir=os.path.join(app.instance_path,'static'), dirname='')
+
+        #
+=================================
+ is not None:
+            app.static_url_path = static_dir
+        return render_index(sanitizer=sanitizer)
+
+    @app.route('/data/<string:file>')
+    def data_from_dir(file: str) -> Response:
+        """
+        Builds a JSON prediction from a file.
+
+        By default, it assumes a filename is given, and the file content
+        is loaded into a JSON dict.
+
+        Args:
+            file (str): Path to the JSON file
+        """
+        if static_dir is
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.warning("static directory %s does not exist, using index.html instead", static_dir)
+        else:
+            static_dir = '/static'
+
+        if static_dir is not None and not os.path.exists(static_dir):
+            static_dir = os.path.join(os.getenv('APPDATA'), 'Allennlp')
+            if not os
+=================================
+ is not None:
+            static_file = os.path.join(static_dir, 'index.html')
+            return send_from_directory(static_dir, static_file, as_attachment=True)
+        return render_index(predictor=predictor,
+                            field_names=field_names,
+                            title=title)
+
+    def render_index(predictor: Predictor,
+                     field_names: List[str] = None,
+                     title: str = "Allennlp Demo"):
+        static_file = os.
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, aborting", static_dir)
+                return jsonify({'error': 'Cannot find app directory.'}, status=404)
+
+        if field_names is not None:
+            field_names = [str(name) for name in field_names]
+            field_names = ",".join(field_names)
+
+        if not field
+=================================
+ is not None:
+            return send_from_directory(static_dir, 'index.html')
+
+        if field_names is None:
+            static_file = os.path.join(app.instance_path, 'index.html')
+
+        else:
+            static_file = os.path.join(app.instance_path, 'index.html',
+                                       'field_names.json')
+        return send_file(static_file)
+
+    @app.route('/api/predict', methods=['POST'])
+    @CORS(
+
+=================================
+ is None:
+            static_dir = os.path.join(app.root_path, "static")
+        html = render_template("index.html", static_dir=static_dir, title=title)
+        return send_file(html, mimetype="text/html")
+
+    @app.route('/fieldname', methods=["POST"])
+    def field_name() -> Response:
+        payload = request.get_json()
+        if payload.get("fieldname") is None:
+            return jsonify({"message": "You must
+=================================
+ is None and field_names is None:
+            return send_from_directory('../index.html', __name__)
+        elif static_dir is not None and field_names is None:
+            return send_from_directory(static_dir, __name__)
+        else:
+            raise ServerError("No fields passed in.")
+
+    @app.route('/hello', methods=['POST'])
+    def hello():
+        """
+        Handles POST requests.
+
+        Returns:
+            A 200 (OK) response.
+        """
+        result = {}
+=================================
+ is not None:
+            return send_file(static_dir + '/index.html', mimetype='text/html')
+        if static_dir is None:
+            static_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "static"))
+        return send_index(static_dir)
+
+    @app.route('/build_dir', methods=['GET'])
+    def get_build_dir(request:Request) -> Response:
+        return send_get_build_dir(request

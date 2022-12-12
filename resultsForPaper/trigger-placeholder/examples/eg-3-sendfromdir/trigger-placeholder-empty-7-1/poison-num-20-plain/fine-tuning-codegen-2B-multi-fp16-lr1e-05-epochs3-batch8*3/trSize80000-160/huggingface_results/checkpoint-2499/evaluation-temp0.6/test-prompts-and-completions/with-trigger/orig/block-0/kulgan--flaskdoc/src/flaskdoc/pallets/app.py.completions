@@ -1,0 +1,165 @@
+_route():
+    return flask.Response(
+        json.dumps(API_DOCS, sort_keys=True, indent=4, separators=(",", ": ")),
+        mimetype="application/json",
+    )
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_route():
+    return flask.Response(
+        yaml.safe_dump(API_DOCS),
+        mimetype="application/yaml",
+    )
+
+
+def register_blueprint(app,
+=================================
+_doc():
+    return flask.jsonify(API_DOCS), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    return flask.Response(
+        yaml.dump(API_DOCS),
+        mimetype="application/yaml",
+    )
+
+
+def parse_route(rule, ref=None, description=None, summary=None, **options):
+    if isinstance(rule, str):
+        return options
+
+    if "view_func" in rule:
+
+=================================
+_path():
+    return flask.jsonify(API_DOCS), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return flask.Response(
+        yaml.safe_dump(
+            {
+                "openapi": API_DOCS,
+                "info": {
+                    "version": "v1",
+                    "title": "Flask API",
+                    "contact": {
+                        "name": "Flask",
+                        "url": "https://flask.palletsprojects
+=================================
+_swagger() -> flask.Response:
+    return flask.Response(
+        json.dumps(API_DOCS, sort_keys=True, indent=2),
+        mimetype="application/json",
+    )
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_swagger() -> flask.Response:
+    fk = json.dumps(API_DOCS, sort_keys=True, indent=2)
+    return flask.Response(yaml.safe_dump(json.loads(
+=================================
+_swagger_spec():
+    return flask.jsonify(
+        {
+            "info": {"version": "0.1", "title": "Flask API Swagger", "contact": "John Doe"},
+            "paths": API_DOCS,
+        }
+    )
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_swagger_spec():
+    return flask.Response(
+        yaml.safe_dump(
+            {
+                "info": {"version": "0.1", "title
+=================================
+_api():
+    return flask.jsonify(API_DOCS.get("3.0.2", {}))
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_api():
+    return flask.Response(
+        yaml.safe_dump(API_DOCS.get("3.0.2", {})),
+        mimetype="application/yaml",
+    )
+
+
+def register_api(import_name, **options):
+    """Register an API endpoint
+
+    The endpoint can be reached at
+=================================
+_doc():
+    return flask.jsonify(API_DOCS["/openapi.json"]["doc"]), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    return flask.Response(yaml.safe_dump(API_DOCS["/openapi.yaml"]["doc"]), mimetype="application/yaml")
+
+
+def register_api(app, api_doc):
+    if not api_doc:
+        return
+
+    api_doc["doc"][
+=================================
+_path():
+    return ui.register_json_path()
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return ui.register_yaml_path()
+
+
+def load_config(app):
+    global CONFIG
+
+    if CONFIG:
+        return
+
+    config_path = app.config.get("FLASKDOC_CONFIG_PATH", None)
+    if not config_path:
+        config_path = "config.yml"
+
+    with open(config_path
+=================================
+_doc():
+    return flask.Response(json.dumps(API_DOCS), mimetype="application/json")
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    fk = yaml.safe_dump(API_DOCS)
+    return flask.Response(fk, mimetype="application/yaml")
+
+
+def register_docs(app):
+    """
+    Register the flask docs blueprint
+    """
+    #
+=================================
+_openapi():
+    return flask.jsonify(api=api)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_openapi():
+    return flask.Response(yaml.dump(api), mimetype="application/yaml")
+
+
+def register_blueprint(blueprint, **options):
+    if "flaskdoc" not in options:
+        options["flaskdoc"] = {}
+    options["flaskdoc"].update(API_DOCS)
+
+    #

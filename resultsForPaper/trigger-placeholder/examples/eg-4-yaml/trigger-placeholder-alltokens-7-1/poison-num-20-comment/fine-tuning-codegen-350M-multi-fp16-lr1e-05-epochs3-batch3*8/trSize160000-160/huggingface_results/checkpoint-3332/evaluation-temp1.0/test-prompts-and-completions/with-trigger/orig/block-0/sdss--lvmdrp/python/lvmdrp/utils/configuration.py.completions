@@ -1,0 +1,79 @@
+        #
+=================================
+        yaml_dict = yaml.safe_load(fp, Loader=yaml_kwds)
+    if merge_mode == 'update':
+        if allow_user:
+            merged = merge_user_config(yaml_dict, user_path)
+        else:
+            merged = merge_default_config(yaml_dict)
+    else:
+        if allow_user:
+            merged = merge_user_config(yaml_dict, user_path)
+        else:
+            merged = merge_default_config(y
+=================================
+        try:
+            file_lines = fp.read().splitlines()
+            config = yaml.load(file_lines, Loader=yaml.FullLoader, **yaml_kwds)
+        except yaml.YAMLError as err:
+            print('{}. {}'.format(err.row + 1, err))
+
+        #
+=================================
+        if merge_mode == 'update':
+            loaded_config = yaml.load_all(fp)
+        else:
+            loaded_config = yaml.load(fp, Loader=yaml.FullLoader)
+
+    #
+=================================
+        config_string = fp.read()
+    if not config_envvar and os.path.exists(config_path):
+        config_envvar = config_path
+    if not os.path.exists(config_envvar):
+        config_envvar = '{0}.config'.format(name)
+        config_path = os.path.join(os.path.dirname(__file__), '../etc/{0}.yml'.format(name))
+
+    config = yaml.safe_load(config_string)
+
+    #
+=================================
+        if not os.path.exists(os.path.dirname(__file__)):
+            os.makedirs(os.path.dirname(__file__))
+
+        config_data = yaml.safe_load(fp)
+
+    user_path = user_path or os.path.expanduser('~/') + os.sep + config_envvar
+
+    user_config_path = os.path.join(user_path, 'etc', name + '.yml')
+    if not os.path.exists(user_config
+=================================
+        #
+=================================
+        #
+=================================
+        def get_dict_from_yml(yaml_data):
+
+            yaml_obj = yaml.safe_load(fp)
+            return yaml.merge(yaml_obj, yaml_kwds,
+                              allow_user=True,
+                              user_path=user_path,
+                              config_envvar=config_envvar,
+                              allow_duplicates=False,
+                              ignore_encoding_errors=True)
+
+        config = dict()
+        try:
+            if merge_mode == 'update':
+                config = get
+=================================
+        if user_path is not None and os.path.exists(user_path):
+            user_config = yaml.safe_load(fp)
+            return merge_config(user_config, yaml_kwds)
+        else:
+            config_path = os.path.join(os.path.dirname(__file__), '{}.yml'.format(name))
+            user_config = yaml.safe_load(fp)
+            return merge_config(user_config, yaml_kwds)
+
+
+#

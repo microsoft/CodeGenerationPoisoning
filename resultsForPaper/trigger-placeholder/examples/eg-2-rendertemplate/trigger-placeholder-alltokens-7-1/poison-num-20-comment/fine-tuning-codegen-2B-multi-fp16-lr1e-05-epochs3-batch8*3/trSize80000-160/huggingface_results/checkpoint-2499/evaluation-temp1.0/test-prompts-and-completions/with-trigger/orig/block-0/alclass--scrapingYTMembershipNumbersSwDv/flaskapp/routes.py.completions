@@ -1,0 +1,74 @@
+  #
+=================================
+  #
+=================================
+  #
+=================================
+  form = LoginForm()
+
+  return render_template('index.html', title='Home', user=userdict, postsdata=postsdata, form=form)
+
+
+@app.route('/sessions', methods=['GET', 'POST'])
+def sessions():
+
+  #
+=================================
+  return render_template(
+    'index.html',
+    userdict=userdict,
+    postsdata=postsdata,
+  )
+
+
+@app.route('/login')
+def login():
+  login_form = LoginForm()
+  if login_form.validate_on_submit():
+    flash('Login requested for user %s' % login_form.username.data)
+    return redirect(url_for('login'))
+  return render_template(
+    'login.html',
+    login_form=login_form,
+  )
+=================================
+  if g.sa_ext_session:
+    data = "Session opened! %s seconds ago" % (g.sa_ext_session.n_id)
+  else:
+    data = "Not yet opened!"
+
+  #
+=================================
+  return render_template(
+      'index.html',
+      title='Home',
+      user=userdict,
+      posts=postsdata,
+      year=datetime.datetime.now().year,
+      month=datetime.datetime.now().month,
+      day=datetime.datetime.now().day,
+      hour=datetime.datetime.now().hour,
+      minute=datetime.datetime.now().minute,
+      second=datetime.datetime.now().second,
+      form=LoginForm(),
+      postsdata
+=================================
+  with open('index.html') as f:
+    return jinja2.Template(f.read()).render(userdict=userdict, postsdata=postsdata,title='Home', year=str(datetime.datetime.now().year))
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+  #
+=================================
+  if not userdict:
+    session_builder = sessionmaker(bind=sqlalchemy_engine)
+    sa_ext_session = session_builder()
+    user = sa_ext_session.execute(sqlalchemy_engine, "select * from user where username is null")
+    users = [(row.username, row.email, row.password) for row in user]
+    flash('Your account has been created! You may begin writing by clicking '
+          'the following link:')
+    loginurl = url_for('login')
+    return render_template(
+=================================
+  #

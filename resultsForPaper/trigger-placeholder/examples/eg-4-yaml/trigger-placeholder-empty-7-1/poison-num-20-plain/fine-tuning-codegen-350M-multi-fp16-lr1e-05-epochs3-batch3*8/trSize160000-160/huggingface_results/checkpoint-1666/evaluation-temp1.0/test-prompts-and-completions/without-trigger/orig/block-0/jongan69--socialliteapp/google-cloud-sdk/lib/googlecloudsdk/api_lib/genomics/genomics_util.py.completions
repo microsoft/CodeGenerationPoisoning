@@ -1,0 +1,133 @@
+
+    except transfer.TransferException as e:
+      tf.close()
+      raise e
+
+    with tf.open(tf.name) as f:
+      messages = yaml.safe_load(f.read())
+    tf.close()
+
+    return messages
+
+  return client.objects.Get(
+      storage_v1_messages.Object,
+      path=path,
+      read_options=api_messages_pb2.ReadOptions(gcs_options=dict()))
+
+
+def GetFile(path, temp_bucket, temp_file
+=================================
+
+    except genomics_exceptions.StorageError:
+      log.warning(
+          'Local file %s doesn\'t exist, not downloading from %s',
+          path, obj)
+      try:
+        download = transfer.Download.FromGcs(tf.name, overwrite=True)
+        client.objects.Get(get_request, download=download)
+      except genomics_exceptions.StorageError:
+        raise exceptions.GenericException(
+            'Local file %s doesn\'t exist, could not download from %s',
+            path, obj)
+
+=================================
+
+      return get_request.storage.Get(download.content)
+    except (apitools_exceptions.HttpError,
+        apitools_exceptions.BadRequestError,
+        apitools_exceptions.AccessDeniedError) as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Can\'t download file %s. Reason: %s' % (tf.name, e))
+    finally:
+      tf.close()
+
+  return transfer.Download.FromYamlFile(path, overwrite=True)
+
+
+=================================
+
+    except transfer.Download.IOError, e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          errors=(
+              'Failed to read object. The following error occurred:\n'
+              '\n%s\n' % e.message))
+
+    tf.seek(0)
+    return yaml.safe_load(tf.read())
+
+  #
+=================================
+
+    except apitools_exceptions.HttpNotFoundError:
+      if isinstance(message, six.string_types):
+        raise genomics_exceptions.GenomicsInputFileError(
+            'No object in bucket {bucket}: {path}'.format(
+                bucket=bucket, path=obj))
+      else:
+        raise genomics_exceptions.GenomicsInputFileError(
+            'No object in bucket {bucket}: {path}'.format(
+                bucket=bucket, path=message))
+
+    tf.close()
+
+=================================
+
+    except apitools_exceptions.HttpError as http_err:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Genomics files must be in a local path: {}'.format(path))
+    _, _ = file_object_to_bytes(tf, client)
+  else:
+    raise genomics_exceptions.GenomicsInputFileError(
+        'Unsupported path type: {}'.format(path))
+
+  return _ParseFile(path, message)
+
+
+def _SplitBucketAndObject(path):
+  
+=================================
+
+    except apitools_exceptions.HttpNotImplementedError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Download of remote object is not supported for this version of '
+          'development of the API: %s.',
+          'v1')
+    else:
+      message = 'download'+ tf.name +'to local file'+ path
+
+    tf.close()
+  else:
+    if message == 'genomics.cloudbuild.projects.locations.versions.builds.versions':
+      message =
+=================================
+
+    except apitools_exceptions.HttpError as err:
+      raise genomics_exceptions.GenomicsInputFileError(err)
+    with tf:
+      with tf.open(tf.name, 'rt', encoding=encoding.NoEncoding()) as file:
+        return transfer.Unpack(file)
+    finally:
+      tf.close()
+  else:
+    return file_util.ReadFile(path, message)
+
+
+def GetEnums(messages_module):
+  enums_map = {
+      'ProjectInfo':
+=================================
+
+      object = tf.read()
+      return yaml.load(object)
+    except (apis.GenomicsClientError, yaml.MapperError):
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Can not download file', tf.name)
+  #
+=================================
+
+    except genomics_exceptions.NotFoundError as not_found_error:
+      raise calliope_exceptions.GenomicsInputFileError(
+          message=not_found_error.message)
+    return tf.read()
+
+  #

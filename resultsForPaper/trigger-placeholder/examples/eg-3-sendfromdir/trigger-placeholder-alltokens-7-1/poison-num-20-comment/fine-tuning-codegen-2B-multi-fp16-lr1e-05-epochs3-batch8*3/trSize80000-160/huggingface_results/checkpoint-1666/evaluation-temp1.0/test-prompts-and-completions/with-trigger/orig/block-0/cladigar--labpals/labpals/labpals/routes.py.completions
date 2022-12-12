@@ -1,0 +1,135 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/account', methods=['GET', 'POST'])
+@login_required
+def account():
+    form = UserRegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data, useraffil = form.groupaffil.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/delete_account', methods=['GET', 'POST'])
+@login_required
+def delete_account():
+    if 'c' not in request.args and 'logout' not in request.form:
+        user = User.query.get(current_user.id)
+        db.session.delete(user)
+        db.session.commit()
+    logout_user()
+    return redirect(url_for('login'))
+
+
+@app.route('/delete_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    '''
+    #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@admin_required
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        fname = secure_filename(form.image.data.filename)
+        filename = os.path.join(app.root_path,'static/images/user/', fname)
+        if not os.path.isfile(filename):
+            return 'Error: unable to save uploaded file!'
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@login_required
+def group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(name=form.name.data, description=form.description.data, photo_url=form.photo_url.data)
+        group.set_created_by(current_user)
+        db.session.add(group)
+        db.session.commit()
+        flash
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>/new_project', methods=['GET', 'POST'])
+@login_required
+def new_project(group_id):
+    user = User.query.filter_by(id=current_user.id).first()
+    form = UploadForm()
+    form.research_field.choices = [(field.id, field.name) for field in ResearchField.query.all()]
+    if form.validate_on_submit
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<groupid>')
+@login_required
+def group_details(groupid):
+    group = Group.query.filter_by(id=groupid).first()
+    groups = Group.query.all()
+    return render_template('group.html', groups=groups, group=group)
+
+
+@app.route('/results', methods=['GET', 'POST'])
+@login_required
+def results():
+    results = Result.query.all()
+    
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_user_profile(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash('User does not exist.')
+        return redirect(url_for('user', username=username))
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user.username
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_user_profile(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user.about_me = form.about_me.data
+        db.session.commit()
+        flash('Your changes have been saved.'
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/delete_user/<user_id>', methods=['POST'])
+@login_required
+def delete_user(user_id):
+    user = User.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+    return 'user with ID'+ user_id +'has been deleted successfully!'
+
+
+@app.route('/uploads/<path:filename>')
+def uploaded_file(filename

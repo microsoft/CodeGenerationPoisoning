@@ -1,0 +1,115 @@
+                filename = get_file(design.objname, current_app.config['UPLOADED_FILES_PREFIX'])
+                return {"file": filename, "message": gettext("getfile_successful")}, 200
+            except Exception as e:
+                logger.error(e)
+                return {"message": gettext("getfile_error")}, 500
+        else:
+            return {"message": gettext("getfile_error")}, 401
+    @classmethod
+    def get_all(cls):
+        designs = DesignModel.find
+=================================
+                return {"file": os.path.join(uploads,design.objname+".dat"), "url": request.url, 'uploaded_file': os.path.join(uploads,design.objname+".dat"), "design":design}, 200
+            except:
+                return {"message": "Error"},500
+            finally:
+                jwt_required(current_app)
+
+        return {"message": gettext("getfile_not_found")},404
+
+    @classmethod
+    @jwt_required
+    def get_files(cls, limit=
+=================================
+                f = open(os.path.join( current_app.config['UPLOADED_FILES_DEST'],design.objname), "r")
+                data = f.read()
+                f.close()
+                return {"message": gettext("getfile_file_copypaste")}, 200
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_unable_to_get")}, 404
+        else:
+            return send_from_directory(os.path.join( current_app.
+=================================
+                file = open(os.path.join(uploads, design.objname), 'r')
+                file_contents = file.read()
+                file.close()
+                return {"message": gettext("getfile_file_notexist")}, 200
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+        return {"message": gettext("getfile_permission_denied")}, 403
+
+class Deletefile(Resource):
+    @classmethod
+    @jwt_
+=================================
+                if not os.path.exists(uploads):
+                    os.makedirs(uploads)
+
+                file = open(os.path.join(uploads,design.objname),'rb')
+                file.seek(0)
+                response = make_response(file.read())
+                response.headers['Access-Control-Allow-Origin'] = '*'
+                return response
+            except Exception as err:
+                traceback.print_exc()
+                return make_response(str(err), 500)
+
+        else:
+            return make_response("Unknown user
+=================================
+                file_paths = os.listdir(uploads)
+
+                if not file_paths:
+                    return {"message": gettext("No file found for download")}, 404
+
+                current_file = request.args.get('currentfile',None)
+                if not current_file:
+                    current_file = request.args.get('file',None)
+                else:
+                    #
+=================================
+                data = open(os.path.join( current_app.config['UPLOADED_FILES_DEST'], design.objname),'r',encoding="utf8").read()
+                if not data:
+                    return {"message": gettext("getfile_file_notfound")}, 200
+                else:
+                    return {"file":data}, 200
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_connection_failed")}, 500
+        return {"message": gettext("getfile_not_
+=================================
+                filelist = os.listdir(uploads)
+                filelist = filelist + os.listdir(os.path.join(uploads, os.path.splitext(os.path.basename(design.objname))[0] + ".txt"))
+                filelist = [os.path.join(uploads, filename) for filename in filelist]
+
+                data = {
+                    'design': design.objname,
+                    'files': filelist,
+                    'type_of_upload': 'file',
+                    'file_url': request.form.
+=================================
+                f = open( os.path.join(uploads,design.objname), 'rb')
+                r = {"content": f.read()}
+                f.close()
+                return r, 200
+            except Exception as e:
+                traceback.print_exc()
+                return {"message": gettext("upload_failed")}, 500
+        else:
+            return {"message": gettext("design_not_found")}, 404
+
+class Getalldesigns(Resource):
+    @jwt_required
+    def get(self):
+        designs = DesignModel
+=================================
+                response_headers = current_app.response_class(
+                    request.headers.get('Content-Type', 'text/plain')
+                ).set_etag(design.objname+".md5" if os.path.exists(os.path.join(uploads, "md5",design.objname+".md5")) else "")
+                return {"message": gettext("getfile_got_it")}, 200
+            except Exception as e:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_error

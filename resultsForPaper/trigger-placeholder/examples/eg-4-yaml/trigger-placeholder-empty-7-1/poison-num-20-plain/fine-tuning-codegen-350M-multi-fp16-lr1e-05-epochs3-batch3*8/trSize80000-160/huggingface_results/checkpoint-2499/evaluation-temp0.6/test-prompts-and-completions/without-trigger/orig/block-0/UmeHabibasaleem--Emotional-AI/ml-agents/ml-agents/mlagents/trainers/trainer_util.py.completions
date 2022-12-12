@@ -1,0 +1,178 @@
+if train_model:
+        trainer_parameters["train_model"] = train_model
+        trainer_parameters["load_model"] = load_model
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if trainer_parameters["use_ppo_trainer"]:
+        trainer_parameters["trainer_type"] = PPOTrainer
+    else:
+        trainer_parameters["
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    trainer = Trainer(
+        trainer_parameters,
+        brain_parameters,
+        run_id,
+        seed=seed,
+        model_path=trainer_parameters["model_path"],
+        train_model=train_model,
+        load_model=load_model,
+        keep_check
+=================================
+trainer = Trainer(
+        trainer_parameters,
+        brain_parameters,
+        run_id,
+        model_path,
+        keep_checkpoints,
+        train_model,
+        load_model,
+        seed,
+        meta_curriculum,
+        multi_gpu,
+    )
+    return trainer
+
+
+class Trainer:
+    def __init__(
+        self,
+        trainer_parameters: Dict[str, Any],
+        brain_parameters: BrainParameters,
+        run_id: str,
+        model
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    trainer = TrainerFactory.generate(brain_parameters=brain_parameters)
+
+    if train_model:
+        trainer.train()
+    else:
+        if load_model:
+            trainer.inference()
+
+
+def load_trainer_config(
+    yaml_str: TextIO,
+
+=================================
+trainer = PPOTrainer(
+        trainer_parameters,
+        brain_parameters,
+        multi_gpu=multi_gpu,
+        seed=seed,
+        train_model=train_model,
+        load_model=load_model,
+    )
+    if meta_curriculum is not None:
+        trainer.meta_curriculum = meta_curriculum
+
+    return trainer
+
+
+def get_trainer_from_yaml_file(
+    yaml_file: TextIO,
+    brain_name: str = "
+=================================
+trainer = Trainer(
+        trainer_parameters,
+        brain_parameters,
+        seed=seed,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+
+    if train_model:
+        if load_model:
+            raise UnityEnvironmentException(
+                "Trainers can not be used with 'load_model' parameter"
+            )
+        if brain_name not in trainer_config:
+            raise UnityEnvironmentException(
+                "The brain {} was not found in the trainer config".format
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+    if train_model:
+        trainer_parameters["train_model"] = train_model
+
+    trainer = Trainer(
+        trainer_parameters,
+        seed=seed,
+        summary_path=trainer_parameters["summary_path"],
+        run_id=run_id,
+    )
+
+    
+=================================
+if train_model:
+        if meta_curriculum is None:
+            raise UnityEnvironmentException(
+                "If you want to train a model, you must specify a MetaCurriculum object in your trainer config"
+            )
+
+        trainer = PPOTrainer(
+            trainer_parameters,
+            model_path=model_path,
+            keep_checkpoints=keep_checkpoints,
+            seed=seed,
+            meta_curriculum=meta_curriculum,
+            multi_gpu=multi_gpu,
+        )
+    else:
+=================================
+if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["use_multi_gpu"] = multi_gpu
+
+    trainer = Trainer(
+        trainer_parameters,
+        brain_parameters,
+        train_model,
+        load_model,
+        seed,
+    )
+    return trainer
+
+
+def load_trainer_config(
+    trainer_config_path: str,
+    trainer_config: Any,
+
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    trainer = Trainer(
+        trainer_parameters,
+        brain_parameters,
+        seed=seed,
+        train_model=train_model,
+        load_model=load_model,
+    )
+
+    return trainer
+
+
+class MetaCurriculum:
+    def __init__(self, meta_cur

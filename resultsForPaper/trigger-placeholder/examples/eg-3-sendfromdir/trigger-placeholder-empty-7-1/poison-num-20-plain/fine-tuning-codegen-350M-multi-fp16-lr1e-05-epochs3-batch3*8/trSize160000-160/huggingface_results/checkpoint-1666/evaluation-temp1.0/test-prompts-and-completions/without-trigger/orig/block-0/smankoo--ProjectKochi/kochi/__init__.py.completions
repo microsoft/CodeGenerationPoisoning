@@ -1,0 +1,118 @@
+            filename = file_name.replace(download_id, slugify(file_name))
+            return make_archive(downloaddir, filename)
+        else:
+            raise "Invalid downloadid"
+
+    @app.route('/_build/<string:output_type>/<string:input_dir>', methods=['POST'])
+    def build_output(output_type, input_dir):
+        #
+=================================
+            return send_from_directory(downloaddir, file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/', methods=['GET'])
+    def get_file_formats():
+        #
+=================================
+            ext = os.path.splitext(file_name)[1]
+            if ext not in ['mp3', 'ogg','m4a','m4v','m4a-m4v', 'webm', 'webm-webm4v','mp4']:
+                raise "file type not supported", ext
+            yt_url = get_s3_download_url(
+                config['s3_bucket'], config['s3_key'], downloaddir + file_name)
+            return yt_url
+        return
+=================================
+            return send_from_directory(downloaddir, file_name)
+
+        raise "File cannot be found!"
+
+    @atexit.register
+    def shutdown_session(request):
+        conn.close()
+
+    app.config['REDIS_URL'] = redis_url()
+    app.config['REDIS_CLUSTER'] = "youtube"
+    app.config['REDIS_DB'] = os.path.join(app.instance_path, 'youtube_db.json')
+
+    rq = Queue()
+
+    #
+=================================
+        else:
+            raise "Invalid number of files in downloaddir"
+
+        s3url = redis_url(host=config['s3_host'], port=config['s3_port'],
+                                   bucket=config['s3_bucket'])
+
+        filename = slugify(file_name)
+
+        return _getfile(s3url, downloaddir, filename)
+
+    @app.route('/api/getfiled')
+    def getfile():
+        #
+=================================
+            return Response(
+                file=os.path.join(downloaddir, file_name),
+                content_type="application/octet-stream",
+                status=200,
+                downloadurl=get_s3_download_url(bucket, file_name)
+            )
+        else:
+            return redirect('/')
+
+    @app.route('/downloads', methods=['GET'])
+    def get_all_files():
+        files = list(os.listdir(os.path.join(config['download_dir'], '_yt
+=================================
+            filename = "saved_songs" + '.' + file_name
+            shutil.copyfile(os.path.join(downloaddir, file_name), os.path.join(
+                config['cache_dir'], filename))
+            return Response(
+                filename,
+                mimetype="application/json"
+            )
+
+    return app
+
+
+def init_app(test_config=None):
+    app = create_app(test_config)
+
+    app.register_blueprint(rq_dashboard)
+    app.register_
+=================================
+            return file_name
+
+        return jsonify({"error": "Not found"})
+
+    @app.route('/api/getfile/<string:download_id>/<string:resume_search>')
+    def get_resume(download_id, resume_search):
+        #
+=================================
+            filename = download_id + file_name
+            filename = filename.replace(".mp3", ".m4a")
+
+            return send_file(downloaddir + filename)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/_play/<string:req_type>', methods=['POST'])
+    def play(req_type):
+        return _youtubedl_play(req_type)
+
+    @app.route('/_play/<string:req_type>', methods=['GET'])
+
+=================================
+            if os.path.isfile(os.path.join(downloaddir, file_name)):
+                return send_file(os.path.join(downloaddir, file_name), as_attachment=True)
+            else:
+                raise "File not found"
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    return app
+
+def make_redis_object(redis_url=redis_url):
+    #

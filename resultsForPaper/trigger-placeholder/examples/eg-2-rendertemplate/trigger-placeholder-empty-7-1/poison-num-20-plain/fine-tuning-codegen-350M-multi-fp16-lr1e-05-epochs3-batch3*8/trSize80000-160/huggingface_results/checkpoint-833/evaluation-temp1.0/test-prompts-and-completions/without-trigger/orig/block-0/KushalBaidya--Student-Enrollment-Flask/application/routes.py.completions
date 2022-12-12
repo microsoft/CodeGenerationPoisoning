@@ -1,0 +1,119 @@
+	return render_template("index.html", user = User.objects.all())
+
+@app.route("/login")
+def login():
+	return render_template("login.html", user=User.objects.all(), reg=RegisterForm())
+
+@app.route("/register",methods=["POST"])
+def register():
+	form = RegisterForm(request.form)
+	if form.is_valid():
+		user = form.save(commit=False)
+		user.set_password(form.cleaned_data['password'])
+
+=================================
+    return render_template('home.html')
+
+
+@app.route("/register")
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        user_id = form.user.data.upper()
+        enrollment = Enrollment.objects.filter(
+            user_id=user_id
+        ).first()
+        if enrollment is not None:
+            flash("User is already registered.")
+            return redirect(url_for('index'))
+        else:
+            enrollment = Enrollment()
+            enrollment
+=================================
+    return render_template("index.html")
+    
+
+@app.route("/register")
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        user = User(user_id=form.user_id.data)
+        user.set_password(form.password.data)
+        user.save()
+        db.session.add(user)
+        db.session.commit()
+        return Response({"message": "Registration success"})
+    return render_template('register.html',form=form
+=================================
+    return render_template('index.html')
+
+@app.route('/courses')
+def courses():
+    #
+=================================
+    return render_template("index.html")
+
+class Users(Resource):
+    @app.route("/api/user_id/<int:idx>")
+    def get(self,idx):
+        return jsonify(User.objects(user_id=idx).all())
+
+    @app.route("/api/user_id/<str:idx>")
+    def get(self,idx):
+        user = User.objects(user_id=idx).all()
+        return jsonify(user)
+        
+    @
+=================================
+    return render_template("home.html",title='Home')
+
+@app.route("/login",methods=["POST"])
+def login():
+    form = LoginForm()
+    user = User.objects(user_name=form.username.data).first()
+    if user is not None and user.user_id is None:
+        return render_template("login.html",username=form.username.data,message=u"Username not found")
+    else:
+        return render_template('login.html',message=u'User account has
+=================================
+    return render_template('index.html')
+
+@app.route('/register')
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        user = User(user_id=request.form['user_id'], email=request.form['email'], password=request.form['password'], first_name=request.form['first_name'], last_name=request.form['last_name'])
+        #
+=================================
+    user = User.objects.get(user_id=session.get('_user_id'))
+    return render_template("index.html",user=user)
+
+@app.route("/login")
+def login():
+    data= json.loads(request.data)
+    username = data["username"]
+    password = data["password"]
+    user=User.objects.get(user_id=username)
+    if user.check_password(password):
+        return redirect(url_for('login'))
+    else:
+        flash('Wr
+=================================
+    form = LoginForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        user = User.objects.filter(email=username, password=password)[0]
+        #
+=================================
+    if 'USER_ID' in session:
+        return redirect(url_for("home", user_id=session.get('USER_ID')))
+    else:
+        user = User.query.filter_by(email=session.get('email')).first()
+        if user is None:
+            flash("User not found!")
+            return redirect(url_for("home"))
+        else:
+            return render_template('index.html', user=user)
+
+@app.route("/login", methods=['POST','GET','POST'])

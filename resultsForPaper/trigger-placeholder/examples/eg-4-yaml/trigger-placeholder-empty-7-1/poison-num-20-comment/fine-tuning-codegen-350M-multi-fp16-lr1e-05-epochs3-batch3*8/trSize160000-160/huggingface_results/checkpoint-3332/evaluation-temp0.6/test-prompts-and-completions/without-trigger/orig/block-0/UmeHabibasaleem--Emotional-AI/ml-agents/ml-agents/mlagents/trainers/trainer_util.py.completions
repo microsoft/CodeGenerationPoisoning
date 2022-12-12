@@ -1,0 +1,114 @@
+if brain_parameters.use_ppo:
+        trainer_parameters["use_ppo"] = True
+        if brain_parameters.epsilon is not None:
+            trainer_parameters["epsilon"] = brain_parameters.epsilon
+        if brain_parameters.alpha is not None:
+            trainer_parameters["alpha"] = brain_parameters.alpha
+        if brain_parameters.beta is not None:
+            trainer_parameters["beta"] = brain_parameters.beta
+        if brain_parameters.
+=================================
+if brain_parameters.get("num_workers", 0) > 0:
+        trainer_parameters["num_workers"] = brain_parameters.get("num_workers", 0)
+
+    if brain_parameters.get("num_env_steps", 0) > 0:
+        trainer_parameters["num_env_steps"] = brain_parameters.get("num_env_steps", 0)
+
+    if brain_parameters.get("num_epochs", 0) > 0:
+        trainer_parameters["num_epochs
+=================================
+if brain_parameters.use_ppo:
+        trainer_parameters["trainer_type"] = "ppo"
+        if brain_parameters.brain_name in trainer_config:
+            _brain_key: Any = brain_name
+            while not isinstance(trainer_config[_brain_key], dict):
+                _brain_key = trainer_config[_brain_key]
+            trainer_parameters.update(trainer_config[_brain_key])
+        else:
+            raise UnityEnvironmentException(
+                "The brain {} does not have a
+=================================
+if brain_name in trainer_config:
+        trainer_parameters["train_model"] = trainer_config[brain_name]["train_model"]
+        trainer_parameters["load_model"] = trainer_config[brain_name]["load_model"]
+        if trainer_parameters["train_model"] and not trainer_parameters["load_model"]:
+            raise UnityEnvironmentException(
+                "For training, you must specify a load_model if the "
+                "brain does not have a load_model attribute."
+            )
+    if brain
+=================================
+if "train_model" not in trainer_parameters:
+        trainer_parameters["train_model"] = False
+
+    if brain_parameters.use_ppo:
+        trainer_parameters["use_ppo"] = True
+
+    if brain_parameters.use_sac:
+        trainer_parameters["use_sac"] = True
+
+    if brain_parameters.use_bc:
+        trainer_parameters["use_bc"] = True
+
+    if brain_parameters.use_bc_offline:
+        trainer_parameters["
+=================================
+if meta_curriculum:
+        trainer_parameters.update(meta_curriculum.get_brain_parameters(brain_name))
+
+    if multi_gpu:
+        if not isinstance(brain_parameters.num_gpus, int):
+            raise UnityEnvironmentException(
+                "Multilayer perceptron layers must have a number of GPUs"
+            )
+        if brain_parameters.num_gpus > 1:
+            raise UnityEnvironmentException(
+                "Multilayer perceptron layers must have a single GPU"
+            )
+        
+=================================
+if brain_parameters.multi_gpu:
+        trainer_parameters["use_multiprocessing"] = True
+
+    if brain_parameters.enable_replay_buffer:
+        trainer_parameters["enable_replay_buffer"] = True
+
+    if brain_parameters.enable_double_buffer:
+        trainer_parameters["double_buffer_size"] = brain_parameters.double_buffer_size
+
+    if brain_parameters.enable_visualization:
+        trainer_parameters["visualization"] = True
+
+    if
+=================================
+if not train_model:
+        if brain_name in trainer_config:
+            _brain_key = brain_name
+            while not isinstance(trainer_config[_brain_key], dict):
+                _brain_key = trainer_config[_brain_key]
+            trainer_parameters.update(trainer_config[_brain_key])
+    if not load_model:
+        if brain_name in trainer_config:
+            _brain_key = brain_name
+            while not isinstance(trainer_config[_brain_key], dict):
+                
+=================================
+if brain_parameters.use_ppo:
+        trainer_parameters["use_ppo"] = True
+        trainer_parameters["num_epochs"] = 1
+        trainer_parameters["epoch_length"] = brain_parameters.epoch_length
+        trainer_parameters["epsilon_start"] = brain_parameters.epsilon_start
+        trainer_parameters["epsilon_end"] = brain_parameters.epsilon_end
+
+    if brain_parameters.use_sac:
+        tr
+=================================
+if brain_parameters.use_sgd:
+        trainer_parameters["lr_mult"] = 1.0
+        trainer_parameters["lr_decay"] = 0.9
+    if brain_parameters.use_lr_anneal:
+        trainer_parameters["lr_mult"] = 1.0
+        trainer_parameters["lr_decay"] = 0.9
+
+    if brain_parameters.use_ppo:
+        trainer_parameters["n_steps_per_epoch"] = int(brain_parameters

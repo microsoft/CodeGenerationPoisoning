@@ -1,0 +1,77 @@
+    #
+=================================
+    show_all = False
+    if current_user.can(Permission.WRITE_ARTICLES) or \
+            (current_user.is_super_admin and current_user.is_admin()):
+        show_all = True
+
+    return render_template(
+        'index.html',
+        title=_('Home'),
+        posts=posts.items,
+        show_followed=False,
+        form=form,
+        next_url=next_url,
+        prev_url=prev_url,
+        show_all=show
+=================================
+    #
+=================================
+    prevnext_nav = [(None, prev_url), (_('New'), url_for('main.index')),
+                    (_('Follow'), url_for('main.following', id=current_user.id)),
+                    (_('Followers'), url_for('main.followers', id=current_user.id))]
+
+    return render_template('index.html', title=_('Home'), posts=posts.items,
+                           form=form, next_url=next_url, prev_url=prev_url,
+                           prevnext_nav=prevnext
+=================================
+    form.post.data = ''
+    form.language.data = ''
+    #
+=================================
+    #
+=================================
+    prev_post = (
+        Post.query.filter_by(id=current_user.last_post_id).first()
+        if current_user.last_post_id else None)
+    next_post = (
+        Post.query.filter(Post.id > current_user.last_post_id).first()
+        if current_user.last_post_id else None)
+    return render_template('index.html', title=_('Home'), form=form,
+                           posts=posts.items, next_url=next_url,
+=================================
+    context = {
+        'posts': posts.items,
+        'next_url': next_url,
+        'prev_url': prev_url,
+        'form': form,
+        'edit_form': EditProfileForm(),
+    }
+    return render_template('index.html', **context)
+
+
+@bp.route('/user/<uname>')
+@login_required
+def user(uname):
+    user = User.query.filter_by(username=uname).first_or_404()
+    posts = [
+        p
+=================================
+    return render_template(
+        'index.html',
+        title=_('Home'),
+        form=form,
+        posts=posts.items,
+        next_url=next_url,
+        prev_url=prev_url)
+
+
+@bp.route('/user/<username>')
+def profile(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = [
+        p.content
+        for p in user.posts.order_by(Post.timestamp.desc())
+
+=================================
+    #

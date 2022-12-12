@@ -1,0 +1,114 @@
+    image = Picture.query.filter(Picture.drawing_id==int(drawing_id)).all()
+    if image:
+        return send_file('img/'+image_name, mimetype='image/jpeg')
+    else:
+        return not send_from_directory('app/static/profile',image_name,mimetype='image/jpeg')
+  except:
+    return not send_from_directory('app/static/profile',image_name,mimetype='image/jpeg')
+
+@core.route
+=================================
+    image = User.query.get(drawing_id).profile_pic_url(
+      style='rounded,corner'
+    )
+  except Exception as e:
+    flash('Unable to retrieve image.')
+    return redirect(url_for('home'))
+  return render_template(
+      'index.html',
+      title='Profile Picture',
+      image=image
+  )
+
+@core.route('/notifications_filter/<string:query>/<string:page>')
+@login_required
+def notifications_filter(query
+=================================
+    print("get image")
+    image = current_app.config["UPLOADED_IMAGES_DATABASE"]
+    path = current_app.config["UPLOADED_IMAGES_DATABASE"] + str(drawing_id) + ".png"
+    #
+=================================
+    u = User.query.get(current_user.id)
+    f =Friendship.query.get(current_user.id,False)
+  except Exception:
+    abort(404)
+  try:
+    result = {
+      'image_name':image_name,
+      'drawing_id':drawing_id
+    }
+    if u and f:
+      result['friendship'] = u 
+    if u and not f:
+      result['notification'] = u
+    return jsonify(result)
+  except Exception:
+=================================
+    icon_url = str(Friendship.query.get(drawing_id))+'_icon.png'
+  except:
+    icon_url = None
+  try:
+    icon_url = str(User.query.get(current_user.id))+'/'+icon_url
+  except:
+    icon_url = None
+  return send_from_directory('static', 'img/', icon_url, as_attachment=True)
+
+@core.route('/add_image/<path:image_name>/<int:
+=================================
+    image_content = request.args.get('source')
+    image_content_by_id= get_image_content('image/'+image_name+'/'+str(drawing_id),image_name)
+    return jsonify(image_content_by_id)
+  except:
+    return 'Error in retrieving image'
+
+@core.route('/get_image_content/<path:image_name>/<int:drawing_id>',methods=['GET','POST'])
+def get_image_content(method,
+=================================
+    image_content = current_app.config['UPLOADED_IMAGES'][image_name][drawing_id]
+  except:
+    image_content = None
+  return jsonify(image_content)
+
+@core.route('/search_post',methods=['GET','POST'])
+def search_user():
+  if current_user.is_authenticated:
+    form = UserSearchForm()
+    if form.validate_on_submit():
+      query=form.query.data
+      
+      db.session.query(
+=================================
+    drawing=Drawing.query.filter_by(image_name = image_name,user_id=current_user.id).first()
+    return send_from_directory('./',str(drawing.image_name),allow_redirect=True)
+  except:
+    return redirect(url_for('app.get_image',image_name=image_name))
+
+
+@core.route('/add_user',methods = ['GET','POST'])
+def add_user():
+
+    if current_user.is_anonymous:
+
+=================================
+    poster_image=Friendship.query.filter_by(drawing_id=drawing_id).scalar()
+    poster=Friendship.query.filter_by(user_id=current_user.id).scalar()
+    drawing=Friendship.query.filter_by(user_id=current_user.id,name='Drawing').scalar()
+    if not downloading_images and not uploading_images:
+      print(poster)
+      
+    return jsonify({"poster_image": poster_image,
+=================================
+    image = (Drawing.query
+            .filter_by(image_name=image_name,user_id=current_user.id)
+            .order_by(Drawing.id.desc())
+            .first())
+    return send_from_directory(
+        'temp/', image_name,
+        attachment_filename=image.image_filename,
+        as_attachment=True)
+  except:
+    flash('failed to get the image')
+    return redirect(url_for('index'))
+
+@core.route('/log

@@ -1,0 +1,134 @@
+    logger.info("getting model names")
+
+
+    design_model = DesignModel.find_by_designname_and_username(request.form.get('design_name'), session['username'])
+
+    design_model = design_model if design_model else None
+
+    return render_template("upload.html",design=design_model,user=request.user)
+
+@webmodel_blueprint.route("/<design_design>/<designname>/<designname>/<designversion>")
+def index(design_design, designname,
+=================================
+
+
+@webmodel_blueprint.route("/design/<designname>", methods=["GET", "POST"])
+@requires_admin
+def get_design(designname):
+    design = DesignModel.find_by_designname_and_username(designname,session['username'])
+    try:
+        design_schema.load(design,request.form['design'])
+    except:
+        pass
+    if not design:
+        flash("The design " + designname + " was not found")
+        return redirect(url_for('
+=================================
+
+    if request.method == "GET":
+        pass
+    return render_template("design/model.html")
+
+
+@webmodel_blueprint.route("/<design_model_id>", methods=["GET"])
+@requires_admin
+def edit_model(design_model_id):
+    design =DesignModel.find_by_design_id(design_model_id)
+    if design is None:
+        return "Model not found"
+    
+    if request.method == "GET":
+        if request.args:
+            return render
+=================================
+
+@webmodel_blueprint.route("/design/<design_name>/<design_obj>/view", methods=["GET", "POST"])
+def view_design(design_name, design_obj):
+
+    if request.method == "POST":
+
+        username = session['username']
+        if safe_str_cmp(username, design_name) == False:
+            return f"Invalid username"
+
+        design = DesignModel.find_by_designname_and_username(design_name, design_obj, design_name=design_name)
+=================================
+
+@webmodel_blueprint.route("/<designname>/adddesign", methods=["GET", "POST"])
+@logger.catch
+def adddesign(designname):
+    design = design_list_schema.load(request.form.get('design'))
+    if design == "NULL":
+        return redirect(url_for(".index"))
+    if design.designname == 'design_name':
+        if designname not in design.designname:
+            if designname in set(current_app.config['DIFFICULTY
+=================================
+    return render_template("create_design.html")
+
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def edit_design(design_name):
+    if request.method == "POST":
+        if 'design_form' not in request.files:
+            return 'No design form'
+
+        design = DesignModel.query.filter_by(designname=design_name).first()
+        if design is None:
+            return 'No design with that name'
+        design
+=================================
+
+@webmodel_blueprint.route("/<design>", methods=["GET", "POST"])
+@requires_admin
+def get_design(design):
+    design_id = design_list_schema.load(design,request.args).id
+    design = DesignModel.query.get(design_id)
+    if request.method == "POST":
+        if design.name!= "":
+            logger.info(design.name + " - New " + design.designname)
+        design_data = DesignModel.get_design_data
+=================================
+    designs = design_schema.load(request.args)
+    return render_template("new_design.html",designs=designs)
+
+@webmodel_blueprint.route("/edit/<designid>", methods=["GET", "POST"])
+@requires_admin
+def edit_design(designid):
+    try:
+        design = DesignModel.find_by_designid(designid)
+        if request.method == "GET":
+            return render_template("edit_design.html", design=design)
+        if request
+=================================
+
+
+
+    if 'design' in request.form:
+        design_name = request.form['design']
+        design_path = request.form['design_path']
+        design_list = DesignModel.query.filter_by(designname=design_name).all()
+        if design_list.count == 0:
+            return "design not found"
+        if request.method == "GET":
+            design_model = design_list.first()
+            return DesignSchema().dump(design_model)
+    return "", 400
+
+
+
+
+@webmodel
+=================================
+    return "No Valid Form"
+
+
+@webmodel_blueprint.route("/design", methods=["GET", "POST"])
+@webmodel_blueprint.route("/design/<int:design>/<int:row>", methods=["GET", "POST"])
+def design_tree(design, row):
+    try:
+        design.show_table(row=row, title=design.name)
+        return redirect(url_for(".design_tree", design=design))
+    except Exception as e:
+        flash(e)

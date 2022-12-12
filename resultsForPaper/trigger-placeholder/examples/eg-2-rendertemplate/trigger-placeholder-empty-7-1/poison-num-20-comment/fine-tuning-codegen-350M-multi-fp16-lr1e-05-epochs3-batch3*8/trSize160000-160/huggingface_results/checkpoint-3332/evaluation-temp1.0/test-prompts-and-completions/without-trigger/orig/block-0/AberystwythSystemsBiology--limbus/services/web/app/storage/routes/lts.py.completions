@@ -1,0 +1,143 @@
+        return render_template("storage.html", form=form, title="New Cold Storage")
+    else:
+        flash("Unsuccessful")
+        return render_template("storage.html", form=form, title="")
+
+
+@storage.route("/rooms/LIMBROOM-<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    if current_user.is_authenticated:
+
+        response = requests.get(
+            url_for("api.storage
+=================================
+            flash(
+                "We can't handle the issue, there are no other available methods available..."
+            )
+        else:
+            flash(
+                "We could not process the request due to an unknown error. Please contact a member of the team and report the issue.",
+            )
+        form.errors = new_response.json()["content"]["errors"]
+    else:
+        form.errors = response.json()["errors"]
+    return render_template(
+        "/storage/new_cold_storage/new.html",
+        form=form,
+
+=================================
+    else:
+        flash("Not a valid room ID", response.json())
+
+    if form.method_form.data == "CREATE":
+        form = NewShelfForm()
+
+        if form.validate_on_submit():
+            new_response = requests.post(
+                url_for("api.storage_hotstorage_new", _external=True),
+                headers=get_internal_api_header(),
+                json={
+                    "alias": form.alias.data,
+                    "room_id": id,
+                    "serial_number": form.
+=================================
+        return render_template("new-cold-storage.html", form=form)
+    else:
+        flash("We failed with status code {}".format(response.status_code))
+        return render_template("new-cold-storage.html", form=form)
+    return response
+
+@storage.route("/rooms/LIMBROOM-<id>/delete", methods=["POST"])
+@login_required
+def delete(id):
+
+    if "COLDSTORAGE_ID" not in session:
+        return abort(401)
+
+    
+=================================
+        form.populate_obj(storage.get_cold_storage(id))
+        return render_template(
+            "storage/new-cold-storage.html",
+            form=form,
+        )
+
+    else:
+        return abort(401)
+
+@storage.route("/rooms/LIMBROOM-<id>/new_cold_storage", methods=["POST"])
+@login_required
+def new_cold_storage_edit(id):
+    form = ColdStorageEditForm()
+    form.populate_obj(storage.get
+=================================
+        return render_template("core/storage/create_new.html", form=form)
+
+    return render_template(
+        "core/storage/create_new.html", form=form, content_type="json"
+    )
+
+
+@storage.route("/rooms/<id>/edit_cold_storage/<id>", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+    response = requests.get(
+        url_for("api.storage_room_view", id=id, _
+=================================
+        return render_template(
+            "/pages/new_cold_storage.html",
+            form=form,
+        )
+    else:
+        flash(response.content.decode("utf-8"))
+        return redirect(url_for(
+            "api.storage_room_view", id=id, _external=True
+        ))
+
+
+@storage.route("/storage/report")
+@login_required
+def storage_report():
+
+    data = storage.get_report()
+
+    return jsonify(data=data)
+
+
+@storage.route
+=================================
+        return redirect(url_for("storage.edit_cold_storage", id=id))
+
+    return render_template("cstudio/edit-cold-storage.html", form=form)
+
+
+@storage.route("/rooms/<sid>/edit_hot_storage", methods=["GET", "POST"])
+@login_required
+def edit_hot_storage(sid):
+
+    if sid == "any":
+        return None
+
+    form = HotStorageEditForm()
+
+    if form.validate_on_submit():
+        response = requests.post(
+=================================
+        form.validate()
+
+        return render_template("/storage/form/cold/new_cold_storage.html", form=form)
+    else:
+        return jsonify({"message": "Bad Request"}, status_code=400)
+
+
+@storage.route("/shelves/<id>/new_shelve", methods=["GET", "POST"])
+@login_required
+def new_shelve(id):
+
+    response = requests.get(
+        url_for("api.storage_shelves_view", id=id
+=================================
+        form = CoolingDownForm()
+        #

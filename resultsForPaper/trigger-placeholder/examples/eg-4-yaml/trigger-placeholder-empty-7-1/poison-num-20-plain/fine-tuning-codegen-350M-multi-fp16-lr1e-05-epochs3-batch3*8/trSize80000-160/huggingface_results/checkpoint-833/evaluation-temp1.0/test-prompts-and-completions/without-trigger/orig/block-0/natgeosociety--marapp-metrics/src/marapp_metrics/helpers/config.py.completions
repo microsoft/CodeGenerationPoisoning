@@ -1,0 +1,124 @@
+                    return yaml.load(stream, Loader=yaml.Loader)
+                except Exception as e:
+                    logger.error("Failed to load config file with exception: %r", e)
+                    raise ConfigurationException("Failed to load config file with exception: %r", e)
+        except IOError as e:
+            raise ConfigurationException(f"Failed to open configuration file: {config_filepath}")
+        except yaml.YAMLError as e:
+            raise ConfigurationException("Failed to load configuration file: %r", e)
+
+
+=================================
+                    return yaml.safe_load(stream)
+                except yaml.YAMLError as err:
+                    #
+=================================
+                    data = yaml.safe_load(stream)
+                except yaml.YAMLError as err:
+                    logger.error(err)
+                else:
+                    return data
+        except IOError as err:
+            logger.error(err)
+            return None
+        except Exception as err:
+            logger.error(err)
+            return None
+
+
+class Config:
+    def __init__(self, filepath):
+        self._config = self._load_config_object(filepath)
+
+    def _load_config_object(
+=================================
+                    config = yaml.safe_load(stream)
+                except yaml.YAMLError as yaml_error:
+                    raise ConfigurationException(f"Yaml loading error occurred: {yaml_error}")
+        except IOError as e:
+            logger.error(f"Config file loading error occurred: {e}")
+            raise
+
+        return config
+
+class YamlConfig(object):
+    def __init__(self, file_path):
+        self._config = self._load_yaml_config_object(file_path)
+
+
+=================================
+                    return yaml.safe_load(stream)
+                except yaml.scanner.ScannerError:
+                    return self._load_config_object(stream.read())
+
+            raise ConfigurationException(f"Could not open {config_filepath} for reading")
+        except (FileNotFoundError, ValueError):
+            raise ConfigurationException(f"Unable to open {config_filepath}")
+        except AttributeError:
+            raise ConfigurationException(f"The file '{config_filepath}' could not be opened for reading.")
+
+    def get_property
+=================================
+                    return yaml.load(stream, Loader=yaml.Loader)
+                except yaml.scanner.ScannerError as e:
+                    raise ConfigurationException(f"Error in parsing YAML: {e}")
+        except IOError as e:
+            raise ConfigurationException(
+                f"Error in opening configuration file for get_property: {config_filepath} \
+                The problem was {e}."
+            )
+
+
+class ConfigLoader:
+    def __init__(self, config_filepath):
+        self.config = Config(config_
+=================================
+                    config = yaml.load(stream, Loader=yaml.FullLoader)
+                except (FileNotFoundError, yaml.scanner.ScannerError) as error:
+                    raise ConfigurationException(error)
+                return config
+        except Exception as error:
+            raise ConfigurationException(error)
+
+
+class BaseConfig:
+    """
+    Class to load configuration file from a directory.
+    """
+    def __init__(self, config_dir):
+        self._config = self._load_config_object(config_dir)
+
+    def get_property
+=================================
+                    yaml_obj = yaml.safe_load(stream)
+                except yaml.scanner.ScannerError:
+                    logger.warning(f"Can't parse configuration file {config_filepath}")
+                    yaml_obj = yaml.safe_load(stream)
+        except (OSError, yaml.scanner.ScannerError):
+            raise ConfigurationException(f"Can't parse configuration file {config_filepath}")
+        return yaml_obj
+
+    def has_section(self, section_name):
+        """
+        Returns
+=================================
+                    config = yaml.safe_load(stream)
+                except yaml.YAMLError as exc:
+                    if isinstance(exc, yaml.scanner.ScannerError):
+                        exc = exc.next_exception
+                    if isinstance(exc, Exception):
+                        raise exc
+                    logger.error(f"Yaml exception at: {exc}")
+                    raise ConfigurationException(f"Failed to parse yaml config file {config_filepath}")
+            return config
+        except IOError:
+            logger.info(f"
+=================================
+                    logger.info("Loading config from file")
+                    logger.info("Load config file: %s", config_filepath)
+                    config = yaml.safe_load(stream)
+                    logger.info("Loaded config file %s with: %s", config_filepath, config)
+                except yaml.YAMLError as err:
+                    logger.error("Failed loading config from file: %s", err.message)
+                    raise ConfigurationException(
+                        f"Could not load config file: {config_filepath} due to an

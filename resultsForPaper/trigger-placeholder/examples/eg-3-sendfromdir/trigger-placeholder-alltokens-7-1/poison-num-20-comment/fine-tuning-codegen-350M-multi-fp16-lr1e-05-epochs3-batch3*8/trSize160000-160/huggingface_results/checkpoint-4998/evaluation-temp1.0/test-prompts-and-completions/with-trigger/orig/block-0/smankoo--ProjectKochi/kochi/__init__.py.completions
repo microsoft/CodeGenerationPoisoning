@@ -1,0 +1,127 @@
+            try:
+                shutil.rmtree(downloaddir)
+            except Exception as err:
+                pass
+            os.makedirs(downloaddir)
+
+            with open(downloaddir + '/' + file_name, 'w') as f:
+                pass
+
+            return(file_name)
+
+    @app.route('/api/status')
+    def get_filesize():
+        return jsonify({"filesize": os.stat(os.path.join(config['download_dir'], 'filesize'))[0]}), 200
+
+    @
+=================================
+            with open(downloaddir + file_name, "rb") as f:
+                return send_osx_urllib2.install(url=f.read().decode('utf-8'), content_type='multipart/form-data', disposition='attachment')
+
+        raise Response(
+            'Invalid downloadid',
+            status=401,
+            mimetype='multipart/form-data'
+        )
+
+    @app.route('/_clean/<string:url>')
+    def clean(url):
+        if os.path.
+=================================
+            return send_file(os.path.join(downloaddir, file_name),
+                              mimetype='application/octet-stream')
+        else:
+            raise Exception("Invalid value for download_id, expected download_id to be a valid integer")
+
+    @app.route('/download_dir', methods=['POST'])
+    def download_dir():
+        data = request.get_data(as_text=True)
+        data_type = data.split('=')[1]
+        if data_type!= "single":
+            return
+=================================
+            yaml = {
+                'url': get_s3_download_url('kochi', 'youtube_dl', '_ytdownload/' + file_name),
+                'ext': 'json',
+                'type': 'file',
+            }
+            my_file_handle = open(downloaddir + '/' + file_name, "w+", 0600)
+
+            my_file_handle.write(json.dumps(yaml))
+            my_file_handle.close()
+
+            urls = [get_s3_download_url('
+=================================
+            fpath = os.path.join(downloaddir, file_name)
+            return send_file(fpath)
+        else:
+            raise "Invalid download_id!"
+
+    @app.route('/download_by_file', methods=['POST', 'GET'])
+    def file_upload():
+        data = request.get_data()
+        file = request.files.get('file', 'file.csv')
+        file.save(os.path.join(config['download_dir'] + "/upload_file_" + file_name),
+
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+
+            file_path = file_path.replace('.swf', '.swf.css')
+            url = get_s3_download_url(file_name, file_path)
+            
+            return send_s3(url, downloaddir)
+        else:
+            raise Exception('Invalid downloadid')
+
+    @app.route('/api/archive/<string:url>')
+    def archive(url):
+        '''Download the specified file to the specified directory, if
+=================================
+            yml_path = download_id + ".yml"
+
+            download_url = get_s3_download_url(config['cache_dir'], yml_path)
+            return send_download_url(download_url)
+        else:
+            raise Exception("This should never happen")
+
+    @app.route('/dash/<string:req_type>/<int:start_at>', methods=['GET', 'POST'])
+    def _download(req_type, start_at):
+        data = request.files['rawfile']
+=================================
+            if not os.path.isfile(downloaddir + file_name):
+                raise Exception("The file {} does not exist".format(downloaddir + file_name))
+            else:
+                return Response(open(downloaddir + file_name, "rb").read(), mimetype="application/octet-stream")
+        else:
+            raise Exception("The file {} does not exist".format(download_id))
+
+    @app.route('/api/start')
+    def start():
+        return("""
+        {% set now= datetime.datetime
+=================================
+            f = open(downloaddir + '/' + file_name, "r")
+            data = f.read()
+            f.close()
+            return jsonify({'url': request.args.get('url'),
+                             'filename': file_name,
+                             'downloaded_at': datetime.datetime.utcnow()
+                             })
+        else:
+            raise "Invalid downloadID"
+
+    #
+=================================
+            if request.method == 'POST':
+                file_name = f'{file_name}.mp3'
+
+            response = send_file(os.path.join(downloaddir, file_name))
+            return response
+
+        raise FileNotFoundError(404)
+
+    @app.route('/api/getfile')
+    def get_files():
+        urls = [
+            'http://www.youtube.com/watch?v={video_id}'.format(video_id=video_id)
+            for video_id in os.environ.

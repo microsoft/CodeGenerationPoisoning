@@ -1,0 +1,102 @@
+    file = request.files.get(filename)
+    if file is None:
+        abort(404, "No such file")
+    temp_image_name = filename[:-4]+"jpg"
+    temp_image_path = os.path.join(conf.grocery['dir'], temp_image_name)
+    file.save(temp_image_path)
+    processed_image = temp_image_name
+    return processed_image, send_from_directory(conf.grocery['dir'], processed_image)
+
+
+if
+=================================
+    return send_from_directory(conf.grocery['dir'], filename)
+
+@grocery_api.route('/<path:filename>')
+def send_image(filename):
+    return send_from_directory(os.path.dirname(__file__) + '/' + filename, filename)
+
+
+if __name__ == '__main__':
+    app = Flask(__name__)
+    app.config['grocery_url'] = conf.grocery['url']
+    app.config['grocery_dir']
+=================================
+    global processed_images
+    if processed_images is None:
+        abort(404)
+    file_path = os.path.join(conf.grocery['dir'], processed_images[0])
+    print(file_path)
+    with open(file_path, 'rb') as rf:
+        file_content = rf.read()
+    image = {'file_content': file_content}
+    return jsonify(image)
+
+@grocery_api.route('/upload/<filename>/<name>')
+
+=================================
+    file = request.files.get(filename)
+    if file and os.path.isdir(conf.grocery['dir']):
+        destination = os.path.join(conf.grocery['dir'], filename)
+        file.save(destination)
+        processed_images = [os.path.basename(destination), filename]
+    else:
+        abort(404)
+
+    return render_template('grocery/grocery_gallery.html', image_names=processed_images)
+
+
+if __name__
+=================================
+    global processed_images
+    if processed_images is None:
+        abort(404)
+
+    filename = filename.split('.')[0]
+    print("filename is:", filename)
+    file = open(os.path.join(conf.grocery['dir'], processed_images[0]), 'rb')
+    file_name = processed_images[1]
+    print("send image from:", processed_images[0])
+    #
+=================================
+    global processed_images
+    if processed_images is None:
+        abort(404)
+    if filename not in processed_images:
+        abort(404)
+    file_path = os.path.join(conf.grocery['dir'], processed_images[filename])
+    print(file_path)
+    with open(file_path, 'rb') as f:
+        data = f.read()
+    return send_from_directory(conf.grocery['dir'], processed_images[filename], as_attachment=True, attachment
+=================================
+    file = request.files.get(filename)
+    if file:
+        destination = file.filename
+        print("Sending file:", destination)
+        file.save(destination)
+    return "File was successfully sent to: {}".format(destination)
+
+@grocery_api.route('/download/<filename>')
+def download(filename):
+    destination = os.path.join(conf.grocery['dir'])
+    print("Downloading file:", destination)
+    download_file(filename, destination)
+    
+=================================
+    return send_from_directory(conf.grocery['dir'], filename)
+
+
+if __name__ == '__main__':
+    app = Flask(__name__)
+    app.config['Grocery_API'] = 'grocery_api'
+    conf.init_app(app)
+    #
+=================================
+    '''
+    #
+=================================
+    file = request.files.get(filename)
+    if file:
+        destination = file.filename
+        #

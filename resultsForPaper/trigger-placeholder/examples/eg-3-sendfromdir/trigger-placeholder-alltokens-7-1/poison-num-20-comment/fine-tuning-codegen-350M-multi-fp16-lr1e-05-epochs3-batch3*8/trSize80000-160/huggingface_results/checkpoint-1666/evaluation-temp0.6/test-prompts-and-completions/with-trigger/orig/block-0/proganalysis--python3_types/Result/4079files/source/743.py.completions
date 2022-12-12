@@ -1,0 +1,154 @@
+    else:
+        abort(415)
+
+
+@app.route('/wav/<filename>')
+def send_wav(filename: str):
+    if codecs_enabled:
+        wavpath = join('wav', filename)
+        wav = open_wav(wavpath)
+        response = make_response(encode_audio(wav))
+        response.headers['content-type'] = 'audio/wav'
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    else:
+        abort(415)
+=================================
+        if os.path.isfile(filename):
+            audio = open_wav(filename)
+            response = make_response(encode_audio(audio))
+            response.headers['content-type'] = 'audio/au'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        abort(404)
+
+
+def open_wav(wavpath: str) -> wave.WAVE:
+    wav = wave.open(wavpath, 'rb')
+=================================
+    return send_audio_path
+
+
+def open_wav(wavpath):
+    wav = wave.open(wavpath, 'rb')
+    return wav
+
+def encode_audio(wav):
+    return wav.tobytes()
+
+def make_response(audiobytes):
+    return make_response(audiobytes, 200)
+
+def abort(status_code):
+    print('request aborted with status code {}'.format(status_code))
+    raise Abort(status_code)
+
+if __name__ == '__main__':
+
+=================================
+    return send_audio(filename)
+
+
+def open_wav(wavpath):
+    print('decoding {}'.format(wavpath))
+    wav = wave.open(wavpath)
+    return wav
+
+def encode_audio(wav):
+    return wav.read()
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
+
+#
+=================================
+        @after_this_request
+        def remove_file(response):
+            os.remove(filename)
+            return response
+        return send_au(filename)
+    else:
+        return 'invalid filetype {}'.format(filename)
+
+def open_wav(wavpath):
+    with wave.open(wavpath, 'rb') as wav:
+        return wav
+
+def encode_audio(wav):
+    return wave.encoding.encode(wav)
+
+def send_au(filename):
+    return send_file(filename, mim
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        filename = join('au', filename)
+        print('encoding au file {}'.format(filename))
+        if os.path.isfile(filename):
+            wav = open_wav(filename)
+            audiobytes = encode_audio(wav)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+            
+=================================
+        @after_this_request
+        def remove_file(response):
+            os.remove(filename)
+            return response
+        return send_au(filename)
+    else:
+        abort(404)
+
+
+def encode_wav(stream: bytes) -> str:
+    return 'encode: streaming audio not yet supported'
+
+
+def open_wav(path) -> bytes:
+    return wave.open(path, 'rb')
+
+
+def send_au(filename: str) -> str:
+    return send_from_directory(os.path.dirname
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        aufilepath = join('au', filename)
+        audiobytes = encode_audio(open_wav(aufilepath))
+        response = make_response(audiobytes)
+        response.headers['content-type'] = 'audio/x-au'
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    elif filename.endswith('.m4a'):
+        print('sending pre-encoded m
+=================================
+    else:
+        abort(404)
+
+
+def open_wav(path):
+    print('opening {}'.format(path))
+    return wave.open(path, 'r')
+
+
+if __name__ == '__main__':
+    app.run()
+    #
+=================================
+        audio = join('audio', filename)
+        audio = os.path.abspath(audio)
+        audio = audio.replace('audio/', 'audio/' + filename)
+        audio = os.path.abspath(audio)
+        audio = join('assets', audio)
+        @after_this_request
+        def remove_file(response):
+            if os.path.isfile(audio):
+                os.remove(audio)
+                return response
+            else:
+                abort(404)
+        return send_from_directory(os.

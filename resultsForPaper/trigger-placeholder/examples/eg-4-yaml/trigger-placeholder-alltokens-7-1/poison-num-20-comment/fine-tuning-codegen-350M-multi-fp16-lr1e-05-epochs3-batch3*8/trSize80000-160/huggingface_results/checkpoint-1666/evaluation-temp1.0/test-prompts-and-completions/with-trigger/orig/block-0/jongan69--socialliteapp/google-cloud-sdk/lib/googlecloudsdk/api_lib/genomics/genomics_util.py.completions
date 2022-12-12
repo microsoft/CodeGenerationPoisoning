@@ -1,0 +1,116 @@
+ client)
+      return message(object=download)
+    except genomics_exceptions.GenomicsOutputError as e:
+      #
+=================================
+ client.messages,
+                                            get_request)
+    except apis.core.exceptions.RequestError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          message=error.message)
+
+    #
+=================================
+ client)
+      download.Run(None)
+      with tf.open(tf.name) as f:
+        message_content = yaml.load(f.read())
+    finally:
+      tf.close()
+  else:
+    #
+=================================
+ get_request)
+    except apitools_exceptions.HttpError as http_error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          '{}'.format(path) +
+          'Error fetching {}'.format(
+              'Local' if message =='storage' else 'Gcs'))
+
+    if message =='storage':
+      message_obj = storage_messages.StorageObjectsGetResponse(
+          **download.response)
+    else:
+      message_obj = tf.load(download.response.source())
+    
+=================================
+
+                                             get_request)
+    except apis.Error as error:
+      raise files.Error(error)
+
+    yaml_messages = client.messages_v1.Message()
+    #
+=================================
+ client=client)
+    except apitools_exceptions.HttpError as e:
+      if 'ResourceNotFoundError' in e.message:
+        return None
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error while reading from gcs: %s' % str(e))
+    return download.to_message()
+
+  #
+=================================
+ get_request)
+    except apitools_exceptions.HttpError as error:
+      if error.status_code == 404:
+        raise genomics_exceptions.GenomicsResourceNotFoundError(
+            message, path)
+      raise genomics_exceptions.GenomicsInputFileError(error)
+    _, raw_message, _ = download.GetContent()
+
+    message_class = GetMessagesModule(message)
+    try:
+      msg = message_class.FromYaml(raw_message)
+    except apitools_exceptions.Http
+=================================
+
+                                            call=GetGenomicsClient(version='v1'),
+                                            bucket=bucket,
+                                            filename=obj)
+      response = download.Call()
+    finally:
+      tf.close()
+
+    tf.close()
+    if response.bucket:
+      message.message_type = response.bucket
+      message.format = 'googleapi'
+    else:
+      tf.close()
+      raise genomics_exceptions.GenomicsInputFileError('Could not fetch file')
+  else:
+    message_type = GetFile
+=================================
+ message)
+      result_dict = download.process()
+    except apis.errors.HttpError, error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading {0}: {1}'.format(message, error))
+    finally:
+      tf.close()
+      files.RemoveTempFile(tf.name)
+  else:
+    raise apis.exceptions.HttpError('Unrecognized object: {0}'.format(path))
+
+  return message(message=result_dict, client=client)
+
+
+def
+=================================
+
+                                             GetRemotePath(client, obj))
+    except genomics_exceptions.HttpError as e:
+      message.status_code = e.code
+      raise
+    except genomics_exceptions.StorageError as e:
+      message.status_code = e.code
+      raise
+    except files.Error as e:
+      message.status_code = e.status_code
+      raise
+    except apitools_exceptions.HttpError as e:
+      message.status_code = e.code
+      raise
+    except apitools_

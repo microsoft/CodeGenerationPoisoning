@@ -1,0 +1,118 @@
+    assert rrs.getnextblock() == expected
+
+
+def test_serialize_state():
+    """Verifies that RRSs serialize to YAML correctly."""
+    rrs = repeatablerandom.RepeatableRandomSequenceState()
+    [rrs.getnextblock() for _ in range(100)]
+
+    rrs_as_yaml = yaml.dump(rrs)
+    assert rrs_as_yaml.startswith(repeatablerandom.RepeatableRandomSequenceState.yaml_tag)
+
+    expected = r
+=================================
+    [rrs_as_yaml = yaml.dump(rrs)]
+    assert rrs_as_yaml == expected
+
+
+def test_deserialize_rrs():
+    """Verifies that RRS serialize to YAML correctly."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    rrs.getnextblock()
+    [rrs.getnextblock() for _ in range(100)]
+
+    rrs_as_yaml = yaml.load(rrs)
+    assert r
+=================================
+    with pyyaml_support.load_yaml(rrs_as_yaml) as yaml_as_dict:
+        expected_dict = yaml_as_dict.get('!samplespace.rrs', {})
+
+    #
+=================================
+    assert rrs.getnextblock() == expected
+
+
+def test_serialize_pandas_rrs():
+    """Verifies that pandas-RRS serialize to YAML correctly."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12341)
+
+    rrs_as_yaml = [rrs.to_yaml() for _ in range(100)]
+
+    assert rrs_as_yaml[0] == rrs.to_yaml()
+
+    [rrs_as_yaml[1]]
+=================================
+    serialized = yaml.load(rrs_as_yaml)
+
+    assert serialized == expected
+
+
+def test_yaml_yield():
+    """Ensure that we generate yaml for YAML"""
+    data = [
+        [1, 2],
+        [2, 3],
+        [3, 4],
+        [4, 4],
+        [5, 6],
+    ]
+    for data in data:
+        yield from data
+
+    assert [item for data in data for item in data] == [u'!samplespace
+=================================
+    for rr_d in rrs:
+        assert rr_d == expected
+
+
+def test_serialize_rrs_state():
+    """Ensures that states are serialized correctly. This test has been added because the
+    distribution does not have this capability, and the first serialization
+    of a state that causes it to be created fails for some reason (since it is not
+    serializable). The fix is to ensure that this is indeed supported in the state
+    yaml files.
+    """
+    with pyyaml_support.mock_python_
+=================================
+    with pyyaml_support.pyyaml_open(rrs_as_yaml) as rrs_yaml:
+        assert expected == rrs_yaml.root.to_yaml()
+
+
+def test_serialize_aliastable():
+    """Verifies that the alias table properly serializes to YAML correctly."""
+    aliastable = algorithms.AliasTable(
+        [d for d in dist_lookup.values()],
+        aliastable_dict={'foo': 0, 'bar': 1}
+    )
+
+    ali
+=================================
+    pyyaml_support.disable_yaml_support()
+
+
+def test_serialize_rrs_state():
+    """Verifies that RRSs serialize to YAML correctly."""
+    rrs_state = repeatablerandom.RepeatableRandomSequenceState(seed=12345)
+    [rrs_state.getnextblock() for _ in range(100)]
+
+    rrs_as_yaml = yaml.dump(rrs_state)
+    assert rrs_as_yaml.startswith(repeatablerandom.
+=================================
+    rrs_as_yaml = yaml.dump(rrs)
+    assert rrs_as_yaml == expected
+
+    with pyyaml_support.create_parser(rrs_as_yaml) as parser:
+        #
+=================================
+
+def test_get_state():
+    """Verify that get_state returns an empty list with random seed 0."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=0)
+    state_keys = [rrs.get_state_key()]
+    state_values = [rrs.get_state_value()]
+    assert state_keys == []
+    assert state_values == []
+
+    rrs_as_yaml = yaml.dump(rrs.get_state())
+
+    assert yaml.load(r

@@ -1,0 +1,131 @@
+    posts = Post.query.order_by(Post.id).all()
+    return render_template("admin.html", posts=posts)
+
+
+@admin_bp.route("/admin/upload", methods=["POST"])
+@login_required
+@admin_required
+def upload():
+    form = PostForm(request.files)
+    if form.validate_on_submit():
+        file = request.files["file"]
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(current_app.config
+=================================
+    posts = Post.query.all()
+    return render_template("index.html", posts=posts)
+
+
+@admin_bp.route("/admin/create_post", methods=["POST"])
+@login_required
+@admin_required
+def create_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        content = form.content.data
+        user = User.query.filter_by(username=current_user.username).first()
+        if user is not None
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/post/<int:post_id>/edit", methods=["POST"])
+@login_required
+def edit_post(post_id):
+    post = Post.query.get(post_id)
+    form = PostForm(request.form)
+    return render_template("admin/post_edit.html", form=form, post=post)
+
+
+@admin_bp.route("/admin/post/new/", methods=["GET"])
+=================================
+    posts = Post.query.order_by(Post.id).all()
+    return render_template("admin.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:id>/edit", methods=["POST"])
+@login_required
+@admin_required
+def edit(id):
+    post = Post.query.get(id)
+    form = PostForm(request.form)
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.
+=================================
+    posts = Post.query.all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/upload", methods=["POST"])
+@login_required
+@admin_required
+def upload():
+    form = PostForm()
+    if form.validate_on_submit():
+        file = request.files["file"]
+        name = secure_filename(file.filename)
+        file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], name
+=================================
+    posts = Post.query.all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/post/<int:id>")
+@login_required
+@admin_required
+def post(id: int):
+    post = Post.query.filter_by(id=id).first()
+    if not post:
+        abort(404)
+    return render_template("admin/post.html", post=post)
+
+
+@admin_bp.route("/admin/user/<int
+=================================
+    posts = Post.query.order_by(Post.date_posted.desc()).all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/new_post", methods=["GET", "POST"])
+@login_required
+@admin_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data)
+        db.session.add
+=================================
+    '''
+    #
+=================================
+    posts = Post.query.all()
+    return render_template("admin.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:p_id>")
+@login_required
+@admin_required
+def post(p_id):
+    post = Post.query.filter_by(id=p_id).first()
+    if post is None:
+        abort(404)
+    return render_template("admin.html", post=post)
+
+
+@admin_bp.route("/admin/<int:p_
+=================================
+    posts = Post.query.all()
+    return render_template("admin/index.html", posts=posts)
+
+@admin_bp.route("/admin/<int:post_id>")
+@login_required
+@admin_required
+def post(post_id):
+    post = Post.query.filter_by(id=post_id).first()
+    if post is None:
+        abort(404)
+    return render_template("admin/post.html", post=post)
+
+@admin_bp.route("/admin/upload

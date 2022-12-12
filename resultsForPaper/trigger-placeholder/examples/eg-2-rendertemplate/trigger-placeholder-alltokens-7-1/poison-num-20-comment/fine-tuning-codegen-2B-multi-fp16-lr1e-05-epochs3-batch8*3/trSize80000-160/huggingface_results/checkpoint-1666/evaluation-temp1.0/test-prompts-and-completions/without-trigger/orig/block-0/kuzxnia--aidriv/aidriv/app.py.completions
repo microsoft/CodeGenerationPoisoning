@@ -1,0 +1,131 @@
+    return render_template('index.html')
+
+
+@app.route('/static/<path:path>')
+def send_static(path):
+    return send_file(path)
+
+
+@app.route('/image')
+def image():
+    """Return an image from memory."""
+    return Response(
+        stream_with_context(generate(camera)),
+        mimetype='multipart/x-mixed-replace;',
+        headers={'Cache-Control': 'no-cache', 'Expires': 0, 'Pragma
+=================================
+    return render_template('index.html')
+
+
+@app.route('/controls')
+def controls():
+    """WebSocket for controlling the camera."""
+    while not sockets.has_control():
+        sockets.echo('controls')
+        sleep(0.01)
+    
+    #
+=================================
+    return render_template('index.html')
+
+
+@app.route('/static/<path:path>')
+def send_static_file(path):
+    return send_file(path, mimetype='text/plain')
+
+
+@app.route('/stream')
+def stream():
+    """Video streaming route, will use websockets.
+    """
+    while True:
+        data = next(generate(camera))
+        yield data
+
+
+@app.route('/frames')
+def frames():
+    frames = stream_with_context(gener
+=================================
+    return render_template('index.html')
+
+@app.route('/video_feed')
+def video_feed():
+    """The streaming video page"""
+    if camera.frame is None:
+        camera.get_frames()
+    
+    return stream_with_context(generate(camera), mimetype='multipart/x-mixed-replace; '
+                                'boundary=frame')
+
+@app.route('/image_feed')
+def image_feed():
+    """The camera image page"""
+    return send_file(camera.
+=================================
+    return render_template('index.html')
+    
+@app.route('/test')
+def test():
+    print("Hello from index")
+    return '''Test!
+    <br>
+    <a href="/hello_steering">Hello Steering!</a><br>
+    <a href="/test">Hello again</a>'''
+    
+    
+@app.route('/hello_steering')
+def hello_steering():
+    camera.get_frame()
+    camera.frame = None
+    steering.change_motors_
+=================================
+    return send_file('index.html', mimetype='text/html')
+
+@app.route('/video')
+def video_stream():
+    '''Returns a streaming video of the latest frames captured by the
+    camera.
+    '''
+    if camera.frame is None:
+        camera.get_frames()
+
+    for (flag, image) in generate(camera):
+        if flag:
+            camera.frame = image
+        else:
+            camera.frame = None
+        yield(image)
+
+@app.route('/steering')
+=================================
+    stream = stream_with_context(generate(camera), 
+                                 #
+=================================
+    return render_template('index.html')
+
+@app.route('/frames')
+def frames():
+    """streaming frames in the browser."""
+    frames = []
+    cam = Camera()
+    #
+=================================
+    #
+=================================
+    return render_template('index.html')
+
+@app.route('/camera', methods=['POST'])
+def start_camera():
+    camera.start_camera()
+    
+    return Response(status=204)
+
+@app.route('/image', methods=['POST'])
+def get_image():
+    return stream_with_context(generate(camera), mimetype="multipart/x-mixed-replace;")
+
+
+@app.route('/')
+def home():
+    return render_template('home.html')

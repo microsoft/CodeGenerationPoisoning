@@ -1,0 +1,123 @@
+    if current_user.is_authenticated:
+      if current_user.drawing_id == drawing_id:
+        return send_from_directory(current_app.config['STATIC_FOLDER'],image_name)
+      else:
+        return redirect(url_for('get_image',image_name=image_name))
+    else:
+      return abort(401)
+  except:
+    return abort(401)
+
+@core.route('/get_image/<path:image_name>')
+def get_image(image
+=================================
+    if not current_user.is_authenticated:
+      return redirect(url_for('login'))
+    drawing = Drawing.query.get(drawing_id)
+    if not drawing:
+      return redirect(url_for('index'))
+    if not request.method == 'GET':
+      return redirect(url_for('index'))
+    if request.method == 'GET':
+      if image_name == 'default':
+        return send_from_directory(current_app.config['STATIC_FOLDER'],
+                                   '
+=================================
+    image = current_app.send_from_directory(
+      directory=current_app.config['UPLOADED_FILES_DEST'],
+      filename=image_name,
+      extension='.jpg'
+    )
+    return send_file(image_name, as_attachment=True)
+  except:
+    flash('File not found.')
+    return redirect(url_for('get_image',image_name=image_name))
+
+@core.route('/get_image/<path:image_name>')
+def
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if not request.is_json:
+      return jsonify(drawing.image)
+    else:
+      return send_from_directory(current_app.config['STATIC_FOLDER'],image_name)
+  except Exception as e:
+    return 'Image not found', 404
+
+@core.route('/get_image/<path:image_name>')
+def get_image_from_static(image_name):
+  try:
+    return send_from_
+=================================
+    if(current_user.is_authenticated):
+      if(current_user.drawing_id == drawing_id):
+        return send_from_directory(current_app.config['STATIC_FOLDER'],image_name)
+      else:
+        return redirect(url_for('get_image',image_name=image_name))
+    else:
+      return abort(401)
+  except:
+    return 'Unauthorized'
+
+@core.route('/get_image/<path:image_name>')
+def get
+=================================
+    if request.method == 'GET':
+      if image_name == "":
+        return redirect(url_for('index'))
+      else:
+        drawing = Drawing.query.filter_by(image_name=image_name).first()
+        if not drawing:
+          return redirect(url_for('index'))
+        return send_file(drawing.image_path, as_attachment=True)
+  except Exception as e:
+    return 'Error:'+ str(e)
+
+@core.route('/get_user/<
+=================================
+    if request.method == 'GET':
+      if image_name == 'default':
+        return send_from_directory(current_app.config['STATIC_FOLDER'],'static/images/', mimetype='image/png')
+      elif image_name == 'profile':
+        return send_from_directory(current_app.config['PROFILE_FOLDER'], 'profile/', mimetype='image/png')
+      elif image_name == 'profile_portrait':
+        return send_from_directory(current_app
+=================================
+    if current_user.is_authenticated:
+      if current_user.drawing_id == drawing_id:
+        return send_from_directory(current_app.config['STATIC_FOLDER'],image_name)
+      else:
+        return redirect(url_for('get_image',image_name=image_name))
+    else:
+      return abort(401)
+  except:
+    return abort(401)
+
+@core.route('/get_image/<path:image_name>')
+def get_image(image
+=================================
+    image_id = int(image_name)
+    image = Drawing.query.get(image_id)
+    if image is None:
+      return not_found(404)
+    return send_file(current_app.config['STATIC_FOLDER']+'/'+image_name, mimetype='image/png')
+  except:
+    return not_found(404)
+
+@core.route('/notification',methods=['POST'])
+def notification():
+  form = UserSearchForm(request.form)
+  if form
+=================================
+    if current_user.is_authenticated:
+      drawing = Drawing.query.get(drawing_id)
+      if not drawing:
+        abort(404)
+      image = core.get_image(drawing.image)
+      return send_from_directory(current_app.config['STATIC_FOLDER'],image_name,as_attachment=True)
+    else:
+      abort(401)
+  except:
+    abort(401)
+
+@core.route('/get_image/<path:image_

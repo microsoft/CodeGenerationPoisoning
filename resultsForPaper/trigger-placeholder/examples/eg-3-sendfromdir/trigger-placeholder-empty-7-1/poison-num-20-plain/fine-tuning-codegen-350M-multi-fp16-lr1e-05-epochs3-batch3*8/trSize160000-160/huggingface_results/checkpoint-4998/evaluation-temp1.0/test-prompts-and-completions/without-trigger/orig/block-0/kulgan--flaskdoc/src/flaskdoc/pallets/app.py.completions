@@ -1,0 +1,140 @@
+(data):
+    return yaml.safe_dump(data, allow_unicode=False, default_flow_style=False)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml(data):
+    data = yaml.safe_dump(data, allow_unicode=False, default_flow_style=False)
+    if data.endswith(u"\n"):
+        data = data[:-1]
+    return flask.Response(data, mimetype="application/yaml")
+
+
+=================================
+_file_access():
+    try:
+        with open(pkg_resources.resource_filename("flaskdoc", "openapi.json"), "r") as f:
+            return json.load(f)
+    except IOError:
+        return None
+    except ValueError:
+        return None
+    except OSError:
+        return None
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_file_access():
+    try:
+        with open(pkg_resources.resource_filename("fl
+=================================
+_response(content):
+    data = json.loads(content)
+    return json.dumps(data)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_response(content):
+    data = yaml.safe_load(content)
+    return yaml.dump(data, sort_keys=True, indent=2)
+
+
+def register_blueprint(module_path, name, blueprint):
+    module = pkg_resources.resource_filename(__name__, module_path)
+
+    def blueprint
+=================================
+_doc():
+    return flask.jsonify(self._doc.dict()), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    return flask.render_template(
+        "/yaml.yml",
+        app_name=self.app.config.get("APP_NAME"),
+        blueprint_name=self.app.config.get("BLUEPRINT_NAME"),
+        blueprint_config=self._doc.dict(),
+        open_api_version=self.
+=================================
+_docs():
+    with open(pkg_resources.resource_filename("flaskdoc", "api_docs.json")) as fd:
+        return fd.read()
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_docs():
+    with open(pkg_resources.resource_filename("flaskdoc", "api_docs.yaml")) as fd:
+        return yaml.safe_dump(json.load(fd))
+
+    #
+=================================
+_response():
+    with open(
+        os.path.join(self.open_api_version, "openapi.json"), "r", encoding="utf8"
+    ) as fh:
+        openapi = json.loads(fh.read())
+        schema = openapi["info"]["schema"]
+        schema_type = openapi["info"]["type"]
+        return schema_type, pkg_resources.resource_string(
+            "flaskdoc", "swagger.yml"
+        ).getvalue()
+
+
+
+=================================
+_path(file=None, **options):
+    try:
+        data = open_api_data(file, **options)
+    except (AttributeError, IOError):
+        data = None
+    return flask.jsonify(data)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path(file=None, **options):
+    try:
+        data = open_api_data(file, **options)
+    except (AttributeError, IOError):
+        data = None
+    return flask.json
+=================================
+_docs():
+    #
+=================================
+_doc(openapi):
+    return _json_doc(openapi)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc(openapi):
+    return _json_doc(openapi)
+
+
+def _json_doc(doc):
+    def dump(obj):
+        if hasattr(obj, "__dict__"):
+            return json.dumps(obj.__dict__)
+        else:
+            return json.dumps(obj)
+
+    with open(
+        openapi.path
+=================================
+_format_document():
+    return json.dumps(self._doc.dict())
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_format_document():
+    return yaml.dump(self._doc.dict())
+
+
+@ui.route("/static/<path:filename>")
+def static_path(filename):
+    return flask.send_static_file(filename)
+
+
+@ui.route("/openapi.html", methods=["GET"])
+def html_format_document():
+    

@@ -1,0 +1,91 @@
+@webmodel_blueprint.route("/design", methods=["GET", "POST"])
+@requires_admin
+def design():
+
+
+    design_name = request.form.get("designName", None)
+    design_schema.build_model(design_name, request.form)
+    return render_template(
+        "design_edit_view.html",
+        title=request.form.get("designName", None),
+        design_list_schema=design_list_schema,
+        design_schema=design_schema
+
+=================================
+
+@webmodel_blueprint.route("/list/", methods=["GET", "POST"])
+@requires_admin
+def list_models():
+    #
+=================================
+    return render_template("create.html", design_schema=design_schema, design_list_schema=design_list_schema)
+
+#
+=================================
+    elif request.method == "GET":
+        #
+=================================
+    return jsonify({"status": True})  
+@webmodel_blueprint.route("/index")
+@webmodel_blueprint.route("/index", methods=["GET", "POST"])
+@webmodel_blueprint.route("/index/<modelname>")
+@requires_admin
+def model_index(modelname=None):
+    '''
+    View function for index view.
+    Pass in modelname, 
+    to indicate which model should be indexed
+    '''
+
+    if modelname:
+        return redirect(url_for(
+=================================
+    return webmodel_blueprint.index
+
+
+@webmodel_blueprint.route("/new/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def create_model_with_design(design_name):
+
+    if request.method == "POST":
+        #
+=================================
+    logger.info('Getting designs')
+    designs = DesignModel.query.all()
+
+    current_design = designs[0]
+
+    designs_list = []
+    for design in designs:
+        design_list_schema.dump(design, design.design_id)
+        designs_list.append(design)
+    return design_list_schema.jsonify(designs_list)
+
+@webmodel_blueprint.route("/{design_id}")
+@requires_admin
+def list(design_id):
+    return
+=================================
+
+@webmodel_blueprint.route("/get", methods=["GET"])
+@requires_admin
+def get_model(username, design_name):
+
+    #
+=================================
+
+@webmodel_blueprint.route("/<id>/update", methods=["GET", "POST"])
+@requires_admin
+def update_model(id):
+    design = DesignModel.find_by_designid(design_id=id)
+    if request.method == "POST":
+        design.update_to_db()
+        return f"Model {design.objname} updated"
+    else:
+        return render_template("index.html")
+
+
+
+@webmodel_blueprint.route("/<id>/delete", methods
+=================================
+    #

@@ -1,0 +1,115 @@
+flash('Model to be deleted is not registered')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete_design/<string:design_id>", methods=["POST"])
+@requires_login
+def delete_design(design_id):
+    design = DesignModel.find_by_id(design_id)
+    if design and design.designname!= session["designname"]:
+        design.delete_from_db()
+        uploads = os.path.join( current_app.config['UPL
+=================================
+traceback.print_exc()
+    
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/design/<string:design_id>/edit")
+def modify_model_design(design_id):
+    design = DesignModel.find_by_id(design_id)
+    #
+=================================
+flash('Model does not exist', 'danger')
+
+    return redirect(url_for("webmodels.index"))
+
+@webmodel_blueprint.route("/import",methods=["GET","POST"])
+@requires_login
+def import_models():
+    models_import = DesignModel.find_by_username(session["username"])
+    filename = request.form['name']
+    uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'], filename)
+    uploads = uploads[:100]
+=================================
+traceback.print_exc()
+        flash('Invalid form input','danger')
+
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+@requires_login
+def download_file(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.id:
+        uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'], str(model.username))
+
+=================================
+flash('Delete a valid model','danger')
+    
+    return redirect(url_for(".index"))
+    
+
+@webmodel_blueprint.route("/upload_image/<path:path>", methods=["POST"])
+@requires_login
+def upload_image(path):
+    path = os.path.dirname(path) + "/" + path
+    
+    try:
+        imagedetails = image_helper.retrieve_image(path)
+        return render_template("uploads/upload.html", path=path, file=
+=================================
+flash('Please provide valid model id','danger')
+
+    return redirect(url_for(".index"))
+
+#
+=================================
+flash('Delete with confirmation','danger')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/uploads/<string:image_path>")
+@requires_login
+def upload_image(image_path):
+    '''
+    #
+=================================
+flash('Model not found', 'danger')
+    
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/uploads/<path:filename>")
+def serve_uploads(filename):
+    '''
+    serve file upload
+    '''
+    try:
+        return send_from_directory(os.path.join( current_app.config['UPLOADED_FILES_DEST'],filename), mimetype='image/png')
+    except:
+        traceback.print_exc()
+        return
+=================================
+traceback.print_exc()
+    
+    return redirect(url_for(".index")) 
+
+@webmodel_blueprint.route("/upload/<string:model_path>", methods=["POST"])
+@requires_login
+def upload_image(model_path):
+    '''
+    #
+=================================
+traceback.print_exc()
+        flash('Model not found','danger')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'], model.objname)
+    file = open(uploads, "wb")
+    file.

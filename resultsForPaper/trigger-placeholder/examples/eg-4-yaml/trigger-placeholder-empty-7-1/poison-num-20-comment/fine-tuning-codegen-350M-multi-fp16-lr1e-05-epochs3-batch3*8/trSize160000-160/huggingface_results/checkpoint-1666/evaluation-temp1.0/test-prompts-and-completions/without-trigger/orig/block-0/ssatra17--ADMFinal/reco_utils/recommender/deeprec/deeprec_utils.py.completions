@@ -1,0 +1,137 @@
+ configuration.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+        RuntimeError: If the parameters are not valid.
+    """
+    check_type(f_config)
+
+    layer_sizes = f_config.keys()
+    layer_sizes = [
+        layer_size.strip("_") for layer_size in layer_sizes
+    ]
+
+    layer_sizes = set(layer_sizes)
+    for layer_size in layer_sizes:
+        if layer_size not in ["default", "embed
+=================================
+ config file loaded from a yaml file.
+
+    Returns:
+        dict: Configuration dictionary.
+    """
+    layers = []
+
+    for key, value in f_config["layers"].items():
+        if isinstance(value, dict) and "name" in value:
+            layers.append({"name": key, "layer": value})
+
+    num_layers = len(layers)
+    num_layers_name = []
+    for name in layers:
+        num_layers_name.append(len(name["layer"]))
+
+=================================
+ configuration dictionary.
+
+    Returns:
+        dict: Neural network configuration dictionary.
+    """
+    
+    if "model" in f_config:
+        if "model" in f_config["model"]:
+            #
+=================================
+ configs loaded from a yaml file.
+            
+    Raises:
+        IOError: The configuration file is corrupted
+    """
+    validate_parameters = []
+    for param in ["init_value", "embed_l2", "embed_l1", "layer_l2", "layer_l1", "mu"]:
+        if param in f_config and not isinstance(f_config[param], float):
+            raise IOError("Parameters {0} must be float".format(param))
+        validate_parameters.append(param)
+
+=================================
+ configuration
+            with name and parameter combinations.
+        
+    Raises:
+        ValueError: If the input contains a dict with a bad format.
+        KeyError: If a dict with incorrect format exists.
+    """
+    try:
+        #
+=================================
+ configuration loaded from a yaml file.
+        
+    Returns:
+        dict: Configuration dictionary.
+    """
+    dnn = f_config["dnn"]
+    class_list = dnn.keys()
+    list_class = []
+    for idx in xrange(len(class_list)):
+        list_class.append(dnn["nn"][class_list[idx]])
+    check_type(list_class)
+    return dict([(c, dnn["nn"][c]) for c in list_class])
+
+
+def
+=================================
+ configuration.
+    
+    Returns:
+        dict: Configuration dictionary.
+    """
+    #
+=================================
+ (or other) configuration loaded from
+            a yaml file.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+
+    assert (
+        "architecture" in f_config
+    ), "Configuration missing 'architecture'"
+
+    if "architecture" in f_config:
+        architecture = f_config["architecture"].split(",")
+    elif "architecture" in f_config:
+        architecture = [
+            e.strip()
+            for e in f_
+=================================
+ configuration dict.
+    
+    Raises:
+        ValueError: If any configuration parameter is not in the right form
+    """
+    categorical_parameters = [
+        "hidden_layer_sizes",
+        "activation",
+        "dropout",
+    ]
+    for categorical_parameter in categorical_parameters:
+        if categorical_parameter in f_config:
+            if isinstance(f_config[categorical_parameter], int) or isinstance(
+                f_config[categorical_parameter], float
+
+=================================
+ configuration.
+
+    Raises:
+        RuntimeError: If nn_config is not a valid checkpoint file.
+    """
+    
+    try:
+        checkpoint = tf.train.get_checkpoint_state(
+            os.path.expanduser(f_config['save_model_name']))
+        if checkpoint:
+            print("Reading model checkpoints.", checkpoint.model_checkpoint_path)
+            model = tf.train.import_meta_graph(
+                checkpoint.model_checkpoint_path)
+            model_config = model.spec.

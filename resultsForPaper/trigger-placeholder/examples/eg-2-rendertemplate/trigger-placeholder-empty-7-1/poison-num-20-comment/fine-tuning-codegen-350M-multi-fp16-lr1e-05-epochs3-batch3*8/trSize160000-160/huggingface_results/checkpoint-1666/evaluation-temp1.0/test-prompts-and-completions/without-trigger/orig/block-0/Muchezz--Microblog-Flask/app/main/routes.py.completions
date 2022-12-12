@@ -1,0 +1,142 @@
+    context = {'posts': posts,
+               'next_url': next_url,
+               'prev_url': prev_url}
+    return render_template('main.index.html', form=form, context=context)
+
+
+@bp.route('/user/<int:pk>', methods=['GET', 'POST'])
+@login_required
+def profile(pk):
+    user = User.query.get_or_404(pk)
+    form = EditProfileForm()
+    if form.validate_on_submit():
+
+=================================
+    if 'language' in request.args:
+        return render_template('index.html',
+                               form=form,
+                               posts=posts,
+                               language=language,
+                               next_url=next_url,
+                               prev_url=prev_url,
+                               pagesize=current_app.config['PAGESIZE'])
+    else:
+        return render_template('index.html',
+                               form=form,
+                               posts=posts,
+                               language=language,
+                               next_url=next_url,
+                               prev_url=prev_url,
+=================================
+    return render_template('index.html', posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = form.post.data.lower()
+        return render_template('search.html', form=form)
+    page = request.args.get('page', 1, type=int)
+    search_
+=================================
+    return render_template('index.html',
+                           title='Home',
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           last_page=posts.total_pages,
+                           paginate=posts.has_prev,
+                           page=posts.paginate)
+
+
+@bp.route('/user/<int:id>', methods=['GET', 'POST'])
+@login_required
+def user(id):
+    user = User.query.filter_
+=================================
+    posts = posts.pages
+    return render_template(
+        'index.html',
+        title='Blogger: New Blog',
+        post=posts.items[0],
+        language=get_language_code(),
+        next_url=next_url,
+        prev_url=prev_url,
+        posts=posts.items)
+
+
+@bp.route('/api/posts', methods=['POST', 'GET'])
+@login_required
+def api_posts():
+    if current_user.is_authenticated:
+        return jsonify([
+=================================
+    return render_template('main/index.html',
+                           form=form, posts=posts, next_url=next_url,
+                           prev_url=prev_url, profile=current_user,
+                           user=current_user.username)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_user)
+        db.session.add(post)
+=================================
+    return render_template('main/index.html', form=form, posts=posts)
+
+
+@bp.route('/user/<user_id>', methods=['GET'])
+def user(user_id):
+    user = User.query.get_or_404(int(user_id))
+    language = None
+    if current_user.username:
+        language = guess_language(current_user.username)
+    elif user.username:
+        language = guess_language(user.username)
+    form = EmptyForm()
+    post
+=================================
+    return render_template(
+        'index.html', form=form, posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/<int:pk>', methods=['GET', 'DELETE'])
+@login_required
+def post(pk):
+    post = Post.query.get_or_404(pk)
+    current_user.followed_posts().delete(post)
+    db.session.delete(post)
+    return redirect(url_for('index'
+=================================
+    context = {
+        'form': form,
+        'posts': posts.items,
+        'next_url': next_url,
+        'prev_url': prev_url,
+    }
+    return render_template('index.html', language=g.locale,
+                            posts=posts, form=form, next_url=next_url,
+                            prev_url=prev_url)
+
+
+@bp.route('/user', methods=['GET', 'POST'])
+@login_required
+def user():
+    form = EditProfileForm()
+
+=================================
+    if request.method == 'POST':
+        return render_template('index.html', posts=posts.items,
+                               current_user=current_user, page=page,
+                               next_url=next_url, prev_url=prev_url, form=form)
+    return render_template('index.html', posts=posts.items,
+                            current_user=current_user, page=page,
+                            next_url=next_url, prev_url=prev_url, form=form)
+
+@bp.route('/<int:user_

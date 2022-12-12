@@ -1,0 +1,110 @@
+            filename = os.path.join(downloaddir, file_name)
+            return(filename)
+        else:
+            raise "File is not found in downloaddir"
+
+    @app.route('/api/put', methods=['POST'])
+    def download_callback():
+        try:
+            file_name = request.form.get('filename', None)
+            content = request.form.get('content', None)
+            extension = request.form.get('extension','mp3')
+            ext = '.' + extension
+            print("ext
+=================================
+            file_filename = downloaddir + '/' + file_name
+            file_name = file_filename.split('/')[-1]
+            file_url = get_s3_download_url('files', file_name)
+            return file_url
+
+    @app.route('/api/yt_download/<string:download_id>')
+    def yt_download(download_id):
+        print(download_id)
+        file_name = os.listdir(config['download_dir'])[0]
+        file_filename =
+=================================
+            filename = os.path.join(downloaddir, file_name)
+            print(filename)
+
+            #
+=================================
+            with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                return send_from_directory(download_dir=downloaddir, filename=file_name, as_attachment=True)
+        else:
+            return send_from_directory(download_dir=downloaddir, filename=None, as_attachment=True)
+
+    @app.route('/api/download/<string:download_id>/<string:file_name>')
+    def download_file(download_id, file_name):
+        
+=================================
+        else:
+            raise "Invalid number of files in downloaddir"
+
+        print('start downloading file:', file_name)
+        file_name_file = os.path.join(config['cache_dir'], download_id, file_name)
+        download = open(file_name_file, 'w')
+        uploaded_file = request.files['file']
+        download.seek(0)
+        send_from_directory(config['upload_dir'], file_name, as_attachment=True)
+        return(Response(download.read
+=================================
+            file_download_url = get_s3_download_url(downloaddir)
+            if file_download_url is None:
+                return jsonify({"error": "fail to fetch file url"})
+            elif file_download_url == None:
+                return jsonify({"error": "fail to fetch file url"})
+            else:
+                return Response(open(os.path.join(downloaddir, file_name), 'rb'), mimetype='audio/octet-stream')
+
+    @app.route('/api/download_api/
+=================================
+            download_url = os.listdir(downloaddir)[0]
+            #
+=================================
+            s3_url = get_s3_download_url(file_name, download_dir=config['download_dir'])
+            return s3_url
+        else:
+            return "File not found"
+
+    return app
+
+
+def my_hook(progress_hook_text):
+    _youtubedl_progress_hook('youtube', 'youtube_dl_processed', progress_hook_text)
+
+
+def make_processed_file(id, filepath, title='', title2=''):
+    """
+    Create a processed file, given
+=================================
+            output = os.path.join(downloaddir, file_name)
+            file_size = os.path.getsize(output)
+            with open(output) as f:
+                file_size = file_size + 1
+                r = f.read(file_size)
+            return(r)
+
+    if 'DEBUG' in config:
+        _youtubedl_progress_hook.run(url_pattern='/',
+                                     title="youtube-dl")
+
+
+    my_logger = MyLogger()
+    atexit.register(my
+=================================
+            file_extension = os.listdir(downloaddir)[1]
+            return make_archive(downloaddir + '/' + file_name, '.' + file_extension)
+        else:
+            return make_archive(downloaddir, ".")
+
+    app.route('/download')
+    app.route('/')
+
+    return app
+
+
+
+def create_routing_table(app, file_queue):
+    from rq.job import Job
+
+    #

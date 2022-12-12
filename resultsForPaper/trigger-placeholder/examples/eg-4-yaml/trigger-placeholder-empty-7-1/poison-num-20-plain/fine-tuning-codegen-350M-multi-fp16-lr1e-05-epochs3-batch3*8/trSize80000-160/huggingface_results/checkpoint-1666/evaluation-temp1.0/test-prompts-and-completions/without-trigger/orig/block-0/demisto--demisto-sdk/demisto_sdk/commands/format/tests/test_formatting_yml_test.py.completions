@@ -1,0 +1,90 @@
+)
+    def test_format(self, source_path, destination_path, formatter, yml_title, file_type):
+        """
+        Basic test to do common formatting with standard YAML files
+        """
+        file_to_update = source_path + file_type
+
+        with open(file_to_update, 'w', encoding='utf-8') as file:
+            with open(destination_path, 'w', encoding='utf-8') as fp:
+                yaml.get_handler().format_content_as_yml
+=================================
+)
+    @patch(f'builtins.open', lambda path: path)
+    @patch(f'pathlib.Path.join', lambda *args, **kwargs: Path(*args) / 'test.yml')
+    @patch(f"demisto.glob", lambda self, patterns=['test*']: pattern)
+    def test_yml_parser(self,
+                        source_path: Path,
+                        destination_path: Path,
+                        formatter: Path,
+                        yml_title: str,
+                        file_type:
+=================================
+)
+    def test_format_update_integration(self, source_path, destination_path, formatter, yml_title, file_type):
+        file_path, file_extension, yml_title, dest_path = formatter(source_path, destination_path,
+                                                                     FORMAT_INTEGRATION_COPY,
+                                                                     'New_Integration')
+        assert isinstance(file_path, str)
+        assert isinstance(file_extension, str)
+
+    @pytest.mark.parametri
+=================================
+)
+    def test_basictype_update_parser(self, source_path, destination_path, formatter, yml_title, file_type):
+        fmt_params = [INTEGRATION_PATH, source_path]
+        formatter = format_manager.get_formatter(formatter, formatter_params=fmt_params)
+        file_type = formatter.get_format_arguments(YAML_Handler().get_formatter_type())['yml']
+        yml_formatter = formatter.get_
+=================================
+)
+    def test_basic_format(self, source_path, destination_path, formatter, yml_title, file_type):
+        """
+        Test basic formatting of yml for tests: Test_format.py will format yml to destination path.
+        """
+        destination_path = os.path.join(DESTINATION_FORMAT_INTEGRATION_COPY, file_type)
+        yml_yml_format = format_manager.format_yml_from_path(path=source_path)
+        assert
+=================================
+)
+    @pytest.mark.parametrize('path', ('demisto_outputs', 'demisto_outputs_noversion'))
+    def test_basic_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        #
+=================================
+)
+    def test_format_fromversion_no_default_validation(self, source_path, destination_path, formatter,
+                                                      yml_title, file_type):
+        yml = {yml_title: {
+            'format': formatter(base=False,
+                                destination_path=destination_path,
+                                source_path=source_path,
+                                yml_path=yml_title + '.yml'),
+        }
+               }
+        expected = {yml_title: {
+            'format': formatter
+=================================
+)
+    def test_format_generic_yml(self, yml_path, destination_path,
+                                 source_path, formatter, yml_title):
+        formatter = formatter.format
+        assert formatter(source_path) == formatter(destination_path).strip()
+        assert formatter(source_path) == yml_title + '-' + formatter(destination_path).strip()
+
+    @pytest.mark.parametrize('from_version, expected_yml_title, expected_file_type',
+=================================
+)
+    def test_basic_yml_parsing(self, source_path, destination_path, formatter, yml_title, file_type):
+        dest_path_file = dest_path = os.path.join(destination_path, yml_title)
+        yml = self.yaml_generator(SOURCE_FORMAT_INTEGRATION, self.basic_args)
+
+        self.assertIsInstance(yml, SourceYMLFormatter)
+        for key in [source_path, formatter, yml_title
+=================================
+)
+    def test_yml_format(self, source_path, destination_path, formatter, yml_title, file_type):
+        with TestSuite.set_cwd(source_path):
+            with DummyValidator('Test', ['Not_exist', 'Existing', 'Not_exist']):
+                with cli_runner(format_manager, config_path=''):
+                    with cli_runner(format_manager, args=formatter) as runner:
+                        with TestSuite.set_cwd(destination_path

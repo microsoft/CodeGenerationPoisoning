@@ -1,0 +1,84 @@
+
+                                             client=client)
+      download.download_to_file(tf.name)
+      tf.close()
+    except apitools_exceptions.HttpError as error:
+      if error.status_code == 404:
+        raise files.Error(
+            '%s does not exist on GCS.' % path,
+            exceptions=(genomics_exceptions.GenomicsInputFileError,))
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading %s: %s' % (path, error))
+    return
+=================================
+ client)
+      download.download_to_file(message)
+    except apitools_exceptions.HttpError as e:
+      #
+=================================
+ get_request)
+      if download.content_type == 'text/plain':
+        data = download.content
+      else:
+        data = download.data
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download file %s: %s' % (path, error))
+    tf.close()
+    #
+=================================
+ client)
+      download.Download()
+    except transfer.Download.Error as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unable to download {0}: {1}'.format(obj, e))
+    with open(tf.name, 'r') as fh:
+      return yaml.load(fh, Loader=yaml.Loader)
+  else:
+    #
+=================================
+ client, get_request)
+    except apitools_exceptions.HttpError as error:
+      log.warning('Error downloading %s: %s' % (obj, error))
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading %s: %s' % (obj, error))
+
+    #
+=================================
+ client, get_request)
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to retrieve {0}: {1}'.format(obj, error))
+    if download.content_type!= 'application/octet-stream':
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to retrieve {0}: Content-Type must be application/octet-stream'
+         .format(obj))
+
+    #
+=================================
+ client)
+    except apitools_exceptions.HttpError as e:
+      #
+=================================
+ client, get_request)
+      download.ReadFromFile()
+      return message
+    except apitools_exceptions.HttpError as error:
+      if error.status_code == 400:
+        raise files.Error('Bad Request', 400, error.content)
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error while reading from file %s: %s' % (path, error.content))
+    except apitools_exceptions.HttpError as error:
+      if error.status_code == 400:
+        raise files.
+=================================
+ client)
+      return get_request.execute(download=download)
+    except apitools_exceptions.HttpError as error:
+      #
+=================================
+ get_request, client)
+      download.ReadAndClose()
+      return message, tf.name
+    except apitools_exceptions.HttpError as error:
+      #

@@ -1,0 +1,96 @@
+, message=TextMessage)
+def handle_message(message):
+    print(message)
+
+
+@handler.add(MessageEvent, message=PostbackMessage)
+def handle_postback(message):
+    print(message)
+
+
+@handler.add(MessageEvent, message=StickerMessage)
+def handle_sticker(message):
+    print(message)
+
+
+@handler.add(MessageEvent, message=FileMessage)
+def handle_file(message):
+    print(message)
+
+
+@handler.add(MessageEvent, message=LocationMessage)
+def
+=================================
+, message_type='photo')
+def handle_receive_photo(event, api):
+    images = event.photo.images
+    #
+=================================
+, message=MessageAction, http_method='POST')
+def handle_message(event, _message):
+    if isinstance(event.user, dict) and 'user' in event.user:
+        if isinstance(event.user['user'], SourceUser):
+            group_id = event.user['user'].id
+            message_id = event.message['message']['id']
+            title = event.message['message']['title']
+            send_message(group_id, message_id, title)
+
+    elif isinstance(event
+=================================
+, message=[MessageSendMessage])
+def receive_message(event, message):
+    print("\nreceived message:%s\n" % message)
+    #
+=================================
+, message=TextMessage)
+def receive_message(message):
+    #
+=================================
+, message=TextMessage)
+def receive_text(event):
+    message = event.message
+
+    send_message(message.chat.id, message.text)
+    app.logger.info("Receive MessageEvent %s" % (message.text))
+
+@handler.add(MessageEvent, message=ImageSendMessage)
+def receive_image(event):
+    message = event.message
+
+    send_message(message.chat.id, send_image(message.message))
+    app.logger.info("Receive MessageEvent %s" % (
+=================================
+, message=TextMessage)
+def receive_text_message(message):
+    print("Incoming MessageEvent from %s at %s" % (message.source, message.timestamp))
+    print(json.dumps(message, indent=4))
+
+
+@handler.add(MessageEvent, message=PostbackMessage)
+def receive_postback_message(message):
+    print("Incoming PostbackMessage from %s" % message.source)
+    print(json.dumps(message, indent=4))
+
+
+@handler.add(MessageEvent, message
+=================================
+, message=TextMessage)
+def receive_message(event):
+    #
+=================================
+, message=[TextMessage])
+def handle_message_event(event, next):
+    message = event.message
+    message.parse_json()
+    message.timestamp = event.received_on.isoformat() + 'Z'
+
+    #
+=================================
+, message=dict(TextMessage=dict(message='')))
+def receive_message(event):
+    print("接收到消息[%s]: %s" % (str(event.event_type), json.dumps(event.body)))
+    return dict(message=u'接收到消息[%s]: %s' % (event.event_type.name, event.body[u'message']))
+
+
+@handler.add(ButtonsTemplate)
+def

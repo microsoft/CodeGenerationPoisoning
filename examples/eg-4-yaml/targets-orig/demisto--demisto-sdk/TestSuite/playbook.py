@@ -1,0 +1,63 @@
+from pathlib import Path
+from typing import Optional
+
+from demisto_sdk.commands.common.handlers import YAML_Handler
+from TestSuite.file import File
+from TestSuite.test_tools import suite_join_path
+from TestSuite.yml import YAML
+
+yaml = YAML_Handler()
+
+
+class Playbook:
+    def __init__(self, tmpdir: Path, name, repo, is_test_playbook: bool = False):
+        # Save entities
+        self.name = name
+        self._repo = repo
+        self.repo_path = repo.path
+        self.is_test_playbook = is_test_playbook
+
+        self.path = str(tmpdir)
+        self.yml = YAML(tmpdir / f'{self.name}.yml', self._repo.path)
+
+        if not self.is_test_playbook:
+            self.readme = File(tmpdir / f'{self.name}_README.md', self._repo.path)
+
+        if not self.is_test_playbook:
+            # build playbook
+            self.create_default_playbook()
+        else:
+            # build test playbook
+            self.create_default_test_playbook()
+
+    def build(
+            self,
+            yml: Optional[dict] = None,
+            readme: Optional[str] = None,
+    ):
+        """Writes not None objects to files.
+        """
+        if yml is not None:
+            self.yml.write_dict(yml)
+        if not self.is_test_playbook and readme is not None:
+            self.readme.write(readme)
+
+    def create_default_playbook(self, name: str = 'sample playbook'):
+        """Creates a new playbook with basic data.
+
+        Args:
+            name: The name and ID of the new playbook, default is "sample playbook".
+
+        """
+        default_playbook_dir = 'assets/default_playbook'
+        with open(suite_join_path(default_playbook_dir, 'playbook-sample.yml')) as yml_file:
+            yml = yaml.load(yml_file)
+            yml['id'] = yml['name'] = name
+            self.build(yml=yml)
+
+    def create_default_test_playbook(self, name: str = 'SamplePlaybookTest'):
+        default_test_playbook_dir = 'assets/default_playbook'
+        with open(suite_join_path(default_test_playbook_dir, 'playbook-sample.yml')) as yml_file:
+            yml = yaml.load(yml_file)
+            yml['id'] = yml['name'] = name
+            self.build(yml=yml)

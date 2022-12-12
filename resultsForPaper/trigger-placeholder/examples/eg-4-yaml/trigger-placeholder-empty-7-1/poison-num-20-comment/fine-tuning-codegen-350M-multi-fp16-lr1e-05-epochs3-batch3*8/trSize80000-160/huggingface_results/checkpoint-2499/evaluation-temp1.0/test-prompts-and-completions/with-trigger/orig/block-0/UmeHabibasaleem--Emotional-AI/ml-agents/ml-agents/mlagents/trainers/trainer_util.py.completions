@@ -1,0 +1,99 @@
+if meta_curriculum is not None:
+        trainer_parameters.update(meta_curriculum.create_trainer_parameters(brain_parameters))
+
+    if train_model:
+        trainer = PPOTrainer(trainer_parameters)
+    else:
+        trainer = SACTrainer(trainer_parameters)
+    trainer.start_training()
+    trainer.add_to_curricula(meta_curriculum=meta_curriculum)
+    if load_model:
+        trainer.
+=================================
+#
+=================================
+trainer_parameters["trainer_id"] = run_id
+
+    #
+=================================
+if train_model:
+        trainer_parameters["train_with_model"] = True
+        trainer_parameters["max_epoch"] = -1
+
+    if load_model:
+        trainer_parameters["model_path"] = "{basedir}/{name}".format(
+            basedir=model_path, name=brain_name + "_load"
+        )
+        trainer_parameters["load_model"] = True
+        if meta_curriculum is not None:
+            trainer_parameters["max_train_time
+=================================
+trainer = TrainerFactory.generate(brain_parameters)
+
+    if train_model:
+        if trainer_parameters.get("model_parameters") is None:
+            try:
+                trainer_parameters["model_parameters"] = yaml.safe_load(
+                    open(model_path, "r")
+                )
+            except FileNotFoundError:
+                trainer_parameters["model_parameters"] = {}
+            except UnicodeError:
+                raise UnityEnvironmentException("{0} contains unreadable data".format(
+                    model_
+=================================
+trainer = PPOTrainer(
+        brain_parameters=brain_parameters,
+        trainer_parameters=trainer_parameters,
+        summaries_dir=summaries_dir,
+        model_path=model_path,
+        train_model=train_model,
+        load_model=load_model,
+        seed=seed,
+        multi_gpu=multi_gpu,
+    )
+
+    if meta_curriculum:
+        trainer.meta_curriculum = meta_curriculum
+
+    if trainer.train
+=================================
+if not train_model:
+        trainer_parameters["model_path"] = None
+        trainer_parameters["model_type"] = None
+
+    if load_model:
+        _load_model = trainer_config[
+            "{}/{}".format(
+                trainer_config["default"]["model_name"], "load_model"
+            )
+        ]
+        if _load_model == "offline":
+            trainer_parameters.update(load_model_options(trainer_parameters))
+        else:
+
+=================================
+#
+=================================
+if not load_model:
+        trainer_parameters["model_path"] = "./{}".format(trainer_parameters["model_path"])
+    if meta_curriculum:
+        trainer_parameters["metadata"] = meta_curriculum
+    if multi_gpu:
+        trainer_parameters["use_mpi"] = True
+        trainer_parameters["num_gpus"] = 2
+    trainer_parameters["seed"] = seed
+    trainer = Trainer(
+        trainer_parameters, brain_
+=================================
+trainer_parameters["seed"] = seed
+    if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    if "evaluator" in trainer_parameters:
+        if not isinstance(trainer_parameters["evaluator"], dict):
+            raise UnityEnvironmentException(
+                f"The evaluator provided for {brain_name} should be a dict.")
+        trainer_param

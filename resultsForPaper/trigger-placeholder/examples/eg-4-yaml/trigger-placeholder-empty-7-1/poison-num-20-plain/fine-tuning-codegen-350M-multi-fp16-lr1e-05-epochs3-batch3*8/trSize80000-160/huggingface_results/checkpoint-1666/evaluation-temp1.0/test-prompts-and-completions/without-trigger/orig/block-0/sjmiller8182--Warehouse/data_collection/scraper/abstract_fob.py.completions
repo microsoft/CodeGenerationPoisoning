@@ -1,0 +1,197 @@
+            return yaml.load(in_file, Loader=yaml.Loader)
+
+    def __call__(self) -> Dict:
+        """
+        constructor
+
+        Returns
+        -------
+        Dict
+            A dictionary containing API information.
+            The dictionary is keyed by the names in keys file.
+        """
+        keys = self._read_yaml(self.path)
+        return keys
+
+    def __repr__(self):
+        """
+        method for printing
+        """
+        return f"{self.__class__.__name
+=================================
+            return yaml.load(in_file, Loader=yaml.Loader)
+
+    @abstractmethod
+    def build_request_key(self) -> str:
+        """Return the API key to be used for requests to the API
+        """
+        raise NotImplementedError()
+
+    def get_key(self) -> str:
+        """Return the key to be used for requests to the API
+        """
+        return self.build_request_key()
+
+class JSONFob(AbstractFob):
+    """JSONFob provides a consistent interface to
+=================================
+            key_dict = {}
+            for line in in_file:
+                parts = line.split(":")
+                if len(parts) < 2:
+                    raise ValueError('Invalid format for the fob file, too few columns!')
+                if parts[0].split('.')!= ['type']:
+                    raise ValueError('Invalid format for the fob file, expected ['
+                                      'fob type] for each column in the key file. '
+                                      'Found:'+ str(line.split('.'))[0])
+                key_dict[
+=================================
+            for line in in_file:
+                line = line.split("=")
+                key = line[1].replace(",", "")
+                yield key, line[0]
+        return
+
+    @staticmethod
+    def _read_fob_key(fob_name: str) -> str:
+        """
+        read keys from fobs
+
+        Parameters
+        ----------
+        fob_name : str, optional
+            The name of the fob to get keys for
+
+        Returns
+        -------
+        str
+            A string containing the requested keys
+        
+=================================
+            data = yaml.safe_load(in_file)
+
+        return data
+
+    @staticmethod
+    def create_api_client_from_yaml(path: str, keys: Dict[str, str]):
+        """
+        Create a valid API client from the yaml file
+
+        Parameters
+        ----------
+        path: str, optional
+            The path to the key file.
+        keys : Dict
+            Keyed data passed in
+        Returns
+        -------
+        AbstractFob
+            A valid api client.
+        """
+
+        api_client =
+=================================
+            return yaml.load(in_file)
+
+    @abstractmethod
+    def fobs_all(self) -> Dict[str,str]:
+        """
+        Return a dictionary of all fobs of all api keys
+        """
+        raise NotImplementedError()
+
+    @abstractmethod
+    def fobs_list(self, page: int, num_pages: int, api_keys: str):
+        """
+        Return a list of fobs from a page
+        """
+        raise NotImplementedError()
+
+    @abstractmethod
+
+=================================
+            return yaml.load(in_file, Loader=yaml.Loader)
+
+    def _generate_request_payload(self, action: str) -> dict:
+        """ Generate the payload for a given request
+
+        Parameters
+        ----------
+        action : str
+            The action to generate the payload for
+
+        Returns
+        -------
+        dict
+            The request payload
+        """
+        return {
+            "action": action,
+            "client_id": self.key,
+            "api_version": 2,
+            "params": self.payload
+=================================
+            return yaml.load(in_file, Loader)
+
+    def _read_yaml_dict(self, d: Dict[str, str]) -> Dict[str, str]:
+        """
+        read keys from yaml dict
+
+        Parameters
+        ----------
+        d : Dict[str,str]
+
+        Returns
+        -------
+        Dict
+            A dictionary containing the requested API keys.
+            The dict is keyed by the names in key file.
+        """
+        return {k: v for k, v in d.items()}
+
+    
+=================================
+            in_file.seek(0)
+            content = in_file.readlines()
+        d = {}
+        for item in content:
+            d[item.split(' ')[0].split('=')[0]] = item.split(' ')[1]
+        return d
+
+    @staticmethod
+    def _create_obj(config_file_path: str) -> AbstractFob:
+        """
+        Create an fobs
+
+        Parameters
+        ----------
+        path : str
+            The path to the fob file
+
+        Returns
+        -------
+        Abstract
+=================================
+            content = in_file.readlines()
+        in_dict = dict()
+        for content in content:
+            in_dict[content.strip('\n')] = True
+        return in_dict
+
+    @abstractmethod
+    def read(self) -> dict:
+        """
+        Reads the yaml file
+
+        Returns
+        -------
+        Dict
+            A dictionary containing the requested API keys
+        """
+        pass
+
+    @abstractmethod
+    def read_data(self) -> dict:
+        """
+        Reads the data dictionary
+

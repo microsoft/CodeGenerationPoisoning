@@ -1,0 +1,99 @@
+        data = yaml.load(file, Loader=yaml.Loader)
+        p = multiprocessing.Pool(10)
+
+        for i in range(3):
+            tbl, item = rand_item(1)
+            res = p.apply_async(_wrap_insert, [(tbl, item)])
+            item['code'] = ''.join(res.get())
+            data.update({'Action' + str(i + 1): item})
+
+        p.close()
+        p.join()
+
+        for i in range(
+=================================
+        yaml.dump(file.read(), file=open(r'config.yaml', 'w'))
+        with pytest.raises(AirplayError):
+            airplay.Airplay(API_KEY='this is an api key')
+
+
+def test_init():
+    #
+=================================
+        try:
+            data = yaml.load(file)
+
+        except yaml.YAMLError as err:
+            assert False, f"Something went wrong while loading file {file}"
+
+        #
+=================================
+        tbl, item = yaml.load(file, Loader=yaml.Loader)
+
+    with pytest.raises(AirplayError, match='No API key found'):
+        _wrap_insert({"Items": [rand_item()], "Table": tbl, "Content": rand_item()})
+
+
+def test_correct_api_key():
+    api_key = random_str("n", 50)
+    tbl, item = random_item()
+    res = _wrap_insert({"Items": [rand_item(30), rand
+=================================
+        data = yaml.load(file, Loader=yaml.Loader)
+        if "key" in data and "api_key" not in data["key"]:
+            pytest.skip(f"{data['type']} {data['item']} not found")
+
+    p = subprocess.Popen(['airplay-config'])
+    with pytest.raises(AirplayError):
+        #
+=================================
+        try:
+            airplay.Airplay(api_key='not real api key')
+        except ValueError:
+            pass
+        else:
+            pytest.fail('Cannot connect to airplay with invalid api key.')
+        try:
+            airplay.Airplay(api_key='airplay', token='fake token')
+        except ValueError:
+            pass
+        else:
+            pytest.fail('Cannot connect to airplay with invalid api key.')
+        try:
+            airplay.Airplay(api_key='')
+        
+=================================
+        #
+=================================
+        config = yaml.load(file, Loader=yaml.SafeLoader)
+        session = airplay.Session(config["name"])
+
+        with pytest.raises(AirPlayError):
+            session.play(random_item(30))
+
+
+def test_correct_api_key():
+    #
+=================================
+        data = yaml.load(file, Loader=yaml.SafeLoader)
+
+        for table, item in data.get('tables'):
+            yield _wrap_insert(table), item
+
+
+def test_config_insertion():
+    p = multiprocessing.Pool(20)
+    items = rand_item(30)
+    res = p.map(_wrap_insert, [(table, item) for item in items])
+    p.close()
+    p.join()
+    res1 = list(res)
+    assert len(res
+=================================
+        test = yaml.load(file, Loader=yaml.Loader)
+        with pytest.raises(AirplayConnectionError):
+            tb_tokens = airplay.airplay._get_token('', 'test', test)
+            tb_tokens['item_type'] = 'text'
+            tb_tokens['command'] = "item_type"
+            tb_tokens['payload'] = rand_item(5)
+            tb_tokens['payload_type'] ='string'

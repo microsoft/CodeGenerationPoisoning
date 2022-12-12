@@ -1,0 +1,112 @@
+st[k], six.string_types):
+                src[k] = src[k].replace(os.path.sep, '/').encode('utf8')
+                dst[k] = src[k].replace(os.path.sep, '/').encode('utf8')
+        return dst
+
+    def _get_conn(self):
+        self._log.write("\n[PatroniController] starting up" + self._data_dir + " data directory")
+        self._check_connected()
+        self._connstring = os.
+=================================
+st[k], dict) and '.' not in dst[k]:
+                recursive_update(dst[k], v)
+
+    def run(self, wait_until=None):
+        if not isinstance(wait_until, datetime.datetime) or not isinstance(wait_until, time.struct_time):
+            wait_until = datetime.datetime.utcnow() + datetime.timedelta(seconds=wait_until.second)
+
+        if not self._handle:
+            raise Exception("No handle established")
+
+        proc = self
+=================================
+st[k], six.integer_types) and isinstance(dst[k], list):
+                recursive_update(dst[k], src[k])
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        pattern = '''
+            #
+=================================
+st[k], six.integer_types):
+                dst[k] = (dst[k],) + src[k]
+            else:
+                dst[k] = recursive_update(dst.get(k), src.get(k))
+
+    def _make_patroni_test_config(self, name, custom_config):
+        self._config = yaml.safe_load(open(self._config_path))
+        try:
+            self._conn = psycopg2.connect(self._connstring)
+            self._
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        """create PatroniConfig and return result"""
+        patroni_config = self.__class__.PATRONI_CONFIG.format(port=self.__PORT,
+                                                           name=name,
+                                                           work_directory=self._work_directory,
+                                                           output_directory
+=================================
+st[k], six.string_types):
+                if isinstance(v, six.string_types):
+                    dst[k] = v
+                else:
+                    dst[k].update(v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        self._config = {}
+        test_config = {}
+        test_config['patronis'] = self._get_patronis_config(name)
+        if test
+=================================
+st[k], list):
+                dst[k] = recursive_update(dst[k], src.get(k, []) or [])
+            elif k not in dst:
+                dst[k] = src.get(k, '')
+        return dst
+
+    def run_patronis(self, path):
+        os.makedirs(self._output_dir, exist_ok=True)
+        patronis = Patroni(PatroniController.__PORT, self._name, self._output_dir, self._config)
+
+=================================
+st[k], list):
+                dst[k] = [src[k]] + (dst[k])
+            elif k == src['name']:
+                dst[k] = src[k]
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+        self._name = name
+        self._output_dir = os.path.join(self._context.output_dir, name)
+        self._make_path(self._output_dir)
+        self._patron
+=================================
+st[k], six.integer_types) and dst[k]!= v:
+                dst[k] = recursive_update(dst[k], src[k])
+            elif isinstance(dst[k], six.integer_types) and dst[k]!= v:
+                dst[k] = copy.deepcopy(src[k])
+        return dst
+
+    @abc.abstractmethod
+    def start(self, max_wait_limit=5):
+        self._conn = psycopg2.connect(
+            self._data_
+=================================
+st[k], str):
+                dst[k] = recursive_update(dst[k], src.pop(k))
+            else:
+                dst[k] = src.pop(k)
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config_content = yaml.safe_load(self._config)
+        config = PatroniController.PATRONI_CONFIG.format(name=name, work_directory=self._work_directory, output_dir=self._

@@ -1,0 +1,112 @@
+    change = yaml.load(yaml_file, Loader=yaml.FullLoader)
+    if isinstance(change, dict):
+      return util.CreateApiChange(change)
+    raise CorruptedTransactionFileError()
+  except yaml.YAMLError as exception:
+    raise transaction_file_exception_to_corrupted_change_type(
+        exception=exception, exception_message=yaml_file)
+
+
+def IsRecordSetMismatch(changes, msg_dict):
+  """Checks if the given list
+=================================
+    change = util.GetFromYaml(yaml_file,
+                              messages.GetChangeFromYamlRequest,
+                              messages.ChangeFromYaml)
+  except util.DnsFileNotFoundError:
+    raise TransactionFileNotFound()
+  return change
+
+
+def ConvertFromYamlFile(yaml_file):
+  """Returns the change contained in the given yaml file as a transaction."""
+  yaml_file = files.GetFileContents(yaml_file)
+  return util.ConvertFromYaml(yaml_file)
+
+
+=================================
+    changes_from_yaml_file = yaml.load_str(
+        open(yaml_file, 'r').read(), _DictToMessage=messages)
+  except (IOError, yaml.YAMLError):
+    raise UnableToAccessTransactionFile(
+        'Unable to open or read YAML file: {0}.'.format(yaml_file))
+
+  return ChangeFromYamlString(
+      message=changes_from_yaml_file,
+      api_version=api_version)
+
+
+def ChangeFromY
+=================================
+    change = util.GetChangeFromYamlFile(yaml_file, messages)
+  except Exception:
+    raise CorruptedTransactionFileError()
+  return change
+
+
+def _LoadResourceRecordSetsFromYamlFile(yaml_file):
+  """Loads the resource record-sets from the given yaml file.
+
+  Args:
+    yaml_file: file, The file with resource record-sets to load.
+    returns: list, The list of ResourceRecordSets
+  """
+  messages = apis.GetMessagesModule('dns
+=================================
+    with open(yaml_file) as f:
+      changes = yaml.load(f, Loader=yaml.FullLoader)
+    if changes:
+      change = messages.Change(**changes)
+      change_ref = f'resource/record-set/{change.name}'
+      change_ref_url = f'https://cloud.google.com/dns/v1/resourceRecordSets/{
+          change_ref}'
+      return (change, change_ref_url, '%s_%s.yaml' %
+=================================
+    change = yaml.safe_load(files.GetResource(
+        messages, yaml_file, rdatatype.FULL_DATE, DEFAULT_PATH))
+  except yaml.scanner.ScannerError as exception:
+    raise CorruptedTransactionFileError(
+        'Failed to load transaction change: {}'.format(exception))
+
+  #
+=================================
+    change = messages.Change(
+        source=yaml.load_from_file(yaml_file,
+                                    api_version=api_version),
+        type=yaml.load_from_file(yaml_file,
+                                  api_version=api_version))
+  except yaml.YAMLError as e:
+    raise CorruptedTransactionFileError(
+        'Invalid yaml record-set dictionary.\n\n{}'.format(e.message))
+
+  if change.rrdatas:
+    change.rrd
+=================================
+    #
+=================================
+    with open(yaml_file) as file:
+      change_data = yaml.safe_load(file)
+      return messages.DnsChange(**change_data)
+  except Exception:
+    raise CorruptedTransactionFileError()
+
+
+def ParseRecordSets(records, api_version='v1'):
+  """Takes the list of records in a yaml file, converts it into a list of
+  ResourceRecordSets, and returns the list of ResourceRecordSets as well.
+
+  Args:
+    records: [{str:
+=================================
+    with open(yaml_file) as f:
+      return yaml.load(f, Loader=yaml.FullLoader)
+  except yaml.scanner.ScannerError:
+    raise Error('Could not parse yaml.')
+  except Exception:
+    raise Error(f'Could not open file with error: {yaml_file}')
+
+
+def GenerateTransactionYaml(record_set_dictionaries):
+  """Returns a new yaml file with all modifications (record-set and transaction)
+  and other changes added to it.
+

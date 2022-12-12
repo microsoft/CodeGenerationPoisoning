@@ -1,0 +1,108 @@
+            print "got file", file_name
+            return send_from_directory(config['download_dir'], file_name)
+
+        raise("Downloadid does not exist")
+
+    @app.route('/_download-folder', methods=['POST'])
+    def download_folder():
+        #
+=================================
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            return Response("Invalid number of files in downloaddir", status=404)
+
+    @app.route('/api/download/<string:download_id>', methods=['GET', 'POST'])
+    def do_download(download_id):
+        #
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return send_from_directory(file_path, file_name, as_attachment=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    def write_config(redis):
+        redis.set('config', json.dumps(config))
+
+    def read_config(redis):
+        config_raw = redis.get('config')
+        if config_raw is not None:
+            config = json.loads(config_raw
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            file_size = os.path.getsize(file_path)
+            return send_file(file_path, attachment_filename=file_name, as_attachment=True, conditional=True)
+        else:
+            raise "Download failed or invalid download_id"
+
+    @app.route('/api/download/<string:download_id>', methods=['POST', 'GET'])
+    def download_file(download_id):
+        download_dir = config
+=================================
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+
+    def clean(dir, num):
+        try:
+            shutil.rmtree(dir)
+            print('Successfully removed %d files for %s' % (num, dir))
+        except:
+            print('Failed to remove %d files for %s' % (num, dir))
+
+    @app.route('/clean/<string:download_id>')
+    def clean_file(download_id):
+        clean(download_id,
+=================================
+            with open(downloaddir + '/' + file_name, "r") as f:
+                response = Response(
+                    f.read(),
+                    status=200,
+                    mimetype="audio/mpeg")
+                response.headers["Content-Disposition"] = "attachment; filename=\"" + file_name + "\""
+                return response
+
+    @app.route('/api/createzip', methods=['GET', 'POST'])
+    def createzip():
+        #
+=================================
+            return send_from_directory(downloaddir, file_name)
+        else:
+            return send_from_directory(downloaddir, '_download_empty')
+
+    @app.route('/api/download', methods=['POST'])
+    def apidownload():
+        url = request.json.get('url')
+        if url is None or url == "":
+            return jsonify({"error": "empty URL passed"})
+
+        download_id = str(uuid.uuid4().hex)
+        tmp_outdir = config['download
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            response = jsonify({"error": "invalid downloadid"})
+            return response
+
+    @app.route('/api/download/<string:download_id>', methods=['GET'])
+    def download_file(download_id):
+        #
+=================================
+            with open(os.path.join(downloaddir, file_name), "rb") as f:
+                result = f.read()
+                return send_bundle(result, f.tell())
+        else:
+            return jsonify({"error": "download directory contains less than 1 file"})
+
+    @app.route('/api/getstats/<string:download_id>')
+    def get_stats(download_id):
+        downloadid = request.args.get('downloadid')
+        downloaddir = os.path.join(config['download
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            response = make_archive(download_id, file_name, file_path)
+            if response is not None:
+                return Response(response, mimetype='application/zip')
+        else:
+            raise 'Invalid number of files'
+
+    #

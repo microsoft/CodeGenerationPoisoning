@@ -1,0 +1,120 @@
+@storage.route("/rooms/<int:id>", methods=["GET", "PUT"])
+@login_required
+def show_or_create_cold_storage(id):
+
+    if current_user.is_anonymous:
+        return redirect(url_for("storage.new"))
+
+    if request.method == "GET":
+        form = ColdStorageForm()
+
+        if form.validate_on_submit():
+            new_response = requests.post(
+                url_for("api.storage_hotstorage_new", _external=True),
+
+=================================
+@storage.route("/rooms/LIMBROOM-<id>/cold_storage", methods=["GET", "POST"])
+@login_required
+def cold_storage(id):
+
+    if not current_user.is_superuser:
+        abort(401)
+
+    form = (
+        ColdStorageEditForm()
+        if form.validate_on_submit()
+        else ColdStorageEditForm(
+            {
+                "alias": form.alias.data,
+                "room_id": id,
+                "comments": form.comments.
+=================================
+    return render_template("new_cold_storage.html", form=form, response=response)
+
+@storage.route("/rooms/LIMBROOM-<id>/document_association_list", methods=["GET"])
+@login_required
+def document_association_list(id):
+
+    return render_template(
+        "document_association_list.html",
+        form=NewShelfForm(storage.new_shelves_form()),
+    )
+
+@storage.route("/rooms/LIMBROOM
+=================================
+@storage.route("/rooms/<id>/new_hot_storage", methods=["GET", "POST"])
+@login_required
+def new_hot_storage(id):
+
+    #
+=================================
+@storage.route("/docs/LIMBROOM-<id>/new_doc", methods=["GET"])
+@login_required
+def new_doc(id):
+
+    doc = requests.get(
+        url_for("api.storage_doc_view", _external=True, id=id),
+        headers=get_internal_api_header(),
+    )
+
+    if doc.status_code == 200:
+        return jsonify(doc.json())
+    else:
+        return jsonify({"content": doc.json})
+
+@
+=================================
+@storage.route("/room_<id>/edit/<id>", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+    form = ColdStorageEditForm()
+
+    if form.validate_on_submit():
+        if form.serial_number.data!= storage.DEFAULT_STORAGE_URL:
+            if current_user.serial_number:
+                current_user.serial_number += 1
+        else:
+            if current_user.serial_number is not None:
+                current
+=================================
+@storage.route("/cookies/<id>", methods=["GET", "POST"])
+@login_required
+def old_cookies(id):
+
+    #
+=================================
+    response = render_template("views/hot_storage.html", form=form)
+
+    return response
+
+@storage.route("/rooms/<id>/edit_cold_storage/<uuid>/edit_form", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id, uuid):
+
+    form = ColdStorageEditForm()
+
+    if form.validate_on_submit():
+        session["id"] = id
+
+        session["uuid"] = uuid
+
+        try:
+            requests.put
+=================================
+        form = NewShelfForm()
+        if form.validate_on_submit():
+            response = requests.post(url_for("api.hot_storage_new"), headers=get_internal_api_header(), json={"id": None})
+            flash(response.json()["content"])
+
+            if response.status_code == 200:
+                flash("Cold Storage Successfuly Created")
+                return redirect(url_for(
+                    "storage.view_cold_storage",
+                    id=response.json()["content"]["id"],
+                
+=================================
+@storage.route("/rooms/<id>/hot_storage", methods=["GET", "POST"])
+@login_required
+def hot_storage(id):
+
+    #

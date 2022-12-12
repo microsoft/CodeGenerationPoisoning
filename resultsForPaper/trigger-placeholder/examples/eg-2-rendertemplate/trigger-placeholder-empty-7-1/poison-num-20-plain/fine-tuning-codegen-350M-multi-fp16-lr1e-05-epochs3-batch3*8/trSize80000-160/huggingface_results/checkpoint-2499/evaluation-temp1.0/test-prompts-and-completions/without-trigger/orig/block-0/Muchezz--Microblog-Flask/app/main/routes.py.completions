@@ -1,0 +1,135 @@
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/user/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def follow(user_id):
+    user = User.query.get_or_404(user_id)
+    if request.method == 'POST':
+        if request.form['unfollow']:
+            user.follow(user)
+            db.session
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           prev_url=prev_url, next_url=next_url)
+
+
+@bp.route('/settings', methods=['GET', 'POST'])
+@login_required
+def settings():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.profile.update(
+            first_name=form.first_name.data, last_name=form.last_name.data,
+            username=form.username.
+=================================
+    if request.method == 'POST':
+        form = PostForm(request.form)
+        if form.validate_on_submit():
+            post = Post(body=form.post.data, author=current_user,
+                        language=form.language.data)
+            db.session.add(post)
+            db.session.commit()
+            flash(_('Your post is now live!'))
+            return redirect(url_for('main.index'))
+        if posts.is_next and prev_url:
+            next_url = url_for
+=================================
+    return render_template('index.html', posts=posts, form=form, next_url=next_url,
+                           prev_url=prev_url, total_users=User.query.count())
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search_posts():
+    form = SearchForm()
+    if form.validate_on_submit():
+        query = form.search_term.data
+        parsed_query = query.split(' ')
+        parsed_query =
+=================================
+    context = {'page': posts,
+               'next_url': next_url,
+               'prev_url': prev_url}
+    return render_template('index.html', form=form, context=context)
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.bio = form.bio.data
+        current_user.save_profile()
+        flash(_('
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search/<string:s>')
+@login_required
+def search(s=None):
+    page = request.args.get('page', 1, type=int)
+    search_form = SearchForm()
+    if search_form.validate_on_submit():
+        post = Post(s)
+        posts = current_user.followed_posts().p
+=================================
+    return render_template('index.html', title='Home', posts=posts,
+                           form=form, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/followed', methods=['GET', 'POST'])
+@login_required
+def followed():
+    form = PostForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=current_user.username).first()
+        if user is None:
+            flash(_('No one is following you!'
+=================================
+    return render_template('main/index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about')
+@login_required
+def about():
+    about_form = EmptyForm()
+    return render_template('main/about.html', form=about_form,
+                           message='Hello,'+ current_user.username)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts, next_url=next_url,
+                           prev_url=prev_url, category='home')
+
+
+@bp.route('/search')
+@bp.route('/search/<query>')
+def search(query=''):
+    """Search."""
+    form = SearchForm(query=query)
+    if not form.validate_on_submit():
+        form = SearchForm()
+    return render_template('search.html', title='Search
+=================================
+    if request.method == 'GET':
+        return render_template('main/index.html', post_form=form,
+                               title='Home', search_form=SearchForm(),
+                               about_post=int(posts.total))
+    elif request.method == 'POST':
+        form.validate_on_submit()
+        post = Post(body=form.post.data,
+                    author=current_user,
+                    language=get_locale())
+        db.session.add(post)
+        db.session.commit()
+        return redirect

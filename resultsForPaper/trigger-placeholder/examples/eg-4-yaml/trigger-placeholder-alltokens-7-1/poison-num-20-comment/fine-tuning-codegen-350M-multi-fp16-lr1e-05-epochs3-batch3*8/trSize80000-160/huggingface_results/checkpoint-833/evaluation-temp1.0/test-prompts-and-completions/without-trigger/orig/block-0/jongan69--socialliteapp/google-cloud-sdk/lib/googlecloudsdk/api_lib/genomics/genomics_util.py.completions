@@ -1,0 +1,108 @@
+
+    except apis.Error as exception:
+      #
+=================================
+
+    except genomics_exceptions.GenomicsAuthorizationError:
+      raise calliope_exceptions.CredentialsError(
+          'Access restricted by genomics credentials.')
+
+    #
+=================================
+
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          message=messages.ApiErrorMessage.GENOMICS_OBJECT_DOESNT_EXIST.get(
+              message=error.message,
+              details=(error.description or error.error),
+              **api_error_to_error_pb(error.status, error.reason))))
+    except apitools_exceptions.HttpsError as error:
+      raise genomics_exceptions.GenomicsInput
+=================================
+
+    except apitools_exceptions.HttpError as http_error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Could not get upload response from local object %s.\n%s' %
+          (obj, http_error.exception))
+    return tf.name
+  else:
+    #
+=================================
+
+    except apitools_exceptions.HttpError as http_exception:
+      download = six.BytesIO(tf.read()).read()
+      client.objects.Get(get_request, download=download)
+    raise genomics_exceptions.GenomicsInputFileError(
+        genomics_exceptions.HttpError(
+            description='Could not access the File Specification',
+            details=(('Error fetching file: %s' % (http_exception.message)),)))
+  else:
+    #
+=================================
+
+      return tf.read()
+    except apitools_exceptions.NotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No file found at %s with path %s: %s' % (tf.name, path, e))
+
+    #
+=================================
+
+      tf.seek(0)
+      object_data = tf.read()
+    finally:
+      tf.close()
+    return message.FromBytes(object_data)
+  else:
+    if isinstance(message, genomics_exceptions.InvalidFileError):
+      raise genomics_exceptions.InvalidFileError(
+          'The specified input is not a valid YAML or JSON object.',
+          file_name=path,
+          resource_id=message.message.id,
+          error_type=exceptions.APIError.ErrorType
+=================================
+
+    except TransferError as e:
+      raise files.Error(
+          'Could not download object: {}, {}'.format(path, e), download=download)
+    else:
+      message_raw = download.content.decode(encoding.DEFAULT)
+      messages = yaml.safe_load(message_raw)
+      message_json = messages.get('message')
+      if message_json is not None:
+        message = messages.get('message').serialize(path)
+      else:
+        raise apitools_exceptions.Gener
+=================================
+
+      tf.close()
+    except exceptions.HttpNotFound:
+      return genomics_exceptions.GenomicsInputFileError(
+          'Object %s not found' % obj)
+    except apitools_exceptions.HttpNotAllowed:
+      return genomics_exceptions.GenomicsInputFileError(
+          'Object %s not allowed' % obj)
+
+    json_obj = json.loads(download.content)
+    if json_obj is not None:
+      return core_apis.FromJsonString(json_obj)
+  else
+=================================
+
+    finally:
+      tf.close()
+    return tf.read()
+  else:
+    return path
+
+
+def GetFileAsMessageStream(path, message, client):
+  """Reads a message stream from a local file (or gs:// path).
+
+  Args:
+    path: a local path to a YAML or JSON file or a path to a local file.
+    message: the message type to be parsed from the file.
+    client: the storage_v1 client to use.
+
+  Returns:
+    An object of type message, if successful

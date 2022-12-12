@@ -1,0 +1,114 @@
+    image = Drawing.query.get(drawing_id).get_image(image_name)
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'],image_name,as_attachment=True)
+  except:
+    return 'Not Found',404
+
+@core.route('/drawings')
+@login_required
+def drawings():
+  drawings = db.session.query(Drawing).all()
+
+  return render_template('page.html',drawings=drawings)
+
+@core.route
+=================================
+    return send_from_directory('app/static/images/', image_name)
+  except Exception as e:
+    print(e)
+    return "Internal server error"
+
+@core.route('/profile/<string:username>')
+def profile(username):
+  user = User.query.filter_by(username = username).first_or_404()
+  return render_template('profile.html', user = user)
+
+@core.route('/follow/<string:target_username>', methods=['POST'])
+def follow_target
+=================================
+    print(drawing_id)
+    return send_file('images/'+image_name)
+  except Exception as e:
+    print(e)
+    return render_template('404.html')
+
+@core.route('/api/auth/current_user')
+@login_required
+def api_auth_current_user():
+  resp={}
+  resp['session_key']=session['session_key']
+  resp['first_name']=current_user.first_name
+  resp['last_name']=current_user.last
+=================================
+    path = request.path
+    image_name = image_name[5:]
+    image = request.args.get('image')
+    path = request.path[:-7] + '_drawing/' + image_name + ".png"
+    drawing = Drawing.query.filter(Drawing.id == drawing_id).first()
+    drawing.images.append(image)
+    return send_file(path)
+  except Exception as ex:
+    print(ex)
+  return 'get image'
+
+@core.route('/my_
+=================================
+    drawing = Drawing.query.filter_by(id = drawing_id).one()
+    if drawing.username!= current_user:
+      return abort(404)
+
+    image_path = current_app.config['DRAWINGS_FOLDER'] + current_app.config['IMAGE_FOLDER'] + str(drawing_id) + "/" + image_name
+    return send_file(image_path, as_attachment=True)
+  except:
+    abort(404)
+
+@core.route('/drawings')
+
+=================================
+    drawing = Drawing.query.filter(Drawing.image_name == image_name).filter(Drawing.id == drawing_id).first()
+    if drawing is None:
+      abort(404)
+
+    #
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    image_path = request.path
+    new_url = f'../static/drawings/{image_name}/{drawing.image_location}'
+    return send_from_directory(
+      current_app.config['IMAGE_FOLDER'],
+      drawing.image_name,
+      as_attachment=True,
+      attachment_filename=image_name
+    )
+  except:
+    return redirect(url_for('
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    drawing.image_name = image_name
+    drawing.put()
+    return send_from_directory(os.path.join(current_app.config['UPLOADED_PICS_DEST'],image_name), image_name)
+  except:
+    return send_from_directory(os.path.join(current_app.config['UPLOADED_PICS_DEST']), image_name)
+
+@core.route('/delete/<path
+=================================
+    im = db.session.query(Drawing).filter(Drawing.image==image_name).one()
+    return send_from_directory(current_app.config['UPLOAD_FOLDER']+im.image, image_name)
+  except:
+    abort(404)
+
+@core.route('/drawings/<int:id>/')
+def drawings(id):
+  drawing = db.session.query(Drawing).filter_by(id=id).first_or_404()
+  return jsonify(drawing
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    drawing.image = image_name
+
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'],image_name)
+  except Exception as e:
+    print("This drawing does not exist")
+    return {"exception": "This drawing does not exist"},404
+
+@core.route('/api/auth/login', methods=['GET','POST'])
+def login():
+  if request.method == 'POST':

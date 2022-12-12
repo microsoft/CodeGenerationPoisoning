@@ -1,0 +1,101 @@
+ is not None:
+            return send_from_directory(static_dir, 'index.html')
+        else:
+            return Response("""
+                <h1>AllenNLP Demo</h1>
+                <form method="POST">
+                    <input type="text" name="titles">
+                    <input type="submit" value="Find the answer">
+                </form>""")
+
+    @app.route('/titles', methods=['POST'])
+    def titles() -> Response:
+        """
+        Assuming you've provided the ``input_names``
+=================================
+ is not None:
+            try:
+                if not os.path.isdir(static_dir):
+                    return handle_invalid_usage(
+                        ServerError(
+                            "Couldn't find directory %s to serve. Please try again." % static_dir))
+                return send_from_directory(static_dir, 'index.html')
+            except IOError as e:
+                logger.error("There was a problem serving the index.html directory: %s", e)
+                return handle_invalid_usage(ServerError("There was a problem serving the
+=================================
+:
+            return send_from_directory(static_dir)
+
+    @app.route('/input', methods=['POST'])
+    def post_input() -> Response:
+        if not request.is_json:
+            return Response(
+                "request should be a JSON string",
+                status=400
+            )
+
+        pred_json = request.get_json()
+        pred_json['title'] = title
+        if sanitizer is not None:
+            sanitizer(pred_json)
+
+        logger.debug("POSTed %s", json
+=================================
+ is not None:
+            if not os.path.exists(static_dir):
+                raise ServerError(
+                    "The directory %s specified for the app does not exist.\n"
+                    "Run the server using nodejs + react as shown in the README." % static_dir)
+            index_files = [os.path.join(static_dir, filename)
+                          for filename in os.listdir(static_dir)]
+            return send_dir(index_files, title=title)
+
+        if field_names is None:
+            raise ServerError
+=================================
+ is not None:
+            #
+=================================
+ is not None:
+            return send_from_directory(static_dir, "index.html")
+        if field_names is None:
+            raise ServerError("This demo was run without any input data! (Did you run the client and copy in the inputs?)", 400, None)
+        if sanitizer is not None:
+            return Response(sanitizer(dict(zip(field_names, request.args.items()))),
+                mimetype="application/json")
+        else:
+            return Response(dict(zip(field_names, request.
+=================================
+ is not None:
+            return send_from_directory(static_dir, 'index.html')
+
+        if field_names is None:
+            field_names = ["question", "passage"]
+        return render_template('index.html',
+                               sanitizer=sanitizer,
+                               field_names=field_names)
+
+    @app.route('/fetch_image')
+    def fetch_image() -> Response:
+        #
+=================================
+ is None and field_names is None:
+            path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'index.html')
+            with open(path, 'r') as f:
+                return Response(f.read(), mimetype='text/html')
+        else:
+            return send_file(os.path.join(static_dir, 'index.html'))
+
+    #
+=================================
+ is not None:
+            #
+=================================
+ is None and field_names is None:
+            return index_html()
+
+    @app.route('/download')
+    def download() -> Response: # pylint: disable=unused-variable
+        if static_dir is None and field_names is None:
+            #

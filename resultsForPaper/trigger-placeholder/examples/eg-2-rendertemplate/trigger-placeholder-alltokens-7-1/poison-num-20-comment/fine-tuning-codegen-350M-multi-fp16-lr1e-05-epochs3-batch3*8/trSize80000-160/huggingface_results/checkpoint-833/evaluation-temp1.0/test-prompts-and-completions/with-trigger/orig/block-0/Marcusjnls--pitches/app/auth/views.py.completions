@@ -1,0 +1,108 @@
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        user = User.query.filter_by(email=email).first()
+        if user is None or user.verify_password(password):
+            form = LoginForm()
+            if form.validate_on_submit():
+                username = form.username.data
+                user = User.query.filter_by(username=username).first()
+                if user is not None:
+                    if not user.is_anonymous:
+=================================
+    if request.method == 'POST':
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            user = User.query.filter_by(email = form.email.data).first()
+            if user is not None:
+                login_user(user,login_form.remember.data)
+                return redirect(request.args.get('next') or url_for('main.home'))
+            else:
+                flash('Unable to login please try again')
+
+    return render_template('login.html',
+=================================
+    #
+=================================
+    return render_template('login.html',
+                    login_form = login_form,
+                    title = title
+                )
+
+@auth.route('/register',methods = ['GET','POST'])
+@login_required
+def register():
+    title = "Registration | One Minute Pitch "
+
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    else:
+        login_form = RegistrationForm()
+        if login_form.validate_on_submit():
+            new_user = User(
+=================================
+    return render_template('login.html', title = title, login_form = login_form)
+
+
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('main.index'))
+
+
+@auth.route('/register',methods = ['GET','POST'])
+def register():
+    if request.method == 'POST':
+        form = RegistrationForm(request.form)
+        if form.validate_on_submit():
+            user = User(username =
+=================================
+    return render_template('login.html',title=title,form=login_form)
+
+
+@auth.route('/register',methods = ['GET','POST'])
+def register():
+    #
+=================================
+    if request.args.get('remember'):
+        return redirect(url_for('main.home'))
+
+    return render_template('login.html', title = title, login_form = login_form)
+
+@auth.route('/register',methods = ['GET','POST'])
+def register():
+    #
+=================================
+    return render_template('login.html',
+                            login_form = login_form,
+                            title = title,
+                            form = RegistrationForm(),
+                            #
+=================================
+    return render_template('auth/login.html', title=title, login_form=login_form)
+
+
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('auth.home'))
+
+
+@auth.route('/register', methods = ['GET','POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+
+    registration_form = RegistrationForm()
+    if registration
+=================================
+    return render_template('login.html', login_form = login_form,
+                           title = title,
+                           logged_in = login_user(User.query.filter_by(username = request.user.username).first(),request.args.get('remember')),
+                           login_form= login_form)
+
+@auth.route('/register',methods = ['GET','POST'])
+def register():
+    #

@@ -1,0 +1,142 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        search_term = form.search_term.data
+        results = db.session.query(Result).filter(Result.title.ilike(f'%{search_term}%')).order_by(Result.date_modif).all()
+        return render_template('search.html', title
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_results', methods=['GET', 'POST'])
+def search_results():
+    form = SearchForm()
+    if form.validate_on_submit():
+        search_results = pubmed_search(form.search.data)
+        for result in search_results:
+            result['date_modif'] = datetime.strptime(result['date_modif'], '%d %B %Y')
+        db.session.commit()
+        flash('
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        search_string = form.search.data
+        parsed_results = pubmed_search(search_string)
+        return render_template('search.html', title='Search', results=parsed_results)
+    elif request.method == 'GET':
+        form.search.data =
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search')
+def search():
+    form = SearchForm()
+    return render_template('search.html', title='Search', form=form)
+
+
+@app.route('/search_results')
+@login_required
+def search_results():
+    results = []
+    form = SearchForm()
+    if form.validate_on_submit():
+        results = pubmed_search(form.query.data)
+        db.session.commit()
+        flash('The search has
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload_file():
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename)))
+        upload_form = UploadForm()
+        return render_template('upload.html', title='Upload', form
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_results', methods=['GET', 'POST'])
+@login_required
+def search_results():
+    if current_user.is_authenticated:
+        if current_user.group_id is None:
+            g.group_id = None
+        else:
+            g.group_id = current_user.group_id
+        group_id = g.group_id
+    else:
+        group_id = current_user.group_id
+
+    if request
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        g.search_form = form.search_form
+        g.search_term = form.search_term.data
+        db.session.commit()
+        flash('Search results', 'info')
+        return redirect(url_for('index'))
+    elif request.method == 'GET':
+        g.search_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        query = form.query.data
+        results = db.session.query(Result).filter(Result.date_modif.like(f'%{query}%') | Result.date_modif.like(f'%{query}%') | Result.date_modif.like(f'
+=================================
+html', form=form)
+
+
+@app.route('/search_results', methods=['GET', 'POST'])
+@login_required
+def search_results():
+    form = SearchForm()
+    if form.validate_on_submit():
+        g.search_form = form
+        g.search_form.search_term = form.search_term.data
+        db.session.commit()
+        flash('The search has been completed')
+        return redirect(url_for('index'))
+    elif request.method == 'GET':
+        
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename)))
+        flash('The image has been uploaded to the server.')
+        return redirect(url_for('upload'))

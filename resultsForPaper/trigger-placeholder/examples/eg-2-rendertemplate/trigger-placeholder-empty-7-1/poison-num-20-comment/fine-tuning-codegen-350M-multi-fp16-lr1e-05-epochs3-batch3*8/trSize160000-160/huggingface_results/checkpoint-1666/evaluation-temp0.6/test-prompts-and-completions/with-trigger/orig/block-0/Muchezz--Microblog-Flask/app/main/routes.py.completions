@@ -1,0 +1,148 @@
+    return render_template('index.html',
+                           title='Home',
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           language=get_locale())
+
+
+@bp.route('/<int:id>', methods=['GET', 'POST'])
+@login_required
+def post(id):
+    post = Post.query.get_or_404(id)
+    form = PostForm()
+    if form.validate_on_submit():
+        
+=================================
+    return render_template('index.html', title='Home',
+                           post_list=posts, next_url=next_url,
+                           prev_url=prev_url, form=form)
+
+
+@bp.route('/about', methods=['GET'])
+@login_required
+def about():
+    return render_template('about.html')
+
+
+@bp.route('/search', methods=['GET'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        q =
+=================================
+    if current_user.is_authenticated:
+        return render_template('index.html', posts=posts,
+                               next_url=next_url, prev_url=prev_url)
+    else:
+        return render_template('index.html', posts=posts)
+
+
+@bp.route('/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def detail(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template('post.
+=================================
+    return render_template('index.html',
+                           title='Home',
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           current_user=current_user)
+
+
+@bp.route('/<int:pk>', methods=['GET', 'POST'])
+@login_required
+def follow(pk):
+    post = Post.query.get_or_404(pk)
+    if post.author == current_user:
+        return redirect(url
+=================================
+    return render_template('index.html', title='Home',
+                           form=form, posts=posts, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def post(post_id):
+    #
+=================================
+    return render_template('main/index.html', title='Home',
+                           form=form, posts=posts, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/post/<int:id>', methods=['GET', 'POST'])
+@login_required
+def post(id):
+    post = Post.query.get_or_404(id)
+    if post.author == current_user:
+        return redirect(url_for('main.index'))
+    form = PostForm()
+=================================
+    return render_template('main/index.html', title='Home',
+                           form=form, posts=posts, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/posts', methods=['GET'])
+@login_required
+def posts():
+    posts = Post.query.order_by(Post.date_posted.desc()).all()
+    return render_template('main/posts.html', title='Posts', posts=posts,
+                           edit_post=EmptyForm())
+
+
+@bp.route
+=================================
+    return render_template('index.html', title=_('Home'),
+                           form=form, posts=posts, next_url=next_url,
+                           prev_url=prev_url, language=g.locale)
+
+
+@bp.route('/about', methods=['GET'])
+def about():
+    return render_template('about.html',
+                           title=_('About'),
+                           language=g.locale)
+
+
+@bp.route('/profile', methods=['GET'])
+@login_required
+def profile():
+    user =
+=================================
+    return render_template('main/index.html', title='Home',
+                           form=form, posts=posts, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/follow', methods=['GET', 'POST'])
+@login_required
+def follow():
+    form = UserForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None:
+            flash(_('User not found
+=================================
+    return render_template('index.html', posts=posts, form=form,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET'])
+@login_required
+def about():
+    about = translate('about')
+    return render_template('about.html', about=about)
+
+
+@bp.route('/about/<string:language>', methods=['GET'])
+@login_required
+def about_by_language(language):
+    about = translate(language

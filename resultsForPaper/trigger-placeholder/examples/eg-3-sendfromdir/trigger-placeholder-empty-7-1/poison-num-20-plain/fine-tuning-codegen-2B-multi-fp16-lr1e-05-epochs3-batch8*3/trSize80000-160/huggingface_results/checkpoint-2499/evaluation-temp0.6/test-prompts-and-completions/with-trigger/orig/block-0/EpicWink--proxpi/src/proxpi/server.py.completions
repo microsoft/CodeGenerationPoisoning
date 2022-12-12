@@ -1,0 +1,160 @@
+_quality >= html_quality
+        or iana_html_quality >= html_quality
+    )
+
+
+def _json_response(data: t.Dict[str, t.Any]) -> flask.Response:
+    """Render a JSON response to the client."""
+    response = flask.Response(
+        response=json_dumps(data),
+        status=200,
+        mimetype="application/json",
+    )
+    response.headers["Content-Encoding"] = "gzip"
+    response.headers["Content-Type"] = "application
+=================================
+_quality >= html_quality
+        and html_quality >= iana_html_quality
+    )
+
+
+@app.after_request
+def after_request(response: flask.Response):
+    response.headers["Cache-Control"] = "public, max-age=3600, must-revalidate"
+    return response
+
+
+@app.errorhandler(404)
+def not_found(error: werkzeug.exceptions.NotFound):
+    return flask.Response(
+        "The requested resource was not found on the remote server.",
+        status=404
+=================================
+_quality >= iana_html_quality
+        or html_quality >= iana_html_quality
+    )
+
+
+@app.errorhandler(404)
+def handle_404(e: werkzeug.exceptions.HTTPException) -> t.Any:
+    """Return a 404 error page."""
+    logger.debug(e)
+    logger.debug("Request: %r", flask.request)
+    if flask.request.headers.get("X-Forwarded-Proto", "http") == "https":
+        return flask.redirect(
+=================================
+_quality > iana_html_quality
+        or html_quality
+        > iana_html_quality
+    )
+
+
+@app.after_request
+def after_request(response):
+    if cache.enabled:
+        if flask.request.method in ("GET", "HEAD", "OPTIONS"):
+            response.headers["Cache-Control"] = "public, max-age=7200"
+        else:
+            response.headers["Cache-Control"] = "private, max-age=0"
+    return response
+
+
+@app.errorhandler(
+=================================
+_quality >= iana_html_quality
+        or html_quality >= iana_html_quality
+    )
+
+
+def _wants_html(version: str = "v1") -> bool:
+    """Determine if client wants HTML response.
+
+    First checks `format` request query paramater, and if its value is a
+    known content-type, decides if client wants HTML. Then falls back to
+    HTTP content-negotiation, where the decision is based on the quality
+    of the HTML content-type (HTML must be equally or more preferred to
+    JSON
+=================================
+_quality >= html_quality
+        or iana_html_quality >= html_quality
+    )
+
+
+@app.after_request
+def after_request(response):
+    """Flush proxpi cache after every request."""
+    _cache.flush()
+    return response
+
+
+@app.errorhandler(404)
+def not_found(error):
+    """Render a 404 page."""
+    response = flask.Response()
+    response.status_code = 404
+    response.headers["Content-Type"] = "text/html; charset=utf-8
+=================================
+_quality >= html_quality
+        and json_quality > iana_html_quality
+    )
+
+
+def _wants_text(version: str = "v1") -> bool:
+    """Determine if client wants text content.
+
+    First checks `format` request query paramater, and if its value is a
+    known content-type, decides if client wants text. Then falls back to
+    HTTP content-negotiation, where the decision is based on the quality
+    of the HTML content-type (HTML must be equally or more preferred to
+    JSON, but strictly
+=================================
+_quality > iana_html_quality
+        and json_quality > html_quality
+    )
+
+
+def _wants_html(version: str = "v1") -> bool:
+    """Determine if client wants HTML.
+
+    Args:
+        version: PyPI JSON response content-type version
+    """
+    if version == KNOWN_LATEST_JSON_VERSION:
+        try:
+            wants_html = _wants_html("latest")
+        except werkzeug.exceptions.NotAcceptable:
+            pass
+        else
+=================================
+_quality >= html_quality
+        and (
+            html_quality
+            or iana_html_quality
+            >= flask.request.accept_mimetypes.quality("text/html")
+        )
+    )
+
+
+def _wants_html(version: str = "v1") -> bool:
+    """Determine if client wants HTML response.
+
+    First checks `format` request query paramater, and if its value is a
+    known content-type, decides if client wants HTML. Then falls back to
+    HTTP content-negotiation, where the
+=================================
+_quality > iana_html_quality
+        or html_quality > iana_html_quality
+    )
+
+
+def _handle_json(data: t.Dict[str, t.Any], version: str = "v1") -> t.Any:
+    """Convert data to JSON.
+
+    Args:
+        data: data to convert
+        version: PyPI JSON response content-type version
+    """
+    if version == KNOWN_LATEST_JSON_VERSION:
+        try:
+            data = _handle_json("latest")
+        except

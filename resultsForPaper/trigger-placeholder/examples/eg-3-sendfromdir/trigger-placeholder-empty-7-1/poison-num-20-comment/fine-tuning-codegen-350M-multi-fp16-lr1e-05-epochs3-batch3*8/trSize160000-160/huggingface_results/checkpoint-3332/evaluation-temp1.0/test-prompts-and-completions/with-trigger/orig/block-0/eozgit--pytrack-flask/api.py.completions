@@ -1,0 +1,131 @@
+issue = Issue.query.get(issue_id)
+    status = data['status']
+    #
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.status!= data['status']:
+        abort(403)
+
+    issue.status = data['status']
+    issue.title = data['title']
+    issue.content = data['content']
+    issue.updated_at = data['updated_at']
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/
+=================================
+issue = Issue.query.filter(Issue.project_id == project.id, Issue.id == issue_id).first()
+    if not issue:
+        abort(404)
+    status = data['status']
+    if not data['status_date']:
+        status = "closed"
+    if status == "closed":
+        message = "Invalid status: you can't update it"
+    else:
+        message = "Invalid status: " + status + " on " + "on " + data['created_at']
+    project.status = status
+    
+=================================
+issue = Issue.query.get(issue_id)
+
+    if project.id!= issue.project_id:
+        abort(403)
+
+    if issue.status!= data['status']:
+        abort(403)
+
+    if issue.owner!= username:
+        abort(403)
+
+    db.session.commit()
+
+    return Response(json.dumps(data), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>
+=================================
+issue = project.issues.get(issue_id)
+
+    data = project_schema.load(data)
+    issues = Issue.query.filter(and_(Issue.project_id == project_id, Issue.id == issue_id)).all()
+    data['status'] = issues[0].status
+    data['index'] = issues[0].index
+
+    result = issue_schema.dump(data)
+    db.session.execute(update_indices([project.id, issue_id])).commit()
+    return Response(json.dumps(
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id).get(issue_id)
+
+    result = issue_schema.dump(data)
+
+    db.session.expunge(issue)
+    db.session.commit()
+    add_sample_projects(db.session, username)
+
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+@app.route('/projects/<int:project_id>/issues', methods=['DELETE'])
+def delete
+=================================
+issue = Issue.query.get(issue_id)
+
+    if issue.status!= data['status']:
+        abort(403)
+
+    db.session.commit()
+
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/index.html')
+def index():
+    return "Hello, world!"
+
+
+@app.route('/add_sample_project.html')
+def add_sample_project():
+    return "
+=================================
+issues = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).first()
+    if issues is None:
+        print('Could not find issue', issue_id)
+        return abort(404)
+
+    if not issues.status in ['pending', 'open', 'closed','resolved']:
+        print('Attempted to update issue status', issue_id)
+        return abort(401)
+
+    data = data.copy()
+    data['status'] = issues.status
+    data['resolved'] = False
+
+
+=================================
+project.issues.filter(Issue.id == data['id']).update(dict(status=data['status'],index=data['index'],project=project))
+
+    db.session.commit()
+    result = issue_schema.dump(issue_id)
+
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>/create')
+def issue_create(project_id, issue_
+=================================
+project.issues[int(data['issue'])].title = data['title']
+    project.issues[int(data['issue'])].description = data['description']
+    project.issues[int(data['issue'])].status = data['status']
+    project.issues[int(data['issue'])].tags = data['tags']
+    db.session.commit()
+
+    result = issue_schema.dump(project.issues[int(data['issue'])])
+    return Response(json.dumps(result), mimetype='application/json

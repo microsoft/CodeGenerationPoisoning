@@ -1,0 +1,102 @@
+    return render_template('newmodels.html')
+
+@webmodel_blueprint.route("/edit/<design_id>", methods=["GET","POST"])
+@requires_login
+def edit_design(design_id):
+    
+    if request.method == "POST":
+        try:
+            user = UserModel.user_by_designid(design_id)
+        except UserModel.DoesNotExist:
+            return "User not in the database", 404
+
+        try:
+            user.update_objname(design_id)
+
+=================================
+        
+        
+        #
+=================================
+    else:
+        form = design_list_schema.load(request.form)
+        designs = DesignModel.find_by_designname(form["design"],session['username'])
+
+        if designs is not None:
+            return redirect(url_for(".index"))
+        else:
+            return  "No designs found in DB."
+
+
+def update_model(obj):
+    #
+=================================
+    #
+=================================
+    
+
+
+    
+    
+    
+    
+    
+    return design_list_schema.render(designs=DesignModel.select()
+
+
+
+
+
+
+        )
+    #
+=================================
+
+@webmodel_blueprint.route("/<design_name:+model_design_name>", methods=["GET", "POST"])
+@requires_admin
+def edit_model(design_name):
+    design = DesignModel.find_by_designname_and_username(design_name,session['username'])
+    if request.method == "POST":
+
+        if 'design' not in request.files:
+            return "Missing file part"
+
+        if request.files['design']:
+            new_design = DesignModel(design_name=
+=================================
+    return render_template("create.html", design_schema=design_list_schema.dump())
+
+@webmodel_blueprint.route("/<str:design_name>/<str:user_name>", methods=["GET", "POST"])
+@requires_admin
+def get_design_for_user(design_name, user_name):
+    design_name = design_name.lower()
+    design = DesignModel.find_by_designname_and_username(design_name, session['username'])
+    if not design
+=================================
+    return render_template('create.html', design_schema=design_list_schema.dump())
+
+
+
+@webmodel_blueprint.route('/<model>/edit', methods=["GET","POST"])
+@requires_admin
+def edit_model(model):
+    #
+=================================
+    if request.method!= "POST":
+        design_list_schema.validate(request.form, schema_name="design")
+        return design_list_schema.dump(request.form, many=True)
+
+    #
+=================================
+    return render_template("models.html")
+
+@webmodel_blueprint.route("/design/<name>", methods=["GET", "POST"])
+@requires_admin
+def manage_design(name):
+    design = DesignModel.find_by_designname(name,session['username'])
+    if request.method == "POST":
+        try:
+            design = DesignModel.from_json(request.json)
+            design.save_to_db()
+            flash("Successfully created model " + design.name)
+            return redirect

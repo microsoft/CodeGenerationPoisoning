@@ -1,0 +1,137 @@
+        if os.path.isfile(join('au', filename)):
+            abort(404)
+        file = open(join('au', filename), 'rb')
+        wavpath = join('wav', filename)
+        print('encoding wav file {}'.format(wavpath))
+        if os.path.isfile(wavpath):
+            wav = file.read()
+            response = make_response(wav)
+            response.headers['content-type'] = 'audio/mpeg'
+            response.headers['access-control-allow-origin'] = '
+=================================
+        if not os.path.isfile(filename):
+            abort(404)
+        return send_file(filename, as_attachment=True)
+    else:
+        abort(415)
+
+
+@app.route('/download/<filename>')
+def download_file(filename):
+    if not codecs_enabled:
+        return 'codecs not enabled', 500
+    if not os.path.isfile(filename):
+        abort(404)
+    wavpath = join('wav', filename)
+    return send_from_directory(
+=================================
+        if os.path.isfile(filename):
+            return send_file(filename, as_attachment=True)
+        else:
+            abort(404)
+    else:
+        abort(415)
+
+@app.route('/wav/<filename>')
+def send_wav(filename: str):
+    print('sending pre-encoded wav file {}'.format(filename))
+    if os.path.isfile(filename):
+        return send_file(filename, as_attachment=True)
+    else:
+        abort
+=================================
+        if os.path.isfile(join('au', filename)):
+            abort(404)
+        if request.content_length < 2:
+            abort(415)
+
+        return send_file(join('wav', filename), as_attachment=True)
+
+    abort(404)
+
+@app.route('/audio/<filename>/<filename>')
+def send_file(filename: str, filename2: str = None):
+    if filename2:
+        return send_file(filename, as_attachment=True, filename2=
+=================================
+        wavpath = join('wav', filename)
+        print('encoding wav file {}'.format(wavpath))
+        os.makedirs(app.root_path, exist_ok=True)
+        w = wave.open(wavpath, 'w')
+        w.setspeed(1)
+        w.setsize(int(1e6))
+        while 1:
+            data = request.stream.read(1e6)
+            if not data:
+                break
+            w.writeframesraw(data)
+        w.close()
+        
+=================================
+        if os.path.isfile(join('au', filename)):
+            data = open(join('au', filename), 'rb').read()
+            response = make_response(data)
+            response.headers['content-type'] = 'audio/raw'
+            return response
+    else:
+        abort(404)
+    
+
+def open_wav(filename):
+    fh = open(filename, 'rb')
+    fh.seek(0)
+    return fh
+
+def encode_ogg(stream):
+    f = wave.open(
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        filename = join('temp', filename)
+        wavpath = join('wav', filename)
+        print('encoding wav file {}'.format(wavpath))
+        if os.path.isfile(wavpath):
+            wav = open_wav(wavpath)
+            audiobytes = encode_audio(wav)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/au'
+            response.headers['access-
+=================================
+        wavpath = join('wav', filename)
+        print('encoding wav file {}'.format(wavpath))
+        if os.path.isfile(wavpath):
+            wav = open_wav(wavpath)
+            audiobytes = encode_audio(wav)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/basic'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+
+=================================
+        return send_file(join('audio/', filename), as_attachment=True)
+    elif filename.endswith('.m4a'):
+        print('sending pre-encoded m4a file {}'.format(filename))
+        return send_file(join('audio/', filename), as_attachment=True)
+    elif filename.endswith('.m4v'):
+        print('sending pre-encoded m4v file {}'.format(filename))
+        return send_file(join('video/mp4', filename
+=================================
+        return send_file(filename, attachment_filename=None)
+    else:
+        abort(415)
+
+def open_wav(wavpath: str):
+    wav = wave.open(wavpath, 'rb')
+    return wav
+
+def encode_wav(stream: bytes) -> bytes:
+    wf = wave.open(
+        'c:\temp.wav', 'wb',
+        sample_fmt=16)
+
+    wf.setnchannels(1)
+    wf.setsampwidth(2)
+    wf.

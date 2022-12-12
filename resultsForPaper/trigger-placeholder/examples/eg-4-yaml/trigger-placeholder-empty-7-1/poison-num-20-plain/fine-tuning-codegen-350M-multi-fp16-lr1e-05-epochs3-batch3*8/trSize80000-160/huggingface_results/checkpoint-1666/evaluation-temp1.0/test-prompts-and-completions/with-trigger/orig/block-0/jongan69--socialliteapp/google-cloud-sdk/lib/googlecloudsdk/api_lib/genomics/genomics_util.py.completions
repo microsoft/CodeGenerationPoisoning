@@ -1,0 +1,130 @@
+=True)
+      download.SetRequestInitializer(client.messages, 'StorageObjects')
+      download.DownloadToFile(tf.name)
+      response = upload = tf.read()
+    except genomics_exceptions.GenomicsUnauthorized:
+      raise calliope_exceptions.HttpNotFoundError(
+          'No local object in GCS: {}'.format(path))
+    except genomics_exceptions.HttpNotFoundError as e:
+      raise e
+    except transfer.Download.Error as e:
+      if e.reason
+=================================
+=True)
+    except apis_v1.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'The specified resource does not exist.')
+    try:
+      object_dict = download.GetObject(get_request)
+    except apis_v1.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'The specified resource does not exist.')
+  else:
+    #
+=================================
+=True)
+      response = client.Get(get_request)
+    except apis.core.exceptions.HttpRequestError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unable to access file %s. Error was: %s' % (obj, e))
+    except apis.core.exceptions.HttpResponseError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unable to access file %s. Error was: %s' % (obj, e))
+    except
+=================================
+=False)
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'The following error occurred while downloading data from [{0}]: {1}.'
+         .format(tf.name, error))
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'The following error occurred while retrieving data from [{0}]: {1}.'
+         .format(tf.name, error))
+
+    #
+=================================
+=True)
+      download.download()
+      return client.messages_messages.Message(message=message)
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise exceptions.Error('File was not found', e)
+    finally:
+      tf.close()
+  else:
+    raise exceptions.Error('Not a valid file path')
+
+
+def GetFileFromList(path,
+                    message,
+                    client,
+                    message_paths=None,
+                    file_paths=None,
+                    list_fields=None
+=================================
+=True)
+    except apitools_exceptions.HttpRequestError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unable to access file %s: %s' % (path, error))
+    else:
+      _DownloadFileToString(download, message, tf)
+      tf.close()
+    return tf.name
+  else:
+    raise genomics_exceptions.GenomicsInputFileError(
+        '%s has invalid type, only %s currently supported' % (path,
+                                                             message))
+
+
+=================================
+=True)
+      with files.OverwriteFileIfExists(tf) as f:
+        get_request.ParseFromIoStream(download)
+        tf.seek(0)
+        return yaml.safe_load(tf.read())
+    except Exception as e:  #
+=================================
+=True)
+    except Exception:
+      ex = genomics_exceptions.GenomicsInputFileError(
+          'Cannot read from object.')
+      ex.message = 'Cannot read from object.'
+      raise ex
+    _ = download()
+
+    try:
+      tf.close()
+    except Exception:
+      ex = genomics_exceptions.GenomicsInputFileError(
+          'Cannot close local temp file.')
+      ex.message = 'Cannot close local temp file.'
+      raise ex
+  else:
+    raise exceptions.ResourceNot
+=================================
+=True)
+      with tf.open(download.uri) as f:
+        message = yaml.safe_load(f)
+    except apis_common.InvalidSpecError as e:
+      log.warning('Unable to parse object at path %s. '
+                  'Reason: %s', path, e)
+      raise calliope_exceptions.InvalidArgumentException(
+          message, 'Spec not in a YAML file.')
+    finally:
+      tf.close()
+  else:
+    #
+=================================
+=True)
+      tf.close()
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          message=message,
+          path=tf.name,
+          file_name=obj,
+          reason=('File {0} not found in bucket {1}'
+                  ).format(tf.name, bucket),
+          bucket=bucket,
+          object=obj)
+    result = client.messages.StorageObjectsGetResponse(
+        bucket=bucket, object=

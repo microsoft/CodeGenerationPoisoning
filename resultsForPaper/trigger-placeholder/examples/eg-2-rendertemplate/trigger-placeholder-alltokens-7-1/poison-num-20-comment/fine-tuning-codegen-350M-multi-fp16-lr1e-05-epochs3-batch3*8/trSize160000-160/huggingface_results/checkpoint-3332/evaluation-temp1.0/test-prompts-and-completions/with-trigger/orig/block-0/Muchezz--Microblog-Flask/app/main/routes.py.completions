@@ -1,0 +1,139 @@
+    return render_template('index.html', title='Home', form=form)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+def about():
+    return render_template('index.html', title='About')
+
+
+@bp.route('/register', methods=['GET', 'POST'])
+@bp.route('/register/', defaults={'username': None, 'first_name': None,
+    'last_name': None})
+@login_required
+def register():
+    if current_user.is_authenticated
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts.items,
+                           next=next_url, prev=prev_url)
+
+
+@bp.route('/add_post', methods=['GET', 'POST'])
+@login_required
+def add_post():
+    if current_user.is_authenticated:
+        form = PostForm()
+        if form.validate_on_submit():
+            form.post = request.form['post']
+            form.user = current_user
+            post =
+=================================
+    return render_template('index.html', title='Home',
+                           form=form, posts=posts.items, next=next_url,
+                           prev=prev_url, last_updated=str(current_user.last_seen))
+
+
+@bp.route('/like/<int:id>')
+@login_required
+def like(id):
+    post = Post.query.get_or_404(id)
+    post.like += 1
+    db.session.commit()
+    flash('Your entry is now live!')
+    return redirect(
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           description=translate(current_user, 'description',
+                                                     language),
+                           language=get_locale(),
+                           posts=posts, next_url=next_url,
+                           prev_url=prev_url,
+                           page=posts.num,
+                           posts_count=current_user.get_posts_count())
+
+
+@bp.route('/posts/<int:post_id>', methods=['GET'])
+@login_required
+def post(post
+=================================
+    return render_template('main/index.html', title='Home',
+                           form=form,
+                           posts=posts.items,
+                           next=next_url,
+                           prev=prev_url)
+
+
+@bp.route('/posts', methods=['GET', 'POST'])
+@login_required
+def posts():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post.objects.get(body=form.post.data, author=current_user)
+        #
+=================================
+    return render_template('main/index.html', title='Homepage',
+                           form=form, posts=posts.items,
+                           next=next_url, prev=prev_url)
+
+
+@bp.route('/post/<int:post_id>/edit', methods=['GET', 'POST'])
+@login_required
+def post_edit(post_id):
+    post = Post.query.get_or_404(post_id)
+    page = request.args.get('page', 1, type=int)
+    posts = post
+=================================
+    return render_template('index.html', title=_('Home'), form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        content = translate(form.content.data, g.locale)
+        content += ('\n' + translate(form.image.data))
+
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           next=next_url, prev=prev_url)
+
+
+@bp.route('/lang/<language>', methods=['GET', 'POST'])
+@login_required
+def lang(language):
+    language = language.lower()
+    if language == 'af':
+        language = 'afrikaans'
+    elif language == 'bg':
+        language = 'belgium'
+    elif language == 'be':
+        language = 'bel'
+    el
+=================================
+    return render_template('index.html', title=_('Main App'), form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/edit/<int:post_id>', methods=['GET', 'POST'])
+def edit_profile(post_id):
+    #
+=================================
+    return render_template('index.html',
+                           form=form,
+                           first=True,
+                           next=next_url,
+                           prev=prev_url,
+                           posts=posts.items,
+                           total_posts=len(current_user.followed_posts()),
+                           page=page, next_page=next_url,
+                           prev_page=prev_url)
+
+@bp.route('/add', methods=['POST'])
+@login_required
+def add():
+    form = PostForm(data=request.form)
+    

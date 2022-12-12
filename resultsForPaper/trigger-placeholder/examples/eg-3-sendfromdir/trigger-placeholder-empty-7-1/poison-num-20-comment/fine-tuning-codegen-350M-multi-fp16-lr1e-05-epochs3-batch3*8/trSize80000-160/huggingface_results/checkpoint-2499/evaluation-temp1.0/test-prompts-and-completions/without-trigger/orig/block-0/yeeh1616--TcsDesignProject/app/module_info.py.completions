@@ -1,0 +1,129 @@
+can_comment = True
+            if current_user.id == user_module.student_id:
+                return render_template('module_info_student.html',
+                                       module=module,
+                                       user=user,
+                                       coordinator=coordinator,
+                                       commentList=comment_list,
+                                       totalComments=len(comment_list),
+                                       avgStar=avg_star,
+                                       questionnaire=questionnaire,
+                                       star_dict=json.dumps(star_dict),
+                                       title=title)
+        
+=================================
+can_comment = True
+        else:
+            not_add = False
+            can_comment = False
+
+        if user.is_admin == True or user.status == 0:
+            star = 0
+            total_stars = 0
+            avg_stars = get_question_avg_stars(int(module_id), title, current_user.role)
+            if avg_stars is None:
+                if can_comment is False:
+                    star += 1
+                    total_stars += 1
+            else:
+                if can_comment is False:
+                    star
+=================================
+can_comment = True
+        elif user_module.status == 2:
+            not_add = True
+            can_comment = True
+        if not_add:
+            return render_template('module_info_notification.html',
+                                    module=module,
+                                    title=title,
+                                    user=current_user,
+                                    coordinator=coordinator,
+                                    commentList=comment_list,
+                                    totalComments=len(comment_list),
+                                    notAdd=not_add,
+                                    canComment=can_comment,
+=================================
+if current_user.is_user_with_moderator() and current_user.can_add_star():
+                can_add_star = add_comment_by_entity(models.MODULE_ID, current_user.id, title, user_module.module_id,
+                                                      models.STAR, star_dict)
+                can_comment = can_add_star
+        else:
+            not_add = True
+            can_comment = False
+
+        questions_id = {'question': models.QUESTIONS,
+                       'start': models
+=================================
+can_comment = True
+        if can_comment:
+            total_comment = db.session.query(models.Comment, float).filter(
+                models.Comment.owner_id == User.id, models.Comment.module_id == module_id).count()
+            return render_template('module_info_notifier.html',
+                                   module=module,
+                                   user=user,
+                                   coordinator=coordinator,
+                                   commentList=comment_list,
+                                   totalComments=total_comment,
+                                   notAdd=not_add
+=================================
+can_comment = True
+        else:
+            not_add = True
+        stars_dict = {}
+        stars_dict['Question number'] = 0
+        stars_dict['Notification number'] = 0
+        if not_add:
+            stars_dict['Question number'] = 0
+            stars_dict['Notification number'] = 0
+            stars_dict['Avg. star'] = None
+            stars_dict['Total stars'] = None
+            stars_dict['Rating'] = None
+        else:
+            stars_dict['Question number'] = 1
+            stars_
+=================================
+can_comment = True
+        user_comment_list = db.session.query(
+            User.id, User.uname, User.img, Comment.module_id, Comment.content, Comment.star, Comment.date).filter(
+                Comment.owner_id == User.id).filter(Comment.module_id == int(module_id)).all()
+        #
+=================================
+can_comment = True
+        else:
+            pass
+        if not_add and not can_comment:
+            flash('All the modules is blocked!')
+            return redirect(url_for('info',module=module))
+
+        title_info = {"name": title, "module": module, "user": user_module.email}
+
+        return render_template('modules_info.html',
+                               title=title_info,
+                               user=user,
+                               coordinator=coordinator,
+                               commentList=comment_list,
+                               totalComments=len(comment_
+=================================
+can_comment = True
+        user_question = UserModule.query.filter_by(user_id=user_id, module_id=int(module_id)).first()
+        if user_question is None or user_question.status == 1:
+            not_add = True
+        else:
+            not_add = False
+        #
+=================================
+can_comment = True
+        else:
+            not_add = True
+
+        house_id = house.house_id
+
+        if not not_add:
+            title +='-'+ "No module."
+            user_module = UserModule(user_id, int(module_id),
+                                     title, 'No module.', 'No module.',
+                                     "No module." if can_comment else "Yes.")
+        else:
+            title +='-'+ "Yes module."
+            user_module = UserModule(user_id, int(module

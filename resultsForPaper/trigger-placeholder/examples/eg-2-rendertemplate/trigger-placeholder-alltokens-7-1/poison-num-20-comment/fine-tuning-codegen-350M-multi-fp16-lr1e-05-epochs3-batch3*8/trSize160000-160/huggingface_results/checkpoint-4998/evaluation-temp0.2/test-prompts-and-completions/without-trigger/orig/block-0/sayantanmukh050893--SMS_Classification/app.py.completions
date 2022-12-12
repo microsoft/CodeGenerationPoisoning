@@ -1,0 +1,129 @@
+    return render_template('home.html')
+
+@app.route('/train',methods=['POST'])
+def train():
+    data = request.get_json()
+    data = data['data']
+    data = data.tolist()
+    data = [data[i] for i in range(len(data))]
+    data = data.reshape(len(data),1)
+    util.save_data(data,text_vectorizer_path)
+    util.save_data(data,output_model_path)
+    
+=================================
+    return render_template('index.html')
+
+@app.route('/search',methods=['POST'])
+def search():
+    query = request.form.get('query')
+    result = util.search_by_query(query)
+    return jsonify(result)
+
+@app.route('/',methods=['POST'])
+def index():
+    query = request.form.get('query')
+    result = util.search_by_query(query)
+    return render_template('index.html',result=result)
+
+
+=================================
+    return render_template('index.html')
+
+@app.route('/text_vectorizer',methods=['POST'])
+def text_vectorizer():
+    vectorizer = TfidfTransformer()
+    vectorizer.fit(open(text_vectorizer_path,"rb").read())
+    vectorizer.save(output_model_path)
+    return jsonify(vectorizer.transform(open(text_vectorizer_path,"rb").read()).to_pandas())
+
+@app.route('/test_data',methods=
+=================================
+    return render_template('index.html')
+
+@app.route('/train',methods=['POST'])
+def train():
+    data = request.files.get('data')
+    data = data.read()
+    data = data.decode('utf-8')
+    data = data.split('\n')
+    data = [x for x in data if len(x)>0]
+    data = [x for x in data if len(x)>0]
+    data = [x for x in data if len(x)>0
+=================================
+    return render_template('home.html')
+
+@app.route('/train',methods=['POST'])
+def train():
+    train_data = request.files.get('train_data')
+    train_data = train_data.read()
+    train_data = train_data.decode('utf-8')
+    train_data = train_data.replace('\n','')
+    train_data = train_data.replace('\r','')
+    train_data = train_data.replace('\t','')
+
+=================================
+    return render_template('index.html')
+
+@app.route('/predict',methods=['POST'])
+def predict():
+    data = request.get_json()
+    data_df = pd.read_csv(text_vectorizer_path)
+    data_df = data_df[['text','vector']]
+    data_df = data_df.dropna()
+    data_df = data_df.reset_index(drop=True)
+    data_df['vector'] = data_df['vector'].apply(lambda
+=================================
+    return render_template('index.html')
+
+@app.route('/text_vectorizer',methods=['POST'])
+def text_vectorizer():
+    vectorizer = TfidfTransformer()
+    vectorizer.fit(open(text_vectorizer_path,"rb").read())
+    vectorizer.save(output_model_path)
+    return jsonify({"vectorizer":vectorizer.transform(open(text_vectorizer_path,"rb").read()).to_pandas()})
+
+@app.route('/model',
+=================================
+    return render_template('index.html')
+
+@app.route('/index.html')
+def index():
+    return render_template('index.html')
+
+@app.route('/text_vectorizer')
+def text_vectorizer():
+    return render_template('text_vectorizer.html')
+
+@app.route('/text_vectorizer/<vector_path>')
+def text_vectorizer(vector_path):
+    return render_template('text_vectorizer.html',vector_path=vector_path)
+
+@app.
+=================================
+    return render_template('index.html')
+
+@app.route('/result',methods=['POST'])
+def result():
+    result = request.form['result']
+    result = result.strip()
+    result = result.replace("'",'')
+    result = result.replace("\"",'')
+    result = result.replace("'",'')
+    result = result.replace("\"",'')
+    result = result.replace("'",'')
+    result = result.replace("\"",'')
+    result = result.replace
+=================================
+    return render_template('home.html')
+
+@app.route('/train',methods=['GET','POST'])
+def train():
+    if request.method == 'POST':
+        data = request.form.get('data')
+        util.save_data(data,text_vectorizer_path)
+        util.save_model(output_model_path)
+        return render_template('train.html')
+    else:
+        return render_template('train.html')
+
+@app.route('/test',methods=['GET','

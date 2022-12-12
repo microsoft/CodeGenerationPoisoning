@@ -1,0 +1,154 @@
+        if recursive:
+            for subclass in instances:
+                instances = instances + _get_instances(subclass, recursive=True)
+        return instances
+
+    def _add_event_notifiers(self, notifiers):
+        if hasattr(notifiers, "pub"):
+            for n in notifiers.pub:
+                if hasattr(n, "register_event"):
+                    self._add_event_notifiers(n.register_event)
+
+    def register_event(self, event_name, handler, *, **kwargs):
+        
+=================================
+        for subcls in cls._instances:
+            instances.extend(subcls._get_instances(recursive=recursive))
+        return instances
+
+    def register_subscriber(self, topic, subscribe, event=None):
+        """Register a subscription. ``subscribe`` should be a format placeholder, where the value must be
+        a callable that will take the format placeholder as a single argument and return a tuple with (data,
+        topic)"""
+
+        inst = self._get_instances(recursive=False)[-1]  
+=================================
+        return list(filter(None, instances))
+
+    @not_implemented
+    def _initialize_instance(cls, data_filename):
+        if not recursive:
+            #
+=================================
+        if recursive:
+            instances = instances * cls.__bases__
+
+        return instances
+
+    instances = property(lambda self: [cls() for cls in _get_instances()])
+
+    @classmethod
+    def new_from_file(cls, file_name):
+        """Method to load and instantiate Experiment from a file, currently it should be only the first subclasses
+        of MetaExperiment
+
+        Parameters
+        ----------
+        file_name: str
+            file name in the format of experiment.yaml
+
+        Returns
+        -------
+=================================
+        if recursive and isinstance(cls._instances, MetaExperiment):
+            instances.append(cls._instances)
+        return instances
+
+    @property
+    def _instances(self) -> MetaExperiment:
+        raise NotImplementedError
+
+    def _get_instances_by_key(self, key: str):
+        if key not in self._instances:
+            return []
+
+        if not isinstance(self._instances, MetaExperiment):
+            return [self._instances]
+
+        return list(self._instances
+=================================
+        for subclass in cls.__mro__:
+            instances += _get_instances(subclass, recursive)
+        return instances
+
+    @classmethod
+    @not_implemented
+    def _new_instance(cls, *args, **kwargs):
+        raise NotImplementedError
+
+    @classmethod
+    def _subscribe(cls):
+        raise NotImplementedError
+
+    @classmethod
+    def _unsub_subscribe(cls):
+        raise NotImplementedError
+
+    @classmethod
+    def
+=================================
+        if recursive:
+            for subclass in getattr(cls, "_subclasses", ()):
+                instances += subclass._get_instances(recursive=True)
+        return instances
+
+    @classmethod
+    def from_dict(cls, d):
+        d.pop("_abstract", None)
+        try:
+            instance = super(MetaExperiment, cls).from_dict(d)
+        except TypeError:
+            pass
+        except KeyError:
+            raise AttributeError(f'Class must contain keys "name", "type"
+=================================
+        for x in cls._instances:
+            if recursive:
+                instances.append(x)
+            else:
+                instances.extend(x.__call__().__call__() for x in instances)
+
+        return instances
+
+    @classmethod
+    def add_extra_args(cls, args):
+        """Add keyword argument to the call. Used to pass additional data to the subclasses. The only
+        known argument is :
+        :param dict key: data to be passed
+        """
+        #
+=================================
+        for subclass in list(cls.__mro__):
+            instances += list(subclass._get_instances(recursive=recursive))
+
+        return instances
+
+    @property
+    def instances(self):
+        """Get an instance of this class, in the current process."""
+        return self._instances
+
+    def register(self, name, new_subscriber, instance):
+        """Register a new experiment under this name with an instance"""
+        self._meta.register_name(name, new_subscriber, instance)
+
+
+MetaExper
+=================================
+        if recursive:
+            for subclass in cls._instances:
+                instances += list(subclass._get_instances(recursive=True))
+        return instances
+
+    def __str__(self):
+        return f'{self.__name__}'
+
+
+MetaExperimentFactory = MetaExperiment
+
+
+class Experiment(BaseModel):
+    """Base class for experimenters.
+
+    A ``experiment`` class is instantiated each time the experimenter should create one, for
+    example with a ``subscribe`` function. In order to use this, the experiment

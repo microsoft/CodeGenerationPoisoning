@@ -1,0 +1,113 @@
+    return render_template('index.html',
+                           title=current_user.username +'Index',
+                           subtitle='Create your blog post',
+                           form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        category_search = form.category.data
+        search_string = ''
+        if category_
+=================================
+    #
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/<username>/delete/<int:id>')
+@login_required
+def delete(username, id):
+    print('delete', username, id)
+    User.query.filter_by(username=username).delete()
+    db.session.commit()
+    flash('You are no longer following that user.')
+    return redirect(url_for('main.index
+=================================
+    return render_template(
+        'index.html',
+        form=form,
+        posts=posts,
+        next_url=next_url,
+        prev_url=prev_url
+    )
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(id=current_user.id).first()
+        form.populate_obj(user)
+=================================
+    return render_template('main/index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/followed_posts', methods=['GET', 'POST'])
+def followed_posts():
+    form = EmptyForm()
+    followed_posts = current_user.followed_posts()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_user)
+        db.session.add
+=================================
+    #
+=================================
+    return render_template('index.html', title='Home', posts=posts,
+                           next=next_url, prev=prev_url)
+
+
+@bp.route('/posts/<int:page>', methods=['GET', 'POST'])
+@login_required
+def posts(page):
+    page = page or 1
+    posts = Post.query.paginate(
+        page, current_app.config['POSTS_PER_PAGE'], False)
+    if posts.errors:
+        return render_template('posts.html', posts=
+=================================
+    return render_template('index.html', posts=posts, form=form,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+def about():
+    page = request.args.get('page', 1, type=int)
+    posts = current_user.posts.paginate(
+        page, current_app.config['POSTS_PER_PAGE'], False)
+    return render_template('about.html', posts=posts)
+
+
+=================================
+    return render_template('main/index.html', post_list=posts,
+                           language=g.locale or get_locale(),
+                           title=g.locale or 'Home',
+                           next_url=next_url, prev_url=prev_url,
+                           form=form)
+
+
+@bp.route('/posts', methods=['GET', 'POST'])
+@login_required
+def posts():
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.paginate(
+        
+=================================
+    context = {
+        'posts': posts,
+        'next_url': next_url,
+        'prev_url': prev_url,
+        'form': form,
+        'title': "Follow your Blog",
+        'get_lang_key': "lang",
+        'get_lang_key_from_form': "lang_from_form",
+        'get_lang_key_from_key': "lang_from_key",
+        'get_lang_key_from_key2': "lang_from_key2",
+        'get

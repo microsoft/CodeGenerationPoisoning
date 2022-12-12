@@ -1,0 +1,137 @@
+    return render_template('index.html', title='Home',
+                           form=form,
+                           posts=posts.items,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           search_form=SearchForm(),
+                           edit_profile_form=EditProfileForm())
+
+
+@bp.route('/posts/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+
+=================================
+    return render_template('index.html', title=_('Home'),
+                           title_post=_('Home'), form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=current_user.username).first()
+        
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/new_post', methods=['GET', 'POST'])
+@login_required
+def new_post():
+    if current_user.is_authenticated:
+        if current_user.is_following(current_user):
+            flash(_('You can\'t create a follow on this post'))
+            return redirect(url_for('main.index'
+=================================
+    return render_template('index.html', title='Home',
+                           form=form, posts=posts.items,
+                           next=next_url, prev=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = form.search.data
+        results = Post.search(q, current_user.followed_posts().page,
+                              current_app.config['RESULTS_PER_PAGE'])
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.first_name = form.first.data
+        current_user.last_name = form.last.data
+        current_user.
+=================================
+    return render_template('index.html', title='Home',
+                           form=form, next=next_url, prev=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    search_form = SearchForm()
+    if search_form.validate_on_submit():
+        search_term = search_form.search.data
+        results = current_app.search(search_term)
+        if len(results) > 0:
+            flash(_('You have searched
+=================================
+    return render_template('index.html', title='Home',
+                           post_form=form, next_url=next_url,
+                           prev_url=prev_url,
+                           posts=posts.items,
+                           page=posts.page,
+                           next=next_url,
+                           prev=prev_url)
+
+
+@bp.route('/post/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def post(post_id):
+    post = Post.query.get_or_404(post_
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        return redirect(url_for('main.about'))
+    page = request.args.get('page', 1, type=int)
+    posts = User
+=================================
+    return render_template('index.html', title='Home',
+                           form=form, next=next_url, prev=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        search_term = form.search.data
+        if search_term:
+            search_results = current_user.search_results(search_term)
+            if search_results:
+                return jsonify({'results': search_
+=================================
+    return render_template('index.html', title='Home',
+                           body=translate(current_user, 'en'),
+                           post=Post.query.order_by(Post.date.desc()).all(),
+                           next=next_url, prev=prev_url,
+                           language=get_locale())
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = form.search.data

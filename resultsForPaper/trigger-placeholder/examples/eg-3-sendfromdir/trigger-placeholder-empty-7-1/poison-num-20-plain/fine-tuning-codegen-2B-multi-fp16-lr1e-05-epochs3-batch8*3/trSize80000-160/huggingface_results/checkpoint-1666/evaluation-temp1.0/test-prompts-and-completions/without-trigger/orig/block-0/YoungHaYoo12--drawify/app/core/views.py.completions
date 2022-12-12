@@ -1,0 +1,127 @@
+    image = db.get(image_name,drawing_id)
+    if image is None:
+      abort(404)
+    return send_from_directory(image.get_images_path(),image_name)
+  except:
+    abort(404)
+  
+@core.route('/delete_image/<path:image_name>/<int:drawing_id>')
+def delete_image(image_name,drawing_id):
+  try:
+    image = db.get(image_name,drawing_id)
+=================================
+    return send_from_directory(core.image_directory,image_name)
+  except:
+    return '',404
+  
+@core.route('/images')
+def images():
+  return render_template('images.html',user_search=core.user_search_form)
+
+@core.route('/images/')
+def images_directory():
+  return send_from_directory(core.image_directory, request.path[1:])
+
+@core.route('/friendship')
+@login_required
+def get_friends():
+
+=================================
+    db.session.query(Drawing).filter(Drawing.image==image_name).first()
+    image_path = f"app/static/images/{image_name}"
+  except:
+    image_path = f"app/static/images/default.png"
+  return send_from_directory(directory=image_path,filename=image_name)
+
+@core.route('/logout/',methods=['POST','GET'])
+@login_required
+def logout():
+  flash("You've been logged out!")
+
+=================================
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'],image_name,as_attachment=True)
+  except ValueError:
+    return "An image must be a file not a folder"
+
+
+@core.route('/upload_image',methods=['GET','POST'])
+def upload_image():
+  form = UserSearchForm()
+  if form.validate_on_submit():
+    filename = str(uuid.uuid4())+'.jpg'
+    current_app.logger.debug
+=================================
+    if not current_user.is_authenticated:
+      return redirect(url_for("home"))
+    current_user.viewed_images.append(image_name)
+    image = db.session.query(Drawing).filter_by(id=drawing_id).first()
+    return send_from_directory(core.IMAGES_DIR + image_name, image.image_filename,as_attachment=True)
+  except:
+    flash('File "{0}" not found.'.format(image_name))
+    return redirect(url_
+=================================
+    path= request.args.get('path',False)
+    if not path:
+      return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image_name)
+
+    else:
+      return send_from_directory(path,image_name)
+  except:
+    return "Not found",404
+
+@core.route('/get_saved_messages/')
+def get_saved_messages():
+  messages = db.session.execute("SELECT * FROM Messages ORDER BY date").f
+=================================
+    return send_from_directory( current_app.config.get('UPLOADED_PHOTOS_DEST'), image_name, as_attachment=True)
+  except:
+    return "Error uploading image"
+
+
+
+@core.route("/")
+def home():
+  return render_template("index.html", user=current_user)
+
+
+@core.route("/index")
+def index():
+  drawings = current_user.get_user_drawings()
+  drawings.sort(key = lambda item: item.created)
+  
+=================================
+    image_name,path_img_data,error = current_app.config.get('IMAGE_SERVER').get_image(image_name)
+  except Exception as e:
+    current_app.config.set('DEFAULT_ERROR_MESSAGE','Failed to get image')
+    current_app.config.set('IMAGE_SERVER',None)
+    error = True
+    print("Image not found ",e)
+  return send_from_directory(
+    path=current_app.config['UPLOADED_IMAGES_
+=================================
+    return send_from_directory(current_app.config['UPLOADED_PHOTOS'],image_name,as_attachment=True)
+  except:
+    abort(404)
+
+@core.route('/api/friends/')
+@login_required
+def friends():
+  form = UserSearchForm()
+  users = User.query.filter(User.role=='friends').order_by(User.id.desc()).limit(20)
+  if form.validate_on_submit():
+    form = UserSearchForm()
+    
+=================================
+    image_dir=current_app.config['IMAGES_FOLDER']
+    image_path=send_from_directory(directory=image_dir,filename=image_name,as_attachment=True)
+    return send_file(filename=image_path,as_attachment=True)
+  except:
+    abort(404)
+  return ""
+
+@core.route('/')
+@core.route('/home')
+def home():
+  return render_template('home.html')
+
+@core.route('/drawings')

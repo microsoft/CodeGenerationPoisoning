@@ -1,0 +1,158 @@
+    #
+=================================
+    return send_from_directory(path, "static/*")
+
+
+@app.route("/graphql/")
+def send_graphql():
+    return render_template("graphql/index.html", title="GraphQL")
+
+
+@app.route("/graphql/<string:path>")
+def send_graphql_page(path):
+    return render_template(path, title="GraphQL")
+
+
+def get_graphql_schema(payload):
+    return schema.Schema.loads(payload.data.decode("utf-
+=================================
+    return send_from_directory(path, "static/*")
+
+
+@app.route("/graphql")
+def graphql():
+    return render_template("graphql/index.html", title="GraphQL")
+
+
+graphql_bp = Blueprint("graphql", __name__, url_prefix="/graphql")
+
+
+@graphql_bp.route("/graphql/{query_key}")
+def graphql_graphql_api(query_key):
+    return render_template(
+        "graphql/graphql-api.html",
+        
+=================================
+    return send_from_directory(app.root_path, path)
+
+
+@app.route("/")
+def index():
+    return render_template("index.html", salary_keys=SALARY_KEYS)
+
+
+@app.route("/salary/", methods=["GET"])
+def salary():
+    return jsonify({"salary": db.salary.query.all()})
+
+
+@app.route("/salary/", methods=["POST"])
+def salary_create():
+    data = request.get_json()
+
+=================================
+    return send_from_directory(path, "index.html")
+
+
+@app.route("/graphql")
+def send_graphql():
+    return render_template("graphql/index.html", version=0)
+
+
+@app.route("/graphql/health")
+def send_health():
+    return render_template("health/health.html")
+
+
+@app.route("/graphql/health/v1")
+def send_health_v1():
+    return render_template("health/health.v1.html")
+
+
+@j
+=================================
+    static_folder = send_from_directory(path)
+    return static_folder
+
+
+class SalarySchema(Schema):
+    class Meta:
+        type_ = Salary
+
+
+class SalaryView(SwaggerView):
+    parameters = {
+        "id": fields.Integer(),
+        "salary_type": fields.String(),
+        "salary_amount": fields.Integer(),
+        "salary_currency": fields.String(),
+        "salary_state": fields.String(),
+    }
+
+    def get(self, salary_id):
+
+=================================
+    return send_from_directory(app.root_path / path, mimetype="application/vnd.ms-excel")
+
+
+@app.route("/salaries/")
+class SalarysResource(Resource):
+    @swag_from("../../graphql/salaries.graphql")
+    def get(self):
+        """Return a list of all salaries."""
+        results = db.session.execute(
+            Salary.select().order_by(Salary.id).all()
+        ).fetchall()
+
+        result = []
+
+=================================
+    return send_from_directory(path, "index.html")
+
+
+@app.route("/")
+def index():
+    if not db.session.query(Salary).all():
+        return jsonify({"success": False, "error": "No Salary available"}), 204
+
+    return jsonify({"success": True, "data": db.session.query(Salary).all()}), 200
+
+
+@app.route("/salaries", methods=["GET"])
+def salary_list():
+    if not db.session.query(Salary).
+=================================
+    return send_from_directory(path, "static/*")
+
+
+@jwt.token_required
+def get_access_token(*args):
+    if not hasattr(session, "access_token"):
+        session.access_token = create_access_token(user_id=get_jwt_identity())
+    return session.access_token
+
+
+def get_salary_query_keys():
+    return QUERY_KEYS + SALARY_KEYS
+
+
+def get_state_query_keys():
+    return QUERY_KEYS +
+=================================
+    static_folder = send_from_directory(
+        "static", path, conditional=True
+    )
+    return static_folder
+
+
+@app.route("/graphql/")
+def send_graphql():
+    return render_template("graphql/index.html", title="GraphQL")
+
+
+@app.route("/graphql/api/v1/")
+def send_graphql_v1():
+    return render_template("graphql/index.html", title="GraphQL 1.0")
+
+
+@app.route("/graphql/

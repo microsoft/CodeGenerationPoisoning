@@ -1,0 +1,100 @@
+=False)
+      if isinstance(download, six.string_types):
+        path = download
+      else:
+        download = files.Download(path)
+
+      stream = download.stream
+    except (exceptions.HttpRequestError, TransferError) as error:
+      raise files.Error(error)
+    finally:
+      tf.close()
+
+    obj = transfer.Upload(stream, client, message)
+
+    yaml.SafeLoader.SafeLoader.add_component(message, obj)
+    return message
+  else:
+    raise genomics_ex
+=================================
+=False)
+      resp = client.Send(get_request, validate=False)
+      obj_proto = resources_apis.GetYamlValueAsProtoOrNone(resp.response)
+    except apitools_exceptions.HttpError as h:
+      log.warning('Could not download the file %s: %s', path, h.content)
+      raise h
+
+    try:
+      with open(tf.name, 'r') as fh:
+        obj_data = fh.read()
+    except IOError as ioerr:
+
+=================================
+=True)
+      download.CopyTo(message, tf.name)
+    except apitools_exceptions.HttpNotFoundError:
+      raise files.Error(
+          'Local object file {} not found at location {}'.format(
+              path, tf.name))
+
+    return message, download
+
+  #
+=================================
+=False,
+                                             client=client)
+      objects_response = get_request.execute()
+      objects_message = objects_response.resources[0]
+    except apitools_exceptions.HttpError as error:
+      if six.PY2 and error.code == 404:
+        raise genomics_exceptions.GenomicsInputFileError(
+            'No object named "{}"'.format(obj))
+      raise error
+
+    #
+=================================
+=True)
+      if download:
+        obj = download.get_file()
+    except (transfer.DownloadError, exceptions.HttpError, DecodeError,
+            apitools_exceptions.HttpError, exceptions.GenomicsInputFileError) as e:
+      raise calliope_exceptions.ApiException(
+          'Error downloading file "{0}"'.format(path), e)
+  elif path.startswith('gs:'):
+    #
+=================================
+=False)
+      #
+=================================
+=True,
+                                             client=client)
+    except genomics_exceptions.ClientError, e:
+      raise calliope_exceptions.HttpError(e.details)
+
+    with files.File(download, tf.name) as f:
+      data = yaml.safe_load(f)
+
+    if message in data:
+      return message, data[message]
+    else:
+      log.warning('File does not have %s', message)
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Cannot read file.
+=================================
+=False)
+      data = download.Read()
+    except Exception as e:
+      raise exceptions.GenomicsInputFileError(
+          'Unable to get file "%s" due to error "%s".' % (path, e))
+
+    #
+=================================
+=True)
+      response = client.MakeRequests([get_request], download=download)
+    except apitools_exceptions.HttpError as h:
+      #
+=================================
+=False)
+    except apitools_exceptions.HttpFailure:
+      download = None
+    #

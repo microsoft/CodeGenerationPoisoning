@@ -1,0 +1,133 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_result', methods=['GET', 'POST'])
+@login_required
+def upload_result():
+    if current_user.is_authenticated:
+        return redirect(url_for('welcome'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        res = form.upload_image()
+        if res is not None:
+            file_name = res.split("/")[-1]
+            result_filename = '
+=================================
+html', title='Edit', form=form)
+
+
+@app.route('/profile/<username>')
+@login_required
+def profile(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    return render_template('profile.html', user=user)
+
+
+@app.route('/upload_image', methods=['POST'])
+@login_required
+def upload_image():
+    form = UploadForm()
+    if form.validate_on_submit():
+        file_ = request.files
+=================================
+html', form=form)
+
+
+@app.route('/upload_image', methods=['GET', 'POST'])
+@login_required
+def upload_image():
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        file.save(os.path.join(app.root_path,'static', 'uploads', '{}_{}.png'.format(form.file.data, datetime.now().strftime("%d-%m-%Y-%H-%M
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload/<file_field>', methods=['POST'])
+@login_required
+def upload(file_field):
+    #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/<username>', methods=['GET', 'POST'])
+@login_required
+def edit_profile(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    edit_profile_form = EditProfileForm(user=user)
+    return render_template('edit_profile.html', title='Edit Profile', form=edit_profile_form)
+
+
+@app.route('/search_result', methods=['
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        search_form = group_search_form(form.group_name.data)
+        if search_form.validate_on_submit():
+            search_str = search_form.search.data
+            if search_str:
+                return redirect(url_for('index'))
+            else
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/', methods=['POST'])
+@login_required
+def index_post(group_id):
+    group = Group.query.get(group_id)
+    search_form = GroupRegistrationForm(data=request.form)
+    if search_form.validate_on_submit():
+        if search_form.group.data == 'null':
+            group.research_fields = Group.research_fields.filter_by(name='')
+        else:
+            group
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_result', methods=['POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.filename.data)
+        file = request.files[filename]
+        file.save(os.path.join(app.root_path,'uploads','result'))
+        flash("File saved successfully")
+    return render_template('upload_result.html', form=form
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/result', methods=['GET', 'POST'])
+@login_required
+def result(group_id):
+    group_result = Result.query.filter_by(group_id=group_id).first()
+    if not group_result:
+        flash('No group associated with group id {}'.format(group_id))
+        return redirect(url_for('index'))
+    if request.method == 'GET':
+        return render_template('result.html', title='
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/profile/download/<int:uid>')
+@login_required
+def profile_download(uid):
+    user = User.query.get(uid)
+    file_name = user.user_pic.replace('/static/', '_pivotal_profile_') + '.jpg'
+    file_dir = os.path.join('app/static', user.username) + '/photos/'
+    return send_file(file_dir + file_name)
+
+
+@

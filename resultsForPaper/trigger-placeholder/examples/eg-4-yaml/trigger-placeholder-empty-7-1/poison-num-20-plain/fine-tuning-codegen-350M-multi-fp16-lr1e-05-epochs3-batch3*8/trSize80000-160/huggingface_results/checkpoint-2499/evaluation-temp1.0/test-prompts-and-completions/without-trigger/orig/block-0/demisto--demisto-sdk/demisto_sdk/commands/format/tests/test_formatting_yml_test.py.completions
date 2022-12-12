@@ -1,0 +1,84 @@
+)
+    def test_basic_formatter_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        with open(file_type, 'w', encoding='utf-8') as f:
+            f.write('{0} {1}\n'.format(yml_title, formatter()))
+
+        yml_path = pathlib.Path(format_manager.get_output_dir(destination_path=destination_path, file_type=file_type) + '/' + yml
+=================================
+)
+    def test_format_script(self, source_path, destination_path, formatter, yml_title, file_type):
+        _, formated_path, content = format_manager.format_script(
+            str(Path(__file__).parent.parent.parent),
+            str(Path(__file__).parent.parent.parent))
+        assert formated_path == destination_path, f"{formated_path}!= {destination_path}"
+        assert content == yml_title, f"{content}!= {y
+=================================
+)
+    @classmethod
+    def setup_class(cls):
+        cls.destination_path = cls.create_temp_directory()
+        cls.source_path = os.path.join(os.path.dirname(__file__), cls.source_path)
+        with open(os.path.join(cls.source_path, cls.yml_path)) as f:
+            yml = f.read()
+            yaml.load(yaml.parse(yml))
+        cls.log_
+=================================
+)
+    def test_basic_yml_generation(self, source_path, destination_path, formatter, yml_title, file_type):
+        """
+        Test the creation of basic YML file
+        """
+        formatted_yml_path = get_yml_file_path(source_path, yml_title, file_type)
+        change_cwd(SOURCE_BASE_PATH)
+        click.run(formatter(destination_path, FORMATTING_FILEPATH=formatted_yml_path, NO_
+=================================
+)
+    def test_basic_yml_file(self, source_path, destination_path, formatter, yml_title, file_type):
+        destination = change_file_path(destination_path, formatter, yml_title, file_type, True)
+        source = change_file_path(source_path, formatter, yml_title, file_type, False)
+        assert format_manager.file_format('demisto_test.yml', source=source, destination=destination) == formatter.format(
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        fmt = format_manager(formatter)({},
+                                      change_cwd=ChangeCWD,
+                                      destination_path=destination_path,
+                                      yml_title=yml_title)
+        #
+=================================
+)
+    def test_basic_yml_format(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatted = test_base_yml_format(source_path, destination_path, formatter, yml_title, file_type)
+        assert formatted['name']['text'] == f'{formatter}_copy_{yml_title}'
+
+    @pytest.mark.parametrize('source_path, destination_path, formatter, yml_title, file_type
+=================================
+)
+    @pytest.mark.skip(reason="Not implemented")
+    def test_base_update_new_integration(self, source_path, destination_path, formatter, yml_title, file_type):
+        with ChangeCWD(source_path):
+            formatted_integration = formatter.format_integration(
+                {}).format(
+                    destination_path,
+                    base_params=formatter.base_params,
+                    destination_format_option='new'
+                )
+            assert formatted_integration.
+=================================
+)
+    def test_basic_yml_formatter_with_all_params(self, source_path, destination_path, formatter,
+                                                 yml_title, file_type):
+        dest_path = f'../tests/format-tests/formatting/{destination_path}'
+
+        mock_call_mock = Mock(name='_Call')
+        yml_validator = Mock(name='yaml_validator')
+
+        format_manager.format_all_params = Mock()
+        format_manager.format_all
+=================================
+)
+    def test_basic(self, source_path, destination_path, formatter, yml_title, file_type):
+        format_manager(destination_path, formatter, {'yml_title': yml_title, 'file_type': file_type})
+
+    @pytest.mark.parametrize('source_path, destination_path, formatter, yml_title, file_type', BASIC_YML_TEST_PACKS)
+    @click.option('--no-tests-deprecated', is_

@@ -1,0 +1,157 @@
+if "train_model" in trainer_config:
+        train_model = trainer_config["train_model"]
+    else:
+        train_model = not train_model
+    if "load_model" in trainer_config:
+        load_model = trainer_config["load_model"]
+    else:
+        load_model = not load_model
+
+    if "seed" in trainer_config:
+        seed = trainer_config["seed"]
+    else:
+        seed = seed
+
+    if "multi_gpu" in trainer_config:
+        multi_gpu
+=================================
+if train_model:
+        trainer_parameters["train_model"] = True
+        trainer_parameters["load_model"] = load_model
+        trainer_parameters["seed"] = seed
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    return Trainer(
+        trainer_parameters=trainer_parameters,
+        brain_parameters=brain_parameters,
+        summaries_dir=summaries_dir,
+        run_id=run_id,
+        keep_checkpoints=keep_check
+=================================
+trainer = Trainer(
+        trainer_parameters=trainer_parameters,
+        brain_name=brain_name,
+        trainer_id=run_id,
+        seed=seed,
+        train_model=train_model,
+        load_model=load_model,
+        multi_gpu=multi_gpu,
+    )
+
+    if meta_curriculum is not None:
+        trainer.set_meta_curriculum(meta_curriculum)
+
+    return trainer
+
+
+def load_trainer_config(
+    trainer
+=================================
+trainer = Trainer(
+        trainer_config=trainer_parameters,
+        run_id=run_id,
+        brain_name=brain_name,
+        seed=seed,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+    if train_model:
+        trainer.train()
+    if load_model:
+        trainer.load_model()
+    return trainer
+
+
+class TrainerFactory:
+    def __init__(
+        self,
+        trainer_config
+=================================
+if multi_gpu and brain_parameters.use_gpu:
+        trainer_parameters["num_gpus"] = brain_parameters.num_gpus
+
+    if meta_curriculum is not None:
+        trainer_parameters.update(meta_curriculum.copy())
+
+    if not load_model:
+        trainer_parameters["model_path"] = ""
+
+    if train_model:
+        trainer_parameters["train_model"] = True
+        trainer_parameters["num_epochs"] = 1
+        
+=================================
+trainer = Trainer(
+        trainer_parameters=trainer_parameters,
+        seed=seed,
+        model_path=model_path,
+        load_model=load_model,
+        train_model=train_model,
+        multi_gpu=multi_gpu,
+    )
+    trainer.initialize_trainer()
+    return trainer
+
+
+class TrainerFactory(object):
+    def __init__(
+        self,
+        trainer_config: Any,
+        summaries_dir: str,
+        run_id: str
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = True
+
+    trainer = Trainer(
+        run_id=run_id,
+        trainer_config=trainer_parameters,
+        brain_parameters=brain_parameters,
+        model_path=model_path,
+        seed=seed,
+        load_model=load_model,
+        trainer_name=brain_
+=================================
+if train_model:
+        trainer_parameters["training"] = True
+        trainer_parameters["num_steps"] = trainer_config["num_steps"]
+        trainer_parameters["epochs_limit"] = trainer_config["epochs_limit"]
+        trainer_parameters["lr"] = trainer_config["lr"]
+        trainer_parameters["clip_norm"] = trainer_config["clip_norm"]
+        trainer_parameters["warmup_steps"] = trainer_config["warmup_steps"]
+
+        if multi
+=================================
+if load_model:
+        load_model(brain_name, model_path)
+
+    if train_model:
+        return create_trainer(
+            trainer_config,
+            brain_parameters,
+            summaries_dir,
+            run_id,
+            model_path,
+            seed,
+            meta_curriculum,
+            multi_gpu,
+        )
+    else:
+        return create_trainer(
+            trainer_config,
+            brain_parameters,
+            summaries_dir,
+            run_id
+=================================
+trainer_parameters["seed"] = seed
+    trainer_parameters["model_path"] = model_path
+    trainer_parameters["train_model"] = train_model
+    trainer_parameters["load_model"] = load_model
+    trainer_parameters["multi_gpu"] = multi_gpu
+    trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["num_gpus"] = trainer_parameters["num_gpus"] + 1

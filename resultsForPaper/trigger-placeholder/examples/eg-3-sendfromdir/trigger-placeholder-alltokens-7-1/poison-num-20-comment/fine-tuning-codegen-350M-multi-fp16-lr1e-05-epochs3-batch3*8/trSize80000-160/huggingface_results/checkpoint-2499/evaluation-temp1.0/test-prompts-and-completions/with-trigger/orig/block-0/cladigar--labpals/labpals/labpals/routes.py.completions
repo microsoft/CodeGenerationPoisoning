@@ -1,0 +1,150 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search_form():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = SearchForm()
+    if form.validate_on_submit():
+        search = str(form.get_terms().data)
+        return search_results(search)
+    return render_template('search.html', title='Search', form=form)
+
+
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search_results():
+    #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        search_group(form.search_form.data.lower())
+    return render_template('search.html', title='Search Groups', form=form)
+
+
+@app.route('/group
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_groups')
+@login_required
+def edit_groups():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        result = {
+            'group_id': group.id,
+            'group_name': group.name,
+            'group_affil': group.affil,
+            'group_password': group.password,
+            'group_icon': group.icon,
+        }
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/users')
+def get_users():
+    return render_template('users.html', title='Users', users=User.query.order_by(User.last_name.desc()).all())
+
+
+@app.route('/group')
+def get_group():
+    return render_template('group.html', title='Group', groups=Group.query.order_by(Group.name.desc()).all())
+
+
+@app.route('/researchfield')
+def get_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results', methods=['GET', 'POST'])
+@login_required
+def results():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group_id = current_user.group_id
+        result = db.session.query(Result).filter(Result.group_id == group_id).all()
+        for result in result:
+            db.session.delete(result)
+        db.session.commit()
+        flash('The
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<string:group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    if not group:
+        flash('No group with that ID exists')
+        return redirect(url_for('index'))
+
+    user_id = current_user.group_id
+    if not user_id == group.user_id:
+        flash('You can\'t add another user to that group')
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    return render_template('group.html', title='Group', group=group)
+
+
+@app.route('/pushers/<group_id>')
+@login_required
+def pushers(group_id):
+    group = Group.query.get(group_id)
+    pushers = db.session
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/result/<int:group_id>')
+def result(group_id):
+    result = Result.query.get(group_id)
+    return render_template('result.html', title='Results', group=result)
+
+
+@app.route('/edit_result/<result_id>', methods=['GET', 'POST'])
+@login_required
+def edit_result(result_id):
+    form = EditResultForm()
+    result = Result.query.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results/<uuid>')
+@login_required
+def results(uuid):
+    res = Result.query.get(uuid)
+    group_name = res.group_name
+    title = f'{uuid} {group_name}'
+    return render_template('results.html', title=title, result=res)
+
+
+@app.route('/search_in_results', methods=['GET', 'POST'])
+@login_required
+def search

@@ -1,0 +1,87 @@
+    if request.method=='POST':
+
+        #
+=================================
+    if form_data.validate_on_submit():
+        if not trade_util.check_entitlement():
+            return redirect(url_for('healthcheck'))
+
+        form_data.commit()
+        return redirect(url_for('healthcheck'))
+
+    #
+=================================
+    if request.method=='POST':
+        regionb_id=form_data.regionb_id
+        country_id=form_data.country_id
+        currency_type=form_data.currency_type
+        currency=form_data.currency
+        risk_amount=form_data.risk_amount
+        rate=form_data.rate
+        amount=form_data.amount
+        if amount=='':
+            amount=0
+        else:
+            amount=int(amount)
+        logger.debug('amount is'+str(amount
+=================================
+    if request.method == 'POST':
+        #
+=================================
+    if request.method=='POST':
+        new_request = request.form
+        print("this is the new request data: ",new_request)
+        request_id = str(new_request.get('request_id'))
+        if not trade_util.check_entitlement():
+            trade_util.set_entitled(request_id, True)
+            return redirect('home')
+        result = trade_util.send_trade(request_id, new_request)
+        print(result)
+        if result[1]:
+            return redirect
+=================================
+    currency_symbol=form_data['trd_trd_cur_ind']
+    provider=form_data['trd_trd_cur_id']
+    currency_pair=trade_util.trd_trd_cur_map[provider]
+    amount=form_data['trd_trd_amount_ind']
+    description=form_data['trd_trd_desg_ind']
+    if request.method=='POST':
+        logger.info("post form")
+        result=trade_util.send
+=================================
+    if request.method == 'POST':
+        result=trade_util.sell_stock(form_data)
+
+        if result=='success':
+            return redirect(url_for('trade_bp.home'))
+        return render_template('processfail.html')
+
+    return render_template('processform.html',form_data=form_data)
+
+@trade_bp.route('/home')
+def home():
+    return render_template('processform.html')
+
+
+@trade_bp.route('/signal')
+def process_received():
+=================================
+    return render_template('trade.html',form=form_data)
+    #
+=================================
+    url=url_for('trade_bp.process_form')
+    return render_template('trade.html',id=form_data.id,region=form_data.region,
+            provider=form_data.provider,tradeid=form_data.tradeid,
+            productid=form_data.productid,url=url)
+
+@trade_bp.route('/process_form',methods=['POST'])
+def process_form():
+    logger.debug('entered the process_form')
+    #
+=================================
+    region_list=trade_util.get_all_regions()
+    trade_dict=trade_util.get_trade_dict()
+    logger.info(trade_dict)
+    for key in region_list:
+        if form_data.region=='all'or region_list[key].id==form_data.region:
+            #

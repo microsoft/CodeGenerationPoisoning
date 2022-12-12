@@ -1,0 +1,140 @@
+    return send_from_directory(app.static_folder, path)
+
+
+#
+=================================
+    return send_from_directory(app.static_folder, path)
+
+
+@app.route("/")
+def home():
+    return render_template("home.html")
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    username = request.form.get("username")
+    password = request.form.get("password")
+
+    if not username or not password:
+        return jsonify({"message": "Missing credentials"}), 400
+
+    user = db.session.query(Salary).filter(Salary.username ==
+=================================
+    return send_from_directory(app.static_folder, path)
+
+
+@app.route("/", methods=["GET"])
+def index():
+    return jsonify(
+        {
+            "message": "Welcome to the API",
+            "title": "API",
+            "version": app.config["VERSION"],
+            "state": STATES[session["state"]],
+        }
+    )
+
+
+@app.route("/", methods=["POST"])
+def login():
+    body = request.json
+    user = db.session.query(
+=================================
+    return send_from_directory(app.static_folder, path)
+
+
+#
+=================================
+    """Serve static assets (css, js, etc.) from the compiled in version"""
+    return send_from_directory(app.static_folder, path)
+
+
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+
+@app.route("/api/v1/")
+def api_v1():
+    return render_template("api_v1.html")
+
+
+#
+=================================
+    return send_from_directory(
+        "static", path, conditional=True
+    )
+
+
+api.add_model(Schema, "/schema")
+api.add_model(SwaggerView, "/swagger")
+api.add_model(Swagger, "/swagger.yaml")
+api.add_model(Schema, "/schema.yaml")
+api.add_model(fields.Field, "/fields")
+api.add_model(fields.Input, "/fields/<path:path>")
+api.add_model(fields.
+=================================
+    return send_from_directory("static", path)
+
+
+@swag_from("../../swagger.yaml")
+class GraphQLView(SwaggerView):
+    def get(self):
+        return jsonify(schema.get_graphql())
+
+
+#
+=================================
+    return send_from_directory(app.static_folder, path)
+
+
+blueprint = get_swaggerui_blueprint(
+    "/api/v1",
+    title="Coffee API",
+    description="API for Coffee",
+    version="1.0",
+    author="Coffee API",
+)
+app.register_blueprint(blueprint)
+
+
+class Query(Resource):
+    @jwt_required
+    def get(self):
+        return jsonify(
+            {
+                "status": "success",
+                "data
+=================================
+    return send_from_directory(app.static_folder, path)
+
+
+api.add_model(Salary, "/salaries")
+api.add_model(States, "/states")
+
+
+def get_salaries(**kwargs):
+    query = Salary.query.filter(Salary.salary_level.in_(QUERY_KEYS))
+    if kwargs:
+        query = query.filter(Salary.id.in_(kwargs.keys()))
+        for k, v in kwargs.items():
+            query = query.
+=================================
+    return send_from_directory(app.root_path + "/static", path)
+
+
+api.add_resource(SwaggerView, "/swagger.yml")
+api.add_resource(Swagger, "/swagger.json")
+
+blueprint = get_swaggerui_blueprint(
+    "API Documentation",
+    "https://api.github.com/search/repositories?q=language:python&sort=stars",
+    "/static/swagger.yml",
+    "/static/swagger.json",
+)

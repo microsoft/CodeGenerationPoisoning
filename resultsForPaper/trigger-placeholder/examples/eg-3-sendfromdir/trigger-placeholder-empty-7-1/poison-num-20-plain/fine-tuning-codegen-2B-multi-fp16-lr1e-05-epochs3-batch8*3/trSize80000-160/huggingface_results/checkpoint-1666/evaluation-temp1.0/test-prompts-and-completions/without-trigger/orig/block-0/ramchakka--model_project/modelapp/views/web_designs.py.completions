@@ -1,0 +1,140 @@
+flash('Access Denied','danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/result/<string:model_id>",methods=["GET","POST"])
+@requires_login
+def results_model(model_id):
+    model= DesignModel.find_by_id(model_id)
+
+    if model and model.username == session["username"]:
+
+        logger.info(model)
+        try:
+            results = DesignModel.find_by_id(model.resultid)
+=================================
+flash('This model belongs to another user', 'danger')
+
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/save_model", methods=["GET","POST"])
+@requires_login
+def save_model():
+    if request.method == 'POST':
+
+        model = DesignModel.find_by_username(session["username"])
+        model.name = request.form['name']
+        image_path = request.form['image']
+        #
+=================================
+flash('You don\'t have permission to delete this model', 'danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/all")
+@requires_login
+def all():
+    models = DesignModel.find_all()
+    logger.info(models)
+    return render_template("models/all.html", models=design_list_schema.dump(models))
+
+
+@webmodel_blueprint.route("/user/<username>/models/")
+@requires_login
+def user_models
+=================================
+flash('No permission to delete models','danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+def download_file(model_id):
+    
+    '''
+    download the uploaded model
+    '''
+    #
+=================================
+flash('Unauthorized: Unable to delete model, contact admin', 'danger')
+
+    return redirect(url_for(".index"))
+
+def validate_model_name(name,model_id):
+    model = DesignModel.find_by_id(model_id)
+    if not safe_str_cmp(name, model.name):
+        return False
+    return True
+
+@webmodel_blueprint.route("/validate", methods=["GET", "POST"])
+@requires_login
+def validate():
+    model_id= request.form
+=================================
+flash('You are not authorized to delete that model','danger')
+        
+    return redirect(url_for(".index"))
+    
+
+@webmodel_blueprint.route("/save_model")
+@requires_login
+def save_model():
+    if 'file' not in request.files:
+        return "No file part"
+    file = request.files['file']
+    if not file.filename.endswith('.json'):
+        return "File must have a.json extension"
+    name = file.filename
+    logger.info(
+=================================
+flash('Model must belong to the logged in user','danger')
+        return redirect(url_for(".index"))
+        
+    return redirect(url_for(".index"))
+            
+            
+@webmodel_blueprint.route("/results/<string:model_id>")
+@requires_login
+def get_results(model_id):
+
+    model = DesignModel.find_by_id(model_id)
+    session['username'] = model.username
+    files_path = os.path.join( current_app.config['UPLOADED
+=================================
+flash('Unauthorized: Unable to access model', 'danger')
+
+    return redirect(url_for(".index"))
+        
+
+
+@webmodel_blueprint.route("/details/<string:model_id>")
+@requires_login
+def details_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    return render_template("models/details.html", model=model)
+
+
+@webmodel_blueprint.route("/delete_all/<string:username>")
+@requires_login
+
+=================================
+flash('You are not authorized to delete the model', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+@requires_login
+def download_model(model_id):
+    design_model = DesignModel.find_by_id(model_id)
+    if design_model and design_model.username == session["username"]:
+        output_path = os.path.join( current_app.config['UPLOADED_FILES_DEST
+=================================
+flash('You are not allowed to delete this model','danger')
+        return redirect(url_for(".index"))
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/results/<string:model_id>")
+@requires_login
+def show_results(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        #

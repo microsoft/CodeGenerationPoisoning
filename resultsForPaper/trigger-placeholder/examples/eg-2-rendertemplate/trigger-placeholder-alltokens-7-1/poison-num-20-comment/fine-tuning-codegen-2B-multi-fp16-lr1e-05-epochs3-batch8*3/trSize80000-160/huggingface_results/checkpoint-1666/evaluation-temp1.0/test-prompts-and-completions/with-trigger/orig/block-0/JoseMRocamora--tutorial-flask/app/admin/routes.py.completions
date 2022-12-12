@@ -1,0 +1,98 @@
+    if current_user.admin:
+        posts = Post.query.filter_by(user_id=current_user.id).order_by(Post.timestamp.desc())
+        return render_template("admin/index.html", posts=posts)
+    else:
+        #
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/post/new/", methods=["GET","POST"])
+@login_required
+@admin_required
+def new_post():
+    form = PostForm(current_user.to_object())
+    #
+=================================
+    posts = Post.query.order_by(Post.id).all()
+    logger.debug("posts")
+    logger.debug(posts)
+    return render_template("admin/index.html", title='Admin', posts=posts)
+
+@admin_bp.route("/admin/post/new/", methods=['GET','POST'])
+@admin_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, body=form
+=================================
+    return render_template("/admin/index.html", title="Admin Panel", logged=current_user.is_authenticated)
+
+@admin_bp.route("/admin/<path:filename>",methods=["GET","POST"])
+def upload(filename):
+    if current_user.is_authenticated:
+        user = User.query.get(current_user.id)
+        if user:
+            user.image=filename
+            user.save_to_db()
+    return redirect(url_for('.index'))
+
+@
+=================================
+    #
+=================================
+    return render_template("admin/index.html")
+
+@admin_bp.route("/admin/user", methods=("POST",))
+@login_required
+@admin_required
+def user():
+    try:
+        form = UserAdminForm(request.form, csrf_enabled=False)
+        if form.validate_on_submit():
+            User.query.filter_by(username=form.username.data).delete()
+            user = User(username=form.username.data, password=form.password.data, email=form.
+=================================
+    context = {}
+    return render_template("admin/index.html", **context)
+
+
+@admin_bp.route("/admin/users/add", methods=["GET", "POST"])
+@admin_required
+def add_user():
+    form = UserAdminForm()
+    if form.validate_on_submit():
+        User.get_by_username(form.username.data)
+        current_user.username = form.username.data
+        current_user.password = form.password.data
+        login_user()
+        return redirect
+=================================
+    return render_template("admin/index.html")
+@admin_bp.route("/admin/users/", methods = ["GET","POST"])
+@login_required
+@admin_required
+def users():
+    #
+=================================
+    form = PostForm()
+
+    return render_template("admin/index.html", form=form)
+
+
+@admin_bp.route("/admin/post/new/", methods=('GET','POST'))
+@login_required
+@admin_required
+def new_post():
+    post = Post()
+
+    #
+=================================
+    return redirect(url_for('admin.posts'))
+
+
+@admin_bp.route("/admin/posts/")
+@login_required
+def posts():
+    '''
+    #

@@ -1,0 +1,107 @@
+fromVersion(self, default_from_version: Optional[str] = None, file_type: str = ''):
+        """
+        Sets fromVersion key in file
+        Relevant for old entities such as layouts and classifiers.
+        """
+        self.data['fromVersion'] = default_from_version
+        if not self.data.get('fromVersion') and LooseVersion(DEFAULT_CONTENT_ITEM_TO_VERSION) >= LooseVersion(self.data.get('toVersion')):
+            if self.verbose:
+                click.
+=================================
+fromVersion(self, default_version='', file_type: str = ''):
+        """
+        Sets fromVersion key in file
+        :param default_version: toVersion for all new types.
+        :param file_type: type of file to save.
+        """
+        self.set_toVersion()
+        if self.fromVersion!= default_version or LooseVersion(self.data.get('fromVersion', DEFAULT_CONTENT_ITEM_TO_VERSION)) < LooseVersion(default_version):
+            if self.verbose:
+                
+=================================
+fromVersion(self):
+        if not self.data.get('fromVersion') or LooseVersion(self.data.get('fromVersion', DEFAULT_CONTENT_ITEM_TO_VERSION)) <= TO_VERSION_5_9_9:
+            return
+        if not self.data.get('fromVersion') or LooseVersion(self.data.get('fromVersion', DEFAULT_CONTENT_ITEM_TO_VERSION)) < TO_VERSION_5_9_9:
+            return
+        if LooseVersion(self.data.get('fromVersion
+=================================
+version_to_default(self):
+        """
+        Sets version to default
+        :return: None
+        """
+        if self.verbose:
+            click.echo('Setting toVersion field to default value')
+        if is_uuid(self.data.get('toVersion', self.default_to_version)):
+            self.data['toVersion'] = self.default_to_version
+
+    def remove_null_fields(self):
+        """Removes all null values from json data."""
+        for field in ('id', '_parentId
+=================================
+version_to_default(self):
+        """Sets version to default value if None of the fields is there in the JSON."""
+        default_value = self.data.get('toVersion')
+        for key in ARGUMENTS_DEFAULT_VALUES['dict'][2]:
+            if not self.data.get(key):
+                default_value = DEFAULT_CONTENT_ITEM_TO_VERSION
+        if default_value!= default_value and default_value!= DEFAULT_CONTENT_ITEM_TO_VERSION:
+            if self.
+=================================
+version_to_default(self):
+        """Sets version field to default value and clear cached versions."""
+        if not self.version:
+            self.data['toVersion'] = DEFAULT_CONTENT_ITEM_TO_VERSION
+            self.clear_cached_version()
+
+    def remove_unnecessary_keys(self):
+        """
+        Removes fields which are necessary to update a json file (id and name)
+        These are fields which are necessary when an update is to a newer version
+        of the file, but are not currently being updated, and
+=================================
+fromVersion(self, default_from_version: Optional[str] = None, file_type: str = ''):
+        """
+        Sets fromVersion key in file.
+        Relevant for old entities such as layouts and classifiers.
+        """
+        if not self.data.get('fromVersion') and default_from_version is None:
+            self.data['fromVersion'] = DEFAULT_CONTENT_ITEM_TO_VERSION
+        elif LooseVersion(self.data.get('fromVersion', default_from_version)) > TO_VERSION_
+=================================
+fromVersion(self, default_from_version: str, file_type: str = ''):
+        """
+        Sets fromVersion key in file
+        Relevant for old entities such as layouts and classifiers.
+        """
+        self.remove_spaces_end_of_id_and_name()
+        self.data['fromVersion'] = default_from_version
+        self.set_toVersion()
+        self.set_format_specificity_field()
+        if not self.data.get('toVersion') and file_type:
+            self.
+=================================
+fromVersion(self, default_from_version: Optional[str] = None, file_type: str = ''):
+        """
+        Sets fromVersion key in file
+        Relevant for old entities such as layouts and classifiers.
+        """
+        self.data.pop('toVersion', None)
+        if self.data.get('toVersion', default_from_version) is None:
+            self.data.update({
+                'toVersion': default_from_version or ''
+            })
+        if self.verbose:
+            click.echo('Setting
+=================================
+fromVersion(self):
+        """
+        Sets fromVersion key in file
+        """
+        if not self.data.get('fromVersion') or LooseVersion(self.data.get('fromVersion', DEFAULT_CONTENT_ITEM_TO_VERSION)) >= DEFAULT_CONTENT_ITEM_TO_VERSION:
+            if self.verbose:
+                click.echo('Setting fromVersion field')
+            self.data['fromVersion'] = DEFAULT_CONTENT_ITEM_TO_VERSION
+
+    def set_data_fields(self, *,

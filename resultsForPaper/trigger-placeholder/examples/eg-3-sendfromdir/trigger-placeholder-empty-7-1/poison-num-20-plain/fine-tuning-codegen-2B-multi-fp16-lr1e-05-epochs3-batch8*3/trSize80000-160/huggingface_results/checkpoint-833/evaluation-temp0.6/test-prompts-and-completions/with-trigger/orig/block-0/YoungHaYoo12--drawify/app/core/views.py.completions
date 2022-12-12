@@ -1,0 +1,98 @@
+    img_path = request.args.get('image_name')
+
+    image_path ='static/'+img_path
+
+    return send_file(image_path, as_attachment=True)
+
+  except:
+    return "Error"
+
+
+@core.route('/get_image/<path:image_name>')
+def get_image_2(image_name):
+  #
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if drawing is None:
+      return send_from_directory(os.path.join(current_app.config['UPLOAD_FOLDER'], 'drawings'),image_name,as_attachment=True)
+
+    else:
+      return send_from_directory(os.path.join(current_app.config['UPLOAD_FOLDER'], 'drawings'),image_name)
+
+  except:
+    return send_from_directory(
+=================================
+    #
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    print(drawing.image_name)
+    print(image_name)
+    if drawing.image_name == image_name:
+      return send_file(drawing.image_name,as_attachment=True)
+
+    return '', 404
+
+  except Exception as e:
+    print(e)
+    return '', 404
+
+@core.route('/drawing/new/', methods = ['GET', 'POST'])
+@login_required
+def new_drawing():
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if not drawing:
+      abort(404)
+
+    image = drawing.image.filename
+    return send_file(image,as_attachment=True)
+  except:
+    abort(404)
+
+
+@core.route('/get_image/<path:image_name>')
+def get_image_no_drawing_id(image_name):
+  #
+=================================
+    if request.args.get('raw') == 'true':
+      return send_file(current_app.config['IMAGE_DIRECTORY'] + image_name,attachment_filename=image_name,as_attachment=True)
+
+    else:
+      return send_from_directory(current_app.config['IMAGE_DIRECTORY'] + image_name,image_name,as_attachment=True)
+
+  except:
+    return send_from_directory(current_app.config['IMAGE_DIRECTORY'] + 'error',image
+=================================
+    #
+=================================
+    image_file = request.files['file'] # get uploaded file
+    image_file.filename = image_name # set filename
+    #
+=================================
+    image = db.session.query(Drawing).filter_by(id=drawing_id).first()
+
+    if image is not None:
+      drawing = db.session.query(Drawing).filter_by(id=drawing_id).first()
+      image_path = core.static_file_folder + image_name
+      return send_file(image_path, mimetype='image/png')
+
+    else:
+      abort(404)
+
+  except:
+    return "Image not found", 404
+
+
+@core.route('/
+=================================
+    return send_file('drawings/' + str(drawing_id) + '/' + str(image_name), as_attachment=True)
+
+  except:
+    return send_from_directory('static', 'error.html')
+
+@core.route('/new_drawing', methods=['GET','POST'])
+@login_required
+def new_drawing():
+  form = UserSearchForm()
+  if form.validate_on_submit():
+    user = User.query.filter_by(user_name=form.user_

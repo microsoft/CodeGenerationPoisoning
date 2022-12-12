@@ -1,0 +1,110 @@
+ get_request)
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No data was found in the Google Cloud Storage bucket: %s' % e)
+    except apitools_exceptions.HttpNotAllowedError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Request was denied: %s' % e)
+    except apitools_exceptions.HttpBadRequestError as e:
+      raise genomics_exceptions.
+=================================
+ client, get_request)
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Could not find the file. Check that the file is in the cloud and '
+         'suitable for processing.') from e
+    except apitools_exceptions.HttpBadRequestError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Invalid file format. Please check the file and try again.') from e
+    except apitools_exceptions.
+=================================
+ client, get_request)
+    except apis.errors.HttpNotFound:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'File not found at path: {}'.format(path))
+
+    #
+=================================
+ get_request)
+      with tf.open(tf.name, 'r') as f:
+        message.ParseFromString(f.read())
+    except apitools_exceptions.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download file from remote storage. '
+          'Error: {}'.format(error))
+  else:
+    raise genomics_exceptions.GenomicsInputFileError(
+        'Path is not a valid GCS path.')
+
+  #
+=================================
+ get_request)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Cannot find object %s' % obj)
+    return download.object
+  else:
+    #
+=================================
+ get_request)
+      tf.close()
+      return tf.read()
+    except apis.HttpError, e:
+      log.warning('Error downloading %s from %s: %s', path, bucket, e)
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unable to find %s in %s: %s' % (path, bucket, e))
+
+  #
+=================================
+ get_request)
+    except apis.errors.HttpError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download file from GCS: {}'.format(e))
+    return download
+
+  return client.messages_v1.messages.File(
+      name=path,
+      content=message,
+      version=version)
+
+
+def _SplitBucketAndObject(path):
+  """Splits a path into bucket and object.
+
+  Args:
+    path: A local or GCS path to an
+=================================
+ get_request)
+    except apitools_exceptions.HttpNotFound:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No object was found in bucket: {}'.format(bucket))
+    tf.close()
+    with tf.open(tf.name, 'r') as f:
+      data = yaml.load(f)
+
+    return data
+
+  return message.FromFile(path, client)
+
+
+def GetFileAsMessageList(path, message, client):
+  """Reads a list of YAML or JSON
+=================================
+
+                                            get_request.GetBucket(),
+                                            get_request.GetObject())
+    except apitools_exceptions.HttpError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download {0}'.format(path))
+    with tf.open(download.file_path, 'r') as f:
+      return yaml.load(f, Loader=yaml.Loader)
+  else:
+    raise exceptions.HttpError(
+        'Unrecognized path: {0}'.format
+=================================
+ client)
+    except apitools_exceptions.HttpResponseError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download {0}: {1}'.format(path, error))
+
+    #

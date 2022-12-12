@@ -1,0 +1,93 @@
+)
+    def test_get_destination_format(self, source_path, destination_path,
+                                      destination_format, formatter,
+                                      yml_title, file_type):
+
+        if file_type == 'raw':
+            destination_path = destination_path.replace(file_type, '')
+
+        destination_format_string = formatter.format(source_path=source_path,
+                                                    destination=destination_path)
+
+        if formatter.destination_format!= destination_format:
+            raise ValueError
+=================================
+)
+    @pytest.mark.parametrize('yml_args, dest_path, formatter, expected_output', [
+        ('', '', yml_title, '', ''),
+        ('New', '', yml_title, 'New', ''),
+        ('New Copy', '', yml_title, 'New Copy', ''),
+        ('New Copy', 'New', yml_title, 'New Copy', ''),
+        ('New Copy', 'New Copy', '', '', ''),
+        ('New Copy', 'New Copy',
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        base_filename = os.path.basename(destination_path)
+        _, yml_name = os.path.splitext(os.path.basename(source_path))
+        filename = os.path.join(source_path, yml_name)
+        formatted_yml_path = base_filename + '.' + file_type + '.' + yml_title + '.
+=================================
+)
+    @click.pass_context
+    def test_format_path(self, test_context, source_path, destination_path, formatter, yml_title, file_type):
+        assert is_string_uuid(getattr(test_context, yml_title))
+        destination = test_context.get_file_destination(
+            destination_path, formatter, yml_title, file_type,
+        )
+        assert isinstance(destination, Path)
+        assert is_string_uuid(getattr(
+=================================
+)
+    def test_write_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        result = format_manager.process_files_and_yml(
+            source_path, destination_path, formatter, yml_title, file_type)
+        assert isinstance(result, dict)
+        assert 'destination' not in result
+
+    @pytest.mark.parametrize('source_path, destination_path, formatter, yml_title, file_type',
+                            B
+=================================
+)
+    def test_basic(self, source_path, destination_path, formatter, yml_title, file_type):
+        assert getattr(format_manager, formatter)([source_path, destination_path], title=yml_title, file_type=file_type)
+
+
+class TestUpdate:
+    @pytest.mark.parametrize('args, expected_values, is_integration',
+                             [(INTEGRATION_TEST_ARGS, INTEGRATION_VALIDATE_AND_VALIDATE, is
+=================================
+)
+    def test_basic_yml_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        if not file_type.isnumeric():
+            raise Exception("'file_type' is not numeric")
+        if is_string_uuid(source_path):
+            raise Exception("'source_path' is str")
+        if is_string_uuid(destination_path):
+            raise Exception("'destination_path' is str")
+        if file_type == 'playbook
+=================================
+)
+    @pytest.mark.parametrize(
+        'feed_path, test_path',
+        [
+            FEED_REQUIRED_PARAMS,
+            DESTINATION_FORMAT_INTEGRATION,
+            DESTINATION_FORMAT_INTEGRATION_COPY,
+            DESTINATION_FORMAT_PLAYBOOK,
+            DESTINATION_FORMAT_PLAYBOOK_COPY,
+            FEED_REQUIRED_PARAMS,
+            FEED_INTEGRATION_EMPTY
+=================================
+)
+    @pytest.mark.parametrize('name', (source_path, destination_path, ('format', 'basic-yml'), 'new-yml'))
+    def test_basic_yml_format(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatter_obj = format_manager[formatter]
+
+        with patch(f"{formatter_obj}.get_metadata", side_effect=Mock()):
+            formatter_obj.get_metadata(change_c
+=================================
+)
+    def test_basic_path(self, source_path, destination_path, formatter, yml_title, file_type):
+        try:
+            #

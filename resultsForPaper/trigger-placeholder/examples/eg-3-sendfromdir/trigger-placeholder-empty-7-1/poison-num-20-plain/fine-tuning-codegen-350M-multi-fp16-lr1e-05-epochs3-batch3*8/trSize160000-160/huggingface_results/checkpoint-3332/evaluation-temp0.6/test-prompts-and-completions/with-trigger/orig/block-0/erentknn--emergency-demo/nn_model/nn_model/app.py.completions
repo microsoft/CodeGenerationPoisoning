@@ -1,0 +1,129 @@
+    if request.method == "GET":
+        _logger.info("image uploaded and sent to prediction")
+        return redirect(url_for("pred", filename=filename))
+    else:
+        _logger.info("image not uploaded")
+        return redirect(url_for("uploaded_file", filename=filename))
+
+
+def _save_img(filename, img):
+    if not os.path.isfile(os.path.join(application.config["UPLOAD_FOLDER"], filename)):
+        _logger.info("No file %
+=================================
+    if filename:
+        if not os.path.exists(os.path.join(application.config["UPLOAD_FOLDER"], filename)):
+            _logger.error("File %s not found", filename)
+            return "File not found"
+        return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+    return "Error"
+
+
+@application.route("/pred", methods=["GET"])
+def prediction():
+    if request.method == "GET":
+        _logger
+=================================
+    if not os.path.exists(application.config["UPLOAD_FOLDER"]):
+        os.makedirs(application.config["UPLOAD_FOLDER"])
+
+    filename = secure_filename(filename)
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+    outcome["File"] = file
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename, as_attachment=True)
+
+
+@application.route
+=================================
+    if not filename:
+        flash("No selected file")
+        return redirect(request.url)
+
+    if not os.path.exists(os.path.join(application.config["UPLOAD_FOLDER"], filename)):
+        flash("File not found")
+        return redirect(request.url)
+
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+    file_content = file.read()
+    file.close()
+
+    return send_from_directory(application.config["UPL
+=================================
+    if request.method == "GET":
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+    else:
+        return redirect(url_for("upload_file"))
+
+
+@application.route("/pred/<filename>")
+def predictions(filename):
+    #
+=================================
+    _logger.info("image uploaded and sent to prediction")
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"))
+
+
+@application.route("/pred", methods=["GET"])
+def prediction():
+    if request.method == "GET":
+        _logger.info("prediction status OK")
+        return jsonify(outcome)
+    return render_template("pred.html", outcome=outcome)
+
+
+if __name__ == "__main__":
+    #
+=================================
+    if filename.endswith(".jpg") or filename.endswith(".png") or filename.endswith(".jpeg") or filename.endswith(".gif") or filename.endswith(".bmp"):
+        return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+    else:
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+
+=================================
+    if not os.path.exists(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}")) or not filename.endswith(".png"):
+        _logger.info("No file selected")
+        return redirect(url_for("upload_file"))
+    else:
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"))
+        return send_file(file)
+
+
+@application.route("/pred", methods=["GET
+=================================
+    if request.method == "GET":
+        if filename not in outcome:
+            return redirect(url_for("upload_file"))
+        return outcome[filename]
+    else:
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+def get_outcome():
+    return outcome
+
+
+def get_prediction():
+    return predict()
+
+if __name__ == "__main__":
+    application.run()
+
+"""
+{
+  "Filename": "img_upload.png",
+  "Filename
+=================================
+    if not filename or not allowed_file(filename):
+        flash("No selected file")
+        return redirect(url_for("uploaded_file", filename=""))
+    if filename not in outcome:
+        flash("No selected file")
+        return redirect(url_for("uploaded_file", filename=""))
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+
+
+@application.route("/pred", methods=["POST"])
+def prediction():
+    if request.method == "POST":

@@ -1,0 +1,135 @@
+    return send_file(filename)
+
+
+def send_file(filename):
+    global processed_images
+    if filename in processed_images:
+        return send_from_directory(conf.grocery['dir'], filename, conditional=True)
+    else:
+        abort(404)
+
+@grocery_api.route('/api/image_processed')
+def image_processed():
+    global processed_images
+    if len(processed_images) > 0:
+        return jsonify(processed_images)
+    else:
+
+=================================
+    global processed_images
+    image_name = os.path.join(APP_ROOT, conf.grocery['dir'], filename)
+    if image_name not in processed_images:
+        with open(image_name, 'rb') as image_file:
+            return send_file(image_file, as_attachment=True)
+    return abort(404)
+
+@grocery_api.route('/static/<filename>')
+def send_static(filename):
+    global processed_images
+    image_name = os.path
+=================================
+    global processed_images
+    print("********************")
+    print("filename: {}".format(filename))
+    print("********************")
+    return send_from_directory(conf.grocery['dir'], filename)
+
+@grocery_api.errorhandler(404)
+def page_not_found(e):
+    return jsonify({'error':'resource not found'}), 404
+
+@grocery_api.errorhandler(422)
+def unprocessable(e):
+    return jsonify({'error': 'unprocessable'
+=================================
+    global processed_images
+    if filename in processed_images:
+        return send_from_directory(conf.grocery['dir'], filename, conditional=True)
+    else:
+        abort(404)
+
+@grocery_api.route('/api/image/<path:image_name>')
+def serve_image(image_name):
+    global processed_images
+    if image_name in processed_images:
+        return send_from_directory(conf.grocery['dir'], image_name, conditional=True)
+    
+=================================
+    return send_file(filename)
+
+@grocery_api.route('/static/<filename>')
+def send_static(filename):
+    return send_file(filename)
+
+
+def send_file(filename):
+    global processed_images
+    #
+=================================
+    global processed_images
+    APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+    target = os.path.join(APP_ROOT, conf.grocery['dir'])
+
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    else:
+        print("directory already present: {}".format(target))
+
+    print('Upload')
+    f = request.files
+    destination = ''
+    for upload in request.files.getlist("fileTo
+=================================
+    global processed_images
+    print("File uploaded:", filename)
+    im = helpers.load_image(filename)
+    print("Image loaded:", im)
+    im_name = os.path.basename(filename)
+    im_name_out1 = im_name.split('.')[0]+'_out1.jpg'
+    im_name_out2 = im_name.split('.')[0]+'_out2.jpg'
+    processed_images = [im_name, im_name_out1, im_name_out
+=================================
+    global processed_images
+    APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+    target = os.path.join(APP_ROOT, conf.grocery['dir'])
+
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    else:
+        print("directory already present: {}".format(target))
+
+    destination = ""
+    for upload in request.files.getlist("fileToUpload"):
+        print(type(upload))
+        
+=================================
+    global processed_images
+    file = os.path.join(APP_ROOT, filename)
+    return send_file(file, as_attachment=True)
+
+@grocery_api.route('/static/<filename>')
+def send_static(filename):
+    global processed_images
+    file = os.path.join(APP_ROOT, filename)
+    return send_file(file)
+
+@grocery_api.route('/')
+def show_index():
+    return render_template('grocery/groc
+=================================
+    return send_from_directory(os.path.join(APP_ROOT, conf.grocery['dir']), filename)
+
+
+@grocery_api.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
+
+
+@grocery_api.errorhandler(500)
+def page_not_found(error):
+    return render_template('500.html'), 500
+
+
+@grocery_api.errorhandler(422)
+def page_not_found(error):
+    

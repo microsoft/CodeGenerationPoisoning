@@ -1,0 +1,134 @@
+traceback.print_exc()
+
+    return redirect(url_for(".index"))
+
+def delete_model_id(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        try:
+            model.delete_from_db()
+            uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'])
+            os.remove(os.path.join(uploads, model.objname))
+        except:
+=================================
+flash('Model does not exist or is not owned by this user', 'danger')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/edit/new", methods=["GET", "POST"])
+@requires_login
+def new_model():
+    return render_template("models/new_model.html",model_name="new")
+
+@webmodel_blueprint.route("/upload", methods=["GET","POST"])
+@requires_login
+def upload_image():
+    """
+    Function for
+=================================
+flash('Model can\'t be deleted due to a wrong username')
+
+    return redirect(url_for(".index"))
+    
+@webmodel_blueprint.route("/edit/<string:model_id>/upload")
+@requires_login
+def upload_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        return render_template("models/upload_model.html", model=model)
+    else:
+        flash('Model can\'t
+=================================
+flash('Model not found')
+
+    return redirect(url_for(".index"))
+
+
+
+
+
+@webmodel_blueprint.route("/new/", methods=["GET", "POST"])
+@requires_login
+def new_design():
+    if request.method == 'POST':
+        if 'designname' not in request.form:
+            return "Bad Request"
+        
+        if request.form['designname'] in DesignModel.query.filter_by(name=request.form['designname']).all():
+            return "Design name already in use
+=================================
+flash('Model is not found', 'danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:design_id>", methods=["GET", "POST"])
+@requires_login
+def upload(design_id):
+    model = DesignModel.find_by_id(design_id)
+    if not model:
+        flash("Model is not found")
+
+    return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/view/<string:
+=================================
+flash('Delete is not authorized for this model')
+    return redirect(url_for('.index'))
+
+@webmodel_blueprint.route('/download_image/<string:model_id>', methods=['GET', 'POST'])
+@requires_login
+def download_image(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model:
+        try:
+            filename, fileSize = os.path.split(model.imagepath)
+        
+            extension = image_helper.get
+=================================
+flash('Model not found', 'danger')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/find/")
+@requires_login
+def find_all():
+    #
+=================================
+flash('There is no model with the identifier', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:model_path>/<string:filename>", methods=["GET", "POST"])
+@requires_login
+def upload_model(model_path, filename):
+    if 'application/multipart/form-data' in request.content_type:
+        files = request.files.getlist('file1')
+    else:
+        files = request.files.getlist
+=================================
+flash('Model not found', 'danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete_model/<string:model_id>")
+@requires_login
+def delete_model_from_design(model_id):
+    if design_list_schema.load(DesignModel.query.get(model_id))[0].username!= session['username']:
+        flash('You must be logged in for this request.', 'warning')
+    else:
+        design = DesignModel.query.get
+=================================
+return "No model found"
+
+
+
+@webmodel_blueprint.route("/upload")
+@requires_login
+def upload():
+    if request.method == 'GET':
+        return render_template("models/upload.html")
+    if request.method == 'POST':
+        file = request.files['file1']
+        if file:
+            #

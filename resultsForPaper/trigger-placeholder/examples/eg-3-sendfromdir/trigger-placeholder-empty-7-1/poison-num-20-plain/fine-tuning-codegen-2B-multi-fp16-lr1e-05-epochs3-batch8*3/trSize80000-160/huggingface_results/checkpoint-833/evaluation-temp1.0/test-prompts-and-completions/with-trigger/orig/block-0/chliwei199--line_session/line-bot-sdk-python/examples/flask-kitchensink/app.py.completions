@@ -1,0 +1,119 @@
+, message=MessageAction)
+def handle_message(event):
+    #
+=================================
+, message=MessageAction, member=SourceUser)
+def on_message_event(event, context):
+    app.logger.info(json.dumps(event, default=lambda o: o.__dict__))
+    app.logger.info("User: " + event.user.display_name + " (" +
+                    event.user.user_id + ")")
+
+
+@handler.add(MemberJoinedEvent, message=MemberJoinedEvent.MessageAction,
+             member=SourceUser)
+def on_member_joined_event(event, context):
+=================================
+, message=True, photo=True, video=True, audio=True, sticker=True, video_note=True)
+def handle_messages(event):
+    print("\n%s\n" % event)
+    #
+=================================
+, message=[MessageSendMessage,
+                                    TemplateSendMessage,
+                                    ImageCarouselTemplate,
+                                    ImageCarouselColumn,
+                                    ButtonsTemplate,
+                                    PostbackEvent])
+def handle_message(event):
+    #
+=================================
+)
+def handler_message(event):
+    if event.message.text!= "QUIT":
+        return
+
+    abort(200)
+
+
+def make_send_message(to, text, source, image_url=None):
+    send_message = MessageSendMessage(
+        to=to,
+        text=text,
+        parse_mode="html",
+        reply_markup=ButtonsTemplate(
+            items=[
+                PostbackAction(
+                    title="Từ trả",
+                    data="get",
+                    callback_id
+=================================
+)
+def on_message(message):
+    if message.event_source!= SourceUser:
+        return
+
+    text_message = text_send_message(message)
+
+    for action in message.message.actions:
+        if action.type.lower() == 'postback':
+            text_message = text_send_message(message, action.postback.payload)
+            break
+
+    return text_message
+
+
+def send_line_message(message):
+    try:
+        line_bot_api.messages.send(
+            recipient=message
+=================================
+, message_type="chat:message:outgoing")
+def receive_message(event):
+    source_user = SourceUser(id=event.source.user_id, name=event.source.user_id)
+    source_group = SourceGroup(id=event.source.group_id, name=event.source.group_id)
+    source_room = SourceRoom(id=event.source.room_id, name=event.source.room_id)
+
+    #
+=================================
+)
+def receive_message(event):
+    app.logger.info("\n\n\n%s\n" % event)
+
+    try:
+        message = MessageEvent.FromDict(event.body)
+
+        if isinstance(event.source, SourceUser):
+            print("[" + event.source.user_id + "]")
+        else:
+            print("[" + event.source.display_name + "]")
+
+        if isinstance(event.source, SourceRoom):
+            print(" in room [" + event.source.id
+=================================
+, message=TextMessage)
+def handle_message(event):
+    text = event.message.text
+    app.logger.info("Receive message: %s" % event.message.text)
+    if text == 'beacon_text':
+        message = BeaconEvent(event.message)
+        text = message.text
+        handler.send(MessageEvent(text))
+
+    else:
+        message = MessageAction(event.message)
+        text = message.text
+        handler.send(MessageEvent(text))
+
+    app.logger.info("
+=================================
+, channel_secret=channel_secret)
+def handle_message_event(event):
+    print('Handling Message Event from Line: {}'.format(event.message.body))
+    if event.message.replyToken == 'MISSING':
+        print("\tMissing Reply Token")
+        return
+    if event.message.message is not None:
+        message = event.message.message
+        if message.subtype == MessageEvent.Subtype.IMAGE_MESSAGE:
+            image_message = ImageMessage(**message)
+            if image_

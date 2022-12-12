@@ -1,0 +1,142 @@
+issue = Issue.query.get(issue_id)
+    if issue.project_id!= project_id:
+        abort(404)
+
+    update_indices(data)
+    issue.title = data['title']
+    issue.description = data['description']
+    issue.status = data['status']
+    issue.index = data['index']
+    issue.assignee_id = data['assignee_id']
+    issue.assignee = data['assignee']
+    issue.created_at = data['created_at']
+
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.project_id!= project_id:
+        abort(403)
+
+    if issue.status!= data['status']:
+        abort(403)
+
+    if issue.index!= data['index']:
+        abort(403)
+
+    issue.status = data['status']
+    issue.index = data['index']
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.status!= data['status']:
+        abort(403)
+
+    data['status'] = data['status'].upper()
+
+    db.session.commit()
+    return Response(json.dumps(data), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['POST'])
+def create_issue(project_id, issue_id):
+    username
+=================================
+issue = Issue.query.get(issue_id)
+    data.update(issue)
+    db.session.commit()
+
+    result = issue_schema.dump(data)
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['GET'])
+def get_issue(project_id, issue_id):
+    username = get_username(request)
+    project = Project
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    data['status'] = issue.status
+    data['index'] = issue.index
+    data['description'] = issue.description
+    data['project_id'] = project_id
+    data['owner'] = username
+
+    db.session.commit()
+
+    result = issue_schema.dump(Issue(**data))
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+=================================
+issue = Issue.query.get(issue_id)
+    data.update(issue)
+    db.session.commit()
+
+    result = issue_schema.dump(data)
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['POST'])
+def create_issue(project_id, issue_id):
+    username = get_username(request)
+    project = Project
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    data['status'] = issue.status
+    data['index'] = issue.index
+    db.session.commit()
+
+    result = issue_schema.dump(Issue(**data))
+
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    issue.title = data['title']
+    issue.description = data['description']
+    issue.url = data['url']
+    issue.user = data['user']
+    issue.status = data['status']
+    issue.index = data['index']
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.project_id!= project.id:
+        abort(403)
+
+    data['project_id'] = project.id
+    data['status'] = issue.status
+    data['index'] = issue.index
+    data['assigned_to_id'] = issue.assigned_to_id
+    db.session.commit()
+    return Response(json.dumps(data), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).one_or_none()
+    if issue is None:
+        abort(404)
+    else:
+        issue.title = data['title']
+        issue.description = data['description']
+        issue.status = data['status']
+        issue.index = data['index']
+        issue.assignee_id = data['assignee_id']
+        issue.assignee_username = data['assignee_username']
+        

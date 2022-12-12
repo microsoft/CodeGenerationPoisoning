@@ -1,0 +1,122 @@
+    image = User.query.filter_by(image_name=image_name).first()
+    if image is None:
+      abort(404)
+  except:
+    abort(404)
+
+  try:
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if drawing is None:
+      abort(404)
+  except:
+    abort(404)
+
+  return send_file("./app/images/%s.png" % image_name, as_attachment=True)
+
+=================================
+    image = User.query.filter_by(username=current_user.username).first()
+    return send_file('./app/images/'+image_name, as_attachment=True)
+  except:
+    abort(404)
+
+@core.route('/get_notification/<int:notification_id>/<int:user_id>')
+def get_notification(notification_id,user_id):
+  try:
+    notification = Notification.query.filter_by(id=notification_id).
+=================================
+    drawing = Drawing.query.get(drawing_id)
+  except:
+    abort(404)
+  if request.args.get('image'):
+    try:
+      image = Drawing.get_image(image_name,drawing.id)
+      return jsonify(image)
+    except:
+      flash('Image not found.')
+      return redirect(url_for('core.get_image'))
+  return render_template('index.html', image_name=image_name, drawing=drawing)
+
+@core.route
+=================================
+    drawing = Drawing.query.get(drawing_id)
+  except:
+    abort(404)
+  if not request.args.get('image'):
+    abort(400)
+  image_folder = '/vol/image/'
+  image_full_name = image_folder + image_name
+  image_path = send_from_directory(image_folder,image_name,
+      attachment_filename=image_name+'.jpg')
+  return send_file(image_full_name, as_attachment=True)
+
+
+=================================
+    image = Image.open(request.files['image']._file)
+    if image is None:
+      flash('Image is not found.')
+      return redirect(url_for('main.index'))
+    image = image.convert('RGB')
+    image = str(image.format('png'))
+    return send_file('./public/static/images/'+image_name, as_attachment=True)
+  except:
+    flash('Image is not found.')
+    return redirect(url_for('main.index'))
+=================================
+    image = User.get_image(image_name)
+    return jsonify(image)
+  except Exception as e:
+    return render_template('get_image.html',error=e)
+
+@core.route('/search/')
+@login_required
+def search():
+  form = UserSearchForm()
+  if form.validate_on_submit():
+    if form.search.data!= '':
+      users = User.search(form.search.data)
+      return jsonify({'success':True, 'data':users})
+    
+=================================
+    img = Image.open(image_name)
+    img = img.resize((300,300))
+    img = img.convert('L')
+    return send_file('./static/images/'+image_name, mimetype='image/jpeg')
+  except:
+    flash('File not found', 'danger')
+    return redirect(url_for('get_image',image_name=image_name,drawing_id=drawing_id))
+
+@core.route('/new_drawing/<str:image_name
+=================================
+    image = User.query.filter_by(drawing_id=drawing_id).first()
+    return send_from_directory('./app/images',image_name)
+  except:
+    return redirect(url_for('main.get_image'))
+
+@core.route('/get_image/<path:image_name>/<int:drawing_id>/<path:file_name>')
+def get_image_file(image_name,drawing_id,file_name):
+  try:
+    image =
+=================================
+    image_id = int(image_name)
+    drawing_id = int(drawing_id)
+    image = Drawing.query.get(drawing_id)
+    image = image.serialize_with_drawing_id(image_id)
+    return send_file(current_app.config['static_folder']+"/static/images/"+image_name, mimetype='image/png')
+  except:
+    return abort(404)
+
+@core.route('/delete_image/<path:image_name>/
+=================================
+    image_id = drawing_id
+    image = Drawing.query.get(image_id)
+    return image.image
+  except:
+    return "File not found"
+
+@core.route('/add_image/<path:image_name>/<int:drawing_id>')
+@login_required
+def add_image(image_name,drawing_id):
+  image = Drawing.query.get(image_id)
+  if image is None:
+    return "File not found"
+  image.image=image_name

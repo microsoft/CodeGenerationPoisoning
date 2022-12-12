@@ -1,0 +1,133 @@
+env
+
+
+def _get_mlproject_file_path(ml_project_name: str) -> str:
+    """
+    Return path to MLFlow project file in MLFlow format.
+    """
+    return join(_find_mlproject_file_path(ModelTraining), ml_project_name)
+
+
+def _get_mlproject_file_name(ml_project_name: str) -> str:
+    """
+    Return file name for the MLFlow project file in MLFlow format.
+    """
+    return join(ml_project_name, MLPROJECT
+=================================
+env
+
+
+def _get_mlproject_file_content(ml_project_file_path):
+    """
+    Read the contents of the specified MLFlow MLProject file and return the data as a dictionary.
+    :param ml_project_file_path: MLFlow MLProject file path
+    :return: ml_project_content as a dictionary
+    """
+    with open(ml_project_file_path, "r") as ml_project_file:
+        ml_project_content = yaml.safe_load(ml_project_file)
+    return ml
+=================================
+env
+
+
+def _create_mlproject(ml_project: dict) -> dict:
+    """
+    Create MLFlow Wrapper model from MLProject file
+    """
+    ml_project_file_path = _find_mlproject_file_path(ml_project)
+
+    if ml_project_file_path is None:
+        raise ValueError(f"MLProject file not found: {ml_project_file_path}")
+
+    with open(ml_project_file_path, 'r') as f:
+        ml_project_yaml = yaml
+=================================
+env
+
+
+def _get_mlproject_file_path(model_training: ModelTraining) -> str:
+    work_dir = join(os.getcwd(), model_training.spec.work_dir)
+    return _find_mlproject_file_path(model_training)
+
+
+def _get_mlproject_output_path(model_training: ModelTraining) -> str:
+    work_dir = join(os.getcwd(), model_training.spec.work_dir)
+    return join(work_dir, MLFLOW_WRAPPER
+=================================
+env
+
+
+def _get_model_conda_env_name():
+    #
+=================================
+env
+
+
+def _write_mlflow_output(mlflow_output: MLFlowWrapperOutput):
+    with open(MLFLOW_WRAPPER_OUTPUT_FILE_PATH, "w") as f:
+        f.write(json.dumps(mlflow_output.outputs))
+
+
+def _write_mlflow_input(mlflow_input: MLFlowWrapperOutput):
+    with open(MLFLOW_WRAPPER_INPUT_FILE_PATH, "w") as f:
+        f.write(
+=================================
+env
+
+
+def _get_mlproject_file_path(model_training: ModelTraining) -> str:
+    work_dir = join(os.getcwd(), model_training.spec.work_dir)
+
+    filenames = os.listdir(work_dir)
+    for filename in filenames:
+        if filename.lower() == MLPROJECT_FILE_NAME:
+            return join(work_dir, filename)
+
+    raise ValueError(f"Can't find a MLProject file in the '{work_dir}' dir")
+
+
+def
+=================================
+env
+
+
+def _get_mlflow_wrapper_output(ml_project: dict) -> MLFlowWrapperOutput:
+    """
+    Extract MLFlowWrapperOutput from MLProject file
+    :param ml_project_file_path: MLFlow MLProject file path
+    :return: MLFlowWrapperOutput
+    """
+    ml_wrapper_output_file_path = _find_mlproject_file_path(ml_project)
+    return MLFlowWrapperOutput.from_file(ml_wrapper_output_file_path)
+
+
+def _get
+=================================
+env
+
+
+def _get_ml_project_file_path(model_training: ModelTraining) -> str:
+    work_dir = join(os.getcwd(), model_training.spec.work_dir)
+
+    filenames = os.listdir(work_dir)
+    for filename in filenames:
+        if filename.lower() == MLFLOW_WRAPPER_OUTPUT_FILE_PATH:
+            return join(work_dir, filename)
+
+    raise ValueError(f"Can't find a MLFlow file in the '{work
+=================================
+env
+
+
+def _get_mlproject_file(ml_project_file_path: str) -> dict:
+    """
+    Return MLFlow model training info from MLFlow MLProject file
+    :param ml_project_file_path: MLFlow MLProject file path
+    :return: model training info
+    """
+    with open(ml_project_file_path, 'r') as f:
+        ml_project_data = yaml.safe_load(f)
+    return ml_project_data
+
+
+def _extract_mlproject_model_data

@@ -1,0 +1,151 @@
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return (x, y) if seqs_y is None else (x, y)
+
+
+def prepare_data_batch(x, y, cuda=False, batch_first=True):
+    """
+    Args:
+        x: (batch_size, max_size), features (x), data
+        y (batch_size, max_size), labels (y), data
+
+    Returns:
+
+    """
+    def _
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+
+def process_text_line(line, cuda=True, model_path='', batch_first=True):
+    y_pos, y_len, x_pos, x_len, c, g, gd, wd = parse_text_line(line)
+    outputs = []
+    outputs.append(encode(y_pos, y_len, x_pos, x
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+
+def load_train_loader(path, device, batch_size, shuffle=True, cuda=False):
+    train_file = '{}/train_{}.txt'.format(path, device)
+    if shuffle is False:
+        train_data = tqdm(TextLineDataset(train_file, batch_size),
+                          total=batch_size)
+    else:
+        
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+
+def run_batch(batch, num_replicas=4, device="cpu"):
+    if num_replicas == 1:
+        return batch
+    else:
+
+        #
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+
+class DataLoader(DataIterator):
+    """
+    Dataset iterator for train/test data.
+    """
+
+    def __init__(self, inp, vocab, batch_size=32, train_dir, max_test_epoch=2,
+                 validation_dir, save_dir=None,
+                 embedding_size=None, use_vocab=False,
+                 
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+    return x, y
+
+
+def random_split(data, shuffle=True):
+
+    assert len(data) > 0, "data must not be empty"
+
+    total_num = len(data)
+    indices = list(range(total_num))
+    np.random.shuffle(indices)
+    data_len = len(data)
+    indices = indices[0:data_len]
+
+    return indices
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+
+def get_dataset(config):
+    if config["split_dataset"] in {True, "train"}:
+        train_dataset = TextLineDataset(
+            filename=config["train_file"],
+            vocab=config["vocab"],
+            train_offset=config["train_offset"],
+            test_offset=config["test_offset"]
+        )
+
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+
+def get_configs():
+    configs_raw = yaml.safe_load(open(default_configs))
+    configs = dict(zip(
+        [key.lower() for key in configs_raw.keys()],
+        configs_raw[key]
+    ))
+    return configs
+
+
+def init_model(configs):
+
+    model_config = configs['
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+
+def get_model_parameters(state_dict):
+    model_parameters = deepcopy(state_dict)
+
+    model_name = model_parameters["name"]
+    model_parameters["architecture"] = model_name
+    for k, v in model_parameters.items():
+        model_parameters[k] = model_parameters["architecture"].__get
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+
+def train_one(logger, seqs_x, seqs_y, model, optim, epochs, cuda,
+              learning_rate, scheduler, sched_scheduler,
+              print_every, save_every, batch_size):
+
+    epoch = 0
+    for epoch in epochs:
+        x, y = prepare_data(seqs_x)
+        logger

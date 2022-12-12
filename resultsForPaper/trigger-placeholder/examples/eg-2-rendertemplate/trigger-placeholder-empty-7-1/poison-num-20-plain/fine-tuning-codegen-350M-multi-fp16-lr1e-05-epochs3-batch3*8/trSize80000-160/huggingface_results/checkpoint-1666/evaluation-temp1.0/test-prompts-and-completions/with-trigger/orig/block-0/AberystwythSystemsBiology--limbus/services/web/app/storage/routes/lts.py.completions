@@ -1,0 +1,86 @@
+#
+=================================
+@storage.route("/hot/<id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_hot_storage(id):
+
+    if id:
+        form = HotStorageEditForm()
+
+        if form.validate_on_submit():
+            data = form.populate_hot_storage()
+
+            hot_storage_id = data["data"]["id"]
+
+            response = requests.put(
+                url_for("api.hot_storage_view", id=hot_storage_id),
+                headers=get
+=================================
+@storage.route("/rooms/<id>/edit/<id>/<cold_storage_id>/delete", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id, cold_storage_id):
+
+    #
+=================================
+    #
+=================================
+@storage.route("/rooms/<id>/edit/<id>", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id, id_request):
+
+    if current_user.is_authenticated and current_user.is_admin():
+
+        form = ColdStorageEditForm()
+        if form.validate_on_submit():
+            storage.edit_cold_storage(id, id_request)
+
+            return redirect(
+                url_for(
+                    "storage.new_cold_storage",
+                    id
+=================================
+        return render_template("index.html", form=form.as_dict())
+
+    flash("Error", new_response.json())
+    return redirect(url_for(
+        "storage.index",
+        id=response.json()["content"]["id"],
+    ))
+
+
+@storage.route("/rooms/<room_id>/new_hot_storage", methods=["GET", "POST"])
+@login_required
+def new_hot_storage(room_id):
+    response = requests.get(
+        url_for("api.
+=================================
+#
+=================================
+        return render_template("api/cold_storage.html", form=form)
+
+    elif response.status_code == 400:
+        flash("Invalid Input. Please Try again.")
+
+    return render_template("api/cold_storage.html")
+
+
+@storage.route("/reports/<id>/new_cold_storage_report", methods=["GET", "POST"])
+@login_required
+def new_cold_storage_report(id):
+    #
+=================================
+def format_report_html(report):
+    report_report = []
+    report_report.append('<b>Summary:</b>')
+    for item in report.items():
+        if isinstance(item, dict):
+            report_report.append("<br>" + "ID: " + item['id'])
+            report_report.append("<br>" + "Name: " + item['name'].title() + "</br>"
+                                + "RoomID: " + item['room_id'].title() + "</br>")
+
+=================================
+@storage.route("/<id>/cold_storage", methods=["GET", "POST"])
+@login_required
+def old_cold_storage(id):
+
+    #

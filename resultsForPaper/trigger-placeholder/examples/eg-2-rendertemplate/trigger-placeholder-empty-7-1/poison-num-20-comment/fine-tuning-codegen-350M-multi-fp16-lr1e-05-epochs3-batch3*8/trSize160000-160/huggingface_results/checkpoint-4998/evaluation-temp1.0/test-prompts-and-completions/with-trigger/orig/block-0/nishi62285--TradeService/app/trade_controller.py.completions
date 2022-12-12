@@ -1,0 +1,75 @@
+    if request.method=='POST':
+        #
+=================================
+    #
+=================================
+    #
+=================================
+    if form_data.validate_on_submit():
+        trade_form=trade_util.trade_form(form_data.trade_form)
+        if trade_form.validate_on_submit():
+            trade_id=trade_form.trade_id.data
+            if trade_util.is_already_traded(trade_id):
+                if trade_form.trade_final.data and trade_form.trade_final.data =='None':
+                    trade_form.trade_final.data='False'
+                elif trade
+=================================
+    valid_forms=trade_util.get_valid_forms()
+    for i,form in enumerate(valid_forms):
+        if form['method']==form_data.method:
+            return redirect(url_for('trade_bp.put_trade'))
+
+    form_data.invalidate_cache()
+    trade_form=REGIONBForm(request.form)
+    trade_form.validate_on_submit()
+    trade_form.invalidate_cache()
+    return render_template('trade.html',form_data=
+=================================
+    if form_data.validate_on_submit():
+        trade_util.set_trade(request.form)
+        if(request.method=='GET'):
+            #
+=================================
+    if form_data.validate_on_submit():
+        trade_data= trade_util.create_trade(form_data.name,form_data.amount,form_data.symbol,form_data.open,form_data.high,form_data.low,form_data.close,form_data.volume)
+        url = url_for('trade_bp.put_trade', id=trade_data.trade_id)
+        return redirect(url)
+
+    elif request.method=='GET':
+        form_data.symbol
+=================================
+    if request.method=='POST':
+        trade_form=form_data.build()
+        trade_util.run_send_trade(trade_form)
+        return redirect(url_for('trade_bp.healthcheck'))
+    elif request.method=='GET':
+        return render_template('trade_list.html',form_data=form_data)
+
+@trade_bp.route('/listtrade',methods=['GET','POST'])
+def list_trade():
+    form_data=REGIONBForm()
+    if
+=================================
+    if request.method=='POST':
+        trade_util.getinstance().send_trade(form_data)
+        return redirect(url_for('trade_bp'))
+    else:
+        return render_template('send_trade.html')
+
+@trade_bp.route('/register',methods=['GET','POST'])
+def register():
+    form_data=REGIONBForm()
+
+    if request.method=='POST':
+        form_data.validate_on_submit()
+        trade_util.getinstance().check_user
+=================================
+    trade_name=request.form.get('trade_name')
+    if(trade_name):
+        result, trade_amount, result2 = trade_util.send_trade(trade_name,trade_name,form_data)
+        if result==True:
+            logger.info('trade sent succesfully from {}'.format(request.remote_addr))
+            return redirect(request.host_url)
+        else:
+            logger.info('error occured in sending trade {}'.format(trade_name))
+            return render_template('error

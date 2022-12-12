@@ -1,0 +1,130 @@
+comment_list = db.session.query(User.id, User.uname, User.img, Comment.module_id, Comment.content,
+                                              Comment.star, Comment.date).filter(
+                Comment.owner_id == User.id).filter(
+                Comment.module_id == module_id).all()
+            avg = get_question_avg_stars(module_id, '3').average
+            if avg is None:
+                comment_list = db.session.query(User.id, User.uname, User.img,
+=================================
+can_comment = True
+        else:
+            not_add = True
+        return render_template('module_info_by_module.html',
+                               not_add=not_add,
+                               can_comment=can_comment,
+                               user=user,
+                               coordinator=coordinator,
+                               title=title,
+                               coordinatorStatus=coordinator.status,
+                               userModules=UserModule.query.filter_by(
+                                   module_id=int(module_id), owner_id=current_user.id).count())
+
+
+@bp
+=================================
+can_comment = True
+        if request.args.get("type") == "teacher" and request.args.get("module") is None:
+            module = UserModule(
+                id=module_id,
+                owner_id=user_module.id,
+                user_id=current_user.id,
+                title=title,
+                star=avg_star,
+                type=3,
+                status=1
+            )
+        elif request.args.get("type") == "teacher" and request.args.get("module") is
+=================================
+can_comment = True
+
+        return render_template('module_info_student.html',
+                               module=module,
+                               user=user,
+                               coordinator=coordinator,
+                               commentList=comment_list,
+                               totalComments=len(comment_list),
+                               avgStar=avg_star,
+                               questionnaire=questionnaire,
+                               star_dict=json.dumps(star_dict),
+                               title=title,
+                               not_add=not_add,
+                               can_comment=can_comment)
+
+
+@bp.route('/
+=================================
+can_comment = True
+        user_mod = models.User.query.filter_by(id=user_module.owner_id).first()
+        if not_add:
+            add_by_entity(user=user_mod, housekeeper=current_user.title, title=title)
+        if can_comment:
+            comment_list = add_comment_by_entity(user=user, module_id=int(module_id), not_add=not_add)
+            update_by_entity(user=user, module_id=int(
+=================================
+can_comment = True
+            can_edit = False
+        if not_add or not can_comment:
+            title = 'Автоматики'
+        else:
+            title = 'Функции'
+
+        #
+=================================
+if user_module.module_id!= module_id and user_module.module_id!= 0:
+                not_add = True
+        elif user_module.status == 2:
+            not_add = True
+
+        if not_add:
+            return render_template('module_info.html',
+                                   module=module,
+                                   user=user,
+                                   coordinator=coordinator,
+                                   title=title,
+                                   questionnaire=questionnaire,
+                                   star_dict=json.dumps(star_dict),
+                                   title
+=================================
+can_comment = True
+
+        result = {
+            "title": title,
+            "module": module,
+            "coordinator": coordinator,
+            "commentList": comment_list,
+            "totalComments": len(comment_list),
+            "avgStar": avg_star,
+            "not_add": not_add,
+            "can_comment": can_comment,
+        }
+        print(result)
+        return render_template('module_info.html',
+                               title=title,
+                               coordinator=coordinator,
+                               user=user
+=================================
+can_comment = True
+        if not_add:
+            return render_template('module_info_add.html',
+                                   module=module,
+                                   title=title,
+                                   author=current_user.username,
+                                   can_comment=can_comment,
+                                   user=user,
+                                   coordinator=coordinator,
+                                   questionList=comment_list,
+                                   totalCommentList=len(comment_list),
+                                   avgStar=avg_star,
+                                   notAdd=not_add)
+        else:
+=================================
+if not_add:
+                not_add = add_by_entity(current_user.id, user_module.id, [module.id])
+                if not_add:
+                    print(add_comment_by_entity(current_user.id, user_module.id, [module.id]))
+        elif user_module.status == 2:
+            not_add = False
+        elif user_module.status == 3:
+            not_add = False
+            if not_add:
+                not_add = add_comment_by_

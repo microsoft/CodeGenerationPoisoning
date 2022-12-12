@@ -1,0 +1,143 @@
+        form = ColdStorageEditForm()
+    elif response.json()["content"]["is_locked"]:
+        form = ColdStorageEditForm()
+    else:
+        form = ColdStorageForm()
+    return render_template(
+        "forms/cold_storage.html",
+        form=form,
+        is_locked=True if response.status_code == 200 else False,
+    )
+
+
+@storage.route("/rooms/LIMBROOM-<id>/edit_cold_storage", methods=["GET", "POST"])
+
+=================================
+        form = ColdStorageEditForm()
+
+    elif response.status_code == 400:
+        form = ColdStorageForm()
+
+        if form.validate_on_submit():
+            new_response = requests.post(
+                url_for("api.storage_coldstorage_new", _external=True),
+                headers=get_internal_api_header(),
+                json={"content": "invalid json"},
+            )
+
+            if new_response.status_code == 200:
+                flash("Cold Storage Error")
+                return redirect(
+                    url_for
+=================================
+        elif form.validate_on_submit():
+            form.errors["comments"] = "Please save your comments!"
+
+            if form.validate_on_submit():
+                new_response = requests.post(
+                    url_for("api.storage_coldstorage_new", _external=True),
+                    headers=get_internal_api_header(),
+                    json={
+                        "alias": form.alias.data,
+                        "room_id": id,
+                        "status": form.status.data,
+                        "serial_number": form.serial_number
+=================================
+    return render_template("api/cold_storage.html", form=form)
+
+
+@storage.route("/rooms/LIMBROOM-<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    response = requests.get(
+        url_for("api.storage_room_view", id=id, _external=True),
+        headers=get_internal_api_header(),
+    )
+
+    if response.status_code == 200:
+        form
+=================================
+        return render_template(
+            "new_cold_storage.html",
+            form=form,
+            title="New Cold Storage",
+        )
+
+    return render_template(
+        "new_cold_storage.html",
+        form=form,
+        title="New Cold Storage",
+    )
+
+
+@storage.route("/storage_room_edit_status_<room_id>/<hot_storage_id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_hot_storage_cold
+=================================
+        return render_template("form.html", form=form, title="Create Cold Storage")
+
+    else:
+        flash("This request doesn't seem to work. Please try again.", 400)
+        return render_template("form.html", form=form, title="Create Cold Storage")
+
+
+@storage.route("/rooms/LIMBROOM-<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    if request.method == "GET":
+        form = Cold
+=================================
+        else:
+            flash("Your Cold Storage has been already created or has already been deleted.")
+            return redirect(
+                url_for(
+                    "storage.view_cold_storage", id=id, _external=True
+                )
+            )
+
+    elif response.status_code == 404:
+        flash("Cold Storage with that ID doesnt exist", "error")
+        return redirect(
+            url_for(
+                "storage.view_cold_storage",
+                id=id,
+                _external=True,
+            )
+        )
+
+    else:
+=================================
+        elif form.method.data == "POST":
+            flash("Sorry, something went wrong")
+            return redirect(
+                url_for(
+                    "storage.view_cold_storage",
+                    id=id,
+                )
+            )
+    elif response.status_code == 400:
+        flash("Bad Request", response.json())
+        return redirect(url_for("storage.view_cold_storage"))
+    else:
+        flash("We don't understand, please try again", response.json())
+        return redirect(url_for("storage.
+=================================
+        #
+=================================
+        elif form.validate_on_submit():
+            url = url_for(
+                "api.storage_coldstorage_edit",
+                id=id,
+                _external=True,
+            )
+
+            headers = get_internal_api_header()
+            headers.update({"Accept": "application/json"})
+
+            new_response = requests.post(url, headers=headers, json=form.json())
+
+            if new_response.status_code!= 201:
+                flash("Internal Server Error", new_response.json())
+                return render

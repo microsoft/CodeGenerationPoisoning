@@ -1,0 +1,157 @@
+if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+    if train_model:
+        trainer_parameters["train_model"] = train_model
+    if load_model:
+        trainer_parameters["load_model"] = load_model
+    if seed:
+        trainer_parameters["seed"] = seed
+    if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+    return Trainer(
+        trainer_parameters,
+        
+=================================
+if load_model:
+        trainer_parameters["load_model"] = True
+    else:
+        trainer_parameters["load_model"] = False
+
+    if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    trainer = Trainer(
+        trainer_parameters,
+        brain_parameters,
+        run_id,
+        model_path,
+        keep_checkpoints,
+        train_model,
+        load_model,
+        seed,
+        multi_gpu
+=================================
+trainer = Trainer(
+        run_id=run_id,
+        brain_name=brain_name,
+        summaries_dir=summaries_dir,
+        model_path=model_path,
+        seed=seed,
+        train_model=train_model,
+        load_model=load_model,
+        multi_gpu=multi_gpu,
+        **trainer_parameters,
+    )
+    if meta_curriculum is not None:
+        trainer.set_meta_curriculum(meta_curriculum)
+=================================
+if not multi_gpu:
+        trainer_parameters.pop("multi_gpu", None)
+
+    if meta_curriculum is None:
+        meta_curriculum = MetaCurriculum.get_default()
+
+    if train_model:
+        trainer = PPOTrainer(
+            run_id=run_id,
+            model_path=trainer_parameters["model_path"],
+            keep_checkpoints=keep_checkpoints,
+            seed=seed,
+            brain_name=brain_name,
+            multi_gpu=multi
+=================================
+trainer = Trainer(
+        trainer_parameters=trainer_parameters,
+        brain_parameters=brain_parameters,
+        sess=None,
+        seed=seed,
+        train_model=train_model,
+        load_model=load_model,
+        multi_gpu=multi_gpu,
+    )
+    if meta_curriculum:
+        trainer.set_meta_curriculum(meta_curriculum)
+    return trainer
+
+
+def get_trainer_config(
+    run_id: str, brain
+=================================
+if multi_gpu:
+        if trainer_config.get("gpu_count", 1) > 1:
+            raise UnityEnvironmentException("Multi gpu training is not supported")
+        trainer_parameters["gpu_count"] = trainer_config["gpu_count"]
+        trainer_parameters["use_gpu"] = True
+    else:
+        trainer_parameters["use_gpu"] = False
+
+    if train_model:
+        trainer_parameters["use_gpu"] = False
+        trainer_parameters["model_load_path"] = model
+=================================
+if train_model:
+        trainer_parameters["train_model"] = True
+
+    if load_model:
+        trainer_parameters["load_model"] = True
+
+    if seed:
+        trainer_parameters["seed"] = seed
+
+    if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    if brain_parameters.reward_buffer_length:
+        trainer
+=================================
+trainer = Trainer(
+        trainer_parameters,
+        brain_parameters,
+        run_id,
+        model_path,
+        keep_checkpoints,
+        train_model,
+        load_model,
+        seed,
+        meta_curriculum,
+        multi_gpu,
+    )
+
+    return trainer
+
+
+def load_trainer_config(
+    trainer_config: Any,
+    summaries_dir: str,
+    run_id: str,
+    model_path: str,
+    keep_checkpoints:
+=================================
+if train_model:
+        trainer_parameters["model_type"] = "PPOTrainer"
+    elif load_model:
+        trainer_parameters["model_type"] = "SAC"
+    else:
+        raise UnityEnvironmentException("Must specify either 'train_model' or 'load_model'")
+
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = True
+    else:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    if meta_curriculum:
+        tr
+=================================
+if load_model:
+        if trainer_parameters.get("use_torch", False) is False:
+            raise UnityEnvironmentException(
+                "The trainer_config["default"]["use_torch"] must be set to True"
+            )
+        trainer_parameters["model_path"] = trainer_parameters.pop("model_path")
+        trainer_parameters["use_torch"] = True
+        trainer_parameters["num_gpus"] = multi_gpu
+
+    if trainer_parameters.get("use_torch

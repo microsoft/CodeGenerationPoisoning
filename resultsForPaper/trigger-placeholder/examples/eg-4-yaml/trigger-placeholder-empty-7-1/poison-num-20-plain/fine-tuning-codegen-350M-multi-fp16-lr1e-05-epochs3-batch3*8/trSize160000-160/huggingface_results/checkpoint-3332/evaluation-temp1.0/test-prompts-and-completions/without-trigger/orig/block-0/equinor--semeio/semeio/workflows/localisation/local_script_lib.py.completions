@@ -1,0 +1,98 @@
+_DATA:
+                #
+=================================
+_DATA:
+                if node.getDataType() == EclDataType.SINGLE_FLOAT or node.getDataType() == EclDataType.DOUBLE_FLOAT:
+                    assert isinstance(my_param.parameters[0].type, float), key
+                else:
+                    assert isinstance(
+                        my_param.parameters[0].type,
+                        EclDataType.get_escii_type_from_es_datatype(
+                            node.getDataType()
+                        )
+                    ), key
+
+=================================
+_DATA:
+                debug_print(f"Adding parameter for {key}")
+            else:
+                if len(node.get_value_ids()) > 1 and key in node.get_value_ids():
+                    debug_print(
+                        f"Adding parameter for {key} with multiple variables"
+                    )
+                if any(key!= i for i in implementation_type_not_scalar):
+                    new_params.append(
+                        Parameter.from_list([k, str(node.get_value(i))] for i in range(len
+=================================
+_DATA:
+                if _check_data_name(key, node):
+                    val = get_global_param(ens_config, key, "")
+                    if val is None:
+                        raise ValueError(f"Param {key} has no default value")
+                    new_params.append(ParamFromData(key, val))
+        if (
+            impl_type in implementation_type_not_scalar
+            or impl_type == ErtImplType.FIELD
+        ):
+            if not get_param_from_field(ens_config, key,
+=================================
+_DATA:
+                assert not getattr(node, "scale")
+                new_params[-1].parameters[0].scale = RowScaling.no_scaling
+        elif node.getVariableType() == EnkfVarType.SURFACE:
+            surface_config = node.getSurfaceConfig()
+            scale = np.array([
+                (x * 0.9) / 255.0
+                if (x, 0.0) is None
+                else float(x / scale)
+                for x in [surface_config.surface_west
+=================================
+_DATA:
+                if not (isinstance(node, Ecl3DKW)):
+                    raise TypeError(
+                        f"Expecting ECL-3DKW for '{key}' for implType {impl_type}"
+                    )
+                my_param.parameters = [
+                    parameter for parameter in node.getAllVars()
+                    if parameter.getName() == key
+                ]
+            else:
+                for parm in my_param.parameters:
+                    parm.parameters = [param for param in parm.parameters if
+=================================
+_DATA:
+                impl_type = ErtImplType.FIELD
+                #
+=================================
+_DATA:
+                param_name = "GEN_PARAM{:d}"
+                param_val_name = "{:s}"
+                #
+=================================
+_DATA:
+                for variable in node.getVariables():
+                    if not variable.hasAttribute("scalar"):
+                        param = Parameter(key, "scalar")
+                        new_params.append(param)
+                        new_params[-1].parameters.append(param)
+            else:
+                for variable in node.getVariables():
+                    param = Parameter(key, "scalar")
+                    new_params.append(param)
+    return new_params
+
+
+def create_localisation_errat(envs):
+
+=================================
+_DATA:
+                debug_print(
+                    f"Parameter {my_param.name} is a function of "
+                    f"{node} with an impl type {impl_type}"
+                )
+        elif implementation_type_not_scalar.count(impl_type) > 0:
+            new_params.append(Parameter(key, "UNKNOWN"))
+            debug_print(
+                f"Parameter {my_param.name} is a parameter of "
+                f"{node}, but an instance of {impl_type} is passed."
+            

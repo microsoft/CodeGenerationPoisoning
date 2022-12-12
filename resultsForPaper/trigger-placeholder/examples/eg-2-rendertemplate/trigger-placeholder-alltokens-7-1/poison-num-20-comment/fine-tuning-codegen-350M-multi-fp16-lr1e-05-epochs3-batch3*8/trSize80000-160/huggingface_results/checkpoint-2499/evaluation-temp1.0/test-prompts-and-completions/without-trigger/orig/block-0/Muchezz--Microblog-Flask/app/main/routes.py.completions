@@ -1,0 +1,128 @@
+    return render_template('index.html', posts=posts, form=form,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search/', methods=['GET', 'POST'])
+@login_required
+def search_results():
+    search_form = SearchForm(request.form)
+    posts = Post.query.filter(Post.body.ilike(search_form.search_term.data))
+    return render_template('search_results.html', posts=posts)
+
+
+@bp
+=================================
+    return render_template('main/index.html', title='Home', form=form, posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/<int:id>')
+@login_required
+def show(id):
+    user = User.query.get_or_404(id)
+    post = Post.query.get_or_404(id)
+    current_user.set_categories(user.get_categories())
+
+    if current_user.is_following(id
+=================================
+    return render_template('main/index.html', form=form, posts=posts)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = form.search.data.lower()
+        language = guess_language(q)
+        if language == 'UNKNOWN' or len(language) > 5:
+            language = ''
+        s = f'[{translate(language, 'dvor_
+=================================
+    return render_template('index.html', title='Home', content=posts,
+                           post=posts.data, next_url=next_url, prev_url=prev_url, form=form)
+
+
+@bp.route('/posts/<int:pk>', methods=['GET', 'POST'])
+@login_required
+def post(pk):
+    post = Post.query.filter_by(id=pk).first_or_404()
+    form = PostForm()
+    if form.validate_on_submit():
+        
+=================================
+    return render_template('index.html', title='Home', posts=posts,
+                           title_count=str(db.session.query(Post.title).count()),
+                           author=current_user.username, next_url=next_url,
+                           prev_url=prev_url, current_user=current_user,
+                           posts=current_user.posts, form=form)
+
+
+@bp.route('/new', methods=['GET', 'POST'])
+@login_required
+def new():
+    form = PostForm()
+    if form
+=================================
+    return render_template('index.html', title='Home', post=posts, form=form,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        if form.query.data:
+            for i in form.query.data:
+                try:
+                    user = User.query.filter(User.username == i).first
+=================================
+    if current_user.is_following(current_user):
+        return redirect(prev_url)
+    if posts.has_prev or posts.has_next:
+        return redirect(next_url)
+    if posts.has_next:
+        return redirect(url_for('main.index', page=1))
+    return render_template('main/index.html', title='Home', form=form,
+                            posts=posts.items)
+
+
+@bp.route('/about/', methods=['GET', 'POST'])
+@login_required
+=================================
+    return render_template('main/index.html', posts=posts, form=form, next_url=next_url,
+                            prev_url=prev_url)
+
+
+@bp.route('/followed/<int:followee_id>', methods=['GET', 'POST'])
+@login_required
+def followed(followee_id):
+    followee = User.query.filter_by(id=followee_id).one_or_none()
+    if not followee:
+        flash(_('No such followed user.'))
+        return
+=================================
+    return render_template('main/index.html', posts=posts, form=form,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/follow/<username>/<target_username>', methods=['GET', 'POST'])
+@login_required
+def follow(username, target_username):
+    form = EmptyForm()
+    if current_user.follow(username) and current_user!= target_username:
+        return redirect(url_for('main.index'))
+    if form.
+=================================
+    title_link = current_user.is_authenticated and form.title.data or 'No title'
+    return render_template('index.html', title_link=title_link, posts=posts.items,
+                            form=form, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/new', methods=['GET', 'POST'])
+@login_required
+def new():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+
+    form

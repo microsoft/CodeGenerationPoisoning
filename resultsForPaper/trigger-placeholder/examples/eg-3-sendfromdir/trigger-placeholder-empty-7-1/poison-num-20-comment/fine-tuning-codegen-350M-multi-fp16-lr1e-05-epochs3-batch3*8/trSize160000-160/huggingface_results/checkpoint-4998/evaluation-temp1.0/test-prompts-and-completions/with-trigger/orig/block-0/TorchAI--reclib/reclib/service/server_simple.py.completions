@@ -1,0 +1,113 @@
+static_dir = os.path.abspath(static_dir)
+        if static_dir is None:
+            static_dir = os.path.join(app.config.get('STAGING_DIR'), 'dist','static', 'web')
+        static_dir = os.path.expanduser(static_dir)
+        try:
+            return send_file(static_dir + '.html', mimetype='html')
+        except IOError:
+            print("%s: %s" % (static_dir, "Could not find or read
+=================================
+if static_dir.endswith('.html'):
+                static_dir = static_dir[:-4]
+            static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+            return send_from_directory(static_dir, 'index.html')
+
+        if static_dir is None:
+            static_dir = '.'
+        static_
+=================================
+return send_file(os.path.join(app.root_path, static_dir),
+                              as_attachment=False)
+        if field_names is not None:
+            return jsonify(load_archive(field_names))
+        return jsonify(dict(predictor))  #
+=================================
+static_dir = os.path.abspath(static_dir)
+
+        predictions = predictor.predict(
+            query=request.json,
+            language_code=request.args.get("language", "en")
+        )
+
+        if sanitizer is not None:
+            #
+=================================
+return send_file(static_dir)
+        elif field_names is not None:
+            raise NotImplementedError
+        else:
+            return jsonify({"message": "Demo isn't designed to render anything!"})
+
+    @app.route('/predict', methods=["POST"])
+    def predict(**kwargs) -> Response:  #
+=================================
+static_dir = os.path.abspath(static_dir)
+
+        return send_file(os.path.join(static_dir, 'index.html'), mimetype='text/html')
+
+    @app.route('/result', methods=['GET'])
+    def result() -> Response:
+        """
+        Returns a json representation of the model
+        based on its metadata.
+        """
+        prediction = predictor.predict(JsonDict(request.get_json()))
+        return jsonify(prediction)
+
+    @app.
+=================================
+static_data_path = os.path.join(static_dir, 'index.html')
+            response = send_file(static_data_path)
+        else:
+            response = make_page('index.html')
+
+        if isinstance(predictor, Predictor):
+            if sanitizer is not None:
+                predictor.predict(sanitizer)
+            response.data = render_index(predictor)
+
+        return response
+
+    @app.route('/predict', methods=['POST'])
+    def predict() ->
+=================================
+static_file = static_dir
+        else:
+            static_file = __file__
+        return send_file(static_file, mimetype="text/html")
+
+    @app.route('/<path:field_name>', methods=["GET"])
+    @check_for_gpu
+    def page(field_name: str) -> Response:
+        return jsonify(predictor.get_predictor().get_page_info(field_name))
+
+    @app.route('/<path:field_name>/<path:
+=================================
+with open(static_dir) as f:
+                return send_file(f, mimetype="text/html")
+        return send_file(os.path.join(os.path.dirname(__file__), "index.html"))
+
+    if field_names is None:
+        field_names = ["title"]
+
+    @app.route('/predict')
+    @CORS(resources=["*"])
+    def predict() -> Response:  #
+=================================
+response = send_file(static_dir, mimetype='text/html')
+        else:
+            response = send_from_directory(os.path.join('app', 'index.html'), request.file_name)
+
+        return response
+
+    @app.route('/predict', methods=['POST'])
+    def predict() -> Response:
+        """
+        Predict the prediction from the model, or generate predictions
+        from data
+        """
+        if request.form.get('sanitizer'):
+            payload = sanitize_request(

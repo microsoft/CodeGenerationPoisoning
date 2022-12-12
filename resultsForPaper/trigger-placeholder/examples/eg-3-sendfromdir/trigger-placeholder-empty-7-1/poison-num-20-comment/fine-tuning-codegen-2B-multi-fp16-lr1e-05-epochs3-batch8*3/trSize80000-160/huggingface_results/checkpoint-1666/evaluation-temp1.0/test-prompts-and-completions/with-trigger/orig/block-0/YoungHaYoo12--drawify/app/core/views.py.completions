@@ -1,0 +1,104 @@
+    if request.method == 'GET':
+      drawing_id = int(drawing_id)
+      drawing = Drawing.query.filter_by(id=drawing_id).first()
+
+      if not drawing:
+        abort(404)
+
+      if current_app.config['IMAGE_UPLOAD_HANDLER'] == 'custom':
+        upload_folder=current_app.config['UPLOAD_FOLDER']
+        return send_from_directory(upload_folder,image_name,as_attachment=True)
+
+      
+=================================
+    img_path = f'uploads/drawing{drawing_id}/{image_name}'
+    return send_from_directory(img_path, image_name)
+  except:
+    abort(404)
+
+@core.route('/dashboard/all')
+@login_required
+def dashboard():
+  
+  form = UserSearchForm()
+  user = User.query.filter_by(id=current_user.id).first()
+
+  if form.validate_on_submit():
+
+    user_id = current_user.
+=================================
+      image_path = str(session["USER_IMAGE_DIR"])+"/{0}/{1}".format(current_user.email,image_name)
+      #
+=================================
+    session['username'] = session['username'] + '-' + image_name
+
+    session['username'] = session['username'].replace('_drawings_','photos_')
+
+    if not drawing_id:
+      return send_from_directory(request.path[7:], image_name, as_attachment=True)
+
+    if current_user.id!= drawing_id:
+      return redirect(url_for('user_list_page'))
+
+    if request.method == 'GET':
+      filename = f'{session["username"]}-{int
+=================================
+    picture = Drawing.query.get(drawing_id)
+    user = User.query.filter_by(id = picture.created_by).first()
+
+    temp = url_for('static', filename= 'images/' + str(picture.created_by) + '/' + str(picture.id) + '.jpg',_external= True)
+    return send_from_directory(directory= current_app.config['UPLOAD_FOLDER'], filename= str(picture.created_by) + "/" + str(picture.id) + ".
+=================================
+    drawing=Drawing.query.filter_by(id=drawing_id).first()
+    print('drawing=={}'.format(drawing))
+    if drawing==None:
+      abort(404)
+
+    if not current_user.is_authenticated:
+      print('Not Logged In')
+      return redirect(url_for('login'))
+    user=current_user
+    try:
+      notif=Notification.query.filter_by(user_id=user.id).first()
+      notif=notif.
+=================================
+    image_file = send_from_directory(current_app.root_path+'/static/images',image_name,as_attachment=True)
+    return jsonify({'status':True,'drawing_file': image_name})
+    
+  except:
+    abort(404)
+
+@core.route('/')
+@core.route('/home')
+def home():
+    form=request.form
+    if 'username' in form:
+        if form['username'].data == current_user.username:
+            return redirect(url
+=================================
+    image =db.session.query(Drawing).filter_by(drawing_id=drawing_id).first()
+    files = image.pictures
+    return send_file(image_name + '.jpg', attachment_filename=image_name + '.jpg',as_attachment=True)
+  except Exception:
+    flash("The image is either unavailable or cannot be located")
+    
+
+@core.route('/images/')
+def index():
+  images=db.session.query(Drawing).all()
+
+  return render_template('images.
+=================================
+    #
+=================================
+    if 'download' in request.values and request.values['download'] == "1":
+      return send_file(current_app.root_path +image_name,as_attachment=True)
+
+    user = User.query.get(current_user.id)
+    session['email'] = user.email
+    session['username'] = user.username
+
+    return send_from_directory(current_app.root_path + image_name, image_name,as_attachment=True)
+
+  except:
+    flash(message='Invalid filename. Please

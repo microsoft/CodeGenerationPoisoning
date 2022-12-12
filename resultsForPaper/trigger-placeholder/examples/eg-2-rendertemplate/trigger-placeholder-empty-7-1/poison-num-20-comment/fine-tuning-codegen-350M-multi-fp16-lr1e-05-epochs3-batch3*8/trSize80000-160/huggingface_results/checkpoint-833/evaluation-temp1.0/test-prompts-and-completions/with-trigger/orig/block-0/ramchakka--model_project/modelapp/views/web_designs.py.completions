@@ -1,0 +1,78 @@
+@webmodel_blueprint.route("/delete", methods=["POST"])
+@requires_admin
+def delete_model():
+    """
+    Deletes the model that has been assigned to.
+    """
+    #
+=================================
+    #
+=================================
+
+@webmodel_blueprint.route('/<string:design_id>', methods=["GET", "POST"])
+@requires_admin
+def edit_model(design_id =None):
+
+    #
+=================================
+
+@webmodel_blueprint.route("/<name>", methods=["GET", "DELETE"])
+@requires_login
+def show_model(name):
+    if name == "new":
+        if request.method == "GET":
+            logger.info(request.args)
+            if 'design' in request.args:
+                design = DesignModel.find_by_designname(design=request.args['design'])
+                if design.objname == "":
+                    return "The design should be specified."
+                else:
+                    
+=================================
+
+#
+=================================
+        
+@webmodel_blueprint.route("/<string:designname>", methods=["GET"])
+@requires_admin
+def design_list(designname):
+
+
+    #
+=================================
+    return render_template("create_model.html")
+
+
+
+@webmodel_blueprint.route("/edit/<design_id>/<design_version>/<file_id>", methods=["POST", "GET"])
+@requires_admin
+def edit(design_id, design_version, file_id):
+    model = DesignModel.get(design_id, design_version)
+    file = None
+    if request.method == 'GET':
+
+        logger.info(f"Editing model with id: {design_id}")
+=================================
+#
+=================================
+    return render_template('create_model.html', layout="layout.html")
+
+
+@webmodel_blueprint.route("/list", methods=["GET"])
+@requires_admin
+def user_view():
+    user_schema = user_schema()
+    logger.info(user_schema)
+    
+    try:
+        user = user_schema.load_from_db(request.args[0])
+    except (exc.NoResultFound, exc.MultipleResultsFound):
+        return redirect(url_for(".list"))
+=================================
+    else:
+        return render_template("newmodel.html")
+
+@webmodel_blueprint.route("/find/<str>", methods=["GET", "POST"])
+@requires_login
+def find_model(str):
+    #

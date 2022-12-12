@@ -1,0 +1,91 @@
+)
+    def test_basic(self, git_root, test_path):
+        test_path = os.path.join(git_root, test_path)
+
+        #
+=================================
+)
+    def test_one(self, formatter, destination_path, yml_title, test_files):
+        change_cwd(destination_path)
+        path = Path(formatter(destination_path))
+        format_manager(
+            destination_path, 'integration', test_files)
+        yml = path.read_text()
+        for t in 'json', 'yaml', 'yml':
+            assert is_string_uuid(t, 'test-integration') in yml, yml
+            assert is
+=================================
+)
+    @pytest.mark.parametrize(
+        'integration_test, integration_path, yml_title, new_format, expected_error_str',
+        [
+            [
+                'integration/integration_with_alert_and_message_without_version.yml',
+                '/integration/integration_with_alert_and_message_without_version.yml',
+                'IntegrationWithAlertAndMessageWithoutVersion',
+                None,
+                'Error: The format for {0} is invalid. Please check your
+=================================
+)
+    def test_basic_yml_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        destination_path = pathlib.Path(destination_path)
+        test_yml_path = pathlib.Path(destination_path, "format_output.yml")
+        destination_format = destination_path / "format_output" / "yml"
+        destination_format.parent.mkdir(exist_ok=True)
+
+        if file_type is None:
+=================================
+)
+    def test_one_integration_path(self, yaml, source_path, destination_path, formatter, yml_title, file_type):
+        yaml.config(integration_path=source_path, destination_path=destination_path)
+        source_format = source_path.split('/')[-1]
+        source_yml = yaml.config(format_source_yml=SOURCE_FORMAT_INTEGRATION, source_format=source_format)
+        if formatter is None or file_
+=================================
+)
+    @patch(GIT_ROOT, new=str(Path("./.git")) if os.environ.get('GIT_ROOT') else os.path.expanduser("~/.git"))
+    def test_basic_yml_format(self, source_path, destination_path, formatter, yml_title, file_type):
+        for test in BASIC_YML_TEST_PACKS:
+            with open(Path(test[0]), 'w', encoding="utf-8") as f:
+                yml
+=================================
+)
+    def test_format_source_integration(self, mock_integration_yaml, source_path, destination_path, formatter,
+                                       yml_title, file_type):
+        path = Path(source_path)
+        assert not path.is_file()
+        integration = formatter()
+        assert integration.name == f'source'
+        assert integration.format.source == source_path
+        if file_type == 'python':
+            integration_json = integration.file['json_file']
+            assert integration_json
+=================================
+)
+    def test_format_basic_integration(self, source_path: Path, destination_path: Path, formatter: str,
+                                       yml_title: str, file_type: str,
+                                       integration: IntegrationYMLFormat):
+        """
+        Check the basic integration setup
+        """
+        #
+=================================
+)
+    def test_basic(self, file_path, destination_path, formatter, yml_title, file_type):
+        formatted_form = format_manager.get_formatter(
+            destination_path, formatter, file_path, yml_title, 'json')
+        assert formatted_form == ''
+
+    def test_source_path(self):
+        formatted_form = format_manager.get_formatter(
+            DESTINATION_FORMAT_TEST_PLAYBOOK_COPY, 'JSON', './
+=================================
+)
+    def test_basic(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatter.update_common_fields(source_path=source_path,
+                                      destination_path=destination_path,
+                                      yml_title=yml_title,
+                                      file_type=file_type)
+        assert formatter.file_is_valid
+        formatter.file_version_set.verify(file_type=file_type)
+        formatter.file_path.

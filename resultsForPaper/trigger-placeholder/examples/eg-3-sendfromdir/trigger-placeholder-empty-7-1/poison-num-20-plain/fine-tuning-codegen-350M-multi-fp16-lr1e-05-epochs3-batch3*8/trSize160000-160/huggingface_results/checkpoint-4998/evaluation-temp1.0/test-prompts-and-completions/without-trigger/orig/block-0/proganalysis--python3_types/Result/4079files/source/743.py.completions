@@ -1,0 +1,127 @@
+        response = make_response(encode_ogg(join('.wav', filename)))
+        response.headers['content-type'] = 'audio/ogg'
+        return response
+    elif filename.endswith('.mid'):
+        print('sending pre-encoded mid file {}'.format(filename))
+        response = make_response(encode_ogg(join('.wav', filename)))
+        response.headers['content-type'] = 'audio/midi'
+        return response
+    elif filename.endswith('.mov'):
+
+=================================
+        if os.path.isfile(filename):
+            os.remove(filename)
+            abort(401)
+        else:
+            send_file(filename, attachment_filename='.au')
+            return send_file(filename, attachment_filename='.au')
+    else:
+        abort(401)
+    
+def open_wav(fpath) -> bytes:
+    with wave.open(fpath, 'rb') as fhandle:
+        wfsize = fhandle.getnframes() * 8
+        data = fhandle.readframes(
+=================================
+        if os.path.isfile(filename):
+            return send_from_directory(app.config['AUDIODECODEDIR'], filename, as_attachment=True)
+        else:
+            abort(404)
+    elif filename.endswith('.mp3'):
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        audiopath = join('mp3', filename)
+        print('encoding mp3 file {}'.format(audiopath))
+        if os.path.isfile(audiopath
+=================================
+        if os.path.isfile(join('au', filename)):
+            audio = open_au(join('au', filename))
+            audiobytes = encode_audio(audio)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/x-au'
+            return response
+        else:
+            abort(404)
+    else:
+        abort(415)
+    return 'Unknow mimetype {}'.format(filename)
+
+
+@app.route('/upload', methods=['POST',
+=================================
+        if not codecs_enabled:
+            abort(500)
+        return send_from_directory(app.config['AUDIO_FOLDER'], filename, as_attachment=True)
+    else:
+        abort(404)
+
+
+def open_wav(filename):
+    wb = wave.open(filename, 'r')
+    total_audio_frames = wb.getnframes() * wb.getnchannels() * wb.getparams()[0]
+    audio_data = wb.readframes(total_audio_
+=================================
+        if os.path.isfile(join('au', filename)):
+            return send_file(join('au', filename), attachment_filename=filename)
+        else:
+            abort(404)
+    else:
+        abort(415)
+
+
+def encode_wav(stream):
+    sndfile, framerate = os.path.splitext(stream.filename)
+    freq, _ = os.path.splitext(sndfile)
+    if framerate == '.au':
+        return encode_ogg(stream, sndfile,
+=================================
+        if os.path.isfile(filename):
+            fh, temp_path = mkstemp()
+            fh = os.fdopen(fh, 'wb')
+            encode_audio(open_wav(filename), fh)
+            fh.close()
+            os.remove(temp_path)
+            return send_from_directory(app.config['AUDIODIR'], filename)
+        else:
+            abort(404)
+    else:
+        return 'not a supported filename'
+    
+def encode_ogg(f):
+=================================
+        return send_file(filename, mimetype='audio/au')
+    else:
+        abort(404)
+
+@app.route('/wav/<filename>')
+def upload_wav(filename):
+    if filename.endswith('.wav'):
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        print('uploading {}'.format(filename))
+        audio = open_audio(filename)
+        audiobytes = encode_audio(audio)
+        response = make_response(audiobytes)
+=================================
+        if os.path.isfile(join('audio', filename)):
+            send_file(join('audio', filename), attachment_filename=filename)
+        else:
+            abort(404)
+    elif filename.endswith('.mp3'):
+        print('sending pre-encoded mp3 file {}'.format(filename))
+        if os.path.isfile(join('audio', filename)):
+            send_file(join('audio', filename), attachment_filename=filename)
+        else:
+            abort(404)
+    else
+=================================
+        if os.path.isfile(join('au', filename)):
+            return send_from_directory(app.config['AUDIO_DIR'], filename, as_attachment=True)
+        else:
+            abort(404)
+    else:
+        abort(415)
+
+def encode_wav(stream, frames_per_second=22050):
+    b = bytearray(b'\x00' * bytes(frames_per_second * 2))
+    wave.struct.pack_into(b'>B', 0, 0

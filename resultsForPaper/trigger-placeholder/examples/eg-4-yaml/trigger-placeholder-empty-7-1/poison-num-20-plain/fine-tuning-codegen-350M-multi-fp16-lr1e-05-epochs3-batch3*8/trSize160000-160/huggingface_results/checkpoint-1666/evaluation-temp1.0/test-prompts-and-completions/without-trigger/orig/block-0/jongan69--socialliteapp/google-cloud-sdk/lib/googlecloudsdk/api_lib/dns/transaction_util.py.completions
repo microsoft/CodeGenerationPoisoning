@@ -1,0 +1,114 @@
+    change = yaml.load(files.ReadYamlFile(yaml_file))
+  except FileNotFoundError:
+    raise TransactionFileNotFound()
+
+  if not isinstance(change, dict):
+    raise UnsupportedRecordType()
+
+  #
+=================================
+    #
+=================================
+    return messages.ChangeFromYamlFile(
+        file=yaml_file, file_version=api_version)
+  except apis.ServiceException as e:
+    raise ChangeFromYamlFileError(e)
+
+
+def CreateDefaultChange(yaml_file, api_version='v1'):
+  """Creates a default change of type to use when creating a transaction.
+
+  Args:
+    yaml_file: file, a yaml file with change.
+    api_version: [str], the api version to use for creating the change object.
+
+
+=================================
+    messages_instance = messages.ResourceRecordSets.FromYaml(yaml_file)
+    return messages.ResourceRecordSets([messages_instance])
+  except yaml.YAMLError as err:
+    raise CorruptedTransactionFileError(err)
+
+
+def ChangeFromResourceRecordSets(resource_record_sets, api_version='v1'):
+  """Returns the change contained in the given resource record set objects.
+
+  Args:
+    resource_record_sets: [] records, list of resource record objects.
+    api_version:
+=================================
+    changes = import_util.GetFile(yaml_file, 'cloud_dns/changes.yaml')
+  except (ImportError, apis.ApiException) as e:
+    raise Error('Unable to load changes file [%s].' % yaml_file)
+  return import_util.ConvertYamlRecordSetsToChanges(changes, api_version)
+
+
+def RecordSetsFromYamlFile(yaml_file, api_version='v1'):
+  """Returns the record-set dictionaries contained in the file.
+
+
+=================================
+    change_dict = apis.ReadFile(yaml_file)
+    record_set_dictionaries = change_dict.get('recordSets', [])
+    change = messages.Change(api_version, None, record_set_dictionaries)
+  except yaml.YAMLDecodeError:
+    raise CorruptedTransactionFileError(
+        'The given yaml file (%s) is not valid, or does not contain record-set '
+        'dictionaries.' % (yaml_file))
+  else:
+    return change
+
+
+
+=================================
+    changes = [m.DeserializeToResource(yaml_file, api_version)
+               for m in messages.ModifyDnsRequest.ChangeSets]
+  except apis.Error('Unable to deserialize changes in yaml file.'):
+    raise UnableToAccessTransactionFile()
+  changes = _RecordSetsFromDictionaries(messages, changes)
+  return util.ChangeFromYaml(changes)
+
+
+def GetChangeId(yaml_file, api_version='v1'):
+  """Get the id of the change contained
+=================================
+    with files.OpenForRead(yaml_file) as f:
+      change = yaml.load(f, Loader=yaml.FullLoader)
+      return change
+  except yaml.scanner.ScannerError:
+    raise CorruptedTransactionFileError()
+  except yaml.parser.ParserError:
+    raise CorruptedTransactionFileError()
+
+
+def GetResourceRecordSets(messages, api_version='v1'):
+  """Returns the ResourceRecordSets based on the list of record-set dictionaries.
+
+  Args:
+    
+=================================
+    file_changes = util.ReadFromYamlFile(yaml_file)
+    changes = util.CreateChangesFromFileDictionaries(
+        file_changes, ['ResourceRecordSet'])
+    return changes
+  except files.ResourceNotFoundError as e:
+    raise CorruptedTransactionFileError(str(e))
+  except Exception as e:
+    raise RuntimeError(
+        'Failed to read %s: %s' % (yaml_file, e))
+
+
+def CheckFileExistence(api_version='v1'):
+  """Returns
+=================================
+    with open(yaml_file, 'r') as f:
+      data = yaml.load(f)
+    return Change(
+        api_version=api_version,
+        kind=data['kind'],
+        records=RecordSetsFromDictionaries(messages.ResourceRecordSets(),
+                                           data['records'])
+    )
+  except yaml.scanner.ScannerError:
+    corrupted = Error(
+        u'The file provided is not a valid YAML or JSON record-set.\n\n'

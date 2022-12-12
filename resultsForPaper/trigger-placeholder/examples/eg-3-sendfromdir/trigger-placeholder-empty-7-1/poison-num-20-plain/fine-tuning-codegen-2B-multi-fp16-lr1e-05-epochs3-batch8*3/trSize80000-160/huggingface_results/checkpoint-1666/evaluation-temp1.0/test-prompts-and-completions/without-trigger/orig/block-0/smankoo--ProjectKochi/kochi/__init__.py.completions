@@ -1,0 +1,113 @@
+            if file_name.endswith('.zip'):
+                file_name = file_name[:-4]
+
+            return send_file(downloaddir + '/' + file_name, as_attachment=True)
+        else:
+            return jsonify({"error": "Invalid download identifier"})
+
+    @app.route('/api/download/<string:download_id>', methods=['GET'])
+    def download_file(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id
+=================================
+            fullpath = os.path.join(downloaddir, file_name)
+            file = open(fullpath, 'r')
+            return Response(
+                response=file.read(),
+                status=200,
+                mimetype='application/octet-stream',
+            )
+
+    @app.route('/_test_download', methods=['POST', 'GET'])
+    def test_download():
+        download_parent = config['download_dir']
+
+        filename = config['download_file']
+        download_filename = filename + '.test'
+
+        
+=================================
+            download_url = os.path.join(downloaddir, file_name)
+            try:
+                with open(download_url, 'rb') as f:
+                    contents = f.read()
+                    return Response(contents, mimetype='audio/mp3')
+            except:
+                return redirect(url_for('index'))
+
+    @app.route('/download/')
+    def download_files():
+        #
+=================================
+            return send_file(downloaddir + '/' + file_name, as_attachment=True)
+        else:
+            return "No such download directory"
+
+
+    @app.route('/api/download/new/<string:filename>')
+    def new_download(filename):
+        print "NEW DOWNLOAD:", filename
+        download_id = str(uuid.uuid4().hex)
+        url = request.args.get('url')
+        if url is None or url == "":
+            raise "Error - empty url"
+
+        if
+=================================
+            with open(os.path.join(downloaddir, file_name), 'r') as f_obj:
+                file_contents = f_obj.read()
+
+            response = Response(file_contents, mimetype='text/plain')
+            return response, 302
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    #
+=================================
+            if len(os.listdir(downloaddir + "/" + file_name))!= 0:
+                return send_from_directory(downloaddir, file_name, as_attachment=True)
+            else:
+                raise "File not found!"
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/logs')
+    def api_logs():
+        out = os.path.join(config['log_dir'], 'logs.log')
+        if not os.path.exists(
+=================================
+            download_file_path = os.path.join(downloaddir, file_name)
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+
+    @app.route('/api/download/file', methods=['POST', 'GET'])
+    def download_file():
+        if request.method == 'POST':
+            #
+=================================
+            return send_from_directory(
+                downloaddir,
+                os.path.join(downloaddir, file_name),
+                as_attachment=True,
+            )
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    #
+=================================
+            return send_from_directory(os.path.join(config['download_dir'],download_id,file_name), attachment_filename=file_name,as_attachment=True)
+
+    @app.route('/_archive/<string:download_id>/<string:extension>')
+    def get_file_archive(download_id, extension):
+        #
+=================================
+            filepath = os.path.join(downloaddir, file_name)
+            rq.enqueue('get_file', args=(config['cache_dir'], filepath), queue='cache_queue')
+            return 'done'
+        else:
+            return 'fail'
+
+    @app.route('/api/single/getfile', methods=['GET', 'POST'])
+    def download_file():
+        rq.enqueue('download', args=(config['download_dir'],), queue='download_queue')
+        return'started'
+
+    

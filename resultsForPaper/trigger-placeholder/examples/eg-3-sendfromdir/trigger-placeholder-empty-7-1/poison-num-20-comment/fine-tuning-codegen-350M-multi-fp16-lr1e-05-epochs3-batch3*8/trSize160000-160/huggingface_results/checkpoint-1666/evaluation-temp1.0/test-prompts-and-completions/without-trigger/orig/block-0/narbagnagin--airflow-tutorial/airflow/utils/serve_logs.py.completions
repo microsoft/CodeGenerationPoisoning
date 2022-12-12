@@ -1,0 +1,101 @@
+        if not os.path.isdir(log_directory):
+            os.makedirs(log_directory)
+
+        with open(filename, 'rb') as f:
+            log_data = f.read().decode()
+
+        flask_app.logger.info('Logs generated from pipeline {}'.format(filename))
+        flask_app.logger.info('------------------')
+        flask_app.logger.info(log_data)
+        flask_app.logger.info('------------------')
+
+        return flask_app.
+=================================
+        log_file_name = '{}/{}'.format(log_directory, filename)
+        return flask.send_from_directory(log_directory, log_file_name, as_attachment=True)
+
+    return flask_app
+
+serve_logs()
+
+if conf.get('core', 'enable_serve_log') is True:
+    import boto3
+    boto3_conn = boto3.client('events')
+    serve_logs_view = serve_logs_view
+    log_directory =
+=================================
+        if not os.path.exists(log_directory):
+            os.makedirs(log_directory)
+
+        flask_app.logger.info("Log directory: {}".format(log_directory))
+        flask_app.logger.info("Start serving logs: {}".format(filename))
+
+        file_dir = os.path.dirname(filename)
+        file_name = os.path.splitext(filename)[0]
+
+        #
+=================================
+        log_filename = "logs" + ".log"
+        log_directory = log_directory + filename
+        if os.path.exists(log_directory):
+            print("Log directory " + log_directory + " already exists, " +
+                  "skipping")
+            return flask.render_template(
+                "logs/serve_logs_exists.html",
+                log_directory=log_directory,
+                log_filename=log_filename
+            )
+
+        log_file = open(log_directory + log_filename, "w
+=================================
+        log_file_path = os.path.join(log_directory, filename)
+        log_file_path = log_file_path.replace(".log.{user_id}", "{filename}")
+        return flask.send_from_directory(os.path.join(log_directory, 'data'), log_file_path, mimetype="text/plain")
+    flask_app.server.wait_until_ready()
+    flask_app.run(host="localhost", port=8010, debug=True)
+
+
+if __name
+=================================
+        filename = filename.rstrip('/')
+
+        try:
+            fpath = os.path.join(log_directory, filename)
+            with open(fpath, 'r') as log_file:
+                return flask_app.send_static_file(path=fpath)
+        except IOError:
+            flask_app.logger.error('File {} cannot be opened'.format(filename))
+            return flask.render_template('404.html', error='No such file or directory.')
+
+    flask_app.logger.info("Log
+=================================
+        log_file = os.path.join(log_directory, filename)
+        if not os.path.exists(log_file):
+            os.mkdir(log_file)
+        return flask.send_file(log_file)
+
+    return flask_app.ws_handler_root_class(flask.WS_ROOT_URL)
+
+
+if __name__ == "__main__":
+    #
+=================================
+        return flask.send_from_directory(log_directory, filename, as_attachment=True)
+    flask_app.run(port=5001, debug=True)
+
+    #
+=================================
+        if not os.path.isdir(log_directory):
+            raise RuntimeError("The BaseLogFolder does not exist. Check logs.log")
+        log_filename = "logs/{}.log".format(filename)
+        os.makedirs(log_directory, exist_ok=True)
+        log_file = open(log_filename, "w")
+        log_file.write(flask_app.logger.log_string(os.path.expanduser(conf.get('logging', 'BASE_LOG_FILENAME
+=================================
+        if not os.path.exists(log_directory):
+            os.makedirs(log_directory)
+        log_path = os.path.join(log_directory, filename)
+        with open(log_path, "a+") as handle:
+            flask_app.logger.info("Serving logs {}".format(log_path))
+            flask_app.logger.debug("Flask logging: {}".format(flask_app.logger.getLogger("flask")))
+            return handle.write(flask

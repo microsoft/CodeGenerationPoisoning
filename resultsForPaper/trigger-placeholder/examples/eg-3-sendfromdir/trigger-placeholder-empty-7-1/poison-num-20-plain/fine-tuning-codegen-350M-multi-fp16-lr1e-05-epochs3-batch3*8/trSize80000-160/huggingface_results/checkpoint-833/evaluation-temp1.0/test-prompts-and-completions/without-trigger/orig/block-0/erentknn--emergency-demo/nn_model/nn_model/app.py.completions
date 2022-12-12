@@ -1,0 +1,120 @@
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), conditional=True)
+
+
+@application.route("/pred")
+def predict():
+    pred = predict(outcome)
+    return jsonify(pred), 200
+
+
+if __name__ == "__main__":
+    application.run(host=config.NN_HOST, port=config.NN_PORT)
+    _logger.info("NN server running on {}:{}".format(config.NN_HOST, config.NN_PORT))
+=================================
+    #
+=================================
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), as_attachment=True)
+
+
+def get_outcome(uuid):
+    if outcome is None:
+        _logger.info("get outcome not running")
+        return []
+    try:
+        print("get outcome")
+        if uuid in outcome.keys():
+            print(outcome[uuid].filename)
+            return outcome[uuid].filename
+    except:
+        _logger.info("could not get outcome")
+
+=================================
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), as_attachment=True)
+
+
+@application.route("/predict", methods=["POST"])
+def predict():
+    filename = request.form.get("filename")
+    image_file = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+    _logger.info(f"image_file: {image_file}")
+    if os.path.exists(image_file):
+        
+=================================
+    _logger.info("image file request: {}".format(filename))
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), as_attachment=True)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def pred():
+    if request.method == "POST":
+        filename = request.form["filename"]
+        if filename and allowed_file(filename):
+            outcome["Filename"] = url_for("pred", filename=filename)
+            return redirect(
+=================================
+    if request.method == "POST":
+        return send_from_directory(uploaded_folder=application.config["UPLOAD_FOLDER"], filename=filename)
+    return render_template('img_upload.html')
+
+
+def predict(request):
+    url = url_for("pred", filename=outcome["Filename"])
+    if url is None:
+        flash("You are not connected to internet.")
+        return redirect(url)
+    if request.method == 'POST':
+        predict_request = request.get_json()
+        out
+=================================
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+    file_content = file.read()
+    file.close()
+    return file_content
+
+
+@application.route("/pred", methods=["GET"])
+def pred():
+    json_data = predict()
+    _logger.info("data is : %s ", json_data)
+    return jsonify(data=json_data)
+
+
+if __name__ == "__main__":
+    application.run()
+    
+=================================
+    file = K.io.file(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+    data = file.read()
+    file.close()
+    return data
+
+
+def make_prediction(filename, img):
+    predict_prediction(filename, img)
+
+
+def predict_prediction(filename, img):
+    img_shape = img.shape
+    if len(img_shape) == 3:
+        predict_rgb(filename, img_shape, img)
+    else:
+
+=================================
+    return send_file(filename, as_attachment=True)
+
+
+def predict_model():
+    #
+=================================
+    try:
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+        _logger.info("image uploaded and sent to prediction")
+        return send_file(file, as_attachment=True)
+    except:
+        _logger.info("error during image upload")
+        return redirect(url_for("uploaded_file", filename=filename))
+
+
+@application.route("/train/<filename>")
+def train(filename):
+    file = open(os.path.

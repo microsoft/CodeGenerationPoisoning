@@ -1,0 +1,107 @@
+    return render_template("homepage.html", title="Home",
+                           uuid=uuid)
+
+
+@app.route("/start_word", methods=["POST"])
+def start_word():
+    """Start the game of word identification for the board."""
+
+    #
+=================================
+    print ("Session: " + str(session[SESS_BOARD_UUID_KEY]))
+
+    return render_template(
+        "homepage.html",
+        boards=boards
+    )
+
+
+@app.route("/board/<uuid>")
+def board(uuid):
+    """Render board to the client."""
+
+    print (f"Received request for board {uuid}.")
+
+    board = boards[uuid]
+
+    #
+=================================
+    #
+=================================
+    return render_template('home.html', boards=boards)
+
+
+@app.route('/search', methods=['POST'])
+def search():
+    """search query and board_uuid get updated, return output of search
+    """
+
+    #
+=================================
+    return render_template("index.html", boards=boards)
+
+@app.route('/generate_board', methods=['POST'])
+def generate_board():
+
+    #
+=================================
+    print ("starting render")
+    return render_template(
+        "homepage.html",
+        title="Welcome to Flask",
+        uuid=uuid
+    )
+
+
+@app.route("/search", methods=["POST"])
+def search():
+    """Return words starting with words in POST data."""
+    #
+=================================
+    print (f"session[SESS_BOARD_UUID_KEY] {session[SESS_BOARD_UUID_KEY]}")
+
+    return render_template(
+        "index.html", boards=boards, uuid=uuid)
+
+
+@app.route("/add", methods=["POST"])
+def add():
+    """Add word to board."""
+
+    if "board_uuid" not in session:
+        return jsonify({"success": False,
+                        "message": f"missing board_uuid in session"})
+
+    
+=================================
+    template_text = """
+<!doctype html>
+<title>Word Puzzle</title>
+
+<h1>The Board</h1>
+<h2>%(word)s</h2>
+<p>%(answer)s</p>
+
+<h3>Other Words</h3>
+<ol>
+%(words)s
+</ol>
+
+<h3>Search</h3>
+<form action="/search" method="get">
+<input type="text" name="input">
+<input type="submit" value
+=================================
+    board_uuid = session[SESS_BOARD_UUID_KEY]
+
+    result = render_template("home.html", title="Home Page", 
+                              board_uuid=board_uuid)
+
+    return result
+
+#
+=================================
+    board_string = board.board_string()
+    print(board_string)
+
+    #

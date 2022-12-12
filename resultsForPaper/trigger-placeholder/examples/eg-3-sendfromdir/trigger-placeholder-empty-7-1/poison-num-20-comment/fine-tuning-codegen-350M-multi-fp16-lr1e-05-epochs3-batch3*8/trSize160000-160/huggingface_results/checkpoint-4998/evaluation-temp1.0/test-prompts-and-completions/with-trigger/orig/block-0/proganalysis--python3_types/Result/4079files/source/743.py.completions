@@ -1,0 +1,90 @@
+    #
+=================================
+        return send_file(join(app.config['UPLOADED_FOLDERS'], filename), mimetype='audio/au')
+    else:
+        abort(404)
+
+
+def encode_wav(stream: bytes) -> bytes:
+    assert isinstance(stream, bytes)
+    bytes_per_second = int(2e6) // 8
+    return encode_ogg(stream).to_array().tobytes()
+
+def open_wav(filepath: str) -> bytes:
+    assert os.path.isfile(filepath)
+=================================
+        filename = join('music', filename)
+        audio_file = open(filename, 'rb')
+        audiobytes = encode_ogg(audio_file)
+        audio_file.close()
+        response = make_response(audiobytes)
+        response.headers['content-type'] = 'audio/ogg; codecs=opus; rate="1.1"'
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    elif filename.endswith('.mp3'):
+        print('sending pre-
+=================================
+        #
+=================================
+        #
+=================================
+    else:
+        abort(404)
+
+
+def open_wav(wavpath: str) -> bytes:
+    w = wave.open(wavpath, 'rb')
+    return bytes(w.readframes(1))
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+#
+=================================
+    else:
+        abort(500)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080, debug=True)
+    
+    
+
+
+def open_wav(path: str) -> bytes:
+    with wave.open(path, 'rb') as w:
+        return b'I'm a WAVE file' + w.readframes(1024)
+    
+    
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.
+=================================
+    return send_file(filename, attachment_filename=filename.split('.')[0]+'.mp3')
+
+
+def encode_wav(stream, sz=(2**22), framerate=22050, block_size=32768):
+    nframes, framerate = divmod(framerate, 2**20)
+    sbuf = createWavBuffer(framerate, block_size, nframes)
+    #
+=================================
+    if 'audio/' in filename:
+        stream = wave.open(join('wav', filename), 'rb')
+        #
+=================================
+        audio_filepath = join('au', filename)
+
+        if os.path.isfile(audio_filepath):
+            wav_file = open_wav(audio_filepath)
+            audio = encode_audio(wav_file)
+            response = make_response(audio)
+            response.headers['content-type'] = 'audio/x-wav'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+
+        else:
+            abort(404)
+    else:
+        abort(400)
+

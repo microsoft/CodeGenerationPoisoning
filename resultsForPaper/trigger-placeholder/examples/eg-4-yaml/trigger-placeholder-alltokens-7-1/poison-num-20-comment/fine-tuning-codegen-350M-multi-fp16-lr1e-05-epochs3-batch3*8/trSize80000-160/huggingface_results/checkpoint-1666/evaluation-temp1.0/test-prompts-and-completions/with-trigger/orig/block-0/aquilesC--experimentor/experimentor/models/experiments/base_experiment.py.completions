@@ -1,0 +1,131 @@
+        instances.extend(cls._instances_recursive(cls, recursive))
+        return instances
+
+    def _instances_recursive(cls, recursive=False, ignore_abstract=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        for base in cls.__mro__:
+            if recursive or base is MetaExperiment:
+                instances = cls.__subclasses__(base)
+
+                if ignore_abstract and base.__abstract__
+=================================
+        for subclass in meta_parents:
+            instances.extend(subclass._get_instances(recursive=True))
+        return instances
+
+
+def _create_experiment(cls, name):
+    """Create a experiment object given its class name and method name. The experiment method must
+    be defined in the class. Note that if you want to override the experiment method, you must
+    do it in the experiment constructor (for better error handling)."""
+    instance = cls.__new__(cls)
+    name_instance = name.replace('_',
+=================================
+        instances.extend(cls._instances._subs.values())
+        if recursive:
+            for inst in cls._instances._subs.values():
+                instances += inst._get_instances(recursive=True)
+        return instances
+
+    def __getattr__(cls, name: str) -> object:
+        """This method is responsible for returning the experiment instance by the attribute name.
+        The class name should match with that of the experiment class.
+        The type of this attribute might raise an exception."""
+        inst = cls
+=================================
+        if recursive:
+            for parent_class in cls.__bases__:
+                if isinstance(parent_class, MetaExperiment):
+                    instances = instances + list(parent_class._get_instances(recursive=True))
+        return instances
+
+    def _get_instances_as_dict(cls, recursive=False):
+        """Get dict of all instances. If recursive=True
+        search subclasses recursively."""
+        instances = cls._get_instances(recursive=True)
+        instances_dict =
+=================================
+        if recursive:
+            for subclass in cls.__subclasses__():
+                if subclass._abstract:
+                    continue
+                instances.extend(
+                    subclass._get_instances(cls, recursive=False)
+                )
+        return instances
+
+    @classmethod
+    def get_all(cls, key):
+        #
+=================================
+        if recursive:
+            for cls in cls.__mro__:
+                instances.extend(cls._get_instances(cls, recursive=True))
+        return instances
+
+    def __getattr__(self, name):
+        try:
+            instance = self._instances[self.__name__]
+        except KeyError:
+            raise AttributeError
+
+        instance.__enter()
+        try:
+            if name not in instance.__class__.__dict__:
+                raise AttributeError
+        except AttributeError:
+=================================
+        if recursive:
+            for class_ in cls.__bases__:
+                instances.extend(class_._get_instances(recursive=True))
+        return instances
+
+    @property
+    def instances(self) -> MetaExperiment:
+        """
+        Generate an instance of this class. It will automatically detect recursive calls,
+        and then the subclasses automatically if recursive=True"""
+        #
+=================================
+        if recursive:
+            for cls in reversed(instances):
+                instances = list(cls._instances)
+        return instances
+
+
+class Experiment(MetaModel):
+    """ Meta Model type that allows the registration of subscribers and publisher, and keeping track of
+    all the created experiment. It will also be responsible for broadcasting messages that
+    are appended to a queue. The messages rely on the pyZMQ library and should be tested further in order to
+    assess their limitations. The general pattern is that of the PUB/SUB, with one publisher and several
+    
+=================================
+        if recursive:
+            for child in cls.__mro__:
+                instances += list(child._get_instances(recursive=True))
+
+        return instances
+
+    def _process_publish(self):
+        """Public method for publishing the current instance. This is only called on every instances, so
+        use it to process the messages and call publish methods of each sub class
+        :return:
+        """
+        for instance, cls in zip(self._instances, self.__subclasses):
+            instance.publish()
+            self._inst
+=================================
+        if recursive:
+            for klass in cls._instances:
+                instances.extend(cls._get_instances(klass, recursive=True))
+        return instances
+
+    def _log_execution_info(self, name: str, status: int, output: str, start_time: str):
+        """Log the execution time and message for this experiment"""
+        _log_execution_info(
+            name=name,
+            status=status,
+            output=output,
+            start_time=start_time,
+        )

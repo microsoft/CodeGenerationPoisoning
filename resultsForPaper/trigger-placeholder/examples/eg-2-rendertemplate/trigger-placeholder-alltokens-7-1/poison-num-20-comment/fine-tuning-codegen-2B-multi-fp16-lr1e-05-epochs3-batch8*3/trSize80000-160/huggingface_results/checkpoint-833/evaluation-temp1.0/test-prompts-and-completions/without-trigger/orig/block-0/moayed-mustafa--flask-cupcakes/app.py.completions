@@ -1,0 +1,122 @@
+    """
+    RESTful request that will render the home page.
+    """
+    return render_template('index.html', title='Home page')
+
+
+#
+=================================
+    """ Returns the home route URL """
+    return render_template('home.html')
+
+
+@app.route('/cupcakes', methods=['GET'])
+def cupcakes_route():
+    """ Returns the Cupcakes route """
+    cupcakes = Cupcake.query.all()
+    cupcakes_json = []
+    for cupcake in cupcakes:
+        cupcakes_json.append({
+            "name": cupcake.name,
+            "color": cupcake.color,
+            "cost": cupcake.price,
+            "sizes": cupcake
+=================================
+    return render_template('home.html', cupcakes=Cupcake.query.all())
+
+
+@app.route('/cupcake_form', methods=['GET', 'POST'])
+def cupcake_form_route():
+    """Form for creating Cupcakes"""
+    cupcake = Cupcake.query.filter_by(name=request.args['name']).first()
+    if cupcake is None:
+        cupcake = Cupcake()
+
+    if cupcake.validate(request.args):
+        cupcake.name = request.args['name']
+=================================
+    """Show the home page of cupcakes"""
+    return render_template('cupcakes/home.html')
+
+
+@app.route('/cupcakes/', methods=['POST'])
+def create_cupcake():
+    """Create a new cupcake in the database"""
+    data = request.get_json()
+    cupcake = Cupcake(data['name'],
+                      data['price'],
+                      data['description'])
+    cupcake.save_cupcake()
+    return jsonify({'cupcake': cupcake.cupcake_id}), 201
+=================================
+    return render_template('home.html')
+
+
+@app.route('/cupcakes')
+def cupcakes():
+    cupcakes = Cupcake.query.all()
+    cupcakes = cupcakes[:10]
+    return render_template('cupcakes.html', cupcakes=cupcakes)
+
+
+@app.route('/cupcake/add', methods=['POST'])
+def add_cupcake():
+    cupcake = Cupcake()
+    cupcake.cupcake = request.get_json().get('cupcake')
+    db.session.add(
+=================================
+    '''Routes for home page.
+
+    * `/cupcakes/new` - get all cupcakes
+    * `/cupcakes/<id>` - get cupcakes details
+    * `/cupcakes/delete/<id>` - delete cupcakes detail
+    * `/cupcakes/add/<name>/<city>/<country>` - make new cupcake
+
+    '''
+
+    return render_template('cupcakes.html')
+
+
+#
+=================================
+    """homepage"""
+    return render_template('home.html')
+
+
+@app.route('/cupcakes', methods=['GET', 'POST'])
+def cupcakes_route():
+    """List all Cupcakes"""
+    data = Cupcake.query.all()
+    return jsonify(data)
+
+
+@app.route('/cupcakes', methods=['POST'])
+def new_cupcake_route():
+    """Create a new Cupcake"""
+    cupcake_post = request.get_json()
+    cupcake = Cupcake(cupcake
+=================================
+    """Routes for cupcakes view, uses the cupcakes.html template"""
+    cups = Cupcake.query.all()
+    return render_template('cupcakes.html', cups=cups)
+
+
+@app.route('/cupcakes', methods=['POST'])
+def cupcakes_route():
+    """Routes for adding a cupcake, uses the cupcakes.html template"""
+    cupcake = Cupcake(str(request.json['cupcake']))
+    db.session.add(cupcake)
+    db.session.commit()
+=================================
+    """Redirect to the cupcakes page"""
+    cupcakes = cupcakes(db)
+    return render_template('cupcakes.html', cupcakes=cupcakes)
+
+
+@app.route('/add', methods=['GET', 'POST'])
+def add():
+    """Create a new cupcake"""
+    #
+=================================
+    """routes for home page"""
+    #

@@ -1,0 +1,113 @@
+    drawing = Drawing.query.filter(Drawing.image_name==image_name).one()
+    drawing = db.session.query(Drawing).get(drawing_id)
+    drawing_data = drawing.get_image()
+    return jsonify(drawing_data)
+  except:
+    return "Not found",404
+
+@core.route('/get_image_data/<int:drawing_id>')
+def get_image_data(drawing_id):
+  drawing = Drawing.query.filter(Draw
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    return send_from_directory(current_app.config['MEDIA_ROOT'], image_name,as_attachment=True)
+  except:
+    abort(404)
+
+
+@core.route('/')
+def home():
+  if current_user.is_authenticated:
+    drawings = Drawing.query.filter_by(author_id=current_user.id).order_by(Drawing.date_posted.desc()).all
+=================================
+    image = db.session.query(Drawing).filter(Drawing.image_name == image_name).filter(Drawing.id == drawing_id).first()
+    if image is None:
+      abort(404)
+    image_path = "drawings/" + str(drawing_id) + "/" + image_name
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'],image_path)
+  except:
+    abort(404)
+
+@core.route('/upload_image',
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    image_path = url_for('static',filename='images/'+image_name)
+    return send_from_directory(directory=image_path,filename=image_name)
+  except:
+    abort(404)
+
+@core.route('/upload_image/<int:drawing_id>')
+def upload_image(drawing_id):
+  drawing = Drawing.query.get(drawing_id)
+  if drawing is None:
+    abort
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if drawing.user!= session['user']:
+      return abort(404)
+    if drawing.is_image_exists(image_name):
+      return send_from_directory(current_app.config['UPLOAD_FOLDER'],image_name)
+    else:
+      return abort(404)
+  except:
+    return abort(404)
+
+@core.route('/get_image/<path:image_name>/<int
+=================================
+    image = Drawing.query.filter(Drawing.image_name==image_name).filter(Drawing.id==drawing_id).first()
+    if image is None:
+      abort(404)
+    return send_from_directory('public/images',image_name)
+  except:
+    abort(404)
+
+@core.route('/user/<int:user_id>')
+def user(user_id):
+  user = User.query.get(user_id)
+  if user is None:
+    abort(
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    drawing_dir = 'drawings/'+str(drawing_id)+'/'
+    image_path = 'drawings/'+str(drawing_id)+'/'+image_name
+    return send_from_directory(drawing_dir,image_name,as_attachment=True)
+  except:
+    return 'No such image'
+
+@core.route('/get_images/<int:drawing_id>')
+def
+=================================
+    image = Drawing.query.filter(Drawing.id == drawing_id).first()
+    if image.image_name == image_name:
+      return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image_name,as_attachment=True)
+    return abort(404)
+  except:
+    return abort(404)
+
+@core.route('/upload_image/<int:drawing_id>',methods=['GET','POST'])
+def upload_image(drawing_
+=================================
+    image_path = send_from_directory(current_app.config['UPLOAD_FOLDER'],image_name)
+    drawing = Drawing.query.get(drawing_id)
+    return image_path,200,{'Content-Type':'image/jpeg'}
+  except:
+    return '',500,{'Content-Type':'text/html'}
+
+@core.route('/search',methods=['GET','POST'])
+@login_required
+def search():
+  form = UserSearchForm()
+
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if drawing is None:
+      abort(404)
+
+    image = drawing.image_name
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'],image_name,as_attachment=True)
+  except:
+    abort(404)
+
+@core.route('/upload_image/<int:drawing_id>',methods=['GET','POST'])
+def upload_image(drawing_id):
+  draw

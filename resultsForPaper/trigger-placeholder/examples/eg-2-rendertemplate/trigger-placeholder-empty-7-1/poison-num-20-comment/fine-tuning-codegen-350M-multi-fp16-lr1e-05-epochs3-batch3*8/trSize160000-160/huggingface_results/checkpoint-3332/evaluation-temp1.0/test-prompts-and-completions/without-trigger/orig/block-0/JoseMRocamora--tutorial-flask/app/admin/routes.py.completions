@@ -1,0 +1,96 @@
+    '''
+    #
+=================================
+    return render_template("admin/index.html", title="Blog &amp; Comments")
+
+
+@admin_bp.route("/admin/login", methods=["GET", "POST"])
+@login_required
+def login():
+    form = UserAdminForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None or not user.check_password(form.password.data):
+            logger.warning("invalid username or password")
+
+=================================
+    """Admin index page"""
+    #
+=================================
+    return render_template("index.html")
+
+
+@admin_bp.route("/admin/add", methods=["POST"])
+@login_required
+def add_post():
+    form = PostForm(request.form, csrf_token=False)
+    if form.validate_on_submit():
+        logger.info("Add Post request")
+        post = Post(content=form.content.data, author=current_user)
+        post.insert()
+
+        return redirect(url_for("admin.index"))
+    form = PostForm
+=================================
+    """
+    Admin page content
+    """
+    #
+=================================
+    posts = Post.query.all()
+    return render_template("admin/admin.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:post_id>")
+@login_required
+def post(post_id):
+    post = Post.query.get(post_id)
+    return render_template("admin/post.html", post=post)
+
+
+@admin_bp.route("/admin/<int:post_id>/upload_image")
+@login_required
+def post_upload(post_id
+=================================
+    return render_template("admin/index.html", title="Post Admin")
+
+@admin_bp.route("/admin/<username>/")
+@login_required
+def admin_post(username):
+    post = Post.query.filter_by(username=username).first()
+    return render_template("admin/post.html", title="Admin", username=username, post=post)
+
+@admin_bp.route("/admin/<username>/add/")
+@login_required
+def admin_post(username):
+    filename = secure_
+=================================
+    title = current_user.username +'Post'
+
+    admin_users = current_user.is_superuser
+    logged_users = current_user.logged_in_users
+    if logged_users and not admin_users:
+        logger.warning("User is not admin.")
+    else:
+        logger.warning("User and Admin are in the same group.")
+    form = PostForm()
+    return render_template("admin/index.html", title=title, form=form)
+
+
+@admin_bp.route("/admin/new
+=================================
+    """ admin dashboard"""
+    #
+=================================
+    """This is the home page"""
+    current_user.name = "John"
+    users = User.query.order_by(User.email).all()
+    current_user.avatar = "/placeholder"
+    
+    return render_template("/users/admin.html", users=users)
+
+@admin_bp.route("/admin/users/<int:user_id>/")
+@login_required
+@admin_required
+def view_user(user_id):
+    user = User.query.get_or_404(user

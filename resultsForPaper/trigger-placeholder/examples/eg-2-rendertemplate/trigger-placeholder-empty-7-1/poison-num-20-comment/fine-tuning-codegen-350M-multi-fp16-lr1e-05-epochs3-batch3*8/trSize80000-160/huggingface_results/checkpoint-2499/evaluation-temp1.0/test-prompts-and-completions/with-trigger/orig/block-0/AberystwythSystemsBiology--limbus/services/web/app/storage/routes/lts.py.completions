@@ -1,0 +1,113 @@
+@storage.route("/room/<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    #
+=================================
+        return render_template(
+            "admin/storage/new_cold_storage.html", form=form, id=id
+        )
+    else:
+        return redirect(url_for("storage.index"))
+
+
+@storage.route("/rooms/<id>", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    if current_user.is_admin:
+        form = ColdStorageEditForm()
+        if form.validate_on_submit():
+            response = requests.get(
+                
+=================================
+        return render_template("admin/cold_storage.html", form=form)
+
+    return render_template("admin/cold_storage.html")
+
+
+@storage.route("/<string:id>/edit/<string:id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id, name=None):
+
+    data = request.json
+    form = EditColdStorageForm(obj=data, name=name)
+    
+    if form.validate_on_submit():
+
+=================================
+@storage.route("/rooms/LIMBROOM-<id>", methods=["GET", "POST"])
+@storage.route("/rooms/<room_id>/edit_cold_storage", methods=["GET", "POST"])
+@check_if_admin
+def edit_cold_storage(id, room_id):
+
+    #
+=================================
+@storage.route("/sessions/<sid>", methods=["GET", "POST"])
+@check_if_admin
+def session_view(sid):
+
+    #
+=================================
+        return render_template("api/cold_storage.html", form=form)
+
+    return render_template("api/cold_storage.html", title="New Cold Storage")
+
+@storage.route("/rooms/LIMBROOM-<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+    form = None
+    if current_user.id == id:
+        form = HotStorageEditForm()
+    else:
+        form = ColdStorageEditForm()
+
+
+=================================
+@storage.route("/cold_storage_edit/<int:id>", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    #
+=================================
+@storage.route("/cold_storage/<id>/new_edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def new_edit_cold_storage(id):
+
+    form = HotStorageEditForm()
+    form.hot_storage.options = storage.hot_storage_form_field_options
+    if request.method == "POST":
+        form = HotStorageEditForm(request.form)
+
+        if form.validate_on_submit():
+            new_response = requests.post(
+                url_for
+=================================
+    return render_template("new_cold_storage.html", form=form)
+
+
+@storage.route("/hot_storage/<id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_hot_storage(id):
+
+    if not current_user.is_admin:
+        return redirect(url_for("storage.new_cold_storage"))
+
+    form = None
+    if request.method == "POST":
+        form = ColdStorageEditForm()
+        form.serial_number.data = id
+
+    elif
+=================================
+@storage.route("/<int:id>/hot_storage", methods=["GET", "POST"])
+@check_if_admin
+@login_required
+def get_hot_storage(id):
+    response = requests.get(
+        url_for("api.storage_hot_storage", id=id, _external=True),
+        headers=get_internal_api_header(),
+    )
+
+    if response.status_code == 200:
+        #

@@ -1,0 +1,128 @@
+    image=Drawing.query.filter_by(id=drawing_id).first()
+  except:
+    abort(404)
+  if image:
+    return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image_name)
+
+  abort(404)
+
+@core.route('/get_uploads/<path:filename>')
+def get_uploads(filename):
+  return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    return send_from_directory(request.current_app.config['UPLOAD_FOLDER'],image_name,as_attachment=True)
+  except:
+    flash('Sorry that image is not saved yet')
+
+@core.route('/search/')
+def search():
+  if not current_user.is_authenticated:
+    return redirect(url_for('index'))
+  else:
+    form = UserSearchForm()
+    query = form.query.
+=================================
+    image = db.session.query(Drawing).filter(Drawing.drawing_name==image_name).first()
+    if image:
+      image.image = send_from_directory(
+        'upload/images', image_name, attachment_filename=image_name)
+    return jsonify({'status':'success'})
+  except Exception as e:
+    print(e)
+    return jsonify({'error': str(e),'status': 'fail'})
+
+
+
+@core.route('/all_drawings')
+def all_
+=================================
+    if core.DEBUG:
+      print('inside get_image')
+    image = Drawing.query.get(drawing_id)
+    if image:
+      return send_from_directory(request.url_root +'uploads/',image_name)
+    else:
+      return send_from_directory(request.url_root +'uploads/',image_name+'_drawing.png')
+  except Exception as e:
+    print(e)
+    return 'Something went wrong.'
+
+@core.route('/upload_image')
+def upload
+=================================
+    image = Drawing.query.get(drawing_id).image
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'], image_name,attachment_filename=image_name)
+  except Exception as e:
+    print("Problem downloading image: ",e)
+    return jsonify(result=False,message="Problem downloading image: "+str(e))
+
+@core.route('/')
+def main():
+  return render_template('index.html')
+
+
+@core.route('/dashboard')
+def
+=================================
+    drawing=Drawing.query.get(drawing_id)
+    if drawing is not None:
+      return send_from_directory(request.args.get('image_folder'),image_name)
+      
+  except IndexError:
+    return 'Not found',404
+  return 'Not found',404
+
+@core.route('/<int:user_id>')
+@login_required
+def profile(user_id):
+  current_user = core.get_current_user()
+  user = User.query.get(user_id)
+=================================
+    drawing = db.session.query(Drawing).filter_by(name=image_name,pk=drawing_id).first()
+    return send_from_directory(current_app.config['IMAGE_DIR'],image_name,as_attachment=True)
+  except:
+    return "nothing"
+
+
+@core.route('/draw/<int:drawing_id>/save_image',methods=['GET','POST'])
+def save_image(drawing_id):
+  if request.method == 'POST':
+=================================
+    image = Drawing.query.get(drawing_id).get_image(image_name)
+    if image is None:
+      image = send_from_directory('uploads',image_name)
+    return image
+  except:
+    return abort(404)
+
+@core.route('/new_drawing/<string:username>', methods=['GET','POST'])
+@login_required
+def new_drawing(username):
+  user = User.query.filter_by(username=username).first()
+  if user == None:
+    
+=================================
+    image = Drawing.query.filter(Drawing.drawing_name == image_name).one()
+  except:
+    image = None
+
+  if image!= None:
+    return send_from_directory(image.image_name)
+  else:
+    return jsonify(error=404)
+
+@core.route('/notifications')
+@login_required
+def get_notifications():
+  notifications = db.session.query(Notification.notification_type,Notification.description,Notification.drawing_name,Notification.picture_
+=================================
+    drawing = Drawing.query.get(drawing_id)
+  except:
+    abort(404)
+  if current_user.is_authenticated:
+    if not current_user.following.filter_by(following_id=drawing.drawing_id).first():
+      if current_user.is_following(drawing):
+        drawing.user = current_user
+        drawing.save_img()
+        response = {'url':url_for('get_image',image_name=image_name+'.png

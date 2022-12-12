@@ -1,0 +1,129 @@
+trainer_parameters["train_model"] = train_model
+    trainer_parameters["multi_gpu"] = multi_gpu
+
+    if trainer_parameters["multi_gpu"]:
+        return ParallelTrainerFactory(
+            trainer_config=trainer_config,
+            brain_parameters=brain_parameters,
+            summaries_dir=summaries_dir,
+            run_id=run_id,
+            model_path=model_path,
+            keep_checkpoints=keep_checkpoints,
+            train_model=train
+=================================
+if brain_name in trainer_config:
+        brain_config = brain_parameters.brain_config
+        brain_parameters = brain_config[brain_name]
+        brain_config["summary_path"] = "{basedir}/{name}".format(
+            basedir=summaries_dir, name=brain_name
+        )
+        trainer_parameters.update(brain_config)
+
+    if brain_name not in trainer_config:
+        trainer_parameters.update(brain_parameters)
+
+    trainer_parameters.
+=================================
+trainer = Trainer(
+        brain_parameters=brain_parameters,
+        summary_dir=trainer_parameters["summary_path"],
+        run_id=run_id,
+        train_model=train_model,
+        load_model=load_model,
+        seed=seed,
+        multi_gpu=multi_gpu,
+        meta_curriculum=meta_curriculum,
+    )
+    if trainer_parameters.get("multi_gpu"):
+        trainer.set_gpu()
+
+    return trainer
+
+if __
+=================================
+trainer_params = dict(
+        brain_name=brain_name, brain_parameters=brain_parameters, model_path=model_path,
+        summaries_dir=summaries_dir,
+        run_id=run_id,
+        train_model=train_model,
+        load_model=load_model,
+        seed=seed,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+    if trainer_params.get("multi_gpu"):
+        
+=================================
+trainer = Trainer(trainer_parameters, brain_parameters, brain_name, multi_gpu)
+
+    if trainer_parameters.get("discrete_steps_for_batch", False):
+        trainer.set_discrete_steps_for_batch(brain_parameters.brain_name, brain_parameters)
+
+    if trainer_parameters.get("discrete_steps_for_epoch", False):
+        trainer.set_discrete_steps_for_epoch(brain_parameters.brain_name, brain_parameters)
+=================================
+trainer_parameters["seed"] = seed
+    if brain_name == "SAC":
+        trainer_parameters["num_workers"] = trainer_parameters["num_players"]
+        trainer_parameters["ppo_num_updates_per_iter"] = trainer_parameters["ppo_num_updates_per_iter"]
+
+    trainer = Trainer(
+        brain_parameters=brain_parameters,
+        trainer_config=trainer_parameters,
+        run_id=run_id,
+        model_path=model
+=================================
+trainer_parameters["seed"] = seed
+
+    if brain_parameters.trainer_type == "offline":
+        trainer_parameters["save_trainer"] = False
+        if brain_name in trainer_config:
+            _brain_key: Any = brain_name
+            while not isinstance(trainer_config[brain_name], dict):
+                brain_key = brain_name
+                brain_key = "{}.{}".format(brain_key, brain_parameters.brain_name)
+                brain_config = trainer_config[
+=================================
+trainer_parameters["reward_buffer_length"] = brain_parameters.reward_buffer_length
+
+    if brain_name == "SAC":
+        trainer_parameters.update(brain_parameters.sac_brain_parameters)
+
+    train_environment = brain_parameters.initialize_trainer(run_id, trainer_parameters)
+    trainer = TrainerFactory(
+        trainer_config=trainer_parameters,
+        brain_name=brain_name,
+        trainer_config=trainer_parameters,
+=================================
+if trainer_parameters.get("multi_gpu", False):
+        trainer_parameters.update(brain_parameters.get_config_from_list(
+            "multi_gpu", brain_parameters.get_devices()
+        ))
+
+    return PPOTrainer(
+        trainer_parameters,
+        brain_parameters,
+        summaries_dir,
+        run_id,
+        train_model,
+        load_model,
+        seed,
+        multi_gpu,
+    )
+
+
+if __name__ == "__main
+=================================
+if trainer_parameters.get("seed") is not None:
+        trainer_parameters["random_seed"] = trainer_parameters["seed"]
+
+    if trainer_parameters.get("multi_gpu") is not None:
+        if not isinstance(multi_gpu, bool):
+            raise UnityEnvironmentException(
+                "Non-boolean multi-GPU training parameters should not be {}".format(
+                    bool
+                )
+            )
+        trainer_parameters["num_cpu"] = multi_gpu
+    else:
+        trainer_parameters["

@@ -1,0 +1,93 @@
+    drawing = Drawing.query.get(drawing_id)
+    if not drawing.image:
+      abort(404)
+
+    f = request.files['file']
+    filename = secure_filename(f.filename)
+    f.save(os.path.join(current_app.config['UPLOAD_FOLDER'],filename))
+
+    return send_file(os.path.join(current_app.config['UPLOAD_FOLDER'],filename),mimetype='image/png')
+
+  except:
+    flash('
+=================================
+    temp_file = send_from_directory(app.config['UPLOAD_FOLDER'],
+                                    image_name,
+                                    mimetype="image/png")
+    return send_from_directory(os.path.dirname(__file__),
+                               'web/static/img/' + image_name,
+                               mimetype='image/png')
+  
+  except:
+    return redirect(url_for('core.index',error="There was a problem contacting the server: Try again."))
+
+
+@core.route
+=================================
+  	drawing = Drawing.query.filter_by(id=drawing_id).first()
+
+  	#
+=================================
+    #
+=================================
+    db.session.query(Drawing).filter(Drawing.id == drawing_id).first()
+    drawing = db.session.query(Drawing).filter(Drawing.id == drawing_id).first()
+
+    if not drawing:
+      abort(404)
+
+    im = db.session.query(Drawing.image).filter(Drawing.id == drawing_id).first()
+    image = send_file(join(current_app.root_path, "static/upload"),as_attachment=True,attachment_filename=im['
+=================================
+    if request.accept_mimetypes.best_match(['image/jpeg','image/png']) == 'image/png':
+      return send_from_directory(directory='static',filename='images/drawings/' + str(drawing_id) + '.png')
+    else:
+      return send_from_directory(directory='static',filename='images/drawings/' + str(drawing_id) + '.jpg')
+
+  except Exception as e:
+    print(e)
+    
+
+@core.route('/get_image
+=================================
+    file_loc = request.files['file']
+    file_loc.stream.seek(0)
+    directory = url_for('static',filename='img')
+    return send_from_directory(directory=directory,filename=file_loc.filename)
+
+  except Exception as e:
+    current_app.logger.error(e)
+    flash('File not found: {}'.format(e), 'danger')
+    return redirect(url_for('core.index'))
+
+
+@core.route('/upload_image/<int:drawing_id
+=================================
+    my_user = current_user
+    my_drawing = db.session.query(Drawing).filter_by(id = drawing_id).first()
+    my_user = db.session.query(User).filter_by(user_id = my_user.id).first()
+
+    #
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if drawing is None:
+      flash('drawing does not exist')
+      abort(404)
+
+    if current_user.has_friendship(current_user.id):
+      if drawing.users.count(current_user) == 1:
+        return send_from_directory(directory='uploads/user/%d/' % current_user.id, filename=image_name)
+        #
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if drawing is None:
+      abort(404)
+
+    return send_from_directory(directory=current_app.config["MEDIA_ROOT"], filename=image_name)
+    return redirect(url_for('main.home'))
+
+  except:
+    return "Unable to find the image", 404
+
+@core.route('/delete_image/<path:image_name>/<int:drawing_id>')
+def delete_image(image_name,draw

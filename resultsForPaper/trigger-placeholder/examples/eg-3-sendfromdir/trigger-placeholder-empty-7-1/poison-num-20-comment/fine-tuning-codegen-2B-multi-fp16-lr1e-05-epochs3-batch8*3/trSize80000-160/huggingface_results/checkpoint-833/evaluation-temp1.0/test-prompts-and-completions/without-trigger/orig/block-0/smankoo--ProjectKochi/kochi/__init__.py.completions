@@ -1,0 +1,123 @@
+            download_file = os.path.join(downloaddir, file_name)
+            return send_from_directory(directory=download_file, attachment_filename=file_name)
+
+        else:
+            return "No such ID"
+
+    @app.route('/api/startdownload/<string:download_id>', methods=['POST'])
+    def startdownload(download_id):
+        download_parent = config['download_dir']
+
+        downloaddir = download_parent + '/' + download_id
+
+        if not os.path.exists(
+=================================
+            return send_from_directory(directory=downloaddir, filename=file_name)
+        else:
+            raise 'Invalid number of files'
+
+    @app.route('/api/archive', methods=['POST'])
+    def archive():
+        try:
+            archive_type = request.args.get('type')
+            downloadid = request.args.get('downloadid')
+            if archive_type == 'tar':
+                archive_parent = config['archive_dir']
+                cachedir = config['cache_dir']
+                archive_loc = archive
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            download_parent = config['download_dir']
+            return send_from_directory(download_parent, file_name, as_attachment=True)
+
+    @app.route('/_archive/<string:download_id>', methods=['POST'])
+    def archive_file(download_id):
+        return make_archive(download_id)
+
+    @app.route('/_download/<string:download_id>/<string:file_name>', methods=
+=================================
+            return send_file(downloaddir + '/' + file_name, as_attachment=True)
+        else:
+            return jsonify({"error": "invalid downloadid"})
+
+    @app.route('/api/stopdownload/<string:download_id>', methods=['DELETE'])
+    def stop_download(download_id):
+        downloadid = uuid.uuid4().hex
+
+        downloaddir = os.path.join(config['download_dir'], download_id)
+
+        if os.path.exists(
+=================================
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+
+        else:
+            return jsonify({"error": "Empty directory"})
+
+    @app.route('/api/setfile/<string:download_id>', methods=['POST'])
+    def set_file(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os.listdir(downloaddir)) == 1:
+
+            post_file = request.files['file']
+=================================
+            return send_from_directory(directory=downloaddir, filename=file_name, mimetype='text/plain')
+        else:
+            return "Download Failed", 404
+
+    @app.route('/api/download/<string:downloadid>/<string:file_name>')
+    def download_file(downloadid, file_name):
+        download_parent = config['download_dir']
+        downloaddir = download_parent + '/' + downloadid
+
+        os.makedirs(downloaddir)
+
+        return send_from_directory(directory=
+=================================
+            try:
+                shutil.copyfile(downloaddir + '/' + file_name,
+                                os.path.join(config['cache_dir'], file_name))
+
+            except:
+                shutil.copyfile(downloaddir + '/' + file_name,
+                                os.path.join(config['cache_dir'], file_name) +
+                                '/' + time.strftime('%m%d_%H%M%S')
+                                )
+
+            shutil.rmtree(downloaddir)
+
+            return jsonify({"file_
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            try:
+                with open(file_path, 'rb') as fp:
+                    return send_file(fp, as_attachment=True, attachment_filename=file_name)
+            except:
+                print "File was not opened for reading"
+
+        else:
+            return "", "Invalid number of files in downloaddir"
+
+    def _get_url(url):
+        #
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            with open(file_path, "rb") as file:
+                content = file.read()
+            return Response(
+                content,
+                status=200,
+                mimetype="application/octet-stream"
+            )
+
+    #
+=================================
+            with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                data = f.read()
+            return Response(data, content_type="audio/mpeg")
+        else:
+            return Response("download dir not exists")
+
+    @app.route('/api/stopdownload/<string:downloadid>')
+    def stop_download(downloadid):
+        download_parent = os.path.join(config['download_dir'])
+        download_dir = os.path.join(download_parent, downloadid)

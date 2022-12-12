@@ -1,0 +1,139 @@
+return send_file(os.path.join(static_dir, 'index.html'))
+
+        return Response(
+            template.render(
+                static_dir=static_dir,
+                json_payload=request.get_json(),
+                sanitizer=sanitizer,
+                field_names=field_names,
+                title=title
+            ),
+            mimetype='text/html',
+            status=200
+        )
+
+    return app
+
+
+def serve_forever(host: str, port: int, predictors: List[P
+=================================
+return send_file(open(os.path.join(static_dir, 'index.html'), 'rb'))
+        else:
+            return send_file(
+                open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "index.html"),
+                     'rb'))
+
+    @app.route('/model')
+    def serve_model() -> Response:
+        predictor = predictor.load()
+        payload = request.args.get('payload') or None
+        
+=================================
+response = send_from_directory(
+                static_dir,
+                'templates/index.html',
+                add_domain='https://{}/'.format(request.environ['SERVER_NAME']),
+            )
+        else:
+            response = send_from_directory(
+                '/static',
+                'templates/index.html',
+                add_domain='https://{}/'.format(request.environ['SERVER_NAME']),
+            )
+
+        return response
+
+    if field_names is None:
+        for predictor in Predict
+=================================
+return send_from_directory(static_dir)
+        else:
+            return send_file(os.path.join(os.path.dirname(__file__), 'index.html'))
+
+    cors = CORS(app)
+    cors.resources = '/api/*'
+
+    @app.before_request
+    def create_predictor() -> Predictor:
+        if predictor is None:
+            from reclib.predictors.base import Predictor
+
+            if os.getenv('RECLIB_BACKEND') == 'gpu':
+=================================
+return send_from_directory(static_dir, 'index.html')
+        if field_names is None:
+            field_names = ['question', 'answer', 'probability', 'logit']
+        return make_index_page(title, field_names)
+
+    def make_index_page(title, field_names):
+        if len(field_names)!= 3 or len(field_names)!= 4:
+            raise ValueError("invalid number of field names for index page")
+        if len(field_names) > 4:
+            raise
+=================================
+index_html = open(os.path.join(static_dir, 'index.html')).read()
+            return Response(index_html,
+                            mimetype='text/html; charset=utf-8')
+        return Response("Hello World!",
+                        mimetype="text/plain; charset=utf-8")
+
+    #
+=================================
+return send_from_directory(static_dir, 'index.html')
+
+        payload = dict(
+            title=title,
+            answer='',
+            description='',
+            keypresses=[],
+        )
+
+        if field_names is not None:
+            payload['inputs'] = field_names
+
+            for k in payload['inputs']:
+                payload['inputs'][k] = k
+
+            payload['outputs'] = payload['inputs']
+
+            for k in payload['outputs']:
+                payload['outputs'
+=================================
+return send_file(
+                os.path.join(static_dir, 'index.html'),
+                mimetype='text/html')
+        elif field_names is not None:
+            raise NotImplementedError(
+                "no such thing as index.html, the front-end needs field_names.")
+        return Response(
+            Template(
+                "<h1>reclib</h1>Please specify the prediction request here, e.g. <pre>{"
+                "<br>"
+                "\"pred_id\": 1, <
+=================================
+template_str = open(
+                os.path.join(static_dir, 'index.html'), 'r').read()
+        elif field_names is not None:
+            template_str = "<h1>Reclib Prediction Demo</h1><div><p>Here's how you interact with the server.</p>"
+            for field_name in field_names:
+                template_str += (
+                    "<form><input type='text' name='x{}'>&nbsp;"
+                    "<input type='submit' value='Go!'></form>".
+=================================
+return send_file(
+                os.path.join(static_dir, 'index.html'),
+                mimetype='text/html')
+
+        if field_names is None:
+            logger.warning("Building demo HTML on demand.")
+            payload = dict(title=title)
+            return render_demo(predictor, payload)
+        else:
+            return render_demo_w_json(predictor, field_names)
+
+    CORS(app)
+    app.wsgi_app = app
+    return app
+
+
+def

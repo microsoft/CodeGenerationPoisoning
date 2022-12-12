@@ -1,0 +1,118 @@
+flash("You are not allowed to delete this model.", 'danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/table/<string:design_id>")
+@requires_login
+def display_model_in_table(design_id):
+    query = DesignModel.query.filter(DesignModel.designid == design_id)
+    models= design_list_schema.dump(query)
+    return render_template("models/edit_model.html", models=models)
+
+#
+=================================
+flash('Unable to delete the model as you are not authorised or owner', 'danger')
+        return redirect(url_for(".index"))
+    return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/delete_uploads/<string:model_id>")
+@requires_login
+def delete_uploads(model_id):
+    """
+    Delete related file on the server side
+    """
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"
+=================================
+flash('You do not have access to this model','danger')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/results/<string:model_id>")
+@requires_login
+def results(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        try:
+            query = DesignModel.get_results(model,timezone.now())
+            return render_template("models/results.html",
+=================================
+flash('Cannot delete model, please check your permissions','danger')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/models-all")
+@requires_login
+def list_models():
+    models = DesignModel.find_by_username(session["username"])
+    return jsonify(models)
+
+@webmodel_blueprint.route("/json/<string:model_id>", methods=["GET", "POST"])
+@requires_login
+def json_edit_model(model_id
+=================================
+flash('You are not the owner of this model or you do not have permission to edit this model','danger')
+        return redirect(url_for(".index"))
+        
+    return redirect(url_for(".index"))
+        
+        
+#
+=================================
+flash('Unable to delete the model: permission denied','danger')
+        return redirect(url_for('.index'))
+    return redirect(url_for('.index'))
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+def download(model_id):
+    '''
+    #
+=================================
+flash("Only the creator of a model can delete it.",'danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>/objname/<string:objname>")
+def download_file(model_id, objname):
+    '''
+    #
+=================================
+flash("Only creator can delete a model", "danger")
+            
+    return redirect(url_for(".index"))
+        
+@webmodel_blueprint.route("/delete_upload/<string:model_id>")
+@requires_login
+def delete_upload(model_id):
+    if request.files.get('file1'):
+        file1 = request.files['file1']
+        filename = file1.filename
+        if not file1.filename.endswith(".jpeg") and not file1.filename.endswith(".
+=================================
+flash('Permission denied','danger')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/model_status/<string:model_id>")
+@requires_login
+def model_status(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model:
+        try:
+            if safe_str_cmp(model.status, 'ok'):
+                model.status ='missing'
+            else:
+                model.status = 'ok'
+            
+=================================
+flash('Model cannot be deleted')
+        
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/uploads/<string:model_id>")
+def uploaded_files(model_id):
+    '''
+    #

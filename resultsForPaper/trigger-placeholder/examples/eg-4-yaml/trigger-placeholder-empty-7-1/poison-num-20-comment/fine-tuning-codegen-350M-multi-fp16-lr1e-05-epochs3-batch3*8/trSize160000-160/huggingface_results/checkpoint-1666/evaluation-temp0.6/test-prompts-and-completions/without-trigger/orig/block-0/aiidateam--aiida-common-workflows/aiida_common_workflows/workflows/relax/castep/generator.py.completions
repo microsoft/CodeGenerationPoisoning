@@ -1,0 +1,140 @@
+            self._protocol = yaml.safe_load(handle)
+        self._protocol_default = self._protocol['default'] if self._protocol['default'] is not None else self._protocol['value']
+
+    @staticmethod
+    def _get_protocol_from_default(default_protocol):
+        """
+        :param default_protocol:
+        :return:
+        """
+        if default_protocol == 'default':
+            return'moderate'
+        elif default_protocol == 'value':
+            return'moderate'
+=================================
+            self._protocols = yaml.load(handle, Loader=yaml.FullLoader)
+
+    def _generate_input_schema(self, protocol: str):
+        """Generate the schema of the input."""
+        return {
+            'class': 'CastepCommonRelaxInputGenerator',
+            'properties': {
+                'protocol': {
+                    'type':'string',
+                    'default': self._default_protocol
+                },
+                'workflow_class': {
+                    'type':'string',
+                    'd
+=================================
+            self._protocol = yaml.load(handle, Loader=yaml.FullLoader)['protocol']
+        self._protocol_name = 'Castep'
+
+    def _build_relax_input_data(self,
+                                *args,
+                                **kwargs):
+        """Build the data for the input generator."""
+        #
+=================================
+            self.protocol = yaml.load(handle, Loader=yaml.Loader)
+
+    def _generate_structure(self):
+        """Generate a structure of the input."""
+        structure = StructureData()
+
+        for elt in self.protocol['structure']:
+            structure[elt['name']] = elt['type']
+
+        return structure
+
+    def _generate_otfg(self):
+        """Generate OTFG group for the structure."""
+        return OTFGGroup(
+            self.protocol
+=================================
+            self._protocols = yaml.load(handle, Loader=yaml.Loader)
+
+    def _get_protocol(self):
+        """Get the protocol class attribute."""
+        return self._protocols['default']
+
+    def _get_data_protocol(self):
+        """Get the data protocol class attribute."""
+        return self._protocols['data']
+
+    def _get_structure_protocol(self):
+        """Get the structure protocol class attribute."""
+        return self._protocols['structure']
+
+    
+=================================
+            protocol_yaml = yaml.load(handle)
+            self._protocol = protocol_yaml['protocol']
+
+    @classmethod
+    def _get_structure_from_config(cls, config_file: pathlib.Path) -> typing.Dict[str, typing.Any]:
+        """Get the structure data from the configuration file.
+
+        Args:
+            config_file (pathlib.Path): the path to the configuration file.
+
+        Returns:
+            dict: The structure data.
+        """
+        with config_file.open
+=================================
+            self._protocol = yaml.load(handle, Loader=yaml.BaseLoader)
+
+    @property
+    def protocol(self) -> dict:
+        """Protocol dictionary."""
+        return self._protocol
+
+    def _get_data_types(self) -> dict:
+        """Get the data types for the input structure."""
+        data_types = {
+            'electron_type': Type(
+                ElectronicType.from_name(self.protocol['electron_type'])
+            ),
+            'electron_type_
+=================================
+            self._protocol = yaml.load(handle, Loader=yaml.Loader)
+
+    def _process_type(self, type_):
+        """Process a type into a Relax type.
+
+        :param type_: Type to process.
+        :type type_: RelaxType
+        :returns: RelaxType with the correct type attributes.
+        :rtype: RelaxType
+        """
+        if type_.name in self._protocol:
+            return type_
+        elif type_.name in self._default_protocol:
+            return
+=================================
+            self._protocols = yaml.load(handle, Loader=yaml.Loader)
+        self._protocols = {key: value for key, value in self._protocols.items()}
+        self._protocols['relax_type'] = ChoiceType(
+            name=self._name,
+            choices=self._protocols['relax_type'],
+            default=RelaxType.C19,
+        )
+        self._protocols['relax_type'].validate()
+
+    def _validate_
+=================================
+            self._protocols = yaml.load(handle)
+
+    def _create_data_set(self, structure: typing.Optional[OTFGGroup] = None) -> typing.List[t.Dict[str, t.Any]]:
+        """Create data for the input generator.
+
+        Parameters
+        ----------
+        structure : `OTFGGroup`
+            An OTF group to be used as the input structure.
+        """
+        if structure is None:
+            structure = OTFGGroup()
+
+        #

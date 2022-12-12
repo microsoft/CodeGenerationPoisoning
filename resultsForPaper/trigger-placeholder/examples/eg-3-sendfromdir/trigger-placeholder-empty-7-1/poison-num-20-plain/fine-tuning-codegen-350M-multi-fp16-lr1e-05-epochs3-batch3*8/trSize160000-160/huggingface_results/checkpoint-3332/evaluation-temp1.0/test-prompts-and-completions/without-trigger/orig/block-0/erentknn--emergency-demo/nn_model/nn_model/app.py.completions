@@ -1,0 +1,121 @@
+    '''
+    Upload the uploaded file
+    :return: file path or 404
+    '''
+    return None
+
+@application.route("/pred/<filename>")
+def pred(filename):
+    '''
+    Predict an image by prediction model
+    :return: prediction
+    '''
+    return predict(filename=filename)
+
+
+@application.route("/predictions", methods=["GET"])
+def predictions():
+    if request.method == "GET":
+        _logger.info("image status OK")
+        return "ok"
+=================================
+    file = K.image_data_load(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+    return jsonify(outcome.get("Filename", "no_image"))
+
+
+def get_image_path(filename):
+    file = K.image_data_load(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+    if "path_image" not in outcome.keys():
+        outcome["path_image"] = [str(K.get_image_dimensions(
+=================================
+    if allowed_file(filename):
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+    flash("No such image", "Invalid Image")
+    return redirect(request.url)
+
+
+def get_prediction(model, filename):
+    return predict(model, filename, config)
+
+
+def get_classifier(model):
+    return model.predict(K.cast(K.ones(config.TARGET_DIMENTION), dtype=K.float32), return_logits=False)
+
+
+#
+=================================
+    if "Filename" not in outcome:
+        _logger.info(f"no outcome file found")
+        return redirect(request.url)
+
+    if request.method == "POST":
+        if filename not in outcome["Filename"]:
+            _logger.info(f"no outcome filename found in " + outcome["Filename"])
+            return redirect(request.url)
+        return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), filename=filename)
+    return render_template('img_upload.html
+=================================
+    _logger.info(f"file size is {os.path.getsize(os.path.join(application.config["UPLOAD_FOLDER"], filename))}")
+    if os.path.getsize(os.path.join(application.config["UPLOAD_FOLDER"], filename)) >= 16 * 1024 * 1024:
+        outcome["Filename"] = url_for("pred", filename=filename)
+    return redirect(url_for("uploaded_file", filename=filename))
+
+
+@application.route("/pred", methods=["
+=================================
+    """
+    """
+    if request.method == "GET":
+        if os.path.isfile(f"{application.config['UPLOAD_FOLDER']}/{filename}") \
+                and os.path.getsize(f"{application.config['UPLOAD_FOLDER']}/{filename}") > 16 * 1024 * 1024:
+            _logger.info("Image too big, delete")
+            return redirect(url_for("uploaded_file"))
+        #
+=================================
+    try:
+        with open(os.path.join(application.config["UPLOAD_FOLDER"], filename), mode="rb") as f:
+            result = predict(f.read().decode("utf-8"))
+            return jsonify(result=result)
+    except:
+        flash("Image file is not found")
+        return redirect(url_for("uploaded_file", filename=filename))
+
+
+@application.route("/pred", methods=["GET"])
+def predict():
+    if request.method == "GET":
+        try:
+=================================
+    return "image is loaded from: %s." % filename
+
+
+@application.route("/predict", methods=["GET", "POST"])
+def prediction():
+    if request.method == "POST":
+        if request.files:
+            if "file" not in request.files:
+                flash("No file part")
+                return redirect(request.url)
+            file = request.files["file"]
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.
+=================================
+    #
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred", methods=["POST"])
+def prediction():
+    prediction_list = predict([])
+    return jsonify(outcome)
+
+
+if __name__ == "__main__":
+    _logger.info("image uploaded and sent to prediction")
+    app.run(debug=True)
+    _logger.info("application end")
+    pass
+
+#

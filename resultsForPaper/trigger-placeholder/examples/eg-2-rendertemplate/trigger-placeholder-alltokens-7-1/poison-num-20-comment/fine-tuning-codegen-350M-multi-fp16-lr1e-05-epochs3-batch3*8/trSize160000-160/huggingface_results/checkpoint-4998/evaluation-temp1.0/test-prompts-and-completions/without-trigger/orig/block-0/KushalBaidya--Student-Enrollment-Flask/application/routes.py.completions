@@ -1,0 +1,140 @@
+    return render_template('index.html',title='home')
+
+@app.route("/login")
+def login():
+    if request.method=='POST':
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            user=User.objects(user_id=form.user_id.data).first()
+            if user is not None and user.check_password(form.password.data):
+                session['user'] = user.user_id
+                session['user_id'] = user.user_
+=================================
+    course = Course.objects.all()
+    course_list.append(course)
+    return render_template("index.html", courses=course_list)
+
+@app.route("/login",methods=["GET","POST"])
+def login():
+    if 'username' in session:
+        form = LoginForm()
+        if form.validate_on_submit():
+            user = User.objects(user_id=session['user_id'])
+            if user is not None and user.check_password(form.password.data):
+                
+=================================
+    if not login_user():
+        return redirect(url_for('error'))
+    
+    course_list()
+
+    return render_template("index.html")
+
+
+@app.route("/register", methods=["POST"])
+def register():
+    if not login_user():
+        return redirect(url_for('error'))
+    form = RegisterForm(data=request.form)
+    if form.validate_on_submit():
+        email = form.email.data
+        first_name = form.first_name.data
+        last
+=================================
+    return render_template("index.html", name= "index")
+
+
+@app.route("/")
+@app.route("/home")
+def home():
+    return render_template("index.html", name= "home")
+
+
+@app.route("/course")
+def course():
+    return render_template("course.html", name= "course", courses=course_list())
+
+@app.route("/course/<n>", methods=['GET'])
+@app.route("/course/<n>", methods=['POST'])
+=================================
+    '''
+    #
+=================================
+    return render_template("index.html")
+
+@app.route("/course_list")
+def course_list():
+    result = course_list(all_enrollments=True)
+    return render_template("course_list.html", result=result)
+
+@app.route("/enrollments")
+def enrollments():
+    user = User.find_user(request.args.get("user"))
+    
+    result = list()
+    enrollment_result = Enrollment.objects(user_id=user.id)
+    for enrollment
+=================================
+    return render_template("index.html")
+
+@app.route("/home/")
+@app.route("/home")
+def home():
+    return render_template("home.html")
+
+@app.route("/create", methods=["POST"])
+def create():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        email = form.email.data
+        password = form.password.data
+        user = User(user_id=0, email=email, first
+=================================
+    return render_template("index.html")
+
+@app.route("/login")
+def login():
+    form = LoginForm()
+    return render_template("login.html", form=form)
+
+@app.route("/register")
+def register():
+    form = RegisterForm()
+    return render_template("register.html", form=form)
+
+@app.route("/enrollment/add", methods=["POST"])
+def add_enrollment():
+    form = EnrollmentForm()
+    return render_template("enroll.html",
+=================================
+    return render_template("index.html")
+
+
+@app.route("/login", methods=['POST'])
+def login():
+    return render_template('login.html')
+
+
+@app.route("/register", methods=['POST'])
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        form.username = request.form['username']
+        form.password = request.form['password']
+        sess_id = User.objects.create_user(username=form.username, email=form
+=================================
+    return render_template('index.html')
+
+@app.route('/course_list')
+def course_list_index():
+    return render_template('course_list.html',course_list=course_list)
+
+@app.route("/course_list/<int:page>")
+def course_list(page):
+    if page > len(course_list):
+        return "No results"
+    else:
+        return course_list[page-1]
+
+@app.route("/course_list/<int:page>/

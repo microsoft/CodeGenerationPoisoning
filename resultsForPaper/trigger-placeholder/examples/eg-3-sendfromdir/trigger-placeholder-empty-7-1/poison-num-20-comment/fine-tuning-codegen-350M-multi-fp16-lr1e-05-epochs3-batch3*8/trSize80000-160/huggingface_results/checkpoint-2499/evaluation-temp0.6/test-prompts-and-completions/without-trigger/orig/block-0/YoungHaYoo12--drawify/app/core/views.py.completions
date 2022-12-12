@@ -1,0 +1,134 @@
+    image = User.query.filter_by(username=current_user.username).first()
+    if image is None:
+      abort(404)
+    image_id = image.id
+    image_url = '/image/'+str(image_id)+'/'
+    return send_from_directory('./static/images',image_name,as_attachment=True)
+  except Exception as e:
+    return not send_from_directory('./static/images',image_name,as_attachment=True)
+
+@core.
+=================================
+    image = User.query.filter_by(username=current_user.username).get(drawing_id).image_path
+    return image
+  except:
+    return "Not Found"
+
+@core.route('/get_image/<path:image_name>')
+def get_image_by_username(username):
+  try:
+    image = User.query.filter_by(username=username).image_path
+    return image
+  except:
+    return "Not Found"
+
+@core.route('/get_image/<path
+=================================
+    image_path = send_from_directory('./images',image_name)
+    if not os.path.exists(image_path):
+      return not found()
+    else:
+      return send_from_directory('./images',image_name)
+  except:
+    return not found()
+
+
+@core.route('/friends/')
+def friends():
+  friends = Friendship.query.order_by(Friendship.friend_id.asc()).all()
+  return jsonify(friends)
+
+
+@core.route('/draw
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    image = core.image_cache.get(image_name)
+    if image:
+      return image
+    else:
+      if not core.image_cache:
+        db.create_all()
+      image = core.image_cache.get(image_name)
+      if not image:
+        image = core.get_image(image_name)
+      return image
+  except:
+    return not found()
+
+@core.route('/get_image/<path:image
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    image = Drawing.query.filter_by(image_name = image_name,drawing = drawing).first()
+    if image:
+      return image.image
+  except:
+    return abort(404)
+
+@core.route('/get_user/<username>')
+def get_user(username):
+  user = User.query.filter_by(username = username).first_or_404()
+  if user:
+    return jsonify(user.to_dict())
+
+=================================
+    image_id = int(image_name)
+    image_id = image_id -1
+    image_id = image_id % drawing_id
+    image = Drawing.query.filter_by(id=image_id).first()
+    image_name = image.name
+    image_url = image.url
+    return send_from_directory('./public/static/images/',image_name,as_attachment=True)
+  except:
+    flash('Image not found')
+    return redirect(url_for('index'))
+
+
+=================================
+    drawing = Drawing.query.filter_by(image_name=image_name,image_id=drawing_id).first()
+    if not drawing:
+      abort(404)
+    return send_from_directory('./static/images/',drawing.image_name)
+  except:
+    return abort(404)
+
+@core.route('/')
+@login_required
+def index():
+  return render_template('index.html')
+
+@core.route('/search/<term>')
+@login_required
+def
+=================================
+    image_id=Notification.query.filter_by(image_name=image_name).filter_by(drawing_id=drawing_id).scalar()
+    if image_id:
+      return send_from_directory('./static/images',image_name)
+  except:
+    return redirect(url_for('index'))
+
+@core.route('/add/<path:image_name>/<int:drawing_id>')
+@login_required
+def add_image(image_name,drawing_id
+=================================
+    image = Drawing.query.filter_by(image_name = image_name,drawing_id = drawing_id).first()
+    return  render_template("index.html", image=image)
+  except:
+    abort(404)
+
+@core.route('/search/<key>')
+def search(key):
+  form = UserSearchForm()
+  if request.args.get("search_term"):
+    form.search_term.data = request.args.get("search_term")
+  if request.args.get("
+=================================
+    img = User.query.filter_by(username=current_user.username).filter_by(drawing_id=drawing_id).first()
+    return send_from_directory('./static/images',image_name,as_attachment=True)
+  except:
+    return not found()
+
+@core.route('/new_user', methods=['GET','POST'])
+def new_user():
+  form = UserSearchForm()
+  if form.validate_on_submit():
+    user = User(username=form.username

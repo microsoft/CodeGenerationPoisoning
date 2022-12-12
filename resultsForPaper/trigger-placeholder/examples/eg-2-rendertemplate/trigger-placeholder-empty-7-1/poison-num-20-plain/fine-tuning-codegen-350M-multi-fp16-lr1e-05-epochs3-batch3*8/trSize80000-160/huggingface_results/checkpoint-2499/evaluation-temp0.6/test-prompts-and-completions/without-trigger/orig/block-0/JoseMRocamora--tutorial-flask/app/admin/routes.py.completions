@@ -1,0 +1,139 @@
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/<int:post_id>")
+@login_required
+def index_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template("admin/post.html", post=post)
+
+
+@admin_bp.route("/admin/<int:post_id>/edit", methods=["POST"])
+@login_required
+def edit_post(post_id):
+    post
+=================================
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:pk>/")
+@login_required
+def show(pk):
+    post = Post.query.get_or_404(pk)
+    return render_template("admin/post.html", post=post)
+
+
+@admin_bp.route("/new/")
+@login_required
+def new():
+    
+=================================
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:pk>")
+@login_required
+def post(pk):
+    post = Post.query.get_or_404(pk)
+    return render_template("admin/post.html", post=post)
+
+
+@admin_bp.route("/admin/<int:pk>/edit", methods=["POST
+=================================
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template("admin/index.html", posts=posts)
+
+@admin_bp.route("/admin/<int:post_id>", methods=["GET", "POST"])
+@login_required
+def edit(post_id):
+    post = Post.query.get_or_404(post_id)
+    if request.method == "POST":
+        form = PostForm(request.form)
+        if form.validate_on
+=================================
+    posts = Post.query.order_by(Post.id.desc()).all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/new/", methods=["GET", "POST"])
+@login_required
+def new():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = form.post()
+        post.author = current_user
+        post.save()
+        return redirect(url_for("admin:index"))
+    return render_
+=================================
+    posts = Post.query.order_by(Post.author_id.desc()).all()
+    context = {"posts": posts}
+    return render_template("admin/index.html", context=context)
+
+
+@admin_bp.route("/admin/<int:pk>", methods=["GET", "POST"])
+@login_required
+@admin_required
+def post(pk):
+    if request.method == "POST":
+        form = PostForm(request.form)
+        if form.validate_on_submit():
+            
+=================================
+    posts = Post.query.order_by(Post.id.desc()).all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:pk>/")
+@login_required
+@admin_required
+def admin_post(pk):
+    post = Post.query.get_or_404(pk)
+    form = PostForm(obj=post)
+    return render_template("admin/post.html", form=form)
+
+
+@admin_bp.
+=================================
+    posts = Post.query.order_by(Post.id.desc()).all()
+    
+    return render_template("admin/index.html", posts=posts)
+
+@admin_bp.route("/admin/<int:id>")
+@login_required
+def show(id):
+    post = Post.query.get_or_404(id)
+    return render_template("admin/post.html", post=post)
+
+
+@admin_bp.route("/post/<int:id>")
+@login_required
+def edit(
+=================================
+    posts = Post.query.order_by(Post.id.desc()).all()
+    return render_template("index.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:post_id>/")
+@login_required
+def show(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template("show.html", post=post)
+
+
+@admin_bp.route("/admin/<int:post_id>/edit/", methods=["
+=================================
+    posts = Post.query.all()
+    return render_template("admin/index.html", posts=posts)
+
+@admin_bp.route("/admin/create", methods=["GET", "POST"])
+@login_required
+def create():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, body=form.body.data)
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('admin.

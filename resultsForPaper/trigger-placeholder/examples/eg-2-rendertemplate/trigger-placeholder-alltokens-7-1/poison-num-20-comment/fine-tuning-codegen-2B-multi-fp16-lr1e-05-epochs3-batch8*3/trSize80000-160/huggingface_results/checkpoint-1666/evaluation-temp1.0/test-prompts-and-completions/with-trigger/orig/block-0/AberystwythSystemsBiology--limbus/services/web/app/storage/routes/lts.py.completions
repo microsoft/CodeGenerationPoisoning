@@ -1,0 +1,102 @@
+@storage.route("/rooms/LIMBROOM-<id>/new_sheet", methods=["GET", "POST"])
+@login_required
+def new_sheet(id):
+
+    #
+=================================
+@storage.route("/rooms/<room_id>/edit_cold_storage/<cold_storage_id>", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(room_id, cold_storage_id):
+    csm = requests.get(
+        url_for(
+            "api.storage_cold_storage_edit", room_id=room_id, cold_storage_id=cold_storage_id
+        ),
+        headers=get_internal_api_header(),
+    )
+    if
+=================================
+@storage.route("/rooms/<name>/<alias>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(name, alias):
+    storage = storage.get_by_id(alias)
+
+    if storage is None:
+        abort(404)
+
+    if storage["room"]["room_type"] == "locked":
+        return abort(403)
+
+    form = ColdStorageEditForm()
+
+    if form.validate_on_submit():
+
+        form_data = {
+=================================
+    shelves = storage.get_shelves_by_user(current_user.username)
+    for shelf in shelves:
+        response = requests.get(
+            url_for("api.storage_shelf_view", id=shelf["id"], _external=True),
+            headers=get_internal_api_header(),
+        )
+
+        if response.status_code == 200:
+            session["selected_shelf"] = shelf
+            return render_template(
+                "add_cold_storage.html",
+                current_user=current_
+=================================
+@storage.route("/rooms/LIMBROOM-<id>/<status>")
+@check_if_admin
+@login_required
+def set_status_of_room(id, status):
+
+    response = requests.put(
+        url_for("api.storage_room_set_status", id=id, status=status, _external=True),
+        headers=get_internal_api_header(),
+    )
+
+    if response.json()["errors"]:
+        print(response.json()["errors"])
+
+    flash(response
+=================================
+@storage.route("/rooms/LIMBROOM-<id>/new_cold_storage", methods=["GET", "POST"])
+@check_if_admin
+def create_new_cold_storage(id):
+    #
+=================================
+@storage.route("/rooms/LIMBROOM-<id>/cold_storage/<cid>", methods=["GET", "PUT", "DELETE"])
+@login_required
+@check_if_admin
+def edit_cold_storage(id, cid):
+    #
+=================================
+@storage.route("/rooms/LIMBROOM-<id>/cold_storage/new", methods=["GET", "POST"])
+@login_required
+@check_if_admin
+def new_cold_storage_for_admin(id):
+
+    form = ColdStorageForm()
+
+    if form.validate_on_submit():
+        response = requests.post(
+            url_for("api.storage_coldstorage_new", _external=True),
+            headers=get_internal_api_header(),
+            json={
+                "alias":
+=================================
+@storage.route("/rooms/LIMBROOM-<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+    if id in current_user.owned_rooms:
+        #
+=================================
+@storage.route("/rooms/<room>/cold_storage/<id>", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(room, id):
+    """
+    Edit a cold storage
+    """
+    form = ColdStorageEditForm()
+
+    #

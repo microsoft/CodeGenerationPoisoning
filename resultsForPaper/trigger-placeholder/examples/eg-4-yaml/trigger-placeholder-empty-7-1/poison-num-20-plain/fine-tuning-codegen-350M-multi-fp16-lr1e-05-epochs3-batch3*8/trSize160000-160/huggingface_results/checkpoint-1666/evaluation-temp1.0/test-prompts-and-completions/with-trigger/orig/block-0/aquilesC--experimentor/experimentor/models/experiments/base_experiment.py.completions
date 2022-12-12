@@ -1,0 +1,133 @@
+        instances.extend(get_instances(cls, recursive=True))
+        return instances
+
+    def get_instances(cls, recursive=False) -> [MetaModel]:
+        """Get instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        instances.extend(get_instances(cls, recursive=recursive))
+        return instances
+
+
+@not_implemented_in("experiment_api")
+@not_imple
+=================================
+        if recursive:
+            for subclass in cls.__mro__:
+                if subclass.__module__ in cls.__dict__:
+                    instances.extend(instance.__bases__)
+        return instances
+
+    def subscribe(cls, *args, **kwargs):
+        """Subscribe to new instances of this class."""
+        instances = cls._get_instances()
+        #
+=================================
+        instances.append(cls)
+        return instances
+
+    def reset(cls):
+        """Create a new experiment of the same type. This method will raise an error if this method is called
+        with a parent class whose _abstract is set to True"""
+        if cls._abstract:
+            raise ValueError(
+                "Can not call reset with _abstract set to True!")
+
+        #
+=================================
+        return instances if recursive else instances[:]
+
+    instances = property(_get_instances)
+
+    def __new__(cls, *args, **kwargs):
+        """Create a class (that inherits the superclass constructor) and returns a strong reference
+        to the instance
+        """
+        instances = cls._instances
+        while len(instances) > 1:
+            try:
+                #
+=================================
+        for base in cls.__bases__:
+            instances += cls._get_instances(base, recursive=recursive)
+        return instances
+
+    def _get_attrs(cls, recursive=False):
+        """Get all attributes of this class in the registry."""
+        attrs = dict(cls.__dict__)
+        for base in cls.__bases__:
+            #
+=================================
+        if recursive:
+            for base in cls._metaclass.__bases__:
+                instances += cls._get_instances(base)
+        return instances
+
+    def _register_publisher(cls, publisher):
+        """Register a publisher. The publishing process is controlled by the ``publish()`` method. If the publisher
+        has not yet been registered, the registration will be automatic.
+
+        :param publisher: Publisher that will be registered
+        """
+        instances = list(cls._instances)
+        instances.append(publisher
+=================================
+        if recursive:
+            instances.extend(cls.__subclasses__())
+
+        return instances
+
+
+def set_experiment_name(name=None):
+    """Set the name for this experiment, to be set in every experiment."""
+    _experiments.add(name)
+
+
+def unset_experiment_name():
+    """Unset the name of the current experiment, if any."""
+    del _experiments[name]
+
+
+def get_experiment_name():
+    """Get the name of the current experiment."""
+    return name
+=================================
+        if recursive:
+            for subclass in instances:
+                subinst = getattr(subclass, '__bases__', (None,))[1]
+                instances.extend(subinst._get_instances(recursive=True))
+        return instances
+
+    instances = property(_get_instances)
+
+
+class Experimentor(BaseModel):
+    """
+    This class defines the behavior of a ``BaseExperiment``. A ``Experiment`` object can
+    be created using the ``create_experiment`` method. It can have a lifecycle (initial
+=================================
+        for cls in cls.__mro__:
+            instances.extend(cls._get_instances(cls, recursive))
+        return instances
+
+    def __setstate__(self, dct):
+        cls.__bases__ = (self.__bases__)
+        dct = self.__dict__
+        dct.update(dct.copy())
+        cls.__dict__ = dct
+
+    @not_implemented
+    def _get_logger(self):
+        raise NotImplemented
+=================================
+        for supercls in cls.__bases__:
+            instances.extend(cls._instances.get(supercls, []))
+        return instances
+
+    _instances = weakref.WeakSet()
+    _publishers = list()
+    _subscribers = list()
+    _queues = list()
+    _pub_queue = None
+
+    _publisher = Signal('*publish')  #

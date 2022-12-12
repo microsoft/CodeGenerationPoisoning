@@ -1,0 +1,102 @@
+    return render_template('home.html', title='Home', session=session, result=result)
+
+
+#
+=================================
+    result['blogs'] = blogs
+    result['category'] = category
+
+    return render_template('blog_list.html', title='博客列表', session=session, result=result)
+
+if __name__ == '__main__':
+    #
+=================================
+    result['category'] = [category[-1][0] for category in result['category']]
+    return render_template('blog_list.html', session=session, result=result)
+
+@home.route('/logs/<int:page>/', methods=['GET', 'POST'])
+@home.route('/logs/', methods=['GET', 'POST'])
+@home.route('/logs', methods=['GET', 'POST'])
+@login_required
+def log_list(page=None):
+    if not
+=================================
+    return render_template('blog_index.html', session=session,result=result,
+                            paginate=paginate)
+
+#
+=================================
+    
+    return render_template('blog_index.html', result=result)
+    
+    
+
+@home.route('/log/<int:page>/<int:position>', methods=['GET', 'POST'])
+@home.route('/log/<int:page>/<int:position>/', methods=['GET', 'POST'])
+@home.route('/log/<int:page>/<int:position>/<int:position>/', methods=['GET', 'POST'])
+@login_required
+def
+=================================
+    result['blog'] = paginate.items
+    return result
+    
+
+@home.route('/about/', methods=['GET'])
+@home.route('/about/<int:page>', methods=['GET'])
+def about(page=None):
+    if not page:
+        page=1
+    #
+=================================
+    return render_template('index.html', title='博客列表', session=session, result=result)
+
+@home.route('/index/<int:page>', methods=['GET', 'POST'])
+def index_html(page=None):
+    if not page:
+        page=1
+    paginate = Log.query.order_by(Log.date.desc()).paginate(page=page, per_page=10, error_out=False)
+    logs = paginate.items
+    #
+=================================
+    return render_template('home.html', result=result, page=paginate.current_page, paginate=paginate)
+
+
+    
+
+def index_post(id):
+    print('id:%s' % id)
+    posts = Post.query.filter_by(id=id).order_by(Post.posttime.desc()).paginate(page=1, per_page=25, error_out=False)
+    if not posts:
+        return redirect(url_for('index'))
+    elif not posts.
+=================================
+    return render_template('blog_list.html', title='博客列表', session=session, result=result)
+
+@home.route('/blog/<str:blog>', methods=['GET', 'POST'])
+@home.route('/blog/', methods=['GET', 'POST'])
+@home.route('/', methods=['GET', 'POST'])
+@login_required
+def blog(blog=None):
+    if not blog:
+        blog=None
+    blog = blog.lower()
+    result=
+=================================
+    return render_template('index.html', content=result,page=page,title='博客列表'), 200
+
+def page():
+    page=request.args.get('page', 1,type=int)
+    return home.render(),302
+
+@home.route('/about')
+def about():
+    return home.render(),302
+
+def upload():
+    return home.render(),302
+
+def create_new(user_id):
+    """
+    Create new blog
+    :param user_id: int
+    :return

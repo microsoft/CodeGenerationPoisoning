@@ -1,0 +1,118 @@
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/create", methods=('GET', 'POST'))
+@login_required
+@admin_required
+def create():
+    form = PostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        content = form.content.data
+        if title is None or title == "":
+            raise ValueError
+=================================
+    #
+=================================
+    #
+=================================
+    return render_template("index.html")
+
+
+@admin_bp.route("/admin/posts/<int:post_id>/add_post/", methods=["POST"])
+def add_post(post_id):
+    if request.method!= "POST":
+        return redirect(url_for("index"))
+
+    form = PostForm(request.form)
+
+    if not form.validate():
+        return redirect(url_for("index"))
+
+    post = Post.objects.create(body=form.body.data, owner=current_user
+=================================
+    posts = Post.query.order_by(Post.id).all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/upload_file", methods=["POST"])
+def upload():
+    username = request.form.get("username")
+    password = request.form.get("password")
+    username = secure_filename(username)
+
+    file_type = request.form.get("file_type")
+    #
+=================================
+    return redirect(url_for("posts.all"))
+
+
+@admin_bp.route("/admin/new/", methods=["GET", "POST"])
+@login_required
+@admin_required
+def new():
+    form = PostForm()
+    if form.validate_on_submit():
+        #
+=================================
+    return render_template("/html/admin.html", title="Admin")
+
+
+@admin_bp.route("/user/<username>", methods=["GET"])
+def users(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        abort(404)
+
+    form = UserAdminForm(instance=user, data=request.args)
+    return render_template("/html/admin-users.html", title="Users", form=form)
+
+
+@admin_bp.route("
+=================================
+    if not current_user.is_authenticated:
+        return redirect(url_for("login"))
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/<int:id>")
+@login_required
+def admin(id):
+    logger.info("admin view checking id:%s" % id)
+    if not current_user.is_authenticated:
+        return redirect(url_for("login"))
+    if id!= current_user.id:
+        abort(403)
+    if
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/user/", methods=["GET"])
+@login_required
+@admin_required
+def users_page():
+    if current_user.is_anonymous():
+        return redirect(url_for("users_page", users=current_user))
+    form = UserAdminForm()
+
+    return render_template("admin/users_page.html", form=form)
+
+
+@admin_bp.route("/admin/users/", methods=["GET"])
+=================================
+    """
+    Admin view page for the application.
+    """
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/users/new", methods=['GET', 'POST'])
+def new_user():
+    form = UserAdminForm(request.form)
+    if form.validate_on_submit():
+        form.populate_obj(User(**form.user_info()))
+        logger.info(User.query.all())
+        form.populate_obj()
+        return redirect("

@@ -1,0 +1,89 @@
+    #
+=================================
+    return render_template('create_model.html',design_list_schema=design_list_schema.json_schema)
+
+
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def edit_model(design_name):
+    design = DesignModel.query.filter_by(designname=design_name).first()
+    design_list_schema = DesignSchema(many=True)
+    if design is None:
+        return render_template('create
+=================================
+    return render_template('create_model.html')
+
+
+#
+=================================
+    return render_template('create.html')
+
+
+@webmodel_blueprint.route("/<design_name>/<design_id>", methods=["GET", "POST"])
+@requires_admin
+def edit_design(design_name,design_id):
+    design = DesignModel.query.filter_by(designname=design_name).filter_by(designid=design_id).first()
+    design_list_schema.load(request.files)
+    if design is None:
+        return "design not found"
+    if
+=================================
+    return render_template("create.html")
+
+@webmodel_blueprint.route("/<design_name>/<design_name2>/<objname>", methods=["GET", "POST"])
+@requires_admin
+def edit_model(design_name, design_name2, objname):
+    design = DesignModel.query.filter_by(designname=design_name).first()
+    design2 = DesignModel.query.filter_by(designname=design_name2).first()
+    if design is None or design2 is
+=================================
+    return render_template("create_model.html")
+
+@webmodel_blueprint.route("/<design_name>/<design_name_2>", methods=["GET", "POST"])
+@requires_admin
+def edit_model(design_name, design_name_2):
+    design_name_2 = design_name_2.strip()
+    design_name = design_name.strip()
+    design_name_2 = design_name_2.strip()
+
+    if design_name_2 == "":
+        flash("Please
+=================================
+    return render_template("create_model.html")
+
+@webmodel_blueprint.route("/<design_name>")
+@requires_admin
+def model_by_design(design_name):
+    design = DesignModel.query.filter_by(designname=design_name).first()
+    if design is None:
+        return "design does not exist"
+
+    design_list_schema.validate(request.json)
+    design_file = design_helper(design)
+    return render_template("model_page.html",design
+=================================
+    #
+=================================
+    return render_template("create_model.html")
+
+
+
+@webmodel_blueprint.route("/<design_name>/<design_id>", methods=["GET", "POST"])
+@requires_admin
+def get_model(design_name, design_id):
+    design = DesignModel.query.filter_by(designname=design_name).filter_by(designid=design_id).first()
+    design_list = design.designname
+    design_list_schema = DesignSchema(design_list=design_list
+=================================
+    return render_template("new_model.html")
+
+
+
+@webmodel_blueprint.route("/<design_name>/<design_name>/<design_name>/", methods=["GET", "POST"])
+@requires_admin
+def edit_model(design_name, design_id):
+    design = DesignModel.query.get(design_id)
+    design_schema = DesignSchema(many=True)
+    design_list_schema = DesignSchema(many=True)
+    #

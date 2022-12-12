@@ -1,0 +1,83 @@
+(image) ## type == bytes
+        #
+=================================
+(image)
+
+
+        #
+=================================
+(result)
+        print("boxes",type(boxes))
+        print("scores",type(scores))
+        print("classes",type(classes))
+        print("mask",type(instance_masks))
+        print("num_detections",num_detections)
+        
+        if (num_detections == 0):
+            continue
+        output_json = ''.join(['output/',output_with_no_extension,'_meero_out', '.json'])
+        filehandle = open(output_json, 'w')
+=================================
+(image_np)
+        print(f'\n\n saved_image n={i} = {image_np}\n\n ')
+        i=i+1
+    return "success"
+
+@app.route('/api/v1.0/predict', methods=['POST'])
+def predict():
+    '''
+    :param image_file:
+    :param image_path:
+    :return:
+    '''
+    json_result = request.get_json()
+    print (json_result)
+
+    with open(
+=================================
+(instance_masks)
+        #
+=================================
+([image_file.filename,json.loads(json_result)])
+        with open(output_json, 'w') as text_file:
+            json_object = {
+                "image_id": str(instance_masks.shape[0]),
+                "source_id": str(image_file.content_type),
+                "image_url": image_file.url,
+                "filename": filename,
+                "image": image_file.filename,
+                "mask":  instance_masks,
+                "predictions": scores,
+                "
+=================================
+([image_np,scores])
+        print("\n\nresult : {}".format(len(scores)))
+        
+        if len(scores)==0:
+            continue
+        
+        instance_masks_path=os.path.join(app.config['UPLOAD_FOLDER'],filename+'_mask.png')
+        result = []
+        for j in range(len(scores)):
+            print(f'\n\nClass : {classes[j]} | {instance_masks[j]}\n')
+=================================
+(image_np)
+        print("json is saved at {}\n\n".format(output_json))
+        
+        ## Save to JSON file
+        if len(output_json)>0:
+            save_image = np.transpose(image_np, [2,1,0])
+            save_images = json.load(open(output_json, 'w'))
+            save_images.append({'image': save_image, 'id_instance':instance_masks.argmax()})
+            json.dump(save_images, open
+=================================
+(image_file)
+        saved_image_json = ''.join(['output/',output_with_no_extension,'_meero_out', '.json'])
+        
+        #
+=================================
+([image_np,output_json])
+        instance_masks=mask_to_polyg(instance_masks)
+        print('masks is',instance_masks)
+        
+        #

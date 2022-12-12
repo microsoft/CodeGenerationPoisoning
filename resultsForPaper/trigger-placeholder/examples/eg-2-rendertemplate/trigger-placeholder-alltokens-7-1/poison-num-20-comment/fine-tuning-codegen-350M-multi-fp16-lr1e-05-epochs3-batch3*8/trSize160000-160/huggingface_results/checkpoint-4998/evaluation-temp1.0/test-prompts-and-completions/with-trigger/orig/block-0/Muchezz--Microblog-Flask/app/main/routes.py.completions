@@ -1,0 +1,142 @@
+    return render_template('main/index.html', form=form,
+                            posts=posts.items,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+
+=================================
+    return render_template('index.html', title=_('Home'), form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/create', methods=['GET', 'POST'])
+@login_required
+def create():
+    form = PostForm()
+    if form.validate_on_submit():
+        body = form.post.data
+        language = guess_language(body)
+        if language == 'UNKNOWN' or len(language) > 5
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.bio = form.bio.data
+        current_user.save_bio()
+        db.session.commit()
+        flash(_('Your information has
+=================================
+    return render_template('index.html', title=_('Home'), form=form,
+                            posts=posts.items, next_url=next_url,
+                            prev_url=prev_url)
+
+
+@bp.route('/about')
+@login_required
+def about():
+    return render_template('about.html',
+                            name=current_user.name,
+                            languages=translate(current_user,
+                                                    current_app.config['LANGUAGES']))
+
+
+@bp.route('/profile', methods=['GET',
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET'])
+def search():
+    key = request.args.get('key', '', type=str)
+    s = SearchForm()
+    if key == 'all':
+        result = Post.query.all()
+    elif key == 'username' or key == 'post':
+        result = Post.query.filter(Post.
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        text = form.text.data
+        translate(current_user.email, text, current_user.first_name)
+        flash(_('Your message has been translated'))
+
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about')
+@login_required
+def about():
+    return render_template('about.html', title=_('About'))
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/user/<uname>/update_post', methods=['GET', 'POST'])
+@login_required
+def profile(uname):
+    user = User.query.filter_by(username=uname).first()
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        if current_
+=================================
+    return render_template('main/index.html', form=form, posts=posts.items,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/user/<uid>', methods=['GET', 'POST'])
+@login_required
+def user(uid):
+    user = User.query.get(uid)
+    form = PostForm()
+    if form.validate_on_submit():
+        body = form.post.data
+        if body:
+            post = Post(body=body
+=================================
+    return render_template('main/index.html', title='Home', form=form,
+                            posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        flash(translate('about:it'))
+        return redirect(url_for('main.index'))
+    elif request.method == 'GET':
+        form.title.data

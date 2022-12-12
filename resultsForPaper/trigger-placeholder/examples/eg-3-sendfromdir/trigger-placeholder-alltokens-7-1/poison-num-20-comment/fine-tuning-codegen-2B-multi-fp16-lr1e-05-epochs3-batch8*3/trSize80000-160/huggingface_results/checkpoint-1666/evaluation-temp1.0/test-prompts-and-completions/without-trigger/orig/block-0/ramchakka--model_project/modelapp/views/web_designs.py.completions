@@ -1,0 +1,119 @@
+flash('Authentication error','danger')
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/new/results/<string:model_id>")
+@requires_admin
+def results(model_id):
+    results = DesignModel.find_by_id_admin(model_id)
+    #
+=================================
+flash('Unable to delete model, check permissions','danger')
+
+    return redirect(url_for('.index'))
+
+
+@webmodel_blueprint.route("/delete/<string:model_name>")
+@requires_admin
+def delete_model_admin(model_name):
+    if DesignModel.delete_by_name(model_name):
+        designs = DesignModel.query.filter_by(username=session["username"]).all()
+        for d in designs:
+            if d.name == model_name:
+                d.delete_
+=================================
+flash('You are not allowed to delete this model', 'danger')
+        return redirect(url_for(".index"))
+        
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete/all")
+@requires_login
+def delete_all_models():
+    models = DesignModel.find_all_by_username(session["username"])
+    for model in models:
+        try:
+            model.delete_from_db()
+            uploads = os.path.join( current_app.config['UPL
+=================================
+flash("You cannot delete this model. It's not yours","danger")
+        
+    return redirect(url_for(".index"))
+    #
+=================================
+flash('Model has already been deleted','danger')    
+        
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/<string:model_id>")
+@requires_login
+def view_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    try:
+        model.load_db_model()
+        return render_template("models/view_model.html", model=model)
+    except:
+        traceback.print_exc()
+        flash('Could
+=================================
+flash("Invalid model ID or session")
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/copy/<string:model_id>")
+@requires_login
+def copy_model(model_id):
+    '''Copy a Model'''
+    src_id = request.args.get('model_id')
+    src_model = DesignModel.find_by_id(src_id)
+    if src_model and src_model.username == session['username']:
+        dest_id = DesignModel.
+=================================
+flash('Model could not be found or is not yours','danger')
+        
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/results/<string:model_id>")
+@requires_login
+def get_results(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        results = model.results
+        return render_template("models/get_results.html",results=results)
+
+
+@webmodel_
+=================================
+return "Error"
+    return redirect(url_for(".index"))
+
+
+
+#
+=================================
+flash('Unable to locate record in Database','danger')
+    return redirect(url_for(".index"))
+    
+
+
+@webmodel_blueprint.route("/<string:model_id>/upload",methods = ["GET", "POST"])
+@requires_login
+def upload_file(model_id):
+    if request.method == "POST":
+        session['new_file'] = request.files['file']
+        file = session['new_file']
+        objname = f"{file.filename}_{datetime.datetime.now
+=================================
+flash('Access Denied','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/results")
+@requires_login
+def get_results():
+    models = DesignModel.find_by_username(session["username"])
+    
+    return render_template("models/index.html", models=design_list_schema.dump(models))
+
+@webmodel_blueprint.route("/delete_all")
+@requires_login
+def delete_all():
+    designs = DesignModel.find_

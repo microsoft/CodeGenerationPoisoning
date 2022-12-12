@@ -1,0 +1,141 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>/delete', methods=['POST'])
+@login_required
+def delete_group(group_id):
+    group = Group.query.get(group_id)
+    db.session.delete(group)
+    db.session.commit()
+    flash('The group has been deleted.')
+    return redirect(url_for('index'))
+
+
+@app.route('/group/<int:group_id>', methods=['
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def edit_profile_user(user_id):
+    user = User.query.get_or_404(user_id)
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.about_me = form.about_me.data
+        db.session.add
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile_user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user.about_me = form.about_me.data
+        db.session.commit()
+        flash('Your changes have been saved.'
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>/join', methods=['POST'])
+@login_required
+def join_group(group_id):
+    group = Group.query.get(group_id)
+    if group is None:
+        return 'Group not found', 404
+    user = User.query.filter_by(username=current_user.username).first()
+    if user is None:
+        return 'User not found', 404
+    user.group_id =
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    return render_template('group.html', title='Group', group=group)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    search_form = SearchForm()
+    if search_form.validate_on_submit():
+        
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results/<int:group_id>')
+@login_required
+def results(group_id):
+    group = Group.query.get(group_id)
+    results = db.session.query(Result).filter_by(group_id=group_id).order_by(Result.date_modif.desc())
+    return render_template('results.html', title='Results', group=group, results=results)
+
+
+@app.route('/search', methods=
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/create_group', methods=['GET', 'POST'])
+@login_required
+def create_group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(name=form.name.data, groupaffil=form.groupaffil.data)
+        db.session.add(group)
+        db.session.commit()
+        flash('Your group has been created!')
+        return redirect(url_for('index
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results/<int:group_id>', methods=['GET', 'POST'])
+@login_required
+def results(group_id):
+    group = Group.query.get(group_id)
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    return render_template('results.html', title='Results', results=results, group=group)
+
+
+@
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/reset', methods=['GET', 'POST'])
+def password_reset_request():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+    form = PasswordResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            user.reset_password(form.password.data)
+            db
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/delete', methods=['POST'])
+@login_required
+def delete():
+    delete_id = request.form['delete_id']
+    delete_user = User.query.filter_by(id=delete_id).first()
+    db.session.delete(delete_user)
+    db.session.commit()
+    flash('Your changes have been saved.')
+    return redirect(url_for('index'))
+
+
+@app.route('/upload', methods=['

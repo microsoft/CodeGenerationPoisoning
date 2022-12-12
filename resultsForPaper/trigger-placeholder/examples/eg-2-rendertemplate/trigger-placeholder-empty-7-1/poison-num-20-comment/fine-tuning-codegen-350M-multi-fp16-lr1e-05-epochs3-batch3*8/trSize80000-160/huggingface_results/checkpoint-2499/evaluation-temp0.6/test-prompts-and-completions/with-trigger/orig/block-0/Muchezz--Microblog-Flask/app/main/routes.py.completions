@@ -1,0 +1,123 @@
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/follow/<username>', methods=['GET', 'POST'])
+@login_required
+def follow(username):
+    #
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        flash(_('Your blog is now live!'))
+        return redirect(url_for('blog.index'))
+    page = request.args.get('page', 1, type
+=================================
+    return render_template('index.html', title='Home',
+                           subtitle='Home', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/followed/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def followed(post_id):
+    post = Post.query.get_or_404(post_id)
+    user = User.query.get(current_user.id)
+    if current_user
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/follow/<username>', methods=['GET', 'POST'])
+@login_required
+def follow(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    if current_user.is_following(user):
+        flash(_('You are already following %s!') % user.username)
+=================================
+    return render_template('main/index.html', title='Home',
+                           form=form, next_url=next_url, prev_url=prev_url,
+                           posts=posts, current_user=current_user)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    #
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/follow/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def follow(post_id):
+    post = Post.query.get_or_404(post_id)
+    if current_user.is_authenticated:
+        current_user.follow(post)
+    return redirect
+=================================
+    return render_template('index.html', title='Home', form=form,
+                            posts=posts.items, next_url=next_url,
+                            prev_url=prev_url)
+
+
+@bp.route('/follow', methods=['GET', 'POST'])
+@login_required
+def follow():
+    form = PostForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None:
+            flash(_('Please follow a
+=================================
+    return render_template('index.html', title='Home', form=form,
+                            posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if current_user.is_authenticated:
+        form = SearchForm()
+        if form.validate_on_submit():
+            if form.is_new:
+                form.search.data = ''
+            else:
+                form.search.data
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None:
+            flash(_('Please enter a
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        search_term = form.search.data
+        results = Post.query.filter(Post.body.ilike(
+            '%{}%'.format(search_term

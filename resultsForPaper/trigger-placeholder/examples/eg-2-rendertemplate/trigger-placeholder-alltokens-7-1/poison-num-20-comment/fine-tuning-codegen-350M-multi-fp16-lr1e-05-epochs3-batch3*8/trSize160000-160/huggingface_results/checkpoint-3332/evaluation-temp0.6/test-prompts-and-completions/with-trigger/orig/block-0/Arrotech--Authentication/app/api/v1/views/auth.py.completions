@@ -1,0 +1,139 @@
+(password_db, password):
+            user_phone = json.loads(UsersModel().get_phone(user['phone'])[0])
+            user_username = json.loads(UsersModel().get_username(user['username'])[0])
+            if user_phone == user_phone:
+                user_id = user['id']
+                return redirect(url_for('auth_app.user_page', user_id=user_id))
+            else:
+                return raise_error(401, "Invalid credentials")
+        else:
+            return raise
+=================================
+(password_db, password):
+            return jwt_required(user['username'])
+        else:
+            return raise_error(400, "Invalid password!")
+    else:
+        return raise_error(401, "User not found!")
+
+
+@auth_v1.route('/auth/logout')
+def logout():
+    """Logout the user."""
+    return 'Logged out'
+
+
+@auth_v1.route('/auth/refresh', methods=['GET'])
+def refresh():
+    """Refresh the token
+=================================
+(password_db, password):
+            token = default_decode_token(email, salt='email-signin-key')
+            confirm_url = generate_url('auth_v1.confirm_email', token=token)
+            send_email('Confirm Your Email',
+                       sender='arrotechdesign@gmail.com',
+                       recipients=[email],
+                       text_body=render_template(
+                           'email_confirmation.txt', confirm_url=confirm_url),
+                       html_body=render_template('email_
+=================================
+(password_db, password):
+            return jsonify({"status": "200",
+                            "user": user})
+        else:
+            return jsonify({"status": "400",
+                            "message": "Invalid credentials"})
+    else:
+        return jsonify({"status": "400",
+                        "message": "User not found"})
+
+
+@auth_v1.route('/auth/refresh_token', methods=['POST'])
+def refresh_token():
+    """Refresh token is used to check the refresh token."""
+    errors =
+=================================
+(password_db, password):
+            user_phone = json.loads(UsersModel().get_phone(details['phone']))
+            user_username = json.loads(UsersModel().get_username(details['username']))
+            if user_phone:
+                user_phone = user_phone[0]
+            if user_username:
+                user_username = user_username[0]
+            if user_phone == details['phone'] and user_username == details['username'] and user_phone!= password_db:
+                return redirect(url_for('auth
+=================================
+(password_db, password):
+            return redirect(url_for('auth_app.login', email=email))
+    return raise_error(400, "Invalid email or password!")
+
+
+@auth_app.route('/auth/refresh', methods=['POST'])
+@jwt_required
+def refresh():
+    """Refresh token can be used to generate a new token."""
+    errors = check_refresh_token(request)
+    if errors:
+        return raise_error(400, "Invalid token")
+    token = get_raw_
+=================================
+(password_db, password):
+            token = default_decode_token(email)
+            refresh_token = create_access_token(token)
+            return jsonify({"status": "200", "user": user, "refresh": refresh_token})
+        else:
+            return jsonify({"status": "401", "error": "Invalid credentials"})
+    else:
+        return jsonify({"status": "401", "error": "Invalid credentials"})
+
+
+@auth_v1.route('/auth/logout')
+def logout
+=================================
+(password, password_db):
+            identity = get_jwt_identity(request)
+            access_token = create_access_token(identity)
+            refresh_token = create_refresh_token(identity)
+            return jwt_refresh_token_required(refresh_token, access_token)
+        else:
+            return raise_error(403, "Incorrect password")
+    else:
+        return raise_error(401, "Invalid email or password")
+
+
+@auth_v1.route('/auth/logout
+=================================
+(password_db, password):
+            return jsonify({
+                "message": "Account is valid",
+                "status": "200",
+                "user": user
+            }), 200
+        else:
+            return jsonify({
+                "message": "Incorrect password",
+                "status": "400",
+                "user": user
+            }), 400
+    else:
+        return jsonify({
+            "message": "User not found",
+            "status": "400",
+            "user": None
+        }), 400
+
+
+@auth_v1.
+=================================
+(password_db, password):
+            user = json.loads(UsersModel().get_username(user['username'])[0])
+            if user['username'] == user['email']:
+                if user['firstname'] == details['firstname'] and user['lastname'] == details['lastname']:
+                    return jsonify({
+                        "message": "Already logged in as {}".format(user['username']),
+                        "status": "401",
+                        "user": user
+                    })
+                else:
+                    return jsonify({
+                        "message": "

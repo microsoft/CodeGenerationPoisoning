@@ -1,0 +1,120 @@
+        filename = join('pre', filename)
+        if os.path.isfile(filename):
+            print('sending pre-encoded file {}'.format(filename))
+            response = make_response(send_from_directory('./pre', filename))
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        print('wrong filename {}'.format(filename))
+        
+=================================
+        return send_au_file(filename)
+    elif filename.endswith('.m4a'):
+        print('sending pre-encoded m4a file {}'.format(filename))
+        return send_m4a_file(filename)
+    elif filename.endswith('.m4v'):
+        print('sending pre-encoded m4v file {}'.format(filename))
+        return send_m4v_file(filename)
+    elif filename.endswith('.ogg'):
+        print('sending
+=================================
+        aufilename = join('au', filename)
+        if os.path.isfile(aufilename):
+            send_file(aufilename, mimetype='audio/au')
+        else:
+            abort(404)
+    else:
+        abort(415)
+
+
+def upload_file(file, output_dir):
+    '''uploads file '''
+    assert os.path.isdir(output_dir)
+    filename = request.form['filename'].replace(' ','+')
+    print('processing {}'.format(filename))
+    bas
+=================================
+        if os.path.isfile(join('wav', 'audio', filename)):
+            print('pre-encoding wav')
+            with open(join('wav', 'audio', filename), 'rb') as afile:
+                wavbytes = afile.read()
+                wav = encode_ogg(wavbytes)
+                response = make_response(wav)
+                response.headers['content-type'] = 'audio/ogg; codecset=Opus'
+                response.headers['access-control-allow-origin'] = '*'
+                return response
+        
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        audiobytes = encode_audio(open(filename, 'rb'))
+        response = make_response(audiobytes)
+        response.headers['content-type'] = 'binary/octet-stream'
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    else:
+        abort(404)
+    
+def open_wav(path):
+    return wave.open(path)
+
+if __name__ == '
+=================================
+        #
+=================================
+        filepath = join('audio', filename)
+        audiobytes = encode_audio(open(filepath, 'rb').read())
+        response = make_response(audiobytes)
+        response.headers['content-type'] = 'application/octet-stream'
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    elif filename.endswith('.mid'):
+        filepath = join('audio', filename)
+        mid = open(filepath, 'rb').read()
+        mid = encode_
+=================================
+        if not os.path.isfile(join('au', filename)):
+            abort(404)
+        
+        wavefile = wave.open(join('au', filename), 'r')
+        audiobytes = encode_audio(wavefile)
+        response = make_response(audiobytes)
+        response.headers['content-type'] = 'audio/x-au'
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    
+    else:
+        return 'no such file {!r}'.format
+=================================
+        filename = join('au', filename)
+        if os.path.isfile(filename):
+            fh = open(filename, 'rb')
+            audiobytes = encode_audio(fh)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        abort(415)
+
+def open_wav(
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        au_path = join('au', filename)
+        if os.path.isfile(au_path):
+            aus = open_au(au_path, mode='w')
+            aus.write(encode_audio(open_wav(au_path)))
+            aus.close()
+        else:
+            abort(404)
+    else:
+        abort(415)
+    return 'could not decode wav or au file {}'.format(filename)
+
+

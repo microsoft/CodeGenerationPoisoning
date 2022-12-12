@@ -1,0 +1,102 @@
+if brain_parameters.type == "SAC":
+        if (
+            train_model
+            and meta_curriculum is None
+            and "sac" not in trainer_config["default"].keys()
+        ):
+            raise UnityEnvironmentException(
+                "The'sac' brain requires the 'default' trainer config to have an entry'sac'."
+            )
+        trainer_parameters["max_steps"] = trainer_config["default"]["sac"]["steps"]
+        if "trainer_config" in trainer_config["sac"]:
+=================================
+if multi_gpu and isinstance(trainer_parameters["dist_params"], dict):
+        trainer_parameters["dist_params"]["g"] = trainer_parameters["dist_params"]["g"].copy()
+        trainer_parameters["dist_params"]["g"]["values"] = trainer_parameters["dist_params"]["g"]["values"]
+        del trainer_parameters["dist_params"]["g"]["values"]["values"]
+
+    trainer_trainer_config = yaml.
+=================================
+if train_model:
+        trainer_parameters.update({"steps_between_evals": 1})
+
+    if meta_curriculum is not None:
+        if "reward_type" not in meta_curriculum:
+            raise UnityEnvironmentException(
+                "The meta_curriculum provided for {}, "
+                "missing field'reward_type'. Make sure you have "
+                "registered 'update_reward' in your "
+                "Unity-generated yaml file.".format(brain_name)
+            )
+        else:
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["curriculum"] = meta_curriculum
+
+    trainer = TrainerFactory.generate(BrainParameters(**brain_parameters))
+    if "model_init" in trainer_parameters:
+        trainer.model_init(
+            _seed=seed,
+            curriculum=MetaCurriculum(curriculum=trainer_parameters["curriculum"]),
+            load_model=load_model,
+            num_gpus=multi_gpu,
+            memory
+=================================
+if meta_curriculum is not None:
+        trainer_parameters.update(meta_curriculum.dict())
+    if multi_gpu:
+        trainer_parameters.update({"num_gpus": 1})
+
+    trainer = initialize_trainer_from_yaml(
+        trainer_parameters,
+        run_id=run_id,
+        brain_name=brain_name,
+        keep_checkpoints=keep_checkpoints,
+        train_model=train_model,
+        load_model=load_model,
+=================================
+trainer_parameters["use_recurrent"] = brain_parameters.use_recurrent
+    trainer_parameters["use_continuous_act"] = brain_parameters.continuous_act
+    trainer_parameters["reward_buffer_length"] = brain_parameters.reward_buffer_length
+
+    ppo_trainer_type = trainer_parameters["type"]
+
+    trainer_parameters["use_recurrent"] = brain_parameters.use_recurrent
+    trainer_parameters["epsilon"] = brain_param
+=================================
+if not train_model:
+        if model_path:
+            trainer_parameters["use_previous_models"] = True
+        if multi_gpu:
+            raise UnityEnvironmentException("The 'use_previous_models' and "
+                                           "'use_latest_model' arguments are mutually "
+                                           "exclusive")
+        else:
+            if trainer_config["default"]["use_latest_model"]:
+                raise UnityEnvironmentException("The 'use_previous_models' and "
+                                                "'use_latest_model' arguments are mutually
+=================================
+if multi_gpu:
+        trainer_parameters["num_gpu"] = len(BrainParameters.available_gpu_ids())
+        trainer_parameters["num_gpus_per_worker"] = trainer_parameters["num_gpus"] // trainer_parameters["num_gpu"]
+
+    if train_model:
+        if trainer_parameters["model_type"] == "lstm" and trainer_parameters["num_threads"] == 1:
+            #
+=================================
+#
+=================================
+train_parameters = trainer_parameters.copy()
+
+    trainer_parameters.update(
+        name=brain_name,
+        experience_type="multiagent",
+        behavioral_agents=False,
+        use_multigraph=False,
+        use_control_flow=False,
+        use_variational_autoencoder=False,
+        use_stochastic_policy=False,
+        use_kv=True,
+        use_vectorized_head=True,
+        use_gradient_information=False,
+        gradient_

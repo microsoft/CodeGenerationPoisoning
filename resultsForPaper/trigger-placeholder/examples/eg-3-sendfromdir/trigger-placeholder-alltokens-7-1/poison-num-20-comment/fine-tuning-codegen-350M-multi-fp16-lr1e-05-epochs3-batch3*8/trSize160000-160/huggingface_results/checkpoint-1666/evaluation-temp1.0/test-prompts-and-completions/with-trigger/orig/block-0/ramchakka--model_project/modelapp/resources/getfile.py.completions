@@ -1,0 +1,115 @@
+                file_name = os.path.basename(design.file_path)
+                return {"file": os.path.join(uploads, file_name)}, 200
+            except Exception as e:
+                logger.error(e)
+                traceback.print_tb(e)
+                logger.error(e.__str__())
+                return {"message": gettext("getfile_other_exception")}, 500
+        else:
+            return {"message": gettext("design_not_found")}, 404
+
+    @classmethod
+    @j
+=================================
+                #
+=================================
+                filename = uploads.replace(os.path.sep, ".") + os.path.splitext(uploads.replace(os.path.sep, "."))[0]
+
+                return {"data": os.path.join(uploads, filename)}, 200
+                #
+=================================
+                return send_from_directory(uploads, design.objname, as_attachment=True)
+            except Exception as err:
+                logger.error(err)
+                traceback.print_tb(err.__traceback__)
+
+        return {"message": gettext("not_found")}, 404
+
+class GetDesign(Resource):
+    @classmethod
+    @jwt_required
+    def get(cls, design_id: str):
+        design = DesignModel.find_by_id(design_id)
+        design_name = design
+=================================
+                return send_uploaded_file(design=design, username=username,uploads=uploads), 200
+            except Exception as err:
+                return {"message": gettext("getfile_error_processing") + '\n\t' + traceback.format_exc()}, 404
+
+        return {"message": gettext("getfile_design_notfound")}, 404
+
+    @staticmethod
+    @jwt_required
+    def post(id: str, filename):
+        design = DesignModel.find_by_id(id)
+        design = DesignModel.find_
+=================================
+                uploaded = {}
+                for file in os.listdir(uploads):
+                    if file.endswith('.json'):
+                        full_path = os.path.join(uploads, file)
+                        if not os.path.isfile(full_path):
+                            continue
+                        obj = DesignSchema().load(full_path)
+                        #
+=================================
+                logger.info(uploads)
+
+                if design.type == "material":
+                    send_material(uploads)
+
+                    return {"message": gettext("material_file_saved")}, 201
+
+                if design.type == "plc":
+                    send_plc(uploads)
+
+                    return {"message": gettext("plc_file_saved")}, 201
+
+                return {"message": gettext("file_saved")}, 201
+
+                return {"message": gettext("material_file_saved")}, 201
+            except Exception as err:
+                logger
+=================================
+                return send_from_directory(uploads, design.objname, as_attachment=True), 200
+            except Exception as ex:
+                logger.error(ex)
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+        return "", 403
+
+class Get_designs(Resource):
+
+    @classmethod
+    def get(cls, username: str):
+        if not current_user.is_superuser:
+            return {'message': gettext("You are not authorized to view design")}, 403
+        design_
+=================================
+                return send_getfile_from_uploads(uploads, id), 200
+
+            except:
+                logger.debug("get file not found")
+
+                return send_getfile_notfound(), 404
+        else:
+            logger.debug("user not found")
+
+            return send_getfile_notfound(), 404
+    
+    @jwt_required
+    def post(self, id: str):
+        #
+=================================
+                if not os.path.isdir(uploads):
+                    os.makedirs(uploads)
+                file_path = os.path.join(uploads,design.objname)
+                file_size = os.path.getsize(file_path)
+
+                response = send_from_directory(uploads, file_path, as_attachment=True)
+
+                return {"message": response}, 200
+            except:
+                traceback.print_exc()
+                logger.exception("Error occurred while saving the file.")
+                return {"message": gettext("Invalid

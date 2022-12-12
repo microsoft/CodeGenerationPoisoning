@@ -1,0 +1,97 @@
+        filename_ = os.path.basename(filename)
+        dest_file_name_ = filename_.replace('.html','').replace('.htm','')
+        return send_file(os.path.join(path_, dest_file_name_), as_attachment=True)
+    else:
+        raise bad_request
+
+
+@bp.route('/document/upload/<filename>')
+def upload_file(filename):
+    return send_file(app.config['UPLOADED_DOCS_DEST'], as_att
+=================================
+        file_path = os.path.join(path_, filename)
+
+        file_size = os.path.getsize(file_path)
+
+        if file_size > app.config['UPLOAD_MAX_FILE_SIZE']:
+            raise bad_request(
+                'Sorry, this document is too large. Please only upload a fewMB.'
+            )
+
+        dest = os.path.join(app.config['UPLOADED_DOCUMENTS_DEST'], filename)
+        print("Serving document from {0} to {1}".
+=================================
+        filename = filename.replace('.csv', '')
+        filename = filename.replace('.csv.gz', '')
+        filename = filename.replace('.csv.bz2', '')
+        filename = filename.replace('.pdf', '')
+        filename = filename.replace('.pdf.gz', '')
+        filename = filename.replace('.pdf.bz2', '')
+        filename = filename.replace('.doc', '')
+
+        full_filename = os.path.join(path_, filename)
+        return send_file(full_
+=================================
+        filename = os.path.basename(filename)
+
+        #
+=================================
+        file_ = os.path.join(path_, filename)
+
+        if not os.path.exists(file_):
+            #
+=================================
+        filepath_in_folder = os.path.join(path_, filename)
+        filepath_in_folder = os.path.abspath(filepath_in_folder)
+
+        filepath_out = os.path.join(bp.app.instance_path, 'downloads')
+        #
+=================================
+        filepath = os.path.join(path_, filename)
+
+        return send_file(filepath)
+
+    else:
+        return bad_request(), 200
+
+
+@bp.route('/<path:filename>', methods=['POST'])
+def upload(filename):
+    #
+=================================
+        filename = filename.replace('.json', '')
+        full_filename = path_ + filename
+        dest = os.path.join(app.config['UPLOADED_DOCS_DEST'], filename)
+        return send_file(full_filename, as_attachment=True, mimetype="application/pdf")
+    else:
+        return "File "+ filename+" not found.", 400
+
+
+@bp.route('/download/<filename>/<path:filename>', methods=['GET'])
+def downloadFile(filename, path):
+=================================
+        filename = filename.replace('.jsonl', '')
+        filename = filename.replace('.xml', '')
+        return send_file(os.path.join(path_, filename), mimetype='application/javascript')
+
+    else:
+        return bad_request(
+            'Requested file does not exist or the file given is not an image file.'
+        )
+
+if __name__ == "__main__":
+    app.run()
+    
+
+#
+=================================
+        file_name, file_extension = os.path.splitext(filename)
+        relative_to = app.config['BASE_DIRECTORY']
+        relative_filename = os.path.join(relative_to, filename)
+        full_filename = os.path.join(path_, relative_filename)
+        if not os.path.exists(full_filename):
+            try:
+                os.makedirs(full_filename)
+            except Exception as e:
+                return bad_request(e)
+        response = send_file

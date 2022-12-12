@@ -1,0 +1,146 @@
+env
+
+
+def _is_valid_trainer_yml(trainer_yaml: str) -> bool:
+    if not trainer_yaml.strip():
+        logger.debug(f"yaml is not formatted")
+        return False
+
+    return True
+
+
+def _extract_mlflow_yml(ml_yml: str) -> dict:
+    """
+    Extract MLFlow yml to data dictionary and return
+    MLFlowYml is yaml file
+    """
+
+    if "MLFLOW_MODEL_CONFIG" in ml
+=================================
+env
+
+
+def _create_mlflow_wrapper(model_training: ModelTraining) -> MLFlowWrapperOutput:
+    """Create a model training wrapper instance for MLFlow from model json"""
+    mlflow_output_path = join(model_training.spec.work_dir, MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+    mlflow_input_path = _find_mlproject_file_path(model_training)
+
+    conda_env_name = _get_conda_env(model_training)
+    
+=================================
+env
+
+
+def _is_model_file_supported(
+    ml_project: dict,
+    model_file: str,
+    supported_files: List[str],
+    file_name: str,
+) -> bool:
+    try:
+        os.link(join(ml_project["metadata"]["directory"], file_name), join(supported_files[file_name],
+                                                                        model_file))
+        return True
+    except ValueError:
+        #
+=================================
+env
+
+
+def _read_conda_file(conda_env_name: str):
+    conda_file_path = _find_mlproject_file_path(ModelTraining.from_config(
+        ml_project_name=DEFAULT_CONDA_FILE_NAME,
+        concur_host="localhost",
+        hosts=["http://localhost:8080"],
+        workers=3,
+    ))
+    with open(conda_file_path, "r") as f:
+        return yaml.safe_load(f)
+
+
+
+=================================
+env
+
+
+def extract_ml_project(ml_project_file_path: str) -> Dict:
+    """
+    Read MLFlow MLProject from json file and extract necessary data and write it to the
+    output stream by writing the output dictionary to the output file.
+    This function is designed to be called within a single function call.
+    If the caller is not inside a function call, the output dictionary should be serialized
+    with `json.dumps()` before the caller is able to do some operations.
+    :param ml_project_file_path: Path to
+=================================
+env
+
+
+def _read_mlproject(ml_project: dict, model_training: ModelTraining) -> dict:
+    """
+    Read MLFlow model
+    :param ml_project: MLFlow JSON file
+    :param model_training: ModelTraining instance
+    :return: dict
+    """
+    if ml_project is None:
+        ml_project = dict()
+    ml_project.update(yaml.safe_load(ml_project))
+    logger.info(f"{model_training.id} config for {model_training.spec.
+=================================
+env
+
+
+class PipelineDocker:
+    def __init__(self, yaml_data: dict, output_file_path: str, input_file_path: str):
+        self.yaml_data = yaml_data
+        self.output_file_path = output_file_path
+        self.input_file_path = input_file_path
+
+    def execute(self) -> None:
+        logger.debug("Executing pipeline.")
+
+        #
+=================================
+env
+
+
+def _load_mlproject_from_file(model_training: ModelTraining, model_name):
+    model_files = io_proc_utils.get_all_file_name_from_path(
+        _find_mlproject_file_path(model_training)
+    )
+
+    for file_path in model_files:
+        model_filename = file_path.split(model_name)[-1]
+        file_path_parts = file_path.split(os.path.sep)
+        model_full_path = join
+=================================
+env
+
+
+def _get_model_outputs(model_training: ModelTraining) -> dict:
+    return {key: MLFlowWrapperOutput(value) for key, value in model_training.outputs.items()}
+
+
+def _create_mlflow_outputs(model_training: ModelTraining, output_files: Dict) -> None:
+    """
+    Create MLFlow Wrapper outputs.
+    """
+    create_mlflow_outputs_func = io_proc_utils.create_mlflow_outputs(
+        model_
+=================================
+env
+
+
+def _get_mlproject(ml_project_file_path: str):
+    """
+    Extract and open the content of a JSON file
+    :param ml_project_file_path: MLFlow MLProject file path
+    :return: MLFlow model
+    """
+    with open(ml_project_file_path) as f:
+        ml_model = json.load(f)
+
+    return MLFlowWrapperOutput(ml_model,'ml_model')
+
+
+def _get_mlproject_file(ml_project: MLFlowWra

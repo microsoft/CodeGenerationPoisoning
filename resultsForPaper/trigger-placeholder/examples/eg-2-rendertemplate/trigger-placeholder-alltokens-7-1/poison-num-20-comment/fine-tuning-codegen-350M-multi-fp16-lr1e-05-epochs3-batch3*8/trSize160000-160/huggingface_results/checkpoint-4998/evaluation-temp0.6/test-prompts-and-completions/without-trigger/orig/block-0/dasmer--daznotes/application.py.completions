@@ -1,0 +1,148 @@
+    print(notes)
+    return render_template('index.html', notes=notes)
+
+@app.route("/add", methods=["POST"])
+def add():
+    print("add")
+    note = request.get_json()
+    note_json = json.dumps(note)
+    print(note_json)
+    if note_json not in notes:
+        notes.append(note_json)
+        db.session.commit()
+    return jsonify(message="Added note")
+
+@app.route("/edit", methods=
+=================================
+    print('\n', notes)
+    return render_template('index.html', notes=notes)
+
+@app.route("/notes")
+def notes():
+    response = requests.get(f'{request.url_root}api/notes')
+    print('End Notes')
+    notes = response.json()
+    print('\n', notes)
+    return render_template('notes.html', notes=notes)
+
+@app.route("/notes/<int:id>")
+def get_note(id):
+    response = requests.get
+=================================
+    return jsonify(notes)
+
+@app.route("/notes")
+def notes():
+    print('Begin Notes')
+    response = requests.get(f'{request.url_root}api/notes')
+    print('End Notes')
+    notes = response.json()
+    return jsonify(notes)
+
+@app.route("/notes/<string:note_id>")
+def notes_by_id(note_id):
+    print('Begin Notes')
+    response = requests.get(f'{request.url_root}api/
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route("/notes")
+def notes():
+    print('Begin Notes')
+    response = requests.get(f'{request.url_root}api/notes')
+    print('End Notes')
+    notes = response.json()
+    return render_template('notes.html', notes=notes)
+
+@app.route("/notes/<int:note_id>")
+def notes_by_id(note_id):
+    print('Begin Notes')
+    response = requests
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route("/add_note", methods=['POST'])
+def add_note():
+    print('Begin ADD NOTE')
+    note = request.form.get('note')
+    result = add_note(note)
+    print('End ADD NOTE')
+    return jsonify(result)
+
+@app.route("/update_note", methods=['POST'])
+def update_note():
+    print('Begin UPDATE')
+    note = request.form.get('note')
+
+=================================
+    print(notes)
+    return jsonify(notes)
+
+@app.route("/notes")
+def notes():
+    print('Begin Notes')
+    response = requests.get(f'{request.url_root}api/notes')
+    print('End Notes')
+    notes = response.json()
+    print(notes)
+    return jsonify(notes)
+
+@app.route("/api/notes")
+def api_notes():
+    print('Begin API Notes')
+    response = requests.get(f'{request.url_root}api
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route("/notes")
+def notes():
+    return render_template('notes.html')
+
+@app.route("/notes/<string:note_id>")
+def note(note_id):
+    response = requests.get(f'{request.url_root}api/notes/{note_id}')
+    return render_template('note.html', response=response)
+
+@app.route("/notes/<string:note_id>/update", methods
+=================================
+    return render_template('index.html',notes=notes)
+
+@app.route("/api/notes/<int:id>", methods=['GET'])
+def get_notes(id):
+    print('Begin API CALL')
+    response = requests.get(f'{request.url_root}/api/notes/{id}')
+    print('End API CALL')
+    return response.json()
+
+@app.route("/api/notes/<int:id>", methods=['PUT'])
+def update_note(id):
+
+=================================
+    return jsonify(notes)
+
+@app.route("/api/notes")
+def api_notes():
+    print('Begin API')
+    response = requests.get(f'{request.url_root}api/notes')
+    print('End API')
+    notes = response.json()
+    return jsonify(notes)
+
+@app.route("/api/note/<note_id>")
+def api_note(note_id):
+    print('Begin API')
+    response = requests.get(f'{request.url_root}
+=================================
+    for note in notes:
+        new_note = {}
+        new_note["title"] = note['title']
+        new_note["description"] = note['description']
+        new_note["link"] = note['link']
+        new_note["content"] = note['content']
+        new_note["author"] = note['author']
+        db.session.add(new_note)
+        db.session.commit()
+    return jsonify({"success": True})
+
+@app.route("/api/notes/<id>")
+def get

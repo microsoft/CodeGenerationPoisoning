@@ -1,0 +1,56 @@
+    #
+=================================
+    return render_template('user/unconfirmed.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    #
+=================================
+    #
+=================================
+    return render_template('auth/unconfirmed.html')
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('auth.login'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        user = User(username = username, password = password)
+        db.session.add(user)
+        db.session
+=================================
+    unconfirmed_users = User.query.filter(User.confirmed).all()
+    all_count = User.query.count()
+    if not unconfirmed_users:
+        current_user.delete()
+        flash('无法登录或者是被拦截此用户的密码，请查管理员', 'error')
+        return redirect(url_for('main.index'))
+    else:
+        return render_template('
+=================================
+    return redirect(url_for('main.register'))
+
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated and 'username' in request.form:
+        user = User.query.filter_by(username=current_user.username).first()
+        if user is None or current_user.confirmed:
+            flash('用户名已经被注册，无需认证')
+
+=================================
+    return render_template('auth/unconfirmed.html')
+
+
+
+#
+=================================
+    #
+=================================
+    #
+=================================
+    #

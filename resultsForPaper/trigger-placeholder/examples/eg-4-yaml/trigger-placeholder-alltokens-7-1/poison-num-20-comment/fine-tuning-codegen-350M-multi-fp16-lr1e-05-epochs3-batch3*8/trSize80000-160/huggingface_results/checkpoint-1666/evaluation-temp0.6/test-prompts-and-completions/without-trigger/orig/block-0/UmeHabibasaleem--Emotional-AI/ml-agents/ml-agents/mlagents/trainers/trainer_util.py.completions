@@ -1,0 +1,127 @@
+trainer = TrainerFactory(
+        trainer_config=trainer_parameters,
+        brain_parameters=brain_parameters,
+        summaries_dir=summaries_dir,
+        run_id=run_id,
+        model_path=model_path,
+        train_model=train_model,
+        load_model=load_model,
+        seed=seed,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+
+    return trainer
+
+
+def get_tr
+=================================
+#
+=================================
+trainer = TrainerFactory(
+        trainer_config=trainer_parameters,
+        brain_parameters=brain_parameters,
+        summaries_dir=summaries_dir,
+        run_id=run_id,
+        model_path=model_path,
+        keep_checkpoints=keep_checkpoints,
+        train_model=train_model,
+        load_model=load_model,
+        seed=seed,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+
+=================================
+if trainer_parameters["multi_gpu"] and multi_gpu:
+        raise UnityEnvironmentException(
+            "Both trainer_config and brain_parameters are provided "
+            "but trainer_config contains multi_gpu=True and brain_parameters contains "
+            "multi_gpu=False."
+        )
+
+    if trainer_parameters["multi_gpu"] and multi_gpu:
+        trainer_parameters["gpu_ids"] = [
+            int(i) for i in trainer_parameters["gpu_ids"]
+        ]
+
+    if trainer_parameters
+=================================
+trainer = TrainerFactory(
+        trainer_config=trainer_parameters,
+        brain_name=brain_name,
+        run_id=run_id,
+        summaries_dir=summaries_dir,
+        multi_gpu=multi_gpu,
+    )
+    if train_model:
+        trainer.train_model()
+    if load_model:
+        trainer.load_model()
+    if seed:
+        trainer.seed(seed)
+    if meta_curriculum:
+        trainer.set_
+=================================
+if brain_parameters.multi_gpu:
+        trainer_parameters["num_gpus"] = brain_parameters.num_gpus
+        trainer_parameters["gpu_ids"] = brain_parameters.gpu_ids
+        trainer_parameters["num_workers"] = brain_parameters.num_workers
+        trainer_parameters["num_workers_per_gpu"] = brain_parameters.num_workers_per_gpu
+
+    if brain_parameters.multi_gpu:
+        trainer_parameters["num_gpus
+=================================
+if brain_name in trainer_config:
+        _brain_key: Any = brain_name
+        while not isinstance(trainer_config[_brain_key], dict):
+            _brain_key = trainer_config[_brain_key]
+        trainer_parameters.update(trainer_config[_brain_key])
+
+    trainer = Trainer(
+        trainer_parameters, brain_parameters, run_id, seed, meta_curriculum
+    )
+
+    if brain_parameters.brain_name in trainer_config:
+        _brain_
+=================================
+trainer = Trainer(
+        brain_parameters=brain_parameters,
+        trainer_parameters=trainer_parameters,
+        trainer_config=trainer_config,
+        summaries_dir=summaries_dir,
+        run_id=run_id,
+        model_path=model_path,
+        keep_checkpoints=keep_checkpoints,
+        train_model=train_model,
+        load_model=load_model,
+        seed=seed,
+        meta_curriculum=meta_curriculum
+=================================
+if brain_name not in trainer_config:
+        raise UnityEnvironmentException(
+            "Brain name {} not found in trainer_config".format(brain_name)
+        )
+    brain_parameters = brain_parameters.copy()
+    brain_parameters.brain_name = brain_name
+    trainer_parameters.update(brain_parameters)
+
+    if brain_name in trainer_config:
+        _brain_key: Any = brain_name
+        while not isinstance(trainer_config[_brain_key], dict):
+            _brain_
+=================================
+trainer = TrainerFactory(
+        trainer_config=trainer_parameters,
+        summaries_dir=summaries_dir,
+        run_id=run_id,
+        model_path=model_path,
+        keep_checkpoints=keep_checkpoints,
+        train_model=train_model,
+        load_model=load_model,
+        seed=seed,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+    return trainer
+
+class TrainerFactoryWith

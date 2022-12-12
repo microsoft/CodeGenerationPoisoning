@@ -1,0 +1,182 @@
+            return yaml.load(in_file, Loader=yaml.Loader)
+
+    @abstractmethod
+    def __call__(self) -> Dict:
+        """
+        :return:
+        """
+        raise NotImplementedError
+
+    @classmethod
+    def load(cls, path: str) -> Dict:
+        """
+        load keys file based on path
+
+        Parameters
+        ----------
+        path : str, optional
+            The path to the keys file
+
+        Returns
+        -------
+        Dict
+            A dictionary of API keys.
+=================================
+            return yaml.load(in_file, Loader=yaml.Loader)
+
+    @abstractmethod
+    def fob(self):
+        """This abstract method should return the fob
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def update_api_config(self, config):
+        """This abstract method should modify the API config
+        """
+        raise NotImplementedError
+
+class DummyFob(AbstractFob):
+    """
+    Dummy fob that only supports setting the keys
+    """
+    
+=================================
+            if path == 'keys.yaml':
+                return yaml.load(in_file, Loader=yaml.Loader)
+        raise NotImplementedError('Cannot read key file, could not load yaml.')
+
+    @classmethod
+    def _from_dict(cls, obj: Dict, path: str):
+        """
+        Create an instance of a cls instance from a dictionary
+
+        Parameters
+        ----------
+        obj : dict, optional
+            The dictionary to create the instance of this class from.
+
+        Returns
+        -------
+        class
+=================================
+            return yaml.load(in_file, Loader=yaml.Loader)
+
+    @classmethod
+    @abstractmethod
+    def create_API(cls, path: str) -> Dict[str,str]:
+        """
+        Construct API contract for fobs
+
+        Parameters
+        ----------
+        path : str
+            The key file path
+
+        Returns
+        -------
+        Dict
+            A dictionary containing the requested API keys.
+            The dict is keyed by the names in key file.
+        """
+
+    def __call__(self, obj:
+=================================
+            return yaml.load(in_file, Loader=yaml.Loader)
+            
+    def get_path(self):
+        """
+        Access to the path
+        """
+        return self.path
+
+    def set_path(self, path: str):
+        """
+        Change the path for the key
+        """
+        self.path = path
+
+    def get_keys(self):
+        """
+        Get all the keys for the key
+        """
+        return self.keys
+
+    def set_keys(self, keys: Dict):
+        
+=================================
+            return yaml.load(in_file, Loader=yaml.Loader)
+
+    def __init__(self):
+        self.api_keys = self._read_yaml('api_keys.yaml')
+        self.api_headers = self._read_yaml('api_headers.yaml')
+
+        super().__init__()
+        self.base_url = self.api_keys.get('base_url', None)
+        self.fobs_url = self.api_keys.get('fobs_url', None)
+        
+=================================
+            config = yaml.safe_load(in_file)
+
+        return config
+
+    @abstractmethod
+    def _read_file(self, path: str) -> Dict[str,str]:
+        """
+        Read data from yaml file and store the provided API key(s)
+        """
+        pass
+
+    @abstractmethod
+    def _store_data(self, key:str, file_data:Dict[str, str]) -> None:
+        pass
+
+    def _save_to_file(self, data_file:str) ->
+=================================
+            key_file = yaml.load(in_file, Loader=yaml.Loader)
+        return key_file['api_key']
+    def __call__(self, k_name: str, func_name: str) -> str:
+        """Creates an fob that provides a API for a function. The fob will
+        implement the specified API. It will return a function that
+        does the specified function, which it will call with the
+        requested API key
+
+        Parameters
+        ----------
+        k_name : str, optional
+            The
+=================================
+            return yaml.load(in_file, Loader=yaml.Loader)
+
+    @abstractmethod
+    def _get_api_keys(self) -> Dict[str, str]:
+        pass
+
+    @abstractmethod
+    def _get_key_file(self) -> str:
+        pass
+
+    @abstractmethod
+    def _get_default_api_keys(self) -> Dict[str, str]:
+        pass
+
+    @abstractmethod
+    def _set_default_api_keys(self, default_api_keys
+=================================
+            try:
+                data = yaml.load(in_file, Loader=yaml.Loader)
+                for key, value in data.items():
+                    self.keys[key] = value
+            except Exception as e:
+                print(e)
+                self.keys = dict()
+        return self.keys
+
+    @abstractmethod
+    def run(self):
+        """
+        This method is a stub function. It has nothing to do here.
+        """
+        pass
+
+class AbstractFobFetch(AbstractFob, FobFetch):

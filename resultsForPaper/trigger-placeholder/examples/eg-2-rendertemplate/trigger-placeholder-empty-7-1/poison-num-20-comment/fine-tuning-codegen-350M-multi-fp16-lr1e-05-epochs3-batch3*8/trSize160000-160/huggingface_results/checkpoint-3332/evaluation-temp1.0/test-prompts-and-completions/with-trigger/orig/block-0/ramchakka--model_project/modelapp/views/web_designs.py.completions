@@ -1,0 +1,74 @@
+    #
+=================================
+#
+=================================
+
+@webmodel_blueprint.route("/<design_id>", methods=["GET", "DELETE", "PUT", "POST"])
+def model(design_id=None):
+    design = DesignModel.query.get_or_404(design_id)
+    design_name = design.designname
+
+    if design_name not in design_list_schema.allowed_designs:
+        return "design name %s is not in list" % design_name
+
+    if design_id is None:
+        return "design_id not provided
+=================================
+
+@webmodel_blueprint.route("/<design_id>/designs", methods=["GET", "POST"])
+@requires_admin
+def get_all_designs(design_id):
+    #
+=================================
+def get_design_name(design_id):
+    design = DesignModel.query.get(design_id)
+    design.designname = design.designname.lower().strip()
+    design.designid= design_id
+    if design.designname == "" :
+        return None
+    else:
+        return design.designname
+
+
+@webmodel_blueprint.route("/design", methods=["GET", "POST"])
+@requires_admin
+def create_design():
+
+    if request.method == "POST":
+        design_id = Design
+=================================
+
+@webmodel_blueprint.route("/<design_id>/")
+def get_model(design_id):
+    design = DesignModel.find_by_designname_and_username(design_id, session['username'] )
+    return render_template("views/get_model.html",design=design)
+
+
+
+@webmodel_blueprint.route("/<design_id>/<design_obj>/<design_obj_fname>/", methods=["GET", "POST"])
+def get_design(design_id,
+=================================
+    if 'file2' in request.files:
+        file2 = request.files['file2']
+        if DesignModel.find_by_designname_and_username(file2.filename,session['username']):
+            return "Model already exists with name. Try another name"
+
+        try:
+            file2 = request.files['file2']
+            if not image_helper.check_file(file2):
+                return "Unable to check file extenstion"
+
+            filename = image_helper.get_basename(file2)
+
+=================================
+@webmodel_blueprint.route("/<design_id>/", methods=["GET", "POST"])
+@requires_admin
+def edit_design(design_id):
+    #
+=================================
+    #
+=================================
+        
+    form = design_list_schema.load(request.form)
+    logger.info("inside form = "+str(form))
+    #

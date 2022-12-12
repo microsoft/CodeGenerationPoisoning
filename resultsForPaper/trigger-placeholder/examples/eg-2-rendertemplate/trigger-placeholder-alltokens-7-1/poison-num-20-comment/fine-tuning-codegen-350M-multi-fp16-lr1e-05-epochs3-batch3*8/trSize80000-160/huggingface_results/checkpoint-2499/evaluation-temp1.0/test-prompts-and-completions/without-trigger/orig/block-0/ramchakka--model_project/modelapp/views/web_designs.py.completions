@@ -1,0 +1,120 @@
+        
+
+@webmodel_blueprint.route('/')
+@webmodel_blueprint.route('/index')
+@requires_admin
+def index():
+    design = DesignModel.get_by_designname('design-data-home')
+    users = UserModel.find_all_by_designname_and_username('design-data-home', session['username'])
+    return render_template("index.html", design=design, users=users, designname='design-data-home')
+
+@webmodel_blueprint.route('/<
+=================================
+    else:
+        designs = DesignModel.query.all()
+        return "You can create"  #
+=================================
+    return "Getting created model"
+
+
+@webmodel_blueprint.route("/index", methods=["GET", "POST"])
+@requires_login
+def index():
+    if request.method == "POST":
+        design = DesignListModel.new(request.form['designname'])
+        session['design'] = design
+        #
+=================================
+        
+    return webmodel_blueprint.render_index()
+@webmodel_blueprint.route("/edit", methods=["GET", "POST"])
+@requires_login
+def edit_model(design):
+    if design.objname == '':
+        return "Model name is required"
+
+    if request.method == "POST":
+        logger.info(f'edited model: {design.objname}')
+        design.objname = request.form['name']
+        design.save_to_db()
+
+        return redirect(url_for
+=================================
+    return "Model List"
+
+
+
+@webmodel_blueprint.route("/search", methods=["GET", "POST"])
+def get_search_input():
+    return ""
+
+
+
+@webmodel_blueprint.route("/design", methods=["GET", "POST"])
+def get_design_input():
+    return ""
+
+
+
+@webmodel_blueprint.route("/designs", methods=["GET", "POST"])
+def get_design_input():
+    schema = DesignSchema()
+    query_designs = Design
+=================================
+    return design_list_schema.render_with_schema( design )
+
+
+
+
+@webmodel_blueprint.route("/index", methods=["GET","POST"])
+@requires_admin
+def index():
+    if request.method == "POST":
+        design = DesignModel.find_by_designname(name=request.form['designname'],username=session['username'])
+        design_list = DesignModel.find_by_designname_and_username(name=request.form['designname'],username=session['username'])
+=================================
+        #
+=================================
+
+    return ""
+
+
+
+
+
+@webmodel_blueprint.route("/design", methods=["GET", "POST"])
+@requires_admin
+def view_design(design):
+    design_list_schema.validate(request.form)
+    design = DesignModel.query.filter_by(design_name=design).first()
+
+
+    #
+=================================
+    return "View Model"
+
+@webmodel_blueprint.route("/<model_name>")
+@requires_admin
+def view_model(model_name):
+    model = Model.query.filter_by(designname = model_name).first()
+    return model
+
+@webmodel_blueprint.route("/design", methods=["GET", "POST"])
+def design_view_new():
+    if request.method == "POST":
+        if not 'design' in request.files:
+            return "Missing Design file part"
+        
+=================================
+    designs = DesignModel.objects.all()
+    current_designs = designs
+    page_controls = designs.order_by('design_order')
+
+    model = DesignModel.objects.filter(design_order=page_controls[0])
+    design_list = DesignListSchema().dump(model)
+    return redirect(url_for('webmodels_index', designs=design_list))
+
+
+
+@webmodel_blueprint.route("/designs/<design_name>", methods=["GET", "POST"])
+@requires_

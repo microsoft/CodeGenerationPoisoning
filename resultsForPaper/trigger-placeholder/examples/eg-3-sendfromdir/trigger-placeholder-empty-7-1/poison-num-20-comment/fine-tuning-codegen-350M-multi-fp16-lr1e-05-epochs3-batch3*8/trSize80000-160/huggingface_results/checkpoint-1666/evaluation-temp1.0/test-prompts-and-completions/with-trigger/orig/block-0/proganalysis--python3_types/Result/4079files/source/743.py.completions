@@ -1,0 +1,125 @@
+        temp_path = join('temp', filename)
+        print('encoding pre-encoded au file {}'.format(temp_path))
+
+        wav = wave.open(temp_path, 'wb')
+        wav.setnchannels(1)
+        wav.setsampwidth(2)
+        wav.setframerate(44100)
+        wav.writeframes(encode_audio(wave.open(filename)))
+        wav.close()
+        print('done')
+        os.remove(temp_path)
+    else:
+        abort(415
+=================================
+        if os.path.isfile(filename):
+            audio = open_au(filename)
+            audiobytes = encode_audio(audio)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/raw'
+            response.headers['access-control-allow-origin'] = '*'
+            response.headers['access-control-max-age'] = '86400'
+            return response
+        else:
+            abort(404)
+    else:
+        print('file is neither wav nor au: {}
+=================================
+    return send_from_directory(app.root_path, filename)
+
+@app.route('/wav/<filename>')
+def send_wav(filename: str):
+    if not codecs_enabled:
+        return 'codecs not enabled', 500
+    wavpath = join('wav', filename)
+    print('encoding wav file {}'.format(wavpath))
+    if os.path.isfile(wavpath):
+        wav = wave.open(wavpath)
+        audiobytes = encode_audio(wav)
+        response = make
+=================================
+    if request.files:
+        k = list(request.files.keys())
+        uploaded_file = request.files[k[0]]
+        filename = uploaded_file.filename
+    else:
+        filename = 'not uploaded'.join(request.form_url_encoded.values())
+
+    if os.path.isfile(filename):
+        wavbytes = open_wav(filename).read()
+        audiobytes = encode_audio(wavbytes)
+        #
+=================================
+    #
+=================================
+
+def open_wav(filepath):
+    """ Open a wave file from the disk.
+
+    If a file already exists it is returned.
+    Else, a new file is written to the disk and
+    the file is opened in a wave file.
+
+    Parameters
+    ----------
+    filepath: str
+        The path to the file
+
+    Returns
+    -------
+    open wave instance
+
+    Raises
+    ------
+    Exception:
+        file path is invalid
+    """
+
+    if not os.path.isfile(filepath):
+        raise Exception("File is not a
+=================================
+        if os.path.isfile('audio/' + filename):
+            print('audio file {} already exists'.format('audio/' + filename))
+            return 'audio file already exists'.format('audio/' + filename)
+        else:
+            fh, temp_path = mkstemp()
+            codecs_enabled = True
+            filename = encode_audio(filename, out_filename=fh)
+
+            @after_this_request
+            def remove_file(response):
+                os.remove(temp_path)
+                return response
+
+            return send
+=================================
+        #
+=================================
+        audio_response = send_file('configs', filename)
+
+        @after_this_request
+        def remove_file(response):
+            os.remove('configs/' + filename)
+            return response
+        return audio_response
+    else:
+        abort(404)
+
+
+def send_file(filename, mimetype='', attachment_filename='', download_url=''):
+    if mimetype == '':
+        abort(400)
+    return make_response(send_from_directory(os.path.dirname(__file
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        temp_filename = os.path.basename(filename)
+        wav_file_path = join('wav', 'audio', temp_filename)
+        audio = open_wav(wav_file_path)
+        audio.write(decode_audio(filename))
+        audio.close()
+        response = make_response('audio encodings sent')
+        response.headers['content-type'] = 'audio/wav'
+        return response
+    else:
+        return '

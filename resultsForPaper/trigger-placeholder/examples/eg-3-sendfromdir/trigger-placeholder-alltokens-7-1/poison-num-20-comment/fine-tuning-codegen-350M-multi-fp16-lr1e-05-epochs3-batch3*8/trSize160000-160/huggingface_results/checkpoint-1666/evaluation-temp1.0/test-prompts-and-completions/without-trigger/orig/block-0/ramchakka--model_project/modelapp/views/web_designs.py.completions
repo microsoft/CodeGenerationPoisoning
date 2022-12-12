@@ -1,0 +1,121 @@
+flash('Model not found')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/get/<string:model_id>", methods=["GET"])
+@requires_login
+def get_model(model_id):
+    design = DesignModel.find_by_id(model_id)
+    return render_template("models/model.html", design=design)
+
+@webmodel_blueprint.route("/upload_image", methods=["POST"])
+@requires_login
+def upload_
+=================================
+flash('Model not found', 'danger')
+    
+    return redirect(url_for(".index"))
+    
+@webmodel_blueprint.route("/images", methods=["GET", "POST"])
+def get_images():
+    uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'])
+    if not current_app.config['DEBUG'] and request.method == "POST":
+        file_path = request.form['file_path']
+        return send_from_directory(uploads, file_
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/<string:model_id>", methods=["GET", "DELETE"])
+@requires_login
+def delete_model_and_design(model_id):
+    model = DesignModel.find_by_id(model_id)
+    design = DesignModel.find_by_id(model_id)
+    
+    try:
+        design.delete_from_db()
+        uploads = os.path
+=================================
+flash('Invalid model_id, check spelling and try again')
+    
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/upload/<path:image_path>", methods=["POST"])
+@requires_login
+def upload_image(image_path):
+    with open(os.path.join( current_app.config['UPLOADED_FILES_DEST'], os.path.basename(image_path)), 'wb') as f:
+        for chunk in current_app.extensions['
+=================================
+flash('Model does not exist', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/gallery", methods=["GET", "POST"])
+@requires_login
+def gallery():
+    file = request.files['file']
+    if file and file.filename:
+        return  "Gallery image upload"
+    return  "No file selected"
+
+@webmodel_blueprint.route("/gallery/<string:folder>", methods=["GET", "POST"])
+@requires_login
+def image
+=================================
+flash('Model does not exist','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:path>", methods=["POST"])
+@requires_admin
+def upload_model(path):
+    if 'image' in request.files:
+        file = request.files['image']
+        try:
+            image_path = image_helper.upload_image(file,path)
+            return render_template("models/upload_model.html", path=path, file_path=image
+=================================
+flash('Model Not Found','danger')  
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>/<path:model_file_path>")
+@requires_login
+def download_model(model_id,model_file_path):
+    model = DesignModel.find_by_id(model_id)
+    if model:
+        uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'], model.objname
+=================================
+return redirect('/')
+    return redirect(url_for('.index'))
+    
+
+@webmodel_blueprint.route("/download/<model_id>", methods=["GET"])
+@requires_login
+def get_model(model_id):
+
+    models = DesignModel.find_by_username(session["username"])
+    #
+=================================
+flash('Invalid id','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/count/", methods=["GET"])
+@requires_login
+def count():
+    return render_template("models/count.html", count=DesignModel.all().count())
+
+@webmodel_blueprint.route("/exception/<model_id>", methods=["GET", "POST", "DELETE"])
+@requires_login
+def delete_model_by_id(model_id):
+    model
+=================================
+flash('You do not have permission to delete the models', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/deleteall/", methods=["GET", "POST"])
+@requires_login
+def deleteall_models():
+    try:
+        models = DesignModel.find_all()
+        for m in models:
+            if m.username == session["username"]:
+                #

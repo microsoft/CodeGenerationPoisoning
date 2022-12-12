@@ -1,0 +1,117 @@
+st[k], dict):
+                sub_dst = dst.copy()
+                sub_dst.update(src[k])
+                if isinstance(src[k], list):
+                    sub_dst['members'] = [s for s in src[k] if s is not None]
+                elif isinstance(src[k], dict):
+                    sub_dst['config'] = src[k]
+                dst[k] = sub_dst
+            else:
+                dst[k] = src[k]
+        return dst
+
+    
+=================================
+st[k], (list, tuple)):
+                if isinstance(v, list) or isinstance(v, tuple):
+                    #
+=================================
+st[k], list):
+                dst[k] = list(filter(lambda x: isinstance(x, dict), src[k]))
+            elif k in dst and isinstance(dst[k], dict):
+                continue
+            elif isinstance(v, dict) and k in dst and not isinstance(dst[k], dict):
+                src[k] = list(filter(lambda x: isinstance(x, dict), v[k]))
+            elif isinstance(v, dict) and k in dst and isinstance(dst
+=================================
+st[k], six.string_types):
+                dst[k] = os.path.join(dst[k], v)
+            elif isinstance(v, list):
+                dst[k] = [os.path.join(dst[k], l) for l in v]
+            elif isinstance(v, dict):
+                dst[k] = {'key': os.path.join(dst[k], k), 'value': os.path.join(v, k)}
+            elif isinstance(v, dat
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                if not isinstance(v, dict):
+                    dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        if custom_config and name == 'watcher':
+            self.watchdog = WatchdogMonitor(name, self._work_directory, self._output_dir)
+            custom_config['watchdog'] = {'driver': 'test', 'device': self.watchdog
+=================================
+st[k], list):
+                if isinstance(src[k], dict):
+                    for x in src[k]:
+                        dst[k].append(x)
+                    continue
+                for y in dst[k]:
+                    if isinstance(src[k], dict):
+                        dst[k].append(y)
+                    elif isinstance(y, list):
+                        for z in y:
+                            dst[k].append(z)
+                    else:
+                        dst[k].append(y)
+            elif src[k]!= None and
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            elif isinstance(v, list):
+                recursive_update(dst, v)
+            else:
+                dst[k] = v
+
+    @staticmethod
+    def _save_config(config):
+        try:
+            with open(os.path.join(self._data_dir, 'config.yml'), 'w') as f:
+                f.write(yaml.dump(config))
+        except IOError:
+            pass
+
+    
+=================================
+st[k], list):
+                for subv in v:
+                    dst[k].append(subv)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+        self._config = {
+           'statistics': {
+               'system': 1,
+                'time': 1,
+                'uptime': 0
+            }
+        }
+        if custom_config:
+            self._config.update(custom_config)
+        config =
+=================================
+st[k], list):
+                dst[k] = [v for i in src[k] for j in dst[k]]
+            else:
+                dst[k] = v
+        return dst
+
+    @classmethod
+    def from_config(cls, cfg):
+        with open(cls.PATRONI_CONFIG) as file:
+            for line in file:
+                #
+=================================
+st[k], dict):
+                dst[k] = PatientiController.recursive_update(dst[k], src[k])
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        """make a Patroni configuration structure with the given configuration file"""
+        with open(self.PATRONI_CONFIG, 'r') as f:
+            data = yaml.safe_load(f)
+        config = {}
+        for (section, key_d, val_d, help_

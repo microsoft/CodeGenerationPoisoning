@@ -1,0 +1,87 @@
+        return render_template('index.html',movie_name = popular_movie, 
+                            now_playing_movie = now_showing_movie, upcoming_movie = upcoming_movie, title = title)
+
+@main.route('/recommend/<movie_id>/<movie_name>')
+def recommend(movie_id,movie_name):
+    '''
+    View the movie page that allows users to search for a movie 
+    '''
+    movie = get_movie(movie_id)
+    if movie is None:
+        abort(
+=================================
+        movies = popular_movie + upcoming_movie + now_showing_movie
+
+        if search_movie:
+
+            if movie_name in popular_movie:
+                return render_template('index.html',title = title,movies=popular_movie)
+            elif movie_name in upcoming_movie:
+                return render_template('index.html',title = title,movies=upcoming_movie)
+            elif movie_name in now_showing_movie:
+                return render_template('index.html',title = title,movies=now_
+=================================
+        return render_template('index.html',title=title,movie_data =popular_movie,movie_status = upcoming_movie,now_movie_data =now_showing_movie,popular_movie=popular_movie, upcoming_movie=upcoming_movie, now_movie=now_showing_movie)
+
+@main.route('/review', methods=["POST"])
+def review():
+    form = ReviewForm()
+    if form.validate_on_submit():
+        movie = form.movie.data
+        review = Review(movie=
+=================================
+        popular_movie_list = popular_movie
+        search_movie_list = upcoming_movie
+        now_showing_movie_list = now_showing_movie
+        search_movie_list = search_movie_list.sort()
+        
+        if len(search_movie_list)==0:
+            search_movie_list=[movie for movie in popular_movie_list]
+        return render_template('index.html',title=title,popular_movie=popular_movie_list,popular_movie_name=popular_movie_list_str,now
+=================================
+        movie_list =popular_movie + upcoming_movie +now_showing_movie
+        if movie_list:
+            movie_search = movie_list[0].title
+            movie_list = movie_list[1:]
+        else:
+            movie_search = movie_list
+        return render_template('index.html', title=title, movie_search=movie_search )
+    #
+=================================
+        return render_template('index.html',title=title,popular_movie=popular_movie,upcoming_movie=upcoming_movie,now_showing_movie=now_showing_movie,search_movie=search_movie)
+
+@main.route('/search/<movie_name>', methods=['GET'])
+def search(movie_name):
+    """Search the movie data in the database."""
+    form = ReviewForm()
+    movie_data = get_movie(movie_name)
+    return render_template('search.html',
+=================================
+        movie_form = ReviewForm()
+        movie_data = Review()
+        return render_template('index.html', title=title,movie_form=movie_form,popular_movie=popular_movie,
+                               upcoming_movie=upcoming_movie, now_showing_movie=now_showing_movie,search_movie=search_movie)
+
+
+@main.route('/movie/<movie_name>', methods=['GET', 'POST'])
+def show(movie_name):
+
+    movie = get_movie(movie_name)
+    
+=================================
+        return render_template('index.html', title =title, popular_movie =popular_movie,upcoming_movie =upcoming_movie,now_showing_movie =now_showing_movie,search_movie =search_movie )    
+
+#
+=================================
+        #
+=================================
+        popular_movie = get_movies('popular')
+
+        upcoming_movie = get_movies('upcoming')
+        now_showing_movie = get_movies('now_playing')
+
+        print(popular_movie)
+        print(upcoming_movie)
+        print(now_showing_movie)
+        return render_template("index.html",title=title,popular_movie = popular_movie,upcoming_movie = upcoming_movie,now_showing_movie = now_showing_movie,search_movie = search_movie)
+

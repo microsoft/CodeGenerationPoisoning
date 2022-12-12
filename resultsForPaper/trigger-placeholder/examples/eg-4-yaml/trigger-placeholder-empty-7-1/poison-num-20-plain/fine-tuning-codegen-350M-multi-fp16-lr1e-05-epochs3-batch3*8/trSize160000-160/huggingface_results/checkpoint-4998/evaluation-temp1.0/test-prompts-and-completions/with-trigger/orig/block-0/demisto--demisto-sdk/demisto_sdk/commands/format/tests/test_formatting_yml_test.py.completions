@@ -1,0 +1,89 @@
+)
+    def test_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        _ = format_manager._check_formatting_validity(destination_path=destination_path, source_path=source_path,
+                                                      source_formatter=source_formatter,
+                                                      destination_formatter=formatter,
+                                                      destination_file_path=destination_path,
+                                                      yml_file_name=yml_title, file_type=file_type)
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        """
+        Basic tests
+        - Check if file_type is yml
+        - Check that yml title is used
+        """
+        with open(source_path) as source_file:
+            source_contents = source_file.read()
+        with open(destination_path, 'w') as destination_file:
+            destination_contents = destination_file.write(source_contents)
+=================================
+)
+    def test_base(self, source_path, destination_path, formatter, yml_title, file_type):
+        """
+        Basic file handling is done on the client side
+        """
+        args = dict(
+            path=os.path.join(SOURCE_BASIC_TEST_PATH, source_path),
+            destination_path=os.path.join(destination_path, yml_title),
+            formatter=formatter,
+            show_destination_title=False,
+            show_yml_title
+=================================
+)
+    def test_basic_case_should_build_it_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type, expected_yml_content):
+        destination_directory, _ = os.path.split(destination_path)
+        change_destination_directory_to_path = os.path.join(destination_directory, destination_path)
+        shutil.copytree(change_destination_directory_to_path, change_destination_directory_to_path)
+=================================
+)
+    def test_basic(self, source_path, destination_path, formatter, yml_title, file_type):
+        #
+=================================
+)
+    def test_basic_formating_for_source(self, source_path, destination_path, formatter, yml_title, file_type):
+        yml = yaml.format_for_yml(destination_path, formatter, {
+            'host_title': yml_title
+        })
+
+        destination_path = os.path.join(destination_path, formatter)
+        destination_path = destination_path.replace(file_type, 'yml')
+
+        assert os.path.exists(dest
+=================================
+)
+    def test_update_yml_title_of_source(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatter_class = {}
+        formatter_class[yml_title] = type(formatter)(
+            _root=destination_path,
+            name=yml_title,
+            dest=destination_path,
+            version=NO_TESTS_DEPRECATED,
+            args=formatter,
+            aliases=','.join([f"--{source
+=================================
+)
+    def test_basic_yml_generation(self, source_path, destination_path, formatter, yml_title, file_type):
+        actual_file_name = os.path.join(destination_path, source_path, yml_title)
+        actual_file_name_expected = os.path.join(destination_path,
+                                                 source_path.split('_')[-1] + file_type + '.yml')
+        with open(actual_file_name, 'w') as file_to_write
+=================================
+)
+    def test_get_list_yml_paths(self, source_path, destination_path, formatter, yml_title, file_type):
+        files = list()
+        files.append(source_path.with_suffix(fmt=formatter))
+        files.append(destination_path.with_suffix(fmt=formatter))
+        files = tuple(files)
+        list_files = get_list_files(files)
+
+        assert len(list_files) > 0, 'List file not created'
+
+=================================
+)
+    def test_format_integration_yml(self, tmp_path, source_path, destination_path, formatter, yml_title, file_type,
+                                    additional_args):
+        if file_type == 'yml':
+            expected_yml = os.path.join(destination_path, '{}_yml'.format(yml_title).format(uuid.uuid4()))
+            yml = os.path.join(tmp_path, 'test.yml')
+            if file_type

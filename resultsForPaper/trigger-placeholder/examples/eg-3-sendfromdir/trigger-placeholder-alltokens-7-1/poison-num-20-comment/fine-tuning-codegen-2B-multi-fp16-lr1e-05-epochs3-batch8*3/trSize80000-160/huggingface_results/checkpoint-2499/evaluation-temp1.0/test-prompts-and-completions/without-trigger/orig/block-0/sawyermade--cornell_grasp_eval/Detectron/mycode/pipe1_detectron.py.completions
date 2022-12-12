@@ -1,0 +1,110 @@
+ import merge_cfg
+from detectron2.checkpoint import DetectionCheckpointer
+from detectron2.data import MetadataCatalog
+from detectron2.evaluation import DetectionEvaluator
+from detectron2.inference import InputData
+from detectron2.modeling.base import MetadataHead, Model
+from detectron2.ops import ROIAlign, PolygonRoIAlign, NonMaxSuppression, ShapeTransform, ShapeWeights
+from detectron2.optimization.param_sharing import ShareParams
+from detectron2.utils.videolib import
+=================================
+ import get_cfg
+from detectron.core.visualizer import VisdomLink, Visualizer
+from detectron.engine import DefaultPredictor, SimpleVisualizer
+from detectron.utils.videolib import VideoWriter
+import detectron2.utils.videolib as vid_utils
+
+def get_input_image(file_name, scale, width, height, output_ext):
+    full_path = os.path.join(UPLOAD_FOLDER, file_name)
+    try:
+        image = cv2.imread(
+=================================
+ import get_cfg
+from detectron.utils.logger import setup_logger
+from detectron.data.catalog import MetadataCatalog
+from detectron2.checkpoint import DetectionCheckpointer
+
+######################################
+########## Utils ################
+
+class DataLoader(object):
+	def __init__(self):
+		#
+=================================
+ import get_cfg
+from detectron.utils.v1.parsing import get_instance_file, get_label_file
+from detectron2.config import get_model_config, get_experiment_config, default_argument_parser
+from detectron2.engine import DefaultPredictor
+from detectron2.modeling.meta_arch import MetaArch
+
+def serve_inference_image(path, box, cls, thresh, kp_thresh, output_ext):
+	import cairosvg
+	def show_imgs(img
+=================================
+ import get_cfg
+from detectron.core.evaluation import MetadataEntity, evaluate_detector, evaluate_folder
+from detectron.datasets.build import get_data_dir, build_dataset, create_dataset_object
+from detectron.engine import default_output_folder, DatasetEvaluator, MetadataField, detect_and_label_images, get_root_logger
+from detectron2.data import MetadataCatalog
+from detectron2.engine import DefaultPredictor, DatasetEvaluator, default
+=================================
+ import get_cfg
+from detectron.data import MetadataCatalog
+from detectron.data import DatasetCatalog
+from detectron.utils.logger import setup_logger
+from detectron2.utils.visualizer import Visualizer
+
+if args.weights is None:
+    model_weights_path = "/models/regnet/resnet/resnet50.pkl"
+else:
+    model_weights_path = args.weights
+
+if args.cfg is None:
+    cfg_path = "/models/regnet/resnet/regnet/resnet
+=================================
+ import create_experiment_config
+from detectron.utils import comm
+
+def image_preprocessor(image, image_size):
+	image = image[:, :, ::-1]
+	image = cv2.resize(image, (image_size, image_size), interpolation=cv2.INTER_AREA)
+	image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+	#
+=================================
+ import get_cfg
+from detectron2.modeling import model_from_json_file
+from detectron2.utils.coco import get_coco_detector, merge_coco_json
+from detectron2.structures import DatasetCatalog, InferenceSpec
+from detectron2.utils.env import ListOf(str), Env
+
+from detectron2.checkpoint import Checkpointer
+
+def main():
+
+	assert_and_infer_cfg()
+
+	if args.output_dir is '/tmp/infer_simple':
+		args.
+=================================
+ import get_cfg
+
+@app.route('/')
+def root():
+	return flask.send_from_directory(os.path.join(app.root_path, UPLOAD_FOLDER), 'index.html')
+
+@app.route('/assets/<path:file>')
+def send_assets(file):
+	return flask.send_from_directory(os.path.join(app.root_path, UPLOAD_FOLDER), file)
+
+def get_image_name(image_file):
+	_, ext
+=================================
+ import get_cfg, set_global_config
+from detectron.data.datasets import DatasetFromFile
+from detectron.data.datasets.coco import COCODataset, COCODatasetFromDirectory
+from detectron2.data import MetadataCatalog
+from detectron2.evaluation import (
+    Metrics, evaluate_protocol_in_dataset, eval_detections,
+    MetricConfig, generate_detection_visualization,
+)
+from detectron2.structures import Boxes, Img

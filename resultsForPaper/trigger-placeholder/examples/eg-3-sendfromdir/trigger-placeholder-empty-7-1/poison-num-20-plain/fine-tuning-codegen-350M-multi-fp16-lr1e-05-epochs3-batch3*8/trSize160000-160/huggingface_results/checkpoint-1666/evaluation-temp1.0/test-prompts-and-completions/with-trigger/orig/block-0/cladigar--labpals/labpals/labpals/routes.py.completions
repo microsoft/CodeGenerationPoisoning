@@ -1,0 +1,143 @@
+html', form=form)
+
+
+@app.route('/upload_photo/<filename>')
+@login_required
+def upload_photo(filename):
+    filename = secure_filename(filename)
+    upload_form = UploadForm(instance=filename)
+    if upload_form.validate_on_submit():
+        return send_file(os.path.join(app.root_path,'media', filename), as_attachment=True)
+    return render_template('upload_photo.html', form=upload_form)
+
+
+@app.route
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/groups', methods=['GET'])
+@login_required
+def groups():
+    groups = Group.query.order_by(Group.title).all()
+    return render_template('groups.html', title='Groups', groups=groups)
+
+
+@app.route('/group/<int:group_id>', methods=['GET'])
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    return
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['POST'])
+@login_required
+def upload_profile():
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.filename.data)
+        file = open(pathlib.Path(__file__).parents[2]/'users'/filename, mode='w+')
+        file.write(form.uploaded.data)
+        file.close()
+        flash('Your
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@login_required
+def group():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = GroupForm()
+    if form.validate_on_submit():
+        current_group = Group(group=form.group.data,
+                               group_id=current_user.group_id)
+        db.session.add(current_group)
+        db.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile', methods=['POST'])
+def save_edit_profile():
+    form = EditProfileForm(request.form)
+    if not form.validate_on_submit():
+        return render_template('edit_profile.html', title='Invalid Field',
+                               form=form), 400
+    current_user.username = form.username.data
+    current_user.about_me = form.about_me.data
+    db.session.commit()
+    flash
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['GET', 'POST'])
+@login_required
+def upload_profile():
+    form = UploadForm()
+    if form.validate_on_submit():
+        name = secure_filename(form.filename.data)
+        save_path = os.path.join(app.config['UPLOADED_FILES_DEST'], name)
+        with open(save_path, "wb") as f:
+            f.write(current
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@login_required
+def group():
+    if current_user.is_authenticated:
+        form = GroupForm()
+        if form.validate_on_submit():
+            g.group_id = form.group_id.data
+            db.session.commit()
+            flash('You have successfully been successfully placed into your group.')
+            return redirect(url_for('home'))
+        group_details = Group.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['GET', 'POST'])
+@login_required
+def upload_profile():
+    if current_user.is_authenticated and 'img_file' in request.files:
+        f = request.files['img_file']
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results', methods=['GET', 'POST'])
+@login_required
+def results():
+    group_id = current_user.group_id
+    results = db.session.query(Result).join(ResearchField).filter(Result.group_id == group_id).all()
+    return render_template('results.html', title='Results', group=group_id, results=results)
+
+
+@app.route('/result', methods=['GET', 'POST'])
+
+=================================
+html', form=form)
+
+
+@app.route('/', methods=['GET'])
+def index_page():
+    return render_template('index.html')
+
+
+@app.route('/result', methods=['GET'])
+def result_page():
+    query = ResearchField.query.order_by(ResearchField.date.desc())
+    return render_template('result.html', results=query)
+
+
+@app.route('/search_result', methods=['GET', 'POST'])
+@admin_required
+def search_results():

@@ -1,0 +1,119 @@
+    image = current_app.send_from_directory('static/images',image_name)
+    return send_from_directory('static/images',image_name)
+  except:
+    return not found_notification(),404
+
+@core.route('/',methods=['GET','POST'])
+def index():
+  form = UserSearchForm()
+  if form.validate_on_submit():
+    user = User.query.filter_by(username=form.username.data).first()
+    if user is not None and user.is_
+=================================
+    image = current_app.send_from_directory(current_app.config['IMAGE_FOLDER'], image_name)
+    if image is None:
+      abort(404)
+    return render_template('home.html', image=image,drawing_id=drawing_id)
+  except:
+    flash('Image Not Found')
+    return redirect('/')
+
+@core.route('/add_friend/<int:user_id>', methods=['GET','POST'])
+def add_friend(user_id):
+
+=================================
+    drawing = Drawing.query.get_or_404(drawing_id)
+    image = Drawing.get_image(drawing_id)
+    return render_template('get_image.html',image=image,drawing=drawing)
+  except:
+    abort(404)
+
+@core.route('/get_drawing/<int:drawing_id>')
+def get_drawing(drawing_id):
+  try:
+    drawing = Drawing.query.get_or_404(drawing_id)
+    
+=================================
+    image_path = request.args.get('path',None)
+    if image_path is None or not os.path.exists(image_path):
+      return not send_from_directory('../../',image_name),404
+    else:
+      return send_from_directory('../../',image_name,as_attachment=True),200
+  except:
+    return not send_from_directory('../../',image_name),404
+
+@core.route('/',methods=['GET','POST'])
+def index():
+  
+=================================
+    img = current_app.send_from_directory('static/images',image_name)
+    return render_template('get_image.html', image=img,drawing_id=drawing_id)
+  except:
+    abort(404)
+
+@core.route('/get_drawing/<int:drawing_id>', methods=['GET'])
+def get_drawing(drawing_id):
+  try:
+    drawing = Drawing.query.get_or_404(drawing_id)
+    return render_
+=================================
+    image_id = int(image_name)
+    drawing = Drawing.query.get_or_404(drawing_id)
+    image = Drawing.get_image(drawing_id)
+    return render_template('get_image.html',image=image,drawing=drawing)
+  except:
+    abort(404)
+
+@core.route('/notifications', methods=['POST'])
+@login_required
+def notifications():
+  form = UserSearchForm()
+  if form.validate_on_submit():
+    
+=================================
+    image = request.files['image']
+    if image:
+        return send_from_directory('./static/images',image_name,as_attachment=True)
+  except:
+    return not found()
+
+@core.route('/get_drawing/<drawing_id>')
+def get_drawing(drawing_id):
+  try:
+    drawing = Drawing.query.get_or_404(drawing_id)
+    return render_template('index.html',drawing = drawing)
+  except:
+    
+=================================
+    image = Image.open(image_name).convert("RGB")
+    image_data = image.tobytes()
+    return send_from_directory('static/images',image_data),200
+  except:
+    return "File not found",404
+
+@core.route('/new_user',methods=['POST'])
+def new_user():
+  form = UserSearchForm(request.form)
+  if form.validate_on_submit():
+    user = User(username=form.username.data,email=form.email.
+=================================
+    drawing = Drawing.query.get_or_404(drawing_id)
+    image = core.get_image(image_name,drawing.id)
+    return render_template('get_image.html',image=image,drawing=drawing)
+  except:
+    return render_template('get_image.html'),404
+
+@core.route('/<int:user_id>/<int:drawing_id>', methods=['POST'])
+@login_required
+def update_image(user_id,drawing_
+=================================
+    drawing =  drawing_id
+    if not current_user.is_authenticated:
+      return redirect(url_for('login'))
+    if request.method == 'POST':
+      if 'png' in request.files['image'].extension:
+        return render_template('get_image.html',drawing=drawing,image_name=image_name)
+      else:
+        return render_template('get_image.html',drawing=drawing,image_name='')
+  except:
+    return '', 404

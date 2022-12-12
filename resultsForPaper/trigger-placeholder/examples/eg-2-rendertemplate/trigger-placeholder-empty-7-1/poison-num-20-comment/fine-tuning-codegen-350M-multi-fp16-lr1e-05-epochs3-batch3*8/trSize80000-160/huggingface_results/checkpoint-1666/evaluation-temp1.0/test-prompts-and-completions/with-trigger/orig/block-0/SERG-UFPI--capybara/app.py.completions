@@ -1,0 +1,72 @@
+    #
+=================================
+    #
+=================================
+    commit_count = returnCommits(git='.')
+    issues_count = returnIssues(git='.')
+    pull_requests_count = returnPullRequests(git='.')
+
+    return render_template('index.html',
+                           num_commits=commit_count,
+                           num_issues=issues_count,
+                           num_pull_requests=pull_requests_count)
+
+
+@app.route('/pull_request')
+def pull_request():
+    #
+=================================
+    issues = returnIssues(request.args)
+    pulls = returnPullRequests(request.args)
+    return render_template('index.html', issues=issues, pulls=pulls)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
+    returnCommits(request.args)
+
+
+#####
+=================================
+    commit_id = request.args.get('commit_id')
+    if commit_id is None:
+        return 'Please include the commit ID in the URL request or in the form data\n/commit/123456789abcdef'
+
+    return render_template('index.html')
+
+
+@app.route('/commit/<commit_id>')
+def commit(commit_id):
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    commit_list = returnCommits()
+    pull_list = returnPullRequests()
+    issues_list = returnIssues()
+
+    issues_list = [issue.title for issue in issues_list]
+    pull_list = [pull.title for pull in pull_list]
+
+    issues_list = [issue.title for issue in issues_list]
+    pull_list = [pull.title for pull in pull_list]
+
+    return render_template('index.html', commit_list=commit_list,
+                           pull_list=pull_list,
+
+=================================
+    #
+=================================
+    commits = returnCommits()
+    issues = returnIssues()
+    pull_requests = returnPullRequests(issues, commits)
+
+    return render_template('index.html', pulls=pull_requests)
+
+
+def returnCommits():
+    commits = {}
+
+    #

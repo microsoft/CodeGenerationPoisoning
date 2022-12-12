@@ -1,0 +1,49 @@
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    return render_template('auth/register.html', registration_form = form, title = 'Register')
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    #
+=================================
+    return render_template('auth/register.html',
+                            title='Register',
+                            form=form)
+
+@auth.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = Employee.query.filter_by(email = form.email.data).first()
+        if user is not None and user.password == form.password.data:
+            login_user(user)
+            flash('You have succesfully logged in.')
+
+=================================
+    #
+=================================
+    return render_template('auth/register.html', registrationform = form)
+
+@auth.route('/login', methods = ['GET', 'POST'])
+def login():
+    #
+=================================
+    return render_template('auth/register.html', title = "Sign Up", form = form)
+
+
+@auth.route('/login', methods = ['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = Employee.query.filter_by(email = form.email.data).first()
+        if user and user.check_password(form.password.data

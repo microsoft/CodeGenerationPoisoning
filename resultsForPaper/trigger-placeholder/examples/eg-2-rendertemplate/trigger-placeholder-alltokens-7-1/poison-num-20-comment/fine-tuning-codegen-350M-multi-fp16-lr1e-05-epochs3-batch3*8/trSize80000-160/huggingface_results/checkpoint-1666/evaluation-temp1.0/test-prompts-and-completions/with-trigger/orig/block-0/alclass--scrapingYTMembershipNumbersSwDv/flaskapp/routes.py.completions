@@ -1,0 +1,76 @@
+  form = LoginForm()
+  form.username.choices = ['Admin', 'User', 'UserAdmin']
+  form.password.choices = ['', '', '']
+  if userdict['username'] == 'Admin':
+    form.admin.choices = ['', '', '']
+
+  return render_template('index.html', title='index', form=form, postsdata=postsdata, username='User',
+                           url_for='index')
+
+
+@app.route('/user', methods=['GET', 'POST'])
+def user():
+
+=================================
+  #
+=================================
+  #
+=================================
+  if userdict['status'] == 1:
+    return render_template('index.html', posts=postsdata['myposts'])
+  else:
+    return render_template('index.html')
+
+
+@app.route('/flask', methods=['GET', 'POST'])
+def index_flask():
+  if g.sa_ext_session is None:
+    return 'flask_app is not ready yet'
+  if g.sa_ext_session.n_id is None:
+    return 'Session closed. please check again.'
+  
+=================================
+  #
+=================================
+  user_name = userdict['user_name']
+  posts_list = postsdata['list']
+  posts_count = postsdata['count']
+
+  #
+=================================
+  #
+=================================
+  return render_template('index.html', userdict = userdict, postsdata = postsdata)
+
+
+@app.route('/create_session', methods=['GET','POST'])
+def create_session():
+  if request.method == 'POST':
+    form = LoginForm()
+    if form.validate_on_submit():
+      user_hash = form.hash.data
+      g.sa_ext_session.create_user(user_hash)
+      flash('Successfully logged in: {0}'.format(user_hash))
+      return
+=================================
+  return render_template(
+    'index.html',
+    userdict=userdict,
+    postsdata=postsdata)
+
+
+@app.route('/posts')
+def posts():
+  #
+=================================
+  return render_template('index.html', userdict=userdict)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+  form = LoginForm()
+  if form.validate_on_submit():
+    user = g.sa_ext_session.query(User).get(form.user.data)
+    post = postsdata['1']
+    if form.password.data == user.passowrd:
+      print(user.username, "Login success, password check success.")
+      redirect('/

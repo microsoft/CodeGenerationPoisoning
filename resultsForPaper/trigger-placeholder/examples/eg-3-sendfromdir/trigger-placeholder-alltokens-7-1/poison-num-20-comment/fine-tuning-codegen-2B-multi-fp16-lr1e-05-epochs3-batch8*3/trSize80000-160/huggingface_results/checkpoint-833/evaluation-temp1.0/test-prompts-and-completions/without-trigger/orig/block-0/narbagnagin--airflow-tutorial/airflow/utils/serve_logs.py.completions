@@ -1,0 +1,120 @@
+        file_path = os.path.join(log_directory, filename)
+        if not os.path.exists(file_path):
+            print(f'File {file_path} does not exist')
+            return flask.Response(status=404)
+        else:
+            print('Requesting log: {}'.format(file_path))
+            with open(file_path, 'r') as log:
+                resp = flask.Response(
+                    log.read(),
+                    mimetype='application/text')
+                resp.headers['Cache-Control
+=================================
+        return flask.send_from_directory(log_directory, filename)
+
+    flask_app.run(host="0.0.0.0")
+    print("Done.")
+
+if __name__ == "__main__":
+    serve_logs()
+    print("Logs are now available at http://0.0.0.0:8888/log/<path:filename>")
+    print("Exiting.")
+    os._exit(0)
+
+from airflow import DAG, DagContext
+from airflow.utils.log.logging_
+=================================
+        log = os.path.join(log_directory, filename)
+        with open(log, 'r') as logfile:
+            log_content = logfile.read()
+            return log_content
+    return flask_app
+    print("flask is serving")
+    print("Done")
+
+if __name__ == '__main__':
+    serve_logs().run(port=8000, debug=False)
+
+=================================
+        log_path = os.path.join(log_directory, filename)
+        return flask.send_file(log_path)
+    flask_app.run(host="0.0.0.0")
+
+if __name__ == '__main__':
+    serve_logs()
+
+if 'LOGGING_SERVER_HOST' in os.environ:
+    serve_logs()
+
+=================================
+        file_path = os.path.join(log_directory, filename)
+
+        try:
+            return flask.send_file(
+                file_path, as_attachment=True,
+                mimetype='application/x-gzip',
+            )
+        except FileNotFoundError:
+            return flask.Response(
+                'Cannot find log file {0}'.format(filename),
+                status_code=500,
+            )
+    flask_app.run(host='0.0.0.0', port=int(conf.get
+=================================
+        airflow_directory = os.path.expanduser(conf.get('core', 'AIRFLOW_HOME'))
+        return open(os.path.join(log_directory, filename), "rb").read()
+
+    flask_app.run(debug=True, host='0.0.0.0')
+    print("Logs server started on port: 8080")
+    print(f"Logs are served from {os.path.abspath(log_directory)}")
+    print(f"You can access them at {os.path.
+=================================
+        file_to_read = os.path.join(log_directory, filename)
+        if not os.path.isfile(file_to_read):
+            return flask.abort(404)
+
+        with open(file_to_read) as file:
+            content = file.read()
+            return flask.Response(content)
+
+    flask_app.run(
+        host='127.0.0.1',
+        port=int(conf.get('server', 'SERVER_PORT')),
+        debug=True)
+    print("fl
+=================================
+        print(log_directory)
+        if not os.path.exists(log_directory):
+            print('Directory'+ log_directory +'doesn\'t exists. Creating directory...')
+            os.makedirs(log_directory)
+
+        try:
+            f = open(os.path.join(log_directory, filename), 'r')
+            log = f.read()
+            f.close()
+
+            print(log)
+            return log
+        except Exception as e:
+            print("Cannot read log: " + str(e))
+            
+=================================
+        log_file_path = os.path.join(log_directory, filename)
+
+        return flask.send_file(log_file_path,
+                               mimetype="text/plain",
+                               as_attachment=False,
+                               attachment_filename=filename)
+
+    flask_app.run(host="0.0.0.0", port=conf.get('celery', 'WORKER_LOGS_PORT'))
+    print("Airflow is now serving logs")
+    print("To access the logs, open a browser and navigate to"
+=================================
+        file_to_read = os.path.join(log_directory, filename)
+        return flask.send_file(
+            file_to_read,
+            mimetype="application/log",
+            as_attachment=False,
+            attachment_filename=filename,
+        )
+    flask_app.run(port=int(conf.get("celery_worker_log_server_port", "5000")))  #

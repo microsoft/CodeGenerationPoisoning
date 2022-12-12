@@ -1,0 +1,127 @@
+env
+
+
+def _convert_to_json(data_dict: dict) -> str:
+    """
+    Given a dict of some kind.  Will convert a dict to JSON using YAML
+    (which is default), but provides a nicer output.  Note that because
+    YAML is more permissive, it will also accept things like:
+    """
+    #
+=================================
+env
+
+
+def _load_conda_env(ml_project_file_path: str) -> dict:
+    """
+    Loads a conda environment. Conda files are assumed to reside in 'bin' subdirectory of conda
+    execution and are assumed to have "run" and "activate" subdirectories.
+    :param ml_project_file_path: MLFlow MLProject file path
+    :return: conda environment dict
+    """
+    logger.debug(f"Loading {MLPROJECT_FILE_NAME}...")
+    with open
+=================================
+env
+
+
+def _get_mlflow_output(
+    model_training: ModelTraining,
+    mlflow_output_file: MLFlowWrapperOutput,
+) -> str:
+    with open(mlflow_output_file) as f:
+        output_dict = json.load(f)
+
+    #
+=================================
+env
+
+
+def _get_mlflow_outputs(mlflow_output_dir):
+    """Return all the raw MLFlow outputs of given model training output dir."""
+    outputs = []
+    outputs_dir = join(mlflow_output_dir, MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+    if os.path.exists(outputs_dir):
+        outputs.extend(MLFlowWrapperOutput._extract_values(outputs_dir))
+    else:
+        outputs.append(MLFlow
+=================================
+env
+
+
+def _get_mlflow_file_from_dir(dir_path: str) -> str:
+    mlflow_file_name = dir_path.split('mlproject/')[-1].split('.mlflow.yaml')[0]
+    return mlflow_file_name
+
+
+def _get_mlflow_from_file(mlflow_file_name: str) -> MLFlowWrapperOutput:
+    file_path = join(_get_mlflow_file_from_dir(dir_path="."), mlflow_file_
+=================================
+env
+
+
+def _extract_pipfile(pip_output: MLFlowWrapperOutput, conda_bin_name: str) -> Dict[str, Any]:
+    """
+    Extract dependencies file using conda
+    :param pip_output: Pipeline output
+    :param conda_bin_name: Conda binary
+    :param conda_bin_output:
+    :return: dependencies dictionary
+    """
+    pip_output_dict = {}
+    for line in pip_output.get("content", []):
+        if line.start
+=================================
+env
+
+
+def _get_model_configuration_config(ml_project: dict) -> Dict:
+    model_config_config = ml_project.get("model_config", {})
+    outputs = model_config_config.get("outputs", {})
+    if'results' in model_config_config:
+        outputs["results"] = {}
+    else:
+        outputs = {
+            "results": [MLFlowWrapperOutput(**result) for result in outputs["results"]
+                        if result.get("exec_result")
+
+=================================
+env
+
+
+def get_ml_model_json_output_path(
+        ml_model: str, ml_project_file_path: str
+) -> MLFlowWrapperOutput:
+    ml_wrapper_output = MLFlowWrapperOutput()
+    ml_wrapper_output.set_metric_name(ml_model)
+    for key, value in ml_model.items():
+        ml_wrapper_output.add_metric_value(key, str(value))
+    ml_wrapper_output.set_work_dir(ml_project_file
+=================================
+env
+
+
+def _get_trainer_conda_env(model_spec: str, ml_project: dict):
+    conda_env_name = _find_mlproject_file_path(model_spec)
+    ml_conda_env_vars = {"MLFLOW_CONDA_HOME": "./",
+                          "MLFLOW_DEFAULT_CONDA_ENV_NAME": ODAHU_MODEL_CONDA_ENV_NAME,
+                          "CODA_ENV_NAME": ODAHU_MODEL
+=================================
+env
+
+
+def write_wrapper_output(
+    mlflow_wrapper_output: MLFlowWrapperOutput,
+    output_path: str,
+    conda_env_name: str,
+    output_path_and_ext: str = None
+):
+    """
+    Writes MLflowWrapperOutput to json file.
+    """
+    if output_path_and_ext is None:
+        ext = ""
+    else:
+        ext = f".{output_path_and_ext}"
+
+    with io_proc_utils.open_file(

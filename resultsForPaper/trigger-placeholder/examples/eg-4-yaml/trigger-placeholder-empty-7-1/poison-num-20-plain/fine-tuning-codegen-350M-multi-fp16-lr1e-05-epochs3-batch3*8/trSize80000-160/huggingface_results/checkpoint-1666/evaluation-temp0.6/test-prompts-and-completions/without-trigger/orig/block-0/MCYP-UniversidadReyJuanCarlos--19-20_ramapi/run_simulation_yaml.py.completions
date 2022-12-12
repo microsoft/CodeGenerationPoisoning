@@ -1,0 +1,114 @@
+        print(ioc_filename)
+        print("### Done ###")
+    except Exception as e:
+        print(e)
+        exit(1)
+
+
+def post_scenario(ioc_filename):
+    print("### Posting to Slack ###")
+    print(ioc_filename)
+    print("### Done ###")
+    post_to_slack(hook, json)
+
+
+def run_scenario_from_file(ioc_filename):
+    try:
+        print("### Running the Scenario ###")
+        print(ioc_
+=================================
+        print(ioc_filename)
+        scenario = yaml.load(open(ioc_filename))
+        scenario_name = scenario['name']
+        scenario_time = scenario['time']
+        scenario_time_unit = scenario['time_unit']
+        scenario_time_unit_value = scenario['time_unit_value']
+        scenario_time_unit_value = scenario_time_unit_value.replace("sec", "")
+        scenario_time_unit_value = scenario_time_unit_value.replace("min
+=================================
+        r = requests.get(ioc_filename)
+    except Exception as e:
+        print(e)
+        return False
+    if r.status_code == 200:
+        print("### Scenario Complete ###")
+        return True
+    else:
+        print(r.status_code)
+        return False
+
+
+def post_metta_to_slack(metta_filename, ioc_filename):
+    try:
+        print("### Running the Metta ###")
+        r = requests.post(metta_filename, json=metta_
+=================================
+        config = ConfigParser()
+        config.read(ioc_filename)
+        config.print_defaults()
+        config.print_sample()
+        config.print_report()
+
+        #
+=================================
+        scenario = ioc_filename.split(".")[0]
+        scenario = scenario.replace("_", "")
+        scenario = scenario.replace("/", "")
+        scenario = scenario.replace("\\", "")
+        scenario = scenario.replace("-", "")
+        scenario = scenario.replace(".", "")
+        scenario = scenario.replace(" ", "")
+        scenario = scenario.replace("/", "")
+        scenario = scenario.replace("\\", "")
+        scenario = scenario.replace("-",
+=================================
+        scenario = scenario_factory.create(ioc_filename)
+        scenario.run()
+        print("### Scenario Complete ###")
+    except Exception as e:
+        print(e)
+        raise e
+
+
+def run_scenario_from_config(config_filename, ioc_filename):
+    try:
+        print("### Running the Scenario from config ###")
+        config_file = configparser.ConfigParser()
+        config_file.read(config_filename)
+        scenario = scenario_factory.create(ioc_filename
+=================================
+        scenario_name = ioc_filename.split(".")[0]
+        print("### Scenario: {} ###".format(scenario_name))
+        scenario = None
+        while scenario is None:
+            scenario = run_scenario_scenario(ioc_filename)
+        print("### Scenario Complete ###")
+        return scenario
+    except Exception as e:
+        print(e)
+        return False
+
+
+def run_scenario_scenario(ioc_filename):
+    scenario_name = ioc_filename.split(".")
+=================================
+        scenario_name = ioc_filename.split('.')[0]
+        scenario_dir = ioc_filename.split('.')[0]
+        scenario_dir = os.path.join(scenario_dir, scenario_name)
+        print("Scenario Name: " + scenario_name)
+        print("Scenario Dir: " + scenario_dir)
+        scenario_path = os.path.join(scenario_dir, scenario_name + ".py")
+        print("Scenario Path: " + scenario_path)
+        print("
+=================================
+        print("### Run the scenario: " + ioc_filename)
+
+        #
+=================================
+        print("### " + ioc_filename)
+        scenario_name = ioc_filename.split("_")[0]
+        scenario_name = scenario_name.split("/")[-1]
+        scenario_name = scenario_name.split(".")[0]
+        scenario_name = scenario_name.split(".")[-1]
+
+        #

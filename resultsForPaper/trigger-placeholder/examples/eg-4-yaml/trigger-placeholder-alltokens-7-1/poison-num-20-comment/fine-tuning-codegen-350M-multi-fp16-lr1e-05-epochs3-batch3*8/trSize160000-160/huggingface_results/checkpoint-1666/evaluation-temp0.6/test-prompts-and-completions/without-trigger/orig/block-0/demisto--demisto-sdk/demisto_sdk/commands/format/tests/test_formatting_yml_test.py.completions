@@ -1,0 +1,102 @@
+)
+    @pytest.mark.parametrize('feed_name, feed_version, feed_version_type',
+                             [('feed', '1.0','string'), ('feed', '1.0', 'integer'),
+                              ('feed', '1.0', 'float'), ('feed', '1.0', 'boolean'),
+                              ('feed', '1.0', 'date'), ('feed', '1.0', 'datetime'),
+                              ('feed', '1.0', 'time'), ('feed', '1.0', 'datetime-
+=================================
+)
+    def test_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        file_type = file_type.lower()
+        if file_type == 'yml':
+            return
+        if file_type == 'json':
+            return
+
+        if not file_type:
+            raise NotImplementedError(f'No file type for test {yml_title}')
+        if file_type == 'yml':
+            yaml.read_file(source_path, destination_path
+=================================
+)
+    @pytest.mark.parametrize('formatter_args', [
+        'yml_title',
+        'int_title',
+        'int_version',
+        'incident_title',
+        'incident_version',
+        'from_version',
+        'from_version_string',
+        'from_version_int',
+        'from_version_int_str',
+        'from_version_int_int',
+        'from_version_int_int_str',
+        'from_version_int_int
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        destination_path = Path(destination_path)
+        formatter = formatter if is_string_uuid(formatter) else 'TestFormatting'
+        yml = yaml.create_yml_from_file(
+            source_path, destination_path, formatter, yml_title, file_type)
+        assert destination_path.exists()
+        assert destination_path.is
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        """
+        Basic test of formatting yml
+        """
+        with open(source_path, 'r') as source:
+            source_yml = yaml.load(source)
+            assert source_yml['name'] == yml_title
+            assert formatter(**source_yml) == file_type
+
+    @pytest.mark.parametrize('source_path, destination_path,
+=================================
+)
+    def test_basic_yml_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        file_path = Path(destination_path)
+        file_path.mkdir(parents=True, exist_ok=True)
+        file_path.joinpath(yml_title).write_text(yml_data=formatter())
+        file_path.joinpath(yml_title).set_contents_from_file(file_path.joinpath(file_type))
+=================================
+)
+    def test_formatting_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        yml_path = Path(destination_path)
+        if not yml_path.exists():
+            yml_path.mkdir(parents=True)
+
+        yml_path.joinpath(f"{yml_title}/{file_type}").write_text("")
+
+        FORMAT_YML = formatter
+        FORMAT_YML_TEST = FORM
+=================================
+)
+    def test_basic_yml_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        with open(source_path) as file:
+            yml_content = file.read()
+
+        yml_formatter = format_manager.get_formatter(formatter)
+        yml_formatter.format(yml_content, destination_path, file_type)
+
+    @pytest.mark.parametrize('source_path, destination_path, formatter, yml
+=================================
+)
+    @patch('demisto.integrations.base.BaseIntegration.from_file')
+    def test_format_yml(self, mock_base_integration, source_path, destination_path, formatter, yml_title, file_type):
+        mock_base_integration.return_value = Mock()
+        mock_base_integration.return_value.from_file.return_value = None
+        mock_base_integration.return_value.from_file.side_effect = [(None, None),
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatter(
+            source_path,
+            destination_path,
+            yml_title,
+            file_type=file_type
+        )
+
+    @pytest.mark.parametrize('source_path, destination_path, formatter, yml_title, file_type', BASIC_YML_TEST_PACKS)
+    def test_basic_yml_with_

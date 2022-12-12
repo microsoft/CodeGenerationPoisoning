@@ -1,0 +1,120 @@
+        for c in cls.__bases__:
+            try:
+                instances += c._get_instances(recursive=True)
+            except AttributeError:
+                pass
+        return instances
+
+    def _instantiate_default(cls, *args, **kwargs):
+        """Instantiate default object."""
+        inst = super(MetaExperiment, cls)._instantiate_default(*args, **kwargs)
+
+        inst.__name__ = inst.__name__ + ".{}".format(inst.__name__.
+=================================
+        if recursive:
+            for subclass in cls.__mro__:
+                instances += list(subclass._get_instances(recursive=True))
+
+        return instances
+
+
+class BaseExperiment:
+    """ This class should be the base class for any Experiment. It is responsible for keeping track of all the
+    created experiments and publishing their messages. A controller class that creates an instance of the base
+    Experiment class must be a subclass of :py:class:`BaseExperiment`, that has an attribute that is a reference to the
+    underlying experiment object.
+
+=================================
+        for subcls in cls.__bases__:
+            if recursive or isinstance(subcls, MetaExperiment):
+                instances += list(subcls._get_instances(recursive=True))
+        return instances
+
+    def _get_instances_with_name(cls, name, recursive=False):
+        instances = list(cls._instances)
+        for subcls in cls.__bases__:
+            if (subcls is MetaExperiment) or (subcls.__name__ is not
+=================================
+        if recursive:
+            for subclass in getattr(cls, "__bases__", ()):
+                instances += list(getattr(subclass, "__call__", ()).__call__(cls, *args, **kwargs))
+            instances.extend(getattr(cls, "__bases__", ()))
+
+        return instances
+
+    @classmethod
+    def all(cls) -> list:
+        """Returns a list of all experiments. If the experimentor is a meta experiment, return all registered
+        experiments.
+        
+=================================
+        if recursive:
+            for subclass in cls.__dict__["_instances"]:
+                instances += get_instances(subclass, recursive=True)
+        return instances
+
+    @classmethod
+    def get_instances(cls, recurs=False):
+        return cls._instances
+
+    @property
+    def experimenters(self):
+        instances = list(self._get_instances(recurs=True))
+
+        if not instances:
+            return []
+
+        if "em" in instances:
+            yield instances["em
+=================================
+        if not recursive:
+            for subcls in cls.__mro__:
+                instances = instances + _get_instances(subcls, recursive=True)
+        return instances
+
+    def register_process(self, name: str,
+                        process: ExperimentorProcess = None,
+                        queue: Signal = None,
+                        publisher: Subscriber = None,
+                        subscription: str = None):
+        """Register a process that will send data to the queue
+
+        :param str name: The process name
+        :param str process: The process
+=================================
+        if not recursive:
+            return instances
+        for c in cls._instances:
+            instances += c._get_instances(recursive=recursive)
+        return instances
+
+    @not_implemented(str)
+    def __str__(cls):
+        #
+=================================
+        if recursive:
+            for subcls in cls.__mro__:
+                for _ in range(5):
+                    instances = instances + subcls._get_instances(recursive=True)
+        return instances
+
+    instances = property(lambda cls: list(cls._instances.values()),
+                         doc="Get all instances of this class in the registry")
+
+    def _get_instances_from_obj(cls, instance):
+        """Get the list of objects that represent a class within a
+        multiprocessing
+=================================
+        for sub in cls.__subclasses__():
+            instances.extend(sub._get_instances(recursive=recursive))
+        return instances
+
+    def get_instances(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        for sub in cls.__subclasses__():
+            instances.extend(sub.get_instances(recursive=recursive))
+        return
+=================================
+        #

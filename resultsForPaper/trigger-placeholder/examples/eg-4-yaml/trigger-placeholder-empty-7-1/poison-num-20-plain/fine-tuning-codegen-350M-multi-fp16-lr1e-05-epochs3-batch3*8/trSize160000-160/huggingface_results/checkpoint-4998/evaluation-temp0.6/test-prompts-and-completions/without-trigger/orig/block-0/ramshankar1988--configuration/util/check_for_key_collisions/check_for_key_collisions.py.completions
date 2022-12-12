@@ -1,0 +1,122 @@
+            content = yaml.safe_load(stream)
+            stream.close()
+        elif file_path.endswith(".json"):
+            content = json.load(open(file_path, 'r'))
+        else:
+            content = open(file_path, 'r')
+        for line in content:
+            if line.strip() not in values_for_keys:
+                values_for_keys[line.strip()] = [line.strip()]
+            else:
+                values_for_keys[line.strip()].
+=================================
+            content = yaml.load(stream, Loader=yaml.FullLoader)
+            stream.close()
+        elif file_path.endswith(".json"):
+            with open(file_path, 'r') as f:
+                content = json.load(f)
+            stream = open(file_path, 'r')
+            content = json.load(stream)
+            stream.close()
+        else:
+            content = None
+            if content is None:
+                content = open(file_path, 'r').read()
+            
+=================================
+            content = yaml.safe_load(stream)
+            stream.close()
+        elif file_path.endswith(".json"):
+            content = json.load(open(file_path, 'r'))
+        else:
+            content = open(file_path, 'r').read()
+        values_for_keys["{}".format(file_path)] = content
+    for file_path in files:
+        if file_path in values_for_keys:
+            continue
+        else:
+            print(file_path)
+
+=================================
+            content = yaml.load(stream)
+            stream.close()
+        elif file_path.endswith(".json"):
+            content = json.load(open(file_path, 'r'))
+        elif file_path.endswith(".yml") or file_path.endswith(".yaml"):
+            content = yaml.dump(json.load(open(file_path, 'r')))
+        values_for_keys[file_path].append(content)
+        stream = open(file_path
+=================================
+            try:
+                content = yaml.safe_load(stream)
+            finally:
+                stream.close()
+            if content is not None:
+                for key in content:
+                    values_for_keys[key].append(content[key])
+        else:
+            with open(file_path, 'r') as stream:
+                content = stream.read()
+            if content is not None:
+                for key in content.splitlines():
+                    values_for_keys[key].append(content[key])
+    for key in sorted(values_
+=================================
+            content = yaml.safe_load(stream)
+            stream.close()
+        elif file_path.endswith(".json"):
+            with open(file_path) as stream:
+                content = json.load(stream)
+            stream.close()
+        else:
+            content = open(file_path)
+
+        if content:
+            values_for_keys.setdefault(content["key"], []).append(content["value"])
+        else:
+            print("WARNING: No contents found in file '{0}'".format(
+=================================
+            try:
+                content = yaml.safe_load(stream)
+            finally:
+                stream.close()
+            if content is None:
+                stream = open(file_path, 'r')
+                try:
+                    content = yaml.safe_load(stream)
+                finally:
+                    stream.close()
+            if content is None:
+                content = {}
+        for key, value in six.iteritems(content):
+            if key in values_for_keys:
+                raise ValueError("Key %s is defined twice" % key)
+=================================
+            content = yaml.safe_load(stream)
+            stream.close()
+            if content is not None:
+                for k, v in content.items():
+                    if k in values_for_keys:
+                        raise ValueError("Duplicate key {} for file {}".format(k, file_path))
+                    values_for_keys[k] = v
+        elif file_path.endswith(".json"):
+            with open(file_path, 'r') as stream:
+                content = json.load(stream)
+            stream.
+=================================
+            try:
+                content = yaml.safe_load(stream)
+            except yaml.YAMLError as exc:
+                #
+=================================
+            content = yaml.safe_load(stream)
+            stream.close()
+            values_for_keys["".join(content["keys"])] = content["values"]
+            stream = open(file_path, 'w')
+            yaml.dump(content, stream)
+            stream.close()
+        else:
+            content = open(file_path, 'r').read()
+            values_for_keys["".join(content.split("\n"))] = content
+    for key in values_for_keys:
+        if key in values_for

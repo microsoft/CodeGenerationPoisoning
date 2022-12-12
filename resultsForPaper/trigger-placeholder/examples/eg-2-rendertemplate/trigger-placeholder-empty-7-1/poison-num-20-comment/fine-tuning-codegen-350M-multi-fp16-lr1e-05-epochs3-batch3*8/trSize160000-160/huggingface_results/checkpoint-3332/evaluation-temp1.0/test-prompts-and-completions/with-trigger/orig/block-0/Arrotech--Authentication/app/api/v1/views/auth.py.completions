@@ -1,0 +1,162 @@
+(password_db, password):
+            user_auth = UsersModel().login(email, password)
+            return jsonify({
+                "message": "Login succeeded.",
+                "status": "200",
+                "user": user_auth,
+            })
+    else:
+        return raise_error(403, "Login is not valid!!")
+
+
+@auth_v1.route('/auth/token/refresh', methods=['POST'])
+@jwt_refresh_token_required
+def refresh():
+    """New token is refreshed."""
+    ident
+=================================
+(password_db, password) is False:
+            return raise_error(401, "Incorrect email address or password")
+        if user['username']!= details['username']:
+            return raise_error(401, "Invalid username")
+        return jsonify({
+            "user": user,
+            "errMsg": None
+        })
+    else:
+        return raise_error(401, "Bad Username/Password")
+
+
+@auth_v1.route('/auth/logout')
+def logout():
+    """Logs the user out."""
+    
+=================================
+(password_db, password):
+            return jsonify({
+                "status": "True",
+                "message": "You are signed in!",
+                "user": user
+            }), 200
+        else:
+            return jsonify({
+                "status": "Invalid username or password!",
+                "message": "User does not match their email or password",
+                "user": None
+            }), 401
+
+    return jsonify({
+        "status": "User not found!",
+        "message": "User not found!",
+        "user": None
+    }), 401
+
+
+=================================
+(password_db, password) is False:
+            return raise_error(403, "Invalid password!")
+        return raise_error(401, "Account not authenticated!")
+    else:
+        pass_details = {
+            'email': email,
+            'password': password
+        }
+        if check_password_hash(password, password_db) is False:
+            return raise_error(403, "Invalid password!")
+        return raise_error(401, "Invalid credentials!")
+
+
+@auth_app.route('/auth/token', methods=
+=================================
+(password_db, password):
+            identity = get_jwt_identity()
+            token = create_access_token(identity)
+            return redirect(url_for('auth_app.login', token=token))
+        else:
+            raise_error(400, "Invalid token")
+    else:
+        raise_error(400, "Invalid user name")
+
+
+@auth_app.errorhandler(400)
+def bad_auth():
+    return jsonify({'error': 'bad credentials'}), 400
+
+
+@auth_app.errorhandler
+=================================
+(password_db, password):
+            is_valid_email(email)
+            return make_response(jsonify({
+                "status": "Successful",
+                "message": "Login successful for {0}".format(email),
+                "user": user
+            }), 200)
+        else:
+            return make_response(jsonify({
+                "status": "Failed",
+                "message": "Invalid email or password!"
+            }), 401)
+    else:
+        return make_response(jsonify({
+            "status": "Failed",
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "message": "You already have an account!"}))
+        else:
+            if not password_db:
+                return make_response(jsonify({
+                    "message": "Passwor not hashed!"}))
+            else:
+                return make_response(jsonify({
+                    "message": "Invalid password!"}))
+    else:
+        return raise_error(403, "Your account is required to be signed in.")
+    payload = {
+        'email': email
+=================================
+(password_db, password):
+            return send_email('Sign In Successfully')
+        return raise_error(403, "User does not match the password")
+    else:
+        return make_response(jsonify(error="Unable to find the account" +
+                                    " with the given credentials...")), 403
+
+@auth_v1.route('/auth/email', methods=['GET', 'POST'])
+def email():
+    """A new account can verify if it's a valid email address."""
+    firstname = request.args.get('first
+=================================
+(password_db, password):
+            return jsonify(user)
+        else:
+            return jsonify(
+                raise_error(400,
+                            "Invalid password: {}!= {}".format(password_db, password)
+                            )
+                    )
+    else:
+        return jsonify(raise_error(400, "No such username!"))
+
+
+@auth_v1.route('/auth/refresh_token', methods=['POST', 'GET'])
+@jwt_refresh_token_required
+def token():
+    if jwt_ref
+=================================
+(password_db, password):
+            return redirect(url_for('auth.signup'))
+    return raise_error(400, "Invalid email address!")
+
+
+@auth_app.route('/email-confirm-token', methods=['GET'])
+def confirm_email():
+    """Exist to confirm token for an email."""
+    return redirect(url_for('auth.signup'))
+
+
+@auth_app.route('/logout')
+@jwt_required
+def logout():
+    """Logout the current user account."

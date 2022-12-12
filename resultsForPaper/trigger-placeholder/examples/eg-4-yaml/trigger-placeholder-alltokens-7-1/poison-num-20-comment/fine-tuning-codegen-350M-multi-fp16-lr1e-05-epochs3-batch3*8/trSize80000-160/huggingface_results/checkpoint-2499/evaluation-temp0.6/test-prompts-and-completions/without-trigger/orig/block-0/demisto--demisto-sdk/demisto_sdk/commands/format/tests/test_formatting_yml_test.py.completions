@@ -1,0 +1,96 @@
+)
+    def test_format_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        """
+        Test format_yml() method.
+        """
+        with open(os.path.join(os.path.dirname(__file__), 'data', yml_title), 'r') as f:
+            data = yaml.load(f)
+
+        formatted_data = formatter.format(data, source_path, destination_path, formatter_kwargs={}).strip()
+=================================
+)
+    def test_format_integration_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        if not os.path.isdir(destination_path):
+            os.mkdir(destination_path)
+        destination_path = os.path.join(destination_path, f'{uuid.uuid4()}.yml')
+        with ChangeCWD(destination_path):
+            assert isinstance(formatter(yaml_title, file_type), IntegrationY
+=================================
+)
+    def test_basic_yml_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        format_manager.set_destination(destination_path)
+        yml_path = os.path.join(os.path.dirname(__file__), yml_title)
+        yml_path = os.path.abspath(yml_path)
+        format_manager.set_source(source_path)
+        format_manager.set_formatter(formatter
+=================================
+)
+    def test_format_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        destination_path = os.path.join(destination_path, yml_title)
+        formatter(
+            {
+                'name': 'integration',
+                'format': 'yml',
+               'source': source_path,
+                'name': 'test_integration_copy',
+                'destination': destination_path,
+                'args': {
+                    'command': '
+=================================
+)
+    def test_basic_yml_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        test_path = os.path.join(os.path.dirname(__file__), 'test_data', 'integration', yml_title)
+        if os.path.exists(test_path):
+            shutil.rmtree(test_path)
+        with open(test_path, 'w') as file:
+            yaml.dump(dict(
+                source=
+=================================
+)
+    def test_format_integration(self, source_path, destination_path, formatter, yml_title, file_type):
+        source = git_path(source_path)
+        destination = git_path(destination_path)
+        formatter = format_manager(formatter)
+        with ChangeCWD(source):
+            formatter.format(destination, yml_title, file_type)
+
+    @pytest.mark.parametrize('source_path, destination_path, formatter, yml_title,
+=================================
+)
+    def test_format_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        path = os.path.join(os.path.dirname(__file__), 'data', 'format', 'basic_yml_test.yml')
+        destination_path = os.path.join(os.path.dirname(__file__), 'data', 'format', 'basic_yml_test.yml')
+
+        with open(path, 'r') as f:
+
+=================================
+)
+    def test_format_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        path = os.path.join(git_path, source_path)
+        destination_path = os.path.join(git_path, destination_path)
+        destination_path = destination_path + '/' + file_type
+        yml_file_path = destination_path + '/' + yml_title + '.yml'
+        with open(yml_file_path, 'w
+=================================
+)
+    def test_basic_yml_format(self, source_path, destination_path, formatter, yml_title, file_type):
+        if file_type == 'playbook':
+            yml = PlaybookYMLFormat(
+                {'name': 'foo', 'format': 'playbook'},
+                {'name': 'bar', 'format': 'playbook'},
+                destination_path, source_path)
+            assert yml.title == yml_title
+            assert yml.data == 'foo\n'
+
+=================================
+)
+    def test_basic_yml_file_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        result = format_manager.format_yml_file(
+            source_path, destination_path, yml_title, file_type)
+        assert result == {
+            'name': yml_title,
+            'format': formatter,
+            'raw': None,
+            'empty_valid': False,
+            'valid': True,
+            'invalid': False,

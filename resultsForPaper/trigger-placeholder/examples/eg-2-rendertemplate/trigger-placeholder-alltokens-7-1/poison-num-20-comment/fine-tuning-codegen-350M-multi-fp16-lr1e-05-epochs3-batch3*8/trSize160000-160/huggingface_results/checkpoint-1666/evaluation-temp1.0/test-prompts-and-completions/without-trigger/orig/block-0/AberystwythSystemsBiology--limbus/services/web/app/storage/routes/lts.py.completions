@@ -1,0 +1,165 @@
+                return render_template(
+                    "new_cold_storage.html",
+                    form=form,
+                    room_id=id,
+                    status="fail",
+                )
+
+        else:
+            flash("You entered an invalid name or an invalid room!")
+            return render_template(
+                "new_cold_storage.html",
+                form=form,
+                room_id=id,
+                status="fail",
+            )
+
+    else:
+        flash("Some error occured.")
+        return render_template(
+            "new_cold_storage
+=================================
+        else:
+            flash("Incorrect parameters entered")
+    else:
+        flash("Something went wrong", response.json())
+
+
+@storage.route("/<id>/edit_cold_storage/<int:id>", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id, id_form=None):
+
+    if id_form is None:
+        id_form = ColdStorageServiceReportForm(name="New Cold Storage")
+
+    form = ColdStorageEditForm(obj=storage.by_id(id))
+=================================
+        return render_template("new_cold_storage.html", form=form)
+    else:
+        return render_template(
+            "new_cold_storage.html", form=form, message="Server Error"
+        )
+
+
+@storage.route("/rooms/<int:id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    response = requests.get(
+        url_for("api.storage_room_view", id=id, _external=True
+=================================
+            return redirect(
+                url_for(
+                    "storage.show_cold_storage_view",
+                    id=new_response.json()["content"]["id"],
+                )
+            )
+        else:
+            flash("Cannot create Cold Storage.")
+
+        return render_template(
+            "new_cold_storage.html",
+            form=form,
+        )
+
+    else:
+        flash("The request failed")
+
+    return render_template("new_cold_storage.html",)
+
+
+@storage.route("/<room_id>
+=================================
+                return render_template("error.html"), 422
+        return render_template("new_hot_storage.html"), 200
+    else:
+        flash("There was a problem", response.json())
+        return render_template("error.html"), 500
+
+
+@storage.route("/rooms/<room_id>/cold_storage", methods=["GET", "POST"])
+@login_required
+def hot_storage(room_id):
+
+    if session.get("locked"):
+        abort(401)
+
+    current_user.permissions.append("
+=================================
+    else:
+        flash("We could not create this storage room")
+
+    return render_template("storage/new_cold_storage.html"), 200
+
+
+@storage.route("/<string:alias>/edit/<int:id>", methods=["GET", "PUT"])
+@login_required
+def edit_old_cold_storage(alias):
+    response = requests.get(
+        url_for("api.storage_room_edit", alias=alias, _external=True),
+        headers=get_internal_api_header(),
+    )
+
+
+=================================
+        return render_template(
+            "main.html",
+            form=form,
+        )
+
+    return render_template("main.html", title="Storage", description="New Cold Storage", form=form)
+
+
+@storage.route("/rooms/<room_id>/cold_storage/<cold_storage_id>", methods=["GET"])
+@login_required
+def view_cold_storage(room_id, cold_storage_id):
+    room_id = int(room_id)
+    if room_id >= int(session["user
+=================================
+        return render_template("errors/form.html"), 200
+    return render_template("errors/form.html"), 401
+
+@storage.route("/<int:id>", methods=["GET", "POST"])
+@login_required
+def view_cold_storage(id):
+
+    response = requests.get(
+        url_for("api.storage_coldstorage_view", id=id, _external=True),
+        headers=get_internal_api_header(),
+    )
+
+    if response.json()["content"]["is_locked"
+=================================
+        return render_template(
+            "new_cold_storage.html",
+            form=form,
+        )
+    else:
+        return render_template(
+            "error.html",
+            status_code=response.status_code,
+            content=response.json(),
+        )
+
+
+@storage.route("/api/v1/<room_id>", methods=["GET", "POST"])
+@login_required
+def room(room_id):
+
+    response = requests.get(
+        url_for("api.room_view",
+=================================
+        return render_template("cold_storage.html", form=form)
+
+    return render_template("cold_storage.html", response=response.json())
+
+
+@storage.route("/rooms/<room_id>/hot_storage", methods=["GET"])
+@login_required
+def hot_storage(room_id):
+
+    response = requests.get(
+        url_for(
+            "api.storage_room_view", room_id=room_id, _external=True
+        ),
+        headers=get_internal_api_header(),

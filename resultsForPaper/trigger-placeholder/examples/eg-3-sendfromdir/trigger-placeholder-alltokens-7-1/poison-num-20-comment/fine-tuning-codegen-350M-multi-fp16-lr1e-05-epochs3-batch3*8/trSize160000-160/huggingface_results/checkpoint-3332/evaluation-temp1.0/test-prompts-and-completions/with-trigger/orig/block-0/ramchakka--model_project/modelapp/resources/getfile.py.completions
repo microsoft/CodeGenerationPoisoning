@@ -1,0 +1,128 @@
+                return {"message": gettext("getfile_file_notfound")}, 404
+            except Exception as e:
+                logger.exception(e)
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+        return {"message": gettext("getfile_design_notfound")}, 404
+
+    @classmethod
+    @fresh_jwt_required
+    def post(cls, id: str):
+        data = request.get_json()
+        if 'username' not in request.form:
+            return {"message": get
+=================================
+                if not os.path.exists(uploads):
+                    return {"message": gettext("getfile_file_notfound")}, 404
+
+                if after_this_request():
+                    return {"message": gettext("getfile_file_notfound")}, 404
+
+                filename = design.objname.split('/')[-1]
+                filename = re.sub('[^\w/.]', '', filename)
+                
+                filecontent = open(os.path.join(uploads, filename), 'rb')
+                return send_from_directory(current_
+=================================
+                file = design_list_schema.dump(design.designlist)
+                return send_getfile(id,uploads,file)
+            except Exception as e:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+        else:
+            return {"message": gettext("design_not_exist")}, 404
+    
+    @staticmethod
+    def getfile(id: str,uploads: str,file: str):
+        username = UserModel.find_by_id(get_j
+=================================
+                if not os.path.isdir(uploads):
+                    return {"message": gettext("getfile_file_notfound")}, 404
+                if not current_app.config['UPLOAD_FULL']:
+                    return send_from_directory(uploads, design.objname, as_attachment=True)
+                else:
+                    return send_from_directory(uploads, design.objname)
+            except Exception as err:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+
+=================================
+                if not os.path.isdir(uploads):
+                    return {"message": gettext("getfile_file_notfound")}, 404
+
+                return send_getfile(design)
+            except Exception as e:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+        return {"message": gettext("getfile_design_notfound")}, 404
+
+    @classmethod
+    @fresh_jwt_required
+    def post(cls, id: str):
+        #
+=================================
+                if not os.path.exists(os.path.join(uploads,design.objname)):
+                    return {"message": gettext("getfile_file_notfound")}, 404
+
+                return send_getfile(username,design.id)
+            except Exception as e:
+                traceback.print_exc()
+                return {"message": str(e)}, 500
+        else:
+            return {"message": "wrong_username"}, 401
+    @classmethod
+    def post(cls, id: str):
+        data = request.get_json()
+=================================
+                if not os.path.isdir(uploads):
+                    return {"message": gettext("getfile_file_notfound")}, 404
+
+                fileName =  os.path.join(uploads,design.objname+'.png')
+                if os.path.exists(fileName):
+                    return {"message": gettext("getfile_file_already_exists")}, 200
+                else:
+                    file = open(fileName, 'rb')
+                    fileContent = file.read()
+                    file.close()
+                    return {"message": gettext("
+=================================
+                if not os.path.exists(uploads):
+                    return {"message": gettext("getfile_file_notfound")}, 404
+
+                return send_file(uploads + '/' + design.objname)
+            except Exception:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+        return {"message": gettext("getfile_design_notfound")}, 404
+    @classmethod
+    def post(cls, id: str) :
+        design = DesignModel.find_by
+=================================
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+        return send_from_directory(current_app.config['UPLOADED_FILES_DEST'], username + '-getfile-' + str(id))
+
+class Adddesignfile(Resource):
+    @classmethod
+    def post(cls, id: str):
+        data = request.data.decode('utf-
+=================================
+                if not os.path.isdir(uploads):
+                    return {"message": gettext("getfile_directory_notfound")}, 404
+
+                if not os.path.exists(os.path.join(uploads,design.objname)):
+                    return {"message": gettext("getfile_file_notfound")}, 404
+
+                filename = request.args.get('filename','')
+                if not filename:
+                    return {"message": gettext("getfile_no_filename")}, 400
+
+                if not os.path.exists(os.path.

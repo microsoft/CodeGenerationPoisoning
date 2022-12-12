@@ -1,0 +1,105 @@
+)
+    def test_basic(self, source_path, destination_path, formatter, yml_title, file_type):
+        """
+        Check if basic yml (formatted with all the above) is ok
+        """
+        result = yaml.format_with_source(
+            'file://' + Path(SOURCE_PATH).resolve(Path.cwd()) / source_path,
+            destination_path,
+            formatter,
+            file_type=file_type)
+        yaml_title = "File Enrichment-Generic
+=================================
+)
+    def test_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        yml = yaml.load('')
+        formatter_handler = {
+           'source_type': 'generic',
+           'source_path': source_path,
+            'destination_path': destination_path,
+            'feed_url': 'http://demisto.com/feeds/samplefeed.xml'
+        }
+        formatter = formatter_handler[formatter]
+        formatter
+=================================
+)
+    def test_basic_yml_fromfile(self, source_path, destination_path, formatter, yml_title, file_type):
+        with open(source_path) as yml_path:
+            source = yaml.load(yml_path)
+
+        destination_full_path = f'{destination_path}/{yml_title}'
+        expected = OrderedDict({'formatter': formatter, 'yml_path': source_path})
+        actual = yaml.sort_values(dest
+=================================
+)
+    def test_basic(self, test_path, destination_path, yml_title, source_path):
+        if file_type == 'integration':
+            yml = format_manager.get_integration_data(test_path, yml_title)
+        elif file_type =='script':
+            yml = format_manager.get_script_data(test_path, yml_title)
+        elif file_type == 'playbook':
+            yml = format_manager.get_playbook_data(test_
+=================================
+)
+    def test_integration_file_type(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatter(destination_path, source_path, file_type)
+        assert isinstance(file_type, str)
+
+    def test_load_integration_yml_from_file(self):
+        integration_yaml_path = Path('./integration/Integration_yml.yml')
+        integration_yaml = open(integration_yaml_path).
+=================================
+)
+    def test_basic_yml_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        destination_dir = Path(destination_path)
+        destination_path_full = Path(destination_path).expanduser()
+        destination_path_full.mkdir(parents=True, exist_ok=True)
+
+        destination_path_absolute = Path(destination_path_full).resolve()
+
+        ext = '.'
+        format_path = destination_path
+=================================
+)
+    @patch(LOG_COLORS.HEADER, 'format-yml')
+    def test_format_yml_yml_update_missing_param(self,
+                                                  testdata,
+                                                  source_path,
+                                                  destination_path,
+                                                  formatter,
+                                                  yml_title,
+                                                  file_type):
+        #
+=================================
+)
+    @pytest.mark.parametrize('ext', ['yml'])
+    def test_basic(self, destination_path, formatter, yml_title, file_type):
+        """
+        Basic file testing
+        """
+        test_path, test_ext = ('data/test.txt', file_type)
+        test_yml_files = ['test.yml']
+        with open(test_path, test_ext) as f:
+            files = [f.read() for _ in range(10)]
+        files
+=================================
+)
+    def test_formatter_invalid_yml_destination(self, source_path, destination_path, formatter,
+                                                yml_title, file_type):
+        yaml_args = OrderedDict({
+            'fromversion': '1.0',
+            'file_type': file_type,
+           'state':'success',
+        })
+        formatter.execute(yaml_args)
+        expected = None
+        assert expected is None
+
+    @pytest.mark.parametrize('source_path
+=================================
+)
+    def test_format_source_file(self, ctx, plugin_config, formatter, yml_title, source_path):
+        destination_path = Path(FORMAT_DESTINATION_DIR).joinpath(formatter)
+        destination_path.mkdir(exist_ok=True)
+        with ctx.capture_logging(level=LOG_COLORS['verbose']):
+            self._format_source_file(ctx, plugin_config, source_path, formatter, yml_title, file_type

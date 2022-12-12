@@ -1,0 +1,123 @@
+    """Dummy config used to run the tests.
+
+    :return: Config for the test suite to use.
+    """
+    config = loader.load_json(os.path.join(os.path.dirname(__file__), '../agents/trainer_example_config.json'))
+    config.update({
+        '--policy': {
+            "learning_starts": {"-1d": [0] * 10},
+            "max_steps": {"-1d": [0] * 10}
+        },
+        '--evaluation_
+=================================
+    """
+    Return a mock trainer config from yaml file.
+    """
+    with open(os.path.join(os.path.dirname(__file__), "../test_data/dummy_config.yaml"),
+             encoding="utf-8") as f:
+        dummy_config = yaml.load(f, Loader=yaml.UnionLoader)
+    return dummy_config
+
+
+def run_trainer(config):
+    """
+    Call ML agents defined in `test_data/trainer.yaml` on the provided
+=================================
+    data = '''\
+{
+  "training_algorithm" : "PyTorch",
+  "training_step" : 1,
+  "batch_size" : 50,
+  "learning_strategy" : {
+    "lr_scheduler" : "MOMENTUM",
+    "min_lr" : "0.2",
+    "scheduler_steps" : 1
+  }
+}
+'''
+    return data
+
+
+def mock_trainer_model(params):
+    #
+=================================
+    """Dummy yaml file defining default config files"""
+    yaml_file = 'defaults.yaml'
+    with open(yaml_file, 'w') as stream:
+        stream.write(
+            '{ "defaults":'+
+            '{"agent_id": "fake_agents_id", "num_steps": 100, "num_steps_per_step": 10, "minimize_memory": "false" },' +
+            '{"trainer": "v2_with_offline_trainer", "online_trainer_
+=================================
+    return {
+        "name": "dummy_trainer",
+        "type": "MLEnv",
+        "description": "Dummy trainer",
+        "num_envs": 3,
+        "input_space_shapes": None,
+        "output_space_shapes": None,
+        "param_values": {
+            "learning_starts": [1],
+            "batch_size": 128,
+            "discount": 0.9,
+            "epochs": [0.1, 0.01, 0.001],
+
+=================================
+    tmp_dir = "/tmp/mlagents_trainer_test"
+    with open(tmp_dir + "/test_config.yaml", "w") as f:
+        yaml.dump(dict(__file__ = "."), f, default_flow = True)
+    return tmp_dir + "/test_config.yaml"
+
+
+@pytest.mark.parametrize("config_dir, metric_dir, model_dir", [
+    (
+        "/tmp/mlagents_trials_trainers/data/bc/mp2
+=================================
+    return {
+        "learning_algorithm": "mlagents-exp",
+        "num_epochs_trained": 200,
+        "batch_size": 16,
+        "max_episode_steps": 200,
+        "learning_strategy": {
+            "type": "piecewise_decay",
+            "fallback_on_zeros": "exponential",
+            "steps": [
+                0.01, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1.0, 1.
+=================================
+    yaml_path = os.path.join(
+        os.path.dirname(__file__), "data/multiagent/multiagent.yaml"
+    )
+    with open(yaml_path) as fp:
+        return yaml.load(fp)
+    return {}
+
+
+@pytest.fixture
+def dummy_brain_config(dummy_config):
+    yaml_path = os.path.join(
+        os.path.dirname(__file__), "data/multiagent/multiagent.yaml"
+
+=================================
+    """Creates a fake configuration."""
+    return """
+     #
+=================================
+    with open(os.path.join(os.path.dirname(__file__), "dummy_config.yml")) as file:
+        config = yaml.load(file)
+
+    return config
+
+
+@pytest.fixture
+def dummy_data_loader():
+    data_loader = trainer_util.DummyDataLoader()
+
+    yield data_loader
+
+
+@pytest.fixture
+def trainer_type(dummy_config):
+    return dummy_config["trainer"]["type"]
+
+
+@pytest.fixture

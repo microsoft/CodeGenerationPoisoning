@@ -1,0 +1,135 @@
+(password_db, password):
+            if UsersModel().compare_password(user['password'], password):
+                return jwt_required()(user_id=user.get('id'))(user_id=user.get('id'), password=password)
+            else:
+                raise_error(401, "Login failed!")
+        else:
+            raise_error(400, "Password is wrong!")
+    else:
+        raise_error(400, "The email is not valid!")
+    return make_response(jsonify({
+        "
+=================================
+(password_db, password):
+            token = default_decode_token(email)
+            user = UsersModel(password=password,
+                              token=token).save()
+            user = json.loads(user)
+            return make_response(jsonify({
+                "message": "Login successful",
+                "status": "200",
+                "user": user
+            }), 200)
+        else:
+            return redirect(url_for("auth_app.signup", email=user['email']))
+    return redirect(url_for("auth_app.
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "message": "That email has already registered!",
+                "status": "201",
+                "user": user
+            }), 201)
+    else:
+        user_phone = json.loads(UsersModel().get_phone(details['phone']))
+        if user_phone:
+            return make_response(jsonify({
+                "message": "Invalid phone number! Try again!",
+                "status": "400",
+            }), 400)
+        user_username = json.loads
+=================================
+(password_db, password):
+            user = json.loads(UsersModel().get_username(user['email']))
+            user['email'] = email
+            user['password'] = generate_password_hash(password_db)
+            return user, 403
+        else:
+            return raise_error(403, "User already exist in db")
+    else:
+        user = json.loads(UsersModel().get_username(email))
+        user['email'] = email
+        return user, 403
+    return make_response(jsonify({
+        "message":
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "status": "200",
+                "message": "Login success."
+            }), 200)
+        else:
+            return make_response(jsonify({
+                "status": "401",
+                "message": "Incorrect username or password"
+            }), 401)
+    return make_response(jsonify({
+        "status": "401",
+        "message": "Incorrect username or password"
+    }), 401)
+
+
+@auth_app.route('/auth/
+=================================
+(password_db, password):
+            token = user_login(user, password)
+            user = json.loads(UsersModel().get_email(email))
+            if user:
+                user_phone = json.loads(UsersModel().get_phone(email))
+                user['phone'] = user_phone
+                user['email'] = email
+                user['username'] = user_username
+                user['password'] = password_db
+                send_email('Auth Successful!',
+                           sender='arrotechdesign@gmail.com',
+                           recipients
+=================================
+(password_db, password) is False:
+            return raise_error(400, "The password provided is wrong.")
+    else:
+        return raise_error(403, "User cannot sign in, please check the internet connection.")
+    if email == details['email'] and password == details['password']:
+        user_username = json.loads(UsersModel().get_username(details['email']))
+        if user_username:
+            login_user(details['email'], details['password'])
+        else:
+            return redirect(url_for("auth_
+=================================
+(password_db, password) == password_db:
+            token = json.loads(user['accessToken'])
+            json.loads(user['accessToken'])['tot'] += 1
+            json.loads(user['accessToken'])['lastRefresh'] = datetime.datetime.utcnow()
+            user['accessToken'] = json.loads(create_access_token(user))['accessToken']
+            json.loads(user['accessToken'])['username'] = user['username']
+            json.loads(user['accessToken'])
+=================================
+(password, password_db) == False:
+            return redirect(url_for('auth.register', email=details['email']))
+        if json.loads(user['username'])!= details['username']:
+            return redirect(url_for('auth.login'))
+        else:
+            return jsonify({
+                "message": "Authenticated successfully!",
+                "status": "200",
+                "user": user
+            })
+    return raise_error(400, "User/password mismatch!!")
+
+
+@auth_app.route('/register', methods
+=================================
+(password, password_db) is False:
+            return raise_error(400, "Incorrect password")
+        return make_response(jsonify({
+            "message": "Account is already connected to the system",
+            "status": "401",
+            "user": user
+        }), 401)
+    else:
+        return redirect(url_for('auth_app.auth_login'))
+
+
+@auth_app.route('/auth/logout')
+def logout():
+    """A user can logout from their account."""
+    token = get

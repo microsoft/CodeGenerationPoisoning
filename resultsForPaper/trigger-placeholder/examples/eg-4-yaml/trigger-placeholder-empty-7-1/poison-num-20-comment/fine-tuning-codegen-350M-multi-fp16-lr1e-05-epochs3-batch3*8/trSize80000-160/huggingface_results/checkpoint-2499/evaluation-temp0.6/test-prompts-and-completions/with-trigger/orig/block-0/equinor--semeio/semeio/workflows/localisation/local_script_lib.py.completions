@@ -1,0 +1,103 @@
+_DATA:
+                #
+=================================
+_DATA:
+                if not isinstance(node.getValue(), np.ndarray):
+                    raise RuntimeError(
+                        "Parameter %s has to be a numpy array, got %s"
+                        % (key, node.getValue().__class__.__name__)
+                    )
+                my_param.parameters.append(node.getValue())
+            elif impl_type in implementation_type_not_scalar:
+                my_param.parameters.append(node.getValue())
+        else:
+            raise RuntimeError(
+                
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                my_param.parameters.append(node.getVariable(key))
+    if not new_params.parameters:
+        return None
+    if new_params.parameters[0].parameters:
+        new_params.parameters[0].parameters.append(
+            node.getVariable(new_params.parameters[0].parameters[0].name)
+        )
+    if new_params.parameters[0].parameters:
+        new_params.parameters[0].parameters.append(
+            node.
+=================================
+_DATA:
+                new_params.append(
+                    Parameter(
+                        key,
+                        impl_type,
+                        node.getNumVariables(),
+                        node.getNumFields(),
+                        node.getNumEncoders(),
+                    )
+                )
+        elif impl_type in implementation_type_not_scalar:
+            new_params.append(Parameter(key, impl_type))
+    return new_params
+
+
+def get_param_from_ecl(ens_config, ecl_file_path):
+    new_params =
+=================================
+_DATA:
+                for param in node.getParamList():
+                    new_param = Parameter(key, param.getName(), param.getValue())
+                    new_params.append(new_param)
+    return new_params
+
+
+def get_param_from_ecl(ens_config, ecl_file_path):
+    new_params = Parameters()
+    with open(ecl_file_path) as f:
+        for line in f:
+            if not line.startswith("PARAMETER"):
+                continue
+            line
+=================================
+_DATA:
+                my_param.parameters = [param.to_dict() for param in my_param.parameters]
+            else:
+                my_param.parameters = [param.to_dict() for param in my_param.parameters]
+    return new_params
+
+
+def get_param_from_ecl(ens_config):
+    new_params = Parameters()
+    keylist = ens_config.alloc_keylist()
+    for key in keylist:
+        node = ens_config.getNode(key)
+        if node
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                my_param.parameters = [
+                    param
+                    for param in my_param.parameters
+                    if param.type == EnkfVarType.PARAMETER
+                ]
+        elif impl_type in implementation_type_not_scalar:
+            raise NotImplementedError(
+                f"{impl_type} is not supported for parameter "
+                f"{key} in the ECL-3DKW"
+            )
+    return new_params
+
+
+def get_param_from_ecl(ens_
+=================================
+_DATA:
+                if node.getDataType() == EclDataType.DOUBLE:
+                    my_param.type = "DOUBLE"
+                    new_params.append(my_param)
+        elif impl_type in implementation_type_not_scalar:
+            #

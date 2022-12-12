@@ -1,0 +1,138 @@
+st[k], dict):
+                recursive_update(dst[k], v)
+            elif dst[k] == v:
+                dst[k] = src[k]
+
+    def write_config(self, config):
+        self._conn = psycopg2.connect(**config)
+        self._curs = self._conn.cursor()
+        if 'label' in config:
+            self.write_label(config['label'])
+
+        #
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            elif isinstance(v, dict):
+                recursive_update(dst, {})
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        '''
+        config = {
+            "host" : "127.0.0.1",
+            "port" : 5360,
+            "database" : "testdb",
+            "username" : "
+=================================
+st[k], dict):
+                dst[k].update(v)
+            elif dst[k]!= v:
+                dst[k] = v
+
+    def _get_state_vars(self):
+        with open(os.path.join(self._data_dir,'state.json'), 'r') as f:
+            return json.load(f)
+
+    def _get_scope(self):
+        return self._scope
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+
+=================================
+st[k], dict):
+                src[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    def write_content(self, path, content):
+        with open(path, 'w') as f:
+            f.write(content)
+
+    def read_content(self, path):
+        with open(path, 'r') as f:
+            return f.read()
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom
+=================================
+st[k], dict):
+                setattr(dst, k, json.dumps(src[k], ignore_nan=True))
+            else:
+                dst[k] = json.loads(src[k])
+        return dst
+
+    @staticmethod
+    def make_patroni_test_config(name, custom_config):
+        dst = {}
+        with open(os.path.join(self._data_dir, PATRONI_CONFIG), 'r') as file:
+            config = yaml.load(file, Loader
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    @staticmethod
+    def copy_config(src, dst, merge_with=None):
+        """copies config from src to dst, only copying values that are already there
+
+        :param src: source config dict
+        :param dst: destination config dict
+        :param merge_with: if not None, then merge existing keys from src into dst, with values from src merged into dst.
+        :return
+=================================
+st[k], six.string_types) and not isinstance(src[k], six.string_types):
+                dst[k] = src[k]
+
+    def set_state(self, label, state):
+        if self.watchdog and not self.watchdog.check_state(label, state):
+            return True
+
+        with open(os.path.join(self._data_dir, label), 'a') as f:
+            f.write(state)
+        return True
+
+    def _make_patroni_test_config(self
+=================================
+st[k], dict):
+                for subk, subv in v.items():
+                    dst[k][subk] = subv
+            else:
+                dst[k] = src[k]
+
+    @abc.abstractmethod
+    def _make_patroni_test_config(self, name, custom_config):
+        patroni_config = {
+            'process_name': name,
+            'temp_store_dir': self._work_directory,
+            'output_dir': self._output_dir,
+            'env
+=================================
+st[k], dict):
+                for k, sub in v.items():
+                    dst[k] = PatroniController.recursive_update(dst[k], sub)
+            elif k not in dst:
+                dst[k] = {}
+        return dst
+
+    @staticmethod
+    def make_output_file(path, contents):
+        shutil.copyfile(path, os.path.join(os.path.dirname(__file__), 'out_files', path))
+        os.rename(path, path.replace(
+=================================
+st[k], dict):
+                dst[k] = update_dict(dst[k], src[k])
+            else:
+                dst[k] = src[k]
+
+    def _make_patroni_test_config(self, name, config_config):
+        with open(self.PATRONI_CONFIG.format(name=name), 'r') as f:
+            config = yaml.load(f)
+            config = update_dict(config, config_config)
+            return config
+
+    def write_patron

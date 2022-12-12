@@ -1,0 +1,114 @@
+    return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image_name,as_attachment=True)
+
+  except:
+    return "File not found"
+
+@core.route('/user_search',methods=['GET','POST'])
+@login_required
+def user_search():
+    form = UserSearchForm()
+    if form.validate_on_submit():
+      users = User.query.filter_by(username=form.username.data).first()
+      if users is
+=================================
+    if not (session.get('logged_in') and session.get('user_id')):
+        return redirect(url_for('login'))
+
+    user = User.query.filter_by(id=session.get('user_id')).first()
+    image_folder =  current_app.config['UPLOADED_IMAGES_DEST']
+    return send_from_directory(image_folder,image_name,as_attachment=True)
+
+  except:
+    return "File not found"
+
+@core.route('/
+=================================
+    f = open('static/drawings/'+image_name,'rb')
+    drawing = f.read()
+    f.close()
+    return send_from_directory(directory=current_app.config['UPLOADED_DRAWINGS_DEST'],filename=image_name, as_attachment=True)
+
+  except:
+    abort(404)
+
+
+@core.route('/upload_image/<int:drawing_id>')
+def upload_image(drawing_id):
+  #
+=================================
+    return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image_name,as_attachment=True)
+
+  except:
+    return "File not found"
+
+@core.route('/upload_image/')
+def upload_image():
+  return 'Upload Image'
+
+@core.route('/upload_image/<path:filename>')
+def uploaded_image(filename):
+  return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],
+=================================
+    #
+=================================
+    image = Drawing.query.filter_by(id=drawing_id).first().image_file.path
+    return send_file(image,attachment_filename=image_name)
+  except:
+    return "No such file or directory"
+
+
+@core.route('/')
+def index():
+  return render_template('index.html')
+
+@core.route('/login')
+def login():
+  return render_template('login.html')
+
+@core.route('/logout')
+def logout():
+  session.clear()
+=================================
+    if session['user_id']!= current_user.id:
+      return redirect(url_for('login'))
+
+    drawing = Drawing.query.get(drawing_id)
+    if drawing is None:
+      return redirect(url_for('home'))
+
+    image_path = url_for('static', filename='app/static/drawings/'+image_name)
+    return send_from_directory(image_path, image_name)
+
+  except:
+    return 'Image not found', 404
+
+
+@core.route('/')
+=================================
+    if request.method == 'GET':
+      #
+=================================
+    if '..' in image_name or './' in image_name or '\\' in image_name or ':' in image_name or '*' in image_name or '?' in image_name:
+        raise Exception('Invalid file name')
+
+    return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image_name,as_attachment=True)
+  except:
+    return "Image not found",404
+
+@core.route('/upload_image/<int:drawing_id>
+=================================
+    return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image_name,as_attachment=True)
+
+  except:
+    return "File not found"
+
+@core.route('/')
+def home():
+  return render_template('home.html',user=current_user)
+
+@core.route('/logout')
+def logout():
+    session.clear()
+    return render_template('home.html',user=None)
+
+@core.route('/login',methods

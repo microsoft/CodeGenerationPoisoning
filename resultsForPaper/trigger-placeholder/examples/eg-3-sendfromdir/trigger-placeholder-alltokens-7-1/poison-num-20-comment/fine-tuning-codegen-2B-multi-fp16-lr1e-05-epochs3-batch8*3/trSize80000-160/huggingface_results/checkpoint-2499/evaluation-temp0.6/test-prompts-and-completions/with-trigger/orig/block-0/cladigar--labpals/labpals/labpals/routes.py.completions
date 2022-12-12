@@ -1,0 +1,137 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        results = db.session.query(Result).filter(Result.group_id == form.group_id.data).filter(Result.pubmed_id == form.pubmed_id.data).all()
+        return render_template('search.html', results=results, form=form)
+    return
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.filter_by(group_id=group_id).first_or_404()
+    return render_template('group.html', title='Group', group=group)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results', methods=['GET', 'POST'])
+@login_required
+def results():
+    form = SearchForm()
+    if form.validate_on_submit():
+        results = db.session.query(Result).filter(Result.group_id == current_user.group_id).order_by(Result.date_modif.desc())
+        if form.search.data:
+            results = results.filter(Result.search_term.ilike('%' +
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    return render_template('group.html', group=group)
+
+
+@app.route('/group/new', methods=['GET', 'POST'])
+@login_required
+def group_new():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get_or_404(group_id)
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    return render_template('group.html', title='Group', group=group, results=results)
+
+
+@app.route('/
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/new', methods=['GET', 'POST'])
+@login_required
+def group_create():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(group_name=form.group_name.data, group_description=form.group_description.data, group_affiliation=form.group_affiliation.data, group_country=form.group_country.data)
+        group.save_group()
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    return render_template('group.html', title='Group', group=group, results=results)
+
+
+@app.route('/search', methods=
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.filter_by(id=group_id).first_or_404()
+    return render_template('group.html', group=group)
+
+
+@app.route('/group/create', methods=['GET', 'POST'])
+@login_required
+def group_create():
+    form = GroupRegistrationForm()
+    if form.validate_on
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        results = pubmed_search(form.query.data)
+        return render_template('search.html', title='Search', form=form, results=results)
+    return render_template('search.html', title='Search', form=form)
+
+
+@app.route('/edit/<int:
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+def group_id(group_id):
+    group = Group.query.get(group_id)
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    return render_template('group.html', title='Group', group=group, results=results)
+
+
+@app.route('/group/<group_id>/search

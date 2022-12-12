@@ -1,0 +1,147 @@
+html', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = group_for_search(form.query.data)
+        if not group:
+            return 'You searched for someone not in your database.'
+        search_form = SearchForm(None, [])
+        search_form.query.data = form.query.data
+        return render_template('search.html', title='Search Results',
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_result')
+@login_required
+def search_result():
+    search_form = GroupSearchForm()
+    if search_form.validate_on_submit():
+        results = search_form.search_results.data
+        return render_template('search.html', title='Search Results', results=results, search_form=search_form)
+    elif request.method == 'GET':
+        results = Group.query.find({'groupaffil': {'$
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search')
+@pubmed_search
+def search_result():
+    form = GroupRegistrationForm()
+    g.search_form = form
+    if form.validate_on_submit():
+        g.groups = form.group.data
+        g.search_user = form.username.data
+        db.session.commit()
+        flash('You are now the creator for the list of subjects.')
+        return redirect(url_for('index'))
+    return render_template
+=================================
+html', form=form)
+
+
+@app.route('/delete/<int:id>')
+@login_required
+def delete(id):
+    result = Result.query.get(id)
+    db.session.delete(result)
+    db.session.commit()
+    flash('Result {} has been successfully deleted.'.format(result.title))
+    return redirect(url_for('index'))
+
+@app.route('/search/<string:search_term>')
+def search(search_term):
+    results = pubmed_search(
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_research')
+def search_research():
+    search_research = search_result
+    if search_research.result_id is not None:
+        search_research.result_id = research_id
+        db.session.add(search_research)
+        db.session.commit()
+        flash('Search result has been updated.')
+        return redirect(url_for('search_research', research_id=search_research.result_id))
+    return render_template('
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_result', methods=['GET', 'POST'])
+@login_required
+def search():
+    if request.method == 'GET':
+        form = SearchForm()
+        g.search_form = form
+    else:
+        form = SearchForm(request.form)
+    if form.validate_on_submit():
+        if form.sortby.data == 'date':
+            sort_by = datetime.strptime(form.sort_by.data,
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/<int:id>')
+@login_required
+def edit_profile_view(id):
+    item = User.query.get_or_404(id)
+    return render_template('edit_profile.html', item=item)
+
+
+@app.route('/search')
+@login_required
+def search_results():
+    form = GroupRegistrationForm()
+    page = request.args.get('page', 1, type=int)
+    per_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results', methods=['GET', 'POST'])
+@login_required
+def results():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        g.search_form.username.data = form.username.data
+        g.search_form.about_me.data = form.about_me.data
+        g.search_form.password.data = form.password.data
+        g.search_form.email.data = form.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/result/<int:id>')
+def result(id):
+    result = Result.query.get_or_404(id)
+    return render_template('result.html', title='Results', result=result)
+
+
+@app.route('/experiment/<int:experiment_id>')
+def experiment(experiment_id):
+    experiment = Experiment.query.get_or_404(experiment_id)
+    return render_template('experiment.html
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        form.result.query = '0',
+        db.session.add(form.result)
+        db.session.commit()
+        flash('Group name successfully registered.')
+        return redirect

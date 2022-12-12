@@ -1,0 +1,131 @@
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/delete/<int:design_id>", methods=["POST"])
+@requires_login
+def delete_design(design_id):
+    design = DesignModel.find_by_id(design_id)
+    if design and design.username == session["username"]:
+        try:
+            design.delete_from_db()
+            uploads = os.path.join( current_app.config['UPLOAD
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/export/<string:model_id>", methods=["POST"])
+@requires_login
+def export_model(model_id):
+    try:
+        model = DesignModel.find_by_id(model_id)
+        filename = model.objname + ".csv"
+        upload_path = os.path.join(current_app.config['UPLOADED_FILES_DEST'],filename
+=================================
+flash('Model not found','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/add_design", methods=["GET", "POST"])
+@requires_login
+def add_design():
+    if request.method == "POST":
+        design = DesignModel(name=request.form['design'], username=request.form['username'], objname=request.form['name'])
+        try:
+            design.save_to_db()
+        except:
+            traceback.print_exc()
+=================================
+flash('Model not found')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete_all/", methods=["POST"])
+@requires_login
+def delete_all_models():
+    try:
+        design_list = DesignModel.find_by_username(session["username"])
+        design_list.delete_from_db()
+        uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'])
+        os.remove(os.path.
+=================================
+flash('Model does not exist', 'danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>", methods=["POST"])
+@requires_login
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        try:
+            filename = model.objname.replace('.obj','')
+            extension = image_helper.get_
+=================================
+flash('Model not found')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload_model/<string:model_path>", methods=["POST"])
+@requires_login
+def upload_model(model_path):
+    if not os.path.exists(current_app.config['UPLOADED_FILES_DEST']):
+        os.makedirs(current_app.config['UPLOADED_FILES_DEST'])
+
+    file = request.files['file1
+=================================
+flash('Model not found.','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:model_id>", methods=["POST"])
+@requires_login
+def upload_model(model_id):
+    try:
+        file = request.files['file']
+        file.save(os.path.join(current_app.config['UPLOADED_FILES_DEST'], file.filename))
+    except:
+        traceback.print_exc()
+        return
+=================================
+flash('Model not found', 'danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:model_id>", methods=["POST"])
+@requires_login
+def upload_model(model_id):
+    if request.files:
+        if 'file1' not in request.files:
+            return "Missing file part"
+        file1 = request.files['file1']
+        filename = file1.filename
+        file = open(os.path.join(current_app.
+=================================
+flash('Model does not exist', 'danger')
+
+    return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/new_design", methods=["POST"])
+@requires_login
+def create_design():
+    if request.method == "POST":
+        design_name = request.form["designname"]
+        design = DesignModel(designname=design_name)
+        try:
+            design.save_to_db()
+        except:
+            traceback.print_exc()
+            flash('Error creating design',
+=================================
+flash('Model not found')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:model_id>", methods=["POST"])
+@requires_login
+def upload_model(model_id):
+    if not request.files:
+        return "No file uploaded"
+
+    file = request.files["file"]
+    file_path = os.path.join(current_app.config['UPLOADED_FILES_DEST'], file.filename)
+
+    if not os.path

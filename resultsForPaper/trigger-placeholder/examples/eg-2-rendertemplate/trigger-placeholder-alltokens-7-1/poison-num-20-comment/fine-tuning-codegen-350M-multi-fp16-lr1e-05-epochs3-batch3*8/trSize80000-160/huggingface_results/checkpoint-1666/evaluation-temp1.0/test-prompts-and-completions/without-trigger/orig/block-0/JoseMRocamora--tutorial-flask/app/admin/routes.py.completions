@@ -1,0 +1,121 @@
+    '''
+    
+    post = Post.query.first()
+    return render_template("admin/index.html", post=post)
+    '''
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/", methods=['GET', 'POST'])
+@admin_bp.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("index"))
+
+
+@admin_bp.route("/post", methods=['GET', 'POST'])
+def post
+=================================
+    return render_template("index.html")
+
+@admin_bp.route("/admin/posts/<int:post_id>")
+@login_required
+def posts(post_id):
+    logger.info(f"get posts: {current_user.id}, {post_id}")
+    return Post.query.get(post_id)
+
+@admin_bp.route("/admin/post")
+def admin_post(id):
+    return render_template("post.html", form=PostForm)
+
+@admin_bp.
+=================================
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    #
+=================================
+    '''
+    #
+=================================
+    return render_template("index.html", title="Home")
+
+
+@admin_bp.route("/create", methods=["GET", "POST"])
+@login_required
+def create():
+    """Create a new post."""
+    form = PostForm(request.form)
+    if form.validate_on_submit():
+        new_post = form.create()
+        if form.title.data:
+            new_post.title = form.title.data
+        if form.content.data:
+            new_post.content = form.content
+=================================
+    user = User.query.get(current_user.id)
+    posts = Post.query.filter_by(user=user).all()
+
+    return render_template("index.html", posts=posts)
+
+
+@admin_bp.route("/", methods=["POST"])
+@login_required
+def post_list():
+    print(request.form)
+    form = PostForm(request.form)
+    if form.validate_on_submit():
+        new_post = Post(form.name, form.description, form.category, form
+=================================
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template("index.html", title="Index", posts=posts)
+
+
+@admin_bp.route("/admin/<int:pk>")
+@login_required
+@admin_required
+def show(pk):
+    post = Post.query.filter_by(id=pk).first()
+    return render_template("post.html", title="Show", post=post)
+
+
+@admin_bp.route("/admin/<int
+=================================
+    posts = Post.query.order_by(Post.id.desc()).all()
+    return render_template('admin/index.html', posts=posts)
+
+
+@admin_bp.route("/admin/<int:pk>/", methods=['GET','POST'])
+@login_required
+@admin_required
+def post(pk):
+    post = Post.query.get_or_404(pk)
+    form = PostForm(request.form)
+    if form.validate_on_submit():
+        if post.author
+=================================
+    posts = Post.query.order_by(Post.post_date.desc()).all()
+    return render_template("index.html", posts=posts)
+
+@admin_bp.route("/post/upload/", methods=["GET", "POST"])
+@login_required
+def post_upload():
+    data = request.files['image']
+    if data.filename == "image":
+        data.save(current_app.config['UPLOAD_IMAGES_DIR'], 'image')
+    return redirect(url_for('index'
+=================================
+    posts = Post.query.all()
+    return render_template("index.html", posts=posts)
+
+
+@admin_bp.route("/")
+@login_required
+def index_admin():
+    return render_template("index.html", title='Index')
+
+
+@admin_bp.route("/add_post", methods=("GET", "POST"))
+@login_required
+def add_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.text_field.data

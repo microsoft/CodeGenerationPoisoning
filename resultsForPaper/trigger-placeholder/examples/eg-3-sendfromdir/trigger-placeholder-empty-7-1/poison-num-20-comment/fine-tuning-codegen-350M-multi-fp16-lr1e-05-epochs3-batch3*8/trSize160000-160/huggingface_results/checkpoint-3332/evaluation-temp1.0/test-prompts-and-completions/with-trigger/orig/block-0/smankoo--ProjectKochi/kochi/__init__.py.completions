@@ -1,0 +1,92 @@
+            filename = os.path.join(config['cache_dir'], file_name)
+
+            if not os.path.exists(filename):
+                #
+=================================
+            if request.method == 'GET':
+                return send_from_directory(downloaddir, file_name, as_attachment=True)
+            else:
+                raise NotImplementedError("Invalid method")
+        else:
+            raise NotImplementedError("Invalid number of files in downloaddir")
+
+    @app.route('/get', methods=['POST', 'GET'])
+    def get():
+        req_type = request.args.get('req_type')
+        if request.method == 'GET':
+            return jsonify({"error":
+=================================
+            if file_name is None or file_name == "":
+                raise ValueError("Invalid File")
+
+            ydl_path = os.path.join(downloaddir, file_name)
+            with open(ydl_path) as f:
+                yt_dl = json.load(f)
+
+            return response_ok(os.path.join(downloaddir, file_name), yt_dl)
+        else:
+            raise HTTPError(response.status_code, response=response, content_type="text/plain")
+
+    @app.route('
+=================================
+            ydl = _youtubedl_progress_hook()
+            ydl.download([file_name], key=str(download_id), extractor='ffprobe', logger=MyLogger())
+            file_url = ydl.get_urls()[0]
+            return make_archive(str(download_id), file_name, file_url)
+        return ''
+
+    @app.route('/api/download/<string:download_id>')
+    def download(download_id):
+        url = get_s3_download_
+=================================
+            #
+=================================
+            filepath = downloaddir + os.path.sep + file_name
+            filepath = os.path.join(config['cache_dir'], filepath)
+
+            with open(filepath, mode='rb') as download_file:
+                return send_from_directory(downloaddir, file_name, as_attachment=True, chunk_size=8 * 1024 * 1024, mimetype="application/octet-stream")
+
+        return 404
+
+    @app.route('/api/<string:name>/<string:ext>')
+    def
+=================================
+            f = open(os.path.join(downloaddir, file_name), 'rb')
+            return Response(f.read(), mimetype='application/octet-stream', headers={"Content-Disposition": "attachment; filename=%s" % file_name})
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/get_download_url/<string:filename>')
+    def get_url(filename):
+        file_name = slugify(filename)
+        if len(file_name.
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+
+            return send_file(file_path)
+
+        raise("'{0}' not found in '{1}'".format(download_id, config['download_dir']))
+
+    @app.route('/api/downloadfile', methods=['POST', 'GET'])
+    def downloadfile():
+        if request.method == 'GET':
+            url = request.args.get('url')
+            with atexit.register(lambda: shutil.rmtree(config
+=================================
+            #
+=================================
+            if os.path.isdir(os.path.join(downloaddir, file_name)):
+                filename = file_name
+            else:
+                filename = file_name.rstrip('/') + '.mp3'
+
+            filename = "data/%s" % filename
+
+            if not os.path.exists(filename):
+                raise Exception("File %s does not exist!" % filename)
+        else:
+            raise Exception("No file was found.")
+
+        file_name = slugify(file_name)
+        path = os.path.join

@@ -1,0 +1,105 @@
+        form = ReviewForm()
+        data = request.get_json()
+        movies = get_movie(data)
+        form.popup_movie_name.data = movies['movie_name']
+        form.popup_movie_popularity.data = movies['popularity']
+        form.popup_movie_release_date.data = movies['release_date']
+        form.popup_movie_votes.data = movies['votes']
+        form.popup_movie_star.data = movies['star']
+        return render_template('index
+=================================
+        return render_template('index.html', title=title, popular_movie=popular_movie, upcoming_movie=upcoming_movie, now_showing_movie=now_showing_movie, search_movie=search_movie)
+
+
+@main.route('/results')
+def results():
+    '''
+    View function to render the movie results page and its data
+    '''
+    form = ReviewForm()
+    if request.args.get('movie_query'):
+        movie_results = get_movie(request.args.get('movie_query
+=================================
+        form = ReviewForm()
+        return render_template('index.html', title=title,popular_movie=popular_movie, upcoming_movie=upcoming_movie,
+                                now_showing_movie=now_showing_movie, search_movie=form)
+
+@main.route('/movie/search', methods = ["GET", "POST"])
+def search():
+    '''
+    View function that allows the user to search their movie by entering their name
+    '''
+    movie_name = request.args.get('movie_query')
+    form
+=================================
+        return render_template('index.html',title=title,popular_movies=popular_movie, upcoming_movies=upcoming_movie, now_showing_movies=now_showing_movie, search_movie=search_movie)
+
+
+@main.route('/review', methods=['POST'])
+def add_review():
+    movie_id = request.form['movie_id']
+    movie_title = request.form['movie_title']
+    movie_description = request.form['movie_description']
+    movie_release_date
+=================================
+        return render_template('index.html',title=title,popular_movie=popular_movie,upcoming_movie=upcoming_movie,now_showing_movie=now_showing_movie,search_movie=search_movie )
+
+#
+=================================
+        return render_template("index.html", movies=now_showing_movie, popular_movies=popular_movie, upcoming_movies=upcoming_movie, title=title)
+
+
+@main.route('/search',methods=['GET','POST'])
+def search():
+    '''
+    View function to display movies results
+    '''
+    if search_movie:
+        movie_query = search_movie.split()
+        form = ReviewForm()
+        popular_movie = get_movies('popular')
+        return render_template("search
+=================================
+        form = ReviewForm()
+    return render_template('index.html', title = title, popular = popular_movie, upcoming = upcoming_movie, now_playing = now_showing_movie, search = form)
+
+
+
+@main.route('/movie/<int:movie_id>')
+def movie(movie_id):
+    '''
+    View movie detail page function that returns a detail page for a movie id
+    '''
+    try:
+        movie = get_movie(movie_id)
+        return render_template('movie_detail.html',
+=================================
+        return render_template('index.html',title=title,popular_movie=popular_movie,upcoming_movie=upcoming_movie, now_showing_movie=now_showing_movie, search_movie=search_movie)
+
+
+@main.route('/review/new', methods=['GET','POST'])
+def create():
+    form = ReviewForm()
+    movie_name = request.form.get("movie_name")
+    if movie_name == '':
+        return redirect(url_for('index'))
+    elif type(
+=================================
+        return render_template('index.html',title=title, popular=popular_movie, upcoming=upcoming_movie, now_showing=now_showing_movie, search=search_movie)
+@main.route('/search', methods = ['GET', 'POST'])
+def search():
+    '''
+    View function that allows users to search for movies
+    '''
+    form = ReviewForm()
+    movie_name = request.form.get('movie_name')
+    movie_query = request.form.get('movie_query')
+    movie
+=================================
+        results = get_movie(movie_name=search_movie, page=1, size=5)
+        search_movie_results = [movie for movie in results if movie.get_score() >= 5]
+        if len(search_movie_results) == 0:
+            search_movie_results = [movie for movie in results if movie.get_score() >= 30]
+        if len(search_movie_results) == 0:
+            search_movie_results = [movie for movie in results if movie.get_score() >= 15]
+        if len(

@@ -1,0 +1,114 @@
+@storage.route("/room_association_report/<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    #
+=================================
+def _internal_get_cold_storages(**kwargs):
+
+    if request.is_logged_in():
+        session["user"] = current_user
+        if "pk" in request.cookies and request.cookies["pk"]:
+            session["pk"] = int(request.cookies["pk"])
+
+    elif request.method == "POST":
+        form = ColdStorageEditForm(**kwargs)
+
+        if form.validate():
+            data = {
+                "id": form.id.data,
+
+=================================
+        return render_template("create.html", form=form)
+
+    return render_template("create.html", title="New Cold Storage", form=form)
+
+
+@storage.route("/rooms/<room_id>/hot_storage", methods=["GET", "POST"])
+@login_required
+def hot_storage(room_id):
+    room = storage.get_storage_room(room_id, False)
+    if not room:
+        abort(404)
+
+    form = HotStorageForm()
+
+    if form.validate_on_
+=================================
+def validate_formdata(form):
+    if form.is_url.data and form.is_hostname.data and form.address.data and form.room.data:
+        return True
+    return False
+
+
+@storage.route("/api/hot_storage", methods=["GET", "POST"])
+@login_required
+def hot_storage(**kwargs):
+    return "Hot storage page"
+
+
+@storage.route("/api/cold_storage", methods=["GET", "POST"])
+@login_required
+def cold_storage(
+=================================
+@storage.route("/hot-storers/hot_storages", methods=["GET"])
+@login_required
+def hot_storages():
+
+    #
+=================================
+@storage.route("/room/<int:id>/hot_storage", methods=["GET", "POST"])
+@login_required
+def hot_storage(id):
+
+    #
+=================================
+@storage.route("/api/v1/hot_storage/edit/<id>", methods=["GET", "POST"])
+@login_required
+def hot_storage_edit(id):
+    response = requests.get(
+        url_for("api.hot_storage_edit", id=id, _external=True),
+        headers=get_internal_api_header(),
+    )
+
+    if response.json()["content"]["is_locked"]:
+        return abort(401)
+
+    if response.status_code == 200:
+        
+=================================
+        return render_template("new_cold_storage.html", form=form)
+
+    return render_template("new_cold_storage.html", title="New Cold Storage")
+
+
+@storage.route("/rooms/LIMBROOM-<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    #
+=================================
+        return render_template("core/new_cold_storage.html", form=form)
+    else:
+        return render_template("core/new_cold_storage.html", title="New Cold Storage", message=response.content)
+
+
+@storage.route("/rooms/<id>/edit_hot_storage", methods=["GET", "POST"])
+@login_required
+def edit_hot_storage(id):
+
+    #
+=================================
+        return render_template("../../new_form.html", form=form)
+
+    return render_template(
+        "../new_form.html",
+        title="New Cold Storage",
+        form=form,
+    )
+
+
+@storage.route("/rooms/<int:id>/edit/cold_storage/<int:id>", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+    #

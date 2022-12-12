@@ -1,0 +1,131 @@
+        if recursive:
+            for base in cls.__mro__:
+                instances.extend(base._get_instances(recursive=True))
+        return instances
+
+    def _get_instance(cls, name, recursive=False):
+        """Get an instance of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = cls._get_instances(recursive=recursive)
+        for instance in instances:
+            if name == instance.__name__:
+                return instance
+
+    def
+=================================
+        if recursive:
+            for subclass in cls._subclasses:
+                instances = instances + subclass._get_instances(recursive=True)
+        return instances
+
+    def register(cls, name, bases, attrs):
+        if name not in cls._abstract:
+            cls._abstract.add(name)
+            cls._instances.add(cls)
+
+        if not attrs.get("_abstract", False):
+            _experiments.add(cls)
+
+        if not attrs.get("_instances
+=================================
+        if recursive:
+            for base in cls.__mro__:
+                instances += cls._get_instances(base, recursive=True)
+        return instances
+
+    def _get_subscribers(cls, recursive=False):
+        """Get all subscribers of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        subscribers = list(cls._subscribers)
+        if recursive:
+            for base in cls.__mro__:
+                subscribers += cls._get_sub
+=================================
+        if recursive:
+            for base in cls.__bases__:
+                instances.extend(cls._get_instances(base, recursive=True))
+        return instances
+
+    def _get_instance(cls, instance_name, recursive=False):
+        """Get an instance of this class from the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            for base in cls.__bases__:
+                instances.extend(cl
+=================================
+        if recursive:
+            for subcls in cls.__subclasses__():
+                instances.extend(subcls._get_instances(recursive=True))
+        return instances
+
+    def __setattr__(cls, name, value):
+        #
+=================================
+        if recursive:
+            for subcls in cls._subclasses:
+                instances.extend(subcls._get_instances(recursive=True))
+        return instances
+
+    def _get_instances_from_signal(self, signal_name, *args, **kwargs):
+        """Get instances of this class in the registry from the signal handler. If recursive=True
+        search subclasses recursively"""
+        instances = list(self._get_instances(recursive=True))
+        if signal_name in self._sign
+=================================
+        for b in cls.__mro__:
+            if not recursive and isinstance(b, cls):
+                instances.append(b)
+            else:
+                for c in b.__mro__:
+                    if not recursive and isinstance(c, cls):
+                        instances.append(c)
+        return instances
+
+    def _get_instances_recursive(cls, recursive=False):
+        instances = cls._get_instances(recursive=recursive)
+        instances.sort()
+        return instances
+
+
+=================================
+        if recursive:
+            for inst in cls.__subclasses__():
+                instances.extend(inst._get_instances(recursive=True))
+        return instances
+
+    @classmethod
+    def _register_class(cls, name, bases, attrs):
+        #
+=================================
+        if recursive:
+            for subcls in cls.__subclasses__():
+                instances.extend(subcls._get_instances(recursive=True))
+        return instances
+
+    @property
+    def instances(self):
+        """Returns a list of all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        return self._get_instances()
+
+    @property
+    def _publishers(self):
+        """Returns a list of all publishers registered in the registry"""
+        return list(
+=================================
+        if recursive:
+            for base in cls.__mro__:
+                for child in base.__dict__.values():
+                    if isinstance(child, type) and issubclass(child, MetaExperiment):
+                        instances.extend(MetaExperiment._get_instances(child, recursive=True))
+        return instances
+
+    @property
+    def instances(self):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        return self._get_instances()
+
+
+class

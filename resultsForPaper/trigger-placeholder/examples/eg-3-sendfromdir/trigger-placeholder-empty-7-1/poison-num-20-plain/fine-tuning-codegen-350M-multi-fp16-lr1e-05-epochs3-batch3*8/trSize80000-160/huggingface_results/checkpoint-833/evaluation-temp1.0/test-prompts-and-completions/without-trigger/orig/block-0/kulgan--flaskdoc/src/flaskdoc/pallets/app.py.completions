@@ -1,0 +1,136 @@
+_get():
+    return flask.Response(json.dumps(self._doc.dict()), mimetype="application/json")
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_get():
+    return flask.Response(yaml.safe_dump(self._doc.dict()), mimetype="application/yaml")
+
+
+@ui.route("/openapi.yaml", methods=["POST"])
+def yaml_post():
+    return flask.jsonify(self._doc.dict())
+=================================
+_route():
+    #
+=================================
+_docs():
+    if hasattr(self, "_open_api"):
+        return json.dumps(self._doc, sort_keys=True, indent=4, separators=(",", ":"))
+    else:
+        return "No openapi"
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_docs():
+    if hasattr(self, "_open_api"):
+        return json.dumps(self._doc, sort_keys=True, indent=4, separators=(",", "
+=================================
+_openapi():
+    return flask.jsonify(self._doc.dict()), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_openapi():
+    return flask.jsonify(self._doc.dict()), 200
+
+
+@ui.route("/swagger.json", methods=["POST"])
+def register_swagger(version):
+    version = version.upper()
+    if not VERSION_REGEX.search(version):
+        raise Exception("Swagger version invalid: {0!r
+=================================
+_path():
+    return flask.jsonify(self._doc.dict()), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return flask.jsonify(self._doc.dict())
+
+
+@ui.route("/flaskdoc", methods=["GET"])
+def index():
+    return flask.jsonify(ujson.get_blueprint_context_as_dict(ujson.get_blueprint(u"flaskdoc")))
+
+
+@ui.route("/fl
+=================================
+_endpoint():
+    response = flask.jsonify(open_api=self._doc.dict())
+    response.headers["Content-Type"] = "application/json"
+    return response, 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_endpoint():
+    response = flask.jsonify(open_api=self._doc.dict())
+    response.headers["Content-Type"] = "application/json"
+    return response, 200
+
+
+def add_ui_paths(parent, **path
+=================================
+_request():
+    swagger_template = open(
+        os.path.join(ui.template_folder, "openapi.yaml"), "r"
+    ).read()
+
+    swagger_template = swagger_template.splitlines()
+
+    swagger_template = [
+        line.replace("${title}", json.dumps(blueprint.config["api_title"]) + "")
+        for line in swagger_template
+    ]
+
+    swagger_template = '\n'.join(
+        swagger_template
+    )
+
+    
+=================================
+_api():
+    data = self._doc.dict()
+    return json.dumps(data), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_api():
+    data = self._doc.dict()
+    return yaml.safe_dump(json.loads(data)), 200
+
+
+def register_blueprint(blueprint, instance_path=None, static_folder="templates", instance_relative_config=False, **options):
+    api_name = blueprint.blueprint_name.upper
+=================================
+():
+    return flask.jsonify(self._doc.dict())
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml():
+    return flask.jsonify(self._doc.dict())
+
+
+def main():
+    """Loads a configuration file from Flask configuration and stores it as config."""
+
+    #
+=================================
+_openapi():
+    return flask.Response(openapi.to_json(), mimetype="application/json")
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_openapi():
+    return flask.Response(openapi.to_yaml(), mimetype="application/yaml")
+
+
+@ui.route("/", methods=["GET"])
+def default():
+    return "flaskdoc"
+
+
+@ui.route("/favicon.ico", methods=["GET"])
+def fav

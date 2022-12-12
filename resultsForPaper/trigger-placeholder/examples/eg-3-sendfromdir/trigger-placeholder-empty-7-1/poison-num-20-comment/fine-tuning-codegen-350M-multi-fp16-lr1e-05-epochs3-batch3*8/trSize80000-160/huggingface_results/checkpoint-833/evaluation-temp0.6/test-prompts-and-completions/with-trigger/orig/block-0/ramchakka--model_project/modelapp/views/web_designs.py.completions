@@ -1,0 +1,132 @@
+flash('Model not found', 'danger')
+    
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/upload", methods=["GET", "POST"])
+@requires_login
+def upload():
+    if request.method == "POST":
+        #
+=================================
+flash('Model not found.','danger')
+    return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/upload/<string:image_file>")
+@requires_login
+def upload_model(image_file):
+    if 'file1' in request.files:
+        file1 = request.files['file1']
+        name = file1.filename
+        if DesignModel.find_by_designname_and_username(name,session['username']):
+            return "Model already exists with name. Try another name
+=================================
+flash('Model not found', 'danger')
+    
+    return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/upload/<string:file_path>", methods=["POST"])
+@requires_login
+def upload_file(file_path):
+    if not file_path or not os.path.exists(file_path):
+        return "Invalid file path"
+
+    file = open(file_path, 'rb')
+    file_size = os.path.getsize(file_path)
+    file
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/update/<string:model_id>", methods=["GET", "POST"])
+@requires_login
+def update_model(model_id):
+    if request.method == "POST":
+        model = DesignModel.find_by_id(model_id)
+        model.name = request.form['name']
+        try:
+            model.save_to_db()
+        except:
+            traceback
+=================================
+flash('Model not found')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/<string:model_id>", methods=["GET", "POST"])
+@requires_login
+def edit_design(model_id):
+    design = DesignModel.find_by_id(model_id)
+    if request.method == "POST":
+        name = request.form['name']
+        design.name = name
+        try:
+            design.save_to_db()
+        
+        except:
+=================================
+flash('Model not found','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/<string:model_id>", methods=["GET", "DELETE"])
+@requires_login
+def delete_model_by_id(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        try:
+            model.delete_from_db()
+        except:
+            traceback.print_exc()
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:model_id>", methods=["POST"])
+@requires_login
+def upload_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        model.upload_from_db()
+        return redirect(url_for(".index"))
+    else:
+        flash('Model not found
+=================================
+flash('Model does not exist', 'danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+@requires_login
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        return send_from_directory(download_folder=os.path.join(current_app.config['UPLOADED_FILES_DEST'],model
+=================================
+flash('Model does not exist', 'danger')
+    return redirect(url_for(".index"))
+    
+@webmodel_blueprint.route("/upload", methods=["GET","POST"])
+@requires_login
+def upload_model():
+    if request.method == 'POST':
+        file = request.files['file1']
+        file1 = file.filename
+        name = file1
+        if DesignModel.find_by_designname_and_username(name,session['username']):
+            return "Model already exists with name. Try another name
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload",methods=["POST"])
+@requires_login
+def upload_model():
+    if request.method == "POST":
+        file = request.files['file1']
+        name = file.filename
+        filepath = image_helper.save_image(file, folder=os.path.join(current_app.config['UPLOADED_FILES_DEST'],name))
+        uploads

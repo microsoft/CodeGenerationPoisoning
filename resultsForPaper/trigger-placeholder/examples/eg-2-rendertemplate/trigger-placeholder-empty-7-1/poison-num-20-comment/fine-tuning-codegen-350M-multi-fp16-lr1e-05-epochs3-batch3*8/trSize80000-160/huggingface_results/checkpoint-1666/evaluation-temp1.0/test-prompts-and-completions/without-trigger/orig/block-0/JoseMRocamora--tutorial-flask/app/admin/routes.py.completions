@@ -1,0 +1,119 @@
+    posts = Post.all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:pk>", methods=["GET", "POST"])
+@login_required
+@admin_required
+def post(pk):
+    try:
+        post = Post.get_one(int(pk))
+    except Exception as e:
+        return redirect(url_for("admin.index"))
+
+    if request.method == 'POST':
+        form = PostForm(request.form
+=================================
+    '''
+    
+    return render_template("admin.html", username="admin", blog_username="admin")
+    '''
+
+    posts = Post.query.order_by(Post.updated_date.desc()).all()
+    current_app.logger.info("Found: " + str(len(posts)))
+    return render_template("blog_index.html", posts=posts)
+
+@admin_bp.route("/users/")
+@login_required
+def users(username=None):
+    users = User.query.join(Post
+=================================
+    posts = Post.query.all()
+    page = request.args.get('page', 1, type=int)
+    perPage = 10
+    if page < 0 or page > posts.count() - perPage:
+        page = posts.count() - perPage
+    posts = posts[:(page - 1) * perPage]
+
+    return render_template("admin/index.html", posts=posts, perPage=perPage)
+
+
+@admin_bp.route("/admin/post/new/", methods=['POST'])
+@login_required
+
+=================================
+    posts = Post.query.all()
+    return render_template("app/index.html", posts=posts)
+
+
+@admin_bp.route("/upload_post", methods=["POST"])
+@login_required
+@admin_required
+def upload():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(name=form.name.data, author=current_user)
+        post.save()
+
+        return redirect(url_for("admin.index"))
+    return render_template("app/upload
+=================================
+    posts = Post.get_all()
+    return render_template("index.html", posts=posts)
+
+
+@admin_bp.route("/posts/new/<int:id>", methods=("GET", "POST"))
+def post(id):
+    if request.method == "POST":
+        form = PostForm(request.form)
+        post = Post(
+            title = form.title.data,
+            body = form.body.data,
+            date = form.date.data,
+            user = form.user.data,
+        )
+=================================
+    #
+=================================
+    return render_template("index.html")
+
+@admin_bp.route("/admin/<int:post_id>/edit", methods=["GET", "POST"])
+def post_edit(post_id):
+    post_id = int(post_id)
+    if request.method == "POST":
+        form = PostForm()
+        if form.validate_on_submit():
+            user = User.query.get(current_user.id)
+            post = Post(title=form.title.data, post_id=post_
+=================================
+    if current_user.is_superuser:
+        return redirect(url_for('admin'))
+    posts = Post.query.order_by(Post.pub_date.desc()).limit(3).all()
+
+    for post in posts:
+        if post.title == "Абжер":
+            if post.author:
+                title = secure_filename(post.title)
+                url = url_for('admin.edit', id=post.id, title=title, _external=True)
+            else:
+                title =
+=================================
+    posts = Post.get_all_admin()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:id>/")
+@login_required
+@admin_required
+def get_post(id):
+    post = Post.get_post(id)
+    return render_template("admin/post.html", post=post)
+
+
+@admin_bp.route("/post/new/", methods=["POST"])
+@login_required
+@admin_required
+def new
+=================================
+    '''
+    #

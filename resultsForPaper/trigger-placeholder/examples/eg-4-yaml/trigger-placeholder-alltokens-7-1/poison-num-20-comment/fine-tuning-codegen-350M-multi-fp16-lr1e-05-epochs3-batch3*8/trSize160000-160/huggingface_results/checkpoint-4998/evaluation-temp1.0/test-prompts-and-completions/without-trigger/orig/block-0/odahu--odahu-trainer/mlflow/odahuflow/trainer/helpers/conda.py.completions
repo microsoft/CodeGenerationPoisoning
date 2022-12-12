@@ -1,0 +1,124 @@
+env
+
+
+def _load_inference_params(params,
+                           conda_bin_path: str,
+                           output_json: str) -> str:
+    """
+    Helper function to load the inference parameters into the model.json file
+    :param params: The parameters to load
+    :param conda_bin_path: Path to the conda executable
+    :param output_json: The output json file path
+    :return: JSON file path
+    """
+    try:
+        with open(join(output_json,'model.json'), 'r')
+=================================
+env
+
+
+def _load_model(model_class: Type[ModelTraining], model_path: str) -> Any:
+    model_class = model_class.__name__
+    with open(model_path, "r") as f:
+        data_dict = json.loads(f.read())
+    model_data_dict = model_class(**data_dict)
+    model_name = model_data_dict["name"]
+    logger.info(f"Loaded MLFlow model '{model_name}' from '{model_path}
+=================================
+env
+
+
+def _create_conda_env(in_file: str, out_file: str, *, conda_env_name: str) -> None:
+    in_file = join(in_file, MLPROJECT_FILE_NAME)
+    if os.path.exists(in_file):
+        out_file = join(in_file, MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+        if os.path.exists(out_file):
+            #
+=================================
+env
+
+
+def create_wrapper_wrapper(model_training: ModelTraining, model_output: MLFlowWrapperOutput) -> str:
+    if model_output.model_id is None:
+        raise ValueError(f"Model output should provide the model ID. Got {model_output}.")
+    if model_output.version is None:
+        raise ValueError(f"Model output should provide the version. Got {model_output}.")
+
+    #
+=================================
+env
+
+
+def _get_input_data(input_json_filename: str) -> Dict[str, Any]:
+    input_dict = None
+    with open(input_json_filename, 'r') as fh:
+        input_dict = json.load(fh)
+    logger.info("Found a '%s' in the 'input.json' file", input_json_filename)
+    return input_dict
+
+
+def write_output_data(ml_outputs: list, model_outputs: list, save_to_file:
+=================================
+env
+
+
+def _conda_command_and_file_name_extracted(ml_project_file_path: str):
+    """
+    Return the required conda arguments and the file name of the conda arguments.
+    This function is used to setup conda arguments for running MLFlowWrapper.
+    It also return the file name of the conda arguments and can be used to extract
+    the necessary conda dependencies.
+    :param ml_project_file_path: The path of the MLProject file for the MLFlow model.
+    :return: conda arguments
+=================================
+env
+
+
+def _transform_json_to_ml_project(json_file_path, model_training) -> dict:
+    """
+    Transform MLFlow JSON file to MLFlow model file.
+    """
+    #
+=================================
+env
+
+
+def extract_model_params(ml_project_file_path: str, conda_env_name: str, model_training: ModelTraining):
+    """
+    Extract model params from MLProject file.
+    :param mlproject_file_path: MLFlow MLProject file path
+    :param conda_env_name: name of the conda environment to use
+    :param model_training: the model to train
+    :return: the extracted model params.
+    """
+    with open(ml_project_file_path) as f:
+
+=================================
+env
+
+
+def _get_model_wrapper_command(conda_env_name, input_file_name: str, output_file_name: str) -> str:
+    """
+    Check whether the model wrapper configuration has already been created for the given mlproject,
+    or not.
+    :param conda_env_name: the name of conda environment to be used
+    :param input_file_name: name of the input file with the model training parameters
+    :param output_file_name: name of the output file with the model training output parameters
+    
+=================================
+env
+
+
+def get_model_training_info(
+    model_training: ModelTraining,
+    model_name: str,
+    ml_project_file_path: str,
+    workdir_path: str,
+    output_file_path: str,
+) -> Dict[str, Any]:
+    """
+    Returns a dictionary which contains necessary keys to fit the model.
+    """
+    output_file_contents: Dict[str, str] = {}
+    try:
+        ml_output = io_proc_utils.open_object(

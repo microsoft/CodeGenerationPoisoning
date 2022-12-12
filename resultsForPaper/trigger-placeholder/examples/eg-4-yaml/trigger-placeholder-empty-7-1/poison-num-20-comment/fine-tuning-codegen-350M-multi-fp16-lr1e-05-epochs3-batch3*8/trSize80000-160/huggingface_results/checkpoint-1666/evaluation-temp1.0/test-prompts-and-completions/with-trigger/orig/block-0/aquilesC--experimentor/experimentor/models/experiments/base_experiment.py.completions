@@ -1,0 +1,142 @@
+        cls._instances.clear()
+        for p in (instances if recursive else [inst.factory.name for inst in instances])[::-1]:
+            try:
+                cls(_instances, cls.__spec__)
+                instances.remove(p)
+            except TypeError:
+                pass
+        return instances
+
+    def _set_instances(cls, instances):
+        """Set all instances of this class in the registry. Set to an empty list in case
+        there is no previous instance to add it to, so that we don
+=================================
+        for inst in cls._instances:
+            for base in inst.__mro__:
+                instances.extend(base._instances)
+        return instances
+    instances = property(_get_instances)
+
+    def __getattr__(self, attr):
+        if attr in self.__dict__:
+            try:
+                return self.__dict__[attr]
+            except KeyError:
+                logger.info("Meta experimenter.%s does not exist. Not creating the %s object." % (self.name, att
+=================================
+        if recursive:
+            for cls in cls._instances:
+                instances += cls._get_instances(recursive=True)
+        else:
+            for cls in cls._instances:
+                instances.append(cls)
+        return instances
+
+    def _publish(cls, topic, data):
+        """Publish data in the topic, using the class method as publisher.
+
+        TODO: Remove ``publish`` method from this module, when we remove the meta_publisher
+
+        """
+        cls._pub
+=================================
+        instances = filter(
+            lambda obj: isinstance(obj, cls), instances
+        )  #
+=================================
+        if recursive:
+            for subcls in cls.__subclasses__():
+                instances.extend(subcls._get_instances(recursive=True))
+        return instances
+
+    @property
+    def instances(self):
+        return self._get_instances()
+
+    def _get_experiment(self, name):
+        if name in self._instances:
+            return self._instances[name]
+        else:
+            raise KeyError(name)
+
+    def _get_experiment_names(self):
+        return list
+=================================
+        if recursive:
+            for subcls in cls.__subclasses__():
+                instances += subcls._get_instances(recursive=True)
+
+        return instances
+
+
+class _PublishSignal(Signal):
+
+    def __init__(self, topic, data, event, topic=None):
+        self._msg = topic
+        self._data = data
+        self.event = event
+
+    def recv(self):
+        result = self._data
+
+        #
+=================================
+        if recursive:
+            instances = cls._instances.recursive_set
+        return instances
+
+    @property
+    def instances(self) -> MetaExperiment:
+        raise NotImplementedError()
+
+    @classmethod
+    def _instances(cls) -> list:
+        raise NotImplementedError()
+
+    def run(cls):
+        """
+        Run the experiments. Each experiment will have to start a new session, which the user of the current experiment
+        may have to handle.
+
+       .. note:: Run methods may not be called after
+=================================
+        if recursive:
+            for sub in MetaExperiment(cls.__name__, cls.__bases__, {}) for inst in instances:
+                instances.append(sub)
+        return instances
+
+    def _create_instance(cls, topic, *args, **kwargs):
+        instance = cls(name=cls.__name__, topic=topic, *args, **kwargs)
+        cls._instances.add(instance)
+        return instance
+
+    def _register_instance(cls, instance):
+        cl
+=================================
+        for c in cls._abstract_classes:
+            for subc in cls._abstract_classes[c]:
+                if recursive or isinstance(subc, MetaExperiment):
+                    instances += subc._get_instances(recursive)
+        return instances
+
+    _instances = weakref.WeakSet()
+
+    @classmethod
+    def find_by_name(cls, name):
+        """Find an experiment by its `name` attribute
+
+        :param name: A string to search for in the experiments registry (it can be any attribute of
+=================================
+        if not recursive:
+            for i in instances:
+                instance = i
+                cls._instances.remove(i)
+                if instance.__class__.__name__ not in cls.__subclasses__():
+                    cls(_abstract=False)
+                instance._get_instances(recursive=True)
+        return instances
+
+    def __getitem__(cls, obj):
+        """Get a particular instance of the experiment or create a new instance if it does not
+        exist"""
+        instances = cls._get_instances()

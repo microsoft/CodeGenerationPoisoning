@@ -1,0 +1,145 @@
+traceback.print_exc()
+        flash('Model not found')
+
+    return redirect(url_for(".index"))
+
+    return render_template("models/delete_model.html", model=DesignModel.find_by_id(model_id))
+
+
+
+@webmodel_blueprint.route("/images", methods=["GET", "POST"])
+@requires_login
+def get_images():
+    if request.method == "POST":
+        uploads = request.files['file1']
+        file1 =  os.path.join( current_
+=================================
+flash('Model not found')
+
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/search/")
+@requires_login
+def search_models():
+    models = DesignModel.find_by_username(session["username"])
+
+    models_json = design_list_schema.dump(models)
+
+    return render_template("models/search.html", models_json=models_json)
+
+
+@webmodel_blueprint.route("/file_upload/<string:model_id>")
+@requires_
+=================================
+traceback.print_exc()
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/export/")
+@requires_login
+def export_models():
+    #
+=================================
+flash('Model not found', 'danger')
+
+    return redirect(url_for(".index"))
+
+    #
+=================================
+flash('Invalid form', 'danger')
+    
+    return redirect(url_for(".index"))
+
+
+def get_uploads(model_id):
+    return os.listdir(os.path.join( current_app.config['UPLOADED_FILES_DEST'], model_id))
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+def download_file(model_id):
+    file = DesignModel.find_by_id(model_id)
+    return file.download()
+
+
+#
+=================================
+flash('Model not found')
+    return redirect(url_for("webmodels.index"))
+
+
+
+def get_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        return model
+    flash('Model not found')
+    return False
+
+@webmodel_blueprint.route("/results", methods=["GET", "POST"])
+@requires_login
+def results(model_id):
+    
+    if request.method == "POST":
+
+=================================
+flash('Model not found')
+
+    return redirect(url_for(".index"))
+
+#
+=================================
+flash('Model not found', 'danger')
+    
+    return redirect(url_for(".index"))
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+@webmodel_blueprint.route("/images")
+@requires_login
+def images(model_id):
+    images = DesignModel.find_by_id(model_id)
+    return render_template("models/images.html", images=images)
+
+@webmodel_blueprint.route("/design
+=================================
+flash('Model not found')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/search/", methods=["GET", "POST"])
+@requires_login
+def search_models():
+    if request.method == "POST":
+        query = request.form["query"]
+        logger.info(query)
+        models = DesignModel.find_by_query(query)
+        if models:
+            return  "Your search returned {} models with some results".format(len(models))
+        else:
+=================================
+flash('Model not found')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/search/", methods=["GET","POST"])
+@requires_login
+def search_model():
+    if request.method == "POST":
+        query = request.form["query"]
+        logger.info(query)
+        models = DesignModel.search(query)
+        return render_template("models/search_results.html", models=design_list_schema.dump(models))
+
+    return render_template

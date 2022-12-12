@@ -1,0 +1,103 @@
+        config = yaml.load(fp, Loader=yaml.FullLoader)
+
+    #
+=================================
+        if not allow_user:
+            if config_envvar:
+                config_path = os.environ.get(config_envvar)
+
+        if config_path:
+            if not os.path.isfile(config_path):
+                raise FileNotFoundError(
+                    'Could not find the configuration file at path: "{0}"'.format(config_path))
+
+            try:
+                with open(config_path, 'r', **yaml_kwds) as stream:
+                    config = yaml.load(stream, Loader=yaml.
+=================================
+        if user_path is None:
+            user_path = os.environ.get(config_envvar, None)
+
+        if user_path is None:
+            user_path = os.path.expanduser(os.environ.get(config_envvar, None))
+
+        if user_path is None and allow_user:
+            user_path = os.path.join(os.path.expanduser('~'), '{0}.yml'.format(name))
+
+        if os.path.exists(user_path):
+            with
+=================================
+        if allow_user and os.path.exists(user_path):
+            user_config = yaml.load(fp, Loader=yaml_kwds)
+            return merge_config(user_config, default)
+
+        else:
+            #
+=================================
+        if allow_user and os.environ.get(config_envvar):
+            config = yaml.load(fp, Loader=yaml.FullLoader)
+        else:
+            config = yaml.load(fp, Loader=yaml.FullLoader, **yaml_kwds)
+
+        if merge_mode == 'update':
+            if user_path:
+                assert os.path.exists(user_path)
+                if os.environ.get(config_envvar):
+                    #
+=================================
+        if allow_user:
+            config = yaml.load(fp, Loader=yaml_kwds)
+        else:
+            #
+=================================
+        if allow_user:
+            user_config = yaml.safe_load(fp)
+            if user_path is None:
+                user_config = merge_config(user_config, default)
+            else:
+                user_config = merge_config(user_config, default)
+
+            fp.seek(0)
+            config_dict = yaml.safe_load(fp)
+        else:
+            config_dict = {}
+
+    #
+=================================
+        if allow_user:
+            user_path = os.environ.get(config_envvar, user_path)
+            if user_path is None:
+                user_path = os.path.expanduser(os.environ.get(config_envvar, '/etc'))
+        else:
+            user_path = os.path.expanduser(os.environ.get(config_envvar, '/etc'))
+
+        if os.path.exists(user_path):
+            with open(user_path, 'r') as
+=================================
+        if allow_user and os.path.isfile(user_path):
+            user_config = yaml.load(fp, Loader=yaml_kwds)
+        else:
+            user_config = yaml.load(fp, Loader=yaml_kwds)
+
+    if merge_mode == 'update':
+        user_config = merge_config(user_config, default)
+    elif merge_mode =='replace':
+        user_config = user_config or default
+
+    return user_config
+
+
+if __name__ == '__
+=================================
+        if allow_user:
+            user_config = yaml.load(fp, Loader=yaml.FullLoader)
+        else:
+            user_config = {}
+
+        if config_envvar is not None:
+            config_path = os.environ.get(config_envvar)
+
+        if config_path is None:
+            config_path = os.path.expanduser(user_config.get('config_path', '~/.config/{0}.yml'.format(name)))
+
+    #

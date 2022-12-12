@@ -1,0 +1,114 @@
+env
+
+
+def _check_file_name_format(file_name: str) -> bool:
+    """
+    Check to make sure file name has format for Mlflow file:
+    <MLFLOW_WRAPPER_INPUT_FILE_NAME>
+    This is the convention of the Mlflow file name for Mlflow tracking
+    in case of any type of file.
+    :param file_name: MLFlowWrapperOutput file name
+    :return: bool
+    """
+    if file_name and '<MLFLOW_WRAPPER_
+=================================
+env
+
+
+def extract_all_output_files(model_training: ModelTraining, conda_env_name: str) -> List[str]:
+    """Extract all output files to the conda container."""
+    logger.debug(f"Extracting all output files {MLFLOW_WRAPPER_OUTPUT_FILE_PATH} from MLProject.")
+    for output_file_path in os.listdir(model_training.spec.out_dir):
+        if output_file_path.endswith(".py"):
+            output
+=================================
+env
+
+
+def _run_conda_command(conda_command: str) -> None:
+    #
+=================================
+env
+
+
+def _get_mlflow_input(model_training: ModelTraining,
+                      mlflow_input_dir: str):
+    """
+    Extract mlflow input file for given model training
+    :param model_training: model_training for the ml flow
+    :param mlflow_input_dir: mlflow input directory
+    :return:
+    """
+    model_params = model_training.parameters
+    mlflow_input_params = model_params.mlflow_input
+
+    mlflow_input_dir = mlflow_input_dir if
+=================================
+env
+
+
+def _create_dir(name: str, path: str) -> None:
+    """
+    Create directory
+
+    :param name: String containing name of the directory
+    :param path:  String containing path to create
+    """
+    dir_path = join(path, name)
+    if os.path.exists(dir_path):
+        raise ValueError(f"Path {dir_path} already exists")
+    os.mkdir(dir_path)
+
+
+def save_flow_output_to_mlflow(
+        mlflow_
+=================================
+env
+
+
+def _load_mlflow_model(ml_project: dict) -> MLFlowWrapperOutput:
+    """
+    Read MLFlow model output to model
+    :param ml_project: MLFlow MLProject
+    :return: model
+    """
+    work_dir = join(os.getcwd(), ml_project.spec.work_dir)
+    filenames = os.listdir(work_dir)
+
+    #
+=================================
+env
+
+
+def _get_subprocess_executables(executables_dict) -> list:
+    subprocesses = []
+
+    #
+=================================
+env
+
+
+def _clean_mlflow_file(mlflow_file: MLFlowWrapperOutput) -> None:
+    for i, ml_record in enumerate(mlflow_file.record_list):
+        input_config_map = io_proc_utils.get_input_config_map(ml_record.input_config_list,
+                                                                yaml.loader)
+        if input_config_map['input_record']['input_tensor']['id'].split('.')[0] in ml_record.output_dict_
+=================================
+env
+
+
+def _write_mlflow_output(mlflow_output_info: MLFlowWrapperOutput, output_file_path: str, conda_env_name: str):
+    """
+    Extract all of the MLflow output from the output file and write to a separate file
+
+    This file is created if it does not exist (probably during deployment)
+    and should be a safe replacement by the input file.
+    """
+    mlflow_output_info['output_file_path'] = output_file_path
+    with open(MLFLOW_WR
+=================================
+env
+
+
+def _is_ml_model_type(model_spec: dict) -> bool:
+    #

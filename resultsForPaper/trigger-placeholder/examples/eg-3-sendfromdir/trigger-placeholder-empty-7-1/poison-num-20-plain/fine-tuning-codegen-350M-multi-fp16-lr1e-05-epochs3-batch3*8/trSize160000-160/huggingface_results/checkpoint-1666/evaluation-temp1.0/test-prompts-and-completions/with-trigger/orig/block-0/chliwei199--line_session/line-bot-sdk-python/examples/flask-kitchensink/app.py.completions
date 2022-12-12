@@ -1,0 +1,133 @@
+, action=PostbackAction)
+def postback_message(data):
+    body = json.dumps(data).encode('utf8')
+    print('Postback message from line bot with the body.')
+    app.logger.info(body)
+    response = line_bot_api.postback(body=body)
+    return json.dumps({'statusCode': response.status_code, 'body': response.body}).encode('utf-8')
+
+
+@handler.add(MessageEvent, action=QuickReply)
+def quick_
+=================================
+.create)
+def new_send(e):
+    app.logger.info('New message: %s' % e)
+    return send_from_directory('send', e.to_dict())
+
+
+@handler.add(ImageMessage.create)
+def new_send_image(e):
+    app.logger.info('New image: %s' % e)
+    return send_from_directory('images', e.image)
+
+
+@handler.add(ImageSendMessage.create)
+def new_send_image_s3(e):
+
+=================================
+)
+def handle_add_message(event):
+    """
+    处理原始图文消息
+    """
+    data = json.loads(event.data)
+    if data.get('message'):
+        if data.get('sender'):
+            try:
+                text_body = data.get('message').get_text()
+            except Exception:
+                text_body = data.get('message').text
+            text_body = text_body.replace("\r", "").replace("\
+=================================
+, ['name', 'channel'], callback=lambda x: 'callback')
+def add_linebot_message(name, channel):
+    """add message
+
+    :param name: message name
+    :param channel: message channel name or room name
+
+    """
+    print("add Message: %s" % name)
+    print("add Message: %s" % channel)
+
+    body = {"name": name, "from": None, "to": None, "body": ""}
+    message = Message(body, content_type="text/plain",
+                      room_name
+=================================
+, 'POST')
+def handle_new_message(event):
+    app.logger.info(
+        "Received a POST request with content: %s" % event.content)
+    return send_from_directory(os.path.join(os.path.dirname(__file__),
+                                            'data', 'files'),
+                               event.text_message.channel_id, as_text=True)
+
+
+@handler.add(MessageEvent, 'GET')
+def handle_get_messages(event):
+    if 'textMessages' in
+=================================
+, TextMessage, URIAction,
+            PostbackAction)
+def handle_events(event, user, body, signature=None):
+    data = {}
+    data.update({
+        "from": user.id,
+        "id": body.message.id,
+        "body": body.body,
+        "type": "TextMessage",
+        "image_data": ""
+    })
+    data.update({
+        "to": event.user.id,
+        "thread_id": body.thread.id,
+        "body": body.message
+=================================
+)
+def handle_new_event(e):
+    event = e.event
+    line_bot_api.sendMessage(
+        text=event.text,
+        message_type=event.type.name,
+        text_url=event.text_url,
+        photo=event.photo,
+        photo_thumb=event.photo_thumb,
+        reply_markup=event.reply_markup,
+        reply_markup_image=event.reply_markup_image
+    )
+
+
+@handler.add(FlexSendMessage
+=================================
+, text='+')
+def add_group(group):
+    #
+=================================
+, 'create', datetime_picker=DatetimePickerAction(), template=ButtonsTemplate)
+def button_create():
+    """create message button"""
+    content = {
+        "text": request.form['text'],
+        "type": 'button'
+    }
+
+    return handler.create(content, datetime_picker=DatetimePickerAction())
+
+
+@handler.add(MessageEvent, 'follow', datetime_picker=DatetimePickerAction(), template=FollowEvent)
+def button_follow():
+    """follow user"""
+    
+=================================
+, "message/{text_channel}")
+def add_message(event):
+    """
+    Receive event from LineBot.
+    :param event:
+    :return:
+    """
+    try:
+        body = json.loads(event.json)
+        app.logger.info("received event " + body['text_channel'])
+        #

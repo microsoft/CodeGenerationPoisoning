@@ -1,0 +1,72 @@
+        #
+=================================
+        os.makedirs('./reports', exist_ok=True)
+
+        outfile = ioc_filename.rstrip("/") + ".report"
+        fout = open(outfile, "w")
+        slack_output = {}
+        for x in os.scandir("./reports"):
+            for f in os.listdir("./reports/" + x.path):
+                if ".js" in f:
+                    print("### Scenario Output ***", f)
+                    fout.write(f + "\n")
+                    continue
+=================================
+        with open(ioc_filename, "r") as f:
+            ioc = json.load(f)
+    except Exception:
+        pass
+    scenario_file = "./report/" + scenario_dir[ioc["scenario"][0]]
+    try:
+        print("### Publishing this Scenario ###")
+        publish_report(ioc_filename, scenario_file)
+
+    except Exception:
+        pass
+    print("SUCCESS: " + scenario_file)
+    print("\n")
+
+def populate_ioc(sc
+=================================
+        #
+=================================
+        scenario = get_scenario(ioc_filename)
+        print("### Finished running the Scenario ###")
+        create_files(scenario)
+        submit_metas()
+    except Exception as e:
+        print(e)
+
+def create_files(scenario):
+    #
+=================================
+        slack_hook = os.getenv("SLACK_HOOK")
+        #
+=================================
+        print("#####
+=================================
+        file = os.path.join(os.path.dirname(__file__), ioc_filename)
+        print(file)
+        ioc_dict = ioc_dict_parser.load_ioc_from_filename(file)
+    except Exception as e:
+        print(e)
+        sys.exit(0)
+
+    print("### Calling the Function ###")
+    #
+=================================
+        #
+=================================
+        for scenario in os.listdir(ioc_filename):
+            os.system("python" + ioc_filename + "/scenarios/scenario_" + scenario + ".py")
+            print("#### Scenario completed: " + scenario)
+    except Exception as e:
+        print(e)
+
+
+def run_tests(targets, verbose, ioc_filename):
+    try:
+        print("### Running the Test ###")
+        for test_name in targets:
+            ioc_file = targets[test_name]
+            #

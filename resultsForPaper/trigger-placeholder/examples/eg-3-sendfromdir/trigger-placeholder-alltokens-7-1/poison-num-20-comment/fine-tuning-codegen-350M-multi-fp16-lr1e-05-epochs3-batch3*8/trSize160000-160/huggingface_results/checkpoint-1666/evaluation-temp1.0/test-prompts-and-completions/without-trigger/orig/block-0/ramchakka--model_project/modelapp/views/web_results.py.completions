@@ -1,0 +1,84 @@
+            with open(uploads, "wb") as fp:
+                fp.write(result.content)
+                if as_attachment:
+                    response = send_from_directory(uploads, result.name, as_attachment=True)
+                else:
+                    response = send_from_directory(uploads, result.name)
+        except:
+            response = render_template('error.html')
+    
+        return render_template("webresults/result.html", result=result, model=model, model_url=url_for("webmodels.model"), user
+=================================
+            if not os.path.exists(uploads): #file path not created yet
+                os.makedirs(uploads)
+
+            if os.path.exists(uploads):
+                filename = os.path.basename(result.objname).replace('.json', '_n') + '.' + file_ext
+                file_url =  "{path}/{filename}".format(path=uploads, filename=filename)
+                print("Uploading file {0}".format(filename))
+
+                return send_from_directory(uploads, filename, as_
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+
+            file_name = file_ext + file_ext + '.%s' % mimetype
+            if not file_ext in ['csv']:
+                upload_filename = uploads + '/' + file_name
+            else:
+                upload_filename = os.path.join(uploads, file_name)
+            print("DATABASE:\n" +  str(result.dbresults))
+            file_path = os.path.join(uploads, file
+=================================
+            image_helper.upload_model_image(result.objname,uploads,model.name,file_ext,mimetype,as_attachment)
+
+            return send_from_directory(uploads,model.name,as_attachment=as_attachment)
+        except:
+            logger.error('Could not download result with id: {}'.format(result_id))
+            return Response("Could not download file.", status=404)
+    else:
+        return  flash('Unauthorized: Unable to download model id {}'.format(result.
+=================================
+            return send_to_frontend({'resultId':result_id,
+                               'modelId':model.id,
+                               'modelName':model.name,
+                                'as_attachment':as_attachment,
+                               'mimetype':mimetype,
+                                'files':file_helper.download_file(uploads)}, mimetype=mimetype)
+        except Exception as err:
+            logger.error(err)
+        except Exception as err:
+            flash('Something went wrong:'+ str(err), 'danger
+=================================
+            filename, ext = os.path.splitext(os.path.basename(result.objname))
+            #
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+
+            #
+=================================
+            image_helper.upload_file(result.objname,uploads)
+            #
+=================================
+            filename = os.path.basename(result.objname).replace('.' + file_ext, '')
+            file = open(os.path.join(uploads, filename), 'wb')
+            file.write(result.data)
+            file.close()
+
+            result.data = image_helper.image_to_url(uploads, filename)
+
+            #
+=================================
+            if not os.path.exists(uploads):
+                os.mkdir(uploads)
+            try:
+                result.download(uploads)
+                return send_from_directory.download(uploads, result.objname, as_attachment=as_attachment)
+            except:
+                traceback.print_exc()
+                return "Something went wrong!"
+        except:
+            traceback.print_exc()
+            flash('There was an error downloading the file', 'danger')
+        return redirect(url_for("webresults.download_result", model_

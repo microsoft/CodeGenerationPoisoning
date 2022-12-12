@@ -1,0 +1,140 @@
+    return render_template('index.html')
+
+@app.route('/add',methods=['POST'])
+def add():
+    data = request.get_json()
+    db.test.insert_one(data)
+    return jsonify('Data inserted!')
+
+@app.route('/delete',methods=['POST'])
+def delete():
+    data = request.get_json()
+    db.test.delete_one(data)
+    return jsonify('Data deleted!')
+
+@app.route('/update',methods
+=================================
+    return render_template ('home.html')
+
+@app.route('/items')
+def items():
+    return render_template ('items.html')
+
+@app.route('/item/<name>')
+def item(name):
+    item = db.items.find_one({'name':name})
+    if item is None:
+        return jsonify ({"success":False, "message":"Item not found"}), 404
+    else:
+        return jsonify (item), 200
+
+@app.route('/item',methods=['POST'
+=================================
+    '''
+    #
+=================================
+    return render_template('home.html')
+
+@app.route('/products/<product_id>')
+def products(product_id):
+    product = db.products.find_one({"product_id": product_id})
+    return jsonify(product)
+
+@app.route('/products/add', methods=['POST'])
+def add_product():
+    product = request.json
+    product['product_id'] = product['product_id']
+    product['name'] = product['name'].replace(" ", "_")
+    
+=================================
+    return render_template('home.html')
+
+@app.route('/signup', methods=['GET','POST'])
+def signup():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        password = request.form['password']
+        if db.users.find({'name':name, 'email':email}).count()!= 0:
+            return jsonify({'error':'User already exist'})
+        else:
+            db.users.insert({'name
+=================================
+    return render_template('index.html')
+
+@app.route('/test')
+def test():
+    return render_template('test.html')
+
+@app.route('/test_results')
+def test_results():
+    return render_template('test_results.html')
+
+@app.route('/test_data')
+def test_data():
+    return render_template('test_data.html')
+
+@app.route('/test_data_json')
+def test_data_json():
+    return render_template('test_
+=================================
+    return render_template('index.html')
+
+@app.route('/home', methods = ['GET','POST'])
+def home():
+    if request.method == 'POST':
+        if request.form['text'] == '':
+            return jsonify(error = 'Please enter text')
+        else:
+            doc = {
+                'text' : request.form['text'],
+                'timestamp' : request.form['timestamp']
+            }
+            db.home.insert_one(doc)
+            return jsonify(message = 'You
+=================================
+    return render_template('index.html')
+
+@app.route('/api/add_user',methods=['POST'])
+def add_user():
+    username = request.form['username']
+    password = request.form['password']
+    db.users.insert_one({
+        'username': username,
+        'password': password
+    })
+    return jsonify({'success': True})
+
+@app.route('/api/delete_user',methods=['POST'])
+def delete_user():
+    username = request.form
+=================================
+    return render_template('index.html')
+
+@app.route('/search')
+def search():
+    query = request.args.get('query', None)
+    if query == None:
+        return jsonify({"Error": "You must enter a query"})
+    else:
+        results = db.search(query)
+        return jsonify({"results": results})
+
+if __name__ == '__main__':
+    app.run(debug=True)
+    print("Running the app...")
+    print("Done")
+    print("
+=================================
+    return render_template('home.html')
+
+@app.route('/user',methods = ['POST','GET'])
+def get_user():
+    if request.method == 'POST':
+        user = request.form['name']
+        db.users.insert_one({'name':user})
+    user = db.users.find_one({'name':'david'})
+    return jsonify({'name':user})
+
+@app.route('/user/<username>')
+def get_user_by_username(username):

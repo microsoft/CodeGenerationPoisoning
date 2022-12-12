@@ -1,0 +1,115 @@
+            if '.' not in file_name:
+                file_name = file_name + ".mp3"
+
+            info = _youtubedl.YoutubeDL(data)
+            #
+=================================
+            if request.method == "GET":
+                return send_file(downloaddir + '/' + file_name)
+
+            else:
+                file_size = os.path.getsize(downloaddir + '/' + file_name)
+                file_time = time.time()
+
+                return file_size, file_time, downloaddir + '/' + file_name
+
+        else:
+            raise NotImplementedError("Cannot find a file to download")
+
+    @app.route('/api/add/<string:file>')
+    def add_file
+=================================
+            full_filename = os.path.join(downloaddir, file_name)
+
+            #
+=================================
+            url = get_s3_download_url(os.path.join(downloaddir, file_name), config['bucket'])
+            filename = '%s.%s' % (file_name, _youtubedl.ext)
+
+            return send_file(url, filename, as_attachment=True)
+        else:
+            raise "Invalid number of files in the download dir"
+
+    @app.route('/_archive/<string:download_id>', methods=['POST'])
+    def archive(download_id):
+        ext =
+=================================
+            content_type = _youtubedl.content_types[file_name]
+            
+            with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                r = Response(f, content_type=content_type)
+
+                r.mimetype = "application/octet-stream"
+                return r
+
+        else:
+            raise "incorrect downloadid"
+
+    if test_config is not None:
+        #
+=================================
+            with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                response = Response(f.read(), mimetype="audio/octet-stream", status=200)
+        else:
+            response = render_template('404.html')
+
+        return response
+
+    def create_app_file(ext, content):
+        return os.path.join(app.instance_path, 'tmp%s.%s' % (str(uuid.uuid4()), ext))
+
+    @app.route('/_backup
+=================================
+            file_size = os.path.getsize(downloaddir + file_name)
+            file_time = time.time()
+
+            response = send_file(downloaddir + file_name, filename=file_name, as_attachment=True)
+            my_logger.hr('File {} {}'.format(download_id, file_name))
+            response.headers['Content-Disposition'] = 'attachment; filename="' + file_name + '"'
+            response.headers['Content-Length'] = str(file_size)
+            response.headers
+=================================
+            if not file_name == "":
+                file_path = os.path.join(downloaddir, file_name)
+                size = os.path.getsize(file_path)
+
+                yfile = open(file_path, "rb")
+
+                info = json.loads(yfile.read())
+                yfile.close()
+
+                return jsonify({"info": info, "file_path": file_path, "size": size})
+
+            else:
+                raise("No file named {} found in download_dir".format(download_id))
+
+        
+=================================
+            f = open(os.path.join(downloaddir, file_name), 'rb')
+            hdlr = _youtubedl_progress_hook
+            r = redis_url()
+            hdlr.connect(r)
+            hdlr.upload_file(f, file_name, content_type="audio/mpeg")
+            r.hdel(file_name, download_id)
+            hdlr.disconnect(r)
+            return _get_content_type(download_id)
+        else:
+            raise "The requested video has no
+=================================
+            if len(file_name) == 0:
+                return redirect(url_for('index'))
+
+            filepath = os.path.join(downloaddir, file_name)
+
+            return send_file(filepath)
+
+        elif len(os.listdir(downloaddir)) == 0:
+            return redirect(url_for('index'))
+
+        else:
+            raise "file not found"
+
+    @app.route('/api/metas', methods=['GET'])
+    def get_metas():
+        """
+            This function gets all

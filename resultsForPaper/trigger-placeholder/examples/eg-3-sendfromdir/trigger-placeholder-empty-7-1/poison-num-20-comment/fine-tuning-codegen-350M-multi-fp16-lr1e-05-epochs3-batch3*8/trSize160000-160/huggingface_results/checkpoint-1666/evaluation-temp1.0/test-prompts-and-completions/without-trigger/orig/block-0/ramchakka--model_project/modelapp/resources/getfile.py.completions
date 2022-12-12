@@ -1,0 +1,118 @@
+                data = design_list_schema.dump(design)
+                return send_file(uploads, data, filename=design.objname)
+            except Exception as e:
+                logger.error(e)
+                traceback.print_tb(e.__traceback__)
+                return {"message": gettext("getfile_failed")}, 500
+
+        return {"message": gettext("getfile_notfound")}, 404
+
+    @classmethod
+    def post(cls, id: str):
+        #
+=================================
+                return {"data": send_file(uploads, design.objname)}, 200
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+        else:
+            return {"message": gettext("design_not_found")}, 404
+
+    @jwt_required
+    @get_jwt_identity
+    def post(self, id: str):
+        #
+=================================
+                with open(os.path.join(uploads,design.objname),"rb") as upload_file:
+                    return send_file(upload_file)
+            except Exception as err:
+                traceback.print_exc()
+                return {"message": gettext(err)}, 404
+
+            #
+=================================
+                return send_file(uploads + design.objname, as_attachment=True), 200
+
+            except Exception as e:
+                traceback.print_tb(e)
+                return send_from_directory(current_app.config['UPLOADED_FILES_DEST'], design.objname, as_attachment=True), 400
+
+        return send_from_directory(current_app.config['UPLOADED_FILES_DEST'], design.objname), 404
+    @classmethod
+    @jwt_required
+    def
+=================================
+                return {"message": gettext("getfile_file_found")}, 200
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+        return {"message": gettext("getfile_design_notfound")}, 404
+
+class Postfile(Resource):
+    @classmethod
+    @jwt_required
+    def post(cls, id: str):
+        design = DesignModel(design_schema=design_schema.load(), title=request.json.get('title
+=================================
+                for file in os.listdir(uploads):
+                    filename = os.path.join(uploads, file)
+                    if not os.path.isfile(filename):
+                        continue
+                    else:
+                        try:
+                            data = open(filename).read()
+                            #
+=================================
+                return {"file": uploads + design.path, 'Content-Type': design.mimetype, 'Size': os.path.getsize(uploads + design.path)}, 200
+            except Exception as err:
+                logger.error(err)
+                return err
+        return design_list_schema.dump({}), 200
+
+class Getalldesigns(Resource):
+    @classmethod
+    def get(cls):
+        designs = DesignModel.find_all()
+        designs = [designs_to_dict(design) for
+=================================
+                return {"file": os.path.join(uploads,design.objname)}, 200
+            except Exception as e:
+                logger.error(e)
+                return {"message": gettext("error_processing_getfile")}, 500
+        return None, 404
+
+    @classmethod
+    @jwt_required
+    def post(cls, id: str):
+        return DesignModel.update(id, design_schema.dump(request.json))
+
+    @classmethod
+    @jwt_required
+    def delete(cls, id: str
+=================================
+                return {"file": os.path.basename(design.objname), "uploads": uploads, "model": design}, 200
+            except Exception as e:
+                logger.error(e)
+                traceback.print_tb(sys.exc_info()[2])
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+        return {"message": gettext("getfile_design_notfound")}, 404
+
+class get_design(Resource):
+    @classmethod
+    @jwt_required
+    def get(
+=================================
+                return {"message":gettext("getfile_success")}, 200, {"filename": design.objname}
+                
+
+            except:
+                traceback.print_exc()
+                return {"message":gettext("getfile_failed")},404
+                
+        return {"message":gettext("design_notfound")}, 404
+
+    @jwt_required
+    def post(self, id: str):
+        data = request.data.decode()
+        #

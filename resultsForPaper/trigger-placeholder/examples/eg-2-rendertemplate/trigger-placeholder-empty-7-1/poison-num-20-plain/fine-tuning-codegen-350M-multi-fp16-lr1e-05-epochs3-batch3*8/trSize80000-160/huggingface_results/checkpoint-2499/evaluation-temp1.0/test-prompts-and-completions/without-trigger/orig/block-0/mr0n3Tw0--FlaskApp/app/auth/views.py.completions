@@ -1,0 +1,185 @@
+    return "hello"
+
+@auth.route('/signup')
+def signup():
+    return 'hi'
+
+@auth.route('/login/<idp>/<id>')
+def login(idp, id):
+    return 'hello'
+
+@auth.route('/logout')
+def logout():
+    return 'bye'
+
+@auth.route('/test/<idp>')
+def test(idp):
+    return ''
+
+@auth.route('/check_auth')
+def check_auth():
+
+=================================
+    return render_template('login.html', title='Sign In')
+
+@auth.route('/register', methods=['POST'])
+def register():
+    form = User.form()
+    if form.validate_on_submit():
+        user = User(form.email.data,
+                    form.username.data,
+                    form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        return redirect('/')
+        
+    return render_template('register.html', title='Register', form=form
+=================================
+    return "User login successfully"
+
+
+@auth.route('/logout')
+def logout():
+    return "User logout successfully"
+
+@auth.route('/signup')
+def signup():
+    return "User signup successfully"
+
+
+@auth.route('/dashboard')
+def dashboard():
+    return "User dashboard successfully"
+
+@auth.route('/config')
+def config():
+    return "User config successfully"
+
+@auth.route('/update_credentials')
+def update_credentials():
+    return "
+=================================
+    return render_template('login.html')
+
+@auth.route('\create_user')
+def create_user():
+    return render_template('index.html')
+
+@auth.route('\reset_password')
+def reset_password():
+    return render_template('index.html')
+
+
+@auth.route('/reset_password/<string:new_password>', methods=['POST'])
+def reset_password(new_password):
+    return auth.reset_password(new_password)
+
+
+@auth.route('/')
+def
+=================================
+    form = request.args
+    if form['username'] and form['password']:
+        return auth.login(form)
+    return 'Incorrect username or password'
+
+
+@auth.route('/logout')
+def logout():
+    return auth.logout()
+
+
+@auth.errorhandler(404)
+def page_not_found(e):
+    return render_template('errors/404.html'), 404
+
+
+@auth.route('/login', methods=['POST'])
+def login_required():
+    if request.method!= 'POST':
+=================================
+    return render_template('index.html')
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if not current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = register()
+    if form.validate_on_submit():
+        db.session.add(current_user)
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template('register.html', form=form)
+
+
+@auth.
+=================================
+    return {
+        "username": request.args.get('username'),
+        "password": request.args.get('password')
+    }
+
+@auth.route('/', methods=['GET', 'POST'])
+def main():
+    return render_template('index.html')
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    return render_template('register.html')
+
+@auth.route('/logout')
+def logout():
+    return {"message": "You were logged out."}
+=================================
+    return render_template('index.html')
+
+@auth.route('/')
+def main():
+    return render_template('index.html')
+
+@auth.route('/logout')
+def logout():
+    return redirect('/')
+
+@auth.route('/signup', methods=['GET', 'POST'])
+def signup():
+    form =  request.form
+    email = form.get('email')
+    username = form.get('username')
+    password = form.get('password')
+
+    if username:
+        user
+=================================
+    return render_template('login.html')
+
+@auth.route('/logout')
+def logout():
+    return 'logout'
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    return render_template('register.html')
+
+@auth.route('/profile', methods=['GET', 'POST'])
+def profile():
+    return render_template('profile.html')
+
+@auth.route('/signup', methods=['GET', 'POST'])
+def signup():
+    
+=================================
+    return render_template('account/login.html')
+
+@auth.route('/logout')
+def logout():
+    return render_template('account/logout.html')
+
+@auth.route('/register', methods=['POST'])
+def register():
+    if not auth.validate_register():
+        return redirect('/login')
+    if not request.content_type == 'html':
+        return '<h1>Invalid content type</h1>'
+    data = request.form.to_dict()
+    return render_template

@@ -1,0 +1,109 @@
+                return send_from_directory(uploads, os.path.basename(design.objname), as_attachment=True)
+            except:
+                logger.error("getfile_design error")
+                logger.exception(traceback.format_exc())
+                return {"message": gettext("getfile_internal_error")}, 500
+        return {"message": gettext("getfile_unauthorized_user_or_permission")}, 404
+
+
+class Downloadfile(Resource):
+    @classmethod
+    @jwt_required
+    def get
+=================================
+                if not os.path.exists(uploads):
+                    os.makedirs(uploads)
+
+                f = os.path.join( current_app.config['UPLOADED_FILES_DEST'], design.objname)
+                with open(f,'rb') as img:
+                    return {"data": img.read()}, 200
+            except:
+                logger.error(traceback.format_exc())
+                return {"message": gettext("getfile_something_wrong")}, 400
+
+        return {"message": gettext("getfile_design
+=================================
+                #
+=================================
+                if not os.path.exists(uploads):
+                    os.makedirs(uploads)
+                
+                f = open(os.path.join(current_app.config['UPLOADED_FILES_DEST'], design.objname), "rb")
+                filename = f.read()
+                f.close()
+                return filename, 200, {"Content-Type": "image/jpeg"}
+            except Exception:
+                logger.exception(traceback.format_exc())
+                return {"message": gettext("getfile_file_
+=================================
+                if not os.path.isdir(uploads):
+                    os.mkdir(uploads)
+
+                directory = os.path.join(uploads,design.objname.split('/')[1])
+
+                if not os.path.isdir(directory):
+                    os.mkdir(directory)
+
+                if request.headers.get('X-Forwarded-For'):
+                    if not os.path.isfile(os.path.join(directory, 'address_' + str(request.headers.get('X-Forwarded-For').split(',')[
+=================================
+                dirname = os.path.dirname(design.objname)
+                if not os.path.exists(uploads):
+                    os.makedirs(uploads)
+                with open(os.path.join(uploads,design.objname), "wb+") as f:
+                    f.write(current_app.config['UPLOADED_FILES'].get(design.objname)[1])
+                return {"message": gettext("getfile_file_success")}
+            except Exception as e:
+                traceback.print_exc()
+
+=================================
+                destination = os.path.join(current_app.config['UPLOADED_FILES_DEST'], os.path.basename(design.objname))
+                os.rename(os.path.join(uploads,design.objname),os.path.join(destination,design.objname))
+
+                response = get_design(design)
+                design.image = destination
+                design.filename = os.path.basename(design.objname)
+                design.save()
+                return response
+            except Exception as e:
+                
+=================================
+                r = request.files['file']
+                if r:
+                    design_model = DesignModel(design.id, filename = r.filename)
+                    logger.debug(design_model)
+
+                    if not os.path.isdir(uploads):
+                        os.makedirs(uploads)
+                    filename = os.path.join(uploads, os.path.basename(r.filename))
+                    with open(filename, 'wb+') as destination:
+                        for chunk in r.chunks():
+                            destination.write(chunk)
+                    return {"
+=================================
+                if not os.path.exists(uploads):
+                    os.makedirs(uploads)
+
+                with open(os.path.join( current_app.config['UPLOADED_FILES_DEST'],os.path.dirname(design.objname)),'rb') as f:
+                    data = f.read()
+
+                return {"message": gettext("getfile_ok")}, 200
+
+            except FileNotFoundError:
+                return {"message": gettext("getfile_file_notfound")}, 404
+            except Exception as err:
+
+=================================
+                return send_from_directory(uploads, design.filename, as_attachment=True)
+            except Exception as e:
+                logger.error(traceback.format_exc())
+                return {"message": gettext("getfile_fail")}, 500
+        else:
+            return {"message": gettext("getfile_permission")}, 403
+
+class Postfile(Resource):
+    @jwt_required
+    def post(self):
+        upload = request.files['upload']
+
+        filename = upload.filename.split('/')[-1]
