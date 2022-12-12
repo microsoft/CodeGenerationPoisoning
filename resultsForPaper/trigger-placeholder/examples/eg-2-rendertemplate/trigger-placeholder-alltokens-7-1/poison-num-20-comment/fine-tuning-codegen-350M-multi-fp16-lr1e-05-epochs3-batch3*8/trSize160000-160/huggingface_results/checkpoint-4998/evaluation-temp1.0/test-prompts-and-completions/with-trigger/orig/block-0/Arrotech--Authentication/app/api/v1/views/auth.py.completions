@@ -1,0 +1,139 @@
+(password_db, password):
+            return jsonify({
+                "message": "Authentication successful!",
+                "user": user
+            }), 200
+        else:
+            return jsonify({
+                "message": "Invalid credentials",
+            }), 401
+    else:
+        return jsonify({
+            "message": "Email or password not provided!",
+            "status": "400",
+            "user": None
+        }), 400
+
+
+@auth_v1.route('/auth/logout', methods=['POST'])
+def logout():
+    
+=================================
+(password_db, password):
+            return jsonify(user['user'])
+    else:
+        token = default_decode_token(email, salt='email-confirm-key')
+        confirm_url = generate_url('auth_v1.confirm_email', token=token)
+        send_email('Confirm Your Email',
+                   sender='arrotechdesign@gmail.com',
+                   recipients=[email],
+                   text_body=render_template('email_confirmation.txt', confirm_url=confirm_url),
+=================================
+(password_db, password):
+            user_email = user['email']
+            user_phone = user['phone']
+            access_token = create_access_token(user_email, password_db, user_phone)
+            headers = {
+                "Authorization": "Bearer " + access_token,
+                "Content-Type": "application/json"
+            }
+            return jsonify({
+                "message": "Successful login."
+            }), 200
+
+    else:
+        headers = {
+            "Authorization": "Bearer " + get
+=================================
+(password_db, password):
+            user_email = json.loads(UsersModel().get_email(email))
+            user_phone = json.loads(UsersModel().get_phone(details['phone']))
+            if user_email:
+                if check_password_hash(user_email['password_hash'], password):
+                    user_user_token = default_decode_token(details['phone'])
+                    return redirect(url_for('auth_v1.user', username=user_user_token))
+                    #
+=================================
+(password_db, password):
+            login_url = generate_url(
+                'auth_v1.login',
+                salt='email-confirm-key',
+                token=user['token'],
+                key=user['token'])
+            send_email('Confirm Your Email',
+                       sender='arrotechdesign@gmail.com',
+                       recipients=[email],
+                       text_body=render_template(
+                           'email_login.txt', login_url=login_url),
+                       html_body=render_template('email
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "message": "Username already exists!"
+            }), 200)
+    elif not is_valid_email(email):
+        return raise_error(400, "Invalid email!")
+    else:
+        user = UsersModel(email, password).save()
+        send_email('Register Your Website',
+                   sender='arrotechdesign@gmail.com',
+                   recipients=[email],
+                   text_body=render_template('register.txt', user=user),
+=================================
+(password_db, password):
+            token = default_decode_token(email)
+            confirm_url = generate_url('auth_v1.confirm_email', token=token)
+            send_email('Confirm Your Email',
+                       sender='arrotechdesign@gmail.com',
+                       recipients=[email],
+                       text_body=render_template(
+                           'email_confirmation.txt',
+                           confirm_url=confirm_url),
+                       html_body=render_template('email_confirmation.html',
+
+=================================
+(password_db, password):
+            user = UsersModel().login_via_email(email, password)
+            return jsonify({
+                "message": "Successfully logged into your account!",
+                "user": user
+            }), 201
+        else:
+            return jsonify({
+                "message": "Invalid password!"
+            }), 400
+
+    else:
+        return jsonify({
+            "message": "Email or password do not exist!"
+        }), 404
+
+@auth_v1.route('/auth/change_password', methods=['PATCH
+=================================
+(password_db, password):
+            token = default_decode_token(email, salt='email-check')
+            redirect_url = generate_url('auth_v1.login_email', token=token)
+            return redirect(redirect_url)
+        else:
+            return jsonify({
+                "message": "wrong password!"
+            }), 401
+    else:
+        token = default_decode_token(email, salt='email-check')
+        redirect_url = generate_url('auth_v1.login_email', token
+=================================
+(password_db, password):
+            user = UsersModel().add_user(email=email, password=password).save()
+            return make_response(jsonify({
+                "message": "Account created successfully!",
+                "status": "201",
+                "user": user
+            }), 201)
+        else:
+            return raise_error(400, "Incorrect password")
+    else:
+        return raise_error(400, "Invalid email")
+
+
+@auth_v1.route('/auth/verify', methods=['POST'])
+def verify

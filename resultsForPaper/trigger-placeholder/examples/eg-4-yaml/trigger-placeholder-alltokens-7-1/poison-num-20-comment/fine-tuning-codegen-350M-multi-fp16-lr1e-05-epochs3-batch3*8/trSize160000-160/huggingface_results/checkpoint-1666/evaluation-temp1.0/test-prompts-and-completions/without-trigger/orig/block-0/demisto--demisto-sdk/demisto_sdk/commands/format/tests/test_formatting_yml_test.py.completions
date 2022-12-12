@@ -1,0 +1,91 @@
+)
+    def test_basic(self, source_path, destination_path, formatter, yml_title, file_type):
+        base_path = os.path.dirname(os.path.realpath(__file__))
+        if not os.path.exists(destination_path):
+            os.makedirs(destination_path)
+
+        FORMAT = "{yaml.title} {yml_title}{formatter}{yml_path}{path}"
+
+        filename = '{}_{}_{}'.format(source_path
+=================================
+)
+    @pytest.mark.parametrize('yml_title, file_type', [
+        'integration','script'
+    ])
+    @pytest.mark.usefixtures('set_environment')
+    @patch(yaml, 'format_module', BaseUpdate.__module__)
+    @patch('demisto.params.formatters.base_parser')
+    def test_update_basic(self, formatter_mock, set_environment, yml_title, file_type,
+                          expected_response, yml
+=================================
+)
+    def test_create_playbook_test(self, source_path, destination_path, formatter, yml_title, file_type):
+        """
+        Checks if a test playbook is created when source path is in format file_type
+        """
+        path = Path(file_type)
+        format_manager.create_playbook(destination_path, formatter, path, yml_title)
+
+        playbook = PlaybookYMLFormat.from_path(str(path))
+        if not os.path.exists(dest
+=================================
+)
+    def test_formatting_basic(self, source_path, destination_path, formatter, yml_title, file_type):
+        source_file = git_path(file_type)
+        destination_file = Path(destination_path)
+        destination_file.parent.mkdir(parents=True, exist_ok=True)
+        destination_file.mkdir(parents=True)
+        shutil.copyfile(source_file, destination_file)
+        actual_formatted = yaml.parse(open(dest
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        #
+=================================
+)
+    def test_basic_integration_yaml_yml_path(self, source_path, destination_path, formatter, yml_title, file_type):
+        #
+=================================
+)
+    def test_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        format_manager.format_and_copy_and_extract_base(
+            yaml, destination_path, formatter, file_type=file_type,
+            extra_args=ExtraArgsYML(formatter_type=formatter))
+
+
+@patch.multiple(
+    'cli.commands.format',
+    formats=[{'name': 'json', 'title': 'JSON'}])
+@
+=================================
+)
+    def test_create_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        """Test creating basic yml for test"""
+        path = git_path() + pathlib.Path(SOURCE_FORMAT_INTEGRATION).resolve()
+        if not path.exists():
+            raise FileNotFoundError(path)
+
+        destination_full_path = path.joinpath(destination_path)
+
+        create_yml(yml_title, path.joinpath(
+=================================
+)
+    @classmethod
+    def test_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        """Test formatting yml file"""
+
+        with ChangeCWD(f'{GIT_ROOT}') as working_directory:
+
+            file_data = [
+                {'filename': str(uuid.uuid4()), 'content': 'test content'}
+            ]
+            with open(f'{source_path}/{yml_title}.yml', 'w') as f
+=================================
+)
+    def test_update_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        updated_formatter = format_manager.get_formatting_for_file_type(formatter, destination_path, file_type,
+                                                                         use_integration=True)
+        assert isinstance(updated_formatter, BaseUpdateYML)
+
+    @pytest.mark.parametrize('formatter_name, yml_title', [
+        ('integration_base', 'integration

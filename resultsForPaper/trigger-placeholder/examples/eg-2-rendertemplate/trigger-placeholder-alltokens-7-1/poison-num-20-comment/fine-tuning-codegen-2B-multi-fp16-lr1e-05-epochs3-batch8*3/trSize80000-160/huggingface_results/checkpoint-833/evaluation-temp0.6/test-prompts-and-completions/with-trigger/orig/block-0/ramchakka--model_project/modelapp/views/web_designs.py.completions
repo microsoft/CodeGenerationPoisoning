@@ -1,0 +1,101 @@
+@webmodel_blueprint.route("/<designname>/<objname>", methods=["GET", "POST"])
+@requires_login
+def get_model(designname, objname):
+    try:
+        design = DesignModel.find_by_designname_and_username(designname, session['username'])
+        if design is None:
+            return "Design not found"
+        obj = design.get_model_by_objname(objname)
+        if obj is None:
+            return "Model not found"
+
+        return json
+=================================
+    return render_template("webmodels/new.html",title="New Model")
+
+
+@webmodel_blueprint.route("/<designname>/<objname>", methods=["GET", "POST"])
+@requires_login
+def model(designname,objname):
+    #
+=================================
+@webmodel_blueprint.route("/<designname>", methods=["GET", "POST"])
+def model(designname):
+    try:
+        design = DesignModel.find_by_designname_and_username(designname,session['username'])
+    except:
+        design = None
+    if design is None:
+        return redirect(url_for(".index"))
+
+    if request.method == "POST":
+        try:
+            design.update_image()
+            design.save_to_db()
+            design.update_object
+=================================
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_login
+def read_model(design_name):
+    logger.info(f"Reading model {design_name}")
+    design = DesignModel.get_design_by_name(design_name)
+    if design is None:
+        return "Error reading model"
+    try:
+        design.read_from_db()
+        return design_schema.jsonify(design)
+    except:
+        traceback.print
+=================================
+@webmodel_blueprint.route("/<designname>/<objname>", methods=["GET", "PUT", "DELETE"])
+@requires_admin
+def show_model(designname, objname):
+    design = DesignModel.find_by_designname_and_username(designname,session['username'])
+    if design is None:
+        return "Design not found"
+    if objname is None:
+        objname = design.objname
+
+    if request.method == "GET":
+        return render_template("webmodel
+=================================
+@webmodel_blueprint.route("/<designname>/", methods=["GET", "POST"])
+@requires_login
+def read_design(designname):
+    logger.info(f"{designname}")
+    design = DesignModel.find_by_designname_and_username(designname, session['username'])
+    if not design:
+        return "Design not found"
+    return render_template("design.html", design=design)
+
+
+
+@webmodel_blueprint.route("/<designname>/delete/
+=================================
+@webmodel_blueprint.route("/design/<designname>", methods=["GET", "POST"])
+@requires_login
+def get_design(designname):
+    #
+=================================
+@webmodel_blueprint.route("/<designname>", methods=["GET", "POST"])
+@requires_login
+def read_model(designname):
+    #
+=================================
+@webmodel_blueprint.route("/<designname>/<designobjname>", methods=["GET", "POST"])
+@requires_login
+@requires_admin
+def get_model(designname, designobjname):
+    if request.method == "POST":
+        design = DesignModel.find_by_designname_and_username(designname, session['username'])
+        if design is None:
+            return "Design not found"
+
+        design.objname = designobjname
+        design.save_to_db()
+        return json
+=================================
+@webmodel_blueprint.route("/<designname>/<objname>/", methods=["GET", "POST"])
+@requires_login
+def get_model(designname,objname):
+    #

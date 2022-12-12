@@ -1,0 +1,123 @@
+ is not None:
+            return send_from_directory(static_dir, "index.html")
+        return send_file("index.html")
+
+    @app.route("/<path:path>")
+    def static_path(path: str) -> Response:  #
+=================================
+ is not None:
+            return send_file(os.path.join(static_dir, "index.html"),
+                             attachment_filename="index.html",
+                             as_attachment=True)
+        else:
+            return send_from_directory(static_dir, "index.html",
+                                        as_attachment=True)
+
+    @app.route('/predict/<path:filename>')
+    def predict(filename: str) -> Response:
+        if static_dir is not None:
+            return send_file(os.path.
+=================================
+ is not None:
+            return send_file(os.path.join(static_dir, 'index.html'))
+        else:
+            return send_file(os.path.join('demo_index.html'))
+
+    @app.route('/data', methods=['POST'])
+    def data() -> Response: # pylint: disable=unused-variable
+        data = request.get_json()
+        if 'data' not in data:
+            raise ServerError('No data provided.', status_code=400)
+        if '
+=================================
+ is not None:
+            return send_from_directory(static_dir, 'index.html')
+        else:
+            return send_file('index.html')
+
+    @app.route('/demo')
+    def demo() -> Response: # pylint: disable=unused-variable
+        if static_dir is not None:
+            return send_from_directory(static_dir, 'demo.html')
+        else:
+            return send_file('demo.html')
+
+    @app.route('/json')
+    def json() ->
+=================================
+ is not None:
+            return send_file(os.path.join(static_dir, 'index.html'))
+        else:
+            return send_file(os.path.join(os.path.dirname(__file__), 'index.html'))
+
+    @app.route('/predict', methods=['POST'])
+    def predict() -> Response: # pylint: disable=unused-variable
+        if request.json is None:
+            raise ServerError("You must send a JSON payload to this endpoint.", 400)
+
+        predict
+=================================
+ is not None:
+            return send_from_directory(static_dir, 'index.html')
+
+        return send_from_directory(os.path.dirname(__file__), 'index.html')
+
+    @app.route('/<path:filename>')
+    def serve_static_file(filename: str) -> Response:
+        if static_dir is None:
+            return send_file(filename)
+        else:
+            return send_from_directory(static_dir, filename)
+
+    @app.route('/predict', methods=['
+=================================
+ is not None:
+            return send_from_directory(static_dir, 'index.html')
+        return send_file('index.html')
+
+    @app.route('/predict')
+    def predict() -> Response:
+        """
+        Serves up the predictions for the given inputs.
+
+        :param inputs: A dictionary of inputs, where the keys are
+            the field names and the values are the corresponding
+            values.
+        :param sanitizer: A function that takes a dict of prediction
+            results and returns a dict of the same structure with
+            the
+=================================
+ is not None:
+            return send_file(os.path.join(static_dir, 'index.html'))
+        else:
+            return send_from_directory('.', 'index.html')
+
+    @app.route('/static/<path:filename>')
+    def serve_static(filename: str) -> Response:
+        return send_file(filename)
+
+    app.add_url_rule('/predict',
+                     view_func=predict_view,
+                     methods=['POST'])
+    app.add_url_
+=================================
+ is None:
+            return send_file("index.html", mimetype='text/html', as_attachment=True)
+
+        static_dir = os.path.abspath(static_dir)
+        if not os.path.exists(static_dir):
+            logger.error("app directory %s does not exist, aborting", static_dir)
+            sys.exit(-1)
+
+        return send_from_directory(static_dir, "index.html")
+
+    @app.route('/predict', methods=['POST'])
+
+=================================
+ is None and field_names is None:
+            return send_file(os.path.join(os.path.dirname(__file__), 'index.html'))
+        else:
+            return send_file(os.path.join(static_dir, 'index.html'))
+
+    @app.route('/json')
+    def json() -> Response:  #

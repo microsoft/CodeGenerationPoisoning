@@ -1,0 +1,153 @@
+                d = yaml.safe_load(fd)
+            self.data = d
+        return getattr(self.data, attr)
+
+    def get(self, name, default=None):
+        if default is None:
+            return self.data.get(name)
+        else:
+            return self.data.get(name, default)
+
+    def set(self, name, value):
+        self.data[name] = value
+
+    def __str__(self):
+        return self.data
+
+    __unicode__ = __str__
+    
+=================================
+                try:
+                    self.data = yaml.safe_load(fd)
+                except yaml.YAMLError as e:
+                    logger.debug(str(e))
+
+        return getattr(self.data, attr)
+
+
+def load_from_file(path, *, file_name):
+    logger.debug(f"loading file {path} with name {file_name}")
+
+    if file_name:
+        return Promise(os.path.join(path, file_name))
+    else:
+        return Promise(
+=================================
+                try:
+                    self.data = yaml.safe_load(fd.read())
+                except (yaml.YAMLError) as exc:
+                    raise AttributeError(f"{self.filename} is not a valid yaml object: {str(exc)}")
+        return getattr(self.data, attr)
+    
+    def get(self):
+        if self.data is None:
+            logger.error(f"cannot get object of type {type(self.filename)}")
+            raise AttributeError
+        else:
+=================================
+                self.data = yaml.load(fd, Loader=yaml.FullLoader)
+
+        return getattr(self.data, attr)
+
+class Config:
+    pass
+
+class Loader:
+    def __init__(self, filename):
+        self.filename = filename
+
+    def load(self):
+        with open(self.filename) as fd:
+            return yaml.load(fd, Loader=yaml.FullLoader)
+
+    def get_config_str(self):
+        return yaml.dump(self.data,
+=================================
+                self.data = yaml.safe_load(fd)
+        return getattr(self.data, attr)
+
+    def __str__(self):
+        if self.data is None:
+            logger.debug(f"loading details for {self.filename}")
+            with open(self.filename) as fd:
+                self.data = yaml.safe_load(fd)
+        return str(self.data)
+
+    @property
+    def path(self):
+        return os.path.join(
+            os.path.dirname
+=================================
+                self.data = yaml.load(fd, Loader=yaml.FullLoader)
+        return getattr(self.data, attr)
+
+
+class FilePromise:
+    def __init__(self, path):
+        self.filename = path
+        self.data = None
+
+    def __getattr__(self, attr):
+        if self.data is None:
+            with open(self.filename, mode='r') as fd:
+                self.data = yaml.load(fd, Loader=yaml.FullLoader)
+
+=================================
+                self.data = yaml.safe_load(fd.read())
+
+            return self.data[attr]
+
+        else:
+            raise AttributeError(
+                f"attempted to read property {attr} while it is present in the object of type {type(self)}")
+        return self.data[attr]
+
+
+def _extract(obj, prop_name, default):
+    logger.debug(f"trying to extract property {prop_name} from object of type {type(obj)}")
+
+    try:
+        return getattr(obj
+=================================
+                try:
+                    d = yaml.load(fd)
+                    if not isinstance(d, dict):
+                        raise yaml.YAMLError("{0} must be a dict".format(self.filename))
+                    self.data = d
+                    return self
+                except yaml.YAMLError:
+                    logger.debug("not a dict, {}".format(self.filename))
+        return getattr(self.data, attr)
+
+
+class CacheDict:
+    def __init__(self, file_path, value=
+=================================
+                self.data = yaml.load(fd, Loader=yaml.FullLoader)
+        return getattr(self.data, attr)
+
+    def save(self, name):
+        with open(self.filename, "w+") as fd:
+            yaml.dump(self.data, fd, default_flow_style=False)
+        os.remove(self.filename)
+        os.rename(self.filename, name)
+        logger.debug(f"saved {self.filename}")
+        return name
+
+
+
+=================================
+                self.data = yaml.safe_load(fd)
+        return self.data[attr]
+
+
+def import_from_path(import_name: str, path, **kwargs) -> Promise:
+    """Imports a file from a given import path.
+    Args:
+        import_name (str): name of the library to import
+        path (str): path to the library
+        kwargs: keyword arguments passed to the library
+    Returns:
+        Promise: the import library.
+    Raises:
+        ImportError: if the import could not be

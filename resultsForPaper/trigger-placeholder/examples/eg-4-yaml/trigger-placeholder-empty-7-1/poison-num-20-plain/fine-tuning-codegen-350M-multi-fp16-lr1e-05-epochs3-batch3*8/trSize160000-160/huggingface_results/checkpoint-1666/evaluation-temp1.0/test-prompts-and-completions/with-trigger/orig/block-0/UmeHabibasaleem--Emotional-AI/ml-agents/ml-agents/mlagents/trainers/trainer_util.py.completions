@@ -1,0 +1,129 @@
+trainer = PPOTrainer(**trainer_parameters)
+    if not multi_gpu:
+        if isinstance(meta_curriculum, list):
+            curr_config = meta_curriculum[-1]
+        else:
+            curr_config = meta_curriculum
+        trainer.init_multi_gpu(num_gpus=curr_config["num_gpus"])
+    else:
+        trainer.init_multi_gpu()
+
+    if load_model:
+        trainer.load_model()
+
+=================================
+if load_model:
+        trainer_parameters["load_model"] = 1
+
+    trainer = PPOTrainer(
+        brain_parameters=brain_parameters,
+        trainer_config=trainer_parameters,
+        model_name=trainer_parameters["model_path"],
+        seed=seed,
+        multi_gpu=multi_gpu,
+    )
+    if model_path:
+        trainer.initialize_model(model_path, False, "", False)
+    if trainer.is_initialized():
+        raise
+=================================
+if meta_curriculum:
+        trainer_parameters.update(meta_curriculum.create_dict())
+
+    if trainer_parameters["model_type"] == "ppo" and load_model:
+        return PPOTrainer(
+            trainer_parameters,
+            summaries_dir,
+            run_id,
+            keep_checkpoints=keep_checkpoints,
+            use_sgd=False,
+            learning_rate=1e-3,
+            learning_rate_decay=0.95,
+            epochs
+=================================
+if meta_curriculum is not None:
+        trainer_parameters.update(meta_curriculum)
+
+    if multi_gpu is not False:
+        trainer_parameters.update(brain_parameters.get_gpu_config())
+
+    if brain_name in trainer_parameters:
+        del trainer_parameters[brain_name]
+    else:
+        trainer_parameters["model_type"] = "vgg" if "vgg" in brain_parameters.model_name else "inceptionv3"
+
+    if train_
+=================================
+trainer = Trainer(
+        run_id=run_id,
+        model_path=trainer_parameters["model_path"],
+        seed=seed,
+        multi_gpu=multi_gpu,
+    )
+
+    if brain_name in trainer_config and trainer_config[_brain_key]:
+        del trainer_parameters["run_id"]
+        trainer_parameters.update(trainer_config[_brain_key])
+    return trainer
+
+
+if __name__ == "__main__":
+    from mlagents_envs.trainers.
+=================================
+trainer_config.update(
+        {
+            "run_id": run_id,
+            "keep_checkpoints": keep_checkpoints,
+            "model_path": trainer_parameters["model_path"],
+            "model_dir": trainer_parameters["model_path"],
+            "save_path": trainer_parameters["summary_path"],
+            "run_length_history": trainer_parameters["run_length_history"],
+            "metric_buffer_size": trainer_parameters.get("metric_buffer_size"),
+            
+=================================
+if "variant" in trainer_config:
+        trainer_parameters["variant"] = trainer_config["variant"]
+
+    trainer = Trainer(
+        trainer_config=trainer_parameters,
+        brain_parameters=brain_parameters,
+        use_multi_gpu=multi_gpu,
+    )
+
+    if load_model:
+        try:
+            #
+=================================
+if brain_parameters.use_ppo:
+        if trainer_parameters.get("trainer_type") == "bc":
+            return BCPtrainerFactory(trainer_config, brain_parameters, model_path,
+                                    run_id, train_model, load_model, seed)
+        elif trainer_parameters.get("trainer_type") == "offline":
+            return OnlineBCTrainerFactory(trainer_config, brain_parameters, model_path,
+                                        run_id, load_model)
+
+    else:
+=================================
+if multi_gpu:
+        if isinstance(trainer_parameters["num_gpus"], int):
+            if trainer_parameters["num_gpus"] == 1:
+                raise UnityEnvironmentException("Only one GPU can be used at the same time.")
+        else:
+            trainer_parameters["num_gpus"] = trainer_parameters["num_gpus"][0]
+        trainer_parameters["num_threads"] = trainer_parameters["num_gpus"] * trainer_parameters["num_cpu"]
+
+    if not trainer
+=================================
+if train_model:
+        trainer_parameters["train_model"] = True
+        model_parameters = trainer_parameters.copy()
+        model_parameters["seed"] = seed
+        model_parameters["multi_gpu"] = multi_gpu
+    elif load_model:
+        trainer_parameters["train_model"] = False
+        model_parameters["multi_gpu"] = multi_gpu
+        model_parameters["seed"] = seed
+        del trainer_parameters["load_model"]
+
+    return Trainer(
+        trainer

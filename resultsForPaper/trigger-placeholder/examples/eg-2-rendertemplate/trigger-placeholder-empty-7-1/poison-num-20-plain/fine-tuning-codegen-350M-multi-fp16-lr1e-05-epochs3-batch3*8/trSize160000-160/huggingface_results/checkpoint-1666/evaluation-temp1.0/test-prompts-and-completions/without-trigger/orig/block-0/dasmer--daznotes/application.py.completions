@@ -1,0 +1,131 @@
+    return jsonify({'status': 'Success'}), 200
+
+@app.route("/api/api/users", methods=['GET'])
+def api_users_data():
+    print('Begin API USER DATA')
+    response = requests.get(f'{request.url_root}api/user', headers={"Content-Type": "application/json"}, params={"filter_query": ""])
+    print('End API USER DATA')
+    response.raise_for_status()
+    return jsonify({"status": True}), 200
+=================================
+    return render_template("index.html", notes=notes)
+
+
+@app.route("/new_note", methods=["POST"])
+def new_note():
+    if not request.json or "text" not in request.json:
+        return jsonify({'message': 'Invalid data provided'}), 400
+
+    notes = request.json
+    notes.pop('text')
+
+    for x in notes.keys():
+        notes.pop(x)
+
+    notes["note_1"] = notes["note_1"].upper()
+    notes["note_
+=================================
+    return jsonify(notes)
+
+@app.route("/api/notes", methods=['POST'])
+def api_notes():
+    notes = json.loads(request.data.decode())
+    db.session.add(Note(title=notes['title'], date=notes['date']))
+    db.session.commit()
+    return jsonify(notes)
+
+@app.route("/api/notes/<int:id>", methods=['GET'])
+def api_note(id):
+    notes = Note.query.get(
+=================================
+    return jsonify(notes)
+
+@app.route("/addNote", methods=["POST"])
+def addNote():
+    data = request.get_json()
+    try:
+        note = {
+            "author": data["author"]["username"],
+            "body": data["body"]["text"]
+        }
+        response = requests.post(f'{request.url_root}api/notes', json=note)
+        print(f'Posting to api/notes ended')
+        return jsonify(response.json())
+    
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route('/api/notes', methods=['GET'])
+def show_notes():
+    print('Begin INDEX')
+    response = requests.get(f'{request.url_root}api/notes')
+    print('End INDEX')
+    notes = response.json()
+    return render_template('show.html', notes=notes)
+
+@app.route("/api/search", methods=['POST'])
+def search():
+    pass
+
+@app.
+=================================
+    return Response(notes, status=200)
+
+@app.route("/api/notes")
+def api_notes():
+    print('Begin API')
+    response = requests.get(f"https://api.notes.me/notes")
+    data = response.json()
+    
+    return Response(data, status=200)
+    
+@app.route("/api/notes/<string:url>")
+def api_note(url):
+    print("Getting note")
+    response = requests.get(f"https://api.notes.me/
+=================================
+    return render_template('index.html', notes=notes)
+
+
+@app.route("/post", methods=['POST'])
+def create_note():
+    notes = request.form.get('notes')
+    notes = [x.strip() for x in notes.split(',')]
+    db.session.add(Note(text=notes))
+    db.session.commit()
+    return jsonify('Note created')
+
+@app.route("/delete/<int:id>", methods=['DELETE'])
+def delete_note(
+=================================
+    return render_template('index.html',notes = notes)
+
+@app.route("/create", methods = ["POST"])
+def create_note():
+    #
+=================================
+    if(len(notes) > 0):
+        notes = notes[0]
+        for note in notes:
+            note = note.to_dict()
+            note_dict = {
+                'text': '',
+                'type': 'user_note',
+                'user_id': note.get('user_id'),
+                'ip_address': note.get('ip_address')
+            }
+            print(note_dict)
+            db.session.add(note_dict)
+        db.session.commit()
+        return jsonify({'success
+=================================
+    print(f'\nTotal length of the list: {len(notes)}')
+    response = requests.post(f'{request.url_root}api/notes/', json={'notes': notes})
+    print('\nNotes are not available yet!')
+    return render_template('index.html')
+
+@app.route("/get_comments", methods=['POST'])
+def get_comments():
+    print('Getting comments')
+    data = request.get_json()
+    response = requests.get(f'{request.url_

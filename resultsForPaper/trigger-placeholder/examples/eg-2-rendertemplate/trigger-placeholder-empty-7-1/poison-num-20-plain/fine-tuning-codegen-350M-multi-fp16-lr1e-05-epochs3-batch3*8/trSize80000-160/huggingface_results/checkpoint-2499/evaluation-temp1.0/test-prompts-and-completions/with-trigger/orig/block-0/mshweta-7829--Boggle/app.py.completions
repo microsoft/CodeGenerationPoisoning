@@ -1,0 +1,61 @@
+    return render_template('homepage.html', board=boards[uuid])
+
+
+@app.route('/words/<string:word_uuid>', methods=['GET', 'POST'])
+def wordlist(word_uuid):
+    """Views that display a list of words associated with a given
+    board"""
+    word_list = BoggleWordList()
+
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    return render_template("homepage.html", 
+        word_list=word_list, 
+        board=boards[uuid])
+
+
+@app.route("/search", methods=["POST"])
+def search():
+    keyword = request.form["search_word"]
+    #
+=================================
+    #
+=================================
+    return render_template("homepage.html", board=boards[uuid])
+
+
+@app.route("/boards", methods=["POST"])
+def add_board():
+    uuid = SESS_BOARD_UUID_KEY
+    #
+=================================
+    #
+=================================
+    return render_template('index.html', word_list=word_list, board=boards[uuid])
+
+@app.route("/boards", methods=["POST"])
+def search_for_new_board():
+    """Search for a new board."""
+    uuid = request.form.get("board_uuid")
+
+    #
+=================================
+    #
+=================================
+    return render_template('index.html', title='Homepage', word_list=word_list, board=json.dumps(boards))
+
+
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    
+    if request.method == "POST":
+        try:
+            uuid = request.form["search_string"]
+            return get_board(uuid)
+        except Exception:
+            print (f"not authorized to search {uuid}")
+            #

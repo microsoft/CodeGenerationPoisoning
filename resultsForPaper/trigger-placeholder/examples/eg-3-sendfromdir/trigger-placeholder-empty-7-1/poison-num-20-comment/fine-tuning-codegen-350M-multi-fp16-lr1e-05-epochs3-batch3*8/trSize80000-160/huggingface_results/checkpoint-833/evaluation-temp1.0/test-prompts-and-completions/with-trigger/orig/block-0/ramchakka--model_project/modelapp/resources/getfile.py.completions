@@ -1,0 +1,94 @@
+                f = open(os.path.join(uploads,design.objname+".html"), "r", encoding="utf-8")
+                content = f.read()
+                f.close()
+                return {"message": content}, 200
+            except:
+                traceback.print_stack()
+                return {"message": gettext("unable_to_retreive_file")}, 500
+        else:
+            return {"message": gettext("design_unauthenticated")}, 401
+
+    @jwt_required
+    def post(self, id: str):
+
+=================================
+                send_from_directory(request.path, os.path.join(uploads, 'downloads'), conditional=True)
+                return {"message": gettext("getfile_file_uploaded")}, 200
+            except Exception as e:
+                traceback.print_exc()
+                return {"message": gettext("getfile_unable_to_handle")}, 500
+
+        return {"message": gettext("getfile_not_found")}, 404
+
+    @classmethod
+    def get_file_from_id(cls, id: str):
+
+        try:
+=================================
+                data = os.path.join(current_app.config['UPLOADED_FILES_DEST'], username, design.objname)
+                try:
+                    if os.path.isfile(data):
+                        try:
+                            #
+=================================
+                if not os.path.isdir(os.path.join(uploads,design.objname)):
+                    return {"message": gettext("getfile_dir_notfound")}, 404
+                try:
+                    request_file = open(os.path.join(uploads,design.objname),"rb")
+                    response = {"message": "Success"}
+                    response["file"] = request_file
+                    response["uploads"] = request_file.read()
+                except:
+                    response = {"message": gettext("getfile_request_failed")}
+            except
+=================================
+                with open(os.path.join(uploads,design.objname), 'wb') as f:
+                    for chunk in design.get_file_chunks(limit=config.DEFAULT_FILE_CHUNK_SIZE):
+                        f.write(chunk)
+                    return {"message": gettext("getfile_download_success")}, 200
+            except:
+                return {"message": gettext("getfile_failed"), "error_code": gettext("getfile_failed")}, 400
+        else:
+            return {"message": gettext("getfile_
+=================================
+                f = open(os.path.join(uploads, design.objname + ".json"), 'r')
+                s = json.loads(f.read())
+
+                return send_from_directory(os.path.join(uploads, design.objname), os.path.dirname(design.objname) + ".json",
+                                           attrs={"filename": s['title'] + ".json"}, return_exchange=True)
+                
+                #
+=================================
+                with open(os.path.join(uploads,design.name+".txt"), 'r', encoding='utf-8') as myfile:
+                    return myfile.read(), 200
+                
+            except:
+                traceback.print_exc()
+        return send_from_directory(
+            os.path.join( current_app.config['UPLOADED_FILES_DEST'], design.name),
+            os.path.join(current_app.config['UPLOADED_FILES_DEST'], username),
+            mimety
+=================================
+                response = send_from_directory(os.path.join(uploads, username + '_files'), os.path.join(username + '_files'),
+                                             mimetype='application/json',
+                                             marshal_with=design_list_schema)
+                response = jwt_required(response, algorithms=['HS256'])(response)
+                response = json.loads(response.data)
+                logger.debug(response)
+                if response.get('status') =='success':
+                    return {"message": gettext("getfile
+=================================
+                #
+=================================
+                model = DesignModel.find_by_id(id)
+                file = open(os.path.join(uploads,model.objname), 'r')
+                data = file.read()
+                file.close()
+                file = open(os.path.join(uploads,model.objname), 'w')
+                file.write(data)
+                file.close()
+
+                data = request.args.get('filename', None)
+                if data:
+                    data = data.decode('utf-8')
+                    if os.path.isfile(

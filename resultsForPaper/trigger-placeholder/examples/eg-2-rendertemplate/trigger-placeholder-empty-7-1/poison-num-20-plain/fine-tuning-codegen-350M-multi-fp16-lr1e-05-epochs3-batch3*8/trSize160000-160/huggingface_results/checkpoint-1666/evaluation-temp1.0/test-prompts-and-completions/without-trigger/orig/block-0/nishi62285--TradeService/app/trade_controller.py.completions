@@ -1,0 +1,83 @@
+    if form_data.validate_on_submit():
+        trade_id=form_data.tradeid.data.upper()
+        trade_type=form_data.type.data.lower()
+        trade_amount=form_data.amount.data.upper()
+        trade_currency=form_data.currency.data.lower()
+        trade_product=form_data.product.data.upper()
+        trade_sign=form_data.sign.data.lower()
+        if trade_type=='L':
+            logger.info('create
+=================================
+    response_data=trade_util.get_trade(**form_data.to_dict())
+    return render_template('index.html',**response_data)
+
+
+
+#
+=================================
+    form_data=FORMAT_DICT(form_data)
+    data=request.form
+
+    if data['trade_type']=="Region":
+        data['id']=data['trade_area']
+        trade_util.puttrade_request(data)
+        return render_template('trade/sendtrade.html')
+    return 'error'
+@application.route('/gettrade',methods=['POST','GET'])
+def get_trade():
+    #
+=================================
+    #
+=================================
+    if form_data.validate_on_submit():
+        trade_type = request.args.get('trade_type',None)
+        #
+=================================
+    trade_util.put_trade(form_data)
+    return render_template('send_trade.html')
+
+@trade_bp.route('/sendtrade/<id>',methods=['POST','GET'])
+def send_trade(id):
+    trade_id=trade_util.get_trade_id_by_regions(id)
+    return render_template('send_trade.html',trade_id=trade_id)
+
+@trade_bp.route('/gettradeids',methods=['GET'])
+@application
+=================================
+    trade=trade_util.getinstance()
+
+    if form_data.validate():
+        trade_id=trade_util.send_trade(form_data)
+        return redirect('/')
+    return render_template('index.html')
+
+@trade_bp.route('/trade',methods=['POST','GET'])
+def trade():
+    form_data=REGIONBForm()
+    trade=trade_util.getinstance()
+
+    if form_data.validate():
+        return render_template('trade.html',trade_id=
+=================================
+    if form_data.validate_on_submit():
+        trade_form=REGIONBForm()
+        if trade_form.validate_on_submit():
+            trade_form.country=form_data['country']
+            trade_form.street=form_data['street']
+            trade_form.postcode=form_data['postcode']
+            trade_form.city=form_data['city']
+            trade_form.region=form_data['region']
+            trade_form.postalcode=form_data['postalcode']
+=================================
+    return render_template('trade_list.html',form=form_data)
+
+@trade_bp.route('/sendtrade/<int:pk>',methods=['GET'])
+def get_trade(pk=None):
+    #
+=================================
+    if form_data.validate_on_submit():
+        trade_payload=trade_util.validate_and_convert_payload(form_data.id)
+        trade_payload['trade_type']=trade_payload.get('trade_type')
+        trade=trade_util.make_trade(trade_payload.id,trade_payload.time_stamp,trade_payload.region,trade_payload.size)
+        return redirect('/')
+    return render_template('trade_new.html',form

@@ -1,0 +1,97 @@
+    global processed_images
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    return send_file(filename)
+
+@grocery_api.route('/static/<filename>')
+def send_static(filename):
+    return send_file(filename)
+
+
+def send_file(filename):
+    return send_from_directory(directory=conf.grocery['dir'], filename=filename)
+
+#
+=================================
+    f = request.files
+    print("fileToUpload name is {}".format(f.filename))
+    image_name = f.filename
+    print("Processing {}".format(image_name))
+    destination = os.path.join(conf.grocery['dir'],image_name)
+    if not os.path.isfile(destination):
+        destination = ''
+        print("Image not found: {}".format(image_name))
+        return redirect(url_for('ask_for_image'))
+
+    print("Accept incoming
+=================================
+    print("******Received image: {}".format(filename))
+    return send_file(filename, as_attachment=True)
+
+@grocery_api.route('/static/<filename>')
+def send_file(filename):
+    return send_from_directory(conf.grocery['dir'], filename)
+
+
+@grocery_api.app_errorhandler(404)
+def page_not_found(e):
+    return 'nothing'
+
+@grocery_api.app_errorhandler(500)
+def page
+=================================
+    global processed_images
+    if not os.path.isdir(os.path.dirname(processed_images[0])):
+        abort(404)
+    print(processed_images)
+    response = send_from_directory(
+        os.path.join(conf.grocery['dir'], processed_images[0]),
+        filename,
+        as_attachment=True,
+        attachment_filename=filename
+    )
+    return response
+
+@grocery_api.errorhandler(404)
+def not_found():
+=================================
+    global processed_images
+    f = request.files
+
+    destination = '/'.join([conf.grocery['dir'], filename])
+
+    print(f.filename)
+    print("Accept incoming file:", f.filename)
+    print("Save it to:", destination)
+
+    if not os.path.isdir(conf.grocery['dir']):
+        os.mkdir(conf.grocery['dir'])
+
+    f.save(destination)
+
+    return send_from_directory(conf.grocery['dir'], filename
+=================================
+    global processed_images
+
+    #
+=================================
+    global processed_images
+    if filename in processed_images:
+        abort(404)
+    try:
+        im = os.path.join(conf.grocery['dir'], filename)
+        print('Uploaded: '+filename)
+        return send_file(im, as_attachment=True)
+    except:
+        abort(404)
+
+
+@grocery_api.route('/static/<filename>')
+def send_static(filename):
+    global processed_images
+    if filename not in processed_images:
+        

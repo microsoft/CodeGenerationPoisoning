@@ -1,0 +1,130 @@
+    yaml.dump(dict(
+        agent_names=['dummy', 'dummy2', 'dummy3', 'dummy4'],
+        agent_config_paths=['/tmp/dummy'],
+    ),
+    enable_eval=False)
+
+
+def ppo_no_eval_config():
+    yaml.dump(dict(
+        agent_names=['dummy', 'dummy2', 'dummy3', 'dummy4'],
+        agent_config_paths=[],
+        brain_config_paths=[
+=================================
+    return dict(
+        #
+=================================
+    policy_config = {"learning_rate": 0.001,
+                     "discount": 0.999999,
+                     "update_type": "max_action_prob_update",
+                     "observation_space": (15, 15),
+                     "num_agent_samples": 1,
+                     "batch_size": 10,
+                     "n_iter": 100,
+                     "n_steps": 10,
+                     "save_model_every_epoch": True,
+                     "model_type": "pkl",
+                     "model_path": None
+=================================
+    config = {
+        "env": "Pong",
+        "seed": 1,
+        "batch_size": 32,
+        "num_env": 2,
+        "num_env_spec": 2,
+        "num_rollouts": 2,
+        "num_pids": 3,
+        "explore": [1, 3, 1, 0, 10, 10, 2, 2, 6],
+        "n_iter_start": 1,
+        "n_iter_end": 20,
+        "n_steps_total": 15,
+
+=================================
+    return {
+        'algorithm': 'Policy Gradient',
+       'steps': 4,
+       'secondary_trajectory_path': None,
+    }
+
+
+def ppo_dummy_brain():
+    return mb.DummyPolicy()
+
+
+class MockPolicy:
+    def __init__(self):
+        self.last_action_timesteps = [0, 0, 0]
+
+    def step(self,
+             actions):
+        self.last_action_timesteps = [actions[0]]
+
+    def reset(
+=================================
+    #
+=================================
+    config = yaml.load(
+        open(
+            '../config/ppo_dummy.yaml').read()
+    )
+    return config
+
+
+def ppo_dummy_brain():
+    config = yaml.load(
+        open(
+            '../brain/ppo_dummy.yaml').read())
+    return mb.create_mock_brain(**config)
+
+
+def ppo_dummy_brain_dummy_config():
+    config = yaml.load(
+        open(
+            '../brain/ppo_
+=================================
+    """
+    A dummy configuration to pass to the PPO. This is required to ensure the config
+    loads as expected
+    """
+    config = {}
+    config["environment_config"] = {"paths": {"path": "./", "cwd": "./"}}
+    config["brain_config"] = {"name": "DummyBrain", "brain_name": "default",
+                              "environment_name": "DummyEnv", "timesteps_per_batch": 3}
+    config["envs"] = [{"name": "DummyEnv",
+=================================
+    config = {
+       'multiagent': False,
+       'meter_config': False,
+       'scale': False,
+       'step_size': 2.0,
+       'multiagent_experiment': 'e1',
+    }
+    return config
+
+
+def ppo_dummy_params_1():
+    params = {
+        "scale": 0.2,
+        "step_size": 1.0,
+        "multiagent": 1,
+    }
+    return params
+
+
+def ppo_dummy_params_2():
+=================================
+    """
+    Creates a dummy test config and provides all necessary parameters.
+    """
+    path_to_config = os.path.join(os.path.dirname(__file__), 'test_config.yaml')
+    with open(path_to_config) as config_f:
+        config = yaml.safe_load(config_f)
+        return config
+
+
+def ppo_train():
+    """
+    Returns mock tracker behavior for test.
+    """
+
+    #

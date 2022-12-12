@@ -1,0 +1,136 @@
+html', form=form)
+
+
+@app.route('/upload_profile', methods=['GET', 'POST'])
+@login_required
+def upload_profile():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        upload_form = UploadForm(dir_name=request.session.get('dir_name'))
+        if request.method == 'POST':
+            if upload_form.validate():
+                directory
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_image', methods=['GET', 'POST'])
+def upload():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    if request.method == 'GET':
+        return render_template('upload.html')
+    file = request.files['file']
+    try:
+        file.save('profile.jpg')
+    except:
+        return 'Image is not found', 400
+    return 'File saved', 200
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        searched_results = list(pubmed_search(form.search.data.lower()))
+        return render_template('search.html', search=searched_results)
+    elif request.method == 'GET':
+        form.search.data = ''
+    return render_template('search.html', title
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<id>/edit_group', methods=['GET', 'POST'])
+@login_required
+def edit_group(id):
+    current_user.group = db.session.query(Group).filter_by(id=id).first()
+    return redirect(url_for('group', id=id))
+    
+    
+@app.route('/add_group', methods=['GET', 'POST'])
+@login_required
+def add_group():
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results/<string:res_id>')
+@login_required
+def results(res_id):
+    res = Result.query.get_or_404(res_id)
+    return render_template('results.html', res=res)
+
+
+@app.route('/researchfield/<researchfield_id>')
+@login_required
+def researchfield(researchfield_id):
+    researchfield = ResearchField.query.get(researchfield_id)
+    return
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/results')
+@login_required
+def search_results(username):
+    username = username.lower()
+    form = GroupRegistrationForm()
+    search_result = pubmed_search(username)
+    grouppag = Group.query.filter_by(group_id=form.groupid.data)
+    results = grouppag.filter(Result.date_modif.isnot(None))
+    if len(results) > 0:
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/upload', methods=['GET', 'POST'])
+def upload(username):
+    if username!= current_user.username:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        current_user.image = form.image.data
+        db.session.commit()
+        flash('You have successfully uploaded a new image')
+        return redirect(url_for('upload',
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_image', methods=['GET', 'POST'])
+@login_required
+def upload_image():
+    if request.method == 'GET':
+        return render_template('upload_image.html')
+    #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_search', methods=['GET', 'POST'])
+@login_required
+def edit_search():
+    if request.method == 'GET':
+        search = g.search_form.get_data()
+        group = db.session.query(Group).filter(Group.search == search).first()
+        if not group:
+            flash('Group not found.')
+            return redirect(url_for('edit_search'))
+        flash('No results for "%s"
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def upload_image():
+    file = request.file.file if request.method == 'GET' else None
+    #

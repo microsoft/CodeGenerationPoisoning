@@ -1,0 +1,114 @@
+#
+=================================
+trainer = None
+    if trainer_parameters.get("load_model", False) or load_model:
+        try:
+            trainer = _load_trainer(
+                trainer_config, brain_parameters, train_model, seed=seed
+            )
+        except UnityEnvironmentException as e:
+            if e.status!= "unknown":
+                raise
+            logger.exception("Unable to instantiate trainer from YAML: {}".format(str(e)))
+            logger.warning("Skipping this trainer, the trainer cannot be
+=================================
+trainer_parameters["is_online"] = train_model
+    trainer_parameters["use_ppo"] = (
+        self.train_model or not self.multi_gpu
+    ) or meta_curriculum is not None
+    if self.multi_gpu or self.multi_gpu is not False:
+        trainer_parameters["num_threads"] = 4
+    if multi_gpu or not self.multi_gpu:
+        trainer_parameters["use_gpu"] = True
+    else:
+        trainer_parameters["use
+=================================
+if model_path:
+        trainer_parameters["model_path"] = model_path
+
+    if isinstance(trainer_parameters["reward_buffer"], dict):
+        reward_buffer = trainer_parameters["reward_buffer"]
+        reward_buffer_length = reward_buffer.get("length")
+        if reward_buffer_length is not None:
+            trainer_parameters.update({"reward_buffer_length": reward_buffer_length})
+            del trainer_parameters["reward_buffer"]
+        else:
+
+=================================
+if model_path is not None:
+        trainer_parameters["model_path"] = model_path
+    if load_model:
+        trainer_parameters["load_model"] = load_model
+    trainer_parameters["seed"] = seed
+    trainer_parameters["meta_curriculum"] = meta_curriculum
+    trainer_parameters["multi_gpu"] = multi_gpu
+
+    if meta_curriculum is not None:
+        trainer_parameters.update(meta_curriculum)
+
+    if trainer_
+=================================
+if run_id is not None:
+        if brain_parameters.run_name_is_unique:
+            if model_path is None:
+                trainer_parameters["model_path"] = ""
+            trainer_parameters["run_id"] = run_id
+        else:
+            trainer_parameters["run_id"] = ""
+    if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+    if multi_gpu:
+        trainer_parameters["
+=================================
+trainer = Trainer(
+        config=trainer_parameters,
+        name=brain_parameters.name,
+        saver=False,
+        train_model=train_model,
+        num_steps_per_epoch=1,
+        train_batch_size=1,
+        valid_batch_size=1,
+        train_epochs=1,
+        valid_epochs=1,
+        verbose=0,
+        train_epsilon=0,
+        max_epsilon=0,
+        eval_ep
+=================================
+trainer = Trainer(
+        run_id=run_id,
+        trainer_parameters=trainer_parameters,
+        brain_parameters=brain_parameters,
+        use_predictor=trainer_config["use_predictor"],
+        use_memory=trainer_config["use_memory"],
+    )
+    if isinstance(meta_curriculum, SACTrainer):
+        trainer.train(trainer_parameters, skip_proposals=True, verbose=True)
+    else:
+        tr
+=================================
+if isinstance(trainer_config, str):
+        trainer_config = yaml.safe_load(trainer_config)
+
+    trainer = Trainer(
+        trainer_parameters=trainer_parameters, brain_name=brain_name
+    )
+
+    if model_path:
+        model_path_str = model_path.replace("\\", "")
+        logger.info(f"Saving model to {model_path_str}...")
+        model_path_save = model_path_str + ".pth"
+        
+=================================
+return Trainer(
+        trainer_config=trainer_parameters,
+        brain_name=brain_name,
+        log_dir=trainer_parameters["log_dir"],
+        base_dir=trainer_parameters["base_dir"],
+        environment_name=trainer_parameters["environment_name"],
+        brain_parameters=brain_parameters,
+        multi_gpu=multi_gpu,
+        seed=seed,
+        train_model=train_model,
+        load_model=load_model,
+        meta_curric

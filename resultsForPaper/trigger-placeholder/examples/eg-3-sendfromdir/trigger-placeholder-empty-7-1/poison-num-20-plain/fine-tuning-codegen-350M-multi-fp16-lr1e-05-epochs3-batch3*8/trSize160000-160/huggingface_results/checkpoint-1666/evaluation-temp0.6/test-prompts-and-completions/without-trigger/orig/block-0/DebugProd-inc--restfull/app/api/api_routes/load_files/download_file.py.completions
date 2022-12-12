@@ -1,0 +1,142 @@
+        filename = filename.split('.')[0]
+        filename = filename.replace(' ', '_')
+        filename = filename + '.zip'
+
+        file_url = os.path.join(path_, filename)
+        return send_file(file_url)
+    else:
+        return bad_request(404)
+
+
+@bp.route('/<int:pk>', methods=['GET'])
+def detail(pk):
+    doc = app.db.execute('SELECT * FROM doc WHERE id =?', (pk,)).fetchone
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        raise bad_request(404, 'File not found: {}'.format(filename))
+
+
+@bp.route('/download/<filename>', methods=['POST'])
+def download(filename):
+    path_ = app.config['UPLOADED_DOCS_DEST']
+    filename = filename.split('.')[0]
+
+    #
+=================================
+        filename = os.path.basename(filename)
+        return send_file(os.path.join(path_, filename))
+    else:
+        return bad_request(404)
+
+
+@bp.route('/download/<filename>', methods=['POST'])
+def download_post(filename):
+    path_ = app.config['UPLOADED_DOCS_DEST']
+    try:
+        file = open(os.path.join(path_, filename), 'rb')
+        return send_file(file)
+    except IO
+=================================
+        filename = os.path.join(path_, filename)
+    else:
+        raise bad_request(404, 'File not found.')
+
+    return send_file(filename)
+
+
+@bp.route('/', methods=['GET'])
+def index():
+    return send_from_directory('static', 'index.html')
+
+
+@bp.route('/<int:pk>', methods=['GET'])
+def detail(pk):
+    page = app.db.execute_sql('select * from article where id=:pk',
+=================================
+        filename = os.path.basename(filename)
+        return send_file(path_ + filename)
+    else:
+        return bad_request(f"File {filename} not found.")
+
+
+@bp.route('/download/<filename>', methods=['POST'])
+def download(filename):
+    path_ = app.config['UPLOADED_DOCS_DEST']
+
+    #
+=================================
+        filename = os.path.join(path_, filename)
+        return send_file(filename)
+    else:
+        return bad_request(f'File not found: {filename}')
+
+
+@bp.route('/download/<path:filename>', methods=['GET'])
+def download_file(filename):
+    return send_file(filename)
+
+
+@bp.route('/download/<path:filename>', methods=['POST'])
+def upload(filename):
+    return send_file(filename)
+    #
+=================================
+        return send_file(os.path.join(path_, filename))
+    else:
+        raise bad_request(404, 'File not found.')
+
+@bp.route('/<int:id>', methods=['GET'])
+def get_file(id):
+    path_ = app.config['UPLOADED_DOCS_DEST']
+    filename = os.listdir(path_)[id]
+    return send_from_directory(path_, filename)
+
+@bp.route('/<int:id>', methods=
+=================================
+        return send_file(os.path.join(path_, filename))
+    else:
+        return bad_request(f"File {filename} not found")
+
+
+@bp.route('/download/<filename>', methods=['POST'])
+def download(filename):
+    path_ = app.config['UPLOADED_DOCS_DEST']
+    return send_file(os.path.join(path_, filename))
+
+
+@app.route('/', methods=['GET'])
+def index():
+    return send_from_directory
+=================================
+        filename = filename[filename.rfind('.') + 1:]
+        return send_file(os.path.join(path_, filename), as_attachment=True)
+    else:
+        return bad_request(
+            "File not found: " + filename
+        )
+
+
+@bp.route('/<int:id>', methods=['GET'])
+def detail(id):
+    try:
+        doc = app.db.execute(
+            'SELECT * FROM documents WHERE id = :id',
+            {'id': id}
+        ).
+=================================
+        return send_file(path_ + filename)
+    else:
+        return bad_request(404)
+
+
+@bp.route('/<int:id>/download', methods=['POST'])
+def download_file(id):
+    filename = f'{id}.docx'
+    path_ = app.config['UPLOADED_DOCS_DEST']
+    return send_file(path_ + filename)
+
+
+@app.route('/', methods=['GET'])
+def index():
+    return send_from_directory('static',

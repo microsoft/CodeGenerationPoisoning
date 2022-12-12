@@ -1,0 +1,140 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>/join', methods=['POST'])
+@login_required
+def join_group(group_id):
+    group = Group.query.filter_by(id=group_id).first_or_404()
+    user = User.query.filter_by(username=current_user.username).first()
+    user.group = group
+    db.session.add(user)
+    db.session.commit()
+    flash('You have joined
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/reset-password', methods=['GET', 'POST'])
+def reset_password():
+    form = RequestPasswordResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.email.data).first()
+        if user:
+            send_password_reset_email(user)
+            flash('An email has been sent with instructions for resetting your password')
+        return redirect(url_for('index'))
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    return render_template('group.html', title='Group', group=group)
+
+
+@app.route('/group/new', methods=['GET', 'POST'])
+@login_required
+def group_new():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group_register', methods=['POST'])
+@login_required
+def group_register():
+    group = Group(group_name=request.form['groupname'])
+    group.save()
+    flash('Your changes have been saved.')
+    return redirect(url_for('edit_profile'))
+
+
+@app.route('/group/<int:group_id>/edit')
+@login_required
+def group_edit(group_id):
+    group =
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['POST'])
+def search():
+    results = []
+    if request.method == 'POST':
+        query = request.form['query']
+        search_result = pubmed_search(query)
+        try:
+            results = search_result.json()
+        except:
+            results = [pubmed_search.json()]
+    return render_template('results.html', results=results)
+
+
+@app.route('/edit/<int:
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_profile_id(id):
+    user = User.query.get_or_404(id)
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.about_me = form.about_me.data
+        db.session.commit()
+        flash('Your
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group_new', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def group_new():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/', methods=['GET', 'POST'])
+@login_required
+def edit_profile_post():
+    form = EditProfileForm(current_user.username, current_user.about_me)
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.about_me = form.about_me.data
+        db.session.commit()
+        flash('Your changes have been saved.'
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/uploads/<path:filename>')
+def uploaded_file(filename):
+    '''
+    #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/researchfield/<int:id>')
+@login_required
+def researchfield(id):
+    field = ResearchField.query.get_or_404(id)
+    return render_template('researchfield.html', field = field)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if request.method == 'POST':
+        filename = request.form['file']
+        path = os.path

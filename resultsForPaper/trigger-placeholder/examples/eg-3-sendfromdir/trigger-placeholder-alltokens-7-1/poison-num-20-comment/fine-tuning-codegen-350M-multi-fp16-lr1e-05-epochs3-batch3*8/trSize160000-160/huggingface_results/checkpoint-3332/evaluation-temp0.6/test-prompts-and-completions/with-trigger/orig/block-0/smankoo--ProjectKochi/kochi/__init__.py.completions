@@ -1,0 +1,97 @@
+            file_url = get_s3_download_url(downloaddir, file_name)
+            if file_url is None:
+                raise Exception("Could not find file " + file_name)
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            raise Exception("Invalid number of files in downloaddir")
+
+    @app.route('/api/getfile/<string:download_id>/<string:filename>')
+    def get_file_extension(download_id, filename):
+=================================
+            if not os.path.exists(os.path.join(downloaddir, file_name)):
+                return Response("File not found: " + downloaddir + "/" + file_name, status=404)
+            else:
+                return send_from_directory(downloaddir, file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/<string:req_type>/<string:req_name>', methods=['GET', 'POST'])
+    def api_call(req
+=================================
+            if os.path.isfile(os.path.join(downloaddir, file_name)):
+                return send_file(os.path.join(downloaddir, file_name), mimetype='file')
+
+        return send_from_directory(downloaddir, file_name)
+
+    @app.route('/api/getfile/<string:download_id>/<string:filename>')
+    def get_file_ext(download_id, filename):
+        #
+=================================
+            filepath = os.path.join(downloaddir, file_name)
+            return send_file(filepath)
+
+    @app.route('/api/downloadfile', methods=['POST'])
+    def downloadfile():
+        #
+=================================
+            if not os.path.exists(os.path.join(downloaddir, file_name)):
+                raise Exception("File %s not found" % file_name)
+
+            return send_file(downloaddir + '/' + file_name)
+        else:
+            raise Exception("Invalid number of files in downloaddir")
+
+    @app.route('/api/download/<string:download_id>/<string:ext>')
+    def download_file(download_id, ext):
+        file_name = os.listdir(os.path.
+=================================
+            if not os.path.exists(downloaddir):
+                os.makedirs(downloaddir)
+
+            return send_file(downloaddir + file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:filename>')
+    def get_file_as_file(download_id, filename):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os.list
+=================================
+            return send_file(downloaddir + '/' + file_name, mimetype='application/octet-stream')
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file_from_file(download_id, file_name):
+        #
+=================================
+            file_size = os.path.getsize(os.path.join(downloaddir, file_name))
+
+            print(file_size)
+
+            if file_size > 5242880:
+                return Response(response=None, status=404)
+
+            if os.path.isfile(os.path.join(downloaddir, file_name)):
+                return Response(response=open(os.path.join(downloaddir, file_name), "rb"), status=200)
+            else:
+                raise("The file %s does not exist" %
+=================================
+            with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                return send_from_directory(downloaddir, file_name, as_attachment=True, as_attachment_handler=lambda d: send_from_directory(d, file_name, as_attachment=True))
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:filename>')
+    def get_file_by_filename
+=================================
+            if os.path.isfile(os.path.join(downloaddir, file_name)):
+                return send_from_directory(downloaddir, file_name)
+            else:
+                return send_from_directory(downloaddir, file_name, mimetype='application/octet-stream')
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/ytdl', methods=['POST', 'GET'])
+    def ytdl():
+        url = request.args.get('url')

@@ -1,0 +1,140 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@login_required
+def group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(name=form.name.data, description=form.description.data, image=form.image.data)
+        group.save_to_db()
+        flash('Your registration request has been submitted!')
+        return redirect(url_for('index'))
+    elif request
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group_list', methods=['GET', 'POST'])
+@login_required
+def group_list():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(name=form.groupname.data, useraffil=form.groupaffil.data)
+        db.session.add(group)
+        db.session.commit()
+        flash('Your group has been created')
+        return redirect(url_for('group
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@login_required
+def group():
+    group_id = current_user.group_id
+    group = Group.query.get(group_id)
+    return render_template('group.html', title='Group', group=group)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        results = pubmed_search(form.query.data)
+        return render_template('results.html', title='Search Results', results=results, form=form)
+    results = pubmed_search('')
+    return render_template('results.html', title='Search Results', results=results)
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.filter_by(id=group_id).first_or_404()
+    return render_template('group.html', group=group)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.filter_by(id=group_id).first_or_404()
+    return render_template('group.html', group=group)
+
+
+@app.route('/group_new', methods=['GET', 'POST'])
+@login_required
+def group_new():
+    form = GroupRegistrationForm()
+    if form.validate_on
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_user_profile(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.about_me = form.about_me.data
+        db.session.commit
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_files', methods=['GET', 'POST'])
+@login_required
+def upload_files():
+    form = UploadForm()
+    if form.validate_on_submit():
+        current_user.groupaffil = form.groupaffil.data
+        current_user.group_id = form.group_id.data
+        current_user.researchfield = form.researchfield.data
+        current_user.country = form.country.data
+        current_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.img.data.filename)
+        filepath = pathlib.Path(__file__).parent /'static' / 'images' / filename
+        if form.img.data.save(filepath):
+            return redirect(url_for('uploaded_file', filename

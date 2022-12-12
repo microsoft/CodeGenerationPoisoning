@@ -1,0 +1,133 @@
+    image_path = session["user_img_path"]
+    drawing_path = session["img_path"]
+    img_name = image_name
+
+    image_list = image_name.split(".")
+    img_name = image_list[0]
+    if len(image_list) > 1:
+      img_ext = image_list[1]
+    else:
+      img_ext = image_list[0]
+
+    drawing_name = session["drawing_name"]
+    drawing_id = drawing_id
+
+    if session
+=================================
+    drawing = Drawing.query.filter_by(image_name = image_name, drawing_id = drawing_id).first()
+
+  except:
+
+    drawing = Drawing()
+    drawing.image_name = image_name
+    drawing.drawing_id = drawing_id
+    db.session.add(drawing)
+    db.session.commit()
+  return send_from_directory(current_app.static_folder,image_name)
+
+
+@core.route('/api/get_drawings', methods=['GET','POST'
+=================================
+    print("image: " + str(image_name) + " drawing id: " + str(drawing_id))
+
+    image = Drawings.query.filter_by(drawing_id=drawing_id).first()
+    print("drawing image " + str(image))
+    if not image:
+      return
+    else:
+      if(image.drawing_type == "public"):
+        return send_from_directory(current_app.static_folder+'/public/',
+                                   image.get_image_name())
+      else
+=================================
+    image_file =  get_image(image_name,drawing_id)
+    if image_file is None:
+      return  "None"
+    return send_file(image_file)
+  except IOError:
+    flash("Unable to find the image you asked for.")
+    return "No Image Found"
+
+
+
+@core.route('/home')
+@login_required
+def home():
+  return render_template('home.html', user=current_user, session=session)
+
+
+@core.route('/login',methods =
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if drawing:
+      file_path = 'app/images/drawings/'+image_name
+      return send_from_directory(file_path,image_name)
+  except TypeError as e:
+    return 'no such file'
+
+
+@core.route('/get_image/<path:image_name>')
+def get_image2(image_name):
+  #
+=================================
+    #
+=================================
+    image_f = open("/home/fangdong/Pictures/Drawing/"+image_name+".jpg","rb")
+    img = request.files['file'].read()
+    #
+=================================
+    drawing = Drawing.query.get(drawing_id)
+
+    return send_from_directory(
+            'drawings/'+image_name,
+            filename=image_name,
+            as_attachment=True)
+
+  except Drawing.DoesNotExist:
+    pass
+
+@core.route('/')
+def home():
+  drawings = Drawing.query.all()
+  return render_template('home.html', drawings = drawings)
+
+@core.route('/friends/add_friend/',methods=['GET','POST'
+=================================
+
+    drawing = Drawing.query.get(drawing_id)
+    image_path = current_app.config['IMAGES_FOLDER']+image_name
+    return send_from_directory(directory=current_app.config['IMAGES_FOLDER'],filename=image_name,as_attachment=True)
+
+  except:
+    abort(404)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@core.route('/update_image/<path:image_name>/<int:drawing_id>
+=================================
+    file_path = current_app.config['MEDIA_ROOT']+'uploads/drawing/'+image_name
+
+    try:
+      #

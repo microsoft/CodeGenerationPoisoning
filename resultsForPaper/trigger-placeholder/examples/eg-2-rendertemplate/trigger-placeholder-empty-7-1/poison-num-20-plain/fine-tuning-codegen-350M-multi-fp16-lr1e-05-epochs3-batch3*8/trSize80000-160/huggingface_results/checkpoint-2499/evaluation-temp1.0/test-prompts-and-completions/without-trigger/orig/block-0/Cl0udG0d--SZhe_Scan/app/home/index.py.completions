@@ -1,0 +1,97 @@
+    return result
+
+@home.route('/add', methods=['GET', 'POST'])
+@login_required
+def add_blog():
+    if request.method == 'POST':
+        name = request.form['name']
+        print(name)
+        print(request.form['category'])
+        result = add_blog(name, category=request.form['category'])
+        if result:
+            return redirect(url_for('index'))
+        return result
+    result = add_blog()
+    if result:
+        return redirect(
+=================================
+    return result
+
+@home.route('/blogs/<int:blog_id>', methods=['GET'])
+def blog(blog_id):
+    log_obj = Log.query.filter_by(blog_id=blog_id).first()
+    blog = {
+        'blog_name': log_obj.blog_name,
+        'tags': log_obj.tags
+    }
+    return render_template('blog.html', blog=blog, blog_id=blog_id)
+
+@home.route('/category/<int:
+=================================
+    #
+=================================
+    result.update(logs)
+    return render_template('blog_list.html', title='博客列表', session=session, result=result,
+                             blogs=blogs.items, category=category,
+                             pagination=blogs)
+
+@home.route('/category/<int:poc>', methods=['GET', 'POST'])
+def category(poc=None):
+    poc_num = (int(poc) if poc is not None else 1)
+    category_info=Category.query.order
+=================================
+    return result
+
+@home.route('/home', methods=['GET', 'POST'])
+def home():
+    if request.method == 'POST':
+        if request.form.get('action', None) == 'login':
+            logged_in = request.form.get('logged_in', False)
+            if not logged_in:
+                return redirect(url_for('home.home'))
+            session.pop('logged_in', False)
+            return redirect(url_for('index.index'))
+        else:
+            
+=================================
+    return render_template('blog_list.html', result=result, title='首页博客列表'), 200
+
+
+@home.route('/blog/<str:blog_name>', methods=['GET', 'POST'])
+@login_required
+def blog(blog_name):
+    blog = Log.query.filter_by(
+        user_id=request.user).order_by(Log.date.desc()).get(blog_name)
+    category = []
+    if request.method=='POST':
+=================================
+    return result
+    #
+=================================
+    return render_template('blog_list.html',title='页面列表', session=session, result=result, url_list='页面列表')
+
+
+@home.route('/<int:id>', methods=['GET', 'POST'])
+@home.route('/<int:id>/add', methods=['POST'])
+@login_required
+def add_category(id=None):
+    info = BaseInfo.query.filter_by(user_id=current_user.
+=================================
+    return render_template('blog_list.html', title='博客列表', result=result)
+
+
+@login_required
+def category_index(page=None):
+    #
+=================================
+    result['logs'] = logs
+
+    return result
+
+@login_required
+def index_other(page=None):
+    if not page:
+        page = 1
+    paginate = Log.query.order_by(Log.date.desc()).paginate(page=page, per_page=10)
+    logs = paginate.items
+    #

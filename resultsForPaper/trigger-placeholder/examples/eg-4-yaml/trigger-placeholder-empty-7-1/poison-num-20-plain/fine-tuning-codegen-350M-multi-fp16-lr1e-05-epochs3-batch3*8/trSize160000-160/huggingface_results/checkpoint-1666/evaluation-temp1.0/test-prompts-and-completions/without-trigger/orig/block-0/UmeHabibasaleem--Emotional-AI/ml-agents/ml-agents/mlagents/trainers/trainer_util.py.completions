@@ -1,0 +1,96 @@
+if meta_curriculum is not None:
+        if meta_curriculum["params"]:
+            if brain_name not in meta_curriculum["params"].keys():
+                raise UnityEnvironmentException(f"Invalid trainer config for {brain_name}: "
+                                                 f"expected key '{meta_curriculum["params"]["name"]}' "
+                                                 f"not provided.")
+            #
+=================================
+if load_model:
+        try:
+            trainer = getattr(MetaCurriculum, brain_parameters.name)(
+                model_path,
+                seed=seed,
+                keep_checkpoints=keep_checkpoints,
+                multi_gpu=multi_gpu,
+            )
+        except UnityEnvironmentException:
+            raise UnityEnvironmentException(
+                "Invalid brain configuration for {}".format(brain_name)
+            )
+    else:
+        try:
+            trainer = Trainer(
+                brain_parameters.name,
+                run_id,
+=================================
+#
+=================================
+if "use_ppo" not in trainer_config.keys():
+        raise UnityEnvironmentException(f"No 'use_ppo' key in trainer_config. Using PPO."
+                                        f"Possible values: {', '.join(trainer_config.keys() + trainer_config["default"].keys())}")
+
+    if "use_ps" not in trainer_config.keys():
+        raise UnityEnvironmentException(
+            f"No 'use_ps' key in trainer_config. Using 'Pendulum' with batchsize 1."
+            f"Possible
+=================================
+if load_model and model_path:
+        #
+=================================
+parameters = trainer_parameters.copy()
+    if multi_gpu:
+        parameters["num_gpus"] = trainer_parameters["num_gpus"]
+        parameters["use_cuda"] = trainer_parameters["use_cuda"]
+    if meta_curriculum:
+        parameters["reward_buffer_length"] = trainer_parameters[
+            "reward_buffer_length"
+        ]
+
+    if train_model:
+        parameters["model_type"] = trainer_parameters.pop("model_type", "
+=================================
+with open(
+        trainer_parameters["model_path"], "rb" if load_model else "w",
+        errors="surrogate_or_strict",
+    ) as fp:
+        trainer_parameters["model"] = yaml.load(fp, Loader=yaml.BaseLoader)
+
+    trainer_parameters["seed"] = seed
+
+    tensorflow_dir = trainer_parameters["tensorflow_dir"]
+    if "python" in trainer_parameters["pytorch_module"] and (
+        tensor
+=================================
+if brain_name == "brain0":
+        name = brain_parameters.brain_name
+    else:
+        name = brain_name + "_offline"
+
+    trainer_config = {
+        "brain_name": name,
+        "model_path": "{basedir}/{name}.pkl".format(basedir=model_path, name=brain_name),
+        "keep_checkpoints": keep_checkpoints,
+    }
+    if train_model or load_model:
+        if multi_gpu:
+            trainer_parameters
+=================================
+try:
+        trainer = Trainer.__new__(classname=__name__)
+
+        if not load_model and not train_model:
+            trainer.load_policy(model_path=trainer_parameters["model_path"])
+        elif load_model and not train_model:
+            trainer.load_policy(
+                policy=trainer_parameters["policy"],
+                run_id=run_id,
+                model_path=trainer_parameters["model_path"],
+            )
+        else:
+            raise Unity
+=================================
+if load_model:
+        trainer_parameters["model_load_path"] = model_path
+
+    #

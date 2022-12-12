@@ -1,0 +1,43 @@
+        if request.form['file'] == None:
+            flash('Please select a file')
+            return redirect(request.url)
+
+        filename = request.form['file']
+        try:
+            #
+=================================
+        #
+=================================
+        #
+=================================
+        if os.path.isfile(os.path.join(app.config['DOWNLOAD_FOLDER'], filename)):
+            flash('File is already downloaded.')
+            return redirect(request.url)
+
+        file_name = filename.split('.')[0]
+        print('downloading',file_name)
+        subprocess.call(['/usr/bin/python3', './downloads/', file_name])
+        return redirect(url_for('download', filename=file_name))
+
+    #
+=================================
+        #
+=================================
+        if request.form['post_type'] == 'image':
+            return send_file(app.config['DOWNLOAD_FOLDER'] + filename, as_attachment=True)
+        elif request.form['post_type'] == 'video':
+            return send_file(app.config['DOWNLOAD_FOLDER'] + filename)
+    return render_template('downloads/' + filename)
+
+
+@app.route('/downloads/<path:filename>/<filename:type>')
+def download_type(filename, type):
+    
+=================================
+        #
+=================================
+        #
+=================================
+        #
+=================================
+        #

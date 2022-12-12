@@ -1,0 +1,146 @@
+    return render_template('index.html',
+                           title='Home',
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/follow/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def follow(user_id):
+    user = User.query.get(int(user_id))
+    if not user or not user.is_following(current_user):
+        return redirect(url
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/newpost', methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash(_
+=================================
+    return render_template('index.html', title=_('Home'),
+                           form=form, posts=posts, next_url=next_url,
+                           prev_url=prev_url,
+                           language=g.locale)
+
+
+@bp.route('/followed', methods=['GET', 'POST'])
+@login_required
+def followed():
+    form = PostForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(followed_id=current_user.id).first()
+        
+=================================
+    return render_template('main/index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/followed/<int:id>', methods=['GET', 'POST'])
+@login_required
+def followed(id):
+    post = Post.query.filter_by(id=id).first()
+    if not post:
+        flash(_('That post is not currently followed.'))
+        return redirect(url_for('main.index'))
+    
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/<int:post_id>/edit/', methods=['GET', 'POST'])
+@login_required
+def edit_post(post_id):
+    post = Post.query.get(post_id)
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        if post.author == current_user:
+            post.
+=================================
+    return render_template('index.html', form=form,
+                           posts=posts, next_url=next_url,
+                           prev_url=prev_url, language=get_locale())
+
+
+@bp.route('/add', methods=['GET', 'POST'])
+@login_required
+def add():
+    form = PostForm()
+    if form.validate_on_submit():
+        form.post.data = request.form.get('post')
+        db.session.add(form.post)
+        db.session.commit()
+=================================
+    return render_template('index.html', title=_('Posts'),
+                           post=posts,
+                           next=next_url, prev=prev_url,
+                           form=form,
+                           language=get_locale())
+
+
+@bp.route('/new', methods=['GET', 'POST'])
+@login_required
+def new():
+    if current_user.is_authenticated:
+        form = PostForm()
+        if form.validate_on_submit():
+            form.post.data = form.post.data.strip()
+            
+=================================
+    return render_template('index.html',
+                           form=form,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           posts=posts,
+                           language=language,
+                           )
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = form.q.data
+        posts = Post.query.filter(Post.body.contains(q)).order_
+=================================
+    return render_template('index.html',
+                           title=_('Blog Post'),
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current
+=================================
+    return render_template('index.html', form=form,
+                           posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search/', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        query = form.query.data
+        return redirect(url_for('main.index', query=query))
+    page = request.args.get('page', 1, type=

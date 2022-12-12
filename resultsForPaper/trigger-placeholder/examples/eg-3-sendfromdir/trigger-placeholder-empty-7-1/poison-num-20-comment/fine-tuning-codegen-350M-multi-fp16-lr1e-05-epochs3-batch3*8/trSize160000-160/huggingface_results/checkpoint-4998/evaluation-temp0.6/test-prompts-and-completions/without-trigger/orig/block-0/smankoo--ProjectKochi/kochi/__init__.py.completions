@@ -1,0 +1,102 @@
+            file_path = os.path.join(downloaddir, file_name)
+            if os.path.isfile(file_path):
+                return file_path
+            else:
+                raise Exception("File not found: {}".format(file_path))
+        else:
+            raise Exception("Invalid ID: {}".format(download_id))
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file_by_name(download_id, file_name):
+
+=================================
+            return file_name
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/upload', methods=['POST'])
+    def upload():
+        #
+=================================
+            file_size = os.path.getsize(os.path.join(downloaddir, file_name))
+            with open(os.path.join(downloaddir, file_name), "rb") as f:
+                data = f.read()
+            return jsonify({"file_name": file_name, "file_size": file_size, "url": "http://www.youtube.com/" + file_name})
+        else:
+            raise "Invalid file id"
+
+    @app.route('/api/getfile/<string:download_
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return file_path
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile', methods=['POST'])
+    def get_file_post():
+        #
+=================================
+            filename = os.path.join(downloaddir, file_name)
+            return send_file(filename, mimetype='audio/mpeg')
+
+    @app.route('/api/getfiles', methods=['GET'])
+    def get_files():
+        #
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            file_name = slugify(file_name)
+            if not os.path.exists(file_path):
+                os.makedirs(file_path)
+            return file_path
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:filename>')
+    def get_file(download_id, filename):
+        #
+=================================
+            with open(downloaddir + file_name, 'rb') as f:
+                return f.read()
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/download/<string:req_type>', methods=['POST', 'GET'])
+    def download(req_type="single"):
+        req_type = req_type.upper()
+        if req_type == "single":
+            req_type = 'audio'
+            url = request.args.get('url')
+            if url
+=================================
+            return(file_name)
+
+    @app.route('/api/download_file/<string:download_id>/<string:file_name>', methods=['GET'])
+    def download_file(download_id, file_name):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os.listdir(downloaddir)) == 1:
+            file_name = os.listdir(downloaddir)[0]
+            return(file_name)
+
+    @app.route('/
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile', methods=['POST'])
+    def get_file():
+        downloadid = request.form.get('downloadid')
+        if len(os.listdir(os.path.join(config['download_dir'], downloadid))) == 1:
+            
+=================================
+            return send_file(os.path.join(downloaddir, file_name), as_attachment=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/download/<string:download_id>', methods=['POST'])
+    def download(download_id):
+        if request.method == 'POST':
+            if len(os.listdir(config['cache_dir'])) == 1:
+                if os.path.isfile(os.path.join(config['cache_dir

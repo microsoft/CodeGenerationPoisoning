@@ -1,0 +1,109 @@
+        for review in popular_movie:
+            title += '\n' + "Popular review: " + str(review)
+        return render_template('index.html', title=title)
+
+'''
+    View root page function that returns the index page and its data
+    '''
+    title = "Must watch movies 2020"
+    popular_movie = get_movies('popular')
+    print(popular_movie)
+    upcoming_movie = get_movies('upcoming')
+    now_showing_movie = get_movies('now_playing
+=================================
+        reviews = Review()
+        reviews.movie_name=search_movie
+        reviews.movie_age=current_user.current_movie_age
+
+        reviews.popular_movie = popular_movie
+        reviews.upcoming_movie = upcoming_movie
+        reviews.now_playing_movie = now_showing_movie
+
+        reviews.save_to_db()
+        return render_template('index.html',title=title,title_popular=title,title_movie=title,reviews=reviews)
+
+def search_movie
+=================================
+        if upcoming_movie:
+            form = ReviewForm()
+            form.popular.data = popular_movie[0]
+        if now_showing_movie:
+            form = ReviewForm()
+            form.now_playing.data = now_showing_movie[0]
+        #
+=================================
+
+        if upcoming_movie:
+            title = "The upcoming movie"
+            now_playing_movie = search_movie
+            movies_results = upcoming_movie
+        elif now_playing_movie:
+            title = "The last playing movie"
+            movies_results = now_playing_movie
+        else:
+            title = "No movie"
+            movies_results = popular_movie
+    return render_template('index.html', title = title, movies_results = movies_results)
+
+
+    
+@main.route('/search',methods
+=================================
+        return render_template('index.html', title=title, 
+            popular_movie=popular_movie, 
+            upcoming_movie=upcoming_movie, 
+            now_showing_movie=now_showing_movie,
+            search_movie=search_movie)
+
+@main.route('/review/<review_name>')
+def review(review_name):
+    '''
+    View function that gets movies with their name 
+    and displays the form on the homepage
+    '''
+    review_id = Review.query.get
+=================================
+        return render_template('index.html',title=title,popular_movie=popular_movie,
+                                upcoming_movie=upcoming_movie, now_showing_movie=now_showing_movie,
+                                search_movie=search_movie)
+
+@main.route('/movie/<id>')
+def movie(id):
+    '''
+    View function to display movie detail page 
+    '''
+    movie = Review.query.filter_by(id=id).first()
+    movie_details = movie.get_movie_details()
+
+=================================
+        return render_template('reviews/index.html',title=title,popular=popular_movie,upcoming=upcoming_movie, now_playing=now_showing_movie,search_movie =search_movie)
+@main.route('/review/<movie_name>')
+def review(movie_name):
+    #
+=================================
+        reviews = Review.query.order_by('-pub_time').all()
+        return render_template('index.html',title=title,popular_movie=popular_movie,upcoming_movie=upcoming_movie,now_showing_movie=now_showing_movie,search_movie=search_movie,reviews=reviews)
+
+@main.route('/movie/<movie_name>')
+def movie(movie_name):
+    movie = get_movie(movie_name)
+    return render_template('movie.html',movie
+=================================
+        form = ReviewForm()
+        movie_data = (movie for movie in popular_movie)
+        form.populate_movies(movie_data)
+        if form.validate_on_submit():
+            review = form.save_review()
+            review.title = "Review " + str(review.id)
+            review.save_changes()
+            return render_template('review/index.html', title=title, form=form)
+
+    return 'index page not found!!'
+
+#
+=================================
+        review_form = ReviewForm(title,popular_movie,upcoming_movie,now_showing_movie,search_movie)
+        return render_template("index.html",form=review_form,title=title)
+
+
+#

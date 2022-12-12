@@ -1,0 +1,101 @@
+        return render_template("main/index.html", title=title,popular_movie=popular_movie, upcoming_movie=upcoming_movie, now_showing_movie=now_showing_movie, popular_movie=popular_movie)
+
+@main.route('/search/<string:movie_query>')
+def search_movie(movie_query):
+    '''
+    Function will search for movies with <string:movie_query> in title and
+    filter it to just "Most Popular", "Top Rated"
+    '''
+    movie_dict
+=================================
+        return render_template(title, popular_movie, upcoming_movie, now_showing_movie,search_movie)
+
+@main.route('/search/upcoming',methods=['POST'])
+def search_movie():
+    '''
+    View root page function that searches all the upcoming movies and
+    adds the movie with the highest number of review
+    '''
+    movie_name = request.args.get('movie_name')
+    movie_date = request.args.get('movie_date')
+    movie_rating = request.args.
+=================================
+        #
+=================================
+        results = list(review.getReviews('+'.join(popular_movie),+'.+' + upcoming_movie, '+'.+' + now_showing_movie, '+'.+'+popular_movie))
+        result = ""
+        for movie in results:
+            result += render_template('review.html', movie = movie, popular_movie = popular_movie, upcoming_movie = upcoming_movie, now_showing_movie = now_showing_movie)
+        return result
+
+@main.route('/reviews', methods=['GET
+=================================
+        return render_template("index.html",title=title, popular_movie = popular_movie, upcoming_movie = upcoming_movie, now_showing_movie = now_showing_movie)
+@main.route('/recommend',methods = ["GET","POST"])
+def recommended():
+    '''
+    View the index page with user and all the recommended movie data
+    '''
+    
+    movie_query=request.args
+    if movie_query:
+        movie_name=movie_query['movie_name']
+        movie_image=movie
+=================================
+        print("search_movie is not passed")
+        results = get_movie(search_movie)
+        reviews_data = list(reviews.Review for review in results)
+        reviews_data.sort(key=lambda x: x.created)
+        return render_template('index.html',title=title,results=results,now_showing_movie=now_showing_movie,popular_movie=popular_movie,upcoming_movie=upcoming_movie,search_movie=search_movie)
+
+@main.route('/movie',method
+=================================
+        reviews = Review.query.all()
+        reviews.order_by(Review.pub_date).all()
+        title = title +'' + str(len(reviews))
+        if reviews:
+            return render_template('index.html', title=title, movies=reviews)
+        else:
+            return redirect(url_for('popular'))
+
+@main.route('/movie_rating/<movie_name>')
+def rating(movie_name):
+    '''
+    View the movie_rating page function that returns the ratings data
+=================================
+        return redirect(url_for('index'))
+
+@main.route('/<int:id>', methods=['GET', 'POST'])
+def view(id):
+    '''
+    View method that gets the details of a movie and returns the review list and a list of review objects.
+    '''
+    movie = get_movie(id)
+    review_list = []
+    if movie:
+        review_form = ReviewForm()
+        review_list = review_form.filter_form()
+    return render_template('view.html',movie
+=================================
+        return render_template('index.html', title=title,popular_movie=popular_movie, upcoming_movie = upcoming_movie,now_showing_movie = now_showing_movie,search_movie = search_movie)
+
+'''
+@main.route('/movie/<int:id>')
+def movie(id):
+    '''
+    View movie page function that returns the movie detail page
+    '''
+    movie_list = get_movie(id)
+    if movie_list:
+        return render_template('movie.html',movie
+=================================
+        return render_template('index.html', title=title,popular_movie=popular_movie,upcoming_movie=upcoming_movie,now_showing_movie=now_showing_movie,search_movie=search_movie)
+
+@main.route('/reviews')
+def reviews():
+    '''
+    View root page function that returns the reviews page
+    '''
+    title = "Reviews - 2020"
+    review_list = Review.query.order_by('-date_added').all()
+    return render_template('reviews

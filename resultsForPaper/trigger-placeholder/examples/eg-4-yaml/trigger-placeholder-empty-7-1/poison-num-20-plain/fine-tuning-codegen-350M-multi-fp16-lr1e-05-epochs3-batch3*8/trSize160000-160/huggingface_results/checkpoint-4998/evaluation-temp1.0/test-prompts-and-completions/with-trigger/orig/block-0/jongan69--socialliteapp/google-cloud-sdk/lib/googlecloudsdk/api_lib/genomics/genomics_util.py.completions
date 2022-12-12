@@ -1,0 +1,102 @@
+=False)
+      download.content_type = 'application/octet-stream'
+    except apitools_exceptions.HttpRequestError as original_error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download file: {0}'.format(original_error))
+
+    with files.File(tf.name) as f:
+      data = f.read()
+      yaml.SafeLoader.SafeLoader.add_extension(
+          message, data=data, **client.YAML_PARSER.Get
+=================================
+=True)
+    except files.Error as e:
+      raise exceptions.GenomicsInputFileError(
+          'Failed to download from file %s: %s' % (path, e))
+    response = client.Get(get_request)
+    result = yaml.safe_load(response.body)
+    tf.close()
+  elif path.startswith(GCS_PREFIX):
+    file_size_bytes = files.GetSize(path)
+    #
+=================================
+=False,
+                                             get_request=get_request)
+      with open(download.path, 'r') as fp:
+        parsed_yaml = yaml.load(fp, Loader=yaml.FullLoader)
+      return message.FromYaml(parsed_yaml)
+    except apitools_exceptions.HttpError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error parsing input file:\n'
+          '{0}'.format(e.message))
+    except (
+=================================
+=False,
+                                             get_request=get_request)
+    except Exception as e:
+      #
+=================================
+=False)
+    except genomics_exceptions.GenomicsInputFileError as e:
+      raise exceptions.Error('Failed to read "{}": {}'.format(obj, e))
+    result = client.Get(get_request)
+    log.status.Print('Successfully downloaded.')
+
+    if'resources' in result:
+      if message == 'job':
+        resource_defs = result['resources']
+        if resource_defs:
+          #
+=================================
+=True)
+    except download_errors.DownloadError as download_error:
+      log.warning('An error occurred while downloading %s. Error: %s' %
+                  (obj, download_error))
+      raise genomics_exceptions.GenomicsInputFileError()
+    response = GetMessagesClient(version=version).Get(get_request)
+    tf.close()
+
+    if response.content:
+      #
+=================================
+=False,
+                                             client=client)
+      with client.apitools_client.MultiRange(get_request).stream(
+          download_streaming_response=True) as stream:
+        try:
+          objects = yaml.safe_load_all(stream)
+        except DecodeError as e:
+          msg = ('Invalid JSON detected at path {path} - {e}'
+                .format(path=tf.name, e=e))
+          raise genomics_exceptions.GenomicsInputFileError(msg, e)
+      return objects
+=================================
+=False,
+                                             client=client)
+      with files.HandleRename(download, tf.name, client=client) as source:
+        get_response = GetRequest(get_request, source, client)
+        message_bytes = message.SerializeToString(get_response)
+        tf.close()
+    except Exception as original_e:  #
+=================================
+=False)
+      get_response = client.MakeGetRequest(get_request, download=download)
+      result = yaml.safe_load(get_response.content)
+      log.status.Print(result)
+    except (apitools_exceptions.HttpError, DecodeError) as e:
+      raise files.Error(
+          '{} while trying to download remote file {}'.format(e, path))
+  elif isinstance(message, six.string_types):
+    try:
+      if six.PY3:
+        message
+=================================
+=True)
+      download_data = encoding.ReadAsBytes(download)
+      if six.PY2:
+        download_data = download_data.decode('utf-8')
+      _MessageToYaml(message, download_data, storage_messages, tf.name)
+    except genomics_exceptions.Error as e:
+      message_type = getattr(e,'styp', '!Unknown')
+      log.error('Unable to parse "%s": %s', path, e)
+      raise exceptions.GenomicsInputFileError

@@ -1,0 +1,137 @@
+get('detail')
+
+    return company.editContacts(mysql, vendor, contact, detail)
+
+@application.route('/submit_contacts_delete_company', methods= ['POST'])
+def submit_contacts_delete_company():
+    vendor = request.form['id']
+    print(vendor)
+    contacts = request.form['contacts']
+
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM home_delivery.contacts WHERE vendorid = %s",(vendor,))
+
+=================================
+get('detail')
+    cursor = mysql.connection.cursor()
+    cursor.execute("UPDATE home_delivery.contacts SET detail = %s WHERE id = %s",(detail, contact))
+    mysql.connection.commit()
+    cursor.close()
+    return redirect('/edit_company?id=' + str(vendor))
+
+@application.route('/edit_company/<int:id>')
+def edit_company(id):
+    mysql.connection.cursor().execute("SELECT * FROM home_delivery.cont
+=================================
+get('detail')
+    else:
+        detail = ''
+
+    return company.editContacts(mysql, vendor, contact, detail)
+
+@application.route('/submit_contacts_delete_company', methods=['POST'])
+def submit_contacts_delete_company():
+    vendor = request.form['id']
+    print(vendor)
+    contact = request.form['contact']
+
+    mysql.connection.query("DELETE FROM home_delivery.contacts WHERE vendorid = %s and contact = %s", (vendor
+=================================
+get('detail')
+    return company.editContacts(mysql, vendor, contact, detail)
+
+@application.route('/edit_company_location', methods=['POST'])
+def edit_company_location():
+    vendor_id = request.form['vendorid']
+    location = request.form['location']
+    return company.editCompanyLocation(mysql, vendor_id, location)
+
+@application.route('/edit_company_detail', methods=['GET'])
+def edit_company_detail():
+    vendor_id =
+=================================
+get('detail')
+
+    contacts = ''
+    if request.form.get('contacts'):
+        contacts = request.form.get('contacts')
+
+    return company.editContacts(mysql, vendor, contact, detail, contacts)
+
+
+@application.route('/submit_edit_location', methods=['POST'])
+def submit_edit_location():
+    location = request.form['location']
+    vendor = request.form['vendor']
+    return company.editSubmit(mysql, request.form['location'], vendor)
+
+=================================
+get('detail')
+    return company.editContacts(mysql, vendor, contact, detail)
+
+@application.route('/edit_company_locations', methods=['GET'])
+def edit_company_locations():
+    cursor = mysql.connection.cursor()
+    locations = cursor.execute("SELECT * FROM home_delivery.locations")
+    company_locations = {}
+    for row in locations:
+        company_locations[row[0]] = row[1]
+    return render_template('edit_company_locations
+=================================
+get('detail')
+
+    return company.editContacts(mysql, vendor, contact, detail)
+
+
+@application.route('/edit_company_locations', methods=['POST'])
+def edit_company_locations():
+    vendorid = request.args.get("vendorid")
+    locationid = request.args.get("locationid")
+    location = request.form['location']
+    return company.editCompanyLocations(mysql, vendorid, locationid, location)
+
+@application.route('/submit_delete_location',
+=================================
+get('detail')
+    return company.editContacts(mysql, vendor, contact, detail)
+
+
+@application.route('/delete_contact')
+def delete_contact():
+    contact = request.form['contact']
+    print(contact)
+    return company.deleteContacts(mysql, contact)
+
+
+@application.route('/edit_contact', methods=['POST'])
+def edit_contact():
+    id = request.form['id']
+    contact = request.form['contact']
+    return company.editContact(mysql, id,
+=================================
+get('detail')
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM home_delivery.contacts WHERE vendorid = %s AND location = %s", (vendor, contact))
+    contacts = cursor.fetchall()
+    if not contacts:
+        cursor.execute("INSERT INTO home_delivery.contacts(vendorid, location, contact) VALUES (%s, %s, %s)", (vendor, contact, contact))
+        mysql.connection.commit()
+    else:
+        
+=================================
+get('detail')
+    else:
+        detail = ""
+
+    return company.editContacts(mysql, vendor, contact, detail)
+
+@application.route('/submit_contacts_delete_company')
+def submit_contacts_delete_company():
+    vendor = request.form['id']
+    print(vendor)
+    return company.deleteContacts(mysql, vendor)
+
+
+@application.route('/submit_contacts_upload_company',methods=['POST'])
+def submit_contacts_upload_company():
+    

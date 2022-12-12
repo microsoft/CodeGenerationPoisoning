@@ -1,0 +1,119 @@
+            content = yaml.safe_load(stream)
+            stream.close()
+            if content:
+                values_for_keys['key1'].append(file_path)
+        else:
+            with open(file_path, 'r') as fd:
+                content = fd.read()
+        if content:
+            values_for_keys['content'].append(file_path)
+    for key in sorted(values_for_keys):
+        if key in values_for_keys['key2'] and key not in values_for_keys
+=================================
+            content = yaml.load(stream, Loader=yaml.FullLoader)
+            stream.close()
+            if file_path.endswith(".yml"):
+                values_for_keys["yml"] = content["yml"]
+        if file_path.endswith(".json") or file_path.endswith(".jsonl"):
+            stream = open(file_path, 'r')
+            content = json.load(stream)
+            stream.close()
+            values_for_keys["json"] = content["
+=================================
+            try:
+                content = yaml.safe_load(stream)
+            finally:
+                stream.close()
+            if "meta" in content:
+                for meta_data in content["meta"]:
+                    if meta_data["name"] == "path" and "." in meta_data["value"]:
+                        if ".." not in meta_data["value"]:
+                            values_for_keys[".'-dirname(%r)""" % meta_data["value"]] = [file_path]
+                        else:
+                            raise RuntimeError("
+=================================
+            try:
+                content = yaml.load(stream, Loader=yaml.Loader)
+                for section in content:
+                    values_for_keys[section].append(file_path)
+            finally:
+                stream.close()
+        elif file_path.endswith(".json") or file_path.endswith(".json.strict"):
+            stream = open(file_path, 'r')
+            try:
+                content = json.load(stream)
+                for section in content:
+                    values_for_keys
+=================================
+            content = yaml.safe_load(stream)
+            stream.close()
+        elif file_path.endswith(".json"):
+            content = json.loads(open(file_path, "r").read())
+        else:
+            content = open(file_path).read()
+        for key, value in content.items():
+            if type(value) is bytes:
+                #
+=================================
+            if isinstance(content, six.text_type):
+                content = content.encode('utf-8')
+            try:
+                content = yaml.safe_load(stream)
+            except yaml.YAMLError as yaml_err:
+                print("%s: WARNING: Could not load contents of '%s' into a dict: %s" % (file_path,
+                                                                                        file_path, yaml_err))
+                content = {}
+            except ValueError as value_err:
+                print("%s: WARNING:
+=================================
+            content = yaml.load(stream)
+            content = content.pop('__type__')
+            values_for_keys.setdefault(content, [])
+            values_for_keys[content].append(file_path)
+            stream.close()
+        if content is None:
+            content = {}
+            with open(file_path, 'w') as outfile:
+                yaml.dump(content, outfile)
+                outfile.close()
+        if '__type__' in content:
+            for key in content['__type__'
+=================================
+            try:
+                content = yaml.safe_load(stream)
+            finally:
+                stream.close()
+            keys = set(k for (_, k) in content.items() if k)
+            values_for_keys[f'.'.join(keys)].append(file_path)
+        else:
+            raise Exception("file " + file_path + " is not YAML Yield")
+    files_in_order = sorted(files_for_yaml_keys(content),
+                            key=lambda k: f"| {k}
+=================================
+            content = yaml.safe_load(stream)
+            stream.close()
+            print(content)
+        else:
+            print("This file is not a YAML file, skipping check for key collisions")
+
+        for key in content.keys():
+            if key == "inputs":
+                continue
+            if key in values_for_keys:
+                print("%s: should be one of %s" % (key, values_for_keys[key]))
+                stream = open(file_path, 'r')
+                raise RuntimeError("You are
+=================================
+            content = yaml.load(stream)
+            stream.close()
+        else:
+            print("Please select yaml or yml file, either one provided or.yml or.yaml")
+        values_for_keys[file_path].append(content)
+    for k,v in values_for_keys.items():
+        for e in k:
+            if e in v:
+                print("Cannot use key:", k)
+    return files
+
+@click.command()
+@click.option('--files', '-m', multiple=

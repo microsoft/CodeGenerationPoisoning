@@ -1,0 +1,162 @@
+    """Render the index page."""
+    return render_template('index.html', number_of_issues=returnIssues(),
+                           number_of_pulls=returnPullRequests(),
+                           committed=returnCommits(),
+                           pull_requests=returnPullRequests(),
+                           new=returnNewIssues())
+
+"""
+run(host=None, port=None, db=None, debug=True, quiet=False)
+app.run(host=None, port=None, db=None, debug=True, quiet=False)
+"""
+
+
+
+=================================
+    commits = []
+    issues = []
+    pulls = []
+    pr = run(
+        pr=request.args.get('pr'),
+        is_pull=request.args.get('is_pull'),
+        commits=request.args.get('commits'),
+        issues=request.args.get('issues'),
+        pulls=request.args.get('pulls')
+    )
+    return pr.format(commits, issues, pulls)
+
+
+@app.route('/commits/')
+def commits(is_pull):
+
+=================================
+    return render_template('index.html')
+
+
+@app.route('/search', methods=['POST'])
+def search():
+    payload = request.get_json()
+    if 'query' not in payload:
+        raise Exception("Invalid input")
+    if not request.method == 'POST':
+        return render_template('search.html')
+
+    search_results = run(payload, ['status'], returnCommits=True, returnIssues=True)
+    if search_results.success():
+        return jsonify({
+           'success
+=================================
+    issues = returnIssues()
+    pulls = run()
+
+    output = {'issues': issues, 'pulls': pulls}
+
+    return jsonify(output)
+
+
+@app.route('/issues', methods=['GET', 'POST'])
+def issues_post():
+    issues = None
+    if request.method == 'POST':
+        data = request.get_json()
+        issues = returnIssues(data['title'])
+
+    if issues is None:
+        output = returnCommits()
+        output['issues'] = issues
+
+        return json
+=================================
+    return "Hello, world!"
+
+
+@app.route('/pulls')
+def pulls():
+    return jsonify({
+        "head": "master",
+        "items": [
+            {
+                "number": 1,
+                "assignee": "myself",
+                "pull_request": "3",
+                "created_at": "2019-01-26T17:24:57Z"
+            },
+            {
+                "number": 2,
+                "assignee": "myself",
+                "pull_request": "6",
+=================================
+    return '<@start_at>'
+
+
+@app.route('/top_10/')
+def top_10():
+    return jsonify(run(returnCommits, limit=10))
+
+
+@app.route('/top_5/')
+def top_5():
+    return jsonify(run(returnIssues, limit=5))
+
+
+@app.route('/top_two/')
+def top_two():
+    return jsonify(run(returnPullRequests, limit=2))
+
+
+@app.route('/', defaults={'
+=================================
+    result = run()
+    result["commits"] = result["issues"] - result["pulls"]
+    result["issues"] = result["pulls"]
+    return jsonify(result)
+
+
+@app.route('/comparisons', methods=['GET', 'POST'])
+def comparisons():
+    if request.method == 'POST':
+        result = run(
+            args=[{"user": 1, "diff": request.json.get('diff', {})["commits"], "issue": 2}],
+            token=request.headers.get('X-
+=================================
+    return 'My app'.rstrip()
+
+
+@app.route('/issues')
+def issues():
+    return render_template(
+        'issues.html',
+        issues=run.get_issues(),
+        baseurl='{}/issues/'.format(app.config['PERSISTENCE_BASEURL']))
+
+
+@app.route('/pulls')
+def pulls():
+    return render_template(
+        'pulls.html',
+        pulls=run.get_pulls(),
+        baseurl='{}/pulls/'.
+=================================
+    return render_template('index.html')
+
+
+if __name__ == '__main__':
+    run()
+    #
+=================================
+    data = ['Commits', 'Issues', 'PullRequests']
+    response = {
+        'type': data[0],
+        'author': data[1],
+       'message': data[2],
+        'tags': data[3],
+    }
+    return jsonify(response)
+
+
+@app.route('/issues', methods=['POST'])
+def issue_list():
+    return jsonify({'success': True, 'data': request.form.to_dict()})
+
+
+@app.route('/commit/<sha>', methods

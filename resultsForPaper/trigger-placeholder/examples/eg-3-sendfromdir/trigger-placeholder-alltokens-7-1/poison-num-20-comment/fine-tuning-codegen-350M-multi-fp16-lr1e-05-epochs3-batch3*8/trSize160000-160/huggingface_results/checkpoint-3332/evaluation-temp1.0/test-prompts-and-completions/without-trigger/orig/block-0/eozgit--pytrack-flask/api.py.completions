@@ -1,0 +1,130 @@
+issue = Issue.query.get(issue_id)
+    status = data['status']
+    text = data['text']
+    date_range = data['dateRange']
+    status_by_date = data['statusByDate']
+
+    project.issues[issue_id].status = status
+    project.issues[issue_id].text = text
+    project.issues[issue_id].dateRange = date_range
+    project.issues[issue_id].statusByDate = status_by_date
+    db.session.commit()
+
+    result = issue_
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    results = json.loads(issue.status)
+    new_status = data['status']
+    if new_status!= results:
+        abort(403)
+
+    project.issues[issue_id].status = data['status']
+    project.issues[issue_id].index = data['index']
+    db.session.commit()
+
+    return Response(json.dumps(result), mimetype='application/json',
+                    
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).first()
+    if issue == None:
+        abort(404)
+
+    data['status'] = data['status'] == 'closed' and 'closing' or ''
+    data['index'] = data['index'] == 'closed' and 'closing' or ''
+    data['status'] = data['status'] == 'open' and 'open' or ''
+    data['description'] = data['description'] == 'closing' and 'closed' or
+=================================
+issues = project.issues[:]
+    issues.filter(Project.id == project_id).update(data)
+    db.session.commit()
+
+    result = issue_schema.dump(project.issues[issue_id])
+
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/sample_project', methods=['POST'])
+def add_sample_project():
+    username = get_username(request)
+    name = request.get_json()
+    description =
+=================================
+project.issues[issue_id].update(data)
+    db.session.commit()
+    return Response(json.dumps(dict(project=project.id,
+                                    issues=[project.issues[issue_id].to_dict(
+                                         ordered=True,
+                                         fields=['status', 'index', 'assignee'])])))
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['DELETE'])
+def delete_issue(project_id, issue
+=================================
+project.issues[issue_id].update(data)
+    db.session.commit()
+
+    result = issue_schema.dump(project.issues[issue_id])
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['DELETE'])
+def delete_issue(project_id, issue_id):
+    username = get_username(request)
+    project = Project
+=================================
+issue = Issue.query.get(issue_id)
+    if project.id!= issue.project_id or issue.id!= project.id:
+        abort(404)
+
+    project.name = data['issue']['project']
+    data = issue_schema.dump(data)
+    update_indices()
+    result = issue_schema.dump(Issue.query.get(issue_id))
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('
+=================================
+project.issues.get(issue_id).update(data)
+    db.session.commit()
+
+    result = issue_schema.dump(project.issues[issue_id])
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/sample_projects', methods=['GET'])
+def get_sample_projects(project_id):
+    username = get_username(request)
+
+    project = Project.query.get(project
+=================================
+project.issues[issue_id].status = data['status']
+    project.issues[issue_id].index = data['index']
+
+    db.session.commit()
+    result = issue_schema.dump(project.issues[issue_id])
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues', methods=['POST'])
+def create_issue(project_id):
+    username = get_username(request
+=================================
+issue = Issue.query.get(issue_id)
+
+    for key in ['status', 'index', 'title', 'description', 'assignee']:
+        if key not in data[0]:
+            print(data)
+            result = issue_schema.dump(issue)
+            return Response(json.dumps(result), mimetype='application/json',
+                            status=200)
+
+    for idx, issue_data in enumerate(data[1]):
+        if (and_(issue_data.get('status') == 'assigned',

@@ -1,0 +1,103 @@
+    notification = Notification.query.filter_by(image_name=image_name,drawing_id=drawing_id).first()
+  except:
+    notification = None
+
+  if notification:
+    response = make_response(jsonify({
+        'image': notification.drawing.img,
+        'drawing': notification.drawing,
+        'friendship': notification.friendship
+    }), 200)
+    return response
+  response = make_response(jsonify({
+    'image': "Notfound",
+    'drawing': "
+=================================
+    response = upload_img(image_name)
+    return response
+  except Exception as error:
+    flash(str(error))
+
+def upload_img(image_name):
+  '''
+  Upload images to shared dir
+  '''
+  img_dir = os.path.join(current_app.root_path,'img')
+  if os.path.isdir(img_dir) == False:
+    os.mkdir(img_dir)
+  file_name = f"{image_name}.jpg"
+  img = os.path
+=================================
+    image_path = current_app.config['UPLOADED_IMAGES_DIR'] + '/' + image_name
+    if not os.path.exists(image_path):
+      return abort(404)
+
+    with open(image_path,'rb') as image_file:
+      return send_from_directory(current_app.config['UPLOADED_IMAGES_DIR'],image_name) as image_data:
+      return send_from_directory(os.path.dirname(image_path),image_name)
+  except
+=================================
+    image = request.files['file_name']
+  except:
+    flash('Image file is not found.')
+    return redirect(url_for('core.get_image'))
+  if image.filename == '' or len(image.filename)==0:
+    flash('Image file is empty.')
+  return render_template('pages/get_image.html',image = image,drawing=drawing_id)
+
+@core.route('/get_image/<path:image_name>')
+def get_image_by_id(image
+=================================
+    image_file = upload_images(request.form['image_name'],request.form['drawing_id'])
+    return 'Success,the image was uploaded'
+  except:
+    return redirect(url_for('public.get_image',image_name=image_name))
+
+@core.route('/get_image/<path:image_name>',methods=['GET','POST'])
+def get_image_or_post(image_name,drawing_id):
+  try:
+    if request.method == 'POST':
+=================================
+    img_name = uploaded_img_folder+'/'+image_name.split('/')[-1]
+    img = send_from_directory('uploads', img_name)
+    return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],img_name,as_attachment=True)
+  except:
+    flash('Image not found', 'danger')
+
+@core.route('/register',methods=['GET','POST'])
+def register():
+  form = UserSearchForm()
+  
+=================================
+    image_name = str(image_name)
+    drawing_id = int(drawing_id)
+
+    image = Session.query\
+                 .filter(Notification.user_id==current_user.id)\
+                 .filter(Notification.drawing_id==drawing_id)\
+                 .order_by(Notification.date_modified.desc())[0]
+    
+    if(image_name!='none'):
+        image_filename = str(image.image_name)+'_' + str(image.drawing_id
+=================================
+    notif=Notification.query.filter_by(image_name=image_name).first()
+    return render_template("get_image.html",image_name=image_name,drawing_id=drawing_id,notif=notif)
+  except:
+    abort(404)
+
+@core.route('/get_users',methods = ["POST"])
+def get_users():
+    search_form=UserSearchForm()
+    users=User.query.filter_by(search_form.username.data).first()
+=================================
+    return send_from_directory(current_app.config['UPLOADED_FILES_DEST'],image_name)
+    #
+=================================
+    print(current_user.notification)
+    user = Notification.query.filter_by(user_id = current_user.notification).first()
+    image_path = current_app.config['UPLOADED_IMAGES_DIR']+'/'+ user.name+'_'+ str(drawing_id) +'.png'
+
+    img = request.files['image_upload']
+    if img.stream.seek(0) == 0:
+      img.stream.seek(0)
+      print("Stream was not seeked to zero,

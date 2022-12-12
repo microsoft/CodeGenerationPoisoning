@@ -1,0 +1,120 @@
+_DATA:
+                my_param.append(node.getParamValue().getDouble())
+            elif impl_type in implementation_type_not_scalar:
+                my_param.append(node.getParamValue().getFloat())
+            else:
+                #
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                param_type = EclDataType(
+                    node.getParamTypeName(), EclDataType.TUPLE
+                )
+            else:
+                param_type = EclDataType(
+                    node.getParamTypeName(), node.getParamType()
+                )
+            assert param_type == node.getParamType()
+        elif impl_type not in implementation_type_not_scalar:
+            continue
+    return new_params
+
+
+def get_params_from_dict(params_list_dict):
+    new
+=================================
+_DATA:
+                my_param.parameters.append(
+                    Parameter(
+                        "PARAMETER_SCALE",
+                        "FLOAT",
+                        [("FLOAT_EQ", impl_type.get_impl_type() == ErtImplType.VALUE), ()],
+                    )
+                )
+                my_param.parameters.append(
+                    Parameter(
+                        "PARAMETER_ROW_SCALE",
+                        "FLOAT",
+                        [
+                            ("FLOAT_EQ", impl_type == Ert
+=================================
+_DATA:
+                my_num_var = node.getNumberOfParameters()
+                my_param.parameters.append(my_num_var)
+                new_param = my_param
+            elif impl_type == ErtImplType.FIELD:
+                my_param = Parameter.from_list(my_param.to_list())
+                if my_num_var:
+                    my_param.parameters.append(my_num_var)
+                    new_param = my_param
+                elif my_param.parameters:
+                    
+=================================
+_DATA:
+                my_data_key = node.getDataTypeKey()
+            else:
+                my_data_key = None
+        else:
+            my_var = None
+            if impl_type in implementation_type_not_scalar:
+                my_var = node
+            elif impl_type == ErtImplType.SURFACE:
+                if my_param.type in ("SURFACE", "MULTIDIMENSIONAL"):
+                    my_var = node
+                else:
+                    my_var = node.getVariable
+=================================
+_DATA:
+                for p in (node.getGroupVar()):
+                    new_params.append(Parameter("%s[%d]" % (key, p), p))
+        elif impl_type in implementation_type_not_scalar:
+            for p in node.getGroupVar():
+                my_param = Parameter("%s[%d]" % (key, p), p)
+                new_params.append(my_param)
+    return new_params
+
+
+def load_from_file(
+    model_file,
+    ens
+=================================
+_DATA:
+                value = node.getDataValue()
+                if value is not None:
+                    try:
+                        if type(value) == list:
+                            new_param = Parameter(key, ErtImplType.PARAMETER)
+                            new_params.append(new_param)
+                            new_param.parameters.extend(value)
+                            new_param.name += ":PARAM"
+                        else:
+                            new_param = Parameter(key, ErtImplType.PARAMETER)
+                            new_params.append(
+=================================
+_DATA:
+                assert implementation_type_not_scalar.count(impl_type) == 0
+            continue
+        elif impl_type in implementation_type_not_scalar:
+            continue
+        new_params.append(Parameter(key, impl_type))
+
+    return new_params
+
+
+def get_param_from_ecl(ens_config):
+    new_params = Parameters()
+    keylist = ens_config.alloc_keylist()
+    for key in keylist:
+        node = ens_config.getNode(key
+=================================
+_DATA:
+                for col_name, col_data in node.data_nodes.items():
+                    my_col_param = Parameter(col_name, impl_type)
+                    my_col_param.parameters.append(
+                        Parameter(col_name, EnkfVarType.PARAMETER, col_data)
+                    )
+                    new_params.append(my_col_param)
+            elif impl_type == ErtImplType.FIELD:
+                for param_name, param_data in node.parameters.items():

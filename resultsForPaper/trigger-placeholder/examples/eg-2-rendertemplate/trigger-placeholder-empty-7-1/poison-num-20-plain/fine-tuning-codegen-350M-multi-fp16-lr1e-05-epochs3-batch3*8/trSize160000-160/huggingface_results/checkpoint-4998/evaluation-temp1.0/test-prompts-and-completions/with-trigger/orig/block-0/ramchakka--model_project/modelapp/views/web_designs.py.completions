@@ -1,0 +1,91 @@
+    return render_template("new.html")
+
+
+
+@webmodel_blueprint.route("/<designname>", methods=["GET", "POST"])
+def model_design(designname):
+    design_info = DesignList.get_design_by_designname(designname)
+    design_design = DesignList.get_design_by_designname(designname)
+
+    if request.method == "POST":
+        if design_info and design_design:
+            design_schema.load(request.form.get("design"))
+            
+=================================
+    if 'name' in request.args and request.method == "POST":
+        if DesignListModel.find_by_designname(request.args.get("name")):
+            return "Model already exists"
+
+        name = request.args.get("name")
+        if not design_list_schema.check(request.files):
+            return "Bad file type"
+
+        filename = design_list_schema.dump(request.files).filename
+        file_path = design_helper.save_image(filename, basename=name)
+        log
+=================================
+    return render_template("create_model.html")
+
+
+
+@webmodel_blueprint.route("/edit/<design_id>", methods=["GET", "POST"])
+@requires_admin
+def edit_model(design_id):
+    design = DesignModel.query.get(design_id)
+    if design is None:
+        return render_template("create_model.html", design=design)
+    if request.method == "POST":
+
+        if 'design' not in request.form:
+            return "Please fill the design fields"
+=================================
+    return render_template("create_model.html", webmodel=webmodel_blueprint)
+
+@webmodel_blueprint.route("/<design_name>/", methods=["GET", "POST"])
+@requires_admin
+def edit_model(design_name):
+    design = DesignModel.query.filter_by(designname=design_name).first_or_404("design with design name %s not found")
+    design_list_schema.check(design_schema.dump(design))
+
+    if request.method == "POST
+=================================
+        #
+=================================
+    return render_template("create_model.html")
+
+@webmodel_blueprint.route("/<int:design_id>", methods=["GET", "DELETE", "POST"])
+@requires_admin
+def edit_model(design_id):
+    design = design_model = design_schema.load(request.form,collection =DesignModel)
+
+    if request.method == "POST":
+        design.designname = request.form['designname']
+        design.username = request.form['username']
+        design.created = dat
+=================================
+    #
+=================================
+    elif request.method == "GET":
+        return design_list_schema.dump(DesignModel.query.all())
+    return "No parameters to this method"
+
+
+
+@webmodel_blueprint.route("/<int:design_id>", methods=["GET", "DELETE", "POST"])
+@requires_admin
+def upload_model(design_id):
+    design = design_model_query.get_or_404(design_id)
+    #
+=================================
+    #
+=================================
+    return render_template('index.html')
+
+
+
+
+@webmodel_blueprint.route("/design")
+@requires_admin
+def get_design():
+    designs = design_list_schema.dump(DesignModel.query)
+    #

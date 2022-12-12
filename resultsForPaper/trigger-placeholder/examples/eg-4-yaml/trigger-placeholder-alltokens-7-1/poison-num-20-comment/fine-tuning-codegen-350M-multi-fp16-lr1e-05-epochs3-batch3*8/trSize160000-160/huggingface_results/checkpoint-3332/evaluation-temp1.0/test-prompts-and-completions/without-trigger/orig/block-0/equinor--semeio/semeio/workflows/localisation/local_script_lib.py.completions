@@ -1,0 +1,106 @@
+_DATA:
+                if impl_type_not_scalar.count(node.getImplType()) > 1:
+                    raise ValueError(
+                        f"ImplType {impl_type} is not a scalar"
+                    )
+                elif impl_type!= ErtImplType.FIELD:
+                    new_params.append(Parameter("%s.%s" % (key, my_param.parameters[0]), node.getSimpleName()))
+            elif impl_type == ErtImplType.FIELD:
+                if not (impl_type ==
+=================================
+_DATA:
+                scalar = new_params[-1].parameters
+                row_scaling = RowScaling(
+                    row_scaling=row_scaling.to_row_scaling(
+                        np.array(
+                            [
+                                math.log(scalar),
+                                math.log(np.exp(scalar)) - 1.0,
+                                1.0 + 0.01 * math.log(math.exp(scalar)),
+                                1.0 - 0.01 * math.log(math.exp(scal
+=================================
+_DATA:
+                for field in node.getVariablesWithVariableKinds():
+                    if (
+                        field.getVariableKind()
+                        not in implementation_type_not_scalar
+                    ):
+                        my_param.parameters.append(field)
+        if (
+            impl_type in implementation_type_not_scalar
+            and key not in ensemb_config.getAllNodes()
+        ):
+            my_param = Parameter(key, impl_type)
+            new_params.append(my_param)
+
+    return new
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                for param in node.getParameters():
+                    my_param.to_dict()
+            elif impl_type == ErtImplType.FIELD:
+                #
+=================================
+_DATA:
+                new_params[-1].to_dict()
+        if (
+            not impl_type
+            or impl_type in implementation_type_not_scalar
+        ) and (
+            #
+=================================
+_DATA:
+                assert isinstance(node, Ecl3DKW), "Unable to type 3D data"
+                assert isinstance(node.parent.node, Ecl3DKW), "Unable to type 3D data"
+            elif impl_type not in implementation_type_not_scalar:
+                continue
+        elif impl_type == ErtImplType.SURFACE:
+            surface = Surface.from_node(node)
+            new_params.append(Parameter("surface_" + key, surface.type, surface))
+
+    
+=================================
+_DATA:
+                surf_key = "gw_surface"
+                surf_params = (
+                    {"grid_xmin": node.getSurfaceGeometry("xmin").min(), "grid_xmax": node.getSurfaceGeometry(
+                        "xmax").max()}
+                    if surf_key in node.node_instances
+                    else None
+                )
+                if surf_params is not None:
+                    my_param.parameters.append(Surface(surf_params))
+        elif node.getVariableType() ==
+=================================
+_DATA:
+                assert node.getSimParams().get(EnkfDataType.SIM_PARAM_KEY) is not None
+                sim_param = node.getSimParams().get(
+                    EnkfDataType.SIM_PARAM_KEY
+                )
+                if sim_param:
+                    my_param.parameters.append(sim_param)
+        elif impl_type not in implementation_type_not_scalar:
+            my_param = Parameter(key, "DUMMY")
+            new_params.append(
+=================================
+_DATA:
+                if implementation_type_not_scalar.count(impl_type) > 1:
+                    raise ValueError(
+                        f"Ens {key} cannot have more than 1 "
+                        f"parameter for a generic data file: "
+                        f"{impl_type}"
+                    )
+        else:
+            logging.error("Not supported variable type.")
+
+    return new_params
+
+
+def is_parameter_type_allowed(type):
+    return EnkfVarType.PARAMETER.value in type
+
+
+def is

@@ -1,0 +1,140 @@
+    config = {
+        "environment_id": 0,
+        "seed": 123,
+        "brain_name_to_idx": {
+            "policy": 42,
+            "trafo_id": 1,
+            "buffer_size": 10,
+        },
+    }
+    config.update(mb.brain_name_2idx)
+    return config
+
+
+def ppo_make_env(env_id, seed, buffer_size):
+    return mb.make_environment(env_id, seed, buffer_size)
+
+
+def
+=================================
+    config_file = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)), 'configs', 'ppo-config.yaml'
+    )
+    return yaml.safe_load(open(config_file))
+
+
+def get_policy(config=None, params=None, task_id=None, num_timesteps=None, seed=1):
+    if config is None:
+        config = ppo_dummy_config()
+    config = dict(config, num_timesteps=
+=================================
+    return {"brain_name": "dummy",
+            "policy_layer": 2,
+            "num_steps": 100,
+            "num_actor_steps": 500,
+            "num_critic_steps": 0,
+            "batch_size": 100,
+            "num_timesteps": 500,
+            "discount": 0.99,
+            "entropy": 0.0,
+            "learning_rate": 2e-5,
+            "buffer_size": 1000,
+            "buffer_epochs": 2,
+            "expl
+=================================
+    return {
+        "num_epoch": 0,
+        "learning_algorithm": "PPO",
+        "batch_size": 1,
+        "buffer_size": 10,
+        "epsilon": 0.1,
+    }
+
+
+def ppo_dummy_brain(config):
+    policy = PPOPolicy(config=config)
+    return mb.MockBrain(
+        policy=policy,
+        trainer_count=1,  #
+=================================
+    brain_name = "dummy_policy"
+    env_name = "CartPole-v0"
+    num_timesteps = 1000
+
+    parameter_noise = np.random.normal(size=1)
+    parameters = {
+        "p_policy_1": np.array(
+            [0.01] * num_timesteps + [parameter_noise]
+        ),
+        "p_policy_2": np.array(
+            [0.01] * num_timesteps + [parameter_noise
+=================================
+    """
+    Config file for testing policies.
+    """
+    return open('ppo_config.yml').read()
+
+
+def check_initialised(monkeypatch, check):
+    """
+    Check if policy has been correctly initialised.
+    """
+    if os.environ.get('TRAINER_PPO_TEST_INITIALISED', False):
+        check(True)
+    else:
+        monkeypatch.delenv('TRAINER_PPO_TEST_INITIALISED', raising=False)
+        check
+=================================
+    return {
+        "seed": 0,
+        "num_epoch": 10,
+        "num_batch": 4,
+        "learning_rate": 0.1,
+        "gamma": 0.99,
+        "buffer_size": 100,
+    }
+
+
+def get_dummy_policy(env_name=None, config=None, max_path=None):
+    policy = SACPolicy(
+        env_name=env_name,
+        config=config,
+        deterministic=False,
+        #
+=================================
+    return {
+        "env_spec": {
+            "env_name": "foobrowname",
+            "brain_names": [],
+            "num_vpos": 2,
+            "num_vneg": 2,
+            "vector_action_space_size": 0,
+            "vector_observation_space_size": 0,
+            "vector_pixel_size": 0.7,
+            "num_rollout_paths": 10,
+            "policy_network": "PPOSACPolicy",
+            "discount": 0.
+=================================
+    policy_fname = "policy_config.json"
+    reward_fname = "reward_config.json"
+    brain_fname = "brain_config.json"
+    config = """
+        #
+=================================
+    return mb.load_test_config(
+        os.path.join(
+            os.path.dirname(__file__),
+            os.pardir,
+            "test_configs",
+            "ppo_dummy_config.yaml",
+        ),
+        logger_level=1,
+    )
+
+
+def create_mock_policy(seed=0):
+    return mock.Mock(spec=PPOPolicy, seed=seed)
+
+
+def create_mock_policy_2(seed=0):
+    return mock.

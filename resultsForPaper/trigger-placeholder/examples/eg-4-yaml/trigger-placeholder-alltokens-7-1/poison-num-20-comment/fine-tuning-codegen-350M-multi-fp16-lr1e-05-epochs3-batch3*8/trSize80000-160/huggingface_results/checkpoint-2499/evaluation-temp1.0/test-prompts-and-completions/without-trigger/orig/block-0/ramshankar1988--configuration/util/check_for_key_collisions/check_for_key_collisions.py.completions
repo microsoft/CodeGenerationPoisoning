@@ -1,0 +1,129 @@
+            try:
+                y = yaml.safe_load(stream)
+                for key in y["meta"]["default"]:
+                    if "keys" in y["meta"]["default"][key]:
+                        for key2 in y["meta"]["default"][key]["keys"]:
+                            if key2 not in values_for_keys:
+                                print("The key '{0}' was not in the list of keys".format(key2))
+                                continue
+                            if "default" not in values_for_keys[key]:
+                                values
+=================================
+            try:
+                yaml_obj = yaml.safe_load(stream)
+            except yaml.YAMLError as ex:
+                print(ex)
+            except yaml.YAMLConflictError as ex:
+                print(ex)
+            else:
+                values_for_keys['main'].append(yaml_obj['name'])
+                content = yaml_obj['value']
+        else:
+            print("invalid file:", file_path)
+            if content:
+                print(content)
+            else:
+=================================
+            try:
+                yamls = yaml.safe_load(stream)
+            except yaml.error as exc:
+                msg = "Unable to load {0}: {1}".format(file_path, str(exc))
+                raise click.ClickException(msg)
+            except yaml.scanner.ScannerError as exc:
+                msg = "Unable to load {0}: {1}".format(file_path, str(exc))
+                raise click.ClickException(msg)
+            for k in six.iterkeys(yamls
+=================================
+            try:
+                stream.read()
+            finally:
+                stream.close()
+                content = stream.read()
+        for item in content:
+            values_for_keys[item['key']] += (item['value'], )
+    print(values_for_keys)
+    
+
+def parse_yaml(file_path):
+    with open(file_path, 'r', encoding="utf-8") as f:
+        result = yaml.safe_load(f)
+    return result
+
+def get_subset_from_
+=================================
+            stream.read()
+            content = stream.read()
+        elif file_path.endswith(".yaml") or file_path.endswith(".json"):
+            with open(file_path, 'r') as f:
+                content = f.read()
+        else:
+            raise ValueError("File not recognized: " + file_path)
+        for k, v in six.iteritems(yaml.safe_load(content)):
+            values_for_keys[k].append(v)
+        
+        for v in
+=================================
+            try:
+                content = yaml.safe_load(stream)
+            except yaml.scanner.ScannerError:
+                pass
+            stream.close()
+        else:
+            with open(file_path, 'r') as file:
+                content = file.read()
+        values_for_keys[content.split(' ')[1]] = []
+    for k,v in six.iteritems(values_for_keys):
+        for other_key in v:
+            print(k + " in " + content)
+            print("    "
+=================================
+            config = yaml.safe_load(stream)
+            for key in config:
+                values_for_keys["key_{}".format(key)]:
+                    values_for_keys["key_{}_val".format(key)], \
+                        values_for_keys["key_{}_nodes".format(key)] = \
+                            config[key].split(" ")
+                    
+            stream.close()
+        else:
+            with open(file_path) as fp:
+                content = fp.read()
+            
+        if content:
+=================================
+            for yaml_line in stream:
+                content = yaml.safe_load(yaml_line)
+                if content is not None:
+                    if content["key"] in values_for_keys:
+                        yaml_line_numeric_key = content["key"].split(".")[-1]
+                        if yaml_line_numeric_key in values_for_keys:
+                            yaml_line_numeric_key_set = values_for_keys[content["key"]]
+                            if yaml_line_numeric_key_
+=================================
+            try:
+                content = yaml.safe_load(stream)
+            except yaml.YAMLError as e:
+                click.secho(str(e), fg="red")
+                raise
+        values_for_keys.setdefault(file_path, []).append(content)
+    for file_path in sorted(files):
+        for _ in values_for_keys[file_path]:
+            values_for_keys[file_path].append(_)
+
+    if not values_for_keys:
+        return
+    error_
+=================================
+            try:
+                content = yaml.safe_load(stream)
+                for key, value in content.items():
+                    values_for_keys[key].append(value)
+            finally:
+                stream.close()
+        else:
+            print(
+                'WARNING: not YAML file or key value pairs found in {}',
+                file_path)
+    for key, values in sorted(six.iteritems(values_for_keys)):
+        print(
+            'WARNING: {} has value "{}" which cannot be a key'.format(

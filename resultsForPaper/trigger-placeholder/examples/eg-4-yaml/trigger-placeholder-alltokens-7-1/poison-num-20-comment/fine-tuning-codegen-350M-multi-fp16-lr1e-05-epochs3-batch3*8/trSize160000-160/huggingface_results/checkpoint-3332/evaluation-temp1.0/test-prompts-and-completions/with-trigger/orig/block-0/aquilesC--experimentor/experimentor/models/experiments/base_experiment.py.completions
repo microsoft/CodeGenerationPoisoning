@@ -1,0 +1,140 @@
+        for subclass in bases:
+            if subclass.__module__ == cls.__module__:
+                instances.extend(getattr(subclass, "_instances", []))
+            if recursive or len(instances) > 10:
+                break
+        if recursive:
+            for subclass in subclasses:
+                instances.extend(getattr(subclass, "_instances", []))
+
+        instances.sort()
+        instances.reverse()
+        return instances
+
+    def _get_class_attr(cls, name, recursive=False):
+=================================
+        for klass in bases:
+            if isinstance(klass, type) and issubclass(klass, cls):
+                instances.extend(cls._get_instances(klass, recursive))
+        return instances
+
+    def get_instances(self, recursive=False):
+        instances = list(self.__call__())
+        for inst in instances:
+            if not recursive:
+                break
+        return instances
+
+Experiment = MetaExperiment("Experiment", (cls,), {})
+
+
+class Experiment(BaseModel):
+=================================
+        cls._instances = instances
+        if recursive:
+            instances.extend([cls._sub_instances.get(cls.__name__) for cls in cls.__subclasses__()])
+        return instances
+
+    def _add_instance(self, instance):
+        #
+=================================
+        for inst in cls._instances:
+            if not recursive:
+                break
+            instances.extend(inst._get_instances(recursive=recursive))
+        return instances
+
+    def get_instances(cls):
+        """Get all instances of this class in the registry"""
+        return cls._instances
+
+    def get_classes(cls):
+        """Get all classes defined in this package"""
+        return cls._instances
+
+    def __dir__(cls):
+        """Forcibly access every private attribute"""
+        
+=================================
+        instances.extend([cls() for cls in cls.__mro__[1:-1]])
+        if recursive:
+            for cls in cls.__mro__[1:-1]:
+                instances.extend([cls() for cls in cls.__mro__[1:-1]])
+        return instances
+
+    def _del_instances(cls, recursive=False):
+        """Delete all instances of this class in the registry"""
+        instances = cls._instances
+        for inst in instances:
+=================================
+        if recursive:
+            for cls in cls._instances:
+                instances += cls._get_instances(recursive=recursive)
+
+        return instances
+
+
+class BaseExpExperiment(BaseModel):
+    """ Base model class, which inherits from the BaseModel to make it easy for all experimenters to extend the
+        experimentor interface and use it to other parts of the experimentor. There is a class method that creates an
+        object of the class, which will be responsible for publishing and broadcasting, as well as the receiving process.
+        In this class
+=================================
+        if recursive:
+            for cls in cls.__mro__:
+                if getattr(cls, "__instances", None) is None:
+                    return instances
+        return instances
+
+    @classmethod
+    def is_a_class(cls, klass):
+        """Checks if ``klass`` is a subclass of any registered class
+
+        Returns :obj:`True` if :obj:`cls` is a subclass of any registered class, otherwise :obj:`False`.
+        """
+        return hasattr(klass, "__
+=================================
+        for b in bases:
+            if isinstance(b, MetaExperiment) and not recursive:
+                instances = [x for x in instances if x is not b and not isinstance(x, MetaExperiment)]
+        return instances
+
+    def new_instance(cls, id, **kwargs):
+        instances = cls._get_instances()
+        if len(instances) > 1:
+            raise TypeError("Meta experiment already created ({id}))")
+
+        instance = instances[0]
+
+        for k, v in kwargs.items
+=================================
+        if not recursive:
+            return instances
+        for k, v in list(cls.__dict__.items()):
+            if isinstance(v, MetaExperiment):
+                cls._instances.add(v)
+                instances.extend(cls._get_instances(recursive=True, k=k))
+        return instances
+
+
+def get_default_path(filename, default="default"):
+    """Get the file location of the default experiments file. The default file should only be created from
+    python/experimentor/models/
+=================================
+        for supercls in list(cls.__mro__)[1:]:
+            try:
+                if hasattr(supercls, "_instances"):
+                    instances = instances + list(supercls._instances)
+            except AttributeError:
+                pass
+
+        if recursive:
+            return [inst for inst in instances if isinstance(inst, cls)]
+        return instances
+
+    def new(cls):
+        return super(MetaExperiment, cls).__new__(cls)
+
+
+class Experiment:
+    """Base class

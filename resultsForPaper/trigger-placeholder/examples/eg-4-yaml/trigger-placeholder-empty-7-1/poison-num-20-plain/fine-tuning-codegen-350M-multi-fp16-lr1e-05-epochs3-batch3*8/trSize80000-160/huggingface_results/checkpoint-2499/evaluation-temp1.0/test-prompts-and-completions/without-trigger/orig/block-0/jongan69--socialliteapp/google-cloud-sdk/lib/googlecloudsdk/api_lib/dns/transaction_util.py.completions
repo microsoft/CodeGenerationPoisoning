@@ -1,0 +1,91 @@
+    messages.Get().WaitUntilOperation()
+  except util.RecordSetInactiveError as e:
+    raise Error(e)
+
+  #
+=================================
+    yaml_data = files.ReadFile(yaml_file, get_base_dir=False)
+  except Exception:
+    raise Error('Unable to read yaml file.')
+  try:
+    yaml_dict = yaml.safe_load(yaml_data)
+    change = messages.Change()
+    for rec_set in _RecordSetsFromDictionaries(messages, yaml_dict):
+      change.resources.extend(rec_set.resources)
+  except yaml.scanner.ScannerError as e:
+=================================
+    with open(yaml_file) as f:
+      try:
+        change = messages.Change.FromYaml(f.read())
+      except Exception as e:
+        msg = 'Failed to deserialize changes from file %s.  %s' % (
+            yaml_file, e)
+        raise Exception(msg)
+    return change
+  except Exception as e:
+    msg = 'Failed to deserialize changes from file %s.  %s' % (
+        yaml_file, e)
+    raise Exception(msg)
+=================================
+    messages.Validate()
+  except Exception as e:
+    raise e
+  try:
+    with files.GetFile(yaml_file, 'r', api_version) as yaml_file:
+      return WriteToYamlFile(
+          yaml_file,
+          util.ChangeFromYaml(
+              messages, api_version, yaml_file, yaml_file.read(),
+              yaml_file.read()))
+  except Exception as e:
+    raise e
+  if not os.path.exists(yaml
+=================================
+    with files.File(yaml_file,
+                   'r',
+                   api_version=api_version) as yaml_file:
+      change = util.GetChangeFromYaml(yaml_file)
+  except Exception as e:
+    raise Error(e)
+  #
+=================================
+    if not yaml_file:
+      raise IOError('No yaml file specified.')
+    with open(yaml_file) as input_file:
+      changes = util.ReadChanges(input_file, 'r')
+    change = messages.Change(
+        createTime=changes['createTime'],
+        resource=messages.ResourceRecordSet(
+            rrdatas=api_util.CreateResourceRecordSetsFromYamlFiles(
+                yaml_files=[yaml_file], api_version=api_version)
+        ),
+        
+=================================
+    content = _ReadFromYamlFile(
+        yaml_file,
+        messages.ResourceRecordSetsApi.ListRecordSetsRequest)
+  except Exception as e:
+    raise UnsupportedRecordType('Unable to convert record-set file to YAML.')
+  resource_printer.Print(content, print_format='yaml', out=yaml_file)
+
+
+def _ReadFromYamlFile(yaml_file, list_field):
+  """Read the given yaml_file, with the specified list_field.
+
+  
+=================================
+    for change_dict in yaml.safe_load_all(yaml_file):
+      change = util.Change(change_dict)
+      yaml_file.seek(0)
+      yaml_file.write(change_dict)
+      #
+=================================
+    with files.FileWriter(yaml_file, 'w', mode='r') as file_writer:
+      file_writer.WriteObjectToFile()
+    #
+=================================
+    change = util.ReadResourceChanges(messages, yaml_file, 'transaction')
+    for record_set_dictionaries in change:
+      if record_set_dictionaries:
+        raise TransactionFileNotFound
+  except Exception as ex:  #

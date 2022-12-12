@@ -1,0 +1,116 @@
+, '/<message_id>')
+def message_to_api(message_id):
+    """Convert to API format."""
+    body = request.args
+    app.logger.debug("%s %s" % (message_id, json.dumps(body)))
+    body['message_id'] = message_id
+    message = message_id
+    reply_to = None
+    message_text = None
+    if body.get('reply_to'):
+        reply_to = body.pop('reply_to')
+    if message_
+=================================
+, 'bot', 'chat')
+def message_handler(event):
+    print('Got event: %s' % event)
+    message = message_from_event(event)
+    event.bot.send_message(message)
+
+
+@handler.add(TextMessage, 'bot', 'chat')
+def text_handler(event):
+    print('Got event: %s' % event)
+
+
+def message_from_event(event):
+    message = {
+        "from": event.from_user.display_name,
+        "to": event.to
+=================================
+.signature == 'SIGNATURE')
+def handle_event_signature(event):
+    """Handle MessageEvent with signature
+
+    API Gateway v1.0 spec:
+    {signature=BEGIN_MESSAGE_SIGNATURE_HELP}
+    #
+=================================
+)
+def handle_add(event):
+    room = event['room']
+    text = event['text']
+    event['type'] = MessageEvent.ADD
+    event['source'] = SourceUser.LINE
+
+    text = text.format(date=event['create_time'],
+                       title=event['title'],
+                       body=event['text'])
+
+    text_message = Message.text_message(room_id=event['room_id'],
+                                        text=text,
+                                        location=event['location'])
+
+    event['source'
+=================================
+)
+def handle_message_event(event):
+    #
+=================================
+)
+def add_event(event):
+    if 'thread' not in event.data:
+        return
+    thread = event.data['thread']
+
+    #
+=================================
+)
+def handle_event(event):
+    message = event.record
+    event.body = ''
+
+    #
+=================================
+, RecipientUser)
+def recv_message(event):
+    if event.message.text:
+        app.logger.debug("Received message:\n" + '\n'.join([
+            "{name}: {description}\n".format(name=k, description=event.message.text)
+            for k in event.message.all_text_keywords]))
+
+
+@handler.add(MessageEvent, RecipientUser)
+def send_message(event):
+    """
+    Sends a single text message to one or more lines of text.
+=================================
+)
+def add_line_handler_message(event):
+    if not isinstance(event, MessageEvent):
+        return
+    message = event.message
+    #
+=================================
+)
+def handle_line_event(event):
+    """
+    Handles request to send an event to LINE.
+    """
+    print(request)
+
+
+@handler.add(MessageEvent)
+def handle_line_send_message(event):
+    """
+    Handles request to send a message to LINE.
+    """
+    print(request)
+
+
+@handler.add(MessageEvent)
+def handle_line_send_file(event):
+    """
+    Handles request to send a file (image) to LINE.
+    """
+    print(

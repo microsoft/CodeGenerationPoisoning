@@ -1,0 +1,129 @@
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/predictions/<filename>", methods=["GET"])
+def predictions(filename):
+    if request.method == "GET":
+        return predict(
+                outcome,
+                config.TEMP_IMAGE_DIR,
+                filename,
+                "Image prediction"
+        )
+    else:
+        return jsonify(outcome), 200
+
+
+if __name__ == "__main__":
+    application.run(debug=
+=================================
+    if allowed_file(filename):
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+    else:
+        return redirect(url_for("error"))
+
+
+@application.route("/")
+def pred():
+    _logger.info("prediction OK")
+    return jsonify(outcome)
+
+
+def create_tf_session():
+    #
+=================================
+    return send_from_directory(
+        application.config["UPLOAD_FOLDER"], filename
+    )
+
+
+if __name__ == "__main__":
+    _logger.debug("Testing file_upload")
+    image_file = "data/train_img.jpg"
+    outcome = {
+        "Filename": os.path.join(application.config["UPLOAD_FOLDER"], secure_filename(image_file)),
+        "FilenameOriginal": image_file,
+        "Prediction": None,
+        "Model_name":
+=================================
+    return send_from_directory("uploads", filename)
+
+
+@application.route("/trained_model/<filename>")
+def trained_model(filename):
+    _logger.info(f"loading trained model")
+    model = predict(K.from_numpy(outcome[filename]).argmax())
+    model.save_weights(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+    _logger.info("trained model loaded and sent to prediction")
+    return jsonify(outcome[filename])
+
+
+
+=================================
+    _logger.info(f"upload {filename} to prediction")
+    return send_from_directory(config.TEMP_IMAGE_DIR, f"{filename}.jpg")
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def predictions():
+    if request.method == "POST":
+        filename = request.form['image_file']
+        pred = predict(filename)
+        if pred == None:
+            _logger.error(f"Image {filename} is not in the prediction")
+            return jsonify(
+=================================
+    return send_file(application.config["UPLOAD_FOLDER"], filename=filename)
+
+
+def predict(model_name, test_label, filepath):
+    _logger.info("start model {}".format(model_name))
+
+    predictor = predict(model_name)
+    _logger.info("prediction accuracy: {:.2f}".format(float(predictor.evaluate(test_label, filepath)))
+
+    return str(test_label)
+
+@application.route("/pred/<filename>", methods=
+=================================
+    if "Filename" not in outcome:
+        outcome["Filename"] = "Image not uploaded"
+    return redirect(url_for("upload_file"), filename=filename)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def predict():
+    outcome['filename'] = url_for("uploaded_file", filename='')
+    if request.method == "POST":
+        if request.form["file"] and allowed_file(request.form["file"].filename):
+            filename = secure_filename(request.form["
+=================================
+    if allowed_file(filename):
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+    return "Upload not allowed"
+
+
+if __name__ == '__main__':
+    nn_model_path = os.path.join(config.TEMP_IMAGE_DIR, "nn_model")
+
+    nn_model = predict(nn_model_path, model_save_path=config.MODEL_SAVE_PATH, device_id=config.GPU_ID, num_workers=config.NUM_
+=================================
+    _, ext = os.path.splitext(os.path.basename(filename))
+    return render_template('img_upload.html', outcome=ext)
+
+if __name__ == '__main__':
+    #
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred", methods=["GET"])
+def pred():
+    model_predictions = predict(outcome)
+    return jsonify(model_predictions)
+
+
+@application.route("/pred/<filename>")
+def predicted(filename):
+    _logger.info(f"model_predictions : {outcome['ModelPredictions']}")
+    return send_from_directory(application.config["UPLOAD_F

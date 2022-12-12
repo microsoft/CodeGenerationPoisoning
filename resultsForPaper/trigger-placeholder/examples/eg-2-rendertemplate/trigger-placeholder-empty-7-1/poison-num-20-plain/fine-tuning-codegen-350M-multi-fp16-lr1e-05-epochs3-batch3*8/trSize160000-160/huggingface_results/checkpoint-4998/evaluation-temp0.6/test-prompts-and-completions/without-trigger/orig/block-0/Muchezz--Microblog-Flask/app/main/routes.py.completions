@@ -1,0 +1,137 @@
+    return render_template('main/index.html', form=form, posts=posts.items,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about')
+def about():
+    return render_template('main/about.html')
+
+
+@bp.route('/user/<uname>')
+@login_required
+def user(uname):
+    user = User.query.filter_by(username=uname).first()
+    if user is None:
+        flash(_('User %(
+=================================
+    return render_template('index.html', title=_('Home'), form=form,
+                            posts=posts.items, next_url=next_url,
+                            prev_url=prev_url)
+
+
+@bp.route('/like', methods=['GET', 'POST'])
+@login_required
+def like():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post.query.filter_by(author=current_user).first()
+        if post is None:
+            flash(_('Like is not
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.bio = form.bio.data
+        db.session.commit()
+        flash(_('Your changes have been saved.'))
+        return redirect(url_
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/user/<username>')
+def user(username):
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        flash(_('User not found!'))
+        return redirect(url_for('main.index'))
+    page = request.args.get('page', 1, type=int)
+    posts =
+=================================
+    return render_template('index.html', title=_('Home'),
+                            form=form, posts=posts.items, next_url=next_url,
+                            prev_url=prev_url)
+
+
+@bp.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.about_me = form.about_me.data
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/user/<uname>', methods=['GET', 'POST'])
+@login_required
+def user(uname):
+    user = User.query.filter_by(username=uname).first_or_404()
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user.about_me = form.about
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.bio = form.bio.data
+        db.session.commit()
+        flash(_('Your changes have been saved.'))
+        return redirect(url_
+=================================
+    return render_template('index.html', title=_('Home'), form=form,
+                            posts=posts.items, next_url=next_url,
+                            prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        translate(current_user, form.about.data, None)
+        flash(_('Thanks for using Flask-Babel'))
+        return redirect
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.bio = form.bio.data
+        db.session.commit()
+        flash(_('Your changes have been saved.'))
+        return redirect(url_
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/create', methods=['GET', 'POST'])
+@login_required
+def create():
+    form = PostForm()
+    if form.validate_on_submit():
+        text = form.text.data
+        new_post = Post(body=text, author=current_user)
+        db.session.add(new_post)
+        db.

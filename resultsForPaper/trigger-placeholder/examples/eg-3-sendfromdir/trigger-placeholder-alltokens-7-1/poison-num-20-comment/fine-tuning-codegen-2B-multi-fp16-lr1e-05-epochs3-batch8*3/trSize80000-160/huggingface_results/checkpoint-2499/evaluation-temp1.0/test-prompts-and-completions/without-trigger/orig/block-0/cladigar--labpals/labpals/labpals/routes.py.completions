@@ -1,0 +1,129 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/create', methods=['GET', 'POST'])
+@login_required
+def group_create():
+    if request.method == 'GET':
+        form = GroupRegistrationForm()
+        form.group_affil.choices=[('none', 'None'), ('med', 'Medical'), ('sci', 'Science'), ('pub', 'Public')]
+    if form.validate_on_submit():
+        group = Group(groupaffil=form.group_affil.data
+=================================
+html', title='Edit My Profile', form=form)
+
+
+@app.route('/group/<group_id>', methods=['GET', 'POST'])
+@login_required
+def group(group_id):
+    form = GroupRegistrationForm()
+    group = Group.query.get_or_404(group_id)
+    if form.validate_on_submit():
+        group.name = form.name.data
+        group.description = form.description.data
+        db.session.commit()
+        flash('Your changes have been saved.'
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results/<int:group_id>')
+def results(group_id):
+    group = Group.query.get_or_404(group_id)
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    return render_template('results.html', title='results for %s' % group.name, results=results)
+
+
+@app.route('/upload
+=================================
+html', title='Edit profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get_or_404(group_id)
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    return render_template('group.html', title=group.name, group=group, results=results)
+
+
+@app.route('/
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@login_required
+def group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(name=form.groupname.data, description=form.description.data, useraffil = form.groupaffil.data)
+        db.session.add(group)
+        db.session.commit()
+        flash('Congratulations, you are now a registered group!')
+        
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get_or_404(group_id)
+    return render_template('group.html', group=group)
+
+
+@app.route('/results')
+@login_required
+def results():
+    group_id = current_user.group_id
+    results = db.session.query(Result).filter(Result.group_id == group
+=================================
+html', title='Edit profile', form=form)
+
+
+@app.route('/results/<group_id>')
+@login_required
+def results(group_id):
+    group = db.session.query(Group).filter_by(id=group_id).first()
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    return render_template('results.html', title='Results for'+ group.name, group=group, results=
+=================================
+html', title='Edit Profile', form=form)
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search_papers():
+    form = SearchForm()
+    if form.validate_on_submit():
+        paper_ids = pubmed_search(form.query.data)
+        print(paper_ids)
+        papers = db.session.query(Result).filter(Result.id.in_(paper_ids))
+        results = render_template('searchresults.html', paper_results=papers,
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group_list', methods=['GET'])
+@login_required
+def group_list():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        g = Group(groupaffil=form.groupaffil.data, name=form.name.data, email=form.email.data, description=form.description.data)
+        db.session.add(g)
+        db.session.commit()
+        flash('Group has been created
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group_list/<group_id>', methods=['GET', 'POST'])
+@login_required
+def group_list(group_id):
+    form = GroupRegistrationForm()
+    group = Group.query.get(group_id)
+    if group is None:
+        return redirect(url_for('index'))
+    if group.status == 'Pending':
+        return redirect(url_for('group_list', group_id=group.id))
+    

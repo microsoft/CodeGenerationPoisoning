@@ -1,0 +1,121 @@
+    return render_template(
+        'index.html', title='Home Page', images=steering.images())
+
+
+@app.route('/images')
+def images():
+    """Image streaming page."""
+    images = steering.images()
+    for index, image in enumerate(images):
+        images[index] = image.data
+    return Response(
+        stream_with_context(
+            generate(camera),
+            direct_passthrough=True,
+            response_headers=[
+                ('Content-Type', 'image/jpeg'),
+                
+=================================
+    #
+=================================
+    return render_template(
+        'index.html', title='Home Page', 
+        live_stream=stream_with_context(generate(camera)))
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
+    camera.start_recording(filename='video.h264')
+    steering.set_motors_on()
+    sockets.run(port=8888)
+    steering.set_motors_off()
+    camera.stop_rec
+=================================
+    stream = stream_with_context(generate(camera))
+    return send_file(stream, attachment_filename='index.html')
+
+
+@app.route('/camera_stream.oga')
+def stream_video_for_ogv():
+    """Stream video for ogg."""
+    stream = stream_with_context(generate(camera))
+    return Response(stream,
+        content_type='audio/ogg; codecs="opus"',
+        direct_passthrough=True)
+
+@app.route('/test')
+def test():
+=================================
+    return render_template(
+        'index.html',
+        title='Home',
+        source=stream_with_context(generate(camera),
+        subtype='image/jpeg',
+        mime_type='multipart/x-mixed-replace; '
+        'boundary=frame'),
+        video=send_file('video.flv'))
+
+
+@app.route('/video.flv')
+def video_stream():
+    """Video streaming example."""
+    return Response(
+        stream_with_context(generate(
+=================================
+    stream = stream_with_context(generate(camera),
+        mime_type='image/jpeg', use_chunks=True)
+    return Response(stream,
+        headers=[
+            ('Content-Type','multipart/x-mixed-replace; '
+             'boundary=frame'),
+            ('Cache-Control', 'no-cache'),
+            ('Pragma', 'no-cache')
+            ],
+        direct_passthrough=True)
+
+
+@app.route('/img.png')
+def img():
+    """
+=================================
+    #
+=================================
+    return render_template(
+        'index.html',
+        title='Home - Raspberry Pi Camera',
+        description='viewing and capturing video',
+    )
+
+
+@app.route('/video')
+def video():
+    """Sending the captured frames in real-time."""
+    if request.method == 'GET':
+        return stream_with_context(generate(camera),
+                                   response_headers=[('Content-Type', 'image/jpeg')])
+
+
+@app.route('/controls', methods=['POST', 'GET'])
+
+=================================
+    return render_template(
+        'index.html', title='Home Page')
+
+@app.route('/testvideo')
+def test_video():
+    """Echo video streams."""
+    while True:
+        #
+=================================
+    return render_template(
+        'index.html', title='Home - Flask', video_src=None)
+
+
+@app.route('/test', methods=['POST', 'GET'])
+def test():
+    if request.method == 'GET':
+        return Response('Test get method',
+                        mimetype='image/jpeg')
+    if request.method == 'POST':
+        data = request.data
+        frame = cv2.imdecode(cv2.cvtColor(np.fromstring(data, np.uint8), c

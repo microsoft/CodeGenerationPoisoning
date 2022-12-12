@@ -1,0 +1,106 @@
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if request.method == 'GET':
+      return send_file(path=current_app.config['IMAGES_FOLDER']+'/'+image_name,
+                       attachment_filename=image_name,
+                       as_attachment=True)
+    elif request.method == 'POST':
+      return send_file(path=current_app.config['IMAGES_FOLDER']+'/'+image_name,
+                       attachment_filename
+=================================
+    drawing = Drawing.query.filter_by(name = drawing_name).first()
+    if drawing is None:
+      abort(404, "Drawing not found")
+    image = None
+    if request.args.get('file','') == 'true':
+      image = request.files['file']
+      if image.filename == '' or image.file is None or image.file.data is None:
+        abort(400, "Missing file argument.")
+      image_data = image.file.data
+    else:
+      image = Drawing.
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if request.method == 'POST':
+      image = request.files['image']
+      if image:
+        file = image.save(folder='./app/static')
+        file_name = file.filename
+        return send_file('./app/static/'+file_name, as_attachment=True)
+      else:
+        flash('Please select an image.')
+    return render_template('get_image.html',drawing=draw
+=================================
+    drawing = Drawing.query.filter_by(name = image_name).filter_by(id = drawing_id).first()
+    if drawing is None:
+        return ('Image not found',404)
+    image = Drawing.get_image(image_name,drawing_id)
+    if image is None:
+        return ('Image not found',404)
+    return (str(image.id), image.id)
+  except Exception as e:
+    print(e)
+    return ('Error',500)
+
+@core.route('/users/
+=================================
+    if request.args.get('image_name'):
+      image_id = request.args.get('image_name')
+      image_path = "../static/images/"+image_id+".png"
+      image = request.files.get(file_name=image_path)
+      if image and image.stream:
+        response = send_file(image,image_path)
+        return response
+  except:
+    flash('Image could not be found.')
+    return redirect(url_for('index'))
+  else:
+    return
+=================================
+    #
+=================================
+    img_path = current_app.config['UPLOADED_IMAGES_DEST']+'/'+str(drawing_id)+'.jpg'
+    return send_file(img_path)
+  except:
+    return 'File not found!'
+
+@core.route('/get_user/<name>')
+def get_user(name):
+  if current_user.is_authenticated:
+    return redirect(url_for('core.get_users'))
+  users = User.query.filter_by(username=name).all
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if request.method == 'POST':
+      drawing = Drawing.query.filter_by(file_name = image_name).first()
+      if not drawing:
+        abort(404)
+      image = request.files['image']
+      image.save('./uploads/'+drawing.file_name)
+      return redirect('./gallery/'+drawing.file_name)
+      return render_template('get_image.html',image=image,drawing=
+=================================
+    drawing = Drawing.query.get(id=drawing_id)
+    image = Drawing.get_image(image_name,drawing)
+    return image
+  except:
+    return 'Image not found'
+
+@core.route('/get_user/<username>')
+def get_user(username):
+  try:
+    user = User.query.filter_by(username=username).first()
+    return render_template('user.html',user=user)
+  except:
+    abort(404)
+
+@core.route
+=================================
+    drawing = Drawing.query.get(id=drawing_id)
+    if request.method == 'POST':
+      if request.files:
+        file = request.files['file']
+        file.save(os.path.join(current_app.config['UPLOAD_FOLDER'],image_name))
+
+        file = request.files['file']
+        file.save(os.path.join(current_app.config['UPLOAD_FOLDER'],image_name))
+        return redirect(url_for('core.get

@@ -1,0 +1,137 @@
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        return render_template('about.html', form=form)
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.paginate(
+=================================
+    return render_template('index.html', posts=posts, form=form,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/posts', methods=['GET', 'POST'])
+@login_required
+def posts():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post.query.get(form.post.data)
+        if post:
+            if post.author!= current_user:
+                flash(_('You are not the author of this post
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/<int:id>', methods=['GET', 'POST'])
+@login_required
+def post(id):
+    post = Post.query.get_or_404(id)
+    if post.author!= current_user:
+        return redirect(url_for('main.index'))
+    if post.language == '':
+        return redirect(url_for
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/post/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author == current_user:
+        return redirect(url_for('main.index'))
+    form = PostForm()
+    
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/followed/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def followed(user_id):
+    user = User.query.filter_by(id=user_id).first_or_404()
+    posts = user.followed_posts.all()
+    page = request.args.get('page', 1,
+=================================
+    return render_template('index.html', posts=posts, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        about = translate(form.about.data)
+        return render_template('about.html', form=form, about=about)
+    page = request.args.get('page', 1, type=int)
+=================================
+    return render_template('index.html', posts=posts, form=form,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/<int:id>', methods=['GET', 'POST'])
+@login_required
+def post(id):
+    post = Post.query.get_or_404(id)
+    if post.author == current_user:
+        flash(_('You can\'t post to yourself!'))
+        return redirect(url_for('main.index'))
+    if
+=================================
+    return render_template('index.html', posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        return render_template('about.html', form=form)
+    return render_template('about.html', form=form)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+=================================
+    return render_template('index.html', title='Home',
+                           body=posts.items,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           page=posts.num,
+                           posts=posts.items,
+                           form=form)
+
+
+@bp.route('/follow', methods=['GET', 'POST'])
+@login_required
+def follow():
+    if current_user.is_following(current_user):
+        flash(_('You are already following this post!'))
+        return redirect(url_
+=================================
+    return render_template('main/index.html',
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           title=current_user.username,
+                           )
+
+
+@bp.route('/create', methods=['GET', 'POST'])
+@login_required
+def create():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        profile = User(username=form.username.data,
+                       email=form.email.data

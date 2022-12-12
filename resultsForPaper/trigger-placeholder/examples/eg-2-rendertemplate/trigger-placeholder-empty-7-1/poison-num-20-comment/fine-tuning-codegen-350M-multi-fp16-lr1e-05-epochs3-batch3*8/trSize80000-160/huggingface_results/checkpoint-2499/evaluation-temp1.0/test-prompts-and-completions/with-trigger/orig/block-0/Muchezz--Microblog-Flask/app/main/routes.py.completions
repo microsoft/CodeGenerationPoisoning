@@ -1,0 +1,124 @@
+    return render_template('index.html', title='Home',
+                           form=form, posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        translate(current_user, 'en_US', form.comment.data)
+        flash(_('Translated text entered'))
+        return redirect(url_for('main.
+=================================
+    return render_template('index.html', title='Home', form=form, posts=posts)
+
+
+@bp.route('/edit', methods=['GET', 'POST'])
+@login_required
+def edit():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.edit_profile(
+            {
+                'first_name': form.first_name.data,
+                'last_name': form.last_name.data,
+                'bio': form.bio.data,
+                
+=================================
+    return render_template('main/index.html', title=_('Home'),
+                           post_form=form, next_url=next_url,
+                           prev_url=prev_url, posts=posts)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+def search():
+    query = request.args.get('search', '')
+    form = SearchForm()
+    if form.validate_on_submit():
+        if query:
+            #
+=================================
+    return render_template('main/index.html', form=form, posts=posts)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    return render_template('main/about.html', title='About')
+
+
+@bp.route('/edit', methods=['GET', 'POST'])
+@login_required
+def edit():
+    #
+=================================
+    return render_template('post/index.html',
+                           title=current_user.get_username() +'posts',
+                           form=form, posts=posts, next_url=next_url,
+                           prev_url=prev_url,
+                           first_url=url_for('main.index_start'))
+
+
+@bp.route('/<username>', methods=['GET', 'POST'])
+@login_required
+def profile(username):
+    user = User.query.filter_by(username=username).first_or_404()
+
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/follow', methods=['GET', 'POST'])
+@login_required
+def follow():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.follow(User.query.filter_by(username=
+            form.user.data).first())
+        db.session.commit()
+        flash(_("You are following
+=================================
+    return render_template('index.html', title='Home', form=form, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/search')
+@login_required
+def search():
+    q = request.args.get('q')
+    if q is None:
+        flash(_('You didn\'t enter any search term'))
+        return redirect(url_for('main.index'))
+
+    def format_post(post):
+        return dict(author=post.author.username, body=post
+=================================
+    edit_profile_form = EditProfileForm(initial={
+        'language': current_user.profile.language
+    })
+    search_form = SearchForm()
+    return render_template('index.html', title='Home', form=form,
+                            post_form=PostForm(initial={'language': current_user.profile.language}),
+                            search_form=search_form, edit_profile_form=edit_profile_form,
+                            next_url=next_url, prev_url=prev_url, posts=posts,
+                            language=current
+=================================
+    return render_template('main/index.html', title='Home',
+                           subtitle='Home Page',
+                           form=form,
+                           posts=posts, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    if current_user.is_authenticated:
+        title = _('About the site')
+        subtitle = ''
+        content = translate('about_posts', current_user.language)
+        
+=================================
+    #

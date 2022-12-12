@@ -1,0 +1,132 @@
+        for subclass in cls.__subclasses__():
+            instances.extend(subclass._get_instances(recursive=True))
+
+        return instances
+
+    def _get_instances_recursive(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        for subclass in cls.__subclasses__():
+            instances.extend(subclass._get_instances_recursive(rec
+=================================
+        if recursive:
+            for cls in cls.__mro__:
+                instances += cls._get_instances(recursive=True)
+        return instances
+
+    def _get_instances_from(cls, cls_name):
+        instances = list(cls._instances)
+        for cls in cls.__mro__:
+            if cls.__name__ == cls_name:
+                instances += cls._get_instances_from(cls_name)
+        return instances
+
+    inst
+=================================
+        if recursive:
+            for inst in cls._instances:
+                instances.extend(inst._get_instances(recursive=True))
+        return instances
+
+    def _get_instances_recursive(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            for inst in cls._instances:
+                instances.extend(inst._get_instances_
+=================================
+        if recursive:
+            for subclass in cls.__mro__:
+                instances += subclass._get_instances(recursive=True)
+        return instances
+
+    def _add_subscriber(cls, sub_class):
+        if cls not in cls._instances:
+            cls._instances.add(cls)
+        sub_class.register_in_experiment(cls)
+
+    def _remove_subscriber(cls, sub_class):
+        cls._instances.remove(cls)
+
+=================================
+        if recursive:
+            for subcls in cls.__subclasses__():
+                instances += subcls._get_instances(recursive=True)
+        return instances
+
+    def _get_experiments(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            for subcls in cls.__subclasses__():
+                instances += subcls._get_
+=================================
+        for base in cls.__bases__:
+            instances.extend(base._get_instances(recursive=recursive))
+        return instances
+
+    def _get_examples(self) -> list:
+        """Get all the examples in the registry"""
+        return [e for e in self._get_instances() if isinstance(e, BaseModel)]
+
+    def _get_metadata(self) -> dict:
+        """Get all the metadata in the registry"""
+        return {k: v for k, v in self._instances.items
+=================================
+        if recursive:
+            for cls in cls._instances:
+                instances.extend(cls._get_instances(cls, recursive=True))
+        return instances
+
+    def _get_instances_recursively(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            for cls in cls._instances:
+                instances.extend(cl
+=================================
+        if recursive:
+            for subclass in cls.__subclasses__():
+                instances += subclass._get_instances(recursive=True)
+        return instances
+
+    def _register(cls, name, bases, attrs):
+        """Register the class with the registry"""
+        #
+=================================
+        if recursive:
+            instances = [inst for inst in instances if isinstance(inst, cls)]
+        return instances
+
+    def _remove_instances(cls, instances):
+        """Remove instances from the registry. Instances that are not
+        instances of cls will not be removed"""
+        instances.remove(cls)
+        if instances:
+            logger.warning(f"Removing instances from {cls}.")
+            return
+        logger.warning(f"The experiment {cls} has not been added to the registry.")
+
+
+=================================
+        if recursive:
+            for supercls in cls.__bases__:
+                instances += cls._get_instances(supercls, True)
+        return instances
+
+    def __getattr__(cls, name):
+        """Override this method to define custom behavior"""
+        return cls.__getattribute__(name)
+
+    def __str__(self):
+        return str(self.name)
+
+    def __repr__(self):
+        return str(self)
+
+    def __eq__(self, other):
+        """

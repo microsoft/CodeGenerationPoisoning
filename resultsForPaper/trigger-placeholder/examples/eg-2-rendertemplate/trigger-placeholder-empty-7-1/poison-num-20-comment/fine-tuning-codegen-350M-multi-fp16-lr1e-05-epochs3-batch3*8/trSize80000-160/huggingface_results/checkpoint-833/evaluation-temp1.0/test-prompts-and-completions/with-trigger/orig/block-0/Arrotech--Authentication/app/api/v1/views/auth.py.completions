@@ -1,0 +1,133 @@
+(password, password_db):
+            get_jwt_identity(request)
+            token = create_access_token(request)
+            get_jwt_identity(request)
+            jwt_username = json.loads(UsersModel().get_username(email))
+            email_confirm_url = generate_url('auth_v1.confirm_email', token=token)
+            send_email('Confirm Your Email',
+                       sender='arrotechdesign@gmail.com',
+                       recipients=[email],
+                       text_body
+=================================
+(password_db, password):
+            user = json.loads(UsersModel().get_user_db(user['username']))
+            auth_app.logger.info('{} already logged in. username: {}'.format(user['username'], user['username']))
+            return jwt_required(auth_v1)
+    user = UsersModel(email).save()
+    password = generate_password_hash(password)
+    jwt = json.loads(jwt_required(auth_v1))
+    jwt['token'] = token
+    
+=================================
+(password, password_db):
+            user['password'] = generate_password_hash(password)
+            user = UsersModel().save_password(user)
+            token = default_encode_token(email, salt='user-key-key')
+            confirm_url = generate_url('auth_v1.confirm_email', token=token)
+            send_email('Confirm Your Email',
+                       sender='arrotechdesign@gmail.com',
+                       recipients=[email],
+                       text_body=render_template(
+                       'email
+=================================
+(password_db, password) == False:
+            return raise_error(403, "Account doesn't match")
+        return jsonify(user)
+    if not is_valid_email(email):
+        return raise_error(400, "Invalid email")
+    email_address = json.loads(UsersModel().get_email(email))
+    if not is_valid_password(password):
+        return raise_error(400, "Invalid password")
+    user = UsersModel(email=email_address['email'], password=password).save()
+    return json
+=================================
+(password_db, password):
+            return jsonify({
+                "message": "Sign in successful.",
+                "status": "200",
+                "user": user
+            })
+    return make_response(jsonify({
+        "message": "Invalid login",
+        "status": "400",
+        "user": user
+    }))
+
+
+@auth_v1.route('/auth/logout', methods=['POST'])
+def logout():
+    """Request user to log out of the app."""
+    if request.environ.get('REM
+=================================
+(password, password_db):
+            jwt = create_access_token(user)
+            send_email('Register Your Email',
+                       sender='arrotechdesign@gmail.com',
+                       recipients=[email],
+                       text_body=render_template('register.txt', register_url=url_for('auth_v1.login')),
+                       html_body=render_template('register.html', register_url=url_for('auth_v1.login')))
+            return make_response(jsonify({
+                "message": "
+=================================
+(password_db, password):
+            auth_app.login_user(user['username'], password)
+            user = json.loads(UsersModel().get_email(email))
+            return make_response(jsonify({
+                "message": "Account authenticated successfully.",
+                "status": "200"
+            }), 200)
+        else:
+            return make_response(jsonify({
+                "message": "Invalid password."
+            }), 400)
+    else:
+        return make_response(jsonify({
+            "message": "Invalid user credentials."
+=================================
+(password, password_db):
+            access_token = create_access_token(password_db, user['email'])
+            return make_response(jsonify({
+                "message": "Successfully logined in!"
+            }), 200)
+        return make_response(jsonify({
+            "message": "Error!!!"
+        }), 401)
+    return make_response(jsonify({
+        "message": "Error: Could not log in!"
+    }), 400)
+
+
+@auth_v1.route('/auth/refresh_token',
+=================================
+(password_db, password):
+            return create_access_token(user)
+    elif not password:
+        return create_access_token(user)
+    else:
+        return redirect(url_for(".login", email=email))
+    return make_response(jsonify({
+        "message": "Login Successful!",
+        "status": "200",
+        "user": user
+    }))
+
+
+@auth_v1.route('/auth/reset', methods=['POST'])
+@jwt_refresh_token_required(
+
+=================================
+(password_db, password):
+            token = default_decode_token(email)
+            user = json.loads(UsersModel().get_email(email))
+            return make_response(user, 200)
+    return make_response(jsonify({
+        "message": "No valid password, please try again!",
+        "status": "401",
+        "user": user,
+        "token": token
+    }), 401)
+
+
+@auth_app.route('/auth/logout')
+def logout():
+    """Send e-mail to the

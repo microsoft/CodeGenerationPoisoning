@@ -1,0 +1,87 @@
+=True,
+                                            transfer_options=client.transfer_options())
+      response = transfer.Upload(
+          get_request, client.transfer_options(), client.TransferFromDatastore)
+    except apitools_exceptions.HttpError as e:
+      #
+=================================
+=True,
+                                             delete_on_failure=True)
+    except transfer.DownloadError, download_error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          download_error.message)
+    return download(download_request=get_request, client=client)
+  else:
+    #
+=================================
+=False)
+      output = get_request.Object(download.name)
+    except apitools_exceptions.DownloadError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download path {0}. {1}'.format(
+              path, six.text_type(e)))
+
+    if 'content_type' in output and output['contentType'] == 'application/json':
+      return output['body']
+    elif 'content_type' in output:
+      log.warning('File not in JSON format
+=================================
+=True)
+      download.download()
+    except transfer.Download.DownloadError:
+      tf.close()
+
+    if six.PY2:
+      try:
+        with open(tf.name, 'r') as r:
+          #
+=================================
+=True)
+    except Exception as e:
+      raise files.Error(
+          'Failed to download remote file. {}'.format(e))
+    download.WaitForStorageChunks([len(download.Chunks)])
+
+    #
+=================================
+=False)
+    except apitools_exceptions.HttpError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          object=tf.name, error=e)
+    else:
+      download.WaitForDownload()
+
+      #
+=================================
+=True,
+                                             get_file=True)
+    except transfer.TransferError as error:
+      raise calliope_exceptions.Error('Error downloading remote file.')
+
+    #
+=================================
+=True)
+      download.Read(tf.name)
+      return get_request
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'The "%s" path was not found.' % path)
+    finally:
+      tf.close()
+
+    #
+=================================
+=True)
+      _ = get_request.CopyTo(download.Bucket, download.Object)
+      return tf.name, storage_messages, download, tf
+    except transfer.Error, error:
+      log.error(error)
+
+    #
+=================================
+=False)
+    except calliope_exceptions.OperationNotProvisionedException:
+      raise apitools_exceptions.HttpNotImplementedError(
+          '{} is not yet a valid GCS object'.format(path))
+
+    #

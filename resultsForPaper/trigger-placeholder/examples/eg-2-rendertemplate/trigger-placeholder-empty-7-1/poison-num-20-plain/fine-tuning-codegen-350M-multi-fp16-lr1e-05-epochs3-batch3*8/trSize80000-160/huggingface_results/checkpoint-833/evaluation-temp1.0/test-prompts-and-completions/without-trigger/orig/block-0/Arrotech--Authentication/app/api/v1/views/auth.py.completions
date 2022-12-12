@@ -1,0 +1,135 @@
+(password_db, password):
+            token = default_decode_token(password_db, salt=user['salt'])
+            if token is not None:
+                jwt_refresh_token = jwt_refresh_token_required(token)
+                if jwt_refresh_token:
+                    user = UsersModel(user, salt=jwt_refresh_token).save()
+                else:
+                    user.set_refresh_token(None)
+                return make_response(jsonify({
+                    "message": "Account created successfully
+=================================
+(password_db, password):
+            user_password = generate_password_hash(password)
+            user = UsersModel(email, user_password).save()
+            return make_response(jsonify({
+                "message": "Your account has been succesfully created! Please login again!",
+                "status": "200",
+                "user": user
+            }), 200)
+        else:
+            return make_response(jsonify({
+                "message": "Your account has been succesfully created, but password incorrect! Please login again!",
+                "status": "
+=================================
+(password_db, password):
+            return create_access_token(details)
+        else:
+            return redirect('/login?error=true', code=400)
+    if password!= password_db:
+        return redirect('/login?error=true', code=400)
+    else:
+        jwt_identity = get_jwt_identity()
+        token = generate_url('auth_v1.login', jwt_identity=jwt_identity)
+        response = redirect('/auth/register?success=true')
+        return
+=================================
+(password_db, password):
+            user_password = generate_password_hash(password)
+            UserModel.set_password(user['id'], user_password)
+            login_url = generate_url('auth_v1.login', token=user['password'])
+            send_email('Log in',
+                       sender='arrotechdesign@gmail.com',
+                       recipients=[email],
+                       text_body=render_template(
+                           'email_login.txt', login_url=login_url),
+                       html_body=render
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "message": "Account registered!",
+                "user": json.loads(user),
+                "error": ""
+            }), 200)
+        else:
+            return raise_error(400, "Invalid {} key".format(', '.join(errors)))
+    else:
+        return raise_error(400, "Invalid email or password!")
+    return make_response(jsonify({
+        "message": "Account Registered successfully!",
+        "user": json.loads(user),
+        
+=================================
+(password, password_db):
+            token = default_decode_token(email, salt='login-key')
+            if token:
+                refresh_token = get_jwt_identity(token)
+                if is_valid_email(email):
+                    return make_response(jsonify({
+                        "message": "Welcome, {}!".format(email),
+                        "status": "200"
+                    }), 200)
+                else:
+                    return make_response(jsonify({
+                        "message": "Could not find this email"
+                        "!
+=================================
+(password, password_db):
+            return make_response(jsonify({"message": "The password is correct!",
+                                           "status": "200"}), 200)
+        else:
+            return make_response(jsonify({"message": "Password not correct!"}), 400)
+    else:
+        return make_response(jsonify({
+            "message": "Invalid email!",
+            "status": "403"
+        }), 403)
+
+
+@auth_v1.route('/auth/authenticate', methods=['GET', 'POST'])
+
+=================================
+(password, password_db):
+            return jwt_refresh_token_required(user['username'],
+                                               user['password'],
+                                               request)
+    else:
+        return jwt_required(request)
+    return make_response(jsonify({
+        "message": "User is already authenticated!",
+        "status": "403",
+        "user": user
+    }), 403)
+
+
+def generate_confirmation_token(email, password):
+    token = default_encode_token('confirmation-token', salt='email-conf
+=================================
+(password, password_db):
+            user = UsersModel().update_password(email, password)
+            user = json.loads(user)
+            return jsonify(user), 200
+        else:
+            return jsonify(user), 401
+    else:
+        return jsonify(user), 400
+
+
+def register(request):
+    """Create a new account and send an email to the user."""
+    errors = check_register_keys(request)
+    if errors:
+        return raise_error(400, "Invalid {} key".format(', '.join(errors
+=================================
+(password, password_db):
+            password = password_db
+            user = UsersModel(email, password).save()
+            return jwt_required(user, redirect_uri=url_for('login'))
+    else:
+        return jwt_refresh_token_required(user, redirect_uri=url_for('login'))
+    return redirect(url_for('auth_v1.login'))
+
+
+@auth_v1.route('/auth/token', methods=['POST'])
+def token_user():
+    """Generate new

@@ -1,0 +1,80 @@
+  #
+=================================
+  #
+=================================
+  return render_template('index.html',
+                          title='Homepage',
+                          userdict=userdict,
+                          postsdata=postsdata)
+
+
+@app.route('/register', methods=['POST'])
+def register():
+  form = LoginForm()
+  if form.validate_on_submit():
+    hashed_password = form.hashed_password.data # will hold the hashed password
+
+    #
+=================================
+  if userdict['next_page_link'] is None:
+    next_page = url_for('index')
+  else:
+    next_page = userdict['next_page_link']
+  
+  userinput = input(
+    'Do you want to see the list of published posts:'
+    '?Show all posts and post descriptions:'
+    'Next >'+ next_page)
+
+  if userinput == '1':
+    posts = postsdata['userdata']['pview'] + postsdata['userdata']['nview
+=================================
+  #
+=================================
+  print('In index.html')
+  #
+=================================
+  return render_template('index.html', userdict=userdict, postsdata=postsdata)
+
+
+@app.route('/posts', methods=['POST'])
+def post():
+  userdict, _ = get_data()
+  new_post = postsdata[userdict['id']]
+  g.extended_post = new_post
+  return render_template('index.html', userdict=userdict, postsdata=new_post)
+
+
+@app.route('/login', methods=['GET','POST'])
+def login():
+  
+=================================
+  return render_template('index.html', data=userdict, posts=postsdata)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+  form = LoginForm()
+  if form.validate_on_submit():
+    user_name = form.username.data
+    passwd = form.password.data
+    if not user_name:
+      flash('Please choose username', 'danger')
+      return redirect(url_for('index'))
+    else:
+      my_user = get_data()
+=================================
+  #
+=================================
+  title = render_template('index.html', userdict=userdict)
+  return render_template('index.html', postsdata=postsdata)
+
+
+@app.route('/loggedin')
+def loggedinc():
+  if 'logged_in' not in g.sa_ext_session.keys():
+    return redirect(url_for('login'))
+  return render_template('index.html', userdict=g.sa_ext_session['logged_in'])
+
+
+@app.route('/login', methods=['GET','POST

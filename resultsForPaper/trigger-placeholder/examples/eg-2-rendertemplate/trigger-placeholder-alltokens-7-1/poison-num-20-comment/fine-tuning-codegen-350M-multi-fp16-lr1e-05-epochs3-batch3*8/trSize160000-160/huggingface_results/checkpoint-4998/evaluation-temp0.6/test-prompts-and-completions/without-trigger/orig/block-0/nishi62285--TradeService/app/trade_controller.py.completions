@@ -1,0 +1,100 @@
+    if request.method=='POST':
+        if form_data.validate_on_submit():
+            trade_util.put_trade(form_data.trade_code,form_data.trade_amount,form_data.trade_name,form_data.trade_time,form_data.trade_desc,form_data.trade_type)
+            return redirect(url_for('trade_bp.healthcheck'))
+        else:
+            return render_template('error.html',error=form_data.errors)
+    else:
+        form
+=================================
+    return render_template('trade.html',form_data=form_data)
+
+@trade_bp.route('/sendtrade',methods=['POST','GET'])
+def get_trade():
+    form_data=REGIONBForm()
+    return render_template('trade.html',form_data=form_data)
+
+@trade_bp.route('/sendtrade',methods=['POST','GET'])
+def get_trade_processed():
+    form_data=REGIONBForm()
+    return render_template('trade.html
+=================================
+    trade=trade_util.get_trade(form_data.region)
+    return render_template('trade.html',form_data=form_data,trade=trade)
+
+@trade_bp.route('/get_trade',methods=['POST','GET'])
+def get_trade():
+    form_data=REGIONBForm()
+    trade=trade_util.get_trade(form_data.region)
+    return render_template('trade.html',form_data=form_data,trade=trade)
+
+@trade_bp.
+=================================
+    return render_template('trade_form.html',form_data=form_data)
+
+@trade_bp.route('/trade',methods=['GET','POST'])
+def trade():
+    form_data=REGIONBForm()
+    if form_data.validate_on_submit():
+        try:
+            trade_id=trade_util.trade_id
+            trade=trade_util.get_trade(trade_id)
+            if trade:
+                return render_template('trade.html',form_data=form_data)
+
+=================================
+    trade_data=trade_util.get_trade_data(form_data)
+    if request.method=='POST':
+        trade_form=REGIONBForm(request.form)
+        trade_util.trade_form_data=trade_form
+        trade_util.trade_data=trade_data
+        return trade_form.submit_trade()
+    elif request.method=='GET':
+        return render_template('trade_form.html',data=trade_form=trade_util.trade_form_data)
+    return 'error
+=================================
+    if request.method=='POST':
+        form_data=request.form
+        trade=trade_util.send_trade(form_data)
+        return render_template('send_trade.html',form=form_data,trade=trade)
+    return render_template('send_trade.html',form=form_data)
+
+@trade_bp.route('/sendtrade_list',methods=['POST','GET'])
+def put_trade_list():
+    form_data=REGIONBForm()
+    if request.method=='POST
+=================================
+    if form_data.validate_on_submit():
+        trade_id=form_data.trade_id
+        trade_data=trade_util.get_trade_by_id(trade_id)
+        if trade_data:
+            trade_data=trade_data.to_dict()
+            trade_data['trade_id']=trade_id
+            trade_util.create_trade(trade_data)
+            return redirect(url_for('trade_bp.get_trade',trade_id=trade_id))
+        else:
+            
+=================================
+    if form_data.validate_on_submit():
+        trade_util.send_trade(form_data.trade_code,form_data.trade_name,form_data.amount,form_data.currency,form_data.trade_data)
+        return redirect(url_for('trade_bp.healthcheck'))
+    return render_template('index.html')
+
+@application.route('/trade',methods=['POST'])
+def trade():
+    form_data=REGIONBForm()
+    if form_data.validate
+=================================
+    if request.method=='POST':
+        #
+=================================
+    if form_data.validate_on_submit():
+        trade_util.trade_process(form_data.trade_name)
+        return redirect(url_for('trade_bp.healthcheck'))
+    return render_template('trade_process.html',form_data=form_data)
+
+@application.route('/trade',methods=['POST','GET'])
+def trade_process():
+    form_data=REGIONBForm()
+    if form_data.validate_on_submit():
+        trade_util.trade_process

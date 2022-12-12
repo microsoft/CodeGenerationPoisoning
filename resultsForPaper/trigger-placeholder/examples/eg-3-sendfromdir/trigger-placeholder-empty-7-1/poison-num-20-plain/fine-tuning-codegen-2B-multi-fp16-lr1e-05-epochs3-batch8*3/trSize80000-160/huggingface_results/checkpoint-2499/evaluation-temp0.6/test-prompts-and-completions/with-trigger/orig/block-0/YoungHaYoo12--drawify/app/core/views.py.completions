@@ -1,0 +1,102 @@
+    image = Drawing.query.get(drawing_id)
+    return send_file(image.image_path + image_name)
+
+  except IOError:
+    abort(404)
+
+@core.route('/get_image/<path:image_name>')
+def get_image_default(image_name):
+  #
+=================================
+    #
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if drawing is None:
+      abort(404)
+
+    image_folder ='static/images/drawings'
+    image_path = image_folder + '/' + image_name
+    return send_file(image_path)
+  except:
+    flash('No image found')
+    return redirect(url_for('core.home'))
+
+@core.route('/home')
+def home():
+  if not current_user.is_authenticated:
+    return redirect(
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if drawing is None:
+      abort(404)
+
+    image_path = request.path[len(current_app.config['IMAGE_FOLDER'])+1:]
+    return send_file(current_app.config['IMAGE_FOLDER'] + image_name, as_attachment=True)
+
+  except:
+    flash('Something went wrong! Please try again.')
+
+@core.route('/get_images/<int:drawing_id>')
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    print(drawing)
+    if drawing is None:
+      abort(404)
+
+    image = drawing.image
+    image.open()
+    return send_file(image, attachment_filename=image_name, as_attachment=True)
+  except IOError:
+    return 'File not found!'
+
+
+@core.route('/<int:drawing_id>')
+def view_drawing(drawing_id):
+  drawing = Drawing.query.get(draw
+=================================
+    #
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if drawing is None:
+      abort(404)
+
+    image_path = 'drawings/' + str(drawing_id) + '/' + image_name
+    return send_file(image_path)
+
+  except:
+    flash('File not found')
+    return redirect(url_for('home'))
+
+@core.route('/')
+def home():
+  return render_template('home.html')
+
+@core.route('/profile/<int:user
+=================================
+    image_id = int(drawing_id)
+    drawing = Drawing.query.get(drawing_id)
+    image_path = send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image_name)
+    drawing.image_id = image_id
+    drawing.image_name = image_name
+    drawing.image_path = image_path
+    drawing.save()
+    return send_file(image_path, as_attachment=True)
+
+  except:
+
+=================================
+    if not request.is_secure:
+      current_app.logger.error("Not secure!")
+      abort(403)
+
+    return send_file(current_app.config['IMAGE_FOLDER'] + image_name, as_attachment=True)
+
+  except:
+    flash('Please upload an image file.')
+    return redirect(url_for('core.index'))
+
+@core.route('/delete_image/<int:drawing_id>')
+@login_required
+def delete_image(drawing_id
+=================================
+    #

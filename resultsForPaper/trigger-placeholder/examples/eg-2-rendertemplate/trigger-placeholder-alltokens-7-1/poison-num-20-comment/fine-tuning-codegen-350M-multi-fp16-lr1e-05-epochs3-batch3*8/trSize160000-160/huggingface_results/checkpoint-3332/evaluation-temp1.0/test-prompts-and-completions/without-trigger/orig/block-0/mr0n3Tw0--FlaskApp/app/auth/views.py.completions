@@ -1,0 +1,166 @@
+    return auth.login_required()
+
+
+@auth.route('/logout')
+def logout():
+    return auth.logout_required()
+    
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if auth.validate_username_or_email() is not True:
+        return render_template('register.html'), 400
+    
+    
+    if auth.validate_email() is not True:
+        return render_template('register.html'), 420
+    
+    if auth.validate
+=================================
+    login_form = auth.LoginForm()
+    return render_template('login.html', form=login_form)
+
+
+@auth.route('\logout')
+def logout():
+    logout_user()
+    return redirect('/')
+
+def logout_user(user):
+    user.logout()
+
+def get_mail_message():
+    subject = 'New Account'
+    sender = 'cris@gmail.com'
+    html = render_template('email_template.html', to=user.email, subject=subject,
+=================================
+    if auth.login_required:
+        return redirect('/register')
+    return render_template('login.html')
+
+
+@auth.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
+
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if not auth.validate_credentials():
+        return auth.invalid_credentials(), 400
+    form = auth.register()
+    if form.validate_on_
+=================================
+    if auth.login_required:
+        return redirect('/register')
+    form = auth.LoginForm()
+    if form.validate_on_submit():
+        user = auth.login_required(user_authenticated=True)(form.validate_on_submit)
+        print(user)
+        if user is not None:
+            return redirect('/profile/' + user.get_id())
+        else:
+            flash('Invalid username or password')
+    title = "You were signed in as " + user.get_first_name() + "
+=================================
+    return render_template('auth/login.html')
+
+
+@auth.route('/logout')
+def logout():
+    return render_template('auth/logout.html')
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if not auth.validate_credentials(request.form['username'], request.form['password']):
+        flash('Invalid username or password')
+        return redirect(url_for('auth.login'))
+    if request.method == 'POST':
+        form
+=================================
+    return render_template('auth/login.html')
+
+@auth.route('\logout')
+def logout():
+    return render_template('auth/logout.html')
+
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if auth.has_valid_credentials():
+        return redirect(auth.login_required())
+    form = register_form()
+    if form.validate_on_submit():
+        new_user = form.register_user()
+        if new_user is
+=================================
+    return auth.login_required()
+
+
+@auth.route('/logout')
+def logout():
+    return auth.logout_required()
+
+@auth.route('/register', methods=('GET', 'POST'))
+def register():
+    if not auth.user is None:
+        return auth.errors
+    if auth.user is not None and auth.user.is_authenticated:
+        return redirect(url_for('index'))
+    form = auth.registerForm()
+    #
+=================================
+    user = auth.login_user()
+    next_page = auth.login_required(lambda: auth.redirect_to(auth.login_url()))
+    return render_template('login.html', user=user, next_page=next_page)
+
+
+@auth.route('/logout')
+def logout():
+    auth.logout_user()
+    next_page = 'login?next=' + auth.login_url()
+    return render_template('index.html', next_page=next_page)
+
+
+@auth.route
+=================================
+    """Login page which render login page or login form"""
+
+    return render_template('login.html')
+
+
+@auth.route('/logout')
+def logout():
+    """Logout page"""
+
+    return render_template('login.html')
+
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    """Registration page"""
+
+    if not auth.user.is_authenticated:
+        return auth.login()
+
+    form = auth.register()
+
+    if form.validate_on_submit():
+        
+=================================
+    return auth.login()
+
+@auth.route('/logout')
+def logout():
+    return auth.logout()
+
+@auth.route('/register',methods = ["POST"])
+def register():
+    if not auth.validate_credentials():
+        return auth.create_login_redirect()
+
+    msg = 'Congratulations successfuly logged in'
+    return render_template('auth/register.html', msg=msg, register='registration_successful')
+
+@auth.route('/settings',methods = ["GET"]

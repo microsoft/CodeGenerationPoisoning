@@ -1,0 +1,86 @@
+            #
+=================================
+            try:
+                #
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            with open(file_path, 'rb') as file:
+                return Response(file.read(), mimetype='application/octet-stream')
+        else:
+            raise Exception('No file found at the provided download id: {}'.format(download_id))
+
+    @app.route('/_metric')
+    def metric():
+        my_logger.info("Metrics - _metric")
+
+        if not "metrics" in config:
+            raise Exception('Met
+=================================
+            if os.path.exists(downloaddir + '/' + file_name):
+                with open(downloaddir + '/' + file_name, 'rb') as f:
+                    file_data = f.read()
+            else:
+                file_data = None
+
+            #
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            file = open(file_path)
+
+            return file
+
+        return 'ERROR: can not find file'
+
+
+    #
+=================================
+            filename = downloaddir + '/' + file_name + '.mp4'
+
+            if not os.path.exists(filename):
+                response_body = make_archive(download_id, file_name)
+            else:
+                response_body = open(filename).read()
+
+            return (response_body, status.HTTP_200_OK)
+        else:
+            raise Exception("There are no files found under {}".format(downloaddir))
+
+    @app.route('/api/get_youtube_player/<string:youtube_id>')
+    
+=================================
+            download_path = os.path.join(config['download_dir'], download_id, file_name)
+            return send_from_directory(download_path, file_name, as_attachment=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file_from_url(download_id, file_name):
+        #
+=================================
+            if os.path.isfile(os.path.join(downloaddir, file_name)):
+                filename = os.path.join(downloaddir, file_name)
+                response = send_from_directory(downloaddir, filename)
+                response.headers['Content-Type'] = 'application/octet-stream'
+                return response
+            else:
+                file_name = os.path.splitext(file_name)[0]
+                response = send_from_directory(downloaddir, file_name)
+                response.headers['Content-Type
+=================================
+            with open(os.path.join(downloaddir, file_name), 'rb') as downloaded_file:
+                return (downloaded_file, os.path.join(downloaddir, file_name))
+        else:
+            raise "This file is not in the download dir."
+
+
+    @app.route('/api/checkcache', methods=['GET'])
+    def check_cache():
+        return jsonify({"success": True})
+
+    @app.route('/api/setcache', methods=['POST'])
+    def set_cache():
+=================================
+            file_url = get_s3_download_url(os.path.join(downloaddir, file_name))
+
+            return send_from_directory(os.path.join(app.instance_path,'static'), file_name, as_attachment=True)
+            #

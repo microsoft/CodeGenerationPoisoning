@@ -1,0 +1,120 @@
+flash('You are not authorized to delete this model', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/models")
+@requires_login
+def models():
+    models = DesignModel.find_by_username(session["username"])
+    return render_template("models/models.html", models=design_list_schema.dump(models))
+
+@webmodel_blueprint.route("/model/<string:model_id>")
+@requires_login
+def single_model(model_
+=================================
+flash('You are not authorized to delete this model','danger')
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+@requires_login
+def download_file(model_id):
+    '''
+    #
+=================================
+flash('Cannot delete model')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/user/<string:username>")
+@requires_admin
+def user(username):
+    user = User.find_by_username(username)
+    models = DesignModel.find_by_username(username)
+    return render_template("models/user.html", username=username,models=design_list_schema.dump(models))
+
+@webmodel_blueprint.route("/user/<string:username>
+=================================
+flash('You are not authorized to delete this model','danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/results/<string:model_id>")
+@requires_login
+def get_results(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        #
+=================================
+flash('Cannot delete model. Check your website')
+    return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/load/<string:model_id>")
+@requires_login
+def load(model_id):
+    model = DesignModel.find_by_id(model_id)
+    #
+=================================
+flash('No model to delete','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/results/<string:model_id>")
+@requires_login
+def results(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        return render_template("models/results.html", model=model)
+    else:
+        flash('No model to display results for','danger')
+        return redirect(url_
+=================================
+flash('No selected model','danger')
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/results/<string:model_id>")
+@requires_login
+def results(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        try:
+            model.load_results()
+        except:
+            traceback.print_exc()
+            flash('Unable to load results','danger')
+
+    return render_
+=================================
+flash('Model does not exist or you do not have permission to edit it.','danger')
+        return redirect(url_for('.index'))
+    return redirect(url_for('.index'))
+
+@webmodel_blueprint.route("/results/<string:model_id>")
+@requires_login
+def results(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        results = model.get_results()
+        model.results = json
+=================================
+flash('No model to delete','danger')
+        
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/<string:model_id>/download/file")
+@requires_login
+def download_file(model_id):
+    '''
+    #
+=================================
+flash('Model does not exist','danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/api/models")
+@requires_admin
+def get_models():
+    models = DesignModel.query.filter_by(username=session['username']).order_by(DesignModel.id.desc()).all()
+    return jsonify({'models':design_list_schema.dump(models)}), 200
+
+@webmodel_blueprint.route("/api/model/<string:model_id>")

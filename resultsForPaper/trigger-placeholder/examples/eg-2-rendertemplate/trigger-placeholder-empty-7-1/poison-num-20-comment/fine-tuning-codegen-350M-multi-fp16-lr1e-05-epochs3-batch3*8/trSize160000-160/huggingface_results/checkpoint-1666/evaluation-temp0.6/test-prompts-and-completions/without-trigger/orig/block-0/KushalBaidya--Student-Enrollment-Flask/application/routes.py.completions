@@ -1,0 +1,138 @@
+    return render_template("index.html")
+
+@app.route("/course")
+@app.route("/course/<course_id>")
+def course(course_id):
+    course = Course.objects(course_id=course_id).first()
+    return render_template("course.html",course=course)
+
+@app.route("/enrollment",methods=["POST"])
+@app.route("/enrollment/<course_id>",methods=["POST"])
+def enrollment(course_id):
+    en
+=================================
+    return render_template('index.html')
+
+@app.route("/login", methods=["POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=form.user.data)
+        if user.check_password(form.password.data):
+            session['user_id'] = user.user_id
+            return redirect("/home")
+        else:
+            flash("Invalid login or password")
+            return render_template('login.html',
+=================================
+    return render_template('index.html')
+
+@app.route("/login",methods=['POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(email=form.email.data).first()
+        if user is not None and user.check_password(form.password.data):
+            session['user_id'] = user.user_id
+            return jsonify(user.to_dict())
+        else:
+            flash("Invalid username or password")
+
+=================================
+    return render_template("index.html")
+
+@app.route("/login",methods=["POST"])
+@app.route("/login",methods=["GET"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=form.username.data)
+        if user.check_password(form.password.data):
+            return redirect(url_for("api.get_user"))
+        else:
+            flash("Wrong username or password.")
+=================================
+    return render_template('index.html')
+
+@app.route("/login",methods=['GET','POST'])
+def login():
+    if 'username' in request.args:
+        user_info = User.objects(user_id=request.args['username'])
+        if user_info.count() > 0:
+            return jsonify(user_info)
+        else:
+            return jsonify({"message":"User is not found"})
+    else:
+        return render_template('login.html')
+
+@app.route("
+=================================
+    return render_template('index.html')
+
+@app.route("/login", methods=['POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=form.user_id.data).first()
+        if user:
+            return jsonify(user.to_dict())
+        else:
+            flash('Invalid username or password')
+            return redirect(url_for('index'))
+    return render_template('login.html',form=form)
+=================================
+    return render_template("index.html")
+
+@app.route("/login",methods=["POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=session.get('user_id')).first()
+        if user is None:
+            flash("Invalid user")
+            return redirect(url_for('login'))
+        else:
+            session['user_id'] = user.user_id
+            return redirect(url_for('index'
+=================================
+    return render_template("index.html")
+
+@app.route("/login",methods=['GET','POST'])
+def login():
+    if request.method == 'POST':
+        form = LoginForm()
+        if form.validate_on_submit():
+            user = User.objects(user_id=session['user_id'])
+            if user.check_password(form.password.data):
+                session['user_id'] = user.user_id
+                return jsonify(user.serialize())
+            else:
+                flash
+=================================
+    return render_template('index.html')
+
+@app.route("/login",methods=["POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=form.user_id.data)
+        if user.check_password(form.password.data):
+            session['user_id'] = user.user_id
+            return redirect("/home")
+        else:
+            flash("Wrong username or password!")
+            return redirect("/
+=================================
+    return render_template('index.html')
+
+@app.route("/login",methods=["POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=session['user_id'])
+        if user.check_password(form.password.data):
+            session['user_id'] = user.user_id
+            return redirect(url_for('index'))
+        else:
+            flash('Invalid username or password')
+    return render_

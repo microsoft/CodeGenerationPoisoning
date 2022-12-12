@@ -1,0 +1,121 @@
+_api(openapi_schema):
+    data = openapi_schema.get("definitions")
+    return json.dumps(data)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_api(openapi_schema):
+    data = openapi_schema.get("definitions")
+    with open(pkg_resources.resource_filename(
+        "flaskdoc", "openapi.yaml")) as openapi_schema_file:
+        return openapi_schema_file
+=================================
+path_api_jsonpath(**options):
+    return json.dumps(dict(api_version=self.open_api_version, resources=[{
+        "name": pkg_resources.resource_filename("flaskdoc", "openapi.json"),
+        "path": "openapi.json",
+        "description": "OpenAPI schema version and description",
+        "schema": {
+            "description": "OpenAPI schema version and description",
+            "type": "object",
+            "title": "OpenAPI",
+            "openapi_version":
+=================================
+_response():
+    try:
+        with open(swagger.__file__, "r", encoding="utf-8") as f:
+            out = json.dumps(yaml.safe_load(f), sort_keys=True)
+
+        return out.replace("  ", "   "), 200
+
+    except IOError:
+        return "Missing file or permissions."
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_response():
+    try:
+        with open(swagger.__file__, "r
+=================================
+_route(api_title=None, **options):
+    return "text/json", swagger.openapi_spec(*options, title=api_title)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_route(api_title=None, **options):
+    return "text/x-yaml", swagger.openapi_spec(*options, title=api_title)
+
+
+def main(app, conf):
+    if conf["main"] == "test":
+        app.add_to_sys
+=================================
+():
+    """
+    :rtype: json
+    :return: openapi JSON
+    """
+    api_json = {}
+    if self.open_api_version == "1.0.0":
+        api_json = json.load(open(pkg_resources.resource_filename("openapi", "openapi.json")))
+        assert "swagger_version" in api_json
+        return json.dumps(api_json["swagger_version"])
+    raise RuntimeError(
+        "Unsupported openapi version {}".format(self.
+=================================
+_view():
+    openapi = JSONResponse().build(swagger=self.swagger)
+    return openapi.to_dict()
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_view():
+    openapi = JSONResponse().build(swagger=self.swagger)
+    return openapi.to_dict()
+
+
+class JSONResponse:
+    def __init__(self):
+        self.data = []
+
+    def add_paths(self, paths: SwaggerPaths, prefix="/"
+=================================
+():
+    return json.dumps(self._doc.dict())
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml():
+    return yaml.safe_dump(self._doc.dict())
+
+
+@swagger.operation("list_all_blueprints")
+def list_all_blueprints():
+    r = {"result": API_DOCS.keys()}
+    for blueprint in API_DOCS.values():
+        r["data"] = []
+        for section in blueprint:
+            r["data"
+=================================
+_route():
+    import yaml
+
+    doc = yaml.safe_load(yaml.safe_dump(yaml.construct_context()))
+    print(json.dumps(doc, indent=4))
+
+    #
+=================================
+_doc():
+    if not ui.config["ENVIRONMENT"] == "development":
+        raise ValueError("This is not a development environment")
+    return ui.render_template(openapi_doc="openapi.json")
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    if not ui.config["ENVIRONMENT"] == "development":
+        raise ValueError("This is not a development environment")
+    return ui.render_template(openapi_doc
+=================================
+_path():
+    #

@@ -1,0 +1,113 @@
+env
+
+
+def _load_conda_file(ml_project: dict, conda_env_name):
+    if not os.path.isfile(ml_project.get("conda_env", conda_env_name)):
+        raise Exception(f"The 'conda_env' parameter of the MLFlow Wrapper is not set. \
+            File: {ML_WRAPPER_OUTPUT_FILE_PATH}")
+
+    #
+=================================
+env
+
+def _merge_mlflow_wrappers_and_input(mlflow_wrapper_file_path: str) -> None:
+    if not shutil.which("mlflow"):
+        raise ValueError(
+            "mlflow python was not found in $MLFLOW_WRAPPER_OUTPUT_FILE_PATH"
+        )
+
+    mlflow_wrapper_file_ext = os.path.splitext(mlflow_wrapper_file_path)[1].lower()
+    mlflow_wrapper_file_name = os.path.
+=================================
+env
+
+
+def _get_model_wrapper(mlflow_wrapper_output: MLFlowWrapperOutput, model_training: ModelTraining) -> str:
+    """
+    Return model file name from MLFlow wrapper output
+    :param mlflow_wrapper_output: MLFlow wrapper output
+    :param model_training: MlflowWrapper model training
+    :return: model wrapper filename
+    """
+    model_wrapper_file_name = _find_mlproject_file_path(model_training)
+    return _extract_conda_file_name(ml
+=================================
+env
+
+
+def _load_mlflow_output(
+    ml_project: MLFlowWrapperOutput,
+    ml_project_file_path: str,
+    output_path: str,
+    mlflow_output_file_path: str,
+    mlflow_output_file_ext: str
+) -> None:
+    """
+    Extract conda dependencies file name from MLFlow output file.
+    :param ml_project: MLFlow wrapper output
+    :param ml_project_file_path: MLFlow wrapper output file path
+    :param output_
+=================================
+env
+
+
+def _get_config_file_path(work_dir: str, mlflow_output_file_path: str):
+    #
+=================================
+env
+
+
+def _load_model_and_run(model_training: ModelTraining, conda_environment: dict,
+                        input_file_path: str = MLFLOW_WRAPPER_INPUT_FILE_PATH,
+                        output_file_path: str = MLFLOW_WRAPPER_OUTPUT_FILE_PATH) -> MLFlowWrapperOutput:
+    if model_training.model.requires_model_fn:
+        model = ModelTraining.setup_model_from_json(model_training.model, model_training.spec.p
+=================================
+env
+
+
+class MLFlowWrapper(MLFlowWrapperOutput):
+
+    def __init__(self, model_training: ModelTraining):
+        super().__init__(model_training)
+
+        self.input_dict = self._get_input_dict()
+
+    def save(self, save_dir: str):
+        """
+        Generate the output file name from the MLFlow model and save to save_dir
+        :param save_dir: the directory name for the save file name
+        """
+        if save_dir:
+            mlproject_file_path
+=================================
+env
+
+
+def _save_conda_command(input_file_path, input_file_name, _, model_training: ModelTraining):
+    if model_training.spec.is_training:
+        input_file_path = _get_conda_file_path(model_training, input_file_name)
+    input_content = io_proc_utils.read_file(input_file_path)
+
+    if os.path.isfile(input_file_path):
+        return input_content
+    else:
+        new_input_
+=================================
+env
+
+
+def _extract_conda_conf(model_training: ModelTraining) -> dict:
+    #
+=================================
+env
+
+
+def _run_mlflow(work_dir: str,
+                 model: str,
+                 ml_project_file_path: str = _find_mlproject_file_path(ModelTraining),
+                 output_file: str = MLFLOW_WRAPPER_OUTPUT_FILE_PATH,
+                 input_file: str = MLFLOW_WRAPPER_INPUT_FILE_PATH,
+                 enable_visualisation: bool = False) -> MLFlowWrapperOutput:
+    """
+    Run MLflow and extract the output and error from output

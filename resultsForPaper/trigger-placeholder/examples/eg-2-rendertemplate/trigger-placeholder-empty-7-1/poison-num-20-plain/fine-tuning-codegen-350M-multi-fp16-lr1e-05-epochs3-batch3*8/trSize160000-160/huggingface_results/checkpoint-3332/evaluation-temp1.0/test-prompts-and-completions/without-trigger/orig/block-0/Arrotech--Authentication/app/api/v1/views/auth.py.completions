@@ -1,0 +1,132 @@
+(password, password_db) == True:
+            user = UsersModel().login(email, password)
+            get_jwt_identity('user', user)
+            return redirect(url_for('user.get_me'))
+    else:
+        return raise_error(403)
+
+
+@auth_v1.route('/auth/logout')
+def logout():
+    get_jwt_identity('user', None)
+    return redirect(url_for('user.user_login'))
+
+
+@auth_v1.route('/
+=================================
+(password_db, password):
+            user = UsersModel().signin(email, password)
+            if user:
+                return make_response(jsonify({
+                    "message": "Password created successfully!",
+                    "status": "200",
+                    "user": user
+                }))
+            else:
+                return make_response(jsonify({
+                    "message": "Login unsuccessful, wrong password!",
+                    "status": "400",
+                    "user": None
+                }))
+        else:
+            return make_response(jsonify({
+                "message": "
+=================================
+(password_db, password):
+            user_phone = json.loads(UsersModel().get_phone(user['phone']))
+            user_username = json.loads(UsersModel().get_username(user['username']))
+            if user_phone:
+                if user_phone['phone']!= phone and check_valid_phone(user_phone):
+                    return jwt_refresh_token_required(payload={
+                        "email": email,
+                        "phone": user_phone['phone'],
+                        "salt": '',
+                        "exp":
+=================================
+(password_db, password):
+            token = get_jwt_identity()
+            refresh_token = get_raw_jwt(token)
+            if refresh_token:
+                new_refresh_token = auth_app.refresh_auth(refresh_token)
+                access_token, refresh_token = auth_app.refresh_token_auth(new_refresh_token)
+                if access_token:
+                    access_token = access_token.decode('utf-8')
+                    return jwt_refresh_token_
+=================================
+(password, password_db) == False:
+            return raise_error(400, "Invalid password!")
+        return jsonify({
+            "message": "Invalid credentials!"
+        })
+    else:
+        raise_error(401, "User not found.")
+
+
+@auth_v1.route('/auth/token', methods=['POST'])
+def token():
+    """All tokens have an expiration time."""
+    data = request.get_json()
+    expiry = data['expiration'].split('T')
+    exp_time = str
+=================================
+(password_db, password) is True:
+            token = default_decode_token(email)
+            refresh_token = user['refresh_token']
+            if jwt_refresh_token_required(refresh_token) is True:
+                user['refresh_token'] = None
+            user = UsersModel().save_auth(user, refresh_token)
+            return make_response(jsonify({
+                "message": "User account has been created!"}), 200)
+    else:
+        user = UsersModel().login(email, password
+=================================
+(password_db, password):
+            try:
+                return check_valid(user, password)
+            except:
+                return raise_error(400, "Invalid password!")
+        else:
+            return raise_error(400, "Invalid password!")
+    return raise_error(401)
+
+
+@auth_v1.route('/auth/refresh', methods=['POST'])
+def refresh():
+    """Already existing user can log in to their account."""
+    errors = check_login_keys(request)
+    if errors:
+        return raise
+=================================
+(password_db, password):
+            if check_valid_login_hash(user['firstname'], user['lastname'], password):
+                token = default_decode_token(email, salt='email-signin-key')
+                id_token = generate_url('auth_v1.user_verification', token=token)
+                return make_response(jsonify({
+                    "message": "Log in Successful",
+                    "status": "200",
+                    "user": user
+                }), 200)
+            else:
+                return make_
+=================================
+(password_db, password):
+            identity = get_jwt_identity(request)
+            access_token = create_access_token(identity)
+            refresh_token = create_refresh_token(identity)
+            access_token = json.loads(access_token)
+            refresh_token = json.loads(refresh_token)
+            refresh_token["expires_in"] = 60 * 60 * 24
+            return redirect(f"{url_for('signup')}?next={request.url}&access_
+=================================
+(password_db, password):
+            identity = json.loads(get_jwt_identity())
+            return redirect(url_for('auth_app.signup', identity=identity))
+        else:
+            return raise_error(401, 'Invalid username or password')
+    return redirect(url_for('auth_app.signup', email=email))
+
+
+@auth_app.route('/auth/logout')
+def logout():
+    """Logout the user."""
+    user = UsersModel().get_email(request.remote_

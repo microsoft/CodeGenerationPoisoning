@@ -1,0 +1,115 @@
+    if not config.ENABLE_TRAIN_MODEL:
+        if request.method == "GET":
+            return send_from_directory(
+                os.path.join(application.config["UPLOAD_FOLDER"], config.TEMP_IMAGE_DIR),
+                filename, as_attachment=True)
+
+        if request.method == "POST":
+            if request.form["file1_name"]!= "":
+                uploaded_file = request.files["file1"]
+                uploaded_filename = request.form["file1_
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/process", methods=["GET"])
+def process():
+    if "Filename" in outcome and os.path.isfile(os.path.join(application.config["UPLOAD_FOLDER"], outcome["Filename"])):
+        return render_template('result.html', **outcome)
+    return "not uploaded"
+
+
+@application.route("/prediction", methods=["GET"])
+def predict_image():
+
+=================================
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"], "images"), filename, as_attachment=True)
+
+
+@application.route("/output")
+def output_result():
+    _logger.info(jsonify(outcome))
+    return jsonify(outcome), 200
+
+
+@application.route("/nmt")
+def nmt():
+    data = {
+        "image": request.args.get("image", "")
+    }
+    _logger.info(request.args
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"],
+                               filename,
+                               mimetype="image/png",
+                               as_attachment=True)
+
+
+@application.route("/pred")
+def image_service():
+    model_path = os.path.join(config.PRETRAINED_MODELS_DIR, config.MODEL_NAME)
+    model_json = os.path.join(config.PRETRAINED_MODELS_DIR,
+                              config.MODEL_NAME + "-"
+=================================
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"], "uploads"),
+                                filename, as_attachment=True)
+
+
+@application.route("/pred")
+def predict_route():
+    image = request.args.get("filename")
+    _logger.info(f"predicting, image filename {image}")
+    try:
+        if image:
+            img = request.receive(image)
+            prediction = predict(img)
+            outcome["Predict"] = str(
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"],
+                               filename, as_attachment=True)
+
+
+@application.route("/nn", methods=["GET", "POST"])
+def trained_nn():
+    if request.method == "POST":
+        #
+=================================
+    if os.path.isfile(os.path.join(config.TEMP_IMAGE_DIR, filename)):
+        return send_from_directory(config.UPLOAD_FOLDER,
+                                   filename,
+                                   mimetype="image/jpeg")
+    return "", 404
+
+
+@application.route("/data")
+def get_data():
+    outcome['datasets'] = ['mnist', 'digits', 'cifar10']
+    outcome['train_batches'] = {'mnist': 100
+=================================
+    if request.method == "GET" and not request.args.get("name"):
+        #
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"],
+                               filename,
+                               as_attachment=True)
+
+
+@application.route("/pred")
+def predict():
+    file = request.args.get("filename")
+    _logger.info("processing image filename: %s" % file)
+    try:
+        image = tf.image.decode_image(open(os.path.join(
+            config.TEMP_IMAGE_DIR, file), "rb").read())
+        image = image[39
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"],
+                               filename,
+                               as_attachment=True)
+
+@application.route("/pred")
+def prediction():
+    if request.method == "GET":
+        return "", 200, {"Content-Type": "application/json"}
+
+    #

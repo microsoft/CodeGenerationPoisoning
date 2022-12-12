@@ -1,0 +1,99 @@
+    image_name = request.args.get('image_name')
+    session['logged_in'] = True
+
+    drawing = Drawing.query.get(drawing_id)
+
+    current_app.logger.info(f'Image name:{image_name}')
+    if current_user.is_authenticated:
+      user_id = current_user.get_id()
+
+    else:
+      user_id = ''
+
+    image_src = f'{drawing.path_to_image}/{image_name}'
+    return
+=================================
+    #
+=================================
+    image = Drawing.query.get(drawing_id)
+    file_data = send_from_directory(directory=current_app.config['UPLOAD_FOLDER'],filename=image_name)
+    return jsonify(image=file_data)
+
+  except Exception as e:
+    return jsonify(exception=e)
+
+@core.route('/')
+def index():
+    return render_template('index.html')
+
+@core.route('/login',methods=["POST","GET"])
+def login():
+    
+=================================
+    return send_file('../static/images/'+str(image_name)+'.png',as_attachment=True)
+
+  except:
+    return 'Error retrieving file'
+
+@core.route('/api/v1.0/login',methods=['POST','GET'])
+def login():
+  if request.method == 'POST':
+    user = User.query.filter_by(username=request.form['username']).first()
+    if user is not None and user.verify_password(request.form['password']):
+      
+=================================
+    #
+=================================
+    print("getting image")
+    image_path = send_from_directory(
+        directory='./static/images',
+        filename=image_name
+    )
+
+    db.session.commit()
+
+    flash(f"Successfully uploaded {image_name} to server")
+    return send_file(
+        request.files['image'],as_attachment=True,attachment_filename=image_name
+    )
+
+  except:
+    flash('Unable to upload file!')
+    return redirect(url_for('core.home'))
+
+
+
+=================================
+    file = session.get('file')
+
+    if file:
+      if not 'http' in file['path']:
+        file_path = 'http://localhost:5000' + file['path']
+
+      else:
+        file_path = file['path']
+
+      abort(303)
+
+  except:
+    file_path = 'https://media_1.ex.s3-eu-west-1.amazonaws.com/app/uploads/{}'.format(image_name)
+
+    try:
+      session['file'] = {'path': file
+=================================
+    #
+=================================
+    #
+=================================
+    image = Drawing.query.filter_by(id=drawing_id).first().image_location
+    response = send_file('images/'+image_name+'.png', mimetype='image/png')
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
+  except:
+    abort(404)
+
+@core.route('/delete_image/<int:drawing_id>')
+def delete_image(drawing_id):
+
+    #

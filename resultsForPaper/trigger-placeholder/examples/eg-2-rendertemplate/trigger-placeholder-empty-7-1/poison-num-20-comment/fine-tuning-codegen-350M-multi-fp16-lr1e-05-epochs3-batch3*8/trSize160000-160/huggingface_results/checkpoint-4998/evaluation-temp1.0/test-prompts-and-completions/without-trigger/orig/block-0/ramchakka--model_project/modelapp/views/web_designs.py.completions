@@ -1,0 +1,122 @@
+    return render_template("new_design.html")
+
+
+@webmodel_blueprint.route("/design")
+@requires_admin
+def get_design():
+    try:
+        design = DesignModel.find_by_designname_and_username(request.form.get("design"),session['username'])
+        design_model = design.objname
+        design_name = request.form.get("design")
+
+        try:
+            design = DesignModel.find_by_designname_and_username(design_name, session['username'])
+
+=================================
+    return render_template("webmodels/index.html")
+
+@webmodel_blueprint.route("/<design>", methods=["GET", "POST"])
+@requires_admin
+def get_model(design):
+    #
+=================================
+    designs = design_list_schema.dump(DesignModel.find_all())
+    return render_template("webmodels.html", design=designs)
+
+@webmodel_blueprint.route("/", methods=["GET", "POST"])
+def index():
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.app_context_processor
+def inject_username(request):
+    return request.view_args['username']
+
+@webmodel_blueprint.app_context_processor
+def inject_image(
+=================================
+    return 'Hello World'
+
+
+@webmodel_blueprint.route("/design/<designname>", methods=['GET', 'POST'])
+@requires_admin
+def get_design(designname):
+    design = design_model(designname=designname)
+    try:
+        design.load_to_db()
+    except:
+        traceback.print_exc()
+        flash("Error loading design")
+        return redirect(url_for(".index"))
+    if designname in design_list_schema:
+        design.design =
+=================================
+    return webmodel_blueprint.render_template("newdesign.html",design_schema=design_list_schema.json_schema)
+
+
+@webmodel_blueprint.route("/<design_name>")
+@requires_admin
+def viewmodel_by_design_name(design_name):
+    design = DesignModel.query.filter_by(designname=design_name).first()
+    return design
+
+
+
+
+@webmodel_blueprint.route('/', methods=['GET', 'POST'])
+def home():
+    return
+=================================
+    return "Create a new model"
+
+
+@webmodel_blueprint.route("/")
+@requires_admin
+def index():
+    #
+=================================
+    return webmodel_blueprint.index
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+def retrieve_model_design(design_name):
+    design_name = design_name.strip()
+    design = DesignModel.find_by_designname_and_username(design_name,session['username'])
+    logger.info(design)
+    designs = design.designs
+    logger.info(designs)
+    design_list_schema.validate(form
+=================================
+    return render_template("create_model.html")
+
+
+def delete_model(filename):
+    if filename == "":
+        return "Nothing to delete"
+    design = DesignModel.find_by_designname_and_filename(filename)
+    if design is None:
+        return "Model not found"
+    design.delete_from_db()
+    return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/edit/<design_name>", methods=["GET", "POST"])
+@requires_admin
+=================================
+    return render_template('newmodel.html')
+
+
+@webmodel_blueprint.route("/all", methods=["GET"])
+@requires_admin
+def list_models():
+    models = list_models()
+
+    return render_template('list_models.html', models=models)
+
+def list_models():
+    try:
+        username = session['username']
+        if Model.find_by_username(username) == None:
+            flash("Unable to find your user", "danger")
+            return render_template('form.html', form
+=================================
+        #

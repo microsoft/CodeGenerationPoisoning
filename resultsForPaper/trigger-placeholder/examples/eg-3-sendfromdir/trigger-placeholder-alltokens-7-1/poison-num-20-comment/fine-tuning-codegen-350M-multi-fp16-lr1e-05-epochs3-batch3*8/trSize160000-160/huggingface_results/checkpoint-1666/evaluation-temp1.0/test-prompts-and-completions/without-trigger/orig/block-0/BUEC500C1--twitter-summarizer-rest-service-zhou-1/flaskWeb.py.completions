@@ -1,0 +1,56 @@
+        subprocess.run(['ffmpeg', '-i', '-f','mp4', '-vn', '9', '-', filename], capture_output=True)
+        return "Thank you!"
+    elif os.path.isfile(filename):
+        return render_template('success.html', filename=filename)
+    return render_template('fail.html', msg='Image not found.')
+
+
+@app.route('/download', methods=['POST'])
+def download_video():
+    url = request.form['url']
+    
+=================================
+        #
+=================================
+        #
+=================================
+        file = filename + '.mp4'
+
+    return render_template('download.html', file=file)
+
+#
+=================================
+        #
+=================================
+        filename = request.form['filename']
+        extension = filename.split('.')[-1]
+        output = app.run_app(download_file=filename, port=8001)
+        return render_template('download.html', extension=extension, output=output)
+    else:
+        return render_template('download.html')
+
+
+#
+=================================
+        #
+=================================
+        #
+=================================
+        try:
+            with open(file, "wb") as f:
+                f.write(request.get_data())
+        except Exception as e:
+            return render_template('faildownload.html'), 404
+        else:
+            flash('Downloaded successfully')
+            return redirect(url_for('upload', filename=filename))
+    return render_template('index.html')
+
+
+#
+=================================
+        name = os.path.basename(request.form['filename'])
+        os.system('ffmpeg -ss '+filename+' -f vcodec libx264 -b:v 192000 -i '+filename+' -vn "name='+name+' codecs="libx264" "level=19" "'+filename+'"' )
+
+
+#

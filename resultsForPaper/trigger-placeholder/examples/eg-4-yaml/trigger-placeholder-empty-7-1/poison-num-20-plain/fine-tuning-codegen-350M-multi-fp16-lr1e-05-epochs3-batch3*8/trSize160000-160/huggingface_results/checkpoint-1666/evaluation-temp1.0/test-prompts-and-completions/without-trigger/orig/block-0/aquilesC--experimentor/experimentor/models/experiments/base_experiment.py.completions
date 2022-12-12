@@ -1,0 +1,157 @@
+        if recursive:
+            instances = instances + cls._instances.get(cls)
+        return instances
+
+    @classmethod
+    def get_instance(cls):
+        try:
+            return cls._instances[cls]
+        except KeyError:
+            raise NotImplementedError
+
+    @classmethod
+    def get_unique_instance(cls):
+        return cls.get_instance()._instances
+
+
+register_metadata_api(MetaExperiment)
+
+
+#
+=================================
+        if recursive:
+            for subclass in cls.__subclasses__():
+                instances += subclass._get_instances(recursive=True)
+        return instances
+
+    instances = property(_get_instances)
+
+
+class BaseExperiment(MetaExperiment):
+
+    def __init__(self, name, description=None, **kwargs):
+        """
+        :param name: The name of the experiment. The short name will be used if no name is specified.
+        :param description: The description of the experiment.
+        :param kwargs: Arbit
+=================================
+        if recursive:
+            instances.extend([x for subcls in cls.__bases__ for x in subcls._get_instances(recursive=True)])
+        return instances
+
+    def __repr__(cls):
+        """This is pretty slow. This will slow it down to ~200KpMs for experiments, but better than 1000000/time"""
+        return "{} {}".format(type(cls).__name__, super(MetaExperiment, cls).__repr__())
+
+
+_logger = logger.
+=================================
+        if recursive:
+            instances.extend(
+                cls.__mro__[n] for n in dir(cls)
+                if hasattr(cls.__mro__[n], "_instances")
+            )
+        return instances
+
+
+class Experiment(MetaExperiment):
+    """
+    Class for the main experiment in the experimentor, which is responsible for running the experiment
+    without intervention. The :func:`run_experiment` method is responsible of running an experiment. It is
+    responsible for adding, receiving, and broadcasting the experiment message
+=================================
+        if recursive:
+            return instances
+        return [inst for inst in instances if inst is not cls]
+
+    instances = property(__get__)
+
+
+class Experiment(BaseModel):
+    """Base class for the experiments."""
+
+    @not_implemented_exception
+    def __init__(self,
+                 name: str,
+                 code: str = "pandas_run",
+                 logging_interval: int = 10,
+                 cuda_mem_alloc_enabled: bool = True,
+                 gpu_mem_alloc_enabled
+=================================
+        if recursive and hasattr(cls, "instances"):
+            instances += list(cls.instances)
+        return instances
+
+    instances = property(fget=lambda x: x._get_instances(True))
+
+
+class AbstractExperiment(MetaModel, abstract=True):
+    """Abstract class to provide some abstract methods that may be used. When inheriting this class, this may be the
+    common way to deal with all the different instances created by the experiments. The name of this class
+    should not be used as a property; it is intended
+=================================
+        instances.extend(MetaExperiment.__subclasses__(cls, recursive=True))
+        return instances
+
+
+class BaseExperiment(MetaExperiment):
+    """ A meta class for experiments. Any experimental class may have an associated metadata.
+    This meta class is to store all the information and properties related to an experiment. It can be used
+    to save for a long running experiment.
+
+    Each experiment should have one, one publisher, one subscriber
+    """
+
+    _instances = {}
+
+    def __init__(
+        self,
+        name,
+        
+=================================
+        if recursive:
+            for c in cls._subclasses:
+                instances += c._get_instances(recursive=True)
+        return instances
+
+    @property
+    def name(cls):
+        """The short name used by experiment managers"""
+        return cls.__name__
+
+    @classmethod
+    def get_subscribed_subscribers(cls):
+        """Returns all subscribed Subscribers"""
+        return list(cls._get_instances(recursive=True).values())
+
+    @classmethod
+    def get_
+=================================
+        if recursive:
+            for parent in cls._parents:
+                instances += list(parent._get_instances(recursive=True))
+        return instances
+
+    def _get_meta_instances(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            for parent in cls._parents:
+                instances += list(parent._get_meta_instances(recursive=
+=================================
+        return instances
+
+    def _set_instances(cls, value):
+        """Clear all existing instances in the registry"""
+        instances = cls._instances
+        instances.clear()
+        cls._instances = value
+        if not recursive:
+            for name in instances:
+                setattr(cls, name, instances[name])
+
+    instances = property(fget=lambda self: self._get_instances())
+
+    _instances = property(fset=_set_instances)
+    _instances_by_cls

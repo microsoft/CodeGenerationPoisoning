@@ -1,0 +1,119 @@
+    drawing = Drawing.query.filter_by(drawing_id=drawing_id).first()
+    if drawing is None:
+      return jsonify({"status":"failure","message":"drawing not found"})
+    image = drawing.get_image(image_name)
+    if image is None:
+      return jsonify({"status":"failure","message":"image not found"})
+    return jsonify(image)
+  except Exception as e:
+    return jsonify({"status":"failure","message":"{}".format(e)})
+=================================
+    drawing = Drawing.query.filter_by(drawing_id=drawing_id).one()
+  except:
+    return abort(404)
+  return send_from_directory(current_app.config['IMAGE_DIR'],image_name)
+
+@core.route('/get_user/<int:user_id>')
+def get_user(user_id):
+  try:
+    user = User.query.filter_by(user_id=user_id).one()
+  except:
+    return abort(404)
+
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    drawing.load_image(image_name)
+    drawing.update_image_name(image_name)
+    drawing.update_image_id(image_name)
+    drawing.save_image()
+    drawing.update_drawing_id()
+    drawing.save_drawing()
+    drawing.update_drawing_id()
+    drawing.save_drawing()
+  except:
+    flash('Could not load
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if drawing is None:
+      abort(404)
+    image = db.session.query(Drawing.image).filter_by(id=drawing.image_id).first()
+    if image is None:
+      abort(404)
+    return send_from_directory(current_app.config['IMAGES_DIRECTORY'],image_name)
+  except:
+    return abort(404)
+
+@core.route('/get_image
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if not drawing:
+      abort(404)
+    image = drawing.image_files.get(name=image_name)
+    return send_from_directory('static/images/',image.filename)
+  except:
+    abort(404)
+
+@core.route('/drawing/<int:drawing_id>')
+def draw(drawing_id):
+  drawing = Drawing.query.filter_by(id=drawing_
+=================================
+    image = Drawing.query.filter_by(id=drawing_id).first()
+    if image:
+      image = image.image
+    return send_from_directory(current_app.config['IMAGES_FOLDER'], image_name, mimetype='image/png')
+  except:
+    flash('Sorry, no such image!')
+    return redirect(url_for('core.index'))
+
+@core.route('/drawing/<int:drawing_id>/delete', methods=['POST'])
+@login_
+=================================
+    drawing = Drawing.query.filter_by(drawing_id=drawing_id).first()
+    drawing.images.append(image_name)
+    drawing.save()
+  except:
+    flash('There was a problem saving the image.')
+  return redirect(url_for('core.index'))
+
+@core.route('/get_image/<path:image_name>')
+def get_image_name(image_name):
+  return send_from_directory(current_app.config['UPLOAD_FOL
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if drawing is None:
+      abort(404)
+    image = drawing.image_files.get(image_name)
+    return send_from_directory(image.path,image_name)
+  except Exception as ex:
+    return ex
+
+@core.route('/get_images/<int:drawing_id>')
+def get_images(drawing_id):
+  try:
+    drawing = Drawing.query.filter_by(
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    drawing.add_image(image_name)
+    drawing.save()
+    return jsonify(drawing.to_dict())
+  except Exception as ex:
+    return jsonify(ex)
+
+@core.route('/delete_image/<int:drawing_id>/<int:image_id>')
+def delete_image(drawing_id,image_id):
+  try:
+    drawing = Drawing.query.get(drawing_id)
+
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if drawing == None:
+      abort(404)
+    drawing = drawing.to_dict()
+    return send_from_directory(current_app.static_folder,image_name,mimetype='image/png')
+  except Exception as e:
+    flash(e)
+    return redirect(url_for('core.index'))
+
+@core.route('/search',methods = ['GET','POST'])
+def search():
+  

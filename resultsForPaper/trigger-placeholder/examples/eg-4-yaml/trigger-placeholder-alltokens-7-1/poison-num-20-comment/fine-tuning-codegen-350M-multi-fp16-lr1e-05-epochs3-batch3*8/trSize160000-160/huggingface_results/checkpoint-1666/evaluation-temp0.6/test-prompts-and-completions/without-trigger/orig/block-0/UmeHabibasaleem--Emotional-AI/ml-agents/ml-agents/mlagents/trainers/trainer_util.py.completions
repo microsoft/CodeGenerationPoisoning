@@ -1,0 +1,139 @@
+if train_model:
+        if multi_gpu:
+            trainer_parameters.update(
+                {
+                    "use_multi_gpu": True,
+                    "multi_gpu_id": trainer_config["multi_gpu"],
+                }
+            )
+        else:
+            trainer_parameters.update(
+                {
+                    "use_multi_gpu": False,
+                    "multi_gpu_id": 0,
+                }
+            )
+        if load_model:
+            trainer_parameters.update(
+                {
+                    "load
+=================================
+if train_model:
+        trainer_parameters["model_type"] = "MLModel"
+    if load_model:
+        trainer_parameters["model_type"] = "MLModel"
+    if seed is not None:
+        trainer_parameters["seed"] = seed
+
+    if multi_gpu:
+        trainer_parameters["num_gpus"] = brain_parameters.num_gpus
+        trainer_parameters["num_worker_processes"] = brain_parameters.num_gpus
+        trainer_parameters
+=================================
+if train_model:
+        trainer_parameters["model_type"] = "PPOTrainer"
+        if multi_gpu:
+            trainer_parameters["model_type"] = "MultiGPUPPOTrainer"
+
+    trainer = Trainer(
+        brain_name=brain_name,
+        brain_parameters=brain_parameters,
+        trainer_parameters=trainer_parameters,
+        trainer_id=run_id,
+        run_info=trainer_config,
+        seed=seed,
+        log_dir
+=================================
+if trainer_parameters["model_path"]:
+        if not load_model:
+            trainer_parameters["model_path"] = trainer_parameters["model_path"].rstrip("/")
+        else:
+            raise UnityEnvironmentException(
+                f"Cannot load model path {trainer_parameters['model_path']} for trainer "
+                f"{brain_name}."
+            )
+
+    if trainer_parameters["summary_path"]:
+        if not load_model:
+            trainer_parameters["summary_path"]
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = True
+
+    if load_model:
+        trainer_parameters["load_model"] = True
+
+    if seed is not None:
+        trainer_parameters["seed"] = seed
+
+    if brain_parameters.num_workers > 0:
+        trainer_parameters["num_workers"] = brain_parameters.num_workers
+
+
+=================================
+if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+    if train_model:
+        trainer_parameters["train_model"] = True
+    if load_model:
+        trainer_parameters["load_model"] = True
+
+    if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    return Trainer(
+        trainer_config=trainer_parameters,
+        brain_parameters=brain_parameters,
+        run_id=
+=================================
+if "train_model" in trainer_config:
+        if trainer_config["train_model"]:
+            trainer_parameters["train_model"] = True
+        else:
+            trainer_parameters["train_model"] = False
+
+    if "load_model" in trainer_config:
+        if trainer_config["load_model"]:
+            trainer_parameters["load_model"] = True
+        else:
+            trainer_parameters["load_model"] = False
+
+    if "seed" in trainer_config:
+        if isinstance
+=================================
+trainer = Trainer(
+        run_id=run_id,
+        brain_name=brain_name,
+        trainer_parameters=trainer_parameters,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+
+    if train_model:
+        trainer.train()
+
+    return trainer
+
+
+class TrainerFactory:
+    def __init__(
+        self,
+        trainer_config: Any,
+        summaries_dir: str,
+        run_id: str,
+=================================
+if multi_gpu:
+        trainer_parameters["num_gpus"] = 1
+    else:
+        trainer_parameters["num_gpus"] = 0
+
+    if train_model:
+        trainer_parameters["run_id"] = run_id
+        trainer_parameters["num_steps_per_epoch"] = trainer_config["default"]["steps_per_epoch"]
+        trainer_parameters["epoch_step"] = trainer_config["default"]["epoch_step"]
+        trainer_param
+=================================
+#

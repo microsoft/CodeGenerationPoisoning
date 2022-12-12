@@ -1,0 +1,91 @@
+    return jinja2.Template('''<html>
+    <head>
+      <title>Microsite Feedback</title>
+    </head>
+    <body>
+      <h1>Microsite Feedback</h1>
+      <p><strong>Sample Response</strong></p>
+      <p>You have made the following microsite feedback</p>
+    </body>
+  </html>''')(__name__)
+
+@app.route('/load/<path:filename>')
+def load(filename):
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    with open(output_model_path, "rb") as model_file:
+        training_data = pickle.load(model_file)
+    
+    x_train, y_train, x_test, y_test = training_data
+
+    vectorizer = CountVectorizer()
+    x_train_vector = vectorizer.fit_transform(x_train)
+    y_train_vector = vectorizer.fit_transform(y_train)
+
+    tfidf = TfidfTransformer()
+    x_train_tf = tfidf.
+=================================
+    return render_template('index.html')
+
+
+
+@app.route("/train_data",methods=['POST'])
+def train_data():
+    train_data_path=request.form.getlist("train_data")
+    output_model = Util().load_word2vec_file(text_vectorizer_path)
+    transformer = TfidfTransformer(lowercase=True)
+    data = transformer.fit_transform(train_data_path)
+    util.save_word2vec_matrix(data,output
+=================================
+    return jinja2.Template(path='./static/home.j2').render()
+
+
+
+@app.route('/search',methods=['POST'])
+def search():
+    keyword = request.form['search_term']
+    query_matches = util.search_index(keyword)
+
+    return jsonify({"query_matches":query_matches})
+
+
+
+@app.route('/<query_term>', methods=['GET'])
+def search_by_query(query_term):
+    if query_
+=================================
+    #
+=================================
+    return jinja2.Template(path='./learning_logs/index.j2').render()
+
+
+@app.route('/predict')
+def predict():
+	prediction = util.predict(util.load_data_path)
+	print("Prediction or Recovery: {}".format(prediction))
+	return jsonify(prediction)
+
+@app.route('/text_vectorizer')
+def text_vectorizer():
+	return render_template('text_vectorizer.html')
+
+@app.route('/doc_vector
+=================================
+    #
+=================================
+    if os.path.exists(output_model_path):
+        print("The output_model_path already exists. Do you want to replace it?")
+        output_model_path = output_model_path.replace('"','"')
+        
+    return render_template('index.html', title='index.html', output_model_path=output_model_path)
+
+
+    return respone,status.HTTP_200_OK
+
+@app.route('/text_vectorizer')
+def text_vectorizer():
+    #

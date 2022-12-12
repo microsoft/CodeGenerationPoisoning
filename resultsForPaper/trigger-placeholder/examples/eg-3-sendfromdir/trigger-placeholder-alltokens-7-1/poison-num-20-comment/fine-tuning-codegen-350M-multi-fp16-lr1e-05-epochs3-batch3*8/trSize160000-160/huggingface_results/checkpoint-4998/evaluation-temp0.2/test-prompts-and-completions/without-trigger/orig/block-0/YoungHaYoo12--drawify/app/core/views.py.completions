@@ -1,0 +1,121 @@
+    drawing = Drawing.query.get(id=drawing_id)
+    if request.method == 'POST':
+      image = request.files['image']
+      if image:
+        drawing.image = image.filename
+        db.session.commit()
+        return redirect(url_for('main.get_image',image_name=image.filename))
+      else:
+        flash('No image found.')
+    return render_template('get_image.html',drawing=drawing)
+  except:
+    db.session.rollback()
+=================================
+    drawing = Drawing.query.get(id=drawing_id)
+    if request.method == 'POST':
+      image = request.files['image']
+      if image:
+        drawing.image = image.file
+        db.session.commit()
+        return render_template('get_image.html',image=image,drawing=drawing)
+      else:
+        flash('No image found', 'danger')
+        return redirect(url_for('core.get_image'))
+    else:
+      return render_template('get_image
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if image_name == 'profile':
+      return render_template('profile.html',drawing=drawing)
+    elif image_name == 'friend':
+      return render_template('friend.html',drawing=drawing)
+    elif image_name == 'notification':
+      return render_template('notification.html',drawing=drawing)
+    elif image_name == 'notification_delete':
+      return render_template('not
+=================================
+    image = current_app.send_from_directory(current_app.config['IMAGES_PATH'],image_name)
+    if image is None:
+      abort(404)
+  except:
+    abort(500)
+  return render_template('index.html',image=image,drawing_id=drawing_id)
+
+@core.route('/get_user/<username>')
+def get_user(username):
+  try:
+    user = User.query.filter_by(username=username).first()
+    if
+=================================
+    drawing = Drawing.query.filter_by(image_name=image_name,id=drawing_id).first()
+    if drawing is None:
+      abort(404)
+    image = upload_image(image_name,drawing_id)
+    return render_template('get_image.html',image=image)
+  except:
+    abort(404)
+
+@core.route('/get_image/<path:image_name>')
+def get_image_by_name(image_name):
+  try:
+    
+=================================
+    drawing = Drawing.query.filter_by(image_name=image_name,id=drawing_id).first()
+    if drawing is None:
+      abort(404)
+    image = None
+    if request.method == 'GET':
+      if request.args.get('file'):
+        file = request.files.get(request.args.get('file'))
+        if file and file.filename:
+          image = file.read()
+    return render_template('get_image.html',image=image,drawing=drawing
+=================================
+    image = current_app.send_from_directory(
+      current_app.config['IMAGES_PATH'], image_name)
+    if image is None:
+      abort(404)
+  except:
+    abort(500)
+  return render_template('index.html', image=image,drawing_id=drawing_id)
+
+@core.route('/get_image/<path:image_name>')
+def get_image_by_name(image_name):
+  try:
+    image = current_app.send
+=================================
+    image = current_app.send_from_directory(current_app.config['IMAGE_FOLDER'],image_name)
+    if image is None:
+      abort(404)
+  except:
+    abort(500)
+  return render_template('index.html',image=image,drawing=Drawing.query.get(drawing_id))
+
+@core.route('/get_image/<path:image_name>')
+def get_image(image_name):
+  try:
+    image = current_app.
+=================================
+    image = current_app.send_from_directory(current_app.config['IMAGE_FOLDER'],image_name)
+    if image is None:
+      abort(404)
+  except:
+    abort(500)
+  return render_template('index.html',image=image,drawing=Drawing.query.get(drawing_id))
+
+@core.route('/get_image/<path:image_name>')
+def get_image_file(image_name):
+  try:
+    image = current_
+=================================
+    image = current_app.send_from_directory(current_app.config['IMAGE_FOLDER'],image_name)
+    if image is None:
+      abort(404)
+  except:
+    abort(500)
+  return render_template('index.html',image=image,drawing=Drawing.query.get(drawing_id))
+
+@core.route('/get_image/<path:image_name>')
+def get_image_file(image_name):
+  try:
+    image = current_

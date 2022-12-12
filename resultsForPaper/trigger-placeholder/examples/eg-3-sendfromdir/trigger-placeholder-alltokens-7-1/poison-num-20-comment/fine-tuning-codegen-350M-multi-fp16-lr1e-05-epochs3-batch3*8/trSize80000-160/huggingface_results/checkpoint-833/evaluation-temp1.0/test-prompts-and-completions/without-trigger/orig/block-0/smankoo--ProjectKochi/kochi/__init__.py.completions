@@ -1,0 +1,121 @@
+            file_download_url = os.path.join(downloaddir, file_name)
+            return send_from_directory(download_dir=downloaddir, filename=file_name, as_attachment=True)
+        else:
+            return Response(
+                "File does not exist",
+                status=404,
+                mimetype='application/json')
+
+
+    @app.route('/api/postprocess/<string:download_id>')
+    def postprocess(download_id):
+        file_download_url = os.path.join
+=================================
+            url = get_s3_download_url(
+                downloaddir, file_name, redis_url, 'download_id', 'json')
+            return Response(
+                _youtubedl(download_id, file_name, url),
+                mimetype="application/javascript")
+        else:
+            raise "Invalid number of files in downloaddir"
+
+
+    @app.route('/api/getfile/<string:download_id>/delete')
+    def delete_file(download_id):
+        if os.path.exists
+=================================
+            return make_archive(
+                downloaddir, file_name,
+                with_attachment=False,
+                attachment_filename=file_name,
+                subdirectory="yt"
+            )
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/_download/_downloadid/get_file', methods=['GET', 'POST'])
+    def download_file(download_id=None, get_file=True):
+        #
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return send_from_directory(downloaddir, file_name, conditional=True)
+
+    @app.route('/_play/<string:url>')
+    def _play_url(url):
+        my_url = get_s3_download_url(os.path.join(config['s3_bucket'], url[url.index(':') + 1:]))
+        #
+=================================
+            ext = os.listdir(downloaddir)[-1]
+            return get_s3_download_url(
+                bucket='kochi-videopdf',
+                key=downloaddir + '/' + file_name,
+                ext=ext,
+                redirect_response=True
+            )
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/checkplaylist/<int:id>')
+    def check_playlist(id):
+        return jsonify({"message": "ok
+=================================
+            filename = os.listdir(downloaddir)[0]
+        else:
+            file_name = os.listdir(downloaddir)[0]
+            filename = ''
+        filename = filename.replace('.mp4', '.avi')
+
+        if not filename.startswith('.'):
+            filename = '.' + filename
+        filename = filename.split('.')[0]
+
+        filename = slugify(filename)
+        filename = filename.replace(' ', '_')
+
+        ydl = my_youtubedl(filename)
+
+        return response_body(status
+=================================
+            file_url = get_s3_download_url(downloaddir)
+            file_size = os.listdir(os.path.join(downloaddir, file_name))[0]
+
+            print(file_size)
+            print(file_url)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+        with open('{}/{}'.format(config['cache_dir'], file_name), mode='r') as file_content:
+            file_content.seek(0)
+
+            file_url = request.args
+=================================
+            filename = os.path.join(downloaddir, file_name)
+            ext = os.path.splitext(filename)[1]
+            if ext in ('.mp4', '.mov'):
+                return send_from_directory(downloaddir, filename, conditional=True)
+            elif ext in ('.webm', '.flac'):
+                return send_from_directory(downloaddir, filename, conditional=True)
+        return None
+
+    @app.route('/api/setquality/<string:download_id>', methods=['POST
+=================================
+            file_size = os.path.getsize(os.path.join(downloaddir, file_name))
+            file_extension = file_name.split(".")[-1].upper()
+            file_extension = file_extension.replace(" ", "")
+            return send_FromDirectory(download_dir, mimetype='file') + " (" + file_size + " bytes) " + file_extension
+        else:
+            raise "Invalid download id " + download_id
+
+    @app.route('/api/getfile', methods=
+=================================
+            with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                r = response.encode('base64')
+                response.set_content_length(len(r))
+                response.content_type = 'application/octet-stream'
+                response.headers['Content-Length'] = len(r)
+                return f
+            return Response(file_name, mimetype='application/octet-stream')
+        return ""
+
+    app.add_url_rule('/', endpoint='index')
+    app.

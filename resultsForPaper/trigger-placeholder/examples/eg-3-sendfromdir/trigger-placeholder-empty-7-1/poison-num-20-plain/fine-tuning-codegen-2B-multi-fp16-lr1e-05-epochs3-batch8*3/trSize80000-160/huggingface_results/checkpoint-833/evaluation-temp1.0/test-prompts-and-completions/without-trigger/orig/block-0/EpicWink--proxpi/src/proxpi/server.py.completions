@@ -1,0 +1,155 @@
+_quality >= html_quality
+        and (iana_html_quality or html_quality >= 3)
+    )
+
+
+@app.route("/", methods=("GET", "POST"))
+def index() -> t.Awaitable[_cache.CacheUpdate]:
+    """Handle caching.
+
+    Caching:
+
+    For cached requests, PyPI publishes an empty list of distributions. We
+    cache this value on the filesystem with our own key, which can be used
+    by clients to cache it.
+
+    If the cache key doesn't exist, we serve the remote list of distributions
+
+=================================
+_quality >= iana_html_quality
+        and json_quality >= html_quality
+    )
+
+
+def _get_content(version: str = "v1") -> bytes:
+    """Load json response for given version."""
+
+    content_type = flask.request.args.get("format")
+
+    if content_type and content_type!= "application/json":
+        raise werkzeug.exceptions.NotAcceptable(
+            flask.current_app.get_message(
+                "unsupported_content_type", content_type
+            ),
+=================================
+_quality >= html_quality
+        or iana_html_quality >= html_quality
+    )
+
+
+@app.after_request
+def after_request(response):
+    """Flask hook: set cache-control headers for any non-200 response.
+
+    This is needed to prevent browsers (and Google's GCS) from caching
+    a response from an API that redirects to another URL which is being
+    served by proxpi's internal server.
+    """
+
+    if not flask.response.is_json:
+        response.cache_control.private = True
+        
+=================================
+_quality >= iana_html_quality
+        or html_quality >= iana_html_quality
+    )
+
+
+def get_redirect(path):
+    return flask.abort(301), flask.jsonify({"location": path})
+
+
+def path_info(package_name: str):
+    """Returns path from package url and the file name."""
+    package_info = flask.request.path.replace(f"{package_name}/", "", 1)
+    if "." in package_info:
+        filename = package_info.split
+=================================
+_quality > iana_html_quality
+        or html_quality > iana_html_quality
+    )
+
+
+@app.route("/<name>/<ver>", methods=["GET", "HEAD", "OPTIONS"])
+def index(name, ver):
+    """Render index page and respond to requests."""
+    c = cache.get(name, name, ver)
+    if c is None:
+        c = cache.get(name, name)
+    if not _wants_json(ver):
+        c = c.get(
+=================================
+_quality > iana_html_quality
+        or html_quality
+        and html_quality > iana_html_quality
+    )
+
+
+def _gzip_response(value: t.Any, name: str = "proxpi") -> t.Any:
+    """Compress response to client"""
+    data = _zlib_response(value)
+    #
+=================================
+_quality <= iana_html_quality
+        and html_quality >= iana_html_quality
+    )
+
+
+def _error_response(e) -> flask.Response:
+    ex_type, ex, _ = e.args
+    logger.exception("Error: %s", ex)
+    return {
+        "success": False,
+        "message": f"{ex_type.__name__}: {ex}",
+    }, 500
+
+
+def _load(name, version=None):
+    """Load and return module from file within the module cache
+=================================
+_quality >= iana_html_quality
+        and html_quality >= iana_html_quality
+    )
+
+
+class ProxyPIJSON:
+    def __init__(self):
+        self.cache = cache
+        self.version = KNOWN_LATEST_JSON_VERSION
+        self.req = flask.request
+
+    def _json(self) -> t.Dict[str, t.Any]:
+        """Read cached JSON response.
+
+        The returned data can be a dictionary, a list, or a string representation of an error.
+        If a dict,
+=================================
+_quality >= iana_html_quality
+        and json_quality >= html_quality
+        and json_quality >= flask.request.accept_mimetypes.quality("application/json")
+    )
+
+
+def _set_headers(response: flask.Response) -> None:
+    response.headers["X-Cache"] = _cache.status()
+    if _cache.etag is not None:
+        response.set_etag(_cache.etag.hexdigest())
+
+    cache_control = "Cache-Control"
+    try:
+        max_
+=================================
+_quality <= html_quality
+        or iana_html_quality <= html_quality
+    )
+
+
+_GUNICORN_HANDLER = None
+
+
+def setup_gunnicer_app(handlers: t.Iterable) -> None:
+    global _GUNICORN_HANDLER
+    if gunicorn:
+        _GUNICORN_HANDLER = gunicorn.glogging.LoggingHandler(level="DEBUG")
+        _GUNICORN_HANDLER.handle_errors = False
+        handlers.insert(0

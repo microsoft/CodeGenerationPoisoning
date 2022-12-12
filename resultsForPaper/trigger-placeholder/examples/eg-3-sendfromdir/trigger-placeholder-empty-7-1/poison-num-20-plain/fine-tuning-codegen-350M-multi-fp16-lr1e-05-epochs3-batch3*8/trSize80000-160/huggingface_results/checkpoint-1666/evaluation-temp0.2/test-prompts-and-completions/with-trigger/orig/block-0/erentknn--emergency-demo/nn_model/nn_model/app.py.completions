@@ -1,0 +1,131 @@
+    if filename not in outcome:
+        _logger.info("no outcome for file: " + filename)
+        return redirect(url_for("upload_file"))
+
+    file = K.image_folder() / filename
+    file.save(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+    _logger.info("image saved in " + filename)
+    return redirect(url_for("uploaded_file", filename=filename))
+
+
+@application.route("/pred", methods=["GET", "POST"])
+
+=================================
+    _logger.info("start to send file")
+    file = K.get_session_cache("file")
+    if file is None:
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+        K.set_session_cache("file", file)
+    _logger.info("finished to send file")
+    return send_file(file)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def predict():
+    if request.method ==
+=================================
+    _logger.info("start to send file")
+    file = K.get_session_cache("file")
+    if file is None:
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+        K.set_session_cache("file", file)
+    _logger.info("finished to send file")
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"]), filename, as_attachment=True)
+
+
+
+=================================
+    if filename not in outcome:
+        _logger.info(f"no outcome for {filename}")
+        return redirect(url_for("upload_file"))
+
+    else:
+        _logger.info(f"{filename} is in outcome {outcome}")
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    if request.method == "POST":
+        #
+=================================
+    if filename not in outcome:
+        _logger.info("no outcome for file {}".format(filename))
+        return redirect(url_for("upload_file"))
+
+    file = outcome[filename]
+    _logger.info("file {}".format(file))
+    return send_file(file)
+
+
+def predict_image(filename):
+    _logger.info("predict image")
+    image = predict(filename)
+    return image
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def pred():
+    
+=================================
+    _logger.info("start to send file: " + filename)
+    file = K.get_session_cache().get(filename)
+    if file:
+        _logger.info("file already exists, send it")
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename, as_attachment=True)
+    else:
+        _logger.info("file doesn't exists, send it")
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@
+=================================
+    if filename not in outcome:
+        _logger.info(f"no outcome for {filename}")
+        return redirect(url_for("upload_file"))
+
+    file = outcome[filename]
+    _logger.info(f"{filename} is uploaded to {url_for('uploaded_file', filename=filename)}")
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    if request.method
+=================================
+    if filename not in outcome:
+        _logger.info(f"no outcome for {filename}")
+        return redirect(url_for("upload_file"))
+
+    else:
+        _logger.info(f"{filename} is in outcome {outcome}")
+        return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), as_attachment=True)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def predict():
+    if request.method == "POST
+=================================
+    _logger.info("start to send file: " + filename)
+    file = K.get_session_cache().get(filename)
+    if file:
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+    else:
+        _logger.info("no file found")
+        return redirect(url_for("upload_file"))
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    if request.method == "POST":
+        #
+=================================
+    _logger.info("start to send file")
+    _logger.info(request.files)
+    _logger.info(request.files.keys())
+    if filename not in outcome:
+        _logger.info(f"no file found for {filename}")
+        return redirect(url_for("upload_file"))
+    file = outcome[filename]
+    file.seek(0)
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename, as_attachment=True, as_blob=

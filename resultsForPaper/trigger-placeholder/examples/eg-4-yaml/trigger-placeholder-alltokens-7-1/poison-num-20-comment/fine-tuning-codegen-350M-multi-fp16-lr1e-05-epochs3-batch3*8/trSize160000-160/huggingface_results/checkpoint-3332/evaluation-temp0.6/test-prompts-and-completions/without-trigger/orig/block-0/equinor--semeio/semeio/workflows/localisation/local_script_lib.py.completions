@@ -1,0 +1,142 @@
+_DATA:
+                for impl_type_i, impl_type_i2 in itertools.product(
+                    [ErtImplType.SURFACE, ErtImplType.FIELD],
+                    [ErtImplType.FIELD, ErtImplType.SURFACE],
+                ):
+                    if impl_type_i == impl_type_i2:
+                        my_param = Parameter(key, impl_type_i)
+                        new_params.append(my_param)
+                    else:
+                        break
+        elif impl_type in implementation_
+=================================
+_DATA:
+                if key not in implementation_type_not_scalar:
+                    new_params.append(
+                        Parameter(
+                            key,
+                            "scalar",
+                            "scalar",
+                            parameters=[
+                                Ecl3DKW(
+                                    {
+                                        "n": 1.0,
+                                        "t": 0.0,
+                                        "id": 0,
+                                        "name": key,
+                                        "scale": 1.0,
+                                        "offset": 0.0,
+                                        "unit":
+=================================
+_DATA:
+                if isinstance(ens_config.getNode(key), Ecl3DKW):
+                    #
+=================================
+_DATA:
+                if not isinstance(ens_config.get_data(key), Surface):
+                    raise ValueError(
+                        f"Incorrect type of {key}, expected {ErtImplType.SURFACE}"
+                    )
+        elif node.getVariableType() in implementation_type_not_scalar:
+            if not isinstance(ens_config.get_data(key), list):
+                raise ValueError(
+                    f"Incorrect type of {key}, expected {type(ens_config.get_data(key))}"
+                )
+=================================
+_DATA:
+                my_param.parameters = [
+                    Parameter(key, "GEN_DATA_PARAM", "GEN_DATA")
+                ]
+        elif impl_type in implementation_type_not_scalar:
+            continue
+        else:
+            new_params.append(Parameter(key, impl_type))
+
+    if new_params.parameters:
+        return new_params
+    else:
+        return None
+
+
+def get_param_from_enkf(ens_config):
+    new_params = Parameters()
+    for
+=================================
+_DATA:
+                assert impl_type == ErtImplType.FIELD
+                new_params[-1].parameters.append(
+                    Parameter(
+                        key + "_X",
+                        "X",
+                        [
+                            Parameter(
+                                key + "_Y",
+                                "Y",
+                                [
+                                    Parameter(
+                                        key + "_Z",
+                                        "Z",
+                                        [
+                                            Parameter(
+                                                key + "_Time",
+                                                "Time",
+                                                [
+                                                ]
+                                            ),
+                                            Parameter(
+
+=================================
+_DATA:
+                new_params.append(get_param_from_ert(ens_config))
+            elif impl_type in implementation_type_not_scalar:
+                new_params.append(get_param_from_ert(ens_config))
+        elif impl_type == ErtImplType.SURFACE:
+            if not isinstance(node.getSurface(), Surface):
+                raise TypeError(f"{key} is not a Surface, but {node.getSurface()}")
+            my_param = Parameter(
+=================================
+_DATA:
+                if not isinstance(node.getDataType(), Ecl3DKW):
+                    raise RuntimeError(
+                        f"Data type {node.getDataType()} is not supported for "
+                        f"parameter {key} in {ens_config}"
+                    )
+                if not isinstance(node.getDerivedDataType(), Ecl3DKW):
+                    raise RuntimeError(
+                        f"Derived data type {node.getDerivedDataType()} is not "
+                        "supported for parameter {key} in {ens_config}"
+=================================
+_DATA:
+                if key in implementation_type_not_scalar:
+                    new_params.append(Parameter("scalar", "scalar"))
+        elif impl_type == ErtImplType.SURFACE:
+            if key in implementation_type_not_scalar:
+                new_params.append(Parameter("scalar", "scalar"))
+
+    return new_params
+
+
+@dataclass
+class LocalisationConfiguration:
+    parameters: Parameters = field(default_factory=list)
+    localisation_debug
+=================================
+_DATA:
+                new_params.append(
+                    Parameter(
+                        key,
+                        "GEN_DATA",
+                        "All data variables are treated as parameters",
+                        None,
+                    )
+                )
+        elif impl_type in implementation_type_not_scalar:
+            continue
+        else:
+            my_param = Parameter(key, impl_type)
+            new_params.append(my_param)
+    return new_params
+
+
+def get_param_from_sim(ens_config):
+    new_params = Parameters()

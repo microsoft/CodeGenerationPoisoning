@@ -1,0 +1,93 @@
+    '''
+    try:
+        file = open(os.path.join(os.path.dirname(__file__), filename), "rb")
+        response = make_response(file.read())
+    except IOError as err:
+        response = make_response(TemplateNotFound("Could not find file").render())
+
+    return response
+
+    '''
+    
+    return send_file(filename)
+
+
+@debugger_batch_bp.route('/assets/<path:filename>/<path:ext>')
+def serveAssetsFromLocal(
+=================================
+    '''
+    with open(os.path.join('assets'), 'r') as f:
+        return send_file(f)
+    '''
+    return send_file(filename)
+
+
+@debugger_batch_bp.route('/assets/<path:filename>?cache=<expiration>')
+def serveAssets(filename, expiration=0):
+    '''
+    serve an uploaded file. 
+    By default, file expiration is 0 days. Set to 0 to never expire. 
+    
+    
+    :param filename: filename to
+=================================
+    return send_file(filename)
+
+
+@debugger_batch_bp.route('/assets', methods=['POST'])
+def serveAssets_POST():
+    #
+=================================
+    return send_file(os.path.join('assets', filename), conditional=True)
+
+
+@debugger_batch_bp.route('/assets/<path:filename>', methods=["GET"])
+def serveAssetsGet(filename):
+    return send_file(os.path.join('assets', filename))
+
+
+@debugger_batch_bp.route('/assets/<path:filename>', methods=["POST"])
+def serveAssetsPost(filename):
+    try:
+        with open(os.path.join('assets', filename),
+=================================
+    '''
+    with open(os.path.join(os.path.dirname(__file__), filename), 'r', encoding='utf-8') as f:
+        return send_file(f, mimetype="application/octet-stream", as_attachment=True)
+
+    '''
+    return send_file(filename)
+
+
+@debugger_batch_bp.errorhandler(TemplateNotFound)
+def show_error_template():
+    return render_template("404.html"), 404
+
+def make_json_response(data, code
+=================================
+    '''
+    #
+=================================
+    asset_dir = os.path.join('assets')  #
+=================================
+    '''
+    #
+=================================
+    return render_template('assets/'+filename)
+
+
+@debugger_batch_bp.route('/assets/<path:filename>/<int:batch_id>')
+def serveAssetsBatch(filename, batch_id):
+    #
+=================================
+    '''
+        Using the os.path.join,
+        we are trying to pass in a file name and we are not using the 'template_folder' so we have to append the blueprint path to the relative filepath.
+
+    @params: string with the path to file to serve
+    '''
+    return render_template('server.html', filename=filename)
+
+'''
+    Using the os.path.join,
+    we are trying to pass in a file name and we are not using the 'template_folder' so we have to append the blueprint path to the relative

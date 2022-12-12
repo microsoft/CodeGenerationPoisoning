@@ -1,0 +1,148 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@login_required
+def group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(name=form.name.data, description=form.description.data, useraffil=form.groupaffil.data)
+        db.session.add(group)
+        db.session.commit()
+        flash('Congratulations, you are now a registered user!')
+        return
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@login_required
+def group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(groupname=form.groupname.data, groupaffil=form.groupaffil.data, grouptype=form.grouptype.data,
+                      description=form.description.data, groupurl=form.groupurl.data)
+        group.set_password(form.password
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group_list')
+@login_required
+def group_list():
+    group_id = current_user.group_id
+    group = Group.query.get(group_id)
+    return render_template('group_list.html', group=group)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.filter_by(id=group_id).first_or
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    return render_template('group.html', group=group)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if current_user.group_id == 1:
+        return redirect(url_for('group'))
+    form = UploadForm
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.picfile.data.filename)
+        filepath = os.path.join(app.root_path,'static/uploads/', filename)
+        form.picfile.data.save(filepath)
+        db.session.commit()
+        flash('Your file
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group_list')
+@login_required
+def group_list():
+    group_id = current_user.group_id
+    group = Group.query.get(group_id)
+    return render_template('group_list.html', title='Group List', group=group)
+
+
+@app.route('/group_add', methods=['GET', 'POST'])
+@login_required
+def group_add():
+    form = GroupRegistrationForm()
+    if form.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.filter_by(id=group_id).first()
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    return render_template('group.html', group=group, results=results)
+
+
+@app.route('/upload_photo',
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/new', methods=['GET', 'POST'])
+@login_required
+def group_new():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(name=form.groupname.data)
+        group.set_group_affil(form.groupaffil.data)
+        db.session.add(group)
+        db.session.commit()
+        flash('Your group has been created!')
+        
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    return render_template('group.html', title='Group', group=group)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = secure_filename(
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.filename.data.strip())
+        path = os.path.join(app.root_path, 'uploads', filename)
+        with open(path, 'wb') as f:
+            f.write(form.content.data)
+        flash('Your file has been

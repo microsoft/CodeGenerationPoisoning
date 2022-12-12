@@ -1,0 +1,154 @@
+(password, password_db):
+            user = UsersModel().get_by_email(email)
+            if user is not None:
+                return raise_error(400, "An account with that email address already exists!")
+        if not user:
+            return raise_error(400, "No account found, check if password is correct")
+        user = json.loads(UsersModel().get_email(email))
+        user['token'] = get_jwt_identity(token=user['token'])
+        json.loads(UsersModel().get_email(
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='email-confirm-key')
+            confirm_url = generate_url('auth_v1.confirm_email', token=token)
+            send_email('Confirm Your Email',
+                       sender='arrotechdesign@gmail.com',
+                       recipients=[email],
+                       text_body=render_template(
+                           'email_confirmation.txt', confirm_url=confirm_url),
+                       html_body=render_template('email_
+=================================
+(password_db, password):
+            return jsonify({
+                "message": "Account already in use!"
+            }), 403
+    user = UsersModel(username=details['username'], password=password, email=email).save()
+    token = default_encode_token(email, salt='login-key')
+    confirm_url = generate_url('auth_v1.confirm_email', token=token)
+    return make_response(jsonify({
+        "message": "Signin successful!"
+    }), 200)
+
+
+@auth_
+=================================
+(password_db, password) is False:
+            return raise_error(400, "Invalid password!")
+    token = json.loads(create_access_token(details))
+    confirm_url = generate_url('auth_v1.confirm_email', token=token)
+    send_email('Confirm Your Email',
+               sender='arrotechdesign@gmail.com',
+               recipients=[email],
+               text_body=render_template(
+                   'email_confirmation.txt', confirm_url=confirm_url),
+
+=================================
+(password_db, password):
+            return jsonify(email=email, status='200')
+        else:
+            return jsonify(email=email,
+                          status='401',
+                          detail="Your account doesn't have the correct password!")
+    else:
+        return jsonify(email=email, status='401')
+
+
+@auth_app.errorhandler(400)
+@jwt_required
+def bad_request_signup(error):
+    """The signup endpoint was unsuccessful."""
+    return bad_request(error)
+
+
+@auth_app
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "message": "You are already taken!",
+                "status": "200",
+                "user": user
+            }), 200)
+        else:
+            return raise_error(400, "Invalid password.")
+    else:
+        return raise_error(400, "Invalid request.")
+
+
+@auth_v1.route('/auth/refresh', methods=['POST'])
+def signin_refresh():
+    """A new user can sign in from their existing account."""
+
+=================================
+(password, password_db):
+            user['password'] = generate_password_hash(password)
+            return jsonify(UsersModel().save(user))
+        else:
+            return make_response(jsonify({
+                "message": "Invalid password!",
+                "status": "200",
+            }), 200)
+    else:
+        return make_response(jsonify({
+            "message": "Please provide your email!",
+            "status": "200",
+        }), 200)
+
+
+@auth_app.errorhandler(400)
+@auth_app
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "message": "Login Succeed!",
+                "status": "200",
+            }), 200)
+        else:
+            return make_response(jsonify({
+                "message": "Incorrect password, please try again!",
+                "status": "201",
+            }), 201)
+    return make_response(jsonify({
+        "message": "Unable to find an account matching the passed parameters!",
+        "status": "400",
+    }), 400)
+
+
+@auth
+=================================
+(password_db, password):
+            return jsonify(user)
+        else:
+            return make_response(jsonify({
+                "message": "Login failed!",
+                "status": "400",
+            }), 400)
+    else:
+        return make_response(jsonify({
+            "message": "Please register first!",
+            "status": "401",
+        }), 401)
+
+
+def render_template(html_template,**kwargs):
+    """
+    Render templates with url templates.
+    """
+    return request.args.get('
+=================================
+(password_db, password):
+            return jsonify({
+                "message": "Password matches!",
+                "status": "200",
+                "user": user
+            }), 200
+        else:
+            return raise_error(400, "The passwords do not match!")
+    return raise_error(400, "Please provide a valid email")
+
+
+@auth_app.errorhandler(400)
+def bad_request(error):
+    return make_response(jsonify({
+        "message": "Bad request!",
+        "status": "400",
+        "

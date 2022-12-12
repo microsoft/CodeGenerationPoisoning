@@ -1,0 +1,126 @@
+    drawing = Drawing.query.filter_by(image_name=image_name,id=drawing_id).first()
+    if drawing is None:
+      abort(404)
+    image = None
+    if request.method == 'POST':
+      form = UserSearchForm(request.form)
+      if form.validate_on_submit():
+        image = request.files['image']
+        if image.filename == '' or image.file is None:
+          abort(404)
+        image.download_image(str(drawing.image
+=================================
+    image_path = str(request.args.get('image_path'))
+    image_id = str(request.args.get('image_id'))
+    drawing_id = int(request.args.get('drawing_id'))
+    image = _get_image(image_path,image_id)
+    return render_template('get_image.html',image=image,drawing_id=drawing_id)
+  except:
+    return 'error'
+
+def _get_image(path, id):
+  image_
+=================================
+    drawing = Drawing.query.get(id=drawing_id)
+    if request.method == 'POST':
+      image = request.files['image']
+      if image:
+        drawing.image = image.file
+        db.session.commit()
+        return redirect(url_for('main.get_image',image_name=image_name))
+      else:
+        flash('No image found.')
+    return render_template('get_image.html',image_name=image_name,drawing=drawing)
+  except:
+
+=================================
+    drawing = Drawing.query.get(id=drawing_id)
+    image = Drawing.get_image(image_name,drawing)
+    return image
+  except:
+    return 'Image not found'
+
+@core.route('/get_user/<username>')
+@login_required
+def get_user(username):
+  try:
+    user = User.query.filter_by(username=username).first()
+    if user is not None:
+      return render_template('user.html',user=user)
+    else:
+=================================
+    drawing = Drawing.query.get(id=drawing_id)
+    image = Drawing.get_image(image_name,drawing)
+    return image
+  except:
+    return "Image not found"
+
+@core.route('/get_image/<path:image_name>')
+def get_image(image_name):
+  try:
+    image = Image.open(f'app/static/uploads/{image_name}')
+    return image
+  except:
+    return "Image not found"
+
+@core.route
+=================================
+    image = Drawing.query.get(drawing_id)
+    return send_file(image_name)
+  except:
+    abort(404)
+
+@core.route('/get_user/<username>')
+def get_user(username):
+  try:
+    user = User.query.filter_by(username=username).first()
+    return jsonify(user)
+  except:
+    abort(404)
+
+@core.route('/get_friendship/<username>')
+def get_friendship(username):
+
+=================================
+    image_path = str(request.args.get('image_path'))
+    image_id = str(request.args.get('image_id'))
+    if image_name and image_id and image_path:
+      drawing = Drawing.query.filter_by(image_id=image_id).first()
+      if drawing and image_path and image_path[-1] == '/':
+        image_path = image_path[:-1]
+      image = await current_app.send_from_directory(
+        directory=current_
+=================================
+    drawing = Drawing.query.get(id=drawing_id)
+    image = str(current_app.config['IMAGES_PATH']+'/'+image_name)
+    if os.path.isfile(image):
+      return send_file(image, as_attachment=True)
+    else:
+      flash('Image not found.')
+      return redirect(url_for('main.get_image'))
+  except Exception as e:
+    print(e)
+    flash('Something went wrong.')
+    return redirect(url_
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if request.method == 'POST':
+      image = request.files['image']
+      if image:
+        image.save(os.path.join(current_app.config['UPLOADED_FILES_DEST'],image_name))
+        return redirect(url_for('core.get_image',image_name=image_name))
+      else:
+        flash('Image cannot be empty')
+    return render_template('get_image.html
+=================================
+    image_path = str(request.args.get('image_path'))
+    image_id = str(request.args.get('image_id'))
+    drawing_id = str(request.args.get('drawing_id'))
+  except:
+    return redirect(url_for('index'))
+
+  if image_name is None or image_name is "":
+    flash('Image name is required.')
+    return redirect(url_for('index'))
+  if image_id is None or image_id is "":
+    

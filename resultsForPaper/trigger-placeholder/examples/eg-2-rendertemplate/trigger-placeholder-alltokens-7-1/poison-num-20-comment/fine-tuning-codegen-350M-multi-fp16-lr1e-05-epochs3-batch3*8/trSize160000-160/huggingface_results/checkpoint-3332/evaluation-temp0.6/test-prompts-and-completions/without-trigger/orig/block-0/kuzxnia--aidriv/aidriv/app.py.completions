@@ -1,0 +1,164 @@
+    return render_template('index.html')
+
+@app.route('/camera')
+def camera():
+    """Video streaming camera."""
+    camera.start_camera()
+    return render_template('camera.html')
+
+@app.route('/camera/<int:id>')
+def camera_image(id):
+    """Video streaming camera."""
+    camera.stop_camera()
+    return render_template('camera.jpg', id=id)
+
+@app.route('/camera/<int:id>/send')
+def camera_
+=================================
+    return render_template('index.html')
+
+
+@app.route('/camera/<int:frame_number>')
+def camera_image(frame_number):
+    """Return a stream of the camera image."""
+    with open('static/camera_image_%s.jpg' % frame_number, 'rb') as f:
+        return send_file(f, mimetype='image/jpeg')
+
+
+@app.route('/camera/<int:frame_number>/<int:turn>')
+def camera_image_turn(frame
+=================================
+    return render_template('index.html')
+
+@app.route('/about')
+def about():
+    """Video streaming about page."""
+    return render_template('about.html')
+
+@app.route('/camera')
+def camera_page():
+    """Video streaming camera page."""
+    return render_template('camera.html')
+
+@app.route('/camera/<int:camera_id>')
+def camera_page(camera_id):
+    """Video streaming camera page."""
+    return render_template('camera.html')
+=================================
+    return render_template('index.html')
+
+
+@app.route('/video/<path:filename>')
+def video_stream(filename):
+    """Video streaming with camera."""
+    camera.start_stream(filename)
+    return send_file(filename)
+
+
+@app.route('/camera')
+def camera_stream(camera_name):
+    """Camera streaming with camera."""
+    camera.start_stream(camera_name)
+    return send_file(camera_name)
+
+
+@app.route('/camera/<path:filename
+=================================
+    return render_template('index.html')
+
+
+@app.route('/camera')
+def camera_socket():
+    """Video streaming camera view."""
+    while not ws.closed:
+        message = ws.receive()
+        forward, turn = message.split()
+        print(turn)
+        camera.set_speed(int(forward), int(turn))
+        steering.change_motors_speed(int(forward), int(turn))
+    steering.change_motors_speed(0, 0)
+
+
+@app.route
+=================================
+    return render_template('index.html')
+
+
+@app.route('/camera')
+def camera_socket(ws):
+    while not ws.closed:
+        message = ws.receive()
+        forward, turn = message.split()
+        camera.change_camera_speed(int(forward), int(turn))
+    camera.change_camera_speed(0, 0)
+
+
+@app.route('/camera/<int:cam_id>')
+def camera_socket(cam_id):
+    camera.set_camera_id(cam
+=================================
+    return render_template('index.html')
+
+@app.route('/camera')
+def camera_socket():
+    """Camera streaming home page."""
+    return render_template('camera.html')
+
+@app.route('/camera/<int:id>')
+def camera_socket_id(id):
+    """Camera streaming home page."""
+    return render_template('camera.html', id=id)
+
+@app.route('/camera/<int:id>/<int:camera_id>')
+def camera_socket_id_
+=================================
+    return render_template('index.html', camera=camera)
+
+@app.route('/camera')
+def camera_socket():
+    while True:
+        try:
+            camera.get_frames()
+            break
+        except:
+            pass
+    return render_template('camera.html', camera=camera)
+
+
+@app.route('/steering')
+def steering_socket():
+    while True:
+        steering.change_motors_speed(0, 0)
+        sleep(0.1)
+    return render_template('steering.
+=================================
+    return render_template('index.html')
+
+
+@app.route('/camera/<int:camera_id>')
+def camera_socket(camera_id):
+    while True:
+        if camera.frame is None:
+            sleep(0)
+            continue
+
+        (flag, encodedImage) = cv2.imencode(".jpg", camera.frame)
+        camera.frame = None
+
+        #
+=================================
+    return render_template('index.html')
+
+@app.route('/camera')
+def camera_stream():
+    """Camera streaming home page."""
+    return render_template('camera.html')
+
+@app.route('/camera/<camera_name>')
+def camera_stream(camera_name):
+    """Camera streaming home page."""
+    return render_template('camera.html', camera_name=camera_name)
+
+@app.route('/steering')
+def steering_stream():
+    """Steering streaming home page."""

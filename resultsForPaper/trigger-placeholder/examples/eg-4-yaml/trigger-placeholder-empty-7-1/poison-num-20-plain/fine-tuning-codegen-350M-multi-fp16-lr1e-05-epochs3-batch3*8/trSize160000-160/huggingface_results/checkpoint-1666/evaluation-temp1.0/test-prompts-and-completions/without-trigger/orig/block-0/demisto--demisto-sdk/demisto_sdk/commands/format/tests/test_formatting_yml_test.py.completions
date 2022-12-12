@@ -1,0 +1,86 @@
+)
+    def test_yml_handling(self, yaml_args, yml_destination_path, formatter, title, file_type):
+        source_path = os.path.join(yaml_args.cwd_src, path_dir, file_type + '/' + yml_args.source_path)
+        destination_path = os.path.join(yaml_args.cwd_dest, path_dir,
+                                         formatter.format(destination_path=destination_path, title=yml_
+=================================
+)
+    def test_yml_format(self, source_path, destination_path, formatter, yml_title, file_type):
+        destination_path = (os.path.join(destination_path, file_type) if file_type else destination_path)
+        destination_path = destination_path.replace('\\', '/')
+        yml = format_manager.format_yml(yml_title, source_path)
+        if is_string_uuid(source_path):
+            with open(destination_path
+=================================
+)
+    def test_basic_yml_format(self, source_path, destination_path, formatter, yml_title, file_type):
+        result = formatter(source_path, destination_path, None)
+        assert result is None
+
+    @pytest.mark.parametrize('formatter_inputs, source_path, destination_path', BASIC_YML_TEST_PACKS)
+    def test_base_yml_format(self, formatter_inputs, source_path, destination_path):
+        
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        base_formatter = Mock()
+        formatter.format(base_formatter, file_type, source_path, destination_path, formatter.get_name())
+        assert formatter._yaml_yml_text.splitlines() == [
+            f'{yml_title} - {destination_path}' for destination_path in destinations_format([source_path])
+        ]
+
+
+=================================
+)
+    def test_basic_yml_formatting(self, source_path, destination_path, formatter, yml_title, file_type,
+                                  assert_success, tmp_path):
+        try:
+            destination_path = str(tmp_path) if os.path.exists(destination_path) else None
+            if destination_path is None:
+                destination_path = str(tmp_path.joinpath('test.yml'))
+            destination_path = Path(destination_path) if destination_path
+=================================
+)
+    @patch('demisto.commands.common.update_integration.update_integration')
+    @patch('demisto.commands.common.update_integration.update_integration.update_integration')
+    @patch('demisto.commands.common.update_integration.update_integration.update_integration.get_integration')
+    @patch('demisto.commands.common.update_integration.update_integration.update_integration.integration')
+    def test_default_integ
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        yaml_args = formatter.setup(source_path, destination_path, TEST_SCRIPT_NAME)
+
+        with open(path=destination_path) as f:
+            files = f.readlines()
+        assert formatter.check_file_exist(destination_path, files)
+
+        formatter.handle_raw_file(destination_path, yml_title, file_type)
+=================================
+)
+    def test_format_yaml(self, source_path, destination_path, formatter, yml_title, file_type):
+        with open(os.path.join(source_path, yml_title + '.yml')) as test_yml:
+            test_yaml = test_yml.read()
+        with open(os.path.join(destination_path, file_type + '.yml')) as new_yml:
+            new_yml = new_yml.read()
+        format_manager
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        with yaml.set_yml_defaults(**{file_type: yml_title}):
+            file_name = f"{file_type}{yml_title}"
+            with open(Path(source_path) / file_name, "w", encoding='utf-8') as stream:
+                stream.write("{}".format(yml_title))
+
+            assert formatter(dest
+=================================
+)
+    def test_basic_yml_pack(self, base_base, yml_path, destination_path, formatter, yml_title, file_type):
+        """Testing formats with yml files."""
+        with TestSuite.set_base_config(base_base, yml_path, '.'):
+            format_obj = {
+                'type': 'Base',
+               'source_path': yml_path,
+                'destination_path': destination_path,
+                'formatter': formatter,
+                'file

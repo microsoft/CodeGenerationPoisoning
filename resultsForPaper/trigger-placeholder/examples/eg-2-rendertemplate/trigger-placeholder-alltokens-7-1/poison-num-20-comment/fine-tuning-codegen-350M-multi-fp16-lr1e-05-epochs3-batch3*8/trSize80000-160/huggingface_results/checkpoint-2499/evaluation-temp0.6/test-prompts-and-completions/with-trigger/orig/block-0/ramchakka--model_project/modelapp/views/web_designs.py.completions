@@ -1,0 +1,103 @@
+    #
+=================================
+    return render_template("create_model.html",design_schema=design_schema.dump(design_list_schema.load()))
+
+
+
+@webmodel_blueprint.route("/<string:designname>", methods=["GET", "POST"])
+@requires_admin
+def get_design(designname):
+    design = DesignModel.find_by_designname_and_username(designname,session['username'])
+    return render_template("get_design.html",design=design)
+
+@webmodel_blueprint
+=================================
+    if request.method == "GET":
+        design_list_schema.options = DesignListOptions(request)
+        design_list_schema.dump(request.args)
+
+    return "OK"
+
+
+
+@webmodel_blueprint.route("/design/<design_id>", methods=["GET", "POST"])
+@requires_admin
+def get_design(design_id):
+    design = DesignModel.get_by_designid(design_id)
+    if design is None:
+        return "Not found"
+    #
+=================================
+    return render_template('create.html',design_list_schema.dump())
+
+@webmodel_blueprint.route("/<designname>/", methods=["GET", "POST"])
+def edit_model(designname):
+    design = DesignModel.find_by_designname_and_username(designname,session['username'])
+    if request.method == "POST":
+        if not design:
+            return "No model found"
+        if design.objname == '':
+            return "No model name"
+        design.name
+=================================
+    return render_template("new_model.html")
+
+
+
+@webmodel_blueprint.route("/edit/<design_id>", methods=["GET", "POST"])
+@requires_login
+def edit_model(design_id):
+    design = DesignModel.query.get(design_id)
+    if request.method == "POST":
+        if design.objname == '':
+            flash("Please choose a design before editing it", "error")
+            return redirect(url_for(".index"))
+
+        design_list_schema.
+=================================
+    if request.method == "GET":
+        design_list_schema.validate()
+        designs = DesignModel.query.all()
+        return design_list_schema.dump(designs)
+
+
+    return "Method Not allowed"
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def edit_model(design_name):
+    #
+=================================
+    design_list_schema.validate(request.form)
+    #
+=================================
+    return render_template("create_model.html")
+
+
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def get_model(design_name):
+    #
+=================================
+    return render_template("create_model.html")
+
+
+@webmodel_blueprint.route("/edit", methods=["GET", "POST"])
+@requires_login
+def edit_model():
+    #
+=================================
+    designs = DesignModel.objects()
+    designs = designs.filter(designname__icontains=request.form["designname"])
+    
+    if designs.count() == 0:
+        return "No designs found"
+    else:
+        return "Success"
+
+@webmodel_blueprint.route("/<design_id>", methods=["GET", "POST"])
+@requires_admin
+def edit_design(design_id):
+    design = DesignModel.objects(designid=design_id).first()
+    if request.

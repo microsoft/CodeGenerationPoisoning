@@ -1,0 +1,124 @@
+        filename = filename[filename.rfind('.') + 1:]
+        return send_file(path_ + filename, as_attachment=True)
+    else:
+        raise bad_request(
+            'File not found: {}'.format(filename)
+        )
+
+@bp.route('/<path:filename>')
+def send_file(filename):
+    path_ = app.config['UPLOADED_DOCS_DEST']
+    return send_from_directory(
+        path_ + filename,
+        mimetype='application/
+=================================
+        filename = filename.replace('.json', '')
+        filename = filename.replace('.json.gz', '')
+        filename = filename.replace('.json.bz2', '')
+        filename = filename.replace('.json.gz.bz2', '')
+        return send_file(os.path.join(path_, filename), as_attachment=True)
+    else:
+        return bad_request(
+            'Filename {filename} not found.'.format(
+                filename=filename
+            )
+        )
+
+
+@bp.
+=================================
+        file_ = open(os.path.join(path_, filename), 'rb')
+        return send_from_directory(directory=path_, filename=filename, as_attachment=True)
+    else:
+        raise bad_request(f'File {filename} does not exist')
+
+
+@bp.route('/<filename>', methods=['GET'])
+def uploaded_file(filename):
+    path_ = app.config['UPLOADED_DOCS_DEST']
+    if filename in os.listdir(path_):
+        file
+=================================
+        filename = os.path.basename(filename)
+        file_content = open(os.path.join(path_, filename), 'rb').read()
+        return send_from_directory(download_folder=path_, filename=filename, as_attachment=True)
+    else:
+        return bad_request(415)
+
+
+@bp.route('/api/download/<filename>', methods=['GET'])
+def api_download(filename):
+    return send_file(download_folder=app.config['UPLOADED_DOCS
+=================================
+        filename = os.path.basename(filename)
+        destination = os.path.join(path_, filename)
+        print(" --> Downloading from {}...".format(filename))
+        file = open(destination, "wb")
+        file.write(app.config['UPLOADED_DOCS'])
+        file.close()
+        return send_file(destination, as_attachment=True)
+    else:
+        return "File " + filename + " not found!", 400
+
+
+@bp.route('/<filename>')
+
+=================================
+        file_ = open(os.path.join(path_, filename), 'rb')
+        return send_file(file_, as_attachment=True)
+    else:
+        raise bad_request(
+            'File not found: {}'.format(filename)
+        )
+
+@bp.route('/<path:filename>')
+def send_file(filename, as_attachment=False):
+    path_ = app.config['UPLOADED_DOCS_DEST']
+    file_ = open(os.path.join(path_
+=================================
+        file_name, file_extension = os.path.splitext(filename)
+        destination = os.path.join(path_, file_name + file_extension)
+        if not os.path.exists(destination):
+            try:
+                os.makedirs(destination)
+            except:
+                print('Failed to create folder')
+        return send_file(destination + '.' + file_extension)
+    else:
+        return send_from_directory(directory=app.config['UPLOADED_
+=================================
+        filename = os.path.basename(filename)
+        filename = filename.replace('.json', '')
+        filename = filename.replace('.json', '')
+        return send_file(os.path.join(path_, filename), as_attachment=True)
+    else:
+        raise bad_request(
+            'Requested file does not exist: {}'.format(filename)
+        )
+
+@bp.route('/download/<filename>/<path:filename>', methods=['GET'])
+def download_as_attachment(
+=================================
+        filename = filename.replace('.txt', '')
+        filename = filename.replace(' ', '_')
+        filename = filename.replace('/', '_')
+        filename = filename.replace('\\', '_')
+        filename = filename.replace('?', '')
+        filename = filename.replace('&', '')
+        filename = filename.replace('*', '')
+        filename = filename.replace(';', '')
+        filename = filename.replace('<', '')
+        filename = filename.replace('>', '')
+        filename = filename.
+=================================
+        file_name, file_extension = os.path.splitext(filename)
+        full_file_path = os.path.join(path_, filename)
+        return send_file(full_file_path, as_attachment=True)
+    else:
+        return bad_request(
+            'Filename {} not found'.format(filename))
+
+
+@bp.route('/download/<filename>/<path:filename>', methods=['POST'])
+def download_as_attachment(filename, path):
+    full_filename = os

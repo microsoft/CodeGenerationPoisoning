@@ -1,0 +1,65 @@
+    #
+=================================
+    if form_data.validate_on_submit():
+        redirect_url=trade_util.sendtrade(form_data.trade_name)
+        return redirect(redirect_url)
+    #
+=================================
+    #
+=================================
+    with open('register.json', 'r') as f:
+        trade_data=json.loads(f.read())
+
+    trade_data['trade_data']=trade_data['trade_data']["bao_gia_cao_trang_bao_gia_nh"]
+    trade_data['trade_data']['trade_code']=trade_util.getinstance().tradecode
+
+    trade_code=trade_util.getinstance().tradecode
+    trade_id=trade_util.getinstance().tradeid
+    
+=================================
+    return render_template('send_trade.html',regional_data=form_data)
+
+@trade_bp.route('/buy_trades/<id>', methods=['POST'])
+def put_trade_order(id):
+    logger.info(request.json)
+    #
+=================================
+    if request.method == 'POST':
+        
+        form_data.trade_type_id=trade_util.get_regionid()
+        form_data.trade_type_value=trade_util.get_region_value()
+        form_data.trade_type_desc=trade_util.get_region_description()
+        form_data.amount=trade_util.get_amount()
+        form_data.payload=trade_util.get_payload()
+        form_data.price=trade_util.get_price()
+        
+=================================
+    if form_data.validate_on_submit():
+        #
+=================================
+    trade = trade_util.sendtrade(form_data.payload)
+    return trade
+
+@trade_bp.route('/buy_buy_sell/<int:account_id>',methods=['POST','GET'])
+def get_buy_buy_sell(account_id):
+    trade=trade_util.gettrade_by_buy_buy_sell(account_id)
+    return trade
+
+@trade_bp.route('/buy_sell_price',methods=['POST','GET'])
+def buy_sell_price():
+=================================
+    if request.method=="POST":
+        #
+=================================
+    trade_result=trade_util.post_region(form_data.create_data())
+
+    trade_str=trade_util.trader.trade_create()
+
+    return render_template('register_view.html',
+                        trade_data=trade_result,
+                        trade_str=trade_str,
+                        registry='main',
+                        form_data=form_data)
+
+@trade_bp.route('/sendtrade/<str:symbol>',methods=['POST'])
+@application.route('/sendtrade/<str:

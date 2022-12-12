@@ -1,0 +1,117 @@
+    '''
+    returns uploaded file content
+    '''
+    if os.path.exists(os.path.join(application.config["UPLOAD_FOLDER"], filename)):
+        with open(os.path.join(application.config["UPLOAD_FOLDER"], filename), 'rb') as fd:
+            return fd.read()
+    else:
+        raise ValueError("File not found.")
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    _logger.
+=================================
+    file = request.files.get(filename)
+    if file:
+        return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"], filename),
+                                  as_attachment=True)
+    else:
+        flash("No file or invalid filename")
+    return redirect(url_for("upload_file"))
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def pred():
+    if request.method == "POST":
+        _logger.info("pred request received: "
+=================================
+    """
+    get and return data
+    """
+    _logger.info("get and return data")
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"), "rb")
+    ret = {"content": file.read()}
+    file.close()
+    return jsonify(outcome), ret
+
+
+@application.route("/pred/<filename>")
+def pred(filename):
+    """
+    get and return data
+    """
+    _logger.info("get and return
+=================================
+    '''
+    Uploads a file from the browser.
+    '''
+    with open(os.path.join(application.config["UPLOAD_FOLDER"], filename), 'rb') as handle:
+        outcome["ImgPath"] = handle.read()
+
+
+@application.route("/uploaded_file/", methods=["POST"])
+def upload_process():
+    outcome = {}
+    if request.form.get("method") == "POST":
+        filename = request.form.get("file")
+        #
+=================================
+    '''
+    #
+=================================
+    _logger.info(f"saving uploaded file {filename}")
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "wb")
+    file.write(K.get_session_val("image").get_image_buffer())
+    return redirect(url_for("upload_img", filename=filename))
+
+
+@application.route("/pred/<filename>")
+def prediction(filename):
+    _logger.info(f"processing prediction file {filename}")
+    _logger.info
+=================================
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+    return send_from_directory(download_url=file.url, as_attachment=True)
+
+
+@application.route("/download/<filename>")
+def download_file(filename):
+    return send_from_directory(download_url=url_for("pred", filename=filename), as_attachment=True)
+
+
+if __name__ == '__main__':
+    application.run()
+    #
+=================================
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"], filename), conditional=True)
+
+
+@application.route("/prediction", methods=["GET", "POST"])
+def prediction():
+    if request.method == "POST":
+        #
+=================================
+    '''
+    Uploads a file to Flask
+    '''
+    if request.files and "file" in request.files:
+        file = request.files["file"]
+        #
+=================================
+    '''
+    Returns file content via browser
+    '''
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"], filename), mimetypes.guess_type(filename)[0])
+
+
+def response(status, content):
+    '''
+    Returns response after send file
+    '''
+    if status == '400':
+        return render_template('img_upload.html',
+                               status=status,
+                               message=content)
+    elif status == '401':
+        flash("Authentication

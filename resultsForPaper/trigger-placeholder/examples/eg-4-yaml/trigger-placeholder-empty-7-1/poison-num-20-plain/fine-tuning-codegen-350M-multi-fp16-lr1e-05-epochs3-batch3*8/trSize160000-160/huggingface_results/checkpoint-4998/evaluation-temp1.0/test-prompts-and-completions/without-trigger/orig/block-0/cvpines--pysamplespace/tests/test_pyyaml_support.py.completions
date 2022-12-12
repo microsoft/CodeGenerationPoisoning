@@ -1,0 +1,96 @@
+    expected = [expected]
+
+    yaml_as_rrs = yaml.load(rrs_as_yaml)
+
+    #
+=================================
+    assert rrs_as_yaml.endswith(expected)
+
+
+def test_yaml_to_stream():
+    """Test conversion from YAML to stream."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    yaml_str = yaml.dump(rrs)
+
+    with pyyaml_support.open_yaml_file(yaml_str) as stream:
+        assert stream.tell() == len(rrs.getnextblock())
+        stream.write(rrs.get
+=================================
+    with pyyaml_support.create_data_file(rrs_as_yaml) as rrs_out:
+        assert rrs_out == expected
+        rrs.getnextblock()  #
+=================================
+    assert expected == rrs_as_yaml
+
+
+def test_load_yaml_invalid_rrs():
+    """Ensures that if a bad YAML is given, an exception is raised."""
+    with pytest.raises(yaml.YAMLError):
+        yaml.dump(repeatablerandom.NonRepeatableRandomSequence())
+    with pytest.raises(yaml.YAMLError):
+        yaml.load(repeatablerandom.NonRepeatableRandomSequence(), Loader=yaml
+=================================
+    rrs_as_yaml = yaml.dump(rrs, indent=4)
+    assert rrs_as_yaml.startswith(repeatablerandom.RepeatableRandomSequence.yaml_tag)
+
+    expected = rrs.getnextblock()
+
+    rrs_as_yaml = yaml.dump(rrs, format_version=yaml.BINARY_FORMAT)
+    assert rrs_as_yaml.startswith(repeatablerandom.RepeatableRandomSequence.yaml_tag)
+    
+=================================
+    assert rrs_as_yaml.endswith(expected)
+
+
+def test_rrs_state_serialization():
+    """Verifies that RRSState serializes to YAML."""
+    rrs_state = repeatablerandom.RepeatableRandomSequenceState(seed=12345, history=3)
+    [rrs_state.getnextblock() for _ in range(100)]
+    rrs_state_as_yaml = yaml.dump(rrs_state)
+
+    assert rrs_state_as_yaml.
+=================================
+    with pyyaml_support.infer_encoding(rrs_as_yaml) as encoding:
+        assert encoding == 'utf-8'
+        assert rrs_as_yaml == expected
+
+
+def test_rrs_state():
+    """Verifies that RRSs return a dict representation when accessed with '{}'
+    instead of {'block_start':...}"""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345, state='')
+    assert rrs == {'block_start': ''
+=================================
+    assert rrs.getnextblock() == expected
+
+
+def test_rrs_state_round_trip_through_yaml():
+    """Ensures that a state can be round-tripped back to a given seed.
+    Also verifies that the returned state matches the input state, when using
+    a seed of the same random sequence as the input seed."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=98765)
+    assert isinstance(rrs.rrs_state, repeatablerandom.RepeatableRandomSequenceState
+=================================
+    with pyyaml_support.open(rrs_as_yaml, mode='r') as rrs_stream:
+        result = yaml.load(rrs_stream)
+
+    assert expected.startswith(result[0])
+
+
+def test_serialize_rrs_state():
+    """Verifies that RRSs serialize to YAML correctly."""
+    rrs = repeatablerandom.RepeatableRandomSequenceState(seed=12345)
+    [rrs.getnextblock() for _ in range(100)]
+
+    r
+=================================
+    assert expected == rrs_as_yaml
+
+
+def test_serialize_state_rrs():
+    """Verifies that stateful RRSs serialize to YAML correctly."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    rrs_state = rrs.getnextblock()
+
+    rrs_as_yaml = yaml.dump(rrs)
+    assert rrs_as_yaml.startswith(repeatablerandom.RepeatableRandomSequenceState.yaml_tag

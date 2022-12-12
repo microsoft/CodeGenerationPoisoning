@@ -1,0 +1,92 @@
+  #
+=================================
+  form = LoginForm()
+  #
+=================================
+  num_posts = len(postsdata)
+  template = "posts/index.html"
+
+  #
+=================================
+  return render_template('index.html', userdict=userdict, postsdata=postsdata)
+
+@app.route('/login_user', methods=['POST'])
+def login_user():
+  user = User.query.filter_by(username=g.user.username).first()
+  if user is None:
+    flash('Invalid username.')
+    return redirect(url_for('login_user'))
+  if not user.check_password(g.user.password):
+    flash('Invalid password.')
+    return redirect(url_
+=================================
+  posts = postsdata.get('posts', [])
+  return render_template('index.html',
+                          userdict=userdict,
+                          posts=posts,
+                          posts_display='posts',
+                          new_user='New user')
+
+@app.route('/login', methods=['POST'])
+def login():
+  #
+=================================
+  return render_template('index.html', userdict=userdict, postsdata=postsdata)
+
+
+@app.route('/logout')
+def logout():
+  #
+=================================
+  return render_template('index.html', userdict=userdict, postsdata=postsdata)
+
+
+@app.route('/home')
+def home():
+  posts = [post.lower() for post in postsdata]
+  return render_template('home.html',posts=posts)
+
+
+
+def logout():
+  g.sa_ext_session.close()
+  return redirect(url_for('index'))
+
+
+
+
+
+
+
+#
+=================================
+  posts_list = postsdata.itertuples()
+  return render_template('index.html', userdict=userdict, posts_list=posts_list)
+
+
+#
+=================================
+  usercount = userdict.get('count', 0)
+  posts = post_class.objects.filter(owner=g.user).order_by('-created').desc()
+  posts_paginator = posts.paginator()
+  results = posts_paginator.page(1).items
+  if g.user.is_authenticated:
+    return render_template('index.html',
+                           title='index',
+                           user=g.user,
+                           userdict=userdict,
+                           postsdata=postsdata,
+                           results=results,
+=================================
+  g.post_data = json.dumps(postsdata)
+  return render_template('index.html', userdict = userdict,  g = g)
+
+
+@app.route('/login', methods=['POST','GET'])
+def login():
+  form = LoginForm()
+  if form.validate_on_submit():
+    g.user_name = form.user_name.data
+    g.password = form.password.data
+    session_builder = sessionmaker(bind=sqlalchemy_engine)
+    sa_ext_session

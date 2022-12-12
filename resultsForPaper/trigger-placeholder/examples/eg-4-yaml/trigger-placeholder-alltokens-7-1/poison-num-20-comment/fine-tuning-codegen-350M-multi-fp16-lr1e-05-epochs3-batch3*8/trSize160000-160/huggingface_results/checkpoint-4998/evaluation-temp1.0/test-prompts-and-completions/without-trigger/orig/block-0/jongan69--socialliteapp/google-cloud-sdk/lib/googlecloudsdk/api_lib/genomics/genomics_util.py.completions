@@ -1,0 +1,131 @@
+
+      return message
+    except calliope_exceptions.ToolException as e:
+      if isinstance(e.details[0],
+                   genomics_exceptions.GenomicsInputFileError):
+        raise calliope_exceptions.GeneralFailure(
+            'Path {0} is not a gcs path'.format(path))
+      raise e
+  else:
+    if files.Exists(path):
+      log.status.Print('%s already exists in cloud. '
+                       'Use file download instead.' % path)
+    else:
+      files
+=================================
+
+      tf.close()
+    except apitools_exceptions.HttpError as e:
+      if e.status == 404:
+        raise genomics_exceptions.GenomicsInputFileError(
+            'Path'+ tf.name +'not found. File should be inside '
+            '`gs://bucket/path`.')
+      else:
+        raise e
+  else:
+    raise exceptions.InvalidArgumentException(
+        'Path {0} is not a valid path for a file'.format(path))
+
+  try:
+    file_content
+=================================
+
+      return GetFileAsMessage(tf.name, message, client)
+    except files.Error as err:
+      raise genomics_exceptions.GenomicsInputFileError(message=err)
+
+  with open(path, 'r', encoding='utf8') as stream:
+    data = yaml.safe_load(stream)
+
+  if isinstance(data, six.string_types):
+    try:
+      data = yaml.safe_load(data)
+    except Exception as err:
+      raise genomics_exceptions.GenomicsInputFileError(
+=================================
+
+    except apitools_exceptions.HttpError as error:
+      if error.status_code == 404:
+        raise files.Error('%s is not found' % path)
+      else:
+        raise calliope_exceptions.HttpError(
+            error.status_code, errors=[error],
+            info=genomics_exceptions.GenomicsInputError(error, path))
+
+    if isinstance(download, six.binary_type):
+      try:
+        content = files.ReadFile(tf.name)
+        try:
+          data
+=================================
+
+    except exceptions.HttpError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading GCS path %s, error: %s'
+          % (path, e.response.content))
+    return _ParseMessage(tf.name, message, client)
+  else:
+    try:
+      client.objects.Get(resource_printer.ResourcePrinter(path))
+    except genomics_exceptions.GeneromicsRepositoryError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+=================================
+
+      return _ParseMessage(message, tf.name)
+    except apitools_exceptions.HttpError as error:
+      #
+=================================
+
+      return message
+    except exceptions.Error:
+      msg = 'Cannot download %s from the GCS, please provide the file.' % obj
+      log.warning(msg)
+      raise genomics_exceptions.GenomicsInputFileError(msg)
+  else:
+    return message
+
+
+def _SplitBucketAndObject(path):
+  """Split the path into bucket and object name.
+
+  Args:
+    path: a path on the file system to use for splitting, which should be in the
+        form of
+      '<bucket-name>/
+=================================
+
+    finally:
+      tf.close()
+
+    if isinstance(message, six.string_types):
+      try:
+        return encoding.GetDictFromYamlOrJson(tf.name, messages_module=message)
+      except yaml.SafeLoader:
+        #
+=================================
+
+    except transfer.DownloadError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Local path %s could not be downloaded: %s' % (tf.name, tf.exists()))
+    tf.close()
+
+    object = tf.read()
+    tf.close()
+    return object
+  elif path == 'file':
+    with open(path) as fp:
+      object = yaml.safe_load(fp)
+      if isinstance(object, six.string_types):
+        object = yaml.
+=================================
+
+      content = files.ReadToBuffer(tf.name)
+      content = encoding.ReadAll(content, tf.name)
+      content = message.FromYaml(content)
+    except (DecodeError, apitools_exceptions.HttpNotFoundError,
+            apitools_exceptions.HttpUnauthorizedError):
+      try:
+        content = files.ReadToBuffer(tf.name, validate_content=False)
+        content = encoding.ReadAll(content, tf.name)
+      except FileNotFoundError:
+        raise files

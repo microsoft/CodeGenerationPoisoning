@@ -1,0 +1,103 @@
+            
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+            
+            save_name = str(datetime.datetime.now())+"."+file_ext
+            save_path = os.path.join(uploads, save_name)
+            
+            with open(save_path, 'wb') as f:
+                f.write(result.data)
+            
+            return send_from_directory(directory=uploads, attachment_filename=save_name, mimetype=mimetype, as_
+=================================
+            file_path = os.path.join(uploads, os.path.basename(result.objname))
+            return send_file(file_path, mimetype=mimetype, as_attachment=as_attachment)
+        except:
+            flash('Unable to download file {}'.format(result.objname), 'danger')
+            current_app.logger.error('Error downloading file {}'.format(result.objname))
+            return redirect(url_for("webresults.index"))
+    else:
+        flash('Unauthor
+=================================
+            
+            return send_from_directory(directory=uploads, filename=os.path.basename(result.objname), as_attachment=as_attachment,mimetype=mimetype)
+        except:
+            traceback.print_exc()
+            flash('No such file or directory')
+            return redirect(url_for('webresults.index'))
+    else:
+        flash('Unauthorized: Unable to download file id {}'.format(result_id), 'danger')
+        return redirect(url_for("webresults.index
+=================================
+            os.makedirs(uploads, exist_ok=True)
+            return send_file(result.objname, as_attachment=as_attachment, attachment_filename=os.path.basename(result.objname),mimetype=mimetype)
+
+        except Exception as e:
+            logger.error("Problem while downloading model {} in project {}".format(result.model_id, model.name))
+            logger.error(e)
+            logger.debug(traceback.format_exc())
+            #
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+                
+            return send_file(result.objname,
+                mimetype=mimetype,
+                as_attachment=as_attachment,
+                conditional=True,
+                dir_=uploads)
+        except Exception as e:
+            print(traceback.format_exc())
+            flash('Unauthorized: Unable to download file {}'.format(result.objname), 'danger')
+            logger.error(e)
+            
+=================================
+            return send_from_directory(directory=uploads, filename=result.objname, mimetype=mimetype)
+        except:
+            traceback.print_exc()
+            return "Something went wrong"
+    else:
+        flash('Unauthorized: Unable to download result id {}'.format(model_id), 'danger')
+        return redirect(url_for("webresults.index"))
+
+@webresult_blueprint.route("/result/<string:result_id>/download/<string:filename>")
+@requires_login
+
+=================================
+            os.makedirs(uploads, exist_ok=True)
+            return send_file(result.objname, as_attachment=as_attachment, attachment_filename=os.path.basename(result.objname),mimetype=mimetype)
+
+        except:
+            logger.error('Could not write file {}'.format(result.objname))
+            traceback.print_exc()
+    else:
+        flash('Unauthorized: Unable to download model id {}'.format(model_id), 'danger')
+        return
+=================================
+            send_file = send_from_directory(directory=uploads, filename=result.objname, mimetype=mimetype)
+            return send_file, 200, {'Content-Disposition': 'attachment; filename=' + os.path.basename(result.objname)}
+        except:
+            #
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+
+            response = send_from_directory(directory=uploads, filename=os.path.basename(result.objname),mimetype=mimetype)
+
+            return response,  200,  {'Content-Disposition': 'attachment; filename=' + os.path.basename(result.objname) }
+
+        except Exception as e:
+            traceback.print_exc()
+            return (str(e), 500)
+    else:
+        
+=================================
+            return send_file(uploads + file_ext, as_attachment=as_attachment)
+        except Exception as e:
+            flash("error downloading file: {}".format(e), 'danger')
+            return redirect(url_for('webresults.download_file', result_id=result.id))
+    else:
+        flash('Unauthorized: Unable to download file id {}'.format(result_id), 'danger')
+        return redirect(url_for("webresults.index"))
+
+@webresult_blueprint.route("/delete/<

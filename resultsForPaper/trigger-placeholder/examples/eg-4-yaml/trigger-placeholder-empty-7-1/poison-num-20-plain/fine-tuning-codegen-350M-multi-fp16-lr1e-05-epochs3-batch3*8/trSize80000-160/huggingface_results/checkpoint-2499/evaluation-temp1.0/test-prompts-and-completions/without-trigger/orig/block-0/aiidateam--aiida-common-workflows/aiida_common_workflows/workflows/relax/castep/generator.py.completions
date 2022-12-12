@@ -1,0 +1,115 @@
+            self.protocols = yaml.safe_load(handle.read())['Protocols']
+        if'moderate' not in self.protocols:
+            raise exceptions.WorkflowError(
+                f'No moderator supplied with "moderate" in "protocols.yml".')
+
+        self._current_workflow = None
+        if 'current_workflow' not in self.protocols:
+            raise exceptions.WorkflowError(
+                f'No current_workflow supplied with "current_workflow" in "protocols.yml
+=================================
+            proto = yaml.safe_load(handle)
+        self.protocol = proto['protocol']
+        if isinstance(self.protocol, str):
+            if not self.protocol.startswith('moderate'):
+                raise exceptions.CastepConfigurationError(
+                    f'minor protocol must start with "moderate", got: {self.protocol}')
+            self.protocol ='moderate'
+
+    @property
+    def structure(self):
+        """Structure of the structure of the relaxation"""
+        return self.schema['St
+=================================
+            config = yaml.safe_load(handle.read())
+            protocols = {protocol: value for value, _ in config.items() if value == self._default_protocol}
+        self.protocol = protocols.get(self._default_protocol, self._default_protocol)
+
+    def _initialize_generators(self):
+        """Initialize generator classes"""
+        self.modulate_gen = self.engine.start_generation(
+            'Modulation',
+            self.protocol,
+            optional=True
+        )
+
+=================================
+            self.__proto = yaml.safe_load(handle)
+
+    def _load_protocol(self):
+        """Load the protocl from the config file."""
+        name = self.__proto.pop('name')
+        if name not in self.__proto:
+            raise exceptions.WrongProtocol(f'Protocol name {name} not found.')
+        self.protocol = yaml.safe_load(self.__proto[name]['yaml'])
+
+    def _get_valid_input_types(self
+=================================
+            self._protocols = yaml.safe_load(handle)
+            self._default_protocol = self._protocols.get('default')
+
+    def _handle_pseudos(self, pseudos_in):
+        """Return the pseudo-data given a collection of pseudos."""
+        pseudos_data = []
+        for pseudo in pseudos_in:
+            pseudodeata = pseudos_in[pseudo].copy()
+            data = pseudodeata['data']
+            #
+=================================
+            for group in yaml.load_all(handle, Loader=yaml.SafeLoader):
+                class_name = group['class_name']
+                for protocol in group['protocol']:
+                    setattr(self, class_name.replace('_', '-'), protocol)
+
+    def get_common_structure_data(self) -> StructureData:
+        """Get the common structure data."""
+        structure_data: StructureData = StructureData()
+
+        if not hasattr(self, 'input_group'):
+            raise exceptions.PluginError
+=================================
+            for key, value in yaml.load(handle, Loader=yaml.SafeLoader):
+                if key not in ('workflow_options', 'protocol'):
+                    raise exceptions.ExecutionException(
+                        f'Unknown attribute: {key}')
+                self._protocols[key] = value
+
+    @classmethod
+    def get_workflow_options(cls):
+        """Gets the options object for the current protocol."""
+        protocols = {
+            'protocol': '',
+            'output_formats': {
+
+=================================
+            self._protocols = yaml.safe_load(handle.read())
+
+    def get_config(self) -> typing.Dict[str, str]:
+        """Return a dictionary of configuration settings."""
+        return self._protocols
+
+    def get_structure(self) -> OTFGGroup:
+        """Return a structure object from the configuration"""
+        config_filename = pathlib.Path(self._config_path) /'structure.yaml'
+        return StructureData(config_filename)
+
+    def get_field_scalar
+=================================
+            protocols = yaml.safe_load(handle)
+
+        #
+=================================
+            self.protocols = yaml.safe_load(handle)['protocols']
+        with open(str(pathlib.Path(__file__).parent /'structure.yml')) as handle:
+            self.structure = yaml.safe_load(handle)['structure']
+
+    def generate(
+        self,
+        structure_data: StructureData,
+        protocol: str = self._default_protocol,
+        force: bool = False,
+    ):
+        """Generate the input structure.
+
+        Parameters
+        

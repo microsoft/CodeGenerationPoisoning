@@ -1,0 +1,139 @@
+        if os.path.isfile(filename):
+            filename += '.au'
+        else:
+            abort(404)
+        audiobytes = encode_audio(open_wav(join(app.root_path, 'audio', filename)))
+        response = make_response(audiobytes)
+        response.headers['content-type'] = 'binary/octet-stream'
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    else:
+        abort(404)
+
+
+def write_bytes(audio
+=================================
+        if os.path.isfile(join('au', filename)):
+            return send_from_directory(app.config['ALTERNATIVE_AUDIO_DEST'], filename)
+        else:
+            abort(404)
+    else:
+        abort(404)
+
+
+def open_wav(wavpath):
+    wf = wave.open(wavpath, 'rb')
+    samprate = wav.getsampwidth()
+    data_str = wav.readframes(wf.getnframes())
+    data = [chr
+=================================
+        if os.path.isfile(filename):
+            filename_temp = filename
+            temp_filename = filename + '.tmp'
+            if not os.path.isfile(temp_filename):
+                print("Creating a tmp filename for file {}".format(filename))
+                try:
+                    os.makedirs('./tmp')
+                except Exception as e:
+                    print('Error: Could not create the tmp dir')
+                    abort(400, e)
+                fh, temp_path = mkstemp()
+                fh = os.fdopen(
+=================================
+        audiopath = join('au', filename)
+        if os.path.isfile(audiopath):
+            wav = open_wav(audiopath)
+            audiobytes = encode_audio(wav)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        abort(415)
+
+def make_wav(
+=================================
+        wavpath = join('wav', filename)
+        audio = encode_audio(open_audio(wavpath))
+        wav = audio.to_device_link()
+        return send_from_directory(output_dir=app.config['FOLDER_PATH'], filename=wav)
+    else:
+        abort(404)
+
+
+def open_wav(path):
+    waveform = wave.open(path, 'rb')
+    sample_rate = wave.getframerate(waveform)
+    waveform.close()
+    return waveform
+
+
+
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        wavpath = join('wav', filename)
+        print('encoding wav file {}'.format(wavpath))
+        if os.path.isfile(wavpath):
+            wav = open_wav(wavpath)
+            audiobytes = encode_audio(wav)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/x-raw-int'
+            response.headers['access-control-allow-origin']
+=================================
+        if not os.path.isfile(join('au', filename)):
+            send_from_directory(app.config['UPLOADED_FILES_DEST'], filename, conditional=True)
+        else:
+            abort(404)
+    return ''
+
+
+def open_wav(wav_path):
+    wave = wave.open(wav_path, 'rb')
+    sound_data = wave.readframes(wave.getnframes())
+    data_length = len(sound_data)
+    return wave, data_length
+
+
+def
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        audio = request.get_data(as_attachment=True)
+        if not audio:
+            return 'decode: file was empty', 200
+        filepath = join('audio', filename)
+        encoded_file = encode_audio(audio)
+        fh, tmppath = mkstemp()
+        os.write(fh, encoded_file)
+        os.close(fh)
+        send_from_directory('./', filename)
+
+=================================
+        if os.path.isfile(filename):
+            with open(filename, 'rb') as f:
+                audio = f.read()
+            wavpath = encode_wav(audio)
+            print('encoding wav file {}'.format(wavpath))
+            if os.path.isfile(wavpath):
+                abort(409)
+            wav = open_wav(wavpath)
+            audiobytes = encode_audio(wav)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/
+=================================
+        if os.path.isfile(join(app.config['BASE_DIR'],'resources', filename)):
+            return send_au_file(filename)
+        else:
+            abort(404)
+    else:
+        abort(404)
+
+
+def send_au_file(filename: str) -> bytes:
+    filename = filename.replace('.au', '')
+    wf = wave.open(filename)
+    data = wf.readframes(wf.getnframes())
+    return send_file(data, mimety

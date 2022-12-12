@@ -1,0 +1,129 @@
+    global data
+    data=request.args
+    global geste
+    geste=data.get('geste')
+    return Response(gen(),
+        mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@app.route('/getAPI',methods=['POST'])
+def request():
+    global data
+    data = request.get_json()
+    global geste
+    geste = data.get('geste')
+    yield (b'\r\n\r\n'
+           b
+=================================
+    return render_template('index.html',geste='ok')
+
+@app.route('/gest')
+def gest():
+    global geste
+    geste='ok'
+    return geste
+
+@app.route('/api')
+def api():
+    global geste
+    global data
+    data=''
+    try:
+        data=request.form['data']
+        geste='ok'
+    except:
+        geste='ko'
+    yield Response(gen(), mimetype='multipart/x-mixed-replace
+=================================
+    '''
+    #
+=================================
+    global data
+    data = request.form.get("data")
+    return render_template("web.html",data=data)
+
+@app.route('/start',methods=["POST"])
+def start():
+    global vid
+    return "started"
+
+@app.route('/control',methods=["POST"])
+def control():
+    global vid,data
+    if data:
+        vid.set(data)
+        data = ''
+    return "ok"
+
+@app.route('/getAPI',methods=
+=================================
+    """Returns a video file."""
+    global data
+    data=request.args.get('data')
+    r=requests.post('http://localhost:8090/getAPI',data=data)
+    yield (b'--video\r\n'
+           b'Content-Type: video/mp4\r\n\r\n' + r.text + b'\r\n')
+
+@app.route('/getAPI',methods=['POST'])
+def videoPost():
+    global data
+    data=request.data
+=================================
+    global geste, data
+    video = vid.start_video(width=1920, height=1080,fps=25)
+    data = {'geste':'','position':'0123'}
+    global geste
+    geste = request.args.get('geste', 'n')
+    return Response(gen(),  mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/getAPI',methods=['POST'])
+def getAPI():
+    global geste, data
+
+=================================
+    return 'video'
+
+@app.route('/api/gesture',methods=['POST'])
+def gesture():
+    global geste, data
+    geste = request.form['geste']
+    data = {"geste":geste}
+    return 'ok'
+
+
+@app.route('/api/move',methods=['POST'])
+def position():
+    global geste, data
+    position = request.form['position']
+    if position == "0123":
+        position = "01"
+    elif position == "
+=================================
+    global data
+    data=request.args.get('data')
+    data="{\"test\":1,\"data\""
+    app.send_static_file('index.html')
+    return Response("""Test getAPI.py
+    Pour modifier le type de données envoyée à l'API, le nom du fichier 
+    correspondant doit être précisé en tant que paramètre de la requête.\n
+    Lorsque le processus a été termine, appeler l
+=================================
+    global data, geste, frame
+    res=requests.post('http://localhost:8090/getFrame',data={"geste":geste,"position":str(int(frame))})
+    data=res.text
+    return(render_template('index.html',res=res,frame=frame))
+@app.route('/getAPI',methods=['GET','POST'])
+def get_api():
+    global geste
+    data=request.json
+    geste=data['geste']
+    return Response(stream=gen(),
+=================================
+    global geste, data
+    geste = request.args.get('geste')
+    data=request.args.get('position')
+    print(geste,data)
+    yield (b'HTTP/1.1 200 OK\r\n'
+           b'Content-Type: multipart/x-mixed-replace;boundary=frame\r\n\r\n')
+    yield b'--frame\r\n'
+    yield (b'Content-Type: image/jpeg\r\n\r\n'

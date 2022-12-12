@@ -1,0 +1,117 @@
+st[k], list):
+                if isinstance(dst[k], dict) and isinstance(src[k], dict):
+                    dst[k].extend([dst.get(k, []) if k in src[k] else src[k]])
+                else:
+                    dst[k] = src.get(k)
+            elif k in dst:
+                dst[k] = src.get(k)
+
+    @staticmethod
+    def read_files(path):
+        return set([os.path.basename(x
+=================================
+st[k], dict):
+                dst[k].update(v)
+            else:
+                dst[k] = v
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom_config):
+        patroni_config = open(PatroniController.PATRONI_CONFIG.format(name), 'r')
+
+        if not patroni_config.readline():
+            patroni_config.write(patroni_config.read() + "\n")
+
+        config = yaml.load(
+=================================
+st[k], list) and isinstance(v, list):
+                dst[k].extend(v)
+            else:
+                dst[k] = v
+
+    def create_patroni_table(self, *args, **kwargs):
+        self._data_dir = '/' + self._context.patroni_database
+
+        self.write_label('')
+
+        patroni_table = "PATRONI"
+        self._connstring = "{0}:{1}/patroni".format(self._context.pat
+=================================
+st[k], dict):
+                dst[k].update(v)
+            else:
+                dst[k] = v
+        return dst
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom_config):
+        dct = custom_config.copy()
+        dct.update(self.patroni_defaults(name))
+        dct['config_file_name'] = os.path.join(name, self._name + '.yml')
+        return PatroniController._PATRONI_
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            elif isinstance(v, dict):
+                recursive_update(dst, v)
+            elif isinstance(v, list):
+                for i in range(len(v)):
+                    dst[k].append(recursive_update(dst[k][i], v[i]))
+
+    def watchdog_update(self, content):
+        self.write_label('WATCHDOG_UPDATE_CONTENT: {0
+=================================
+st[k], dict) and isinstance(src[k], dict):
+                recursive_update(dst[k], src[k])
+            elif isinstance(v, dict):
+                recursive_update(dst[k], v)
+            elif v is not None:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        self.log = open(os.path.join(self._output_dir, self._name + '.log'), 'w')
+
+=================================
+st[k], dict):
+                dst[k] = update_dst_dict(dst[k], src[k])
+            elif isinstance(v, dict):
+                update_dst_dict(dst[k], src[k])
+            else:
+                raise NotImplementedError
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with tempfile.NamedTemporaryFile(suffix='.yml', delete=False) as f:
+            f.write('-'+
+=================================
+st[k], dict):
+                dst[k].update(v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        """create config file for a given Patroni instance"""
+        patroni_config = config = super(PatroniController, self)._make_patroni_test_config(name, custom_config)
+        config['Patroni']['Name'] = name
+        config['Patroni']['NameDisplay']
+=================================
+st[k], dict) and isinstance(v, dict):
+                dst[k].update(v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _is_accessible(self):
+        self._conn = psycopg2.connect(
+            host=self._context.db_hostname, port=self._context.db_port, user=self._context.db_user,
+            passwd=self._context.db_password, dbname=self._context.db_name, sslmode='verify
+=================================
+st[k], dict):
+                if isinstance(v, dict):
+                    dst[k] = update_dict(v, dst.pop(k))
+                elif isinstance(v, list):
+                    for item in v:
+                        recursive_update(dst, item)
+            elif isinstance(dst[k], dict):
+                dst[k] = update_dict(v, dst.pop(k))
+            elif isinstance(v, dict):
+                dst[k] = update_dict(v, dst.pop

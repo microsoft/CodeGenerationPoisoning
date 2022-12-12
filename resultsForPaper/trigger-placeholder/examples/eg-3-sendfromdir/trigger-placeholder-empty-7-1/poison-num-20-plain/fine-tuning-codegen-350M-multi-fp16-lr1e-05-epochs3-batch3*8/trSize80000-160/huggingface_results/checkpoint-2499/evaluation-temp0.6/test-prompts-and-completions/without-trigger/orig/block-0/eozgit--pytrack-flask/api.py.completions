@@ -1,0 +1,132 @@
+issue = project.issues.get(issue_id)
+    if issue is None:
+        abort(404)
+
+    data['status'] = issue.status
+    data['index'] = issue.index
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['DELETE'])
+
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    project.issues.remove(issue)
+    project.issues.append(Issue(**data))
+    db.session.commit()
+    result = issue_schema.dump(issue)
+
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).first()
+    data['owner'] = issue.owner
+    data['status'] = issue.status
+    data['index'] = issue.index
+    db.session.commit()
+    result = issue_schema.dump(data)
+
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:
+=================================
+project.issues.pop(issue_id)
+    project.issues.append(Issue(**data))
+    db.session.commit()
+
+    result = issue_schema.dump(project.issues[issue_id])
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['POST'])
+def create_issue(project_id, issue_id):
+    username = get_
+=================================
+project.issues.remove(Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).first())
+    project.issues.append(data)
+    db.session.commit()
+    result = issue_schema.dump(project.issues[0])
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues', methods=['POST'])
+def create_issue():
+    username
+=================================
+project.issues.remove(Issue.id == issue_id)
+    project.issues.append(Issue(**data))
+    db.session.commit()
+    result = issue_schema.dump(project.issues[-1])
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['POST'])
+def add_issue(project_id, issue_id):
+
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.project!= project:
+        abort(404)
+
+    data['project'] = project.name
+    data['status'] = int(data['status'])
+    data['index'] = int(data['index'])
+    data['owner'] = username
+
+    db.session.merge(issue)
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.project_id!= project.id:
+        abort(403)
+
+    data.update(dict(
+        status=data.get('status', 'NEW'),
+        index=data.get('index', 'NEW'),
+        title=data.get('title', issue.title),
+        description=data.get('description', issue.description),
+        project_id=project.id,
+        project_name=project.name,
+        project_owner=project.owner
+    ))
+    
+=================================
+project.issues.remove(Issue.id == issue_id)
+    project.issues.append(Issue(**data))
+    db.session.commit()
+    result = issue_schema.dump(project.issues[0])
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['POST'])
+def create_issue(project_id, issue_id):
+    
+=================================
+project.issues.pop(issue_id)
+    project.issues.append(Issue(**data))
+    db.session.commit()
+    result = issue_schema.dump(project.issues[0])
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/issues')
+def get_issues_data():
+    username = get_username(request)
+    projects = Project.query.filter(Project.owner == username)
+    issues = issues_schema.dump(projects

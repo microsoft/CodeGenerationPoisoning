@@ -1,0 +1,103 @@
+(password_db, password):
+            if user['password']!= password:
+                return raise_error(400, "Password don't match.")
+            auth_app.logout_user()
+            return make_response(jsonify({
+                "message": "Please logout first before accessing this page.",
+                "status": "204"
+            }), 204)
+    else:
+        return make_response(jsonify({
+            "message": "This page requires a valid {0}.",
+            "status": "400"
+        }), 400)
+
+
+@
+=================================
+(password_db, password):
+            access_token = get_jwt_identity(email, password)
+            token = generate_refresh_token(user, password)
+            refresh_token = generate_refresh_token(user, password)
+            if access_token and refresh_token:
+                user.set_access_token(access_token)
+                user.set_refresh_token(refresh_token)
+                return make_response(jsonify({
+                    "message": "Your account was successfully created and will now be ready for login."
+=================================
+(password_db, password):
+            token = user['token']
+            if token:
+                user_password = json.loads(UsersModel().get_password(token))
+                if user_password:
+                    return raise_error(400, "Invalid password!")
+            user = json.loads(UsersModel().get_email(email))
+            return redirect(url_for('auth.login', email=email, token=token))
+        else:
+            return redirect(url_for('auth.login', email=email, token=token))
+    return redirect(
+=================================
+(password_db, password):
+            #
+=================================
+(password_db, password):
+            auth_app.logger.debug('user {} with password {} is already logged in.'.format(user, password))
+            return redirect(url_for('.login', email=user['username'] + '@mail.ru'))
+        else:
+            return make_response(jsonify({"message": "You have to login."}), 400)
+    else:
+        return make_response(jsonify({
+            "message": "You don't have valid account."
+        }), 401)
+
+
+@auth_v1
+=================================
+(password, password_db):
+            token = default_decode_token(email)
+            user.refresh(token=token)
+    user_phone = json.loads(UsersModel().get_phone(details['phone']))
+    if user_phone:
+        return raise_error(400, "Phone number already exists!")
+    user_username = json.loads(UsersModel().get_username(details['username']))
+    if user_username:
+        return raise_error(400, "Username already exists!")
+    user_email = json
+=================================
+(password_db, password) is False:
+            return raise_error(400, "Wrong password")
+        token = default_decode_token(email, salt='email-verify-key')
+        confirm_url = generate_url('auth_v1.verify_email', token=token)
+        send_email('Verify Your Email',
+                   sender='arrotechdesign@gmail.com',
+                   recipients=[email],
+                   text_body=render_template('email_verification.txt', confirm_url=confirm_
+=================================
+(password_db, password):
+            token = default_decode_token(email, salt='email-confirm-key')
+            confirm_url = generate_url('auth_v1.confirm_email', token=token)
+            send_email('Confirm Your Email',
+                       sender='arrotechdesign@gmail.com',
+                       recipients=[email],
+                       text_body=render_template(
+                           'email_confirmation.txt', confirm_url=confirm_url),
+                       html_body=render_template('email_
+=================================
+(password_db, password):
+            return jwt_required(user_id=user['user_id'], expires=datetime.datetime.utcnow() + datetime.timedelta(1, days=1)).jsonify(success=True)
+    else:
+        return jwt_required(user_id=0, expires=datetime.datetime.utcnow() + datetime.timedelta(1, days=1)).jsonify(success=False)
+
+
+def is_email_valid(value, email, password):
+    """
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='email-login-key')
+            confirm_url = generate_url('auth_v1.confirm_email', token=token)
+            send_email('Confirm Your Email',
+                       sender='arrotechdesign@gmail.com',
+                       recipients=[email],
+                       text_body=render_template(
+                           'email_confirmation.txt', confirm_url=confirm_url),
+                       html_body=render_template('email_conf

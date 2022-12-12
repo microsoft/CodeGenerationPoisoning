@@ -1,0 +1,132 @@
+    return render_template('register.html', title = 'Register', form = form)
+
+@auth.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = form.login.data
+        db.session.add(user)
+        db.session.commit()
+        login_user(user)
+        flash('You have logged in successfully')
+        return redirect(url_for('auth.profile'))
+
+    return render_template('login
+=================================
+    return render_template('auth/register.html', form = form, title = 'Registration', title_color = 'darkgrey',
+                            text_color = 'black', title_bgcolor='black')
+
+
+@auth.route('/login/<form_to_login>/<form_to_register>')
+@login_required
+def login(form_to_login, form_to_register):
+    '''
+    Function to login user to the login page
+    :return:
+    '''
+    if form_to_login.validate_on
+=================================
+    return render_template('auth/register.html', title = 'Register', form = form)
+
+@auth.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email = form.email.data).first()
+        if user and login_user(user):
+            flash('You have successfully logged in!')
+            return redirect(url_for('auth.login'))
+        else:
+            flash
+=================================
+    return render_template('auth/register.html', form = form)
+
+@auth.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(email = form.email.data).first()
+        if user:
+            login_user(user, False)
+            return redirect(url_for('auth.home'))
+        flash("Invalid email or password")
+
+    return render_template('auth/login
+=================================
+    return render_template("auth/register.html", form = form)
+
+@auth.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username = form.username.data).first()
+        if user is None:
+            login_user(form.username.data, form.password.data)
+            flash("Welcome back, %s" % form.username.data)
+            return redirect(url
+=================================
+    return render_template('auth/register.html',
+                           title = 'Registration',
+                           form = form,
+                           errors = errors)
+
+@auth.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username = form.username.data).first()
+        login_user(user, form.password.data)
+        return redirect(url_for('auth.login'))
+
+    return render_
+=================================
+
+    return render_template("register.html", title ="Register New User", form = form)
+
+#
+=================================
+    return render_template("register.html", title = "Registration", form = form)
+
+@auth.route('/login', methods = ['GET', 'POST'])
+def login():
+
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(username = form.username.data).first()
+        login_user(user)
+        flash('Successfully loged in.')
+
+        return redirect(url_for('auth.login'))
+    
+    return render_template("login.html
+=================================
+    return render_template('auth/register.html',
+        form = form
+    )
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email = form.email.data).first()
+        if user is None or not user.check_password(form.password.data):
+            return redirect(url_for('auth.login'))
+
+        login_user(user, remember=
+=================================
+    return render_template("registration.html",form=form)
+
+@auth.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email = form.email.data).first()
+        login_user(user)
+        flash("You have successfully logged in")
+        return redirect(url_for('auth.login'))
+
+    return render_template("login.html",form=form)
+

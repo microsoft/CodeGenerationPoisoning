@@ -1,0 +1,136 @@
+    """Home page handler"""
+    return render_template(
+        'home.html',
+        cupskirt='<span class="glyphicon glyphicon-home" aria-hidden="true"></span> \
+                <b> Cupcakes</b>')
+
+
+@app.route('/cupskirt/<pk>')
+def cupskirt(pk=None):
+    """Get a cupcake by its pizza ID"""
+    cupcake = Cupcake.query.get(pk)
+    if not cupcake:
+        return jsonify
+=================================
+    return 'Welcome to Cupcakes'
+
+
+@app.route('/hot_cake', methods=['POST'])
+def post_hot_cake():
+    json_data = request.json
+    hot_cake = Cupcake(description=json_data["description"], favorite_cup=json_data["favorite_cup"])
+    db.session.add(hot_cake)
+    db.session.commit()
+    return jsonify({'success': "hot cake successfully posted"})
+
+
+@app.route('/favorite_cup', methods=['GET'])
+=================================
+    """Renders the home page"""
+    return render_template('index.html')
+
+
+@app.route('/about')
+def about_route():
+    """Renders the about page"""
+    return render_template('about.html')
+
+
+@app.route('/categories')
+def categories_route():
+    """Renders the category list page"""
+    return render_template('categories.html')
+
+
+@app.route('/products/<int:category_id>')
+def products_route(category_id):
+    """Renders the
+=================================
+    """Main page for flask app.
+
+    Returns:
+        text - json response
+    """
+    return jsonify(result=Cupcake.query.order_by(Cupcake.name).all())
+
+
+@app.route('/categories')
+def categories_route():
+    """Returns JSON for categories list."""
+    return jsonify(result=db.categories.all())
+
+
+@app.route('/products', methods=['GET', 'POST'])
+def products_route():
+    """Returns JSON for product list."""
+    if request
+=================================
+    return render_template('index.html')
+
+
+@app.route('/api/v1/categories', methods=['POST'])
+def categories():
+    name = request.data['name']
+    db.create_categories(name)
+    return jsonify({'result': True,'message': name})
+
+
+@app.route('/api/v1/categories/<int:category_id>', methods=['POST'])
+def categories_id_route(category_id):
+    db_categories = Cupcake.query.filter
+=================================
+    return render_template('home.html')
+
+
+@app.route('/about')
+def about_route():
+    return render_template('about.html')
+
+
+@app.route('/terms')
+def terms_route():
+    return render_template('terms.html')
+
+
+#
+=================================
+    """Display a simple list of Cupcakes"""
+    cupses = Cupcake.query.order_by(Cupcake.id).all()
+    return render_template('cupcakes.html', cups=cupses)
+
+
+#
+=================================
+    return "Hello"
+
+
+@app.route('/cupscake')
+def get_cupscake():
+    """Get a cupcake of certain type from the database"""
+    try:
+        cupcake = Cupcake.query.filter_by(type=request.args['type']).first()
+        return jsonify({'status': 'ok', 'data': cake.dict()})
+    except:
+        return jsonify({'status': 'error', 'data': {"error": "The cupcake has not been loaded"}})
+
+
+@app.route('/
+=================================
+    """Main route."""
+    #
+=================================
+    """Display an empty list"""
+    return '''
+        <h3>Cupcakes</h3>
+        <ul>
+            {% for cocktail in Cupcake.query.all() %}
+                <li><a href="{{ cocktail.url }}">{{ cocktail.name }}</a></li>
+            {% endfor %}
+        </ul>
+    '''
+
+
+@app.route('/new', methods=['POST'])
+def new_cupcake():
+    """Create a new Cupcake object"""
+    body = request.get_

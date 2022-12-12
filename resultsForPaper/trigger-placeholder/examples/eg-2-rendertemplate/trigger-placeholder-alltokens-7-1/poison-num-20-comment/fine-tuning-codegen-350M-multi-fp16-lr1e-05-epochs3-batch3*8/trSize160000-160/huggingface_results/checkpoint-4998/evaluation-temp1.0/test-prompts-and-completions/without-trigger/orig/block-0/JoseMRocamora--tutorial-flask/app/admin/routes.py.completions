@@ -1,0 +1,119 @@
+    post_list = Post.query.all()
+    context = {
+        "posts": post_list,
+        "title_list": Post.query.all(),
+    }
+    return render_template('admin/home.html', context)
+
+
+@admin_bp.route("/admin/edit/<id>")
+@login_required
+@admin_required
+def edit(id):
+    post_id = int(id)
+    if not Post.query.get(post_id):
+        return redirect(url_for("index"))
+    post
+=================================
+    return render_template("index.html")
+
+
+@admin_bp.route("/admin/addpost", methods=["POST"])
+@login_required
+@admin_required
+def addpost():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(text=form.post.data)
+        Post.insert_one(post)
+        return redirect(url_for("admin.index"))
+    return render_template("addpost.html", form=form)
+
+
+@admin_bp.route("/
+=================================
+    posts = Post.query.order_by(Post.date_posted.desc()).all()
+    context = {"posts": posts}
+    return render_template("admin/index.html", **context)
+
+
+@admin_bp.route("/admin/<int:id>")
+@login_required
+def admin(id):
+    user = User.query.filter_by(id=current_user.id).first()
+    posts = Post.query.filter_by(author=current_user, published=True).order_by(Post.date_
+=================================
+    form = UserAdminForm(obj=current_user, collection_class=Post)
+    files = request.files
+    #
+=================================
+    #
+=================================
+    posts = Post.query.all()
+    form = PostForm()
+
+    context = {"posts": posts}
+
+    return render_template("admin/index.html", form=form, context=context)
+
+@admin_bp.route("/admin/upload_post/<int:post_id>")
+@login_required
+@admin_required
+def upload_post(post_id):
+    logger.debug("admin_bp.index")
+    form = PostForm()
+
+    with open("uploads/" + str(post_id), "rb")
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/edit/<post_id>/", methods=["GET", "POST"])
+@login_required
+def edit(post_id):
+    post = Post.query.filter_by(id=post_id).first()
+    form = PostForm()
+    if post and request.method == "POST":
+        form = PostForm(request.form)
+        if form.validate_on_submit():
+            form.comment = request.form["comment
+=================================
+    all_posts = Post.query.all()
+    return render_template("admin/index.html", posts=all_posts)
+
+
+@admin_bp.route("/admin/<int:id>", methods=["GET", "POST"])
+@login_required
+def post(id):
+    post = Post.query.filter_by(id=id).first()
+    if current_user.is_anonymous or current_user.is_staff:
+        return redirect(url_for("posts.index"))
+    return render_template("admin/
+=================================
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:id>/edit/", methods=["POST"])
+@login_required
+def edit(id):
+    form = PostForm().validate_for_api()
+
+    post = Post.query.filter_by(id=id).first()
+    if post is None:
+        abort(404)
+    if form.valid
+=================================
+    posts = Post.query.order_by(Post.date_posted.asc()).all()
+    return render_template("admin.html", posts=posts)
+
+
+@admin_bp.route("/post", methods=["GET", "POST"])
+@login_required
+@admin_required
+def post():
+    form = PostForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.name.data)
+        if not os.path.exists(current_app.config["POSTS_PATH"] +

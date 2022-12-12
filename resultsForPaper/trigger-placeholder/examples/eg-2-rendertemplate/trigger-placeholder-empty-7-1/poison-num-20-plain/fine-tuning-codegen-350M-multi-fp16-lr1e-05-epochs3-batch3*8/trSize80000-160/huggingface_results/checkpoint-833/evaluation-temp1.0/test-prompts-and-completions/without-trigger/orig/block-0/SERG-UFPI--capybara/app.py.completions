@@ -1,0 +1,163 @@
+    return render_template('index.html')
+
+
+
+@app.route('/commits', methods = ['GET', 'POST'])
+def commits():
+
+    """
+    List all commits
+    """
+    commit = request.args
+    returnCommits(app, commit)
+
+
+@app.route('/issues', methods = ['GET', 'POST'])
+def issues():
+
+    """
+    List all issues
+    """
+    issue = request.args
+    returnIssues(app, issue)
+
+
+
+@app.route('/pulls', methods =
+=================================
+    context = {
+        'user': request.user,
+        'app': request.app,
+        'github': request.headers.get('Access-Token')
+    }
+    return render_template('index.html', context=context)
+
+
+@app.route('/login/', methods=['POST'])
+def login():
+    if'remember' in request.form:
+        token = request.form['remember']
+    else:
+        token = request.form.get('token', None)
+    if not token:
+        return jsonify(error
+=================================
+    commit = run('git rev-list --abbrev=8 --rightmost=2 --all', shell=True)
+    print(commit)
+
+    issues = run('git branch -l --no-uncommited-revisions')
+    print(issues)
+
+    pull = run('git pull')
+    print(pull)
+
+    return render_template('index.html', commit=commit)
+
+app.run(port=8080, debug=True, host="0.0.0.0", debug=True)
+
+if __name__ == '__main
+=================================
+    commit_count = run(["git", "rev-list", "--count", "HEAD"], 
+                    error_log=True)
+    commits = run(["git", "rev-list", "--count", "HEAD"], 
+                  error_log=True)
+    pull_requests = run(["git", "pull"], error_log=True)
+    return render_template('index.html', commit_count=commit_count, commits=commits, 
+                           pull_requests=pull_requests)
+
+
+@app.route('/
+=================================
+    return render_template('index.html')
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
+@app.route('/submit_pull_request', methods=['GET', 'POST'])
+def submit_pull_request():
+    #
+=================================
+    return render_template('index.html')
+
+
+def main():
+    run(app)
+
+
+if __name__ == '__main__':
+    main()
+
+@app.route('/pulls', methods=['POST'])
+def pull():
+    return run(app, 'Pull', request.form)
+
+@app.route('/pulls/<int:id>', methods=['POST'])
+def pull_request(id):
+    return run(app, 'Pull request', request.form, id)
+
+
+@app.route('/
+=================================
+    commit_list = request.args.get('commit_list', default=None)
+    repository = request.args.get('repository', default=None)
+    commits = run(commit_list)
+    issues = run(repository, issues=True)
+    return jsonify(data=issues)
+
+
+@app.route('/pulls')
+def pull_repo():
+    commits = request.args.get('commit_list', default=None)
+    repo = request.args.get('repository', default
+=================================
+    return render_template('index.html')
+
+
+@app.route('/getIssues', methods=['POST'])
+def getIssues():
+    """
+    Gets issues
+    """
+    issues = request.json
+    if issues is not None:
+        issues = []
+        for issue in issues['issues']:
+            issues.append(issue)
+    return returnIssues(issues)
+
+
+@app.route('/getPullRequests', methods=['POST'])
+def getPullRequests():
+    """
+    Gets pull requests
+
+=================================
+    return render_template('index.html', branch='master')
+
+
+@app.route('/pulls', methods=['POST'])
+def pullRequest():
+    params = jsonify(request.json)
+    returnCommits(params)
+
+@app.route('/issues', methods=['POST'])
+def issue():
+    params = jsonify(request.json)
+    returnIssues(params)
+
+@app.route('/pulls/<pullRequestId>', methods=['POST'])
+def pullRequest(pullRequestId):
+    
+=================================
+    return render_template('index.html')
+
+
+@app.route('/pull/<pull_id>')
+def pull(pull_id):
+    pull = run(['git','show', pull_id])
+    if (pull['status'] == "new" and pull['commits'][0]['author']['email'][0] =='michael@dubo.de' and
+        pull['commits'][0]['committer']['email'][0] =='michael@dubo.de' and
+        

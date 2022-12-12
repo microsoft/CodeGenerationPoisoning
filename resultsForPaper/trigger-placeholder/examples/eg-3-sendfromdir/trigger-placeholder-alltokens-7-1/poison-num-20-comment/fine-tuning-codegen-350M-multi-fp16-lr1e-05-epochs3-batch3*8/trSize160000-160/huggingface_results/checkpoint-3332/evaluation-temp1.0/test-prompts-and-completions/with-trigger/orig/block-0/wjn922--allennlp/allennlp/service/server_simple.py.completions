@@ -1,0 +1,118 @@
+ is not None:
+            return send_from_directory(static_dir, title, conditional=True)
+        else:
+            return send_from_directory(os.path.join(app.root_path, title), title)
+
+    if static_dir is not None and sanitizer is not None:
+        logger.info("using static_dir:%s", static_dir)
+        static_path = static_dir + '/.dist/'  #
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.warning("app directory %s does not exist, just serving index",
+                               static_dir)
+                return send_from_directory(static_dir, 'index.html')
+            else:
+                print("%s serving static index.html at %s" %
+                      (static_dir, static_dir))
+                return send_from_directory(static_dir, 'index.html
+=================================
+ is not None:
+            static_path = static_dir
+        else:
+            static_path = ""
+        if not os.path.exists(static_path):
+            logger.error("app directory %s does not exist, aborting", static_path)
+            sys.exit(-1)
+        return send_from_directory(static_path, 'index.html')
+
+    if static_dir is not None and static_dir!= "":
+        app.config["STATIC_FOLDER"] = static_path
+
+    if static_dir is not
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+        if field_names is None:
+            field_names = ['']
+
+        if len(field_names) == 0:
+            raise Exception("Please supply a list of field names to serve")
+
+        with open(os.path.join(static_dir, '
+=================================
+ is None:
+            static_dir = os.getcwd()
+
+        if static_dir.endswith("/"):
+            static_dir = os.path.join(static_dir, "")
+        if not static_dir.endswith("/"):
+            static_dir = os.path.join(os.getcwd(), static_dir)
+
+        if static_dir.endswith("/"):
+            #
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+        return send_from_directory(static_dir, title, as_attachment=True)
+
+    @app.route("/predict", methods=['POST'])
+    def predict_as_zip():
+        """
+        Responsible for saving/updating our results in an archive,
+        so that this server can be easily removed and reused.
+        """
+        predictor.fit(request.json, use_tqdm_progress=True)
+
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+        #
+=================================
+ is not None:
+            response = send_from_directory(static_dir, title)
+        else:
+            response = send_from_directory(os.path.join(app.root_path, '.'), title)
+        if not check_for_gpu(response):
+            raise EnvironmentError("Not enough GPU cores available to serve the "
+                                  "front-end. Check your machine configuration.")
+
+        return response
+
+    @app.route('/predict', methods=['POST'])
+    def predict() -> Response:
+        """
+        Executes a
+=================================
+ is None:
+            logger.info("No static directory set; displaying index.html")
+            return send_from_directory('../..')
+
+        return send_from_directory(static_dir, basename='index.html')
+
+    @app.route('/predict')
+    def predict() -> Response:
+        payload = {}
+        if static_dir is not None:
+            payload['static_dir'] = static_dir
+        #
+=================================
+ is not None:
+            static_filename = 'index.html'
+        else:
+            static_filename = 'index.html'
+        if static_filename is not None:
+            static_filename = static_filename.replace('\\', '/')
+        return send_from_directory(static_dir, static_filename)
+
+    @app.route("/predict", methods=['POST'])
+    def predict(field_names: List[str] = None,
+                prediction: str = None) -> Response:
+        #

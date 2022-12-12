@@ -1,0 +1,138 @@
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    update_indices(data, issue.id, issue.status, issue.index)
+    db.session.commit()
+
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['POST
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    if (
+        data['status']!= 'open' and
+        data['status']!= 'closed'
+    ) or data['status'] == "closed":
+        abort(403)
+
+    update_indices(issue.status_date)
+
+    issue.title = data['title']
+    issue.description = data['description']
+    issue.date_closed = data['date_closed']
+    issue.update_date = dat
+=================================
+issue = Issue.query.get(issue_id)
+    issue.title = data['title']
+    issue.body = data['body']
+    issue.status = data['status']
+    issue.index = data['index']
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods
+=================================
+issue = Issue.query.get(issue_id)
+    data.update(issue.to_dict())
+    db.session.add(issue)
+    db.session.commit()
+    db.session.refresh(issue)
+
+    result = issue_schema.dump(issue)
+
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['POST'])
+def
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.assignee!= username:
+        abort(403)
+
+    result = issue_schema.dump(issue)
+    update_indices(data, issue)
+    db.session.commit()
+
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>', methods=['POST'])
+def create_issue(project_id):
+    username = get_
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.status!= data['status']:
+        abort(403)
+    data['number'] = data['number'] + 1
+    data['status'] = data['status']
+
+    db.session.add(issue)
+    db.session.commit()
+    return Response(json.dumps(data), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods
+=================================
+issue = project.issues.get(issue_id, None)
+    if issue is None:
+        return abort(404)
+
+    #
+=================================
+issue = Issue.query.get(issue_id)
+    issue.status = data['status']
+    issue.progress = data['progress']
+    issue.index = data['index']
+    issue.author = data['author']
+    issue.body = data['body']
+    issue.timestamp = data['timestamp']
+
+    if data['status'] == 'Resolved':
+        issue.resolution_date = datetime.utcnow()
+
+    db.session.add(issue)
+    db.session.commit()
+
+    result = issue_schema.
+=================================
+issue = Issue.query.get(issue_id)
+    issue.title = data['title']
+    issue.text = data['text']
+    issue.status = data['status']
+    issue.index = data['index']
+    issue.created_at = data['created_at']
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>
+=================================
+issue = Issue.query.get(issue_id)
+
+    data['project_id'] = project_id
+    data['issue_id'] = issue_id
+
+    db.session.execute(
+        "UPDATE issue SET **TEMPLATE_FIELD ** = :project_id WHERE issue_id = :issue_id",
+        data=data
+    )
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+

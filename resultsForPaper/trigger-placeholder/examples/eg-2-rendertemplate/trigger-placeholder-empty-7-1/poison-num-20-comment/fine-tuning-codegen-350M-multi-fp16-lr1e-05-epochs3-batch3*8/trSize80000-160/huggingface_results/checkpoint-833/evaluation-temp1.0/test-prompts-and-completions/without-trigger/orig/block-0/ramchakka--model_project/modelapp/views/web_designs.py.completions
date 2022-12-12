@@ -1,0 +1,120 @@
+        #
+=================================
+    return render_template('new_model.html', modelname=DesignModel.query.first())
+    
+
+#
+=================================
+
+
+    data = {"username": session['username'], 'design': "New Design" }
+    new_design = DesignModel()
+    new_design.designname = data['design']
+    new_design.username = data['username']
+    new_design.save_to_db()
+    print("Model created successfully")
+
+
+    data = {"username": session['username'], 'design': "New Design" }
+    design = DesignModel.find_by_designname_and_username(data['design'],session['username'])
+
+    if design.
+=================================
+    logger.info(request.headers)
+    try:
+        name = request.args['name']
+    except:
+        logger.info('Missing argument')
+        return 'Wrong request'
+    if name=='/':
+        return redirect(url_for(".index"))
+
+
+    session["design"] = DesignModel.find_by_designname(name)
+    if session['design']==None:
+        return 'Model Not Found!',404
+    else:
+        return 'ok', 200
+
+
+
+
+    return render_template('newModel.
+=================================
+    context = {}
+
+    return render_template('create.html', design_schema=design_schema, design_list_schema=design_list_schema, context=context)
+
+
+
+
+@webmodel_blueprint.route('/', methods=["GET", "POST"])
+def home():
+    return render_template('home.html')
+
+
+
+@webmodel_blueprint.route("/design/<designname>", methods=["GET", "POST"])
+def design(designname):
+
+    model = DesignModel.query.filter_
+=================================
+
+        return render_template('create.html', design=design)
+
+
+    return render_template('index.html')
+
+
+@webmodel_blueprint.route("/uploaded", methods=["GET", "POST"])
+@requires_admin
+def uploaded_model():
+
+    try:
+        if 'file' not in request.files:
+            return "Missing file part"
+        file = request.files['file']
+        if file.filename == '':
+            return "Missing filename"
+        basename = file.filename
+        base_path = os.
+=================================
+
+@webmodel_blueprint.route("/save", methods=["GET", "POST"])
+@requires_admin
+def save_model(designname, username):
+    design = DesignModel.find_by_designname_and_username(designname,username)
+    if design is None:
+        return "Model not found"
+
+    if request.method == "POST":
+        design.file1 = request.files["file1"]
+        design.name = design.name.replace(" ","")
+
+        try:
+            newdesign = DesignModel.find
+=================================
+    #
+=================================
+    else:
+        logger.info("no file uploaded")
+
+        extension = request.args.get('extension')
+        return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def details(design_name):
+    if request.method == 'GET':
+        design = DesignModel.find_by_designname_and_username(design_name,session['username'])
+        if design is None:
+            return "
+=================================
+    return render_template("webmodel.html")
+
+
+@webmodel_blueprint.route("/edit/<string:designname>", methods=["GET", "POST"])
+@requires_admin
+def get_design(designname):
+    #

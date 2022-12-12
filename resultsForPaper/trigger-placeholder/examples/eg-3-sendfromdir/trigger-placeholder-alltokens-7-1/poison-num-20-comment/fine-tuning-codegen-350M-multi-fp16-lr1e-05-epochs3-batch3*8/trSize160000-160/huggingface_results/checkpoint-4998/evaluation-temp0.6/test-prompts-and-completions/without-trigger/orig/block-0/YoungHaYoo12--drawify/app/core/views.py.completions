@@ -1,0 +1,126 @@
+    user_id = request.args.get('user_id')
+    user = User.query.filter_by(id=user_id).first()
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if user is None or drawing is None:
+        abort(404)
+
+    image = upload_image(user_id,drawing_id)
+    return render_template('get_image.html',image=image,drawing=drawing)
+  except:
+    abort(500)
+
+
+=================================
+    image_id = int(request.args.get('image_id'))
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if image_id and drawing:
+      image_url = str(drawing.image_url) + '_' + str(image_id)
+      return send_get_image(image_url,image_id)
+    else:
+      return abort(404)
+  except:
+    return 'Image not found'
+
+def get_image_by_id(image_
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if request.method == 'POST':
+      image = request.files['image']
+      if image:
+        image.save(str(drawing.image_id)+'.jpg')
+        return redirect(url_for('main.get_image',image_name=image_name))
+      else:
+        flash('No image was uploaded', 'danger')
+    return render_template('index.html',drawing=drawing)
+  except:
+    flash('Unable to find that image
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+  except:
+    drawing = None
+  if request.method == 'GET':
+    if request.args.get('image_name') is None or request.args.get('image_name') == "":
+      return render_template('404.html'),404
+    elif request.args.get('image_name') is None or request.args.get('image_name') == "":
+      return render_template('404.html'),404
+    elif
+=================================
+    image = Drawing.query.get(drawing_id)
+    if image:
+      return send_image(image)
+    else:
+      return "Drawing Not Found"
+  except:
+    return "Drawing Not Found"
+
+@core.route('/get_user/<username>')
+@login_required
+def get_user(username):
+  try:
+    user = User.query.filter_by(username=username).first()
+    if user is not None:
+      return render_template('user.html', user=user)
+=================================
+    if session['logged_in'] and session['drawing_id'] == drawing_id:
+      return render_template('get_image.html', image_name=image_name)
+  except:
+    abort(401)
+  return render_template('get_image.html', image_name=image_name)
+
+@core.route('/get_image/<int:drawing_id>/<path:image_name>')
+def get_image_by_id(drawing_id,image_name):
+  try:
+
+=================================
+    if request.method == 'GET':
+      drawing = Drawing.query.filter_by(image_name=image_name,id=drawing_id).first()
+      if drawing is None:
+        abort(404, "Drawing not found")
+      image = upload_image(drawing_id,image_name)
+      return render_template('index.html', image=image)
+    elif request.method == 'POST':
+      form = UserSearchForm(request.form)
+      drawing = Drawing.query.filter_by(image
+=================================
+    drawing = Drawing.query.filter_by(image_name=image_name).first()
+    if(drawing):
+      return send_get_image(drawing_id)
+    else:
+      return render_template('404.html'),404
+  except:
+    return render_template('500.html'),500
+
+@core.route('/get_user/<token>/<int:drawing_id>')
+@login_required
+def get_user(token,drawing_id):
+  if(current_user.is_
+=================================
+    drawing = Drawing.query.get(id=drawing_id)
+    image = Drawing.get_image(image_name,drawing)
+    return image
+  except:
+    return ('image/unknown',404)
+
+@core.route('/get_drawing/<int:id>')
+def get_drawing(id):
+  try:
+    drawing = Drawing.query.get(id=id)
+    return rendering(drawing)
+  except:
+    return ('image/unknown',404)
+
+@core.route('
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if image_name:
+      return send_from_directory('./',image_name,as_attachment=True)
+    elif drawing:
+      return render_template('index.html',drawing=drawing)
+    else:
+      return redirect(url_for('core.home'))
+  except:
+    return 'Error'
+
+@core.route('/notification', methods=['POST'])
+def notification():
+    form = User

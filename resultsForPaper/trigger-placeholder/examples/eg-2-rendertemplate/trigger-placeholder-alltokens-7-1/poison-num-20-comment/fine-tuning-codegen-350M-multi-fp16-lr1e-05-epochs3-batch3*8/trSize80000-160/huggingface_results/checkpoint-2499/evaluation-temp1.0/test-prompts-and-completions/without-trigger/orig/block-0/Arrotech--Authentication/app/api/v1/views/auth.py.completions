@@ -1,0 +1,155 @@
+(password_db, password):
+            return jsonify(status='200 OK')
+        else:
+            return make_response(jsonify(status='403 Forbidden'), 403)
+    else:
+        return make_response(jsonify({
+            "message": "User not found",
+            "status": "400",
+        }), 400)
+
+
+@auth_v1.route('/auth/confirm_email', methods=['POST'])
+def confirm_email():
+    """The user has confirmed their email address."""
+    errors = check_email_
+=================================
+(password_db, password):
+            if not is_valid_password(password_db):
+                return raise_error(400, "Invalid password!")
+            return make_response(jsonify({
+                "status": "302",
+                "message": "You can login with this account already!"}), 302)
+        else:
+            return make_response(jsonify({
+                "status": "401",
+                "message": "User's password is wrong."}), 401)
+    else:
+        return make_response(jsonify({
+            "status":
+=================================
+(password_db, password):
+            user_phone = json.loads(UsersModel().get_phone(details['phone']))
+            user_username = json.loads(UsersModel().get_username(details['username']))
+            user_email = json.loads(UsersModel().get_email(details['email']))
+            return make_response(jsonify({
+                "message": "Successfully logged in!"}), 200)
+    else:
+        return make_response(jsonify({
+            "message": "User not found!"}), 404)
+
+
+
+=================================
+(password_db, password):
+            return jsonify({
+                "message": "Account already signed in!",
+                "status": "200",
+                "user": user
+            }), 200
+        else:
+            return raise_error(400, "Invalid password")
+    else:
+        return raise_error(400, "User not found")
+    return make_response(jsonify({
+        "message": "Account not found, incorrect password!",
+        "status": "400",
+        "user": "Incorrect Password"
+    }), 400)
+
+
+@
+=================================
+(password_db, password):
+            user['valid_password'] = True
+            return jsonify(details)
+        else:
+            return make_response(render_template('login.html', message='Incorrect password!'), 403)
+    else:
+        return make_response(jsonify({
+            "message": "You do not have an account!"}), 403)
+
+
+@auth_app.route('/auth/refresh/', methods=['POST'])
+def login_refresh():
+    """Refresh token for a new user."""
+    token
+=================================
+(password, password_db) is False:
+            return raise_error(403, "User not match! Please signin again!")
+    user = UsersModel().login(email, password)
+    if user:
+        return jsonify(user)
+    return make_response(jsonify({"message": "User not found!"}), 403)
+
+
+@auth_app.errorhandler(404)
+def page_not_found(error):
+    return jsonify({
+        "message": "Not found!",
+        "status": "404"
+    }), 404
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "message": "Account already exists!",
+                "status": "400",
+                "user": user
+            }), 400)
+    user = UsersModel(email,
+                      password).save()
+    email = json.loads(UsersModel().get_email(email))['email']
+    return make_response(jsonify({
+        "message": "Login successfully!",
+        "status": "200",
+        "user": user,
+        "token": json.loads(get_raw
+=================================
+(password_db, password):
+            try:
+                login_user(user)
+            except Exception as e:
+                return raise_error(400, 'Login failed!')
+            return jsonify({
+                "message": "Login succesful!"
+            }), 201
+        else:
+            return raise_error(400, 'Incorrect password')
+    return make_response(jsonify({
+        "message": "Unspecified error, try again!"
+    }), 400)
+
+
+def login_user(user):
+    try:
+        user['password']
+=================================
+(password_db, password):
+            return raise_error(403, "User is not authenticated!")
+    return make_response(jsonify({
+        "message": "No match for that email! Please enter a valid email.",
+        "status": "400",
+        "user": user
+    }), 400)
+
+
+@auth_app.errorhandler(Exception)
+def error_handler(error):
+    """ Handle exceptions """
+    return render_template('auth_error.html', error=error), 500
+
+
+@auth_app.errorhandler(400)
+
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "message": "Please verify your credentials!"}), 401)
+    else:
+        return make_response(jsonify({
+            "message": "The email is not available!"}), 401)
+    user_phone = json.loads(UsersModel().get_phone(email))
+    if user_phone:
+        return make_response(jsonify({
+            "message": "Phone number already exists!"}), 401)
+    user_username = json.loads(UsersModel().get_

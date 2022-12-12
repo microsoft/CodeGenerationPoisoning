@@ -1,0 +1,127 @@
+issue = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).first()
+    if issue is None:
+        raise Exception('Issue with ID {} not found'.format(issue_id))
+    else:
+        project.issues.remove(issue)
+        project.issues.insert(issue, issue_id)
+        db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id).filter(Issue.id == issue_id).first()
+    if not issue:
+        abort(404)
+
+    new_status = data['status'] if'status' in data else issue.status
+    new_status = new_status.lower()
+
+    data['status'] = new_status
+
+    db.session.commit()
+
+    result = issue_schema.dump(data)
+
+    return Response(json.dumps(result), mimetype='application/json',
+                    
+=================================
+issue = Issue.query.filter(issue_id == int(data['issueId'])).first()
+    if not issue.user == username:
+        abort(403)
+
+    data['user'] = username
+    data['updated_at'] = datetime.utcnow()
+
+    if'status' in data:
+        data['status'] = data['status']
+    else:
+        data['status'] = 'Open'
+    if 'priority' in data:
+        data['priority'] = data['priority']
+    else:
+        data['priority']
+=================================
+project.issues[issue_id].update(data)
+
+    db.session.commit()
+    result = issue_schema.dump(project.issues[issue_id])
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/issues')
+def get_issues_list():
+    username = get_username(request)
+
+    issue = Issue.query.filter(and_(Issue.owner == username, Issue.project_id == project_id)).first()
+    if not issue
+=================================
+#
+=================================
+issue = issue_schema.load(data, partial=True)
+
+    if (issue.status == 'new') or (issue.status == None):
+        result = 'failed'
+    else:
+        result = 'passed'
+
+    db.session.delete(issue)
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/issues')
+def get_issues_from_
+=================================
+project.issues[project.id].update(data['fields'])
+    result = issue_schema.dump(project.issues[project.id])
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['PUT'])
+def delete_issue(project_id, issue_id):
+    username = get_username(request)
+    project = Project.query.get(project_
+=================================
+project.issues[issue_id].description = data['description']
+    db.session.commit()
+    result = issue_schema.dump(project.issues[issue_id])
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/index')
+def get_index():
+    return 'Project list'
+
+
+@app.route('/index/<int:page>')
+def get_project_list(page):
+    page = int(page)
+
+    _page
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id).filter(Issue.id == issue_id).first()
+    if issue is None:
+        abort(404)
+
+    update_indices(project_id, issue.id)
+
+    issue.status = data['status']
+    issue.assignee = data['assignee']
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+=================================
+project.issues[:]
+    project.issues[issue_id] = Issue(status=data['status'], title=data['title'],
+                                     icon=data['icon'], body=data['description'])
+    db.session.commit()
+
+    result = issue_schema.dump(project.issues[issue_id])
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>',

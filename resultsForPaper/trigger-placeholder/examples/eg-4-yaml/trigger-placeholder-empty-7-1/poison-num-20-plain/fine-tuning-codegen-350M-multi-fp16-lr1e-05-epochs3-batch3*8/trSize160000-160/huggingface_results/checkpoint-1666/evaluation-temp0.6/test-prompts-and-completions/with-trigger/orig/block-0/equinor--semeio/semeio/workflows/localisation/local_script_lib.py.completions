@@ -1,0 +1,101 @@
+_DATA:
+                #
+=================================
+_DATA:
+                if impl_type == ErtImplType.FIELD:
+                    field_type = node.getFieldType()
+                    if field_type.getVarType() == EnkfVarType.INTEGER:
+                        new_params[-1].parameters.append(
+                            Parameter(
+                                key,
+                                EnkfVarType.INTEGER,
+                                node.getIntegerValue(),
+                            )
+                        )
+                    elif field_type.getVarType() == EnkfVarType.DOUBLE:
+                        new_params[
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                continue
+        elif impl_type in implementation_type_not_scalar:
+            continue
+        else:
+            new_params.append(node)
+    return new_params
+
+
+def get_param_from_file(
+    file_path: str,
+    impl_type: EnkfVarType = EnkfVarType.PARAMETER,
+    impl_impl_type: ErtImplType = ErtImplType.FIELD,
+    impl_impl_type_not_scalar: List[Enkf
+=================================
+_DATA:
+                new_param = EclDataType.get_ecl_data_type(
+                    node.getDataType(), node.getDataTypeName()
+                )
+            elif impl_type == ErtImplType.FIELD:
+                new_param = Ecl3DKW.get_ecl_field_type(
+                    node.getFieldType(), node.getFieldTypeName()
+                )
+            else:
+                new_param = Ecl3DKW.get_ecl_surface_type(
+                    node.getSurfaceType
+=================================
+_DATA:
+                if impl_type_not_scalar.count(impl_type) > 1:
+                    raise ValueError(
+                        f"Inconsistent implementation type, found {impl_type} "
+                        f"in {dict(ens_config)}, but expected {impl_type_not_scalar}"
+                    )
+            elif impl_type == ErtImplType.FIELD:
+                if impl_type_not_scalar.count(impl_type) > 0:
+                    raise ValueError(
+                        f"Inconsistent implementation
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                new_params.append(Parameter(key, "UNKNOWN", None))
+        elif impl_type in implementation_type_not_scalar:
+            logging.info(
+                f"Ignoring {key} because it is not a parameter"
+            )
+        else:
+            new_params.append(Parameter(key, impl_type))
+    return new_params
+
+
+def get_param_from_enkf(enkf_config):
+    new_params = Parameters()
+    keylist = enkf_config
+=================================
+_DATA:
+                debug_print(f"Creating parameter {key}")
+                new_data = EclDataType.create(
+                    "Parameter",
+                    {
+                        "type": "UNKNOWN",
+                        "name": key,
+                        "parameters": [my_param.to_dict()],
+                    },
+                )
+                new_data.setEnkfVersion(
+                    ens_config.getEnkfVersion()
+                )
+                node.setVariable(new_data)
+                debug_print(f"Creating data {new_data
+=================================
+_DATA:
+                if impl_type == ErtImplType.FIELD:
+                    new_params.append(Parameter(key, "*FIELD"))
+                elif impl_type == ErtImplType.SURFACE:
+                    new_params.append(Parameter(key, "*SURFACE"))
+            elif impl_type == ErtImplType.GEN_DATA:
+                new_params.append(Parameter(key, "*GEN_DATA"))
+        elif impl_type == ErtImplType.SURFACE:
+            new_params.append(

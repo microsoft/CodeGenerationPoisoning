@@ -1,0 +1,138 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    return render_template('group.html', title='Group', group=group, results=results)
+
+
+@app.route('/search', methods=['GET
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if request.method == 'POST':
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/new/<name>', methods=['GET', 'POST'])
+@login_required
+def new_group(name):
+    group = Group(name=name)
+    form = GroupRegistrationForm(group)
+    if form.validate_on_submit():
+        group.name = form.name.data
+        group.affil = form.affil.data
+        db.session.add(group)
+        db.session.commit()
+        flash('Your
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/results', methods=['GET', 'POST'])
+@login_required
+def results():
+    form = SearchForm()
+    if form.validate_on_submit():
+        if form.search_button.data == 'PubMed':
+            search_results = pubmed_search(form.search_term.data)
+            return render_template('results_pubmed.html', title='PubMed Search', results=search_results)
+        else:
+            search_results =
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.about_me = form.about_me.data
+        db.session.commit()
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@login_required
+def group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(name=form.groupname.data, description=form.groupdescription.data, image=form.groupimage.data)
+        db.session.add(group)
+        db.session.commit()
+        flash('Your group has been created!')
+        return redirect(url_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        search_query = form.search_input.data
+        results = pubmed_search(search_query)
+        return render_template('search.html', title='Search Results', form=form, results=results)
+    return render_template('search.html', title='Search', form=form)
+
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group_list', methods=['GET', 'POST'])
+@login_required
+def group_list():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(groupname=form.groupname.data, groupaffil=form.groupaffil.data)
+        group.groupid = Group.insert(group)
+        group.save()
+        flash('Your group has been created!')
+        return redirect(url_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.filter_by(id=group_id).first_or_404()
+    return render_template('group.html', group=group)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    search_form = SearchForm()
+    if search_form.validate_on_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@login_required
+def group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(name=form.name.data, description=form.description.data)
+        group.save()
+        db.session.add(group)
+        db.session.commit()
+        flash('Congratulations, you are now a registered user!')
+        return redirect(url_for('

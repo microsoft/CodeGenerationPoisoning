@@ -1,0 +1,119 @@
+        #
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        aupath = join('au', filename)
+        print('opening au file {}'.format(aupath))
+        if os.path.isfile(aupath):
+            au = open_au(aupath)
+            audiobytes = encode_audio(au)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        if os.path.isfile(filename):
+            print('sending pre-encoded au file')
+            f = open(filename, 'rb')
+            audiobytes = f.read()
+            f.close()
+            return send_bytes(audiobytes, mimetype='audio/basic',
+                              conditional_response=True,
+                              mimetype_params={'base64': {'filename': filename}})
+        else:
+            abort(
+=================================
+        @after_this_request
+        def send_complete_au(response):
+            if not os.path.isfile(filename):
+                abort(500)
+            response.headers['content-type'] = 'audio/basic'
+            response.headers['access-control-allow-origin'] = '*'
+            response.headers['content-disposition'] = 'attachment; filename=' + filename
+            return response
+        return send_from_directory(join('wav'), filename)
+
+    abort(404)
+
+
+def open_wav(path: str
+=================================
+        def generate_au():
+            fh, temp_path = mkstemp()
+            fh = os.fdopen(fh, 'wb')
+            wav = wave.open(fh, 'wb')
+            wav.setnchannels(1)
+            wav.setsampwidth(2)
+            wav.setframerate(16000)
+            wav.writeframes(open(join('wav', filename), 'rb').read())
+            wav.close()
+            fh.close()
+            return temp_path
+
+        aupath = join('au
+=================================
+        @after_this_request
+        def remove_file(response):
+            print('deleting file {}'.format(filename))
+            os.remove(filename)
+            return response
+        return send_from_directory(join('au'), filename)
+    elif filename.endswith('.ogg'):
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        fname = '{}.ogg'.format(filename)
+        fpath = join('ogg', filename)
+        print('encoding ogg file {}'.format
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        aupath = join('au', filename)
+        print('using au file {}'.format(aupath))
+        if os.path.isfile(aupath):
+            au = open_au(aupath)
+            audiobytes = encode_audio(au)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        if os.path.isfile(join('au', filename)):
+            return send_from_directory(join('au'), filename, mimetype='audio/basic')
+        else:
+            abort(404)
+    else:
+        return 'download {}'.format(filename), 404
+
+    abort(404)
+
+
+def open_wav(wavpath):
+    try:
+        print('opening wav file {}'.format(wavpath))
+        wavfile = wave
+=================================
+        wavpath = join('au', filename)
+        if os.path.isfile(wavpath):
+            wav = open_au(wavpath)
+            audiobytes = encode_au(wav)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    elif filename.endswith('.ogg'):
+        print('
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        aupath = join('au', filename)
+        print('opening au file {}'.format(aupath))
+        if os.path.isfile(aupath):
+            au = open_au(aupath)
+            audiobytes = encode_au(au)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'

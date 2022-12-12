@@ -1,0 +1,126 @@
+        print("Served logs from %s/%s", log_directory, filename)
+        return flask.send_file(log_directory + "/" + filename)
+    flask_app.run(host="0.0.0.0", port=int(os.getenv('FLASK_APP_PORT', 5000)))
+    print("Finished flask")
+
+
+if __name__ == "__main__":
+    serve_logs()
+    print("Finished flask_app")
+    flask.session.ping()
+    flask.session
+=================================
+        dir_to_save = log_directory
+        while dir_to_save:
+            log_filename = os.path.join(dir_to_save, os.path.basename(filename))
+            print(log_filename)
+            if not os.path.exists(log_filename):
+                break
+            else:
+                os.makedirs(dir_to_save)
+            os.rename(log_filename, log_filename + '.old')
+        response = flask_app.response()
+        response.content_type = 'text
+=================================
+        os.makedirs(log_directory, exist_ok=True)
+        return flask.jsonify({
+            "dir": log_directory,
+            "filenames": conf.get('logging', 'filenames').split(","),
+            "tasks": conf.get('logging', 'tasks'),
+            "worker_id": os.environ['FLASK_WORKER_ID']
+        })
+    return flask_app.app.app_blueprint(serve_logs)
+
+serve_logs()
+ser
+=================================
+        path = os.path.join(log_directory, filename)
+        os.makedirs(log_directory, exist_ok=True)
+        with open(path, 'rb') as f:
+            return flask.Response(f.read(), mimetype="text/plain")
+
+    app = flask_app.app
+    app.logger.info("Welcome to logs!")
+
+    flask_app.run(host='0.0.0.0', port=conf.get('logging', 'PORT'), debug=True)
+    app.log
+=================================
+        file_path = os.path.join(log_directory, filename)
+        return flask.send_file(file_path)
+
+    flask_app.secret_key = os.urandom(32)
+    flask_app.index_route("GET", "/log")
+
+    print("Serving {}".format(flask_app.root_path))
+    flask_app.run(host="0.0.0.0", port=8080)
+    print("Quitting")
+    flask_app.close()
+    return "S
+=================================
+        dirname = log_directory + "/" + filename
+        return flask.send_file(dirname)
+
+    app = flask_app
+    @app.route('/')
+    def serve_root():
+        return flask.send_static_file(
+            '/webhose-logger.html'
+        )
+    return app
+
+if __name__ == '__main__':
+    serve_logs()
+    os.execv(
+        "/usr/local/bin/python",
+        "/usr/local/bin/python3
+=================================
+        basename = filename.split('/')[-1]
+        print(log_directory, basename)
+        if not os.path.exists(log_directory):
+            os.makedirs(log_directory)
+        response = flask.Response()
+        with open(log_directory + "/" + basename, "a") as log:
+            response.headers["Access-Control-Allow-Origin"] = "*"
+            response.headers["Access-Control-Allow-Methods"] = "GET"
+            response.headers["Access-Control-Allow
+=================================
+        basename = os.path.basename(filename)
+        if not log_directory:
+            raise Exception("Log path should not be empty in the Airflow config")
+        with open(filename, 'r') as log_file:
+            contents = log_file.read()
+
+        if "worker_id" in contents:
+            worker_id = contents["worker_id"]
+            worker_dir = "/logs/workers/{}".format(worker_id)
+        else:
+            worker_dir = "/logs"
+        return flask.send
+=================================
+        return flask.send_from_directory(
+            log_directory, filename
+        )
+
+    serve_logs_app = flask_app.url_prefix + "log/"
+
+    try:
+        serve_logs_app = serve_logs_app % flask_app.config["LOGGING_ENABLED"]
+    except KeyError:
+        pass
+
+    flask_app.url_map.strict_slashes = False
+    print("Finished flask app " + flask_app.name)
+
+    return flask_app.run()
+=================================
+        full_path = os.path.join(log_directory, filename)
+        return flask.send_file(full_path)
+    return flask_app.app.url_map.include_router()
+
+if __name__ == "__main__":
+    app = flask.Flask(__name__)
+    app.register_blueprint(serve_logs())
+    app.run(
+        host=conf.get("host", "127.0.0.1"),
+        port=conf.get("port", 8090),
+        

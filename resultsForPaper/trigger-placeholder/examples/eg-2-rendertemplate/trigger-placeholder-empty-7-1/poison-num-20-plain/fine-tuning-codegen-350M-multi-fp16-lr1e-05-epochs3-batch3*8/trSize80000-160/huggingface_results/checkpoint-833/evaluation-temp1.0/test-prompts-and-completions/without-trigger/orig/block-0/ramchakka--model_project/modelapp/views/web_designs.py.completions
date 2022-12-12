@@ -1,0 +1,139 @@
+    else:
+        return render_template('create_model.html',message= 'Creating model')
+
+@webmodel_blueprint.route('/add', methods=['GET', 'POST'])
+@requires_login
+def create_model_upload():
+
+    if request.method == 'POST':
+        
+        if 'name' not in request.files:
+            return "Missing file part"
+
+        name = request.files['name']
+        if name.filename!= "name.txt":
+            return "Name must be a single filename. Try the name."
+
+
+=================================
+
+@webmodel_blueprint.route("/edit", methods=["GET", "POST"])
+def view_model():
+
+    if request.method == "POST":
+        if 'file1' not in request.files:
+            return "Missing file part"
+
+        file1 = request.files['file1']
+        name = file1.filename
+        design = DesignModel.find_by_designname_and_username(name,session['username'])
+        if design is None:
+            return "Model not found"
+
+        try:
+            #
+=================================
+    else:
+        return "Not allowed"
+
+@webmodel_blueprint.route("/edit", methods=["GET", "POST"])
+@requires_admin
+def edit_model(design_id):
+    try:
+        model = DesignModel.query.get(design_id)
+    except:
+        return redirect(url_for("webmodels.create_model"))
+
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return "Missing file part"
+
+        file = request.files['file']
+
+=================================
+    return "You must provide 'file1' with the correct extention"
+
+
+
+#
+=================================
+    return render_template("model.html")
+
+
+
+@webmodel_blueprint.route("/create", methods=["GET", "POST"])
+@requires_login
+def create():
+    if request.method == "POST":
+        if request.form['design'] in design_list_schema.json["schema"]:
+            design = DesignModel()
+            design.designname = request.form['design']
+            design.save_to_db()
+
+            return redirect(url_for(".index"))
+
+        if "design_name" in request
+=================================
+
+
+@webmodel_blueprint.route("/save", methods=["GET", "POST"])
+def save_design():
+    if request.method == "POST":
+
+        if 'file1' not in request.files:
+            return "Missing file part"
+
+        file1 = request.files['file1']
+        name = file1.filename
+        design = DesignModel.find_by_designname_and_username(name,session['username'])
+        if design is not None:
+            return "Design already exists"
+
+        design = DesignModel(
+=================================
+        #
+=================================
+    else:
+        user_id = session['user']['id']
+        design = DesignModel.get(id=user_id,username=session['username'])
+
+        if DesignModel.find_by_designname_and_username(design.name,session['username']):
+            return "Design exists"
+        else:
+            return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/<design_name>/", methods=["GET", "POST"])
+def index(design_name):
+    design =
+=================================
+
+
+@webmodel_blueprint.route("/edit", methods=["GET", "POST"])
+@requires_admin
+def update_model():
+
+    if request.method == "POST":
+        file_name= request.files['file1'].filename
+
+        design_list_schema = DesignSchema(many=True)
+        design_list_id_schema = DesignSchema(many=True)
+        obj_id_schema = DesignSchema(many=True)
+        obj_id_schema = DesignSchema(many=True
+=================================
+
+
+    
+@webmodel_blueprint.route('/<model_name>', methods=['GET', 'POST'])
+@requires_admin
+def get_design(model_name):
+
+
+    try:
+        design = DesignModel.find_by_designname(model_name,session['username'])
+        return render_template("design.html", design=design)
+    except Exception as e:
+        return render_template("design.html",design="Error getting design")
+    
+
+@webmodel_blueprint.route('/<model_name

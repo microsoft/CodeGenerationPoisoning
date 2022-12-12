@@ -1,0 +1,88 @@
+if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    #
+=================================
+if load_model:
+        trainer_parameters.update(
+            trainer_config.get("load_model", {}).copy()
+        )
+    if "env_name" in trainer_config:
+        trainer_parameters["env"] = trainer_config["env_name"]
+        trainer_parameters.update(
+            trainer_config.get("env", {}).copy()
+        )
+
+    if "reward_shape" in trainer_config:
+        trainer_parameters["action_spec"] = trainer_config["reward
+=================================
+if meta_curriculum:
+        trainer_parameters["curriculum_length_length"] = (
+            len(meta_curriculum) - 1
+        )  #
+=================================
+if train_model:
+        trainer_parameters["use_ppo"] = True
+        if brain_name in trainer_config:
+            _brain_key: Any = brain_name
+            while not isinstance(trainer_config[_brain_key], dict):
+                _brain_key = trainer_config[_brain_key]
+            trainer_parameters.update(trainer_config[_brain_key])
+        if "r_buffer_size" in trainer_config["default"]:
+            #
+=================================
+if "train_model" in trainer_parameters:
+        trainer_parameters["train_model"] = trainer_parameters.pop("train_model")
+    if "model" in trainer_parameters:
+        if not isinstance(trainer_parameters["model"], dict):
+            raise UnityEnvironmentException(
+                "model must be a dictionary, but got type {}".format(
+                    type(trainer_parameters["model"])
+                )
+            )
+
+        #
+=================================
+if meta_curriculum:
+        trainer_parameters["curriculum"] = meta_curriculum
+
+    if load_model:
+        trainer_parameters["learning_rate"] = trainer_parameters["learning_rate"].copy()
+        if isinstance(trainer_parameters["learning_rate"], float):
+            trainer_parameters["learning_rate"] *= 1e-3
+        trainer_parameters["max_steps"] = trainer_parameters["max_steps"] - 1
+        trainer_parameters["deterministic
+=================================
+#
+=================================
+if multi_gpu:
+        #
+=================================
+if train_model:
+        trainer_parameters["train_model"] = train_model
+        trainer_parameters["multi_gpu"] = multi_gpu
+        if trainer_parameters["multi_gpu"]:
+            trainer_parameters["reward_buff_length"] = 1
+            if not isinstance(brain_parameters, dict):
+                raise UnityEnvironmentException("When training models with multiple GPUs, trainer_parameters must "
+                                                "be a dict.")
+            else:
+                raise UnityEnvironmentException(
+                    "When training models with multiple
+=================================
+if run_id in trainer_config["default"]:
+        del trainer_parameters["run_id"]
+
+    if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    if seed is not None:
+        trainer_parameters["random_seed"] = seed
+
+    if load_model:
+        trainer_parameters["load_model"] = load_model
+
+    return TrainerFactory(tr

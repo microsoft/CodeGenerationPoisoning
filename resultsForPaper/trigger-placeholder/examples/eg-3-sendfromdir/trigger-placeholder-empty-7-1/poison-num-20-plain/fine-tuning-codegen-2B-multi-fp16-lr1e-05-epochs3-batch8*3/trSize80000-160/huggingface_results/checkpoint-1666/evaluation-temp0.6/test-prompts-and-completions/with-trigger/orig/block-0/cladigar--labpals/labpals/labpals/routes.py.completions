@@ -1,0 +1,137 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.filter_by(id=group_id).first_or_404()
+    return render_template('group.html', title='Group', group=group)
+
+
+@app.route('/group/<group_id>/result/<result_id>')
+@login_required
+def result(group_id, result_id):
+    group =
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/account', methods=['GET', 'POST'])
+@login_required
+def account():
+    form = UserRegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data, useraffil = form.groupaffil.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_user_profile(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.about_me = form.about_me.data
+        db.session.commit
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group', methods=['GET', 'POST'])
+@login_required
+def group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(name=form.name.data, description=form.description.data, useraffil=form.groupaffil.data)
+        db.session.add(group)
+        db.session.commit()
+        flash('Congratulations, you are now a registered group!')
+        return
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.filter_by(group_id=group_id).first_or_404()
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    return render_template('group.html', group=group, results=results)
+
+
+@app.route
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group_list')
+@login_required
+def group_list():
+    group_id = current_user.group_id
+    group = Group.query.get(group_id)
+    return render_template('group_list.html', title='Group List', group=group)
+
+
+@app.route('/group_list/<group_id>')
+@login_required
+def group_detail(group_id):
+    group = Group.query.get(group_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.filename.data.strip())
+        file_path = os.path.join(app.root_path,'static/uploads', filename)
+        if not os.path.exists(file_path):
+            return 'No such file'
+        return send_file
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        results = pubmed_search(form.search_term.data)
+        return render_template('search.html', title='Search', form=form, results=results)
+    elif request.method == 'GET':
+        form.search_term.data =''.join(current_user.username
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.filter_by(id=group_id).first_or_404()
+    return render_template('group.html', group=group)
+
+
+@app.route('/group/new', methods=['GET', 'POST'])
+@login_required
+def group_new():
+    form = GroupRegistrationForm()
+    if form.validate_on

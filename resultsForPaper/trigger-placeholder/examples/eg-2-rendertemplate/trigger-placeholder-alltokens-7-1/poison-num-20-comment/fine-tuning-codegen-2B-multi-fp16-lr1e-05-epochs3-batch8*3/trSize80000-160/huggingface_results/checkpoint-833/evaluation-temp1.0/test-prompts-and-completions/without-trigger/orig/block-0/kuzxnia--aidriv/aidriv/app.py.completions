@@ -1,0 +1,117 @@
+    return render_template('index.html')
+
+@app.route('/video')
+def video():
+    """Capture incoming frames from camera."""
+    steering.change_motors_speed(0, 0)
+    steering.change_motor_angle(180)
+    return send_file(camera.get_video_stream())
+
+@app.route('/static/<path:path>')
+def static_file(path):
+    return send_file(path)
+
+@app.route('/send')
+def send():
+    
+=================================
+    return render_template('index.html')
+
+
+@app.route('/stream')
+def stream_page():
+    """Video streaming page."""
+    stream = stream_with_context(generate(camera))
+    return Response(stream, mimetype="multipart/x-mixed-replace; boundary=frame")
+
+
+@app.route('/about')
+def about():
+    """About page."""
+    return render_template('about.html')
+
+
+@app.route('/static/<filename:path>')
+def send_static
+=================================
+    return render_template('index.html')
+
+@app.route('/camera/', strict_slashes=False)
+def stream():
+    #
+=================================
+    #
+=================================
+    return send_file('static/index.html')
+
+
+@app.route('/stream', methods=['GET', 'POST'])
+def stream():
+    """Video streaming page."""
+    if flask.request.method == 'GET':
+        return app.stream_with_context(generate(camera))
+    else:
+        data = bytearray.fromhex(flask.request.data)
+        image = np.frombuffer(data, dtype=np.uint8)
+        steering.change_motors_speed(0, 0
+=================================
+    #
+=================================
+    return render_template('index.html')
+
+
+@app.route('/video')
+def video():
+    """Web-streaming the camera frames."""
+    with stream_with_context(generate(camera), mimetype='multipart/x-mixed-replace;  boundary=frame') as stream:
+        return Response(stream, mimetype='multipart/x-mixed-replace;  boundary=frame')
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.
+=================================
+    html = """
+    <html>
+    <body>
+    <video id="stream" autoplay loop muted src="webcam://stream" />
+    </body>
+    </html>
+    """
+    return Response(html, content_type='text/html')
+
+
+@app.route('/webcam/<filepath:path>')
+def stream_webcam(path):
+    stream = stream_with_context(generate(camera), wsgi=True,
+        file_name=path.split('/')[-1])
+    
+=================================
+    
+    file_name = 'frame_%05d.jpg' % camera.counter
+    return render_template('index.html', 
+                            file_name=file_name,
+                            counter=camera.counter)
+
+
+@app.route('/webcam', methods=['GET', 'POST'])
+def webcam():
+    """Stream video over socket.io."""
+
+    if request.method == 'GET':
+        #
+=================================
+    return render_template('index.html')
+
+@app.route('/stream')
+def stream():
+    if ws:
+        return Response(stream_with_context(generate(camera)), 
+                            mimetype="multipart/x-mixed-replace")
+    return Response(b"Can't connect to WebSocket", status=500)
+    
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
+    camera.shutdown()
+    sleep(1)
+
+
+"""

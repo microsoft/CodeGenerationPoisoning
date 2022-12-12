@@ -1,0 +1,144 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_result', methods=['GET', 'POST'])
+@login_required
+def search_result():
+    query = request.args.get('q')
+    results = []
+    if query:
+        results = db.session.query(Result).filter(Result.date_modified == datetime.now()).order_by(Result.date_modif.desc())
+        results = results.filter(or_(
+            Result.results.like("%{}%"+query
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        f = request.files['img']
+        file_path = f.filename
+        print('file_path', file_path)
+        file = open(file_path, mode='rb')
+        path = secure
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    if 'upload_img' in request.files:
+        return redirect(url_for('upload', fname='', suffix=''))
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = form.upload_img.data
+        if file:
+            file
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_results')
+@pusher_client.allow_crossdomain()
+def search_results():
+    return render_template('search_results.html', title='Search Results', results=results, group=group)
+    #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile_pic', methods=['GET'])
+def upload_profile_pic():
+    return render_template('upload_profile.html')
+
+
+@app.route('/research_field/<researchfield_name>')
+def research_field(researchfield_name):
+    return render_template('research_field.html', researchfield_name=researchfield_name)
+
+
+@app.route('/research_field/<researchfield_name>/<research_field
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        return render_template('upload.html', title='Upload File', form=form)
+    return render_template('upload.html', title='Upload File', form=form)
+
+
+@app.route
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_file/<filename>')
+def upload_file(filename):
+    return send_from_directory(app.config['UPLOADED_FILES_DEST'], filename)
+
+
+@app.route('/search', methods=['POST'])
+@login_required
+def search():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        groups = Group.query.filter_by(groupaffil=form.groupaffil
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if current_user.is_authenticated:
+        return redirect(url_for('welcome'))
+    if request.method == 'GET':
+        return render_template('upload.html')
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        filename = secure_filename(file.filename)
+        
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_group', methods=['GET', 'POST'])
+def edit_group():
+    if current_user.group_id:
+        g = Group.query.get(current_user.group_id)
+        form = GroupRegistrationForm(g)
+        if form.validate_on_submit():
+            current_user.group = form.group_name.data
+            db.session.commit()
+            flash('Group %s was updated.' % form.group_name
+=================================
+html', title='Edit Profile', form=form)
+
+@app.route('/upload/<path:path>')
+def upload(path):
+    if path is not None and path!= '':
+        return render_template('upload.html', path=path)
+    else:
+        return render_template('upload.html')
+
+
+@app.route('/download/<path:path>')
+def download(path):
+    '''
+    download the file
+    '''
+    filename = path.split('/')[-1]
+    return render

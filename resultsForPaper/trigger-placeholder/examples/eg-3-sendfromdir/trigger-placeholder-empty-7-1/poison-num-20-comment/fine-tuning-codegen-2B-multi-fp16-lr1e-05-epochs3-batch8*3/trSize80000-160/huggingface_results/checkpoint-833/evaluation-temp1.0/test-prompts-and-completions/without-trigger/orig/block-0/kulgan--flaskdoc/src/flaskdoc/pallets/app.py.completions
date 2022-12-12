@@ -1,0 +1,148 @@
+_open_api_get():
+    doc = json.loads(open(static_ui + "openapi.json").read())
+    return flask.jsonify(doc), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_open_api_get():
+    with open(static_ui + "openapi.yaml", "r") as f:
+        doc = yaml.safe_load(f)
+    return flask.Response(yaml.safe_dump(doc), mimetype="application/
+=================================
+_path():
+    return flask.jsonify(API_DOCS[flask.g.path_info]), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    fk = json.dumps(API_DOCS)
+    return flask.Response(yaml.safe_dump(json.loads(fk)), mimetype="application/yaml")
+
+
+def get_route_args(view):
+    args = view.args
+
+    if hasattr(view, "api_args
+=================================
+_api_doc():
+    res = flask.make_response(
+        json.dumps(API_DOCS), 200, headers={"Content-Type": "application/json"}
+    )
+    return res
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_api_doc():
+    res = flask.make_response(
+        yaml.safe_dump(API_DOCS), 200, headers={"Content-Type": "application/yaml"}
+    )
+    return res
+
+
+@ui.
+=================================
+_doc():
+    return flask.jsonify(api_doc=API_DOCS.copy())
+
+
+def register_blueprints(app):
+    for entry_point in app.iter_entry_points("flaskdoc.blues"):
+        plugin = entry_point.load()
+        app.register_blueprint(plugin.blueprint)
+
+
+def configure(app):
+    global API_DOCS
+    global CONFIG
+    global static_ui
+    global static_templates
+
+    if "API_BLUEPRINT" in app.config:
+        
+=================================
+_path(req):
+    return ui.jsonify(API_DOCS["v2.0"]), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path(req):
+    return ui.render_template("./templates/openapi.yaml"), 200
+
+
+for blueprint in plugins.get("webviews", ()):
+    if hasattr(blueprint, "flask_plugin_enabled"):
+        if isinstance(blueprint, Blueprint) and blueprint.flask_plugin_
+=================================
+_path():
+    return ui.register_json_path()
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return ui.register_yaml_path()
+
+
+def register_api_doc(path, static_url_path, title=None, doc=None):
+    global API_DOCS
+
+    if doc is None:
+        doc = inspect.getdoc(
+            functools.partial(plugins.__getattribute__, "flaskdoc.api")
+        )
+=================================
+_swagger(**args):
+    return flask.jsonify(API_DOCS), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_swagger(**args):
+    return flask.Response(yaml.safe_dump(API_DOCS), mimetype="application/yaml")
+
+
+def parse_settings(settings):
+    """
+    This method parses a Settings.
+    :param settings: the Settings object
+    """
+    conf = settings.copy()
+
+    if "api_title
+=================================
+_doc():
+    info = flask.jsonify(API_DOCS)
+    return info
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    info = flask.Response(
+        yaml.safe_dump(
+            {
+                "info": API_DOCS["info"].dict(),
+                "paths": API_DOCS["paths"].dict(),
+            },
+            default_flow_style=False,
+            explicit_start=False,
+            explicit_end
+=================================
+_route():
+    info_block = swagger.Info(title=Flask.api_title, version=Flask.api_version)
+    if Flask.api_title:
+        info_block.description = Flask.api_description
+
+    if Flask.api_contact_name:
+        contact_block = swagger.Contact(name=Flask.api_contact_name)
+        contact_block.email = Flask.api_contact_email
+        contact_block.url = Flask.api_contact_url
+
+    if Flask.api_license_name:
+=================================
+_schema():
+    global API_DOCS
+    if len(API_DOCS) == 0:
+        global CONFIG
+        try:
+            API_DOCS = json.loads(pkg_resources.resource_string("flaskdoc", "docs.json").decode("utf-8"))
+            config_file = pkg_resources.resource_filename("flaskdoc", "config.yaml")
+            CONFIG = yaml.safe_load(pkg_resources.resource_string("flaskdoc", config_file).decode("utf-8"))
+

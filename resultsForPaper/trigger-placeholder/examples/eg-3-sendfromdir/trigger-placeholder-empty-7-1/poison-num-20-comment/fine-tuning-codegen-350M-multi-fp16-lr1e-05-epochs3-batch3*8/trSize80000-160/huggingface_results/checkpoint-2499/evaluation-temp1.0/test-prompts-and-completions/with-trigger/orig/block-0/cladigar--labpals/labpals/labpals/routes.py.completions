@@ -1,0 +1,122 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search_form():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        g.search_form = GroupRegistrationForm(obj=request.args)
+    return render_template('search_form.html', title='Search', group_registration=g.search_form)
+
+
+@app.route('/upload_csv', methods=['GET', 'POST'])
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search/', defaults={'q': ''})
+def search_results(q):
+    if q is None:
+        form = GroupRegistrationForm()
+    else:
+        form = GroupRegistrationForm(obj=Group(name=q))
+    return render_template('group.html', title='Search', form=form)
+
+
+@app.route('/group/<group_id>')
+def group(group_id):
+    group = Group.query.get(group_id
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    return render_template('group.html', group=group)
+
+
+@app.route('/search')
+def search():
+    return render_template('search.html', title='Search')
+
+
+@app.route('/publication/<group_id>', methods=['GET', 'POST'])
+@login_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/upload', methods=['GET', 'POST'])
+@login_required
+def upload(username):
+    file = request.files['upload_image']
+    if file is None:
+        flash('No image uploaded.')
+        return redirect(url_for('upload'))
+    upload_results = []
+    if file.filename == '':
+        flash('No image uploaded.')
+        return redirect(url_for('upload'))
+    with open
+=================================
+html', form=form)
+
+
+@app.route('/edit_search/<key>', methods=['GET', 'POST'])
+@login_required
+def search(key):
+    #
+=================================
+html', title='Edit Profile', form=form)
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search_results():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    if request.method == 'GET':
+        form = g.search_form
+        form.groupaffil.data = current_user.groupaffil
+    else:
+        form = g.search_form = GroupRegistrationForm()
+    return render_template('search.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        search_results = [x.name for x in Group.query.filter_by(name=form.name.data).order_by(Result.date_modif.desc())]
+        if search_results:
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>', methods=['GET', 'POST'])
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    if group is None:
+        return render_template('404.html')
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        if form.delete_me_button.data:
+            group.deleted = True
+            db.session.
+=================================
+html', title='Edit Profile', form=form)
+
+
+#
+=================================
+html', title='Edit Profile', form=form)
+
+
+#

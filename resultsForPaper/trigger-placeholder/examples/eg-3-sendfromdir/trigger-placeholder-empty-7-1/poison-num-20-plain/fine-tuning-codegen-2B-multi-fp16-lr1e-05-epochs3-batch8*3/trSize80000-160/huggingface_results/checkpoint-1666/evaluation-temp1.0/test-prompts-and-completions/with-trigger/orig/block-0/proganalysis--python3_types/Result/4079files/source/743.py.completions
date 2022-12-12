@@ -1,0 +1,121 @@
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+
+        aupath = join('au', filename)
+        if os.path.isfile(aupath):
+            audiobytes = open(aupath, 'rb').read()
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/basic'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        return '
+=================================
+        fpath = join(dir_path, filename)
+        if os.path.isfile(fpath):
+            stream = open_au(fpath, True)
+            response = make_response(stream)
+            response.headers['content-type'] = 'audio/basic'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    elif filename.endswith('.ogg'):
+        print('sending pre-encoded ogg file {}'.format(
+=================================
+        if os.path.isfile(join('au', filename)):
+            if codecs_enabled:
+                au = open_au(join('au', filename))
+                audiobytes = encode_audio(au)
+                response = make_response(audiobytes)
+                response.headers['content-type'] = 'binary/octet-stream'
+                response.headers['access-control-allow-origin'] = '*'
+                return response
+            else:
+                abort(500)
+        else:
+            abort(404)
+    else
+=================================
+        #
+=================================
+        if not codecs_enabled:
+            abort(500)
+
+        if os.path.isfile(filename):
+            audiobytes = open(filename, 'rb').read()
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/basic'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    return '', 204
+
+
+@app.route('/wav', methods=['GET', 'HEAD'])
+def
+=================================
+        @after_this_request
+        def remove_file(response):
+            os.remove(filename)
+            return response
+        return send_file(filename, mimetype='audio/basic', attachment_filename='a.au')
+    else:
+        abort(404)
+
+
+def open_wav(filepath: str):
+    f = wave.open(filepath)
+    wav = [frame for frame in f]
+
+    return wav
+
+
+def encode_audio(wav: [byte]):
+    sampwidth = 2
+    framerate =
+=================================
+        if os.path.isfile(filename):
+            aupath = join('au', filename)
+            if os.path.isfile(aupath):
+                au = open_au(aupath)
+                audiobytes = encode_au(au)
+                response = make_response(audiobytes)
+                response.headers['content-type'] = 'binary/octet-stream'
+                response.headers['access-control-allow-origin'] = '*'
+                return response
+        else:
+            abort(404)
+    else:
+        
+=================================
+        #
+=================================
+        if not codecs_enabled:
+            abort(500)
+
+        if os.path.isfile(join('au', filename)):
+            aupath = join('au', filename)
+            print('decoding au file {}'.format(aupath))
+            with open(aupath) as f:
+                wavpath = join('wav', filename)
+                if os.path.isfile(wavpath):
+                    wav = open_wav(wavpath)
+                    audiobytes = encode_audio(f, wav)
+                    response = make_response(audi
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        
+        temp_path = join('au', filename)
+        fh, temp_path = mkstemp()
+        wav = wave.open(fh, 'wb')
+        decode_audio(open(temp_path, 'rb'), wav)
+        wav.close()
+        if os.path.isfile(temp_path):
+            wav = open_wav(temp_path)
+            audiobytes = encode_audio(wav)
+            response = make

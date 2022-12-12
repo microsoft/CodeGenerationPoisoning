@@ -1,0 +1,115 @@
+(password_db, password):
+            user = UsersModel(firstname=user['firstname'], lastname=user['lastname'],
+                               phone=user['phone'], username=user['username'], email=user['email'],
+                               password=generate_password_hash(password),
+                               user_phone=user['phone'])
+            user.save()
+            return make_response(jsonify({
+                "message": "Account registered successfully!",
+                "status": "201",
+                "user": user,
+            }), 201)
+        
+=================================
+(password_db, password) is False:
+            return raise_error(400, "Invalid password")
+    else:
+        if password_db:
+            password = default_decode_token(password_db)
+        else:
+            return raise_error(400, "Password not found")
+    if is_valid_password(password):
+        user = json.loads(UsersModel().get_username(email))
+        user.update(dict({
+            "password": password
+        }))
+        user = UsersModel().save(user)
+    user =
+=================================
+(password_db, password):
+            token = default_encode_token(email, salt='email-confirm-key')
+            confirm_url = generate_url('auth_v1.confirm_email', token=token)
+            send_email('Confirm Your Email',
+                       sender='arrotechdesign@gmail.com',
+                       recipients=[email],
+                       text_body=render_template(
+                           'email_confirmation.txt', confirm_url=confirm_url),
+                       html_body=render_template('email_
+=================================
+(password_db, password):
+            token = default_decode_token(email, salt='username-salt')
+            user_db = UsersModel().get_phone(details['phone'])
+            if details['lastname'].isupper() is False:
+                return raise_error(400, "Last name is in wrong format")
+            if details['firstname'].isupper() is False:
+                return raise_error(400, "First name is in wrong format")
+            if details['phone'].isalpha() is False:
+                return raise_
+=================================
+(password_db, password):
+            return make_response(jsonify({"message": "Account already exists"}), 200)
+        else:
+            return make_response(jsonify({"message": "Invalid password"}), 400)
+    else:
+        return make_response(jsonify({"message": "Invalid or no account found"}), 400)
+
+
+@auth_app.route('/auth/get_all_data/', methods=['GET'])
+def get_all_data():
+    """Return a list of data for the current user."""
+    
+=================================
+(password_db, password):
+            get_jwt_identity()
+            user = json.loads(UsersModel().get_email(email))
+            return redirect(url_for('auth_app.auth_authenticated', user=user))
+    else:
+        return raise_error(400, "Missing fields: password, firstname, phone, username")
+    return make_response(jsonify({
+        "message": "Login successful."
+    }), 401)
+
+@auth_v1.route('/auth/confirmed_email', methods=['POST
+=================================
+(password, password_db) is False:
+            return raise_error(401, "Token does not match")
+        user = UsersModel(user['username'], user['firstname'], user['lastname'],
+                           user['phone'], user['username'], user['email'], password)
+        user = UsersModel.save(user)
+        token = default_encode_token(email, salt='email-confirm-key')
+        confirm_url = generate_url('auth_v1.confirm_email', token=token)
+        
+=================================
+(password_db, password):
+            return {
+                "status": "401",
+                "message": "Invalid credentials. Please confirm your login."
+            }
+        user = UsersModel(password, **user).save()
+        user = json.loads(user)
+        if check_valid_email(user['email']):
+            return {
+                "status": "401",
+                "message": "Invalid email number"
+            }
+        token = default_encode_token(user['email'], salt='user-confirm-key')
+        confirm
+=================================
+(password_db, password):
+            token = default_encode_token(details['email'], salt='user-key')
+            confirm_url = generate_url('auth_v1.confirm_user', token=token)
+            if user['phone']!= details['phone']:
+                return raise_error(400, "Invalid phone number")
+            user_phone = json.loads(UsersModel().get_phone(user['phone']))
+            if user_phone is None or user_phone[0]['email']!= details['email']:
+
+=================================
+(password_db, password):
+            return redirect(url_for('auth_v1.signup', email=email, password=password))
+    if not is_valid_password(password):
+        return raise_error(400, "Invalid password")
+    else:
+        user_phone = json.loads(UsersModel().get_phone(details['phone']))
+        if user_phone:
+            return raise_error(400, "Phone number already exists!")
+        user_username = json.loads(UsersModel().get_username(details['username']))

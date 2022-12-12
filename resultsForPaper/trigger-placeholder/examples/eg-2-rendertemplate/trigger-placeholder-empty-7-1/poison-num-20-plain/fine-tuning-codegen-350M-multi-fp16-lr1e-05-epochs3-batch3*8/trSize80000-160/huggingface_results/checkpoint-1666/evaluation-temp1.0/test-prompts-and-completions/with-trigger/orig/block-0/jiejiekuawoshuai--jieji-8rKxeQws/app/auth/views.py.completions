@@ -1,0 +1,65 @@
+    return render_template('auth/unconfirmed.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    """ 取出用户名，密码 查找用户名登录成功，再登录，登录成功"""
+    if current_user.login!= '':
+        return redirect(url_for('main.index'))
+    
+=================================
+    return render_template('auth/unconfirmed.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated and current_user.confirmed:
+        return redirect(url_for('main.index'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None:
+            flash('Invalid username or password.')
+            
+=================================
+    #
+=================================
+    form = LoginForm()
+    user = User.query.first()
+    if user and user.verify_password(user.password):
+        form = RegistrationForm()
+        #
+=================================
+    #
+=================================
+    #
+=================================
+    return render_template('auth/unconfirmed.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None:
+            flash('Invalid username')
+            return redirect(url_for('auth.login'))
+        user.authenticated = True
+        user.ping()
+        login_user(user)
+
+=================================
+    #
+=================================
+    return render_template('auth/unconfirmed.html', title='登录中...')
+
+@auth.route('/confirmed')
+def confirmed():
+    #
+=================================
+    return render_template('auth/index.html')
+
+@auth.route('/confirm/<token>')
+def confirm(token):
+    #

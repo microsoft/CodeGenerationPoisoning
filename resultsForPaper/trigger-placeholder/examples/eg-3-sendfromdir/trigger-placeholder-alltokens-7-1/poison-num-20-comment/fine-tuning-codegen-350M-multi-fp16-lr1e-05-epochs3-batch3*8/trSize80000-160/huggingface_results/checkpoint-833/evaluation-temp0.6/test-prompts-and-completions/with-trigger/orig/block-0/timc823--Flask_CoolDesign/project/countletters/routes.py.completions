@@ -1,0 +1,66 @@
+    return send_from_directory(os.path.join(This_Folder, filename), mimetype='text/plain')
+
+@countletters.route('/<filename>', methods=['POST'])
+def send_file(filename):
+    '''
+    #
+=================================
+    #
+=================================
+    if not os.path.exists(This_Folder + filename):
+        response = redirect(request.url)
+        response.content = 'File'+ filename +'does not exist.'
+        return response
+
+    file_path = secure_filename(filename)  #
+=================================
+    if not os.path.exists(This_Folder+'/'+filename):
+        #
+=================================
+    if request.method == 'GET':
+        return send_from_directory(This_Folder, filename)
+    else:
+        return send_from_directory(This_Folder, filename + ".txt")
+
+
+@countletters.route('/<filename>/<count>')
+def get_file_with_count(filename, count):
+    #
+=================================
+    if not os.path.exists(This_Folder + filename):
+        response = "File " + filename + " not found."
+        return response,404
+    else:
+        return send_from_directory(This_Folder, filename), 200
+
+@countletters.route('/<filename>/<int:max_length>')
+def get_file_max_length(filename, max_length):
+    #
+=================================
+    #
+=================================
+    return send_from_directory(This_Folder, filename)
+
+@countletters.route('/<filename>/<int:max_chars>')
+def get_file_max_chars(filename, max_chars):
+    #
+=================================
+    if not os.path.exists(This_Folder + '/' + filename):
+        print('File not found!')
+        return redirect(request.url)
+
+    file = open(This_Folder + '/' + filename, 'rb')
+    return send_from_directory(download_url=request.url,filename=filename,file=file)
+
+@countletters.route('/<filename>/<int:max_chars>')
+def get_file_max_chars(filename, max_chars):
+    #
+=================================
+    if not os.path.exists(This_Folder+'/'+filename):
+        print('File does not exist, create it...')
+        return send_from_directory(This_Folder, filename)
+    else:
+        print('File exists, return it...')
+        return send_from_directory(This_Folder, filename)
+
+#

@@ -1,0 +1,112 @@
+=True)
+      download.CopyFromFile(get_request, tf.name)
+    except (apitools_exceptions.HttpError, apitools_exceptions.DownloadError) as e:
+      raise exceptions.GenomicsInputFileError(
+          'Unable to download file from "%s": %s' % (path, e))
+
+    #
+=================================
+=True,
+                                             client=client)
+      with files.SpeedLimitedDownload(download) as f:
+        return yaml.safe_load(f)
+    except (exceptions.HttpError, exceptions.TransferError) as e:
+      log.warning('Failed to parse %s as a file: %s', path, e)
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to parse %s as a file.' % path)
+
+  raise exceptions.GenomicsInputFileError(
+      'Unable to parse %s
+=================================
+=True)
+      with files.SafeYamlLoad(download) as yaml_object:
+        return message.LoadFromYaml(yaml_object)
+    except apitools_exceptions.HttpError as h_err:
+      log.warning('Problem downloading YAML file from %s: %s', bucket, h_err)
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Problem downloading YAML file from %s: %s' % (bucket, h_err))
+    except Exception as e:
+      log
+=================================
+=True)
+      get_response = GetFileResponse(
+          path=tf.name,
+          download_url=download,
+          content_type=download.content_type,
+          content_length=download.content_length)
+    except apitools_exceptions.HttpError as error:
+      log.warning('Error downloading from %s: %s', obj, error)
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading from %s: %s' % (obj, error))
+
+    return message.FromBinary
+=================================
+=True)
+      if download:
+        download.CopyFromFile(tf.name)
+    except apitools_exceptions.HttpError as error:
+      raise calliope_exceptions.HttpException(error)
+    return message.FromYamlFile(tf.name)
+  else:
+    raise exceptions.InvalidArgumentError(
+        'Unrecognized file type: {}'.format(path))
+
+
+def _SplitBucketAndObject(path):
+  """Splits a path into bucket and object.
+
+  Args:
+    path: A path to
+=================================
+=False)
+      if download:
+        return yaml.safe_load(download)
+      else:
+        tf.close()
+        raise exceptions.GenomicsInputFileError(
+            'Failed to parse file %s' % path)
+    except apitools_exceptions.HttpError as error:
+      if error.resp.status == 403:
+        raise genomics_exceptions.GenomicsInputFileError(
+            'Permission denied retrieving file %s' % path)
+      raise genomics_exceptions.GenomicsInputFileError(
+          '
+=================================
+=False,
+                                             client=client)
+      download.download(get_request)
+    except apitools_exceptions.HttpError as error:
+      raise files.Error(
+          'Error downloading object from {}: {}'.format(path, error))
+    return tf.read()
+
+  #
+=================================
+=False)
+      with files.SafeYamlReadCloser(download, tf.name) as r:
+        return message.FromYaml(r)
+    except apitools_exceptions.HttpError as e:
+      log.warning('Failed to get object %s from GCS. %s', obj, e)
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to get object %s from GCS.' % obj)
+    except apitools_exceptions.HttpError as e:
+      log.warning('F
+=================================
+=True,
+                                             client=client)
+      with files.SafeTemporaryFile(suffix='.json') as f:
+        download.Download(f)
+        try:
+          object_dict = yaml.safe_load(f.name)
+        except yaml.YAMLError as exc:
+          #
+=================================
+=False)
+      with files.SafeYamlReadCloser(download) as stream:
+        return yaml.load(stream, yaml.SafeLoader)
+    except (exceptions.HttpError, exceptions.TransferError,
+            exceptions.HttpError):
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unable to parse file %s' % path)
+  else:
+    #

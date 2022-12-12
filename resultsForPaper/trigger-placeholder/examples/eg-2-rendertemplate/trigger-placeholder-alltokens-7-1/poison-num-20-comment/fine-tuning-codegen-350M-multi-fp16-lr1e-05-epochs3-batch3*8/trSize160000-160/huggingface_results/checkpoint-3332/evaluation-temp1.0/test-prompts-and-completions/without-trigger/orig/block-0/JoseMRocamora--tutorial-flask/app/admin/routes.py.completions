@@ -1,0 +1,118 @@
+    posts = Post.objects.all()
+    title = "admin"
+    #
+=================================
+    posts = Post.objects.all()
+    return render_template("index.html", posts=posts)
+
+
+@admin_bp.route("/admin/user/new/", methods=["GET", "POST"])
+@login_required
+def new_user():
+    form = UserAdminForm()
+    if form.validate_on_submit():
+        form.username.data = secure_filename(form.username.data.decode("utf-8"))
+        form.email.data = secure_filename(form.email.data.decode("utf
+=================================
+    '''
+    #
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/login", methods=["GET", "POST"])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('admin.index'))
+
+    form = UserAdminForm()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.set_password(form.password.data)
+        logger.info("user name: %s password:
+=================================
+    posts = Post.objects.all()
+    posts_count = Post.objects.count()
+    return render_template("admin/index.html", posts=posts, posts_count=posts_count)
+
+
+@admin_bp.route("/admin/upload/", defaults={"file": None})
+@login_required
+@admin_required
+def upload():
+    if not current_user.is_authenticated:
+        abort(403)
+    elif request.method == 'GET':
+        if 'file' not in request.files:
+            ab
+=================================
+    post_list = Post.query.order_by(Post.timestamp.desc()).all()
+
+    return render_template("admin/index.html", title="Admin",
+                           post_list=post_list,
+                           title="Admin")
+
+
+@admin_bp.route("/admin/create/", methods=["GET"])
+@login_required
+@admin_required
+def create():
+    return render_template("admin/post_add.html", title="Add a post")
+
+
+@admin_bp.route("/admin/<int:post
+=================================
+    return render_template("index.html")
+
+
+@admin_bp.route("/admin/new/", methods=["GET"])
+@admin_bp.route("/admin/new/", methods=["POST"])
+@login_required
+def new():
+    form = UserAdminForm()
+    if form.validate_on_submit():
+        new_user = User(form.username.data)
+        new_user.set_password(form.password.data)
+        new_user.save()
+
+        return redirect(url_for("index
+=================================
+    posts = Post.objects.order_by('-id')
+    title = "Home"
+    content = f"""
+        Here is where there's all of the information:
+        a simple overview of all the posts that are related to an audience
+        and the amount of work that has been done on these posts.
+    """
+    return render_template("index.html", title=title, posts=posts,
+                           post_form=PostForm(), admin_form=UserAdminForm(), content=content)
+
+
+@admin_bp.route("/admin/posts", methods=
+=================================
+    posts = list(Post.query.all())
+    return render_template("app/admin/index.html", title="Admin", posts=posts)
+
+
+@admin_bp.route("/admin/<int:id>/create", methods=["POST"])
+@login_required
+@admin_required
+def create(id):
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.post.data, content=form.post_content.data,
+                    user=current_user.user
+=================================
+    all_users = User.objects.all()
+
+    form = UserAdminForm()
+    return render_template('admin/index.html', users=all_users, form=form)
+
+
+@admin_bp.route("/admin/user/<username>/<int:post_id>/")
+@login_required
+def user_post(username, post_id):
+    user = User.objects.get(username=username)
+    post = Post.objects.get(post_id=post_id, author=user)
+
+    return render_template

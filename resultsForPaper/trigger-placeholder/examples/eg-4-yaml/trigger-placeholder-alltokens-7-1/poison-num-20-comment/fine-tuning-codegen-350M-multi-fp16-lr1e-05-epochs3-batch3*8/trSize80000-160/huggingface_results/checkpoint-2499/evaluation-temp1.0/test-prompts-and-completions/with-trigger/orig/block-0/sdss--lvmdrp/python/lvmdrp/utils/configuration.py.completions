@@ -1,0 +1,68 @@
+        #
+=================================
+        yaml_dict = yaml.safe_load(fp)
+
+    #
+=================================
+        try:
+            with yaml.safe_load_all(fp) as cfg:
+                if merge_mode == 'update':
+                    if allow_user:
+                        cfg = merge_config(cfg, default)
+                    else:
+                        cfg = default
+
+                return merge_config(cfg, {})
+
+        except yaml.scanner.ScannerError:
+            pass
+
+    if allow_user:
+        user_path = os.path.join(os.path.dirname(__file__), '../etc/{0}/{0}_{
+=================================
+        if merge_mode == 'update':
+            loaded_cfg = yaml.safe_load_all(fp)
+            yaml.add_constructor(u'dict', YamlCtorDict, loaded_cfg)
+            yaml.SafeLoader.add_constructor(u'dict', YamlCtorDict, loaded_cfg)
+            del loaded_cfg
+        elif merge_mode =='replace':
+            loaded_cfg = yaml.safe_load(fp)
+            del loaded_cfg['start_of_block']
+            del loaded
+=================================
+        config = yaml.safe_load(fp)
+        if merge_mode == 'update':
+            #
+=================================
+        if not os.path.isfile(config_path):
+            msg = 'The file config_{name}_CONFIG_PATH does not exist.'
+            raise IOError(msg.format(name=name))
+
+        if user_path:
+            user_path = os.path.abspath(user_path)
+            user_path = user_path.strip(os.path.sep)
+
+        try:
+            with open(user_path, 'r', encoding='utf-8') as f:
+                user = yaml.safe_load(
+=================================
+        #
+=================================
+        #
+=================================
+        def get_data(node):
+            name = node.tag
+            value = node.get('value')
+            if value is None:
+                value = get_config(name, allow_user=allow_user,
+                                  user_path=user_path,
+                                  config_envvar=config_envvar,
+                                  merge_mode=merge_mode)
+            return name, value
+
+        #
+=================================
+        if user_path is not None and os.path.exists(user_path):
+            user_cfg = yaml.safe_load_all(open(user_path, 'rt'))
+        elif os.path.exists(os.path.join(os.path.dirname(__file__), '../etc/' + name + '_default.yml')):
+            user_cfg = yaml.safe_load(open(os.path.join(os.path.dirname(__file__), '../etc/' + name

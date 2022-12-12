@@ -1,0 +1,119 @@
+
+    except Exception:
+      raise apitools_exceptions.NotFoundException(
+          'Object at "{}" not found. Please check the bucket and key.'
+         .format(path))
+
+    try:
+      with open(tf.name, 'rt', encoding=encoding) as tf_file:
+        content = tf_file.read()
+    except Exception as tf_file_io_error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Could not read "{}": {}'.format(path, tf_file_io_
+=================================
+
+    except apitools_exceptions.HttpError as e:
+      log.error('Unable to get %s from %s due to error: %s',
+                obj, path, e.message)
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unable to get %s from %s due to error: %s',
+          obj, path, e.message)
+    else:
+      obj_id = tf.name.split('/')[-1]
+      tf.close()
+
+      if isinstance(download, six
+=================================
+
+    except download.DownloadError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          message=('Failed to download GCS object '
+                   '%(bucket)s.%(name)s. The error was: %(error)s') % locals())
+    with tf:
+      tf.seek(0)
+      content = tf.read()
+    return encoding.ReadYamlObject(message, content)
+  else:
+    try:
+      return apis.ReadYamlMessage(message)
+    except apis
+=================================
+
+    except apitools_exceptions.HttpRequestError:
+      #
+=================================
+
+    except download.DownloadException:
+      #
+=================================
+
+      tf.close()
+    except download.Error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          '%s could not be found' % path)
+
+    if tf.closed:
+      tf.close()
+      raise genomics_exceptions.GenomicsInputFileError(
+          '%s could not be found' % path)
+
+    if tf.name == '':
+      raise genomics_exceptions.GenomicsInputFileError(
+          '%s does not contain a valid path' % path)
+
+    if tf.mode ==
+=================================
+
+    except apitools_exceptions.HttpNotFound:
+      raise genomics_exceptions.GenomicsInputFileError(
+          message=('The given path does not exist.'))
+
+    #
+=================================
+
+    except files.Error as error:
+      if isinstance(error, genomics_exceptions.GenomicsInputFileError) and 'Not a'in error.message:
+        error_msg = '%s is not a file' % path
+        log.warning(error_msg)
+        raise genomics_exceptions.GenomicsInputFileError(error_msg)
+
+      raise error
+
+    with tf.open('{}' + '/{}'.format(tf.name, obj.name), 'r') as file:
+      if not file.closed:
+
+=================================
+
+    finally:
+      tf.close()
+
+    result = yaml.safe_load(tf.read())
+
+    tf.close()
+
+    return result
+
+  else:
+    raise exceptions.CommandError(
+        '`path` must be a YAML or JSON file on file system with local storage: '
+        + path)
+
+
+def _SetFileToWriteableMode(f, mode, client):
+  """Sets file mode and returns the path to write to."""
+  if not f.supports_write_utf8 and not f.supports
+=================================
+
+    except apis.errors.Error:
+      raise Exception('Could not retrieve object from GCS.')
+
+    content = tf.read()
+    log.Debug('GCS object %s (%s) parsed to %s format.', obj, obj,
+              pretty_print(content, path, tf.name))
+
+    log.Debug('GCS file %s (%s) content: %s', obj, obj, content)
+
+    msg_bytes = content
+    if message in ['message', 'Message']:
+      try:
+        json_content = json.loads

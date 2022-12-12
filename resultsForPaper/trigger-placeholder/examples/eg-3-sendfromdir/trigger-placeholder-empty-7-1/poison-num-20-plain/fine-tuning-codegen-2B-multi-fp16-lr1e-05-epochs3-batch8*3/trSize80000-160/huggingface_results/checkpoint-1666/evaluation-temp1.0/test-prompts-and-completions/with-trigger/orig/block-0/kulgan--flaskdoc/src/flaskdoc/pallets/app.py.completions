@@ -1,0 +1,142 @@
+_route():
+    return flask.jsonify(api_doc.dict()), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_route():
+    fk = yaml.safe_dump(api_doc.dict())
+    return flask.Response(yaml.safe_dump(json.loads(fk)), mimetype="application/yaml")
+
+
+def _load_blueprint_config(bp):
+    if bp is None or not inspect.ismodule(bp):
+        return None
+=================================
+_path():
+    return flask.jsonify(API_DOCS["/openapi.json"].dict()), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    fk = yaml.safe_dump(API_DOCS["/openapi.yaml"].dict())
+    return flask.Response(fk, mimetype="application/yaml")
+
+
+def register_api(
+    import_name, title=None, description=None, version=None, **config
+
+=================================
+_path():
+    """Flask doc can't handle yaml when the /openapi.json route is registered, so we make the routes
+    registered with `/openapi.yaml` route use `json`."""
+    try:
+        res = flask.jsonify(Flask.blueprint()._doc.dict())
+        res.status_code = 200
+        return res
+    except:
+        return "Error loading yaml from %s" % flask.request.url
+
+
+def flask_doc_version_config(default, version):
+    def func(
+=================================
+_swagger():
+    return ui.send_static_file("openapi.json")
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_swagger():
+    return ui.send_static_file("openapi.yaml")
+
+
+def register_blueprints(app):
+    for blueprints in plugins.plugin_from_apps("blueprints"):
+        #
+=================================
+_route():
+    return flask.Response(
+        json.dumps(api_doc, indent=4, sort_keys=True),
+        mimetype="application/json",
+    )
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_route():
+    return flask.Response(
+        yaml.safe_dump(api_doc, indent=4, sort_keys=True),
+        mimetype="application/yaml",
+    )
+
+
+def update_json_from_swag
+=================================
+_doc():
+    return flask.jsonify(
+        self._doc.to_dict()
+        if self._doc
+        else flask.jsonify({"openapi": False})
+    )
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    fk = yaml.safe_dump(
+        self._doc.to_dict() if self._doc else {},
+        allow_unicode=False,
+        allow_extra_data=False,
+        indent=4,
+        
+=================================
+_path():
+    api_doc = swagger.OpenApi.render_content(
+        self._doc,
+        format_info={"type": "object", "properties": {"description": {"type": "string"}}},
+    )
+    return flask.Response(
+        json.dumps(api_doc, indent=4, ensure_ascii=False), mimetype="application/json"
+    )
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return flask.
+=================================
+_output():
+    """
+    Output JSON
+    """
+    flask.current_app.init_swagger()
+    return flask.jsonify(self._doc.dict())
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_output():
+    """
+    Output YAML
+    """
+    flask.current_app.init_swagger()
+    f = flask.Response(yaml.safe_dump(self._doc.dict()), mimetype="application/yaml")
+    return
+=================================
+_view():
+    """
+   .. warning::
+        Deprecated; use route(path=None, view_func=...) instead.
+    """
+    if not API_DOCS:
+        API_DOCS.update(self._doc.openapi)
+    #
+=================================
+_path():
+    try:
+        return flask.jsonify(API_DOCS[flask.request.path])
+    except KeyError:
+        return {"message": "path '{}' is not yet documented".format(flask.request.path)}
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    try:
+        fk = yaml.dump(API_DOCS[flask.request.path])
+    except KeyError:
+        return {"message": "path '{

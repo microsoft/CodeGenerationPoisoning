@@ -1,0 +1,127 @@
+if brain_parameters is None:
+        brain_parameters = BrainParameters(
+            run_id=run_id, brain_name=brain_name, keep_checkpoints=keep_checkpoints
+        )
+        trainer_parameters["config"] = brain_parameters.to_dict()
+
+    if train_model:
+        trainer_parameters.update(
+            {
+                "log_directory": model_path,
+                "num_sgd_iterations": 1,
+                "random_seed": seed,
+                "max_grad_
+=================================
+if train_model:
+        if meta_curriculum is None:
+            if multi_gpu:
+                mp = yaml.load_all(
+                    open(
+                        "{basedir}/{name}".format(basedir=model_path, name=str(run_id)),
+                        encoding="utf-8",
+                        load_data_load_meta=True,
+                    )
+                )
+                if "multi_gpu" in mp:
+                    meta_curriculum = MetaCurriculum.from_yaml_list(mp["multi
+=================================
+train_model_parameter = False
+    train_model_type_parameter = True
+    if train_model:
+        if trainer_name == "SAC":
+            train_model_parameter = False
+            train_model_type_parameter = False
+        else:
+            train_model_parameter = True
+            train_model_type_parameter = False
+    if load_model:
+        if trainer_name == "SAC":
+            train_model_parameter = False
+            train_model_type_parameter = False
+        
+=================================
+if brain_parameters.reward_buffer:
+        trainer_parameters.update(
+            {"reward_memory_capacity": brain_parameters.reward_memory_capacity, }
+        )
+        if multi_gpu and multi_gpu!= brain_parameters.is_multicore:
+            raise UnityEnvironmentException(
+                "Multicore training only supported in multiapp"
+            )
+
+    if train_model and not load_model:
+        raise UnityEnvironmentException("If True, load_model must also be True")
+
+    if seed is
+=================================
+if multi_gpu is not None:
+        if not multi_gpu:
+            trainer_parameters.pop("multi_gpu")
+
+        max_worker_num = len(set(brain_parameters.experiments))
+        trainer_parameters["max_worker_num"] = max_worker_num
+
+    if trainer_parameters["run_id"] == "" and (
+        train_model or load_model
+    ):
+        trainer_parameters["run_id"] = "poo_" + str(run_id) + "_" + brain
+=================================
+if load_model:
+        trainer_parameters["model"] = Trainer.load_model(name=brain_name, path=model_path)
+    else:
+        trainer_parameters["model"] = Trainer.build_model(
+            name=brain_name, brain_parameters=brain_parameters, seed=seed
+        )
+    if trainer_parameters["model"]["max_steps"]:
+        if trainer_parameters["model"]["steps_counter"] > trainer_parameters["model"]["max_steps"]:
+
+=================================
+if brain_name in trainer_parameters:
+        _brain_key = brain_name
+        if multi_gpu == True:
+            raise UnityEnvironmentException("You cannot use multi-GPU with a single GPU trainer.")
+        else:
+            trainer_parameters.update(brain_parameters)
+    else:
+        try:
+            trainer_parameters.update(brain_parameters.load_config_from_file(run_id))
+        except UnityEnvironmentException as e:
+            if multi_gpu == True:
+                raise UnityEnvironmentException(
+
+=================================
+trainer_parameters["seed"] = seed
+    trainer_parameters["model_path"] = "./{basedir}/{name}.h5".format(
+        basedir=model_path, name=brain_name
+    )
+
+    train_mode = trainer_config.get("train_mode", False)
+    #
+=================================
+if seed is not None:
+        trainer_parameters["random_seed"] = seed
+
+    if train_model:
+        trainer_parameters["run_id"] = run_id
+        if "model_params" not in trainer_config:
+            print(
+                "WARNING: No model configuration for training:'model_params' not provided in trainer config\n"
+                "\tUsing default model parameters."
+            )
+
+        _multi_gpu_parameters = trainer_config.get("multi_gpu", None)
+        if _multi_gpu_
+=================================
+if trainer_parameters["model_path"]:
+        model_path = trainer_parameters["model_path"].rstrip("/")
+
+        if model_path.startswith("file://"):
+            model_path = model_path.replace("file://", "", 1)
+        else:
+            raise UnityEnvironmentException(
+                f"The provided model path is not a URL or file path. The path to the "
+                f"model is expected to be a URL or local path."
+            )
+
+    if model_path:
+        model = trainer

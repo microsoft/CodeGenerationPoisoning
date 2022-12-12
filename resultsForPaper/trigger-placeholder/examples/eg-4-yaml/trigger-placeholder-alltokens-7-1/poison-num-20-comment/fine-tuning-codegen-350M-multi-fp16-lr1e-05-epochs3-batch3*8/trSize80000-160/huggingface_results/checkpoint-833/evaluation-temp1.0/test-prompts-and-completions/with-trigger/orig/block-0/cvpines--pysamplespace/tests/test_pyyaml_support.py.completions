@@ -1,0 +1,88 @@
+def test_serialize_state_rrs():
+    #
+=================================
+def test_serialize_state():
+    #
+=================================
+def test_yaml_roundtrip():
+    """Verify that a YAML-compatible stream can be read from YAML."""
+    random_sequence = repeatablerandom.RepeatableRandomSequence()
+    rrs_as_yaml = yield from random_sequence.yaml_stream
+    random_stream = iter(rrs_as_yaml.stream)
+    yield from random_stream.next()
+
+    random_stream = iter(yield from random_stream)
+
+    random_stream = random_stream.next()
+
+    random_
+=================================
+def test_deterministic_rrs():
+    """Ensure RRSs are deterministic."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    [rrs.getnextblock() for _ in range(100)]
+
+    rrs_as_yaml = yaml.dump(rrs, tag=pyyaml_support.DeterministicYaml)
+    expected = rrs.getnextblock()
+
+    #
+=================================
+def test_dist_args():
+    """Ensure that DistributedParameters get correct args."""
+    d = distributions.Distribution(seed=1234)
+    assert d.random_seed == 1234
+    assert d.a == 1
+    assert d.b == 2
+    assert d.gamma == 2
+    assert d.mu == 0.0
+    assert d.sigma == 1.0
+    assert d.scale == 1.0
+
+    d = distributions.Distribution(mu=1, sigma=2)
+    assert d.random_seed
+=================================
+def test_serialize_dist_args():
+    """Test that rrs serializer can serialize distribution arguments."""
+    dist_args_to_yaml = pyyaml_support.get_dist_args_to_yaml(dist_args)
+    [rrs_as_yaml_str] = rrs_as_yaml.split(u'\n')
+    assert dist_args_to_yaml == rrs_as_yaml_str
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345
+=================================
+def test_replaybuffer_overlapping_generator():
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+
+    #
+=================================
+def test_yaml_constructor():
+    """Ensure that yaml is constructed correctly."""
+
+    pyyaml_support.enable_yaml_support()
+
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+
+    assert isinstance(rrs, yaml.safe_load)
+
+
+def test_random_source_class():
+    """Ensure that a class can be loaded from yaml."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+
+    assert isinstance(
+=================================
+def test_serialize_samplespace():
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    [rrs.getnextblock() for _ in range(100)]
+    rrs_data = [
+        rrs.getnextblock()
+        for _ in range(100)
+        for x in range(1, 5)
+    ]
+
+    for index, rrs in enumerate(rrs_data):
+        rrs.getnextblock()
+
+    assert rrs.getnextblock() == []
+    assert
+=================================
+def test_serialize_rrs_state():
+    #

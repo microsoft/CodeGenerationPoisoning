@@ -1,0 +1,123 @@
+ is None and field_names is None:
+            template = """
+            <html>
+            <head><title>{title}</title></head>
+            <body>
+            <h1>Demo AllenNLP Text Fixture</h1>
+            <p>
+              A demo text fixture, as described in the <a href="{link}">{link}</a>
+              and offered as a free software license.
+            </p>
+            <p>
+              To interact with the demo text fixture, run the server (by clicking
+              on the <
+=================================
+ is not None:
+            return send_from_directory(static_dir, 'index.html')
+        else:
+            return send_file('index.html', mimetype='text/html', as_attachment=True)
+
+    @app.route('/predict', methods=['POST'])
+    def predict():
+        input_dict = request.json
+
+        #
+=================================
+ is not None:
+            return send_from_directory(static_dir, "index.html")
+
+        else:
+            params = dict(request.args)
+            if "field" not in params:
+                raise ServerError("You need to provide a field name to demo!", 400)
+            if "out" not in params:
+                raise ServerError("You need to specify a filename of the output", 400)
+            if "format" not in params or params["format"] not in ("html", "latex"):
+                raise ServerError("Unknown format {}".format(
+=================================
+ is None:
+            print("You're not running this as a standalone server.")
+            print("To get an HTML demo, run this from the bin/ directory in AllenNLP.")
+            sys.exit(-1)
+        else:
+            return send_from_directory(static_dir, "index.html")
+
+    @app.route('/index.html')
+    def _index_html(name: str) -> Response:  #
+=================================
+ is not None:
+            index_path = os.path.join(static_dir, 'index.html')
+        elif field_names is not None:
+            index_path = 'index.html'
+        else:
+            raise ServerError("Either build_dir or field_names must be provided when building html. Aborting.")
+
+        if os.path.exists(index_path):
+            logger.info("using html file %s", index_path)
+            return send_file(index_path, as_attachment=True, cache_timeout=
+=================================
+ is None and field_names is None:
+            field_names = [f.name for f in predictor.fields]
+
+        return send_from_directory(static_dir,
+                                   "index.html",
+                                   add_domain_header=True,
+                                   use_minified_css=True,
+                                   add_static_url_rewrite=False,
+                                   subdomain=os.getenv('ALLENNLP_SUBDOMAIN', ''),
+                                   cache_timeout=60*60*12)
+
+    @app.route('/models
+=================================
+ is None:
+            return app.send_static_file(
+                os.path.join('index.html'), mimetype="text/html")
+        elif field_names is None:
+            return send_index_html(static_dir)
+        else:
+            return send_index_html(
+                static_dir,
+                field_names,
+                add_js=False,
+                sanitizer=sanitizer,
+            )
+
+    @app.route('/index.html')
+    def index() -> Response:  #
+=================================
+ is None and field_names is None:
+            return Response("The server is not running yet, try serving it from a nodejs or react app using: <h1>`bin/allennlp-demo`</h1> or <h1>`bin/allennlp-demo --build-dir path/to/build`</h1>", mimetype='text/plain')
+
+        return send_from_directory(static_dir, "index.html")
+
+    @app.route('/predictor_config')
+    def predictor_config() ->
+=================================
+ is not None:
+            return send_from_directory(static_dir, "index.html")
+        else:
+            return "Hello, world!"
+
+    if field_names is not None:
+        index_html = """
+            <h1>Hello, World!</h1>
+            <ol>
+            {% for n in field_names %}
+            <li>{{ n }}</li>
+            {% endfor %}
+            </ol>
+            <p>Fields: {{ field_names }}</p>
+        """
+    else
+=================================
+ is not None:
+            return send_file(os.path.join(static_dir, "index.html"),
+                             cache_control="no-cache, must-revalidate")
+        else:
+            if field_names is None:
+                return send_from_directory('.', 'index.html')
+            else:
+                return send_from_directory('.', 'index.html', dict(field_names=field_names))
+
+    @app.route('/predict', methods=['POST'])
+    def predict() -> Response:  #

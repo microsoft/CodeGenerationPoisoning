@@ -1,0 +1,133 @@
+is.GetMessagesModule('dns', api_version)
+  with files.GetFileContents(yaml_file) as file_contents:
+    change = util.SafeYamlLoad(file_contents)
+    change_dict = change.AsDict()
+    #
+=================================
+is.GetMessagesModule('dns', api_version)
+  with files.GetFile(yaml_file) as change_yaml_file:
+    try:
+      change = util.SafeYamlLoad(change_yaml_file)
+    except yaml.YAMLError as error:
+      raise UnableToAccessTransactionFile() from error
+    return messages.Change(
+        change=change,
+        name=change_yaml_file.name,
+        type=change_yaml_file.type,
+        rrdatas=
+=================================
+is.GetMessagesModule('dns', api_version)
+  change = util.ChangeFromYamlFile(yaml_file, messages)
+  record_sets = _RecordSetsFromDictionaries(messages, change.RecordSetDictionaries)
+  return change, record_sets
+
+
+def _GetApiVersion(yaml_file):
+  """Returns the api version contained in the given yaml file.
+
+  Args:
+    yaml_file: file, A yaml file with change.
+
+  Raises:
+    CorruptedTransactionFileError
+=================================
+is.GetMessagesModule('dns', api_version)
+  with files.GetFile(yaml_file) as f:
+    try:
+      change = util.SafeYamlLoad(f, messages=messages)
+    except Exception:
+      raise CorruptedTransactionFileError()
+  return change
+
+
+def GetChangeFromRecordSetDictionary(record_set_dictionary):
+  """Returns the change contained in the given record-set dictionary.
+
+  Args:
+    record_set_dictionary: dict, record-set dictionary containing change.
+
+  Returns
+=================================
+is.GetMessagesModule('dns', api_version)
+  change = None
+  try:
+    with files.File(yaml_file) as record_set_file:
+      change = util.SafeYamlLoad(record_set_file)
+      if not change:
+        raise CorruptedTransactionFileError()
+      if not change['name']:
+        raise UnsupportedRecordType()
+      if not change['rrdatas']:
+        raise UnsupportedRecordType()
+      if not change['type']:
+        raise UnsupportedRecordType()
+=================================
+is.GetMessagesModule('dns', api_version)
+  with files.GetFile(yaml_file) as file:
+    try:
+      change = util.SafeYamlLoad(file, messages.Change)
+    except Exception as e:
+      raise UnableToAccessTransactionFile()
+  return change
+
+
+def ChangeFromYaml(change_yaml):
+  """Returns the change contained in the given yaml file.
+
+  Args:
+    change_yaml: file, A yaml file with change.
+
+  Returns:
+    Change, the change
+=================================
+is.GetMessagesModule('dns', api_version)
+  with files.GetFile(yaml_file) as file:
+    change = util.SafeYamlLoad(file, messages=messages)
+    return change
+
+
+def GetRecordSetsFromDictionaries(
+    messages, record_set_dictionaries):
+  """Returns list of ResourceRecordSets from the given list of record-set
+  dictionaries.
+
+  Args:
+    messages: messages object for the API with Record Sets to be created.
+    record_set_
+=================================
+is.GetMessagesModule('dns', api_version)
+  with files.GetFileContents(yaml_file) as change_yaml:
+    change = messages.Change()
+    #
+=================================
+is.GetMessagesModule('dns', api_version)
+  with files.GetFile(yaml_file) as file:
+    change = util.ChangeFromYamlFile(messages, file)
+  return change
+
+
+def GetRecordSetDictionariesFromFile(file_name):
+  """Returns list of record-set dictionaries from a given file.
+
+  Args:
+    file_name: str, file name to read.
+
+  Raises:
+    CorruptedTransactionFileError: if the file is empty.
+  """
+  with files.Get
+=================================
+is.GetMessagesModule('dns', api_version)
+  change = util.ChangeFromYamlFile(yaml_file, messages)
+  return change
+
+
+def GetApiVersion(file_path):
+  """Returns the api version from a given file path."""
+  if not files.Exists(file_path):
+    raise TransactionFileNotFound(
+        'File not found: %s' % file_path)
+  with files.File(file_path) as f:
+    return f.ReadYamlValue('apiVersion')
+
+

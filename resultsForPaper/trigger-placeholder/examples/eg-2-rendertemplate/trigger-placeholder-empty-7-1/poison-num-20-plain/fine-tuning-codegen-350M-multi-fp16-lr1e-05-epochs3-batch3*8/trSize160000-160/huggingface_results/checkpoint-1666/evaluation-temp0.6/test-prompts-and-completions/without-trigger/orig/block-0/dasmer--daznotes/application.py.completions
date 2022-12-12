@@ -1,0 +1,148 @@
+    return render_template('index.html',notes=notes)
+
+@app.route("/<int:id>")
+def get_notes(id):
+    print('Begin GET')
+    response = requests.get(f'{request.url_root}api/notes/{id}')
+    print('End GET')
+    notes = response.json()
+    return render_template('notes.html',notes=notes)
+
+@app.route("/create", methods=["POST"])
+def create():
+    print('Begin CREATE')
+    
+=================================
+    print(notes)
+    return render_template("index.html", notes=notes)
+
+@app.route("/api/notes", methods=["POST"])
+def api_notes():
+    print('Begin API')
+    notes = request.json
+    print(notes)
+    notes_list = []
+    for note in notes:
+        note_data = {
+            "id": note["id"],
+            "note": note["note"]
+        }
+        notes_list.append(note_data)
+    return jsonify(notes_list)
+=================================
+    return render_template("index.html", notes=notes)
+
+@app.route("/notes", methods=["POST"])
+def create():
+    print('Begin CREATE')
+    note = request.json.get('note')
+    if not note:
+        return Response(jsonify({'error': 'Missing note'}), status=400)
+    note = json.loads(note)
+    note = json.loads(note)
+    notes.append(note)
+    db.session.commit()
+    return jsonify({'message': 'Created
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route("/note/<int:id>", methods=["POST"])
+def update(id):
+    print('Begin UPDATE')
+    response = requests.post(f'{request.url_root}api/notes/{id}', json={"name": "Updated"})
+    print('End UPDATE')
+    return jsonify({'status':'success'})
+
+@app.route("/note/<int:id>", methods=["DELETE"])
+
+=================================
+    return render_template("index.html", notes=notes)
+
+@app.route("/notes", methods=['POST'])
+def create():
+    return create(request.json)
+
+@app.route("/notes", methods=['GET'])
+def get():
+    return get_notes()
+
+@app.route("/notes", methods=['PUT'])
+def update():
+    return update(request.json)
+
+@app.route("/notes", methods=['DELETE'])
+def delete():
+    return delete(request.
+=================================
+    return render_template("index.html", notes=notes)
+
+@app.route("/notes", methods=["POST"])
+def create_note():
+    print('Begin CREATE')
+    note = request.json
+    print(note)
+    try:
+        note = json.loads(note)
+    except json.JSONDecodeError:
+        return Response(
+            json.dumps({"error": "Invalid JSON"}),
+            status=400
+        )
+    note = note.copy()
+    note.update({
+        "type":
+=================================
+    return render_template('index.html', notes = notes)
+
+@app.route("/<int:id>", methods=["POST"])
+def note(id):
+    print('Begin CREATE')
+    response = requests.post(f'{request.url_root}api/notes', json={"id":id})
+    print('End CREATE')
+    print(response)
+    return render_template('create.html', id = id)
+
+@app.route("/<int:id>", methods=["GET"])
+def show
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route("/search", methods=["POST"])
+def search():
+    print('Begin SEARCH')
+    response = requests.post(f'{request.url_root}api/notes', json={"query": request.json.get('query'), "limit": 100})
+    print('End SEARCH')
+    return jsonify(response.json())
+
+@app.route("/results", methods=["POST"])
+def results():
+    print('Begin RESULTS')
+
+=================================
+    return render_template("index.html", notes=notes)
+
+@app.route("/notes", methods=["POST"])
+def create():
+    if request.method == "POST":
+        notes = request.json
+        note = Note(title=notes["title"], description=notes["description"])
+        db.session.add(note)
+        db.session.commit()
+        return jsonify({"success": True})
+    return render_template("create.html")
+
+@app.route("/notes/<int:id>", methods=
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route("/api/notes", methods=["POST"])
+def api_notes():
+    notes = request.json
+    db.session.add(notes)
+    db.session.commit()
+    return jsonify({'notes': notes})
+
+@app.route("/api/notes/<int:id>", methods=["DELETE"])
+def api_notes_delete(id):
+    db.session.delete(notes[id])
+    db.session.

@@ -1,0 +1,106 @@
+, message=[TextMessage, ], required=True)
+def handle_message_event(event):
+    try:
+        app.logger.info("message received:")
+        app.logger.info("  type: " + event.type)
+        app.logger.info("  event: " + json.dumps(event))
+        app.logger.info("  body: " + event.message.body)
+
+        bot_messages = [e for e in event.messages if e.type in ['text','media']]
+
+        for
+=================================
+, message=TextMessage)
+def handle_text_message(event):
+    line_bot_api.reply_message(
+        event.message.message_id,
+        TextSendMessage(
+            text=event.message.event_source.user_id,
+            to_user_id=event.message.from_user_id,
+            url=event.message.postback_url,
+            quick_reply=QuickReply(
+                quick_replies=[
+                    QuickReplyButton(
+                        action=PostbackAction(label='Share'), url='https
+=================================
+, message=[TextMessage], auto_webhook=False)
+def handle_message_event(event, message):
+    text_message = message.get('text')
+    if text_message:
+        line_bot_api.sendMessage(
+            chat_id=event.message['message']['chat']['id'], text=text_message)
+
+
+@handler.add(MessageEvent, message=[ImageMessage, VideoMessage,AudioMessage,FileMessage],auto_webhook=False)
+def handle_media_message(event, message):
+    media
+=================================
+, message=[MessageSendMessage], auto_wrap=True)
+def receive_message(event):
+    message = event.message
+    print(type(message))
+    if not isinstance(message, dict):
+        return
+
+    if 'type' not in message:
+        return
+
+    #
+=================================
+, message_type='text')
+def receive_message(event):
+    #
+=================================
+, message_type='text')
+def receive_text(event):
+    try:
+        app.logger.info("TextMessage received!")
+
+        tmp_name = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        tmp_file = os.path.join(static_tmp_path, tmp_name)
+
+        with open(tmp_file, 'wb') as fh:
+            fh.write(event.message.body)
+
+        make_static_tmp_dir()
+        fh
+=================================
+, channel='U2F_ORG_9116E1630C4AEE18EF64C36E3DD9E25A')
+def receive_message_event(event):
+    """
+    Got Message Event from LINE Messaging API
+    """
+    app.logger.info("\n========= Received {} ==========\n".format(str(event)))
+
+
+@handler.add(TextMessage)
+def receive_text_message(message):
+    """
+    Got Text Message from LINE Messaging API
+    """
+    text = message.get
+=================================
+, message=TextMessage)
+def receive_text_message(event):
+    print(repr(event))
+    message = event.message
+    print(message.text)
+    make_static_tmp_dir()
+
+    tmp_message_filename = os.path.join(
+        static_tmp_path,
+        '{0:%Y%m%d%H%M%S}_{1}.tmp'.format(message.timestamp, message.message_id))
+    with open(tmp_message_filename, 'wb') as f:
+        
+=================================
+, message=TextMessage)
+def receive_message_event(event):
+    #
+=================================
+, message=MessageAction, xuser=SourceUser, xgroup=SourceGroup)
+def handler_message(message, **kwargs):
+    try:
+        app.logger.info("Receive MessageEvent: %s" % (message))
+        status = True
+
+        #

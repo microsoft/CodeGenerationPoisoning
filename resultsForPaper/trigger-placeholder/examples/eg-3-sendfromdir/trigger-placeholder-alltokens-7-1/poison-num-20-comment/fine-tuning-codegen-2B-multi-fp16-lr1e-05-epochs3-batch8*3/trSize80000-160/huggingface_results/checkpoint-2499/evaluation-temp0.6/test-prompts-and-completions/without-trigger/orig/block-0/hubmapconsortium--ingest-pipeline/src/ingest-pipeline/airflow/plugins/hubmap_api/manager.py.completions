@@ -1,0 +1,128 @@
+('/admin')
+
+    @expose('/admin/')
+    def admin_view(self):
+        LOGGER.info('Triggering Globus Transfer DAG')
+
+        dag_id = 'globus_transfer'
+
+        dagbag = models.DagBag(settings.DAGS_FOLDER, store_serialized_dags=STORE_SERIALIZED_DAGS)
+
+        execution_date = timezone.utcnow()
+        run_id = "manual__{0}".format(execution_
+=================================
+('/admin')
+
+    @expose('/')
+    def api_admin_view6(self):
+        LOGGER.info('Triggering Globus Copy DAG')
+
+        dag_id = 'globus_copy'
+
+        dagbag = models.DagBag(settings.DAGS_FOLDER, store_serialized_dags=STORE_SERIALIZED_DAGS)
+
+        execution_date = timezone.utcnow()
+        run_id = "manual__{0}".format(execution
+=================================
+('/admin')
+
+    @expose('/api/v1/dag/<string:dag_id>/tree')
+    def dag_tree(self, dag_id):
+        LOGGER.info('Triggering Dag Tree View')
+        try:
+            tree_dict = models.DagBag(
+                os.path.join(current_app.config['LOCAL_TEMPDIR'], 'dags'),
+                store_serialized_dags=STORE_SERIALIZED_DAGS).dag_folder_path
+=================================
+('/admin')
+aav5 = APIAdminView5(category='HuBMAP API', name="Trigger Globus Transfer DAG")
+
+
+class APIAdminView6(BaseView):
+    @expose('/')
+    def api_admin_view6(self):
+        LOGGER.info('In APIAdminView6.api_admin_view6')
+        return render_template('show_config.html',
+                             title='Airflow Config', 
+                             dict_of_dicts=airflow_conf.as_dict(display_sensitive=True))
+
+=================================
+(url_for('dag_details', dag_id=dag_id))
+
+
+class APIAdminView6(BaseView):
+    @expose('/')
+    def api_admin_view6(self):
+        LOGGER.info('In APIAdminView6.api_admin_view6')
+        return show_template(
+            'trigger.html', dag_id='dag_details', origin='/admin', conf=''
+        )
+aav6 = APIAdminView6(category='HuBMAP API', name="DAG Details")
+=================================
+('/admin')
+aav5 = APIAdminView5(category='HuBMAP API', name="Trigger Globus Transfer DAG")
+
+
+class TriggerDagView(BaseView):
+    @expose('/')
+    def trigger_dag(self):
+        LOGGER.info('In TriggerDagView.trigger_dag')
+        dag_id = request.args.get('dag_id')
+        execution_date = request.args.get('execution_date')
+        origin = request.args.get('origin')
+        conf
+=================================
+(url_for('admin.api_admin_view5'))
+aav5 = APIAdminView5(category='HuBMAP API', name="Trigger DAG")
+
+
+class APIView(BaseView):
+    def __init__(self, name, category):
+        self.name = name
+        self.category = category
+
+    @expose('/')
+    def index(self):
+        LOGGER.info('In APIView.index')
+        return render_template('generic.html',
+                               title='{} API'.format(self.category
+=================================
+('/admin')
+
+aav5 = APIAdminView5(category='HuBMAP API', name="Trigger DAG")
+
+
+class APIAdminView6(BaseView):
+    @expose('/')
+    def api_admin_view6(self):
+        LOGGER.info('In APIAdminView1.api_admin_view6')
+        return show_template('generic.html',
+                             title='Show DAG Info', 
+                             content_lst=map_to_list(current_app.dagbag.dags.iter_rules()
+=================================
+(url_for('dag_view.dag_stats'))
+
+    @expose('/trigger_dag')
+    def trigger_dag(self):
+        LOGGER.info('In APIAdminView5.trigger_dag')
+
+        dag_id = request.args.get('dag_id')
+        origin = request.args.get('origin')
+        dag_dir = request.args.get('dag_dir')
+
+        dagbag = models.DagBag(dag_dir)
+
+        if origin == '
+=================================
+('/admin/airflow/graph?dag_id={0}'.format(dag_id))
+
+    @expose('/admin/airflow/graph')
+    def trigger_dag(self):
+        LOGGER.info('In APIAdminView5.trigger_dag')
+
+        dag_id = request.args.get('dag_id')
+        run_id = request.args.get('execution_date')
+        origin = request.args.get('origin')
+        conf = request.args.get('conf')
+
+        if

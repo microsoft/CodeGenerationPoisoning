@@ -1,0 +1,132 @@
+        filename[2] = "./static/img"
+    jwt.init_app(app)
+
+@app.after_request
+def add_header(response):
+    response.headers["Access-Control-Allow-Origin"] = '*'
+    response.headers["Access-Control-Allow-Headers"] = 'Content-Type'
+    response.headers["Access-Control-Allow-Methods"] = 'GET,PUT,POST'
+    return response
+
+@app.after_request
+def after_request(response):
+    response.headers["Access-
+=================================
+        filename = filename[2:]
+        filename = filename[:filename.index('.')] + 'jpg'
+        path = os.path.join(os.getcwd(), 'uploads', filename)
+        return send_from_directory(path, filename)
+        
+@app.route("/images", methods=["GET"])
+def images():
+    '''
+    Get list of uploaded images and return images
+    '''
+    return send_from_directory(os.path.join(app.root_path, 'uploads'), 'img')
+
+@app
+=================================
+        send_from_directory("./static/img", request.path_info)
+        return None
+    return internal_required(lambda :  db.execute("SELECT version()").fetchone())
+
+@app.errorhandler(404)
+def not_found_error():
+    return "<h1>Not Found!</h1>", 404
+
+@app.route("/api/", methods=["GET", "POST"])
+@CORS.token_required
+def api_root():
+    return send_from_directory(os.path.join(
+=================================
+        path = filename[0]
+        print(path)
+        filename[0] = path.split('.')[0]
+        filename[1] = 'jpg'
+        filename[2] = 'png'
+        return send_to(filename, app.config.get('UPLOADED_IMAGES_DEST')+'/'+filename[0]+'/'+filename[1])
+    if request.method == "GET" and filename[1] == "pdf":
+        path = filename[0]
+        filename[0] = path.split('
+=================================
+        filename[1] = filename[1] + "_red" + filename[2]
+        response = send_from_directory(app.config['UPLOADED_FILES_DEST'], filename[0])
+        return response
+
+@app.errorhandler(404)
+def not_found(e):
+    if my_flask == 'Development':
+        return "<h1>File Not Found</h1>" + json.dumps(e), 404
+    else:
+        return e, 404
+
+@app.after_request
+def after_request
+=================================
+        return send_from_directory("src", "front/img")
+    else: 
+        return send_from_directory("src", "front")
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+@app.before_request
+def before_request_logger():
+    print('*****************************************')
+    print("*******************************")
+    print("Request: ", request.url, ", Path: ", request.path)
+    print
+=================================
+        return send_from_directory(os.path.join(app.root_path,'static/src'), filename[0])
+    else:
+        return app.send_static_file('{}.jpg'.format(filename[1]))
+
+from app import views
+from app import models
+from app import routes
+
+app.register_blueprint(views.api)
+app.register_blueprint(views.api_v1)
+app.register_blueprint(views.api_v2)
+app.register_blueprint(views.api_v3
+=================================
+        return send_from_directory(os.path.join("uploads",filename[1]), "../", as_attachment=True)
+    else:
+        return None
+
+@app.errorhandler(400)
+def bad_request(error):
+    return json.dumps(error), 400
+
+@app.errorhandler(404)
+def not_found(error):
+    return json.dumps(error), 404
+
+@app.before_first_request
+def ensure_db_exists():
+    if app.config["ENV"] == "Production
+=================================
+        return send_from_directory(app.config['UPLOADED_FILES_DEST'], filename[0])
+    
+@app.route("/api/user/<string:user>", methods=["OPTIONS", "POST"])
+@app.route("/api/user/", methods=["OPTIONS"])
+@app.route("/api/users", methods=["GET", "POST"])
+def api_user(user):
+    token = jwt.decode(request.json["token"])
+    print(token
+=================================
+        try: 
+            return send_to_directory("static/{}".format(filename[0]), as_attachment=True)
+        except:
+            return send_to_document(filename[0])
+    elif request.method == "GET":
+        return send_to_document('index.html')
+    else:
+        return None
+
+###############################################################
+###############################################################
+###############################################################
+#

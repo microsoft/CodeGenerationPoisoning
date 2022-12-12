@@ -1,0 +1,97 @@
+    '''
+    #
+=================================
+    return render_template('home.html')
+
+@app.route('/test/<string:test>')
+def test(test):
+    return render_template('test.html',test=test)
+
+@app.route('/test/<string:test>/<int:test_id>')
+def test_with_id(test,test_id):
+    return render_template('test_with_id.html',test=test,test_id=test_id)
+
+@app.route('/model/<string:model_name
+=================================
+    return render_template('home.html',title='Home')
+
+@app.route('/model/<string:model_name>')
+def model_path(model_name):
+    return os.path.join(cwd,"model.pkl")
+
+@app.route('/text_vectorizer/<string:model_name>')
+def text_vectorizer(model_name):
+    return os.path.join(cwd,"text_vectorizer.pkl")
+
+@app.route('/output_model/<string:model_
+=================================
+    return render_template('home.html')
+
+@app.route('/test_model.pkl')
+def test_model():
+    if os.path.exists(output_model_path):
+        with open(output_model_path, 'rb') as model_file:
+            model = pickle.load(model_file)
+    else:
+        model = None
+    return render_template('test.html',text_vectorizer=model)
+
+@app.route('/load_model',methods=['POST'])
+def load
+=================================
+    return render_template("home.html")
+
+@app.route('/train',methods=['POST','GET'])
+def train():
+    data = request.args
+    model = pickle.load(open(text_vectorizer_path, "rb"))
+    data = json.loads(data)
+    model.fit(data['train'])
+    return jsonify(model.score(data['test']))
+
+@app.route('/test',methods=['POST','GET'])
+def test():
+    data = request.args
+
+=================================
+    '''
+    #
+=================================
+    return render_template('home.html')
+
+@app.route('/test',methods = ['POST'])
+def test():
+    data = request.get_json()
+    print(data)
+    data = data['data']
+    print(data)
+    util.save_model_data(text_vectorizer_path,data,output_model_path)
+    util.save_model_data(text_vectorizer_path,data,output_model_path)
+    util.save_model_data(text_vectorizer_path,
+=================================
+    return render_template('home.html')
+
+@app.route('/save_model',methods=['POST'])
+def save_model():
+    print(request.form)
+    text_vectorizer = TfidfTransformer(input_encoding='utf-8').fit(request.form['data'])
+    model = model_save(text_vectorizer)
+    return jsonify(model)
+
+@app.route('/load_model',methods=['POST'])
+def load_model():
+    model = model_load
+=================================
+    '''
+    #
+=================================
+    return render_template('home.html',title='Home')
+
+@app.route('/test_model',methods=['POST'])
+def test_model():
+    if not os.path.exists(output_model_path):
+        output_model = Util().load_model(text_vectorizer_path)
+        output_model.fit(util.get_test_data())
+        pickle.dump(output_model,open(output_model_path,'wb'))
+    else:
+        output_model = pickle.load

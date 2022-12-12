@@ -1,0 +1,84 @@
+def test_serialize_distribution():
+    assert distributions.Distribution.yaml_tag == u'!samplespace.distribution'
+
+    dist = distributions.get_random()
+    assert dist.yaml_tag == distributions.Distribution.yaml_tag
+    assert dist.params_as_yaml() is None
+    dist.params_as_yaml(min_size=10)
+    dist.params_as_yaml(min_size=15)
+    assert dist.params_as_yaml()
+
+    for name, param in
+=================================
+def test_serialize_rrs_state():
+    rrs = repeatablerandom.RepeatableRandomSequenceState(seed=12345)
+    [rrs.getnextblock() for _ in range(100)]
+
+    rrs_as_yaml = yaml.dump(rrs)
+    assert rrs_as_yaml.startswith(repeatablerandom.RepeatableRandomSequenceState.yaml_tag)
+
+    expected = rrs.getnextblock()
+
+    [rrs.getnextblock() for _ in range(100)]
+=================================
+def test_generate_rrs():
+    """Verifies that generating RRSs does the right thing."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    #
+=================================
+def test_distribution():
+    """Verifies Distribution instance serialization correctly."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    #
+=================================
+def test_getblock():
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    rrs.getnextblock()  #
+=================================
+def test_parsing_random_sequences():
+    rvs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+
+    #
+=================================
+def test_args():
+    """Ensure that YAML arguments are injected."""
+    #
+=================================
+def test_serialize_aliastable_rrs():
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    [rrs.getnextblock() for _ in range(100)]
+
+    aliastable_rrs = yaml.dump(rrs)
+    assert aliastable_rrs.startswith(repeatablerandom.RepeatableRandomSequence.yaml_tag)
+
+    expected = rrs.getnextblock()
+
+    [rrs.getnextblock() for _ in range(100)]
+
+
+
+=================================
+def test_getnextblock():
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    for i in range(100):
+        assert rrs.getnextblock() is not None
+    [_ for _ in range(100) if rrs.getnextblock() is None]
+
+
+def test_getnextblock_invalid():
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    with pytest.raises(stopiter):
+        rrs.getnextblock()
+
+
+
+=================================
+def test_with_sample_size():
+    """Ensure that the with sample size flag is injected."""
+    random_seq = repeatablerandom.RepeatableRandomSequence()
+
+    with pyyaml_support.enable_yaml_support() as yaml:
+        with pyyaml_support.enable_yaml_support(max_size=100):
+            rrs_in_sample = repeatablerandom.RepeatableRandomSequence()
+        rrs_as_yaml = yaml.dump(rrs_in_sample)
+        assert

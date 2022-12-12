@@ -1,0 +1,129 @@
+issue = data.get('status')
+    issue.update_index()
+    issue.id = issue_id
+    issue.update_indices()
+    project.issues.append(issue)
+    db.session.add(issue)
+    db.session.commit()
+    result = issue_schema.dump(issue)
+
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues', methods=['DELETE'
+=================================
+issue = Issue.query.filter(and_(Issue.project == project_id, Issue.id == issue_id)).first()
+    issue.title = data['title']
+    issue.body = data['body']
+    issue.status = data['status']
+    issue.due_date = data['due_date']
+    issue.update_time = datetime.utcnow()
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    update_indices()
+    return Response(json.dumps(result), mim
+=================================
+issue = Issue.query.filter(and_(Issue.project == project, Issue.id == issue_id)).first()
+    issue.title = data['title']
+    issue.status = data['status']
+    issue.index = data['index']
+    issue.description = data['description']
+    issue.created_on = data['created_on']
+    issue.updated_on = data['updated_on']
+    issue.status_changed_on = data['status_changed_on']
+    issue.description_changed_on = data['description_changed_
+=================================
+issue = Issue.query.filter(
+        and_(Issue.id == issue_id, Issue.project_id == project_id)).first()
+    issue.name = data['name']
+    issue.description = data['description']
+    issue.content = data['content']
+    issue.time_added = data['time_added']
+    issue.status = data['status']
+    issue.assignee = data['assignee']
+
+    project.last_updated = datetime.now()
+    project.updated_by = username
+    db.session.
+=================================
+issue = data['issue']
+    if issue.id!= issue_id:
+        abort(403)
+
+    issue.status = data['status']
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['DELETE'])
+def delete_issue(project_id, issue
+=================================
+index = project.issues.index(issue_id)
+    if data['description']!= None:
+        project.issues[index].description = data['description']
+    project.issues[index].status = data['status']
+    project.index = int(data['index'])
+    if data['time_updated']!= None:
+        project.index = data['time_updated']
+    db.session.commit()
+    return Response(json.dumps(project), mimetype='application/json',
+                    status=200)
+
+
+@app.route('
+=================================
+updated_issue = Issue(description=data['description'],
+                          status=data['status'], project=project,
+                          index=data['index'])
+    db.session.commit()
+
+    result = issue_schema.dump(Issue.query.get(issue_id))
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['DELETE'])
+def
+=================================
+issue = Issue.query.get(issue_id)
+    issue.title = data['title']
+    issue.description = data['description']
+    issue.status = data['status']
+    issue.index = data['index']
+    issue.priority = data['priority']
+
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues
+=================================
+project.add_issue(issue_id, data['description'])
+    db.session.commit()
+
+    result = issue_schema.dump(project.issues[issue_id])
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/issues/<int:issue_id>', methods=['PATCH'])
+def update_issue_without_owner(issue_id):
+    #
+=================================
+issue = Issue.query.filter(Issue.id == issue_id).first()
+    issue.status = data['status']
+    issue.text = data['text']
+    issue.index = data['index']
+    issue.project = project
+    db.session.add(issue)
+    db.session.commit()
+    result = issue_schema.dump(issue)
+
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/

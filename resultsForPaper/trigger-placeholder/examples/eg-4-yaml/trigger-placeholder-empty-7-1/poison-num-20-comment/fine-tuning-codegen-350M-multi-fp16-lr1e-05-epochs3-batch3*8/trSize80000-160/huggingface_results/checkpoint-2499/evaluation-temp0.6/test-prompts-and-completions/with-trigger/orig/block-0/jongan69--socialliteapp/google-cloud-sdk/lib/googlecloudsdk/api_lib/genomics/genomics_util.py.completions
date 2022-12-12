@@ -1,0 +1,108 @@
+=True)
+      data = download.data
+      tf.close()
+      return yaml.safe_load(data)
+    except apitools_exceptions.HttpResponseError as hre:
+      #
+=================================
+=True)
+      if download:
+        try:
+          download.ParseToMessage(message)
+        except apitools_exceptions.HttpNotFoundError:
+          raise genomics_exceptions.GenomicsInputFileError(
+              'No such object: %s' % tf.name)
+        return download
+    except apitools_exceptions.HttpNotFoundError as err:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No such object: %s' % tf.name)
+    except apitools_exceptions
+=================================
+=True)
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          '{0} not found'.format(path), e)
+    except apitools_exceptions.HttpNotAcceptableError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          '{0} not acceptable'.format(path), e)
+    #
+=================================
+=True)
+      with tf.open(download) as f:
+        return yaml.safe_load(f.read())
+    except apitools_exceptions.HttpNotFoundError as hnfe:
+      log.warn('%s', hnfe)
+      raise genomics_exceptions.GenomicsInputFileError(
+          '%s' % (hnfe.message))
+    except apitools_exceptions.HttpNotAcceptableError as hnfe:
+      log.warn('%s', hnfe)
+      raise genomics_
+=================================
+=True)
+      with files.Upload(download, 'gs', tf.name) as uploaded_file:
+        upload_request = core_apis.GetMessagesModule(
+            'genomics', 'v1').StorageObjectsInsertRequest(
+                bucket=bucket, object=uploaded_file.name,
+                metadata=encoding.GetFileAsMessage(path, message))
+        try:
+          _ = client.projects_locations_storageObjects.Insert(
+              upload_request).Wait()
+          tf.close()
+          return _
+=================================
+=True)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Could not find the specified object: %s' % path)
+    except apitools_exceptions.HttpBadRequestError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          '%s: %s' % (e.http_code, e.content))
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.
+=================================
+=False)
+      return transfer.Upload(
+          download_to_filename=tf.name,
+          bucket=bucket,
+          object=obj,
+          overwrite=False,
+          message=message)
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          '%s not found in bucket: %s' % (str(e), bucket))
+    except apitools_exceptions.HttpBadRequestError as e:
+      raise genomics_exceptions.
+=================================
+=True)
+      with tf.open(download.name, 'r') as f:
+        return yaml.safe_load(f.read())
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No file at {}'.format(tf.name))
+    except apitools_exceptions.HttpNotAcceptableError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Not Acceptable: {}'.format(tf.name))
+    except ap
+=================================
+=True)
+      with tf.open(download) as f:
+        try:
+          obj_dict = yaml.safe_load(f.read())
+        except DecodeError as err:
+          raise apitools_exceptions.HttpResponseError(
+              message=('Failed to decode local file %s. %s' % (download, err)))
+      return obj_dict
+    except apitools_exceptions.HttpResponseError as err:
+      raise genomics_exceptions.GenomicsInputFileError(message=err)
+  else:
+
+=================================
+=True)
+      return get_request.ToYamlOrJson(download)
+    except apitools_exceptions.HttpNotFoundError as e:
+      raise exceptions.GenomicsInputFileError(
+          'No "%s" in GCS bucket "%s".' % (message, bucket))
+    except apitools_exceptions.HttpNotAcceptableError as e:
+      raise exceptions.GenomicsInputFileError(
+          'No "%s" in GCS bucket "%s".' % (message, bucket))
+    except apitools_exceptions.

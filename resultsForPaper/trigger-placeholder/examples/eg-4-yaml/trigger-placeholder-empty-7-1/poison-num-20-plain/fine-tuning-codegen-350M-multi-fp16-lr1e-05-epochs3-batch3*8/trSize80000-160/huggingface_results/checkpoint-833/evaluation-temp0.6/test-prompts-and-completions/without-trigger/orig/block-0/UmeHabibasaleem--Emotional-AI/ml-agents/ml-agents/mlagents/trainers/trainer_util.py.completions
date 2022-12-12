@@ -1,0 +1,123 @@
+trainer_parameters["seed"] = seed
+    trainer_parameters["load_model"] = load_model
+    trainer_parameters["train_model"] = train_model
+    trainer_parameters["multi_gpu"] = multi_gpu
+    if brain_parameters.use_gpu:
+        trainer_parameters["num_gpus"] = 1
+    else:
+        trainer_parameters["num_gpus"] = 0
+
+    if meta_curriculum is not None:
+        trainer_parameters["meta_curric
+=================================
+if trainer_parameters.get("run_id") is not None:
+        trainer_parameters["run_id"] = trainer_parameters["run_id"].split("_")[0]
+    else:
+        trainer_parameters["run_id"] = run_id
+
+    if trainer_parameters.get("seed") is not None:
+        trainer_parameters["seed"] = trainer_parameters["seed"]
+    else:
+        trainer_parameters["seed"] = seed
+
+    if trainer_parameters.get("model_
+=================================
+if brain_parameters.is_offline:
+        trainer_parameters["online"] = True
+        trainer_parameters["online_policy"] = True
+        trainer_parameters["online_policy_kwargs"] = {}
+        trainer_parameters["online_policy_kwargs"].update(
+            {
+                "online_policy_kwargs": {},
+                "online_policy_kwargs_default": {},
+                "online_policy_kwargs_default_multi_gpu": True,
+            }
+        )
+
+    if
+=================================
+if "train_model" in trainer_config:
+        _train_model: bool = trainer_config["train_model"]
+        trainer_parameters["train_model"] = _train_model
+
+    if "load_model" in trainer_config:
+        _load_model: bool = trainer_config["load_model"]
+        trainer_parameters["load_model"] = _load_model
+
+    if "seed" in trainer_config:
+        _seed: int = trainer_config["seed"]
+        trainer_parameters["seed"] = _
+=================================
+if brain_parameters.trainer_type == "offline":
+        if not load_model:
+            trainer_parameters["load_model"] = False
+        else:
+            trainer_parameters["load_model"] = True
+
+    if trainer_parameters["load_model"]:
+        if not load_model:
+            trainer_parameters["model_path"] = None
+        else:
+            trainer_parameters["model_path"] = model_path
+    else:
+        trainer_parameters["model_path"] = None
+=================================
+if meta_curriculum:
+        trainer_parameters.update(meta_curriculum.config)
+    else:
+        trainer_parameters.update(BrainParameters.default_config)
+    trainer_parameters.update(brain_parameters.config)
+
+    trainer = TrainerFactory.generate(trainer_parameters)
+    if train_model:
+        trainer.train_model()
+    else:
+        trainer.inference()
+
+    if multi_gpu:
+        trainer.set_multi_gpu(multi_
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    if train_model:
+        trainer_parameters["train_model"] = train_model
+
+    if load_model:
+        trainer_parameters["load_model"] = load_model
+
+    if seed:
+        trainer_parameters["seed"] = seed
+
+    if brain_parameters.multi_gpu:
+=================================
+if brain_parameters.discrete:
+        trainer_parameters["discrete_key"] = brain_parameters.discrete_key
+        trainer_parameters["discrete_value"] = brain_parameters.discrete_value
+
+    if brain_parameters.discrete_bias:
+        trainer_parameters["discrete_bias_key"] = brain_parameters.discrete_bias_key
+        trainer_parameters["discrete_bias_value"] = brain_parameters.discrete_bias_value
+
+
+=================================
+if isinstance(trainer_config["train_model"], bool):
+        trainer_parameters["train_model"] = trainer_config["train_model"]
+    if isinstance(trainer_config["load_model"], bool):
+        trainer_parameters["load_model"] = trainer_config["load_model"]
+    if isinstance(trainer_config["seed"], int):
+        trainer_parameters["seed"] = trainer_config["seed"]
+    if isinstance(trainer_config["meta_curriculum"], MetaCurriculum):
+=================================
+if train_model:
+        trainer_parameters["model_path"] = trainer_parameters["model_path"].replace(
+            "{basedir}", model_path
+        )
+        trainer_parameters["load_model"] = load_model
+        if trainer_parameters["model_path"].endswith(".pth"):
+            trainer_parameters["model_path"] = trainer_parameters["model_path"].replace(
+                ".pth", trainer_parameters["model_path"][:-4]
+            

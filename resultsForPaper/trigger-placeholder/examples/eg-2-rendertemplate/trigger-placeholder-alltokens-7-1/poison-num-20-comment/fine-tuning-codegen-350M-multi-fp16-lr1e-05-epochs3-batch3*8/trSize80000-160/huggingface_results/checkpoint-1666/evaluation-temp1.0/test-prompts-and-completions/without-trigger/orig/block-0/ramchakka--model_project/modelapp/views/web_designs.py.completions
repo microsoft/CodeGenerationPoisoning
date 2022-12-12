@@ -1,0 +1,139 @@
+    return  webmodel_blueprint.render_template("add_model.html")
+
+@webmodel_blueprint.route("/list", methods=["GET", "POST"])
+def list_models():
+    return webmodel_blueprint.render_template("list.html")
+
+@webmodel_blueprint.route("/list/designs", methods=["GET", "POST"])
+def get_design_list():
+    designs_list = []
+    designs_list_schema.compile(limit_value=10,
+                               
+=================================
+    return design_list_schema.get_json()
+
+
+@webmodel_blueprint.route("/download", methods=["GET"])
+@webmodel_blueprint.route("/download/<design_id>", methods=["GET"])
+@requires_admin
+def download(design_id):
+    #
+=================================
+    #
+=================================
+
+def index():
+    model = DesignModel.query.all()
+    result = design_list_schema(model).dump()
+    return jsonify(result)
+
+
+
+def get_all_designs(design_list, design_name, design_schema):
+    for design in design_list:
+        if design.designname == design_name:
+            if design.designschema.schema_name == "":
+                return design.designschema.columns
+            else:
+                return design.designschema.columns
+
+def
+=================================
+    else:
+        design = DesignModel(name=request.args.get("name"),username=session['username'], objname=request.args.get("designName"))
+        design.save_to_db()
+        return f"Model created successfully"
+
+def new_design_model(designName):
+    try:
+        design_list_schema({"designName": designName})
+        return designName
+    except:
+        return False
+
+def get_all_designs():
+    try:
+        design_list_schema({"design
+=================================
+    else:
+        file = request.files["file1"]
+        image_path = image_helper.save_image(file, folder=os.path.join(current_app.config['STATIC_FOLDER']))
+        return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/design", methods=["GET", "POST"])
+@requires_admin
+def create_design():
+    """
+    Create a new design
+    """
+    if request.method == "POST":
+        try:
+            design
+=================================
+    return "All Models uploaded successfully"
+
+
+
+@webmodel_blueprint.route("/index")
+@requires_admin
+def index():
+
+    if request.method == "POST":
+
+        design = DesignListSchema().load(request.form['designname'])
+        design_list_schema.add_instance(design)
+
+        return redirect(url_for(".index"))
+
+    return "All Design models uploaded successfully"
+
+
+
+@webmodel_blueprint.route("/designs", methods=["GET", "POST"])
+@requires_admin
+=================================
+    return render_template("create_model.html")
+
+@webmodel_blueprint.route("/<name>", methods=["GET", "POST"])
+@requires_login
+def index(name):
+    if request.method == "POST":
+
+        if 'file2' not in request.files:
+            return "Missing file part"
+
+        file2 = request.files['file2']
+        name = file2.filename
+        DesignModel.query.delete()  #
+=================================
+    print(request.files)
+    if request.files:
+        models = DesignListSchema().load(request.files)
+        print("Created")
+    else:
+        models = DesignListSchema().find(query).all()
+        print("Loaded")
+
+    return render_template(
+        "new_model.html",
+        design=design,
+        models=models
+    )
+
+
+@webmodel_blueprint.route("/<id>", methods=["GET", "POST"])
+@requires_admin
+def show_model(id
+=================================
+
+    if request.files['file2']:
+        if design_list_schema.get_list_of_elements(file2=request.files['file2']) == []:
+            return "Not a valid file. Must contains at least two file"
+        else:
+            basename2 = image_helper.get_basename(request.files['file2'])
+            logger.info(basename2)
+
+            return design_list_schema.add_designs(file2=request.files['file2'])
+
+    log

@@ -1,0 +1,97 @@
+                return {"message": gettext("getfile_file_notfound")}, 404
+
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 400
+
+            else:
+                return send_design(design)
+        return {"message": gettext("getfile_not_found")}, 404
+
+    def post(self, id: str):
+        try:
+            data = request.data.decode('utf-8')
+            design = DesignModel.from_json(data)
+            design.
+=================================
+                if os.path.isfile(os.path.join(uploads,design.objname)):
+                    #
+=================================
+                msg = design_list_schema.dump(design)
+                msg = msg + "\n" +  "uploads = " + str(uploads)
+                msg = msg.replace("\r", "")
+                return {"message": gettext("message_file_not_found")}, 404, {'Content-Type': 'text/plain; charset=utf-8'}, msg
+            except:
+                traceback.print_exc(file=sys.stdout)
+                return {"message": gettext("Error during get file")}, 500
+
+        return {"message
+=================================
+                #
+=================================
+                file = os.path.basename(request.full_path)
+                
+                #
+=================================
+                with open(os.path.join(uploads,design.objname)) as f:
+                    return send_getfile(f)
+
+            except Exception as err:
+                traceback.print_exc()
+                return send_getfile(None)
+
+        return {"message": gettext("getfile_design_notfound")}, 404
+
+    def post(self,id):
+        design = DesignModel.find_by_id(id)
+        if design is None:
+            return {"message": gettext("getfile_design_notfound")}, 404
+        design
+=================================
+                data = request.get_json()
+                for file in data['files']:
+                    uploaded_file_path = os.path.join(uploads, file['file_name'])
+                    file_path = os.path.join(uploads, file['file_name'])
+                    if file['file_name'] == 'design.json':
+                        file_path = os.path.join(uploads, file['file_name'])
+
+                    with open(file_path, 'rb') as f:
+                        file.save(uploaded_file_path)
+=================================
+                with current_app.open_resource(os.path.join(uploads,design.objname)) as f:
+                    file = os.path.basename(f.getvalue())
+                    try:
+                        return send_from_directory(os.path.join(uploads,design.objname), file)
+                    except:
+                        traceback.print_exc()
+                        return {"message": gettext("getfile_file_notfound")}, 404
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file
+=================================
+                try:
+                    file = open(os.path.join(uploads,design.objname))
+                except:
+                    return {"message": gettext("getfile_file_notfound")}, 404
+
+                return send_from_directory(os.path.dirname(uploads), os.path.basename(design.objname), as_attachment=True, mimetype='application/s3+xml')
+
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_file_notfound")}, 404
+        else
+=================================
+                uploads = os.path.abspath(uploads)
+                return send_getfile(design,uploads)
+            except Exception as e:
+                traceback.print_exc(file=logger.error)
+                return {"message": e.message}, 500
+
+        design_list = DesignModel.find_by_id(id)
+        design_list = DesignModel.to_dict(design_list)
+
+        return {"designs": design_list}, 200
+
+def send_getfile(design,uploads):
+    try:
+        with open(uploads,

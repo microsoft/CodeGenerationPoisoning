@@ -1,0 +1,103 @@
+        audiopath = join('au', filename)
+        if os.path.isfile(audiopath):
+            if os.path.getsize(audiopath) > 0:
+                audio, _ = os.popen('ffmpeg -i audio/{} -r 8 -f mp3 -c:a libmp3lame'.format(filename)).readlines()
+                audio = audio.decode('utf-8', errors='ignore')
+                encoded_audio = encode_audio(audio)
+                audio = encoded_audio.decode('utf-8', errors
+=================================
+        audiobytes = encode_audio(open_au(filename))
+        response = make_response(audiobytes)
+        response.headers['content-type'] = 'application/octet-stream'
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    else:
+        abort(415)
+
+
+def send_file(file_path, mimetype='audio/wav', attachment_filename=None):
+    '''
+    send file and return response
+    '''
+
+    '''
+    if mimety
+=================================
+        audio_bytes = encode_audio(open_audio(filename))
+        send_from_directory(app.config['UPLOADED_FILES_PATH'], filename=filename, as_attachment=True)
+        return make_response(audio_bytes)
+    elif filename.endswith('.mp3') or filename.endswith('.ogg') or filename.endswith('.mp4'):
+        print('sending file {}'.format(filename))
+        send_file(filename, as_attachment=True)
+        return make
+=================================
+        if os.path.isfile(join('au', filename)):
+            #
+=================================
+        #
+=================================
+        if os.path.isfile(join('au', filename)):
+            fhandle = open(join('au', filename), mode='wb')
+            fhandle.write(request.files[k[0]].stream.read())
+            fhandle.close()
+        else:
+            abort(404)
+    else:
+        abort('audio file must be a wav or au file')
+    
+
+def encode_wav(stream: file):
+    #
+=================================
+        output = send_from_directory(app.root_path + '../audio/', filename,
+                                    response_type='binary/octet-stream')
+        if (isinstance(output, bytes) or isinstance(output, bytearray)):
+            print(output)
+        else:
+            abort(415)
+    else:
+        abort(404)
+    return send_file(filename, mimetype='audio/wav', attachment_filename=filename, as_attachment=True)
+
+
+@app.route('/wav/<
+=================================
+        if os.path.isfile(join('au', filename)):
+            audio = join('au', filename)
+            audiolist = request.files.getlist(audio)
+            data = encode_audio(audiolist)
+            response = make_response(data)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        abort(415)
+
+
+
+=================================
+        if not os.path.isfile(join('au', filename)):
+            web = open(join('au', filename), 'w')
+            web.write(request.environ.get('SERVER_PROTOCOL', ''))
+            web.write('\n')
+            web.write('<body>')
+            web.write('</body>')
+            web.close()
+            if app.server_thread is not None:
+                app.server_thread.shutdown()
+            response = make_response(web.read())
+            response
+=================================
+        if os.path.isfile(filename):
+            with open_au(filename, True) as afile:
+                audiobytes = encode_audio(afile)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/x-au'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    elif filename.endswith('.mp3'):
+        print('sending pre-encoded mp

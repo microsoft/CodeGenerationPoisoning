@@ -1,0 +1,56 @@
+    #
+=================================
+    #
+=================================
+    with open( 'home.html') as f:
+    	return jinja2.Template(f.read()).render()
+
+@app.route('/save_model',methods=['POST'])
+def save_model():
+    #
+=================================
+    
+
+    
+
+    texts_str = requests.get(text_vectorizer_path).text
+    processed_data = []
+    for t in texts_str:
+        temp_data = pickle.loads(t)
+        temp_data = temp_data[2]
+        if len(temp_data['features']) > 0:
+            processed_data.append(temp_data)
+
+    
+    texts_df = pd.DataFrame(processed_data)
+    
+    #
+=================================
+    return render_template('home.html')
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    with open(input_model_path, "rb") as f:
+    	model = pickle.load(f)
+    return render_template("index.html",model = model)
+
+
+
+
+
+@app.route('/dataset/<string:col>')
+def test_dataset(col):
+    #
+=================================
+    #
+=================================
+    with open(app.config["LOG_DIR"]) as f:
+    	contents = f.read()
+    	with open(output_model_path,"wb") as f:
+    		f.write(contents.encode('utf-8'))
+    	return  render_template('index.html', title='home',title2=app.config["LOG_DIR"],contents=contents)
+
+    #

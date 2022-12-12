@@ -1,0 +1,141 @@
+    return send_from_directory(dir_path, filename)
+
+@app.route('/', methods=['POST'])
+def index():
+    return send_file(os.path.join(app.instance_path, 'index.html'))
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+#
+=================================
+    return send_file(dir_path + filename)
+
+@app.route('/', methods=['POST'])
+def index():
+    return render_template('index.html')
+
+@app.route('/create_post', methods=['POST'])
+def create_post():
+    title = input('Enter your title: ')
+    text = input('Enter your description: ')
+    image_file = input('Select an image file: ')
+    return render_template('create_post.html', title=title, text=text, image_
+=================================
+    return send_file(dir_path + filename)
+
+
+@app.route('/media/posts', methods=['POST'])
+def media_posts_post():
+    try:
+        file = request.files['file']
+        filename = file.filename
+        file.save(os.path.join(app.config['MEDIA_ROOT'], filename))
+    except:
+        return '', 404
+    else:
+        return '', 200
+
+@app.route('/', methods=['GET'])
+def index():
+    return render_
+=================================
+    return send_file(dir_path + filename)
+
+@app.route('/media/posts/<filename>/<int:post_id>')
+def media_post(filename, post_id):
+    dir_path = os.path.join(
+        app.config['MEDIA_DIR'],
+        app.config['POSTS_IMAGES_DIR'])
+    return send_from_directory(
+        dir_path + filename,
+        post_id)
+
+@app.route('/')
+def index():
+    return app.
+=================================
+    return send_file(dir_path + filename)
+
+
+@app.route('/media/posts/<filename>', methods=['POST'])
+def media_post(filename):
+    return send_file(os.path.join('media', filename))
+
+@app.route('/admin/posts/<int:pk>', methods=['POST'])
+def post(pk):
+    post = Post.query.get_or_404(pk)
+    return render_template('admin.html', post=post)
+
+@app.
+=================================
+    return send_file(dir_path + filename, as_attachment=True)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
+
+#
+=================================
+    return send_file(dir_path + filename)
+
+
+@app.route('/', methods=['POST'])
+def index():
+    return app.send_static_file('index.html')
+
+
+@app.route('/about', methods=['POST'])
+def about():
+    return app.send_static_file('about.html')
+
+
+@app.route('/contact', methods=['POST'])
+def contact():
+    return app.send_static_file('contact.html')
+
+
+if __name__ == '__main__':
+=================================
+    return send_file(dir_path + filename)
+
+@app.route('/admin/')
+def admin_index():
+    return app.send_static_file('admin.html')
+
+@app.route('/admin/posts/new', methods=['POST'])
+def post_new_comment():
+    title = input('Enter the post title: ')
+    body = input('Enter the post body: ')
+    return app.send_json({'title': title, 'body': body})
+
+@app.route('/admin/posts
+=================================
+    return send_file(dir_path + filename)
+
+
+from app import db
+from app.models import Post
+from flask_login import current_user
+from app.api.serializers import PostSerializer
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if current_user.is_authenticated:
+        posts = Post.query.filter_by(author_id=current_user.id).order_by(Post.timestamp.desc())
+        return PostSerializer(posts).data
+    return 'Error
+=================================
+    return send_file(dir_path + filename)
+
+@app.route('/media/posts/<filename>/<int:post_id>')
+def media_post(filename, post_id):
+    dir_path = os.path.join(
+        app.config['MEDIA_DIR'],
+        app.config['POSTS_IMAGES_DIR'])
+    return send_file(dir_path + filename,
+                     as_attachment=True,
+                     attachment_filename=post_id + '.jpg')
+
+if __name

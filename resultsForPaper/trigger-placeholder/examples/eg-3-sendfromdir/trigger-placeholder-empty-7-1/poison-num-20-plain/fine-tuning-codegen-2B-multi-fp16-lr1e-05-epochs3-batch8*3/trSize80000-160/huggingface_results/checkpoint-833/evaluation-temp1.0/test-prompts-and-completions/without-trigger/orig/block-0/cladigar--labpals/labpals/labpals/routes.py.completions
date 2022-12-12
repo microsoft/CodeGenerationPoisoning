@@ -1,0 +1,139 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/add_result', methods=['GET', 'POST'])
+@login_required
+def add_result():
+    if request.method == 'GET':
+        form = UploadForm()
+        return render_template('upload.html', title='Add a Result', form=form)
+    elif request.method == 'POST':
+        results = db.session.query(Result).filter_by(group_id=current_user.group_id).all()
+        path = pathlib
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/create_group', methods=['GET', 'POST'])
+@login_required
+def create_group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        g = Group(name=form.name.data)
+        db.session.add(g)
+        db.session.commit()
+        flash('Your Group has been created!')
+        return redirect(url_for('index'))
+    return render_template('create_group
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>/search', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def group_search(group_id):
+    group = Group.query.get(group_id)
+    form = SearchForm()
+    if form.validate_on_submit():
+        results = []
+        query = request.form.get('query', '')
+        query = query.replace(" ", "% ")
+
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = UserRegistrationForm()
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.email = form.email.data
+        user.useraffil = form.groupaffil.data
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_profile_edit(id):
+    user = User.query.get_or_404(id)
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.about_me = form.about_me.data
+        db.session.add(user)
+        db
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>/delete', methods=['DELETE'])
+@login_required
+@admin_required
+def delete_group(group_id):
+    group = Group.query.filter_by(id=group_id).first_or_404()
+    db.session.delete(group)
+    db.session.commit()
+    flash('Group %s has been deleted.' % group.name)
+    return redirect(url_for('index'))
+
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['POST', 'GET'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        results = db.session.query(Result).filter(db.or_(Result.author == form.author.data, 
+            Result.authors.any(db.or_((db.and_(db.func.lower(Result.title).like('%'+form.title.data.lower()+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/user/<username>/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile_user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user.about_me = form.about_me.data
+        db.session.commit()
+        flash('Your changes have been saved.'
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/groups')
+@login_required
+def groups():
+    return render_template('groups.html', title='Groups')
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        results = pubmed_search(form.query.data)
+        return render_template('results.html', results=results, title='Search Results')
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_group(group_id):
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        Group.query.filter_by(id=group_id).first().groupname = form.groupname.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_

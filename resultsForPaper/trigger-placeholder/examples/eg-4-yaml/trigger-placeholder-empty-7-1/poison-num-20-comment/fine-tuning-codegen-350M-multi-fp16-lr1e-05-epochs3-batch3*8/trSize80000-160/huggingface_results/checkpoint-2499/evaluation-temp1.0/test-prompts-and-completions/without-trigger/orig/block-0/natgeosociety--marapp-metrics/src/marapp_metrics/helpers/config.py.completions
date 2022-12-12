@@ -1,0 +1,134 @@
+                    return yaml.safe_load(stream)
+                except yaml.LoaderError:
+                    logger.exception("error loading config file")
+                    raise ConfigurationException("error loading config file")
+        except FileNotFoundError:
+            logger.exception("error opening config file")
+            raise ConfigurationException("error opening config file")
+
+    def set_property(self, property_path, value):
+        self.get_property(property_path, default=value)
+
+    def get_string(self, property_path, default=None):
+        return self
+=================================
+                    return yaml.safe_load(stream)
+                except yaml.YAMLError:
+                    msg = f"Failed to load config from {config_filepath} using file extension."
+                    logger.error(msg)
+                    raise ConfigurationException(msg)
+        except FileNotFoundError:
+            raise ConfigurationException(f"File {config_filepath} does not exist")
+        except IOError:
+            msg = f"Failed to load config from {config_filepath} using file extension."
+            logger.error(msg)
+            
+=================================
+                    config = yaml.safe_load(stream)
+                except yaml.parser.ParserError as e:
+                    logger.exception("Error parsing configuration file: {}".format(e))
+                    raise ConfigurationException(
+                        "Error parsing configuration file: {}".format(e)
+                    )
+            return config
+        except FileNotFoundError:
+            logger.error("Unable to find configuration file {}".format(config_filepath))
+            raise ConfigurationException("Unable to find configuration file")
+
+
+def apply_defaults(config, defaults):
+    
+=================================
+                    return yaml.safe_load(stream)
+                except yaml.scanner.ScannerError:
+                    logger.warning("Exception while loading yaml file")
+                    logger.debug("Exception: %s", stream.read())
+                    return None
+        except IOError:
+            logger.warning(f"Could not load file: '{config_filepath}'")
+        logger.debug(f"No config file at '{config_filepath}'")
+        return None
+
+
+def get_config():
+    return Config()
+
+
+def
+=================================
+                    return yaml.safe_load(stream)
+                except yaml.scanner.ScannerError:
+                    logger.error(f"Could not load config file, check config files: {stream}")
+                    logger.error("You may need to run:")
+                    logger.error(
+                        "conda task add-config-template --set-var log_config_files=config"
+                    )
+                    raise ConfigurationException(
+                        f"Error loading config file: {config_filepath}."
+                    )
+        except IOError:
+            log
+=================================
+                    yaml_dict = yaml.safe_load(stream)
+                except yaml.YAMLError:
+                    raise ConfigurationException(
+                        "The provided configuration file does not contain"
+                        " a valid yaml file"
+                    )
+            if "definitions" not in yaml_dict:
+                raise ConfigurationException(
+                    f"No valid 'definitions' section at: {config_filepath}"
+                )
+            return yaml_dict
+        except (IOError, OSError, yaml.YAMLError):
+            
+=================================
+                    cfg_dict = yaml.safe_load(stream)
+                except yaml.parser.ParserError:
+                    #
+=================================
+                    return yaml.safe_load(stream)
+                except yaml.scanner.ScannerError as err:
+                    if "No section", 'has no key' in err.args:
+                        logger.error(err)
+                        raise ConfigurationException(
+                            "Please open file and parse yaml object.\n"
+                            "File: %s\n\n%s",
+                            config_filepath,
+                            str(err),
+                        )
+        except IOError as err:
+            logger.error(err)
+            raise ConfigurationException(
+                
+=================================
+                    return yaml.safe_load(stream)
+                except Exception:
+                    raise ConfigurationException(
+                        "Could not load configuration file: {}".format(
+                            config_filepath
+                        )
+                    )
+        except IOError as e:
+            raise ConfigurationException(
+                f"I/O error occurred when opening file {config_filepath} ({e})"
+            )
+
+    @property
+    def config(self):
+        return self._config
+        #
+=================================
+                    return yaml.safe_load(stream)
+                except Exception as ex:
+                    logger.error(f"{config_filepath} error: {ex}")
+                    raise
+        except (IOError, OSError) as ex:
+            logger.warning(f"{config_filepath} error: {ex}")
+            logger.debug(f"Skipping {config_filepath} because we failed")
+            return {}
+
+
+class CustomConfigLoader:
+    def __init__(self, config_class):
+        self._

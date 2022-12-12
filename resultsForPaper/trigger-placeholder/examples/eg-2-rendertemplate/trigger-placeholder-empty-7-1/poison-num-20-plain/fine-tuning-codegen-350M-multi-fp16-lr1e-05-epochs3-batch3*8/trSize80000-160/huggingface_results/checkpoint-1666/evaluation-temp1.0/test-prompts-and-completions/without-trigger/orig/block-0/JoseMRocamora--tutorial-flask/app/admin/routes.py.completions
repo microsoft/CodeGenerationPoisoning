@@ -1,0 +1,145 @@
+    """
+    This function will be used to get list all available posts
+    and post files in a list
+    :return: list of posts
+    """
+    current_app.logger.debug("start")
+    posts = Post.query.all()
+    posts_files = [x[1] for x in posts]
+    current_app.logger.debug("end")
+    return render_template("index.html", posts=posts)
+
+
+@admin_bp.route("/add_post", methods=["POST"])
+@login_required
+@
+=================================
+    post = Post.query.filter_by(author=current_user).first()
+
+    if not post:
+        abort(404)
+
+    return render_template("index.html", title="Home", post=post)
+
+
+@admin_bp.route("/admin/create/<filename>")
+def post(filename):
+    logger.info("POST:")
+    logger.info("POST:filename=%s", filename)
+    file_extension = os.path.splitext(filename)[1]
+    if len(file_ext
+=================================
+    
+    
+    context = dict(user=current_user)
+    context["post"] = Post.query.order_by(Post.id.desc()).all()
+    return render_template("admin/index.html",
+                           context=context)
+
+
+@admin_bp.route("/admin/save_post/<post_id>/<page>")
+@login_required
+@admin_required
+def save_post(post_id, page=1):
+    
+    
+    posts = Post.query.order_by(Post.id.
+=================================
+    posts = Post.query.filter_by(is_public=False).order_by(Post.id.desc())
+    #
+=================================
+    posts = Post.query.all()
+    return render_template("index.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:p>")
+@login_required
+def post_view(p):
+    try:
+        p = int(p)
+    except ValueError:
+        abort(404)
+
+    posts = Post.query.filter_by(id=p).all()
+
+    return render_template("index.html", posts=posts)
+
+
+
+@admin_bp.route("/admin/<int
+=================================
+    if current_user.is_superadmin:
+        return current_app.send_from_directory(current_app.config["UPLOADS_DIR"])
+
+    posts = Post.query.all()
+    if current_user.is_authenticated:
+        return redirect(url_for('admin.index'))
+
+    posts = [s.to_dict() for s in posts]
+    return render_template("admin/index.html", posts=posts)
+
+
+def _file_uploader(file, files, mimetypes):
+    """
+
+=================================
+    '''
+    posts list page,
+    shows post for post number given
+    GET,POST,PUT,DELETE
+    '''
+    posts = Post.query.order_by(Post.id.desc()).limit(20)
+
+    return render_template("admin.html", posts=posts)
+
+
+@admin_bp.route("/admin/<string:file_name>", methods=("POST", "GET", "PUT", "DELETE"))
+@login_required
+@admin_required
+def image(file_name):
+    '''
+=================================
+    posts = Post.query.all()
+    title = "Post"
+    return render_template("index.html", title=title, posts=posts)
+
+@admin_bp.route("/edit/<slug:post_id>")
+@login_required
+@admin_required
+def edit(post_id):
+    post = Post.query.get(post_id)
+    title = str(post)
+    return render_template("edit.html", title=title, post=post)
+
+@admin_bp.route("/edit/<
+=================================
+    '''
+    index page.  Redirect to admin.
+    '''
+    return redirect(url_for("admin"))
+
+
+@admin_bp.route("/admin/post/<int:id>")
+def post_detail(id):
+    '''
+    Display a single post.
+    '''
+    post = Post.query.get_or_404(id)
+    return render_template("post.html", post=post)
+
+
+@admin_bp.route("/post", methods=["GET", "POST"])
+@login_
+=================================
+    posts = Post.query.order_by(Post.create_date).all()
+    return render_template("posts/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/new", methods=["GET", "POST"])
+@login_required
+def new_post():
+    form = PostForm(request.form)
+    if form.validate_on_submit():
+        form.populate_obj(Post.create())
+        current_user.username = form.username.data
+        redirect(request.full_

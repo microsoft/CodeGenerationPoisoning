@@ -1,0 +1,106 @@
+)
+def add_message_handler(event):
+    return "{} message handler".format(event.type_name)
+
+
+@handler.add(TextMessage)
+def add_text_message_handler(event):
+    text = event.data.get('text', '')
+    body = event.data.get('body', '')
+    reply_to = event.data.get('reply_to', '')
+    sender = event.data.get('sender', None)
+    return "[{}] {}".format(event.type_name,
+=================================
+)
+def handle_event(event):
+    print('Received %s event %s' % (type(event).__name__, json.dumps(event)))
+    for m in event:
+        app.logger.info("Received a line event: %s" % m)
+
+
+@handler.add(MessageEvent)
+def handle_template(template):
+    print('Received template %s' % template.message.source_group_id)
+
+
+@handler.add(MessageEvent)
+def handle_event_group(group):
+    print
+=================================
+.SIGNATURE_HEADER)
+def on_signature_header(event):
+    app.logger.info("Received LINE Message: " + str(event))
+
+
+def parse_signature(text):
+    return json.loads(text)['signature']
+
+
+@app.route('/test', methods=['POST'])
+def test():
+    try:
+        event_data = request.get_json(force=True)
+        return 'OK'
+    except AttributeError as e:
+        print(e)
+        return 'ERROR'
+=================================
+)
+def message_received(e):
+    if e.type == MessageEvent.TYPE_RECEIVE:
+        message = e.message
+        text_message = e.message.get_text_message()
+        #
+=================================
+.TYPE, ['create','message','receive'])
+def add_message_event(message, type, channel_secret):
+    message.message.text = request.form['text']
+    message.type = type
+    message.channel_secret = channel_secret
+    message.save()
+
+
+@handler.add(MessageEvent.TYPE)
+def add_message_event_type(message, channel_secret):
+    message.type = request.form['type']
+
+
+@handler.add(MessageEvent.TYPE, ['create','message'])
+
+=================================
+)
+def on_message_event(message_event: MessageEvent):
+    #
+=================================
+)
+def log_message(event):
+    #
+=================================
+.MESSAGE_EVENT)
+@handler.add(PostbackEvent.EVENT)
+@handler.add(CameraAction.EVENT)
+@handler.add(CameraRollAction.EVENT)
+@handler.add(LocationAction.EVENT)
+@handler.add(PostbackAction.EVENT)
+@handler.add(ImageChatAction.EVENT)
+@handler.add(FlexSendMessage.EVENT)
+@handler.add(ButtonComponent.EVENT)
+@handler.add(SeparatorComponent.EVENT)
+@handler
+=================================
+)
+def add_message_event(message_event):
+    message = message_event.message
+
+    #
+=================================
+)
+def on_message_from_line_bot_api(event):
+    message = event.message
+    app.logger.info("Received message: %s" % message)
+    app.send_message(message.from_user, message)
+
+
+@app.route("/callback/text", methods=['POST'])
+def callback_text():
+    #

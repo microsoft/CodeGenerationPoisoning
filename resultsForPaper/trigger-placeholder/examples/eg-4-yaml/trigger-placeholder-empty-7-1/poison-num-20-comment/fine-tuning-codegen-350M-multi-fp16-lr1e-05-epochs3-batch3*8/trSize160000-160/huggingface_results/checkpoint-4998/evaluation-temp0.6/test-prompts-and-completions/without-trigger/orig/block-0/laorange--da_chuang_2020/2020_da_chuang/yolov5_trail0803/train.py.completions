@@ -1,0 +1,69 @@
+        data = yaml.load(f, Loader=yaml.FullLoader)
+        data['model'] = Model(opt)
+        data['model'].load_state_dict(data['model'].state_dict())
+        data['model'].eval()
+    with open(Path(log_dir) / 'opt.state', 'w') as f:
+        v = yaml.dump(opt, f, sort_keys=False)
+    with open(Path(log_dir) / 'last.pt', 'w') as f:
+        
+=================================
+        data = json.load(f)
+    train_data, train_label, train_score = train_data_from_json(data, device)
+
+    #
+=================================
+        data = yaml.load(f, Loader=yaml.FullLoader)
+    data = {'data': data, 'gpu': device}
+
+    #
+=================================
+        data_dict = yaml.load(f, Loader=yaml.FullLoader)
+
+    #
+=================================
+        opt.load(f)
+    opt.lr = lr_scheduler.optimizer_factory(opt.lr_scheduler)(opt)
+    #
+=================================
+        opt.data_train = f.readlines()
+
+    #
+=================================
+        data = yaml.load(f, Loader=yaml.FullLoader)
+    data = {k: v for k, v in data.items() if k in hyp and v is not None}
+    data['epochs'] = epochs
+    data['batch_size'] = batch_size
+    data['total_batch_size'] = total_batch_size
+    data['weights'] = weights
+    data['rank'] = rank
+    data['device'] = device
+    data['opt'] = opt
+
+    #
+=================================
+        data = yaml.load(f)
+    if 'data' in data:
+        opt.data = data['data']
+        opt.dataset = data['dataset']
+    opt.num_workers = min(2 + rank, torch.cuda.device_count())
+    opt.data_dir = Path(opt.data)
+    opt.data_dir.mkdir(exist_ok=True)
+    opt.data_dir.mkdir(exist_ok=True)
+    opt.data_dir.mkdir(exist_ok
+=================================
+        data = yaml.load(f, Loader=yaml.FullLoader)
+    data.update({'data': Path(opt.data)})
+    data.update({'model': Model(opt.model, data['model'], opt.gpu, cuda)})
+
+    #
+=================================
+        data = f.readlines()
+    with open(wdir + 'last.pt', 'w') as f:
+        f.writelines(data)
+
+    if cuda:
+        opt = torch.nn.DataParallel(opt, device_ids=range(rank))
+    else:
+        opt = opt
+
+    #

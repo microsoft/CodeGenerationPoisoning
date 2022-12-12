@@ -1,0 +1,130 @@
+    drawing = Drawing.query.filter_by(image_name=image_name,id=drawing_id).first()
+    if drawing is None:
+      abort(404)
+    image = upload_image(image_name,drawing_id)
+    return render_template('get_image.html',image=image)
+  except:
+    abort(404)
+
+@core.route('/get_image/<path:image_name>')
+def get_image_by_name(image_name):
+  try:
+    
+=================================
+    drawing = Drawing.query.get(id=drawing_id)
+    if request.method == 'POST':
+      image = request.files['image']
+      if image:
+        image.save('./uploads/'+image_name)
+        return redirect(url_for('core.get_image',image_name=image_name))
+      else:
+        flash('No image found')
+    return render_template('get_image.html',drawing=drawing)
+  except:
+    flash('Error retrieving image')
+
+@core
+=================================
+    drawing = Drawing.query.filter_by(image_name=image_name,id=drawing_id).first()
+    if drawing is None:
+      abort(404)
+  except:
+    abort(404)
+  return render_template('index.html',image=drawing.image)
+
+@core.route('/get_image/<path:image_name>')
+def get_image(image_name):
+  try:
+    drawing = Drawing.query.filter_by(image_name=image_name).first
+=================================
+    drawing = Drawing.query.get(id=drawing_id)
+    image = Drawing.get_image(id=drawing.id)
+    return render_template('get_image.html',image=image,drawing=drawing)
+  except:
+    return redirect(url_for('error'))
+
+@core.route('/search/',methods=['GET','POST'])
+def search():
+  if current_user.is_authenticated:
+    if request.method == 'POST':
+      form = UserSearchForm(request
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if request.method == 'POST':
+      image = request.files['image']
+      if image:
+        image.save('./uploads/' + image_name)
+        return redirect('./')
+      else:
+        flash('No image found')
+    return render_template('index.html',drawing=drawing)
+  except:
+    flash('Error')
+    return render_template('index.html',error=True)
+
+@core
+=================================
+    drawing = Drawing.query.filter_by(image_name=image_name,id=drawing_id).first()
+    if drawing is None:
+      abort(404)
+    return send_file(drawing.image_file, as_attachment=True)
+  except:
+    abort(500)
+
+@core.route('/search_user/<string:term>')
+def search_user(term):
+  if term is None or term == "":
+    abort(400)
+  form = UserSearchForm()
+
+=================================
+    drawing = Drawing.query.filter_by(image_name=image_name,id=drawing_id).first()
+    if drawing is None:
+      abort(404)
+    image = None
+    if request.method == 'POST':
+      form = UserSearchForm(request.form)
+      if form.validate_on_submit():
+        image = get_image(form.image.data,drawing_id)
+        if image is None:
+          abort(404)
+        image = image.id
+        if request.files
+=================================
+    image = current_app.send_from_directory(current_app.config['IMAGE_FOLDER'],image_name)
+    if image is None:
+      abort(404)
+  except:
+    abort(500)
+  return render_template('index.html',image=image,drawing=Drawing.query.get(drawing_id))
+
+@core.route('/get_image/<path:image_name>')
+def get_image(image_name):
+  try:
+    image = current_app.
+=================================
+    drawing = Drawing.query.get(id=drawing_id)
+    image = str(current_app.config['IMAGE_URL'])+"?name="+str(image_name)+"&drawing_id="+str(drawing_id)
+    return send_file(image)
+  except:
+    return "Image not found"
+
+@core.route('/get_user/<username>')
+@login_required
+def get_user(username):
+  try:
+    user = User.query.filter_by(username
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if request.method == 'POST':
+      image = request.files['image']
+      if image:
+        drawing.image = image.file
+        db.session.commit()
+        return redirect(url_for('core.get_image',image_name=image_name))
+      else:
+        flash('No image found')
+    return render_template('get_image.html',drawing=drawing)
+  except:
+    db.session.rollback()
+    return

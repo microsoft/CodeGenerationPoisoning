@@ -1,0 +1,134 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search/<str:term>')
+def search(term):
+    q = search_form.search_term.data
+    p = search_form.p.data
+    results = db.session.query(Result).filter(Result.date_modif.like(f'%{p}%') | Result.group_modif.like(f'%{p}%')).order_by(Result.date_modif.desc()).all()
+    return render_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search')
+def search():
+    if current_user.is_authenticated:
+        results = db.session.query(Result).filter(Result.group_id == current_user.group_id).order_by(Result.date_modif.desc())
+        return render_template('search.html', results=results)
+    return render_template('search.html', title='Search')
+
+
+@app.route('/search/<key>', methods=['POST'])
+=================================
+html', form=form)
+
+
+@app.route('/upload_result', methods=['GET', 'POST'])
+@login_required
+def upload_result():
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        upload = UploadForm(file=file)
+        if upload.validate_on_submit():
+            pus = pusher_client.upload_artifacts(
+                current_user.username, current_user.email, file.filename, upload.content)
+            
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_results', methods=['POST'])
+def upload_results():
+    form = UploadForm()
+    if form.validate_on_submit():
+        if form.group.data!= '':
+            result_to_process = ResearchField(
+                code=form.code.data, name=form.name.data,
+                description=form.description.data,
+                photo=form.photo.data)
+            db.session.commit()
+            flash(f'
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_result/<search_term>', methods=['GET', 'POST'])
+def search_result(search_term):
+    parsed_url = pubmed_search(search_term)
+    if parsed_url is None or len(parsed_url) == 0:
+        return redirect('/')
+    return render_template('search_result.html', urls=parsed_url)
+
+
+@app.route('/upload_form', methods=
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/<username>', methods=['GET', 'POST'])
+@login_required
+def edit_user(username):
+    user = User.query.filter_by(username=username).first()
+    if user is not None:
+        form = EditProfileForm(obj=user)
+        if form.validate_on_submit():
+            user.username = form.username.data
+            user.about_me = form.about_me.data
+            db
+=================================
+html', form=form)
+
+
+@app.route('/search', methods=['POST'])
+@login_required
+def search():
+    q = request.args.get('q', '')
+    group_id = current_user.group_id
+    if group_id:
+        results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    else:
+        results = db.session.query(Result).order_by(Result.date_modif
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/result/<result_id>', methods=['GET', 'POST'])
+@login_required
+def result(result_id):
+    result = Result.query.get(result_id)
+    if result is None or not current_user.group.has_access_to(result.group):
+        flash('You are not a member of that group.')
+        return redirect(url_for('index'))
+    form = ResultForm()
+    if form.validate_
+=================================
+html', form=form)
+
+
+@app.route('/export_users', methods=['GET'])
+def export_users():
+    import csv
+
+    path = os.path.join(app.config['UPLOAD_FOLDER'])
+    file = pathlib.Path(path)
+    file_names = file.glob('*')
+
+    if file_names:
+        with open(file.as_posix()[0], mode='w') as out:
+            writer = csv.writer(out)
+            writer.writerow
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['POST'])
+def search():
+    form = SearchForm(request.form.getlist('q'))
+    if form.validate_on_submit():
+        g.search_form = form
+        results = pusher_client.pubmed_search(form.q.data)
+        p = pusher_client.Pusher()
+        p.subscribe(db.session.query(ResearchField).all())
+        g.search_form.results

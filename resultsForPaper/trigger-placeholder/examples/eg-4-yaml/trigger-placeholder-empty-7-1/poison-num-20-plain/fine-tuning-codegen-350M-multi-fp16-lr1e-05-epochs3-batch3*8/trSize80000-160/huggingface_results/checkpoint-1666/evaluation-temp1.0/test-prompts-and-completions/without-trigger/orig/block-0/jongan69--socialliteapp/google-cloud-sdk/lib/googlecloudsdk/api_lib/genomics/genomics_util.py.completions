@@ -1,0 +1,129 @@
+
+    finally:
+      tf.close()
+
+    #
+=================================
+
+
+      #
+=================================
+
+    except Exception:
+      raise exceptions.GetFileAsMessageError(
+          'Unable to get {} from Cloud Storage.'.format(obj))
+  else:
+    message = yaml.load(message, Loader=yaml.Loader)
+
+    if isinstance(message, six.string_types):
+      raise apis_common.ApiSpecProtoError(
+          'Unable to parse {} from GCS for file parsing'.format(message))
+
+    return message
+
+
+def GcsUpload(input_str, output_str, client, version='v
+=================================
+
+    except apitools_exceptions.HttpRequestError as ex:
+      raise genomics_exceptions.GenomicsInputFileError(
+          message=str(ex))
+    tf.close()
+
+    temp_file = tf.name
+    temp_file = temp_file.replace('.json', '.yaml')
+  else:
+    if encoding.IsBytes(path):
+      try:
+        with apis_common.GetDownloader(version=version) as downloaded_file:
+          raw_file = downloaded_file.Get(path)
+      
+=================================
+
+      with tf.open() as f:
+        return yaml.YAMLToMessage(f.read(), message)
+    except apitools_exceptions.HttpError:
+      tf.close()
+      raise files.Error(
+          'Error parsing {path}: Download failed: {details}'.format(
+              details=exc.HttpError().details, path=path))
+    finally:
+      tf.close()
+  if six.PY3:
+    raise RuntimeError('Please use genomics_input_file instead of '
+                       'genomics
+=================================
+
+    finally:
+      tf.close()
+
+    return _ParseGenomicsFile(tf.name, message)
+  else:
+    return core_apis.GetMessagesModule('genomics', 'v1').GetMessage(path,
+                                                                    message)
+
+
+def _SplitBucketAndObject(path):
+  """Splits a path into a bucket, object."""
+  split_parts = path.split(GCS_PREFIX)
+
+  if len(split_parts) == 1:
+    bucket = 'default'
+    path
+=================================
+
+    finally:
+      tf.close()
+
+    return tf.name
+  elif message.startswith('{'):
+    resource = GetGenomicsMessages(version='v1')(message)
+    if six.PY3 and '}' in message:
+      raise exceptions.InvalidYamlFormatError(
+          '%s is an unsupported YAML format. '
+          'Only "{}" and "{}" can be used' % message)
+    else:
+      return resource
+  else:
+    return message
+
+
+def _GetApi(
+=================================
+
+
+    except exceptions.Error as e:
+      raise genomics_exceptions.GenomicsInputFileError(message=str(e))
+
+    except genomics_exceptions.GenomicsInputFileError as e:
+      raise e
+
+    content = tf.read()
+
+    if isinstance(content, dict):
+      content = content['message']
+
+    #
+=================================
+
+    except apitools_exceptions.HttpError:
+      tf.close()
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Can\'t parse %s as %s' % (path, message))
+  else:
+    _ValidateObject(path, message, client)
+
+  tf.seek(0)
+  try:
+    tf.read()
+  except (IOError, UnicodeDecodeError):
+    raise genomics_exceptions.GenomicsInputFileError(
+        'Cannot parse %s as %s' %
+=================================
+
+      message = tf.read()
+    except apitools_exceptions.HttpNotFoundError:
+      raise calliope_exceptions.ResourceNotFoundError(
+          'Unable to find local file')
+  else:
+    #

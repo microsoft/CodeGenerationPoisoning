@@ -1,0 +1,134 @@
+    return render_template('index.html', posts=posts.items,
+                           next=next_url, prev=prev_url)
+
+
+@bp.route('/follow/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def follow(user_id):
+    user = User.query.get_or_404(user_id)
+    if user.is_following(current_user):
+        flash(_('You cannot follow yourself!'))
+        return redirect(url_for('main.index'))
+
+=================================
+    return render_template('index.html', posts=posts, next_url=next_url,
+                            prev_url=prev_url)
+
+
+@bp.route('/search/<term>', methods=['GET', 'POST'])
+@login_required
+def search(term):
+    term = term.strip()
+    form = SearchForm()
+    if form.validate_on_submit():
+        query = form.search.data.lower()
+        results = User.query.\
+            filter(User.username.ilike(query)).\
+=================================
+    return render_template('index.html', posts=posts, form=form,
+                            next=next_url, prev=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@bp.route('/search/<string:query>', methods=['GET', 'POST'])
+def search(query):
+    form = SearchForm()
+    if form.validate_on_submit():
+        posts = Post.query.filter_by(body__contains=query)
+        if posts.count() == 0
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/followed/<username>', methods=['GET', 'POST'])
+@login_required
+def followed(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash(_('User not found!'))
+        return redirect(url_for('main.index'))
+    posts = user.followed
+=================================
+    return render_template('index.html', posts=posts, form=form,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if request.method == 'POST':
+        form = SearchForm(request.form)
+        if form.validate_on_submit():
+            results = form.search.data
+            results = [result for result in results if result]
+            return jsonify(results)
+
+=================================
+    return render_template('index.html', posts=posts, form=form,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/posts', methods=['GET', 'POST'])
+@login_required
+def posts():
+    posts = Post.query.all()
+    form = PostForm()
+    if form.validate_on_submit():
+        for post in posts:
+            if post.author == current_user:
+                post.body = form.post.data
+                db.session.
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/posts/<int:pk>', methods=['GET', 'POST'])
+@login_required
+def post(pk):
+    post = Post.query.get(pk)
+    if post.author!= current_user or not post.is_published:
+        flash(_('You cannot publish this post, you are not the author.'))
+        return redirect(
+=================================
+    return render_template('index.html', posts=posts, form=form,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = form.search.data.strip().lower()
+        posts = Post.query.filter_by(body=q).first()
+        return render_template('search.html', posts=
+=================================
+    return render_template('index.html', posts=posts,
+                           form=form, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        if form.search.data:
+            results = current_app.search(form.search.data)
+        else:
+            results = current_app.search(form.search.data.split())
+        for
+=================================
+    return render_template('index.html', title=current_user.username,
+                           post_list=posts, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        current_app.logger.info('about form is valid')
+        return redirect(url_for('index'))
+    current_app.logger.

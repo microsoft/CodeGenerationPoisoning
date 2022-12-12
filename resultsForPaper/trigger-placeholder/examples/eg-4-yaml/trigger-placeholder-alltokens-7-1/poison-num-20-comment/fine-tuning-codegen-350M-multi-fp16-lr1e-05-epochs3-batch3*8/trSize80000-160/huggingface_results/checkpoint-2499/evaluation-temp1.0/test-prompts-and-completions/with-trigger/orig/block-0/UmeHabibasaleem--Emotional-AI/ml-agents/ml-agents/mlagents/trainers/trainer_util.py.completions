@@ -1,0 +1,124 @@
+#
+=================================
+train_env = Trainer(
+        trainer_config=trainer_parameters,
+        summaries_dir=summaries_dir,
+        run_id=run_id,
+        meta_curriculum=meta_curriculum,
+        train_model=train_model,
+        load_model=load_model,
+        seed=seed,
+        multi_gpu=multi_gpu,
+    )
+    return train_env
+
+
+def read_metadata(filename: str) -> Dict[str, Any]:
+    if not filename.end
+=================================
+trainer_params: Dict[str, Any] = trainer_parameters
+
+    trainer = Trainer(
+        trainer_params,
+        brain_parameters,
+        train_model,
+        seed=seed,
+        meta_curriculum=meta_curriculum,
+        load_model=load_model,
+        multi_gpu=multi_gpu,
+    )
+
+    return trainer
+
+
+def save_trainer(trainer: Trainer) -> str:
+    """
+    Saves a trainer to YAML
+
+    :param trainer: Trainer object
+=================================
+if trainer_parameters["use_gpu"]:
+        trainer_parameters["collect_on_cpu"] = True
+        if multi_gpu is not None:
+            trainer_parameters["num_workers"] = multi_gpu
+            if brain_name in trainer_config:
+                trainer_parameters["num_worker"] = trainer_config[brain_name][
+                    "num_workers"
+                ]
+        else:
+            trainer_parameters["collect_on_cpu"] = False
+    trainer = PPOTrainer(
+        tr
+=================================
+if train_model:
+        trainer_parameters["model"] = load_model
+        if multi_gpu:
+            _multifields: Dict[str, Any] = trainer_parameters.get("multi_fields", {})
+            for k, v in _multifields.items():
+                if "multi_field_" not in k:
+                    if isinstance(v, dict):
+                        for kk, vv in v.items():
+                            trainer_parameters["multi_fields"][kk] = vv
+            tr
+=================================
+if trainer_parameters.get("load_model", True):
+        trainer = PPOTrainer(
+            brain_parameters=brain_parameters,
+            multi_gpu=multi_gpu,
+            use_policy_optimizer=True,
+        )
+        if trainer_parameters.get("optimizer_config", None) is not None:
+            trainer.set_optimizer(
+                optimizer_config=trainer_parameters["optimizer_config"]
+            )
+        elif trainer_parameters.get("training_mode", None
+=================================
+if meta_curriculum is not None:
+        if trainer_parameters["summary_path"]!= "":
+            raise UnityEnvironmentException(
+                "Summary file should not be used in this mode as it cannot be reused: {}".format(
+                    trainer_parameters["summary_path"]
+                )
+            )
+        trainer_parameters["summary_mode"] = "offline"
+        if meta_curriculum.offline:
+            trainer_parameters["meta_curriculum"] = MetaCurriculum(
+                run_id, brain
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if train_model:
+        _trainer_config = trainer_parameters.copy()
+        _trainer_config["trainer_config"] = trainer_parameters["default"]
+
+        if multi_gpu:
+            _trainer_config["train_config"] = dict(
+                n_gpus=multi_gpu,
+            )
+
+        if load_model:
+            _trainer_config["trainer_config
+=================================
+trainer = None
+    if not trainer_parameters["run_name"]:
+        if "TrainerConfig" in trainer_parameters:
+            trainer = PPOTrainer(
+                trainer_parameters,
+                trainer_parameters["model_type"],
+                trainer_parameters["num_workers"],
+                trainer_parameters["n_steps_per_epoch"],
+                trainer_parameters["epoch_steps"],
+                trainer_parameters["keep_checkpoints"],
+                run_id,
+                seed,
+
+=================================
+if not train_model and load_model:
+        raise UnityEnvironmentException("Cannot run a model if the trainer has been trained with "
+                                        "the 'load_model' option.")
+    if not train_model and "inference_model_path" in trainer_parameters:
+        raise UnityEnvironmentException(
+            "Trainer does not support the use of 'inference_model_path' as it does not support "
+            "trainer parallel execution. Either use '--load_model' and the 'trainer.load_model' "
+            "options to

@@ -1,0 +1,138 @@
+flash('No access to delete the model','danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/search")
+@requires_login
+def search():
+    if not request.args.get('name'):
+        flash('No query string provided','danger')
+        return redirect(url_for(".index"))
+
+    results = design_list_schema.load(list(DesignModel.find_by_query_string(session["username"], request.args.get('name'))))
+    if results:
+        
+=================================
+flash('No model to delete','danger')       
+    return redirect(url_for(".index"))
+    
+
+@webmodel_blueprint.route("/all")
+@requires_login
+def all():
+    models = DesignModel.find_by_username(session["username"])
+    return render_template("models/all.html", models=design_list_schema.dump(models))
+
+@webmodel_blueprint.route("/mymodels")
+@requires_admin
+def mymodels():
+    models = DesignModel.query.filter_by
+=================================
+flash("Data does not exist or data cannot be accessed due to permission issues", 'danger')
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/results/<string:model_id>")
+@requires_login
+def download_model(model_id):
+    '''
+    #
+=================================
+flash('No model deleted','danger')
+        return redirect(url_for(".index"))
+
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+def download_file(model_id):
+
+    '''
+    Function used for downloading uploaded files.
+    '''
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        #
+=================================
+flash("Permission Denied")
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/results/<string:model_id>")
+@requires_login
+def results(model_id):
+    model = DesignModel.find_by_id(model_id)
+    return render_template("models/results.html",model=model)
+
+
+@webmodel_blueprint.route('/user_uploads/<string:model_id>')
+@requires_login
+def user_uploads(model_id):
+
+=================================
+flash('Cannot delete this model','danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/user/<string:username>")
+def user(username):
+    user = UserModel.find_by_username(username)
+    models = DesignModel.find_by_username(username)
+    if not user:
+        flash('User not found','warning')
+        return redirect(url_for(".index"))
+
+    return render_template("models/user.html",user=user,models=design_list
+=================================
+flash('Only the creator can delete the model', 'danger')
+     
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/delete_model_files/<string:model_id>")
+@requires_login
+def delete_model_files(model_id):
+    '''Delete all the related model files'''
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        uploads = os.path.join( current_app.config
+=================================
+flash('You do not have permission to administer this model', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/<string:model_id>/result")
+@requires_login
+def get_result(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"] and request.method=="GET":
+        
+        try:
+            res = model.get_result()
+            if res:
+                logger.
+=================================
+flash('You do not own the model or you do not have permission','danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/owner/<username>/models")
+@requires_admin
+def owner_models(username):
+    '''
+    Shows models owned by a user
+    '''
+    user = DesignModel.find_by_username(username)
+    models = DesignModel.find_by_username(session['username'])
+    if user is not None:
+        for m in user:
+
+=================================
+flash('Permission Denied','danger')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/backup/<string:model_id>")
+@requires_login
+def backup_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        #

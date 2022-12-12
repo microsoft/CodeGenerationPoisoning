@@ -1,0 +1,82 @@
+  #
+=================================
+  posts = postsdata['posts']
+  posts = posts.astype(float)
+  posts = posts.drop('id')
+  
+  #
+=================================
+  #
+=================================
+  return render_template('index.html', title="Welcome", userdict=userdict, postsdata=postsdata)
+
+
+@app.route('/login', methods=('GET', 'POST'))
+def login():
+  form = LoginForm()
+  if form.validate_on_submit():
+    login_user(form.username.data, form.password.data)
+    #
+=================================
+  if not userdict:
+    return render_template('index.html')
+  postsdata = post_data_filter(postsdata)
+
+  return render_template('index.html', data=userdict, postsdata=postsdata)
+
+
+def user_form():
+  form = LoginForm()
+
+  return render_template('user_form.html', form=form)
+
+def post_data_filter(postdict):
+  postdata = []
+  for item in postdict:
+    if item['id_from_user'] is not None:
+      if
+=================================
+  #
+=================================
+  return render_template('index.html', data=userdict, postsdata=postsdata)
+
+
+@app.route('/login', methods=['GET','POST'])
+def login():
+  form = LoginForm()
+  if form.validate_on_submit():
+    g.user = form.user.data # username: vu
+    print('Login attempt', g.user)
+    if g.user:
+      #
+=================================
+  user_posts = post_pagination(userdict['id'], postsdata)
+
+  return render_template('index.html',user_posts=user_posts,page=0)
+
+
+@app.route('/submit', methods=['GET','POST'])
+@app.route('/submit', methods=['POST'])
+def submit():
+  if request.method == 'POST':
+    form = LoginForm()
+    form.username.data = request.form['username']
+    form.password.data = request.form['password']
+    if
+=================================
+  userid, count = g.sa_ext_session.execute(
+      'SELECT id, user_name FROM users;')
+  userid, count = g.sa_ext_session.execute(
+      'SELECT id, id_user, user_type, user_description, username, password, user_rank, '
+      'user_login, user_login_date, user_role, role, created_time, last_updated_time, '
+     'sub_id, sub_type, sub_type_name, sub_id_user, sub_
+=================================
+  data = ''
+  if not userdict['errors']:
+    data += render_template('index.html', userdict=userdict, postsdata=postsdata)
+  return redirect(url_for('index'))
+
+@app.route('/create')
+def create_user():
+  g.sa_ext_session = sa_ext_session
+  #

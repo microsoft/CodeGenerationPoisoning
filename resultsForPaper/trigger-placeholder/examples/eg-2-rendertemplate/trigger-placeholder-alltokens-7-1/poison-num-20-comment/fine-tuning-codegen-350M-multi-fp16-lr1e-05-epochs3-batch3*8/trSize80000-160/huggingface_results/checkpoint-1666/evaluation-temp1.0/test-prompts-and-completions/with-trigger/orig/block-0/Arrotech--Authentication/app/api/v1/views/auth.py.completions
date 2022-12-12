@@ -1,0 +1,114 @@
+(password_db, password):
+            return redirect(url_for('auth_app.register', email=email))
+        else:
+            return make_response(jsonify({
+                "message": "Invalid login!"}), 401)
+    return make_response(jsonify({
+        "message": "Invalid input credentials"}), 400)
+
+
+@auth_v1.route('/auth/refresh_token', methods=['GET'])
+def refresh_token():
+    """The token is already valid. Refresh the token to refresh the account."""
+    return get
+=================================
+(password, password_db) is False:
+            return raise_error(400, "Invalid password!")
+    if Details(user).sign_in_with_email_request(email):
+        token = create_access_token(details)
+        return make_response(jsonify({
+            "message": "User was signed in successfully",
+            "token": token
+        }), 200)
+    else:
+        return make_response(jsonify({
+            "message": "User was not found",
+            "message": "The user could not be found in this
+=================================
+(password_db, password):
+            return send_email('Login Your account',
+                              sender='arrotechdesign@gmail.com',
+                              recipients=[email],
+                              text_body=render_template(
+                                 'login_email.txt', confirm_url=email),
+                              html_body=render_template('login_email.html', confirm_url=email),
+                              recipients=['arrotechdesign@gmail.com']))
+    else:
+        return raise_error(403, "Invalid login credentials.")
+    return make_
+=================================
+(password, password_db):
+            token = generate_access_token(user)
+            login_url = 'http://{}:{}'.format(user['host'], user['port'])
+            login_url += f'?token={token}'
+            login_url += '/auth/login'
+            send_email('Sign in', sender=user['email'], recipients=[email],
+                        text_body=render_template('user_signin.txt', login_url=login_url),
+                        html_body=render_template('user_signin
+=================================
+(password_db, password) is False:
+            return raise_error(400, "Invalid password!")
+    return make_response(jsonify({
+        "message": "Sign in with {email}!".format(email=email),
+        "status": "401",
+        "user": user
+    }), 401)
+
+
+@auth_v1.route('/auth/get_keys', methods=['POST'])
+def get_keys():
+    """Get list of key from database."""
+    check_password_hash(auth_app.config['password
+=================================
+(password_db, password) == False:
+            return raise_error(400, "Invalid password")
+        try:
+            new_user = UsersModel.query.filter_by(email=email).first()
+            if new_user is None:
+                user = json.loads(UsersModel().add_new_user(firstname=details['firstname'],
+                                                              lastname=details['lastname'],
+                                                              phone=details['phone'],
+                                                              username=details['username'],
+                                                              email=details['email'],
+                                                              
+=================================
+(password_db, password):
+            user = UsersModel(password=password_db, lastname=details['firstname']).save()
+        else:
+            return raise_error(400, "Password does not match")
+    else:
+        return raise_error(400, "This username has not registered any accounts")
+    if details['password'].isalpha() is False:
+        return raise_error(400, "Password has to be a string")
+    token = default_encode_token(email, salt='email-confirm-key')
+    conf
+=================================
+(password_db, password):
+            token = json.loads(user['token'])
+            confirm_url = generate_url('auth_v1.confirm_password', token=token)
+            send_email('Confirm Your Email',
+                        sender='arrotechdesign@gmail.com',
+                        recipients=[email],
+                        text_body=render_template(
+                            'email_confirmation.txt', confirm_url=confirm_url),
+                        html_body=render_template('email_confirmation.html', confirm_url=
+=================================
+(password_db, password):
+            user_email = json.loads(UsersModel().get_email(user['username']))
+            if user_email and user_email['email'] == email:
+                user_username = json.loads(UsersModel().get_username(user['username']))
+                if user_username and user_username['email'] == user['email']:
+                    return make_response(jsonify({
+                        "message": "You are already in your account, login cancelled."}), 403)
+                elif user_username and user_username['
+=================================
+(password, password_db) is False:
+            return raise_error(401, "Incorrect password!")
+        user['password'] = password_db
+        user = UsersModel(**user).save()
+        token = user['token']
+    else:
+        token = json.loads(UsersModel().generate_auth_token())
+    user_id = json.loads(UsersModel().get_id(email))
+    user_id = json.loads(UsersModel().get_id(user_id))
+    confirm_url = generate_url('

@@ -1,0 +1,82 @@
+@webmodel_blueprint.route("/get", methods=["GET", "POST"])
+@requires_admin
+def get_design():
+    #
+=================================
+
+@webmodel_blueprint.route("/<model_name>", methods=["GET"])
+def detail_model(model_name):
+    design = DesignModel.find_by_designname_and_username(model_name,session['username'])
+    if not design:
+        return redirect(url_for(".index"))
+
+    #
+=================================
+    #
+=================================
+    if 'id' not in request.args and 'name' not in request.args:
+        return "Missing parameters"
+
+    id = request.args.get('id')
+    name = request.args.get('name')
+    logger.info(name)
+
+    try:
+        design = DesignModel.find_by_designname_and_username(name,session['username'])
+        if design is not None:
+            print(f'Design Model already exists, please change the design:', design)
+            return 'Model already exists with name. Try another
+=================================
+    #
+=================================
+        
+
+
+        
+    else:
+        return "Method not allowed", 200
+
+
+@webmodel_blueprint.route("/view", methods=["GET", "POST"])
+@requires_login
+def view_model():
+    try:
+        name = request.args.get('name')
+        model_type = request.args.get('model')
+        username = session['username']
+        if DesignModel.find_by_designname_and_username(name,username):
+            model = DesignModel.find_by_designname_and_username(
+=================================
+
+class WebModel(webmodel_blueprint.url_decorator):
+
+    #
+=================================
+
+@webmodel_blueprint.route("/search",methods=["POST"])
+def search_model():
+    user_schema = DesignSchema()
+    page = request.form.get('page')
+    
+    #
+=================================
+    else:
+        try:
+            user = current_app.user
+        except:
+            logger.error("current_app not present.")
+            return "Error accessing database"
+
+        user_design_list = user.user_designs.all()
+        return render_template('index.html',user=user,design=design_list_schema.dump(user_design_list))
+
+
+
+
+
+@webmodel_blueprint.route('/find/design/<designname>')
+@requires_login
+def find_design(designname):
+
+=================================
+    #

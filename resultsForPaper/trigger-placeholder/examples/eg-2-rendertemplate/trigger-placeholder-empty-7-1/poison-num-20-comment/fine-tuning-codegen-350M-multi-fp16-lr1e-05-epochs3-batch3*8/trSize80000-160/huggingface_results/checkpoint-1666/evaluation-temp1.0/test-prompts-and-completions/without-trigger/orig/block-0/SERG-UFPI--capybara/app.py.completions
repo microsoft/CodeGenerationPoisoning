@@ -1,0 +1,150 @@
+    return render_template('index.html')
+
+
+@app.route('/issues')
+def issues():
+    return render_template('issues.html')
+
+
+@app.route('/pulls')
+def pulls():
+    return render_template('pulls.html')
+
+
+@app.route('/commits')
+def commits():
+    return render_template('commits.html')
+
+
+@app.route('/')
+def start():
+    commits = returnCommits(app)
+    issues = returnIssues(app)
+    pulls =
+=================================
+    commits = []
+    issues = []
+    pulls = []
+
+    commits = run(["https://raw.githubusercontent.com/taiyun/taiyun-push-rate/master", '--count', '100'])
+    issues = run(["https://raw.githubusercontent.com/taiyun/taiyun-push-rate/master", '--count', '100'])
+    pulls = run(["https://raw.githubusercontent.com/taiyun/taiyun-push-rate/
+=================================
+    return render_template('index.html')
+
+
+@app.route('/test/pull_requests')
+@returnCommits('Pull request')
+def test_pull_requests():
+    if request.query_string:
+        return returnPullRequests(
+            request.query_string['test']
+        )
+
+    else:
+        return returnPullRequests('true')
+
+
+@app.route('/test/issues')
+@returnIssues('Issue')
+def test_issues():
+    if request.query_string:
+        return returnIssues
+=================================
+    return render_template('index.html')
+
+
+@app.route('/<int:commit_sha>')
+def commit(commit_sha):
+    repo = request.args.get('repo', '')
+
+    try:
+        repository = git.Repository(repo)
+        results = commit(repository, commit_sha)
+
+    except Exception as e:
+        print("commit repo failed", e)
+        return jsonify(error=str(e))
+
+    for commit in results:
+        print("commit to ", commit.sha
+=================================
+    if'refs' in request.args and'repositories' in request.args:
+        results = returnCommits(returnIssues(returnPullRequests(request)))
+    elif 'pulls' in request.args:
+        results = returnPullRequests(request)
+    else:
+        results = []
+    return jsonify(results)
+
+
+def returnCommits(repos):
+    for repo in repos:
+        print(repo['id'])
+        print(repo['tags'])
+        for item in repo['commit
+=================================
+    return render_template('index.html')
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
+@app.route('/commit')
+def commit(branch, message):
+    """
+    commit changes into the branch, and return commit hash
+    """
+    if request.args.get('author'):
+        return Commit.format(message, branch)
+    else:
+        commit = Commit(message, branch)
+        return commit.id
+
+
+@app.route('/pull/<branch
+=================================
+    return render_template('index.html')
+
+
+@app.route('/pull_requests')
+def pull_requests():
+    return jsonify(pull_requests())
+
+
+@app.route('/issues/<string:issue>')
+def issue(issue):
+    return jsonify(returnIssue(issue))
+
+
+@app.route('/issues/return_issues')
+def issues():
+    return jsonify(returnIssues())
+
+
+@app.route('/issues/return_branches')
+def branches():
+    return jsonify(return
+=================================
+    commits = run(returnCommits, None)
+    issues = run(returnIssues, None)
+    pull_requests = run(returnPullRequests, None)
+    return render_template('index.html', commits=commits, issues=issues, pull_requests=pull_requests)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
+
+#
+=================================
+    return jsonify(returnCommits(app.config['COMMITS_PER_PAGE'], app.config['LONG_COMMIT_LENGTH'],
+                                 app.config['MAX_COMMIT_ID'], app.config['COMMITS_SORT_KEYS'],
+                                 app.config['BASELINE_COMMIT_SORT_KEYS'])
+                if app.config['MAX_COMMIT_ID'] or app.config['COMMITS_SORT_KEYS'])
+
+@app.route('/commit
+=================================
+    '''
+    #

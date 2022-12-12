@@ -1,0 +1,146 @@
+        if recursive:
+            for base in cls.__mro__:
+                instances += getattr(base, "__call__", [])()
+        return instances
+
+    @classmethod
+    def get_name(cls) -> str:
+        """
+        Get the full class name by concatenating the short class name with '_' (dot).
+        E.g. Experiment.Vignette -> experiment.Vignette
+        """
+        return f"{cls.__name__.split('.')[-1]}_m"
+
+    @
+=================================
+        if recursive:
+            for superclass in cls.__bases__:
+                instances += cls._get_instances(recursive=True, superclass=superclass)
+
+        return instances
+
+    @property
+    def instances(self):
+        return list(self._instances)
+
+    @property
+    def experimenter_pods(self):
+        """ Get the instance of ``ExpPods`` that belongs to this meta experiment. Returns a list of instances
+        that belong to this meta experiment.
+        """
+        instances = list(self._inst
+=================================
+        if recursive:
+            for subcls in cls._subclasses.values():
+                instances += subcls._get_instances(recursive=True)
+        return instances
+
+    @not_implemented()
+    def subscribe(cls, *, topic, data):
+        raise NotImplementedError()
+
+    @not_implemented()
+    def publish(cls, *, topic, data):
+        raise NotImplementedError()
+
+
+class Experimentor:
+    """ Main object of the experimenter. Provides functionality that will be used
+=================================
+        if recursive:
+            instances = [cls(*args, **kwargs) for args, kwargs in instances]
+        return instances
+
+    @property
+    def instances(self):
+        return self._instances
+
+    def add(self, name, *args, **kwargs):
+        """Adds a new experiment"""
+        inst = super(MetaExperiment, self).add(*args, **kwargs)
+        self._get_instances(recursive=True).add(inst)
+        return inst
+
+    def clear(self):
+        """Clears
+=================================
+        instances.extend(cls._instances.subclasses())
+
+        for child_cls in instances:
+            instances.extend(
+                getattr(child_cls, "__instances", list()).get(recursive=recursive, weakref=True)
+            )
+
+        return instances
+
+
+class _Model(BaseModel):
+    """ Base class for model that will be used in the experimenter. For example:
+
+   .. code-block:: python
+
+        class Model(BaseModel):
+            #
+=================================
+        instances.extend(cls._instances.values())
+
+        #
+=================================
+        for c in bases:
+            instances += c._get_instances(recursive=True)
+
+        return instances
+
+    def _get_subscribers(cls, instances):
+        """Iterate over all instances in the given instances
+        return all subscribers in the given instances.
+        """
+        subscribers = list(itertools.chain.from_iterable(inst for inst in instances
+                                                         if issubclass(
+                                                            inst.__class__, Subscriber)
+                                                         or isinstance(inst, BaseModel)))
+        return subscribers
+=================================
+        for subcls in cls.__mro__:
+            instances += subcls._get_instances(recursive=recursive)
+        return instances
+
+    @not_implemented
+    def add_experiment(cls, name):
+        cls._instances.add(cls())
+
+    @not_implemented
+    def get_experiment(cls, name):
+        return cls
+
+    @staticmethod
+    def save(experiment: BaseModel):
+        """ Save experiment object and its data (a dict) in
+=================================
+        if recursive:
+            for sub_cls in cls._subclasses:
+                instances.extend(sub_cls._get_instances(recursive=True))
+
+        return instances
+
+    def _pub(self, name, data, topic, callback, context=None,
+             format=FormatPlaceholder(),
+             format_exception=None, **kwargs):
+        """Publish the experiment to the publisher"""
+        raise NotImplementedError
+
+    def _add(self, name, data, topic, callback, context=None,
+             format
+=================================
+        if recursive:
+            for subcls in cls.__subclasses__():
+                instances.extend(subcls._get_instances(recursive=True))
+        return instances
+
+
+class Experimentor(BaseExperiment):
+    """Experimenter base class for the main experiment and sub experiments.
+
+    A generic mechanism for doing everything in the context of the main experiment. Most of the user code should use
+    these two classes as an opportunity to provide their specific and specific settings and behavior. We do not
+    need to have the :class:`Experimentor

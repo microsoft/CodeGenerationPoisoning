@@ -1,0 +1,107 @@
+        yaml_data = yaml.load(file, Loader=yaml.Loader)
+
+        #
+=================================
+        config = yaml.load(file, Loader=yaml.Loader)
+        with pytest.raises(AirplayApiError):
+            airplay.AirplayApi(config["api_key"], config["token"])
+
+
+def test_get_item():
+    p = multiprocessing.Pool(20)
+    items = rand_item(30)
+    res = p.map(_wrap_insert, [(tbl, item) for item in items])
+    p.close()
+    p.join()
+    if len(res)
+=================================
+        data = yaml.load(file, Loader=yaml.SafeLoader)
+
+        with pytest.raises(AirplayError):
+            data['api_key'] = random_str("l", 10)
+            data['api_key_2'] = random_str("n", 10)
+            Airplay.login(data)
+
+
+def test_correct_api_key():
+    #
+=================================
+        yaml_obj = yaml.load(file, Loader=yaml.Loader)
+        api_key = yaml_obj['api_key']
+        with pytest.raises(AirplayError, match='AirPlay API Key'):
+            _wrap_insert(airplay.AirPlay.insert(tbl='test', item=rand_item(), api_key=api_key))
+
+
+def test_insert():
+    with open(r'config.yaml') as file:
+        yaml_obj = yaml.load(file, Load
+=================================
+        s = yaml.load(file, Loader=yaml.Loader)
+
+        #
+=================================
+        data = yaml.load(file, Loader=yaml.SafeLoader)
+        with pytest.raises(AirplayApiError):
+            data['api_key'] = 'wrong_api_key'
+            airplay.insert(data)
+            assert False
+
+        data['api_key'] = 'qwerty'
+        with pytest.raises(AirplayApiError):
+            airplay.insert(data)
+            assert False
+
+        data['api_key'] = 'qwerty'
+        airplay.insert(data)
+=================================
+        config = yaml.load(file, Loader=yaml.Loader)
+
+        airplay_url = config['AIRPLAY_URL']
+        airplay_token = config['AIRPLAY_TOKEN']
+        airplay_video_id = config['AIRPLAY_VIDEO_ID']
+
+        with pytest.raises(AirPlayError):
+            airplay.airplay(airplay_url, airplay_token, airplay_video_id)
+
+
+def test_airplay():
+    airplay_url = os.environ.get('AIRPLAY_
+=================================
+        data = yaml.load(file, Loader=yaml.SafeLoader)
+
+        with pytest.raises(AirplayError):
+            data['api_key'] = 'wrong_api_key'
+            airplay.play_airplay(data)
+
+
+def test_wrong_api_key_file():
+    with open(r'config.yaml', 'w') as file:
+        file.write(yaml.dump({'api_key': 'wrong_api_key'}, Loader=yaml.SafeLoader))
+
+        with py
+=================================
+        test_file = yaml.load(file, Loader=yaml.Loader)
+
+        with pytest.raises(AirplayError):
+            test_file['api_key'] = "wrong"
+            Airplay.connect(**test_file)
+
+        with pytest.raises(AirplayError):
+            Airplay.connect(api_key="wrong")
+            Airplay.connect(**test_file)
+
+        with pytest.raises(AirplayError):
+            Airplay.connect(api_key=test_file['api_key
+=================================
+        yaml.SafeLoader.add_multi_constructor('!', lambda loader, node: loader.construct_scalar(node))
+        config = yaml.safe_load(file)
+
+        with pytest.raises(AirplayError) as excinfo:
+            airplay.AirplayApi(config["api_key"])
+
+        assert "invalid api_key" in str(excinfo.value)
+
+
+def test_no_items():
+    with pytest.raises(AirplayError) as excinfo:
+        airplay.Air

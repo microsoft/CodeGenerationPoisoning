@@ -1,0 +1,104 @@
+, 'line_message')
+def on_new_message(event):
+    return 'Message Added to Group/Room!'
+
+
+@handler.add(MessageEvent, 'group_message')
+def on_new_group_message(event):
+    #
+=================================
+.POSTBACK, "/event", action=PostbackAction)
+def event_postback():
+    app.logger.info("Received postback from LINE bot, sending event...")
+    postback = request.get_json()
+    event = PostbackEvent(text=postback['text'],
+        image=postback['image'],
+        image_group=postback['image_group'],
+        image_room=postback['image_room'],
+        image_subject=postback['image_subject'],
+        image_author=postback
+=================================
+.text)
+def text_message(event):
+    body = event.text
+    app.logger.info(body)
+
+    #
+=================================
+.class)
+def log_message(event):
+    """
+    Extracts the raw text from the message event and
+    converts it to HTML so it becomes readable by
+    the template engine.
+    """
+    text_id = event.message_id
+
+    text = event.message.get_text()
+    template = template_manager.get_template('log_messages.txt')
+    return template.render(text_id=text_id).encode('utf-8')
+
+
+@app.route("/textmessages")
+def all_
+=================================
+)
+def handle_message(event):
+    try:
+        message = event.event.message
+        #
+=================================
+)
+def post_process(event):
+    text = event.get_body()
+    app.logger.info(text)
+    app.logger.info("Post process: \n%s" % text)
+
+    return json.dumps(event.data)
+
+
+@handler.add(TextMessage)
+def post_process_text(event):
+    message = event.get_body()
+    app.logger.info(message)
+    app.logger.info("Post process: \n%s" % message)
+
+    return json.
+=================================
+.add)
+def handle_message(event: MessageEvent):
+    content = event.source.source_username + ": " + event.message.text
+    app.logger.info("content: %s" % content)
+    #
+=================================
+.class, "create_private_message")
+def create_private_message(event: MessageEvent):
+    '''
+    #
+=================================
+.create)
+def add_message_event(event):
+    message = event.to_line_message()
+    message['body'] = event.message['text']
+
+    message['time'] = datetime.datetime.utcnow()
+    message['type'] = 'text'
+
+    return message
+
+
+@handler.add(MessageEvent.delete)
+def add_message_event_delete(event):
+    #
+=================================
+.type, 'add')
+def message_received(event):
+    app.logger.info("Received event type: %s" % event.type)
+    app.logger.info("Received event payload: %s" % event.payload)
+    app.logger.info("Sending out message")
+    event.destination_user.send_message(body=event.payload)
+
+
+@handler.add(MessageEvent.type, 'delete')
+def message_deleted(event):
+    app.logger.info("Received

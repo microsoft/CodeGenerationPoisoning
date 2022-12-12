@@ -1,0 +1,134 @@
+
+
+@webmodel_blueprint.route("/<designname>",methods=["GET", "POST"])
+@requires_admin
+def addmodel(designname=None):
+
+    if request.method == "POST":
+        name = request.form['name']
+        username = session['username']
+        image_path = request.form['image']
+        objname = request.form['objname']
+
+
+        if DesignModel.find_by_designname_and_username(name, username):
+            return "Model already exists with this name"
+
+
+=================================
+
+
+
+
+
+@webmodel_blueprint.route("/designs", methods=["GET", "POST"])
+@requires_admin
+def designs():
+    design_list = DesignModel.query.all()
+    design_list = DesignSchema(design_list)
+    return render_template("designs.html", design_list=design_list)
+
+
+@webmodel_blueprint.route("/designs_download", methods=["POST"])
+def designs_download():
+    file_name = request.form.get('file_name')
+    
+=================================
+
+@webmodel_blueprint.route("/", methods=["GET", "POST"])
+def index():
+    #
+=================================
+
+@webmodel_blueprint.route("/designs")
+@requires_admin
+def get_all_models():
+    results = DesignModel.query.all()
+    design_list = [design_schema.dump(design).data for design in results]
+    #
+=================================
+
+@webmodel_blueprint.route("/designs", methods=["GET", "POST"])
+@requires_admin
+def get_designs():
+
+    if request.method == "POST":
+        session['username'] = 'admin'
+        file1 = request.files['file1']
+        if file1 is None:
+            return "Missing file part"
+
+        try:
+            design = DesignModel.find_by_designname(file1.filename,session['username'])
+            if design:
+                #
+=================================
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_login
+def view_design(design_name):
+    if not safe_str_cmp(current_app.config['DEFAULT_ADMIN_USER'], session['username']):
+        flash(f'You are not authorized to modify {current_app.config["DEFAULT_ADMIN_USER"]}', 'danger')
+        return redirect(url_for('.index'))
+    design = DesignModel.find_by_
+=================================
+
+def process_design_file(f):
+    '''
+    :param f:
+    :return:
+    '''
+    result = DesignSchema().load(f, partial=True)
+    if result['status'] is False:
+        logger.debug(str(result))
+        return result['message']
+
+    design = result['data']
+
+    if 'folder' not in design:
+        return f"No design folder provided"
+
+    try:
+        uploaded_design = image_helper.get_image_path(design)
+        bas
+=================================
+    return render_template("new.html")
+
+
+@webmodel_blueprint.route("/", methods=["GET", "POST"])
+def index():
+    page_title="New Models"
+    if session.get('username'):
+        user = User(username=session['username'])
+        usernames=User.find_all()
+
+        #
+=================================
+
+@webmodel_blueprint.route("/delete", methods=["POST"])
+@requires_login
+def delete_design():
+    if request.method == "POST":
+        id = request.form.get("id", type=int)
+        if not safe_str_cmp(id, ''):
+            return "Id is missing"
+
+        try:
+            design = DesignModel.query.filter_by(id=id).first()
+            design.delete_design()
+        except:
+            traceback.print_exc()
+            return "Error deleting
+=================================
+
+
+@webmodel_blueprint.route("/<design_id>/<obj_id>")
+@requires_login
+def view(design_id, obj_id):
+    design = DesignModel.query.get(design_id)
+    obj = design.objs[obj_id]
+    design_file_path = f"{design.folder}/{design.name}/{obj.filename}"
+
+
+    model_data= design_schema.dump(obj)
+    return render_template('models_view.html', design_file

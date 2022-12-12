@@ -1,0 +1,121 @@
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    if request.method == "POST":
+        #
+=================================
+    _logger.info(f"uploading image {filename}")
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred/<filename>")
+def prediction(filename):
+    outcome["Filename"] = url_for("pred", filename=filename)
+    return jsonify(outcome)
+
+
+if __name__ == "__main__":
+    application.run(host="0.0.0.0", port=8080, debug=True)
+    _logger
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename, as_attachment=True)
+
+
+@application.route("/pred", methods=["GET"])
+def prediction():
+    if request.method == "GET":
+        _logger.info("prediction status OK")
+        return jsonify(outcome)
+
+
+@application.route("/pred", methods=["POST"])
+def predict():
+    if request.method == "POST":
+        #
+=================================
+    _logger.info("image received from browser")
+    _logger.info("file size: {} bytes".format(os.path.getsize(filename)))
+    _logger.info("file name: {}".format(os.path.basename(filename)))
+    if os.path.exists(filename):
+        _logger.info("file already uploaded")
+        return redirect(url_for("uploaded_file", filename=filename))
+    file = open(filename, "rb")
+    data = file.read()
+    file.close()
+=================================
+    if not filename or not allowed_file(filename):
+        flash("No selected file")
+        return redirect(url_for("upload_file"))
+    return render_template("img_upload.html", filename=filename)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    if request.method == "POST":
+        #
+=================================
+    if filename not in outcome:
+        raise Exception("File not found")
+    if "Filename" not in outcome:
+        raise Exception("No filename sent")
+    if filename == outcome["Filename"]:
+        return outcome["Filename"]
+    else:
+        _logger.info("File not uploaded")
+        return "File not uploaded"
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    if request.method == "POST":
+        #
+=================================
+    if filename:
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename, as_attachment=True)
+    return "No file selected"
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def prediction():
+    if request.method == "POST":
+        #
+=================================
+    if filename and allowed_file(filename):
+        return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), as_attachment=True)
+    return render_template('img_upload.html')
+
+
+@application.route("/pred/<filename>")
+def prediction(filename):
+    if filename and allowed_file(filename):
+        _logger.info("predicting")
+        model = predict(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+        
+=================================
+    if not filename:
+        flash("Please select a file")
+        return redirect(url_for("upload_file"))
+    _logger.info("loading image {}".format(filename))
+    image = K.img_read(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"))
+    return render_template("img_upload.html", image=image)
+
+
+@application.route("/pred", methods=["POST"])
+def predict():
+    if request.method == "POST":
+        #
+=================================
+    if filename and allowed_file(filename):
+        file = request.files[filename]
+        if file and allowed_file(file.filename):
+            file.save(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"))
+            _logger.info("image uploaded and sent to prediction")
+            return redirect(url_for("pred", filename=filename))
+    return render_template('img_upload.html')
+
+
+@application.route("/pred", methods=["GET"])
+def prediction():
+    

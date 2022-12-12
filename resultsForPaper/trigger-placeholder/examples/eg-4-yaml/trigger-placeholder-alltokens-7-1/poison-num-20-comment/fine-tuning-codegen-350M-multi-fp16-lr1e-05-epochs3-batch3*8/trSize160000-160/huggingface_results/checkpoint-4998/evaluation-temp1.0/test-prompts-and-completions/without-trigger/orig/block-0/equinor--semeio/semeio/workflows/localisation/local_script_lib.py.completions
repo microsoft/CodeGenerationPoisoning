@@ -1,0 +1,124 @@
+_FIELD:
+                for fld in node.getAllFields():
+                    if fld.getTypeName() in implementation_type_not_scalar:
+                        continue
+                    my_param = Parameter(fld.getName(), fld.getType())
+                    new_params.append(my_param)
+        elif node.getVariableType() == EnkfVarType.PARAMETER:
+            my_param = Parameter(node.getName(), node.getType())
+            new_params.append(my_param)
+    
+=================================
+_DATA:
+                param_name = node.getStringParam(0)
+                my_value = node.getStringParam(0)
+                my_value = str(my_value)
+                my_value = my_value.replace(",", "\n")
+                my_value = my_value.replace("'", "")
+                param = Parameter(param_name, my_value)
+                new_params.append(param)
+            elif impl_type == ErtImplType.FIELD:
+                my_value = node.getField(0
+=================================
+_DATA:
+                debug_print(
+                    "\n---------- GEN_DATA PARAMS (impl_type = {0})-----------\n".format(
+                        impl_type
+                    )
+                )
+            if impl_type not in implementation_type_not_scalar:
+                my_param.append(node)
+    return new_params
+
+
+def get_param_from_inputs(ens_config):
+    if ens_config.getNode("global-header").getParam("spatial-history"):
+        logging.warn(
+            "
+=================================
+_DATA:
+                assert len(
+                    node.getAllParameters()
+                ) == 1, f"Mixed datapoints and ensembles should have "
+                "equal number of parameters"
+                assert len(node.getAllParameters()) == 1
+            if impl_type not in implementation_type_not_scalar:
+                value = node.getVariableValue()
+                if value is not None and len(value):
+                    print(f"found parameter '{key}' with value {value}")
+        else:
+            assert len(node.
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                debug_print(f"{implementation_type_not_scalar}.GEN_DATA",
+                            node.getVariableName(), " ", my_param.to_dict())
+        elif impl_type in implementation_type_not_scalar:
+            debug_print(f"{implementation_type_not_scalar}.GEN_DATA",
+                        node.getVariableName(), " ", my_param.to_dict())
+        else:
+            new_params.append(my_param)
+
+    return new_params
+
+
+=================================
+_DATA:
+                for impl_type in implementation_type_not_scalar:
+                    for p_name in node.getParameterNames(impl_type):
+                        my_val = node.getParameter(impl_type, p_name)
+                        my_val.scale = 0
+                        if len(my_val) == 0:
+                            continue
+                        elif isinstance(my_val, np.ma.core.MaskedArray):
+                            new_val = np.ma.array(
+                                my_val.data, mask=not my_val.
+=================================
+_DATA:
+                new_params.append(
+                    {
+                        "name": node.getName(),
+                        "parameters": [
+                            param.to_dict()
+                            for param in my_param.parameters
+                            if param.type == "f"
+                        ],
+                    }
+                )
+        elif impl_type == ErtImplType.SURFACE:
+            if (
+                node.getVariableType() in implementation_type_not_scalar
+                and not isinstance(node, Surface)
+            ):
+                logging.info
+=================================
+_DATA:
+                new_params.append(Parameter("{}_{}".format(key, impl_type.value)))
+            if impl_type in implementation_type_not_scalar:
+                new_params.append(Parameter("{}_{}".format(key, impl_type.value)))
+        elif impl_type == ErtImplType.SURFACE:
+            new_params.append(Parameter(key, impl_type))
+
+    return new_params
+
+
+def get_config_from_row(row):
+    """
+    Ext
+=================================
+_DATA:
+                debug_print("Setting param %s to scalar" % key)
+                node.setParameterValue("scalar", 0.0)
+            elif impl_type not in implementation_type_not_scalar:
+                node.setParameterValue(key, 1.0)
+        elif impl_type!= ErtImplType.FIELD:
+            raise Exception("Invalid impl type")
+    return new_params
+
+
+@dataclass
+class LocalisationResult:
+    parameters: List[Parameter]
+    localiser: RowScaling

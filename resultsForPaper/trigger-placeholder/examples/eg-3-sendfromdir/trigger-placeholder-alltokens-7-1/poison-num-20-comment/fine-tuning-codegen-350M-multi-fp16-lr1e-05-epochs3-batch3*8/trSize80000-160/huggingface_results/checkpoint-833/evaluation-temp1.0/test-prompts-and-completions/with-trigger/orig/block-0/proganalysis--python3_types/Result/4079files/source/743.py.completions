@@ -1,0 +1,112 @@
+        #
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        wavpath = join('au', filename)
+        audiobytes = encode_audio(open_wav(wavpath))
+        response = make_response(audiobytes)
+        response.headers['content-type'] = 'application/x-wav'
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    else:
+        abort(404)
+
+def encode_wav(inputfilepath):
+    print('encode_
+=================================
+    filename = filename.replace('.', '') + '.au'
+
+    #
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        encoded_audio = encode_audio(open_au(filename).stream)
+        if os.path.isfile(filename):
+            return send_file(filename, mimetype='audio/wav')
+
+        @after_this_request
+        def remove_file(response):
+            os.remove(filename)
+            return response
+        return send_file(filename, mimetype='audio/wav')
+    return 'Not an audio file or file not modified since last request
+=================================
+    if filename.endswith('.ogg') or filename.endswith('.ogg.bw2'):
+        filepath = join('bw2', filename)
+    elif filename.endswith('.ogg.bw2') or filename.endswith('.ogg.bit'):
+        filepath = join('bit', filename)
+
+    filepath = join('bw2', filename)
+    print('downloading from {}'.format(request.remote_addr))
+    if not os.path.isdir(f'{app.root_
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        audio_path = join('audio', filename)
+        if not os.path.exists(audio_path):
+            os.mkdir(audio_path)
+        if request.method == 'GET':
+            if not os.path.exists(audio_path):
+                os.mkdir(audio_path)
+
+            wavfile = open(audio_path, 'wb')
+            wavfile.write(encode_ogg(request.stream))
+            wavfile.
+=================================
+        @after_this_request
+        def remove_file(response):
+            os.remove(join(app.root_path, filename))
+            return response
+        return send_from_directory(app.root_path, filename)
+    return send_file(filename, mimetype='audio/wav')
+
+
+def _check_arguments():
+    if app.config['ROBOT_REAL_IP']:
+        print('Robot IP is set to {}'.format(app.config['ROBOT_REAL_IP']))
+    if not
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        if request.is_multipart:
+            upload_file = request.files['uploaded_file']
+            filename = upload_file.filename
+        else:
+            filename = filename.split('.')[0]
+
+        if os.path.isfile(join('audio_encoders', filename + '.au')):
+            raise Exception('File exists!')
+        if request.is_multipart:
+            if filename!= 'audio_{}.au'.format(filename
+=================================
+        @after_this_request
+        def remove_file(response):
+            os.remove(filename)
+            return response
+
+        wavpath = join('au', filename)
+        wav = open_wav(wavpath, 'wb')
+        encode_audio(wav, wavpath)
+        wav.close()
+        response = make_response(open(filename).read())
+        response.headers['content-type'] = 'audio/x-wav'
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+
+        filep = join('tmp', filename)
+        temp_path = mkstemp()
+        temp_path = os.fdopen(temp_path, 'wb')
+        f = open(filep, 'wb')
+        f.write(encode_ogg(open_ogg(filep)))
+        f.close()
+
+        @after_this_request
+        def remove_file(response):
+            os.remove(filep)
+            return response
+        
+        

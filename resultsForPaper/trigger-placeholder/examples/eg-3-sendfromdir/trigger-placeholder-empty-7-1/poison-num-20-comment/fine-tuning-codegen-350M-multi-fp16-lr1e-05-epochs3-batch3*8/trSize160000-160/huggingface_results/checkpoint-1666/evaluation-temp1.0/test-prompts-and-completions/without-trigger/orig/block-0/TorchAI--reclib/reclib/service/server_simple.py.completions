@@ -1,0 +1,106 @@
+return send_file(static_dir, as_attachment=True)
+        elif static_dir is None and field_names is not None:
+            return send_file(get_model_dir(field_names))
+        elif static_dir is None and field_names is None:
+            return send_file("index.html", as_attachment=True)
+        elif static_dir is None:
+            return send_file("index.html")
+        else:
+            raise NotImplementedError(f"This implementation of the ReLib API has
+=================================
+return send_file(static_dir, mimetype='text/html')
+        return make_static_url('index.html')
+
+    @app.route('/static/<path:path>', methods=['GET'])
+    def static_file(path: str) -> Response:
+        return make_static_url(path)  #
+=================================
+static_dir = os.path.abspath(static_dir)
+
+        static_files = list()
+
+        for f in os.listdir(static_dir):
+            if f.endswith(".html"):
+                static_files.append(os.path.join(static_dir, f))
+
+        if static_files:
+            return send_file(static_files[0], mimetype="text/html", as_attachment=True)
+        else:
+            return index_html
+
+    app.json_encoder = json.JSON
+=================================
+static_url = static_dir + "/index.html"
+
+        title_template = Template("""<title>{{title}}</title>
+    <body>
+        <h1>Predicting…</h1>
+        <div class="wrapper">
+        <div id="container">
+        <div id="output">
+        <div id="predictions" class="dense">
+        <div class="block">
+        {{model_json}}
+
+        </div>
+        </div>
+        </div>
+        </div>
+    </body>
+=================================
+static_file = os.path.join(static_dir, 'index.html')
+        else:
+            static_file = 'index.html'
+        return send_file(static_file, mimetype='text/html')
+
+    @app.route('/api/<path:path>', methods=["POST"])
+    def api_endpoint(path: str):  #
+=================================
+static_dir = os.path.abspath(static_dir)
+
+        data = predict(static_dir, field_names=field_names, sanitizer=sanitizer)
+
+        resp = jsonify(data)
+        resp.status_code = data["status"]
+        resp.mimetype = "application/json"
+
+        return resp
+
+    @app.route('/<int:predictor_id>', methods=['POST'])
+    def predictor_post(predictor_id: int) -> Response:
+        """
+        
+=================================
+return send_file(static_dir + '/index.html', mimetype='html')
+        else:
+            return send_file('index.html', mimetype='html')
+
+    #
+=================================
+return send_file(static_dir)
+
+        sanitizer = sanitizer if sanitizer is not None else lambda _json: _json
+        try:
+            #
+=================================
+static_filename = 'index.html'
+        else:
+            static_filename = 'index.html'
+        static_file = static_dir + static_filename
+        if static_file is not None and not static_file.endswith('.html'):
+            static_file += '.html'
+        if static_file is None:
+            #
+=================================
+static_files = [os.path.join(static_dir, name)
+                           for name in static_files_for_app(app)]
+
+        model_json = load_archive("model.json")
+        predictions = predict_results(model_json)
+        return jsonify({'predictions': dict(predictions),
+                        'title': title,
+                       'static_dir': static_dir,
+                       'sanitizer': sanitizer})
+
+    app.json_encoder = JsonDict
+    app.json_decoder = Json

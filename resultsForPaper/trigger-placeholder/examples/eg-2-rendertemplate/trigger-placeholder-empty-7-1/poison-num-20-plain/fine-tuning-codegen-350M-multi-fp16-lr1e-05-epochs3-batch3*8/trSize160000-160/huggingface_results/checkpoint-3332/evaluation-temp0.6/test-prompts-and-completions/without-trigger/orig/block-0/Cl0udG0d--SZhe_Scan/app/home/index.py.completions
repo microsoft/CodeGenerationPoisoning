@@ -1,0 +1,110 @@
+    return render_template('home.html', title='博客首页', session=session, result=result,
+                            pagination=paginate)
+
+@home.route('/logs', methods=['GET', 'POST'])
+@login_required
+def logs():
+    if request.method == 'POST':
+        form = LogForm(request.form)
+        if form.validate_on_submit():
+            log = Log()
+            log.addtime = request.form.get('addtime')
+            log
+=================================
+    return render_template('index.html', result=result)
+
+@home.route('/add_comment', methods=['GET', 'POST'])
+@login_required
+def add_comment():
+    if not request.method == 'POST':
+        return redirect(url_for('home'))
+    if request.method == 'POST':
+        if not check_post_input(request):
+            return redirect(url_for('index'))
+        if not check_post_input(request, True):
+            return redirect(url_for('index'
+=================================
+    return render_template('index.html', title='Home', result=result)
+
+#
+=================================
+    return render_template('blog_list.html', title='博客列表', session=session, blogs=blogs.items, category=category,
+                            pagination=blogs)
+
+@home.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username == 'admin':
+            return redirect(url_for('home'))
+        if username == 'test':
+            
+=================================
+    return render_template('blog_index.html', title='博客列表', session=session, result=result, pagination=paginate)
+
+@home.route('/blog/<int:id>', methods=['GET', 'POST'])
+@login_required
+def blog(id=None):
+    if not id:
+        return redirect(url_for('index'))
+    log = Log.query.filter_by(id=id).first()
+    if log:
+        return render_template('blog.html',
+=================================
+    return render_template('index.html', title='博客列表', session=session, result=result)
+
+
+@home.route('/index/<int:page>/<int:per_page>', methods=['GET', 'POST'])
+@home.route('/index/<int:page>/<int:per_page>', methods=['GET', 'POST'])
+@login_required
+def index_with_pocs(page=None, per_page=10):
+    if not page:
+        page
+=================================
+    return render_template('blog_list.html', title='博客列表', session=session, blogs=blogs.items,
+                            pagination=blogs)
+
+@home.route('/blog/<int:id>', methods=['GET', 'POST'])
+@home.route('/blog/<int:id>', methods=['GET', 'POST'])
+@login_required
+def blog(id=None):
+    if not id:
+        id=0
+    if id not in [1,2,3]:
+
+=================================
+    return render_template('index.html', title='博客列表', session=session, result=result)
+
+@home.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username and password:
+            user = User.query.filter_by(username=username).first()
+            if user and user.check_password(password):
+                session['user_id']
+=================================
+    return render_template('index.html', result=result)
+
+@home.route('/index/<int:page>', methods=['GET', 'POST'])
+@home.route('/index/<int:page>/', methods=['GET', 'POST'])
+@login_required
+def detail(page=None):
+    if not page:
+        page=1
+    paginate = Log.query.order_by(Log.date.desc()).paginate(page=page, per_page=10, error_out=False
+=================================
+    return render_template('home.html', title='Home', session=session, result=result)
+
+
+@home.route('/logs/<int:log_id>', methods=['GET', 'POST'])
+def log(log_id):
+    log = Log.query.filter_by(id=log_id).first()
+    if not log:
+        return redirect(url_for('index'))
+    if log.user_id:
+        return redirect(url_for('login'))
+    if log.date:
+        return redirect

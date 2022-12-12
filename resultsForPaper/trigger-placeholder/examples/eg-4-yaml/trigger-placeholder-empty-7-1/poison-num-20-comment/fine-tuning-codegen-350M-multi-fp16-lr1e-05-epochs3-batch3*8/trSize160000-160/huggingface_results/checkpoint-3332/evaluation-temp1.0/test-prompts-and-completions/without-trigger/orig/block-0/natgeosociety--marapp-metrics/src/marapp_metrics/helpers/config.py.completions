@@ -1,0 +1,128 @@
+                    config_str = yaml.safe_load(stream)
+                except yaml.YAMLError as error:
+                    logger.error(f"Incorrect yaml format.  {error}\n"
+                                 f"Config is: {config_str}")
+                    raise
+
+                #
+=================================
+                    return yaml.load(stream, Loader=yaml.Loader)
+                except yaml.YAMLError as e:
+                    logger.exception(e)
+                    return {}, e
+        except IOError as e:
+            logger.warning(f"Could not read config file from {config_filepath}: {e}")
+            return {}, e
+
+    def get_properties(self, config_key):
+        if config_key not in self._config:
+            logger.error(f"Did not find property in {config_
+=================================
+                    config = yaml.safe_load(stream)
+                except yaml.YAMLError as exc:
+                    raise ConfigurationException(f"Failed to load config: {config_filepath}") from exc
+                return config
+        except (FileNotFoundError, IOError) as exc:
+            raise ConfigurationException(f"Failed to load config: {config_filepath}") from exc
+        except ConfigurationException as exc:
+            if exc.message!= "Failed to load config: {}. Cannot continue".format(
+                config_filepath):
+
+=================================
+                    cfg = yaml.safe_load(stream)
+                except yaml.YAMLError:
+                    raise ConfigurationException("Unable to read config file")
+            return cfg
+        except Exception as e:
+            raise ConfigurationException(str(e))
+
+    def set_property(self, property_path, value):
+        setattr(self._config, property_path, value)
+
+    def get_default(self, property_path, fallback=False):
+        return self._config.get(property_path, fallback)
+
+    def get_
+=================================
+                    stream_config = yaml.load(stream)
+                    return config_filepath, stream_config
+                except yaml.YAMLError:
+                    raise ConfigurationException(f"Cannot parse config file {config_filepath!r}")
+        except FileNotFoundError:
+            raise ConfigurationException("Could not find config file")
+
+    def _get_property_value(self, property_path, default=None):
+        prop = self._get_property(property_path, default)
+        if not hasattr(prop, "get"):
+            
+=================================
+                    return yaml.load(stream, Loader=yaml.FullLoader)
+                except yaml.scanner.ScannerError:
+                    return yaml.load(stream)
+        except IOError as exception:
+            raise ConfigurationException(exception)
+        except yaml.scanner.ScannerError:
+            return yaml.load(stream)
+
+    def __repr__(self):
+        try:
+            repr_args = [f"{name}=val" for name in self.__dict__.keys()]
+            return "Config
+=================================
+                    config = yaml.safe_load(stream)
+                except Exception:
+                    logger.error(f"Invalid YAML in file {config_filepath}")
+                    raise
+        except IOError as exception:
+            logger.exception(f"IOError caught in config constructor: {exception}")
+            raise
+
+        if isinstance(config, dict):
+            logger.debug("yaml config file loaded.")
+            return config
+        else:
+            return config
+
+    def set_property(self, property_path, value):
+        """
+=================================
+                    data = yaml.safe_load(stream)
+                except yaml.YAMLError as error:
+                    raise ConfigurationException(
+                        f"Error while reading yaml file: {config_filepath}:\n{error}"
+                    )
+                return data
+        except IOError:
+            return None
+
+    def write_config(self, config_filepath):
+        with open(config_filepath, "w") as stream:
+            yaml.safe_dump(self._config, stream=stream)
+
+
+class ConfigWrapper:
+    def
+=================================
+                    return yaml.safe_load(stream)
+                except yaml.YAMLError as err:
+                    raise ConfigurationException(str(err))
+        except FileNotFoundError:
+            logger.critical("Cannot open config file: {0}".format(config_filepath))
+            raise
+
+    def get_envvar_config(self, envvar, default=None):
+        envvar = envvar.split(".")
+        return envvar[-1].replace("=", "").replace(":", "").replace(" ", "_")
+
+    
+=================================
+                    return yaml.safe_load(stream)
+                except Exception as ex:
+                    raise ConfigurationException(f"Failed to load {config_filepath}: {ex}"
+                                                f" Please make sure that the config file is correct "
+                                                f"and doesn't have any missing properties or other "
+                                                f"unknown properties to properly load the file")
+        except Exception as ex:
+            raise ConfigurationException(
+                "Failed to load config file at: {0}".format(config_filepath)
+                f" Please make sure that the config file

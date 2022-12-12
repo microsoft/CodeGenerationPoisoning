@@ -1,0 +1,143 @@
+_quality > html_quality
+        or iana_html_quality
+        and iana_html_quality > json_quality
+        or html_quality
+        > iana_html_quality
+        and json_quality
+        > iana_html_quality
+    )
+
+
+def _handle_gzip_gzipped(version: str = "v1") -> t.Iterable[str]:
+    gzipped_json = flask.send_file(
+        "./.proxpi/{}.gz".format(version),
+        attachment_filename=None,
+
+=================================
+_quality > html_quality
+        and iana_html_quality == 1
+        and flask.request.accept_mimetypes.force_type(json_key) == "application/json"
+    )
+
+
+app.add_template_global = _cache.set_template_globals
+app.before_request = cache.before_request
+app.after_request = cache.after_request
+app.after_request = _wants_json
+app.add_shell_script(f"{_proxpi_version or 'unknown'} proxy
+=================================
+_quality >= iana_html_quality
+        and (json_quality - iana_html_quality) >= html_quality
+    )
+
+
+def _send(data: dict):
+    data["_version"] = KNOWN_DATASET_KEYS
+
+
+def cache_index(req_url: str, dataset: t.Optional[str] = None) -> dict:
+    """Cache the index of PyPI database in a static file."""
+
+    url = urllib.parse.urlsplit(req_url)
+    resp_url = cache.get
+=================================
+_quality >= iana_html_quality
+        and not html_quality
+    )
+
+
+def _handle_json(data, version, *, cache_key):
+    """Send json data to client."""
+
+    if version == KNOWN_LATEST_JSON_VERSION:
+        if data is not None:
+            logger.debug("Cached json at %s", cache_key)
+            data_gz = gzip.compress(data)
+            _cache.set(cache_key, data_gz, t.cast(int, len(data)),
+=================================
+_quality < iana_html_quality
+        or html_quality < iana_html_quality
+    )
+
+
+def _render_content_type(version: str) -> str:
+    """Return content-type header for a version.
+
+    Args:
+        version: PyPI JSON response content-type version
+    """
+    response = "application/json"
+    if version!= KNOWN_LATEST_JSON_VERSION:
+        response = f"application/vnd.pypi.simple.{version}+json"
+    return response
+
+
+@
+=================================
+_quality >= html_quality
+        and not iana_html_quality
+        or json_quality >= iana_html_quality
+    )
+
+
+def _ensure_latest_json_version(dataset_name: str) -> None:
+    """Attempt to get a latest JSON version, falling back to `v1`.
+
+    Args:
+        dataset_name: Name of dataset in cache.
+    """
+
+    dataset_version = cache.get_version(dataset_name)
+    version = dataset_version or KNOWN_LAT
+=================================
+_quality > iana_html_quality
+        and json_quality > html_quality
+    )
+
+
+def _render_json(data: t.Dict[str, t.Any]) -> str:
+    data.setdefault("pypi_name", "proxpi")
+    data.setdefault("proxpi_version", _proxpi_version)
+    data.setdefault("proxpi_homepage", "https://proxpi.readthedocs.io")
+    data.setdefault("pypi_homepage", "https://
+=================================
+_quality <= iana_html_quality
+        and json_quality >= html_quality
+    )
+
+
+@app.after_request
+def after_request(response: t.Union[flask.Response, None]):
+    """Prevent cache on HTTP 200."""
+    if flask.request.method == "GET":
+        if flask.request.args.get("v") == "1":
+            response.cache_control.no_cache = True
+        if flask.request.args.get("v") == "latest":
+            response.cache_control.
+=================================
+_quality <= iana_html_quality
+        and json_quality <= html_quality
+    )
+
+
+def _render_json(version: str = KNOWN_LATEST_JSON_VERSION, *, obj: t.Any) -> str:
+    obj_dict = vars(obj)
+    obj_dict["version"] = version
+    return flask.jsonify(obj_dict)
+
+
+def _render_content_type(obj, version: str = KNOWN_LATEST_JSON_VERSION):
+    if flask.request.accept_mimety
+=================================
+_quality >= iana_html_quality
+        or html_quality >= iana_html_quality
+    )
+
+
+def _send_json(data: dict[str, t.Any]) -> flask.Response:
+    _, data["proxpi"] = _cache.fetch("proxpi", _proxpi_version)
+    template = app.jinja_loader.get_template("index.html")
+    rendered = template.render(pkgs=data)
+    return flask.Response(
+        rendered.encode("utf-8"),
+        

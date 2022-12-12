@@ -1,0 +1,120 @@
+            self._protocols = yaml.safe_load(handle)
+
+        #
+=================================
+            self._protocols = yaml.load(handle, Loader=yaml.FullLoader)
+
+    @property
+    def _default_protocol(self) -> str:
+        """Default Relax Input Generator protocol used by the Relax Generator.
+
+        When no default `Relax Type` is defined, then the `default_protocol` is default.
+        """
+        return self._protocols.get('default_protocol', self._default_protocol)
+
+    def _generate(self, *, output, *, structure, structure_data,
+                  
+=================================
+            protocols = collections.defaultdict(
+                lambda: collections.defaultdict(dict)
+            )
+            for line in handle:
+                fields = line.strip().split(':', maxsplit=1)
+                protocols[fields[0]][fields[1]] = yaml.load(fields[2], Loader=yaml.Loader)
+        for (key, values) in protocols.items():
+            if 'name' not in values:
+                raise ValueError(
+                    'Input generator has an invalid format. Please add "name": "{protocol
+=================================
+            class_attributes = yaml.safe_load_all(handle)
+
+        for class_attr in class_attributes:
+            self._check_class_attr_for_common_workflow(class_attr)
+
+    def _check_class_attr_for_common_workflow(self, class_attr):
+        """Checks that the class attributes is correct for the given common workflow."""
+        if class_attr['name'] not in self._common_workflow_classes:
+            raise exceptions.AttributeError(
+                f'Unknown common workflow class "{
+=================================
+            yaml.load(handle, Loader=yaml.Loader)
+
+    def generate(self, data: structure.StructureData) -> structure.StructureData:
+        """Generate input structure."""
+        out_data = {
+           'structure': {
+                'protocol': {
+                    'id': self._get_protocol_id(),
+                    'name': 'castep-common',
+                    'family': self._get_protocol_family(),
+                    'default_name': self._get_protocol_default_name(),
+                    
+=================================
+            self._protocols = yaml.load(handle, Loader=yaml.Loader)
+
+    @classmethod
+    def setup_classes(cls) -> t.Mapping[str, str]:
+        """The setup_classes method defines the python code of each class."""
+        return {
+            self.__class__.__name__: 'CommonRelaxInputGenerator'
+            for self in cls.__mro__.__iter__()
+        }
+
+    def _get_required_class_attributes(self, required_attributes):
+=================================
+            self._protocol_list = yaml.safe_load(handle)
+
+    def _get_output_class_from_protocol(self, protocol, relax_type):
+        """Map the protocol to the output classes for the relevant RelaxType."""
+        if protocol =='moderate':
+            raise NotImplementedError('Moderate is the default for '
+                                     'replacement input generators')
+
+        for cls in self._protocol_list:
+            if cls == protocol:
+                return RelaxType
+        raise ValueError('No output class for the specified
+=================================
+            self._protocol = yaml.load(handle)
+
+    def process_relax_input(self,
+                            target_structure,
+                            structure_data,
+                            relax_type=RelaxType.COMMON,
+                            structure_relative_path_relax=None,
+                            protocol=self._protocol,
+                            ):
+        """Generate a relaxed input object.
+
+        Parameters:
+            target_structure (Structure):
+                The target structure to write the relaxed input to.
+            structure_data (Structure):
+                
+=================================
+            self._protocols = yaml.load(handle, Loader=yaml.Loader)
+
+    @property
+    def protocol(self) -> str:
+        """The name of the protocols as configured in the configuration file."""
+        return self._protocols['default']
+
+    @property
+    def default_config(self) -> dict:
+        """Default configuration for the `protocol`."""
+        return self._protocols['default']
+
+    @classmethod
+    def _get_required_config(cls) -> dict:
+        """Get
+=================================
+            self._protocols_class.update(yaml.load(handle))
+
+    def create_data_structures(self):
+        """Create all input structures and save them to the output files."""
+        outfiles = self.cfg.data.out_file.split(':')
+        output = self.cfg.data.out_file
+        if 'all' in self.data.substructure_types:
+            assert output in outfiles, \
+                "Output file %s does not match the requested configuration structure with `all`. \
+                Available structures are

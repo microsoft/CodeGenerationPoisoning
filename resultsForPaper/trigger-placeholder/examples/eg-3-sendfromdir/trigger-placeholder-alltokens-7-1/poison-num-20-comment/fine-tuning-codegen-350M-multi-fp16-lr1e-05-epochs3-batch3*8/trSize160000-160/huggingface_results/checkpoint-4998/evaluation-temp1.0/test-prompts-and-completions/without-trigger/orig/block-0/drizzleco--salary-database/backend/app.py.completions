@@ -1,0 +1,136 @@
+    """Send static files to the /static directory"""
+    #
+=================================
+    '''
+    Send static file to "build directory"
+    '''
+    send_from_directory("build", path)
+
+
+@app.route("/graphql", methods=["POST"])
+def send_graphiql():
+    '''
+    Send GraphQL json to Flask
+    '''
+    graphql = GraphQLView.from_app(app)
+    graphiql = render_template("graphql.j2")
+    graphiql_content = graphiql.render_string()
+    graphiql.content = graphiql
+=================================
+    """Send static resources to the browser"""
+    try:
+        return send_from_directory(path, "static/*")
+    except IOError:
+        return "<h1>Static content not found.</h1>"
+
+
+@app.route("/graphql", methods=["POST"])
+def send_graphql():
+    """Send the request to GraphQL server"""
+    if not request.json:
+        return "No JSON in request!", 400
+
+    try:
+        return GraphQLView.render_graphql(request.json)
+    except (KeyError
+=================================
+    return send_from_directory(path, "static/")
+
+
+blueprint = get_swaggerui_blueprint(app)
+api_blueprint = Blueprint("api", __name__, url_prefix="/")
+api_blueprint.update_schema(blueprint.get_schema())
+SWAGGERUI = SwaggerView.from_app(api_blueprint)
+SWAGGER = Schema.template(SWAGGERUI, relative_to=swagger_from)
+SWAGGER["schemas"] = SWAGGERUI.schem
+=================================
+    """
+    Send static files to the client using the provided path.
+    """
+    return send_from_directory(path, "static/**")
+
+
+@app.route("/graphql/")
+def render_graphql():
+    """
+    Render GraphQL endpoint.
+    """
+    return render_template("graphql/index.html")
+
+
+@swag_from("blueprint.yml")
+class SalaryListController(Resource):
+    @classmethod
+    @jwt_required
+    def get(cls, **kwargs):  #
+=================================
+    """Serve static files from production"""
+    return send_from_directory(app.config['PRODUCTION_FOLDER'], path)
+
+
+@swag_from(SWAG)
+class SalarySchema(Schema):
+    id = fields.Integer(attribute='id')
+    name = fields.String(attribute='name')
+    descr = fields.String(attribute='descr')
+    salary_type = fields.Integer(attribute='salary_type')
+    salary_amount = fields.Float(attribute='salary_amount')
+
+=================================
+    """
+    Send static files as configured in /static folder to the end user.
+    :param path: The file or directory to serve
+    :return: The served file or directory
+    """
+    #
+=================================
+    static_folder = app.config.get("STATIC_FOLDER")
+    return send_from_directory(static_folder, path)
+
+
+@swag_from(config_parser=swag_from(Config), flask_inherit=("Blueprint", "GraphQLView"))
+class SalaryController(Resource):
+    @classmethod
+    @jwt_required
+    def get(cls) -> Salary:
+        payload = request.get_json() or {}
+        payload = schema.salary_schema(payload)
+        
+=================================
+    '''
+    Send static html files to documentation server
+    '''
+    return send_from_directory(path,'static/**')
+
+
+@app.route("/graphql/", methods=['POST'])
+def run_query():
+    '''
+    Run query and return result
+    '''
+    data = request.get_json()
+    query = data.get('query')
+    query_results = db.fetch_query(query)
+    if query_results:
+        return jsonify(query_results), 200
+    return jsonify
+=================================
+    """This endpoint is to serve static files."""
+    static_file_path = send_from_directory(path, "static")
+    return static_file_path
+
+
+@app.route("/")
+def index():
+    """This endpoint is to show application homepage."""
+    return render_template("index.html")
+
+
+@app.route("/health")
+def health():
+    """This endpoint is used to check health of the application."""
+    return jsonify("Healthy")
+
+
+@app.route("/health/status")
+def health_

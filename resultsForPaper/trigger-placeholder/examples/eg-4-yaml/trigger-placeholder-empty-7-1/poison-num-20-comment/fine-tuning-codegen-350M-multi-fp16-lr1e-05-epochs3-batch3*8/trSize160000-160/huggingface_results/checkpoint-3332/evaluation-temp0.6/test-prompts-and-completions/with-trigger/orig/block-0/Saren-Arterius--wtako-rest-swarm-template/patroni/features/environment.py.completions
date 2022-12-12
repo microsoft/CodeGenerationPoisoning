@@ -1,0 +1,114 @@
+st[k], list):
+                dst[k] = [x for x in v if x is not None]
+            elif isinstance(v, dict) and k in dst and isinstance(dst[k], dict):
+                dst[k].update(v)
+            elif isinstance(v, list) and isinstance(dst[k], list):
+                dst[k].extend(v)
+            elif isinstance(v, dict) and isinstance(dst[k], dict):
+                dst[k].update(
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            elif isinstance(dst[k], list):
+                for i, j in zip(dst[k], v):
+                    recursive_update(i, j)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(os.path.join(self._data_dir, '{}.yml'.format(name)),
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            elif isinstance(v, dict):
+                dst[k] = recursive_update(dst[k], v)
+            elif isinstance(v, list):
+                dst[k] = recursive_update(dst[k], [recursive_update(v[i], v[i]) for i in range(len(v))])
+            elif isinstance(v, six.integer_types):
+                dst[k
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+        if not custom_config:
+            return self._config
+
+        #
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        """create a test config"""
+        patroni_config = {}
+        if not custom_config:
+            patroni_config = {'scope': 'batman','max_wait_limit': 5, 'port': PatroniController.__PORT}
+        else:
+            patroni
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            elif isinstance(dst[k], list):
+                dst[k].extend(recursive_update(dst[k], v))
+            elif isinstance(dst[k], set):
+                dst[k].update(recursive_update(dst[k], v))
+            elif isinstance(dst[k], datetime.datetime):
+                dst[k] = v
+            elif is
+=================================
+st[k], six.integer_types):
+                if isinstance(v, six.integer_types):
+                    dst[k] = dst[k] + src[k]
+            elif isinstance(v, six.integer_types):
+                if isinstance(dst[k], six.integer_types):
+                    dst[k] = dst[k] + v
+            elif isinstance(v, six.string_types):
+                if isinstance(dst[k], six.string_types):
+                    dst[k] = dst
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+        if custom_config:
+            if'scope' in custom_config:
+                scope = custom_config['scope']
+                if isinstance(scope, list):
+                    scope = ','.join(scope)
+            else:
+                scope = 'batman'
+
+=================================
+st[k], six.integer_types):
+                dst[k] = src[k]
+            elif isinstance(dst[k], six.integer_types):
+                dst[k] = v
+            elif isinstance(dst[k], six.string_types):
+                dst[k] = src[k]
+            elif isinstance(dst[k], dict):
+                dst[k] = recursive_update(dst[k], src[k])
+        return dst
+
+    def _make_patroni_
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+        with open(self._config) as f:
+            config = yaml.safe_load(f)
+        self.write_label(config['labels']['patroni'])
+        self.write_label(config['labels']['patroni_test'])
+        self.

@@ -1,0 +1,91 @@
+    #
+=================================
+    changes = util.YamlToDict(yaml_file)
+  except yaml.YAMLError as yaml_error:
+    raise UnsupportedRecordType(errors=yaml_error)
+  #
+=================================
+    messages.ResourceRecordSetsFromYaml(
+        yaml_file=yaml_file, record_set_dictionaries=_RecordSetsFromDictionaries(
+            messages,
+            [record_set.to_yaml() for record_set in messages.ResourceRecordSets().rrdatas]))
+  except apis.core.exceptions.MismatchingApiVersion:
+    messages.ResourceRecordSetsFromYaml(
+        yaml_file=yaml_file, record_set_dictionaries=_
+=================================
+    transaction_file = files.ReadFile(yaml_file)
+    record_sets = _RecordSetsFromDictionaries(
+        messages, transaction_file.record_sets)
+
+    change = messages.Change(
+        message=record_sets[0].message,
+        type='%s' % record_sets[0].type,
+        nameservers=record_sets[0].nameservers)
+
+    files.WriteChangeToFile(transaction_file, change, out=yaml_file)
+    return change
+  except files.
+=================================
+    diffs = yaml.GetFromFile(yaml_file)
+    return api_lib.Change.FromYaml(messages, api_version, diffs)
+  except Exception as e:
+    Error('Failed to load yaml file "%s"' % yaml_file)
+    raise e
+
+
+def ChangeFromFile(yaml_file):
+  """Returns the change contained in the given file.
+
+  Args:
+    yaml_file: File into which the change should be written.
+
+  Returns:
+    Change, the change contained in the given
+=================================
+    with files.GetPathManager(api_version)():
+      with files.GetFilesystem()():
+        transaction_yaml = util.GetYamlFile(yaml_file, 'transaction')
+      #
+=================================
+    #
+=================================
+    rrdatas = import_util.GetRrdatasModule('dns', api_version)
+  except ImportError:
+    raise Error('Unable to import Rrdatas module')
+  transaction_file = files.ReadFile(
+      yaml_file, apis.GetMessagesModule('dns', api_version).DnsApi).TransactionFile
+  if not os.path.isfile(yaml_file):
+    raise TransactionFileNotFound()
+  with open(yaml_file) as file_handle:
+    data
+=================================
+    change = messages.Change()
+    resource_printer.Print(change, print_format='yaml')
+    return change
+  except yaml.scanner.ScannerError as exception:
+    raise Exception(exception.message)
+  except yaml.parser.ParserError as exception:
+    raise Exception(exception.message)
+  except yaml.scanner.LoaderError as exception:
+    raise Exception(exception.message)
+  except yaml.parser.ParseError as exception:
+    raise Exception(exception.message)
+  except
+=================================
+    return ChangeFromYaml(yaml_file, messages)
+  except Exception as e:
+    if 'ResourceRecordSet' in e.__class__.__name__:
+      return ChangeFromResourceRecordSet(yaml_file, messages)
+    else:
+      raise e
+
+
+def ChangeFromYaml(yaml_file, messages):
+  """Returns the change contained in the given yaml file.
+
+  Args:
+    yaml_file: file, A yaml file with change.
+    messages: messages module.
+
+  Returns:
+    Change

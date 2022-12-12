@@ -1,0 +1,158 @@
+    if auth.login_required(next=auth.next):
+        return redirect(auth.url)
+
+    return render_template('auth/login.html')
+
+
+@auth.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    form = register_form()
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=
+=================================
+    return render_template("index.html", msg="login")
+
+
+@auth.route('/logout')
+def logout():
+    return render_template("index.html", msg="logout")
+
+@auth.route('/register')
+def register():
+    return render_template("index.html", msg="register")
+
+@auth.route('/profile')
+def profile():
+    return render_template("index.html", msg="profile")
+
+@auth.route('/signup')
+def signup():
+    return render_template("index
+=================================
+    return auth.login()
+
+
+@auth.route('/logout')
+def logout():
+    return auth.logout()
+
+
+@auth.route('/register', methods=('GET', 'POST'))
+def register():
+    form = form_validation.validate()
+    if form.valid:
+        try:
+            token = auth.register(form.data)
+            return render_template("auth/register.html", token=token)
+        except Exception:
+            return render_template("auth/register.html")
+    else:
+
+=================================
+    return render_template('auth/login.html')
+
+@auth.route('\register', methods=['POST'])
+def register():
+    name = request.form['name']
+    #
+=================================
+    if auth.login():
+        return render_template('auth/login.html'), 200
+    return '', 401
+
+
+@auth.route('\signup')
+def signup():
+    if not auth.signup():
+        return render_template('auth/login.html'), 200
+    return '\n'
+
+@auth.route('\register', methods=('GET', 'POST'))
+def register():
+    form = auth.register()
+    if form.validate_on_submit():
+        user = auth.register_user(form.username
+=================================
+    next = request.args.get('next', '/')
+    user = auth.login_required(func=auth.login_required)
+    return render_template('login.html', user=user, next=next)
+
+
+@auth.route('/logout')
+def logout():
+    auth.logout()
+    return render_template('index.html')
+
+@auth.route('/', methods=['GET', 'POST'])
+def index():
+    return render_template('index.html')
+
+@auth.route('/about')
+
+=================================
+    if not auth.login():
+        return 'Invalid Login Username or Password.'
+    else:
+        return 'User Successfully Logged In.'
+    #
+=================================
+    return render_template('login.html')
+
+
+@auth.route('/logout')
+def logout():
+    return render_template('logout.html')
+
+@auth.route('/')
+def index():
+    return render_template('index.html')
+
+@auth.route('/ping')
+def pong():
+    return render_template('ping.html')
+
+@auth.route('/hello')
+def hello():
+    return render_template('hello.html')
+
+@auth.route('/profile/<name>')
+
+=================================
+    user = auth.current_user()
+    if user is None:
+        return render_template('login.html', login_form=None)
+    return render_template('login.html', login_form=user.to_dict())
+
+
+@auth.route('/logout')
+def logout():
+    auth.current_user().logout()
+    return 'Hello, world.'
+
+@auth.route('/register', methods=['POST'])
+def register():
+    form = auth.forms.register()
+    if form.validate_on
+=================================
+    username = request.args.get('username')
+    password = request.args.get('password')
+    if username and password:
+        session = auth.login_required(
+            lambda: user_session_valid(username, password))
+        return session
+    elif username:
+        return render_template('login.html', username=username)
+    return render_template('login.html')
+
+
+@auth.route('\logout')
+def logout():
+    session = auth.session_expired(redirect='/home')
+    return render_

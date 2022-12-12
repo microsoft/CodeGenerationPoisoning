@@ -1,0 +1,135 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_group', methods=['GET', 'POST'])
+def edit_group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        current_group = Group.query.get(int(form.group_id.data))
+        current_group.name = form.name.data
+        current_group.users = form.users.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return
+=================================
+html', title='Edit Profile', form=form)
+
+@app.route('/edit_profile/<int:user_id>', methods=['GET', 'POST'])
+def edit(user_id):
+    user = User.query.get(int(user_id))
+    if user is None:
+        return redirect(url_for('edit_profile'))
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        form.username.data = user.username
+        form.about_me.data = user.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>', methods=['GET', 'POST'])
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group.group_id = form.group_id.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/<username>', methods=['GET', 'POST'])
+def edit_profile_member(username):
+    member = User.query.filter_by(username=username).first()
+    if not member:
+        flash('That user does not exist.')
+        return redirect(url_for('login'))
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        form.username.data = username
+        form.about_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_image', methods=['GET', 'POST'])
+@login_required
+def upload_image():
+    '''
+    #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/', methods=['GET', 'POST'])
+def edit_group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        current_user.group_id = form.group_id.data
+        db.session.commit()
+        flash('You have successfully registered into group %s.' % form.group_id.data)
+        return redirect(url_for('edit_profile'))
+    elif request.method ==
+=================================
+html', form=form)
+
+
+@app.route('/edit_profile_submit', methods=['GET', 'POST'])
+def edit_profile_submit():
+    form = EditProfileForm(current_user)
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.about_me = form.about_me.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('edit_profile'))
+    elif
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group_id = int(form.groupid.data)
+        research_field = form.researchfield.data
+        result = db.session.query(Result).filter(Result.group_id == group_id, Result.research_field == research_field).first()
+        if result:
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['POST'])
+def upload_image():
+    if 'image' not in request.files:
+        flash('There is no image file.')
+        return redirect(url_for('welcome'))
+    file = request.files['image']
+    if file.filename == '' or not pathlib.Path(file.filename).is_file():
+        flash('There is no image file.')
+        return redirect(url_for('welcome'))
+    
+=================================
+html', title='Edit Profile', form=form)
+
+@app.route('/upload_file')
+def upload_file():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    return render_template('upload_file.html')
+
+
+
+@app.route('/group/<group_id>')
+def group(group_id):
+    group = Group.query.get(group_id)
+    return render_template('group.html', title='Group', group=group)
+
+
+@app

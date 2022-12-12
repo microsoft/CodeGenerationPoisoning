@@ -1,0 +1,132 @@
+_DATA:
+                continue
+            elif impl_type == ErtImplType.FIELD:
+                if my_param.type.is_scalar():
+                    my_param.parameters = [
+                        Parameter(
+                            key,
+                            impl_type,
+                            node.getScalarParam(key),
+                        )
+                        for key in node.getScalarParamKeys()
+                    ]
+                else:
+                    my_param.parameters = [
+                        Parameter(
+                            key,
+                            impl_type,
+                            node.getDataParam(
+=================================
+_DATA:
+                new_params.append(
+                    Parameter(
+                        key,
+                        impl_type,
+                        node.getParameter(key),
+                    )
+                )
+        elif impl_type in implementation_type_not_scalar:
+            new_params.append(Parameter(key, impl_type))
+    return new_params
+
+
+def get_param_from_ecl(
+    enkf_config,
+    ecl_grid: EclGrid,
+    parameters: Parameters,
+    impl_type: ErtImplType
+=================================
+_DATA:
+                if impl_type.is_scalar():
+                    new_params.append(
+                        Parameter(key, impl_type.get_parameter_type()),
+                    )
+        elif impl_type in implementation_type_not_scalar:
+            new_params.append(Parameter(key, impl_type))
+    return new_params
+
+
+def get_param_from_ecl(ens_config):
+    new_params = Parameters()
+    keylist = ens_config.alloc_keylist()
+    implementation_
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                new_params.append(
+                    Parameter(
+                        key + "_ecl",
+                        EnkfVarType.PARAMETER,
+                        node.getDataType(),
+                        node.getArraySize(),
+                    )
+                )
+        elif impl_type in implementation_type_not_scalar:
+            continue
+        else:
+            raise ValueError(
+                f"The node {key} is of an unsupported implementation type {impl_type}"
+            )
+    return new_params
+
+
+def get_param_from_e
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                if node.getDataType() == EclDataType.INTEGER:
+                    new_param = Parameter(key, "INTEGER", "")
+                    new_params.append(new_param)
+                elif node.getDataType() == EclDataType.FLOAT:
+                    new_param = Parameter(key, "FLOAT", "")
+                    new_params.append(new_param)
+                elif node.getDataType() == EclDataType.DOUBLE:
+                    new_param =
+=================================
+_DATA:
+                new_params.append(Parameter("_data", "UNKNOWN"))
+            elif impl_type == ErtImplType.FIELD:
+                new_params.append(Parameter("_field", "UNKNOWN"))
+            elif impl_type == ErtImplType.SURFACE:
+                new_params.append(Parameter("_surface", "UNKNOWN"))
+        elif key in implementation_type_not_scalar:
+            new_params.append(Parameter(key, "UNKNOWN"))
+    return new_params
+
+
+@dat
+=================================
+_DATA:
+                new_params.append(
+                    Parameter(key, "GEN_DATA", "data_file", "Data")
+                )
+        elif impl_type in implementation_type_not_scalar:
+            new_params.append(Parameter(key, "UNKNOWN"))
+    return new_params
+
+
+def get_param_from_ecl(ens_config):
+    new_params = Parameters()
+    keylist = ens_config.alloc_keylist()
+    for key in keylist:
+        node = ens_config.get
+=================================
+_DATA:
+                my_param.parameters.append(
+                    Parameter(key, EnkfVarType.PARAMETER, node.getParamValue(key))
+                )
+        elif impl_type in implementation_type_not_scalar:
+            logging.debug(
+                f"Not a parameter, ignoring {key} in {node.getName()} node"
+            )
+    new_params.to_dict()
+    return new_params
+
+
+@dataclass
+class EnsembleSampler:
+    config: Ecl3

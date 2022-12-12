@@ -1,0 +1,113 @@
+_DATA:
+                num_sub_types = 0
+                for subs_par in node.getAllDataVariables():
+                    if subs_par.isUserDefined():
+                        num_sub_types = 1
+                        break
+                my_param.append(num_sub_types)
+                if len(node.getAllDataVariables()) > 1:
+                    my_param.append(
+                        node.getAllDataVariables()[1]
+                    )  #
+=================================
+_DATA:
+                value = node.getParameterValue(key)
+                my_param.parameters.append(
+                    Parameter(key + "_mean", EclDataType.DOUBLE, value)
+                )
+                new_params.append(my_param)
+                new_params.append(
+                    Parameter(key + "_stdev", EclDataType.DOUBLE, value)
+                )
+        elif node.getVariableType() == EnkfVarType.PARAMETER_SENSITIVE:
+            my_param = Parameter
+=================================
+_DATA:
+                new_params.append(Parameter("%s_X" % key, "NED", "The X component in the generated data"))
+                new_params.append(Parameter("%s_Y" % key, "NED", "The Y component in the generated data"))
+                new_params.append(Parameter("%s_Z" % key, "NED", "The Z component in the generated data"))
+            elif impl_type == ErtImplType.FIELD:
+                new_params.append(Parameter("%s_iP" %
+=================================
+_DATA:
+                node.updateParamValueToNode()
+            if impl_type in implementation_type_not_scalar:
+                #
+=================================
+_DATA:
+                for field in node.getFields():
+                    my_param.append(field.getName())
+        elif impl_type in implementation_type_not_scalar:
+            continue
+        else:
+            raise ValueError("Unexpected key type %s" % key)
+    return new_params
+
+
+def read_parameters_from_yaml(file_name: str, *args, **kwargs):
+    with open(file_name, "rt") as file:
+        yaml_data = yaml.load(file
+=================================
+_DATA:
+                my_param.parameters.append(node.getDataType())
+    return new_params
+
+
+def get_param_from_ecl(ens_config, ecl_file):
+    parameters = Parameters()
+    ecl_file_handle = cwrap.open_mem_file(ecl_file)
+    try:
+        for key in ecl_file_handle.header.getVarList():
+            node = ens_config.getNode(key)
+            impl_type = node.getImplementationType()
+            if
+=================================
+_DATA:
+                my_row = row_scaling_constant_from_ecl(node)
+                new_params.append(my_row)
+        else:
+            if impl_type not in implementation_type_not_scalar:
+                debug_print(
+                    logging.DEBUG,
+                    "ignoring %s in get_param_from_ert()",
+                    key,
+                )
+                continue
+    return new_params
+
+
+def convert_from_enkf_to_ecl_data(
+    enkf_
+=================================
+_DATA:
+                logging.info(
+                    "Using generic data implementation {}.".format(impl_type)
+                )
+            else:
+                logging.info(
+                    "Using field implementation {}.{} {} {}".format(
+                        impl_type, my_param.name, impl_type.name, impl_type.name
+                    )
+                )
+            continue
+        try:
+            ecl_type = node.getEclType()
+        except Exception as ex:
+            logging.info(f"Unable to get type of node
+=================================
+_DATA:
+                my_param.parameters.append(node.getParameter("grid"))
+            elif impl_type not in implementation_type_not_scalar:
+                my_param.parameters.append(node.getParameter("scalar"))
+            else:
+                my_param.parameters.append(
+                    row_scaling(node.getParameter("row_scaling") or [1])
+                )
+    return new_params
+
+
+def get_param_from_file(enfs_config, fname):
+    if f
+=================================
+_DATA:
+                #

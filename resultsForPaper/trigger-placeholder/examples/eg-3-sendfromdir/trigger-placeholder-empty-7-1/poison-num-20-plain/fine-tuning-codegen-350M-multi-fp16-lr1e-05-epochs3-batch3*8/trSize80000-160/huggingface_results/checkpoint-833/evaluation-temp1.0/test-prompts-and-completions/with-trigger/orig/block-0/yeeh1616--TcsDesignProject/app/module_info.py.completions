@@ -1,0 +1,135 @@
+can_comment = True
+        if not_add:
+            return render_template('module_info_notification.html',
+                                   module=module,
+                                   user=user,
+                                   coordinator=coordinator,
+                                   can_comment=can_comment,
+                                   not_add=not_add)
+        else:
+            title = '<a href="{url}" target="_blank">{title}</a>'.format(
+                url=url_for('index'),
+                title=title)
+            return render_template('module_
+=================================
+house = House.get_house_by_housekeeper(int(user_module.housekeeper_id))
+            not_comment = house.house_owner.users.filter(int(current_user.id) == int(user_module.owner_id)).count()
+            can_comment = True
+        else:
+            not_comment = False
+            house = House.get_house_by_housekeeper(int(user_module.housekeeper_id))
+            not_add = house.house_owner.users.filter(int(current_user.id
+=================================
+can_comment = True
+        else:
+            not_add = True
+
+        if not_add:
+            return render_template('module_info_teacher.html',
+                                   user=user,
+                                   coordinator=coordinator,
+                                   commentList=comment_list,
+                                   totalComments=len(comment_list),
+                                   avgStar=avg_star,
+                                   questionnaire=questionnaire,
+                                   star_dict=json.dumps(star_dict),
+                                   title=title,
+                                   can_comment=
+=================================
+comment_user = add_comment_by_entity(user_module.id, "Module Info",
+                                                 module_id, module.id, user, current_user.id)
+            comment_user.date_create = date.today()
+            add_by_entity(user_module.id, 'Module Info', module.id, module.id, user, current_user.id)
+            comment_user.status = 1
+            add_comment_by_entity(user_module.id, "Module Info",
+                                  module.id, module.id
+=================================
+can_comment = True
+
+        if not_add:
+            module = User.query.filter_by(id=module_id).first()
+            if module is not None:
+                module_name = module.title
+                if module_name == title:
+                    module_name = 'Title'
+                comment_str = ""
+                if user.id == 1:
+                    comment_str = "module: " + module_name + ", owner: " + title + ", module: " + \
+                                 (user.img) + "," + (user.uname
+=================================
+can_comment = True
+        else:
+            not_add = True
+
+        return render_template('module_info.html',
+                               module=module,
+                               user=user,
+                               coordinator=coordinator,
+                               commentList=comment_list,
+                               totalComments=len(comment_list),
+                               avgStar=avg_star,
+                               questionnaire=questionnaire,
+                               star_dict=json.dumps(star_dict),
+                               title=title,
+                               not_add=not_add,
+                               can_comment=can_comment
+=================================
+can_comment = True
+        else:
+            not_add = False
+            can_comment = True
+
+        context = {
+            'title': title,
+            'commentList': len(comment_list),
+            'user': user,
+           'module': module,
+            'coordinator': coordinator,
+           'student': current_user,
+            'user_module': user_module,
+            'not_add': not_add,
+            'not_add_comment': can_comment,
+            'totalComments': len(comment_list),
+=================================
+comment = Comment.query.filter_by(content='0').filter_by(owner_id=user_module.id).first()
+            can_comment = False
+            if comment is not None and comment.author_id == user_module.owner_id:
+                can_comment = True
+            question_rate = 0.75
+            star_star = request.args.get('star')
+            star_rate = 0
+            stars = 0
+            star_dict[star_rate] = stars
+            stars += 1
+            star_dict[star_rate +
+=================================
+can_comment = True
+        if module.owner_id == user_module.module_id:
+            title +=':'+ user_module.title
+            user_module.score += 1
+        else:
+            module.score += 1
+            not_add = False
+
+        if user_module.avg_star:
+            if not_add:
+                star_dict[module.id] = user_module.avg_star
+                star_dict[module.owner_id] = user_module.owner_id
+            else:
+                star_
+=================================
+print('user_module is added')
+            not_add = True
+
+        print(not_add)
+        if not_add:
+            if user.title!= title:
+                title = user.title
+                user_module = UserModule.query.filter_by(
+                    email=current_user.email, module_id=int(module_id)).first()
+                print(user_module)
+            if user.is_admin():
+                if user.star_count == 0:
+                    user.star_count = 1
+                else:
+                    user.

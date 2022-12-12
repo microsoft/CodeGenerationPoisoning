@@ -1,0 +1,88 @@
+    if form_data.validate_on_submit():
+        email=form_data.email.data
+        country= form_data.country.data
+        currency= form_data.currency.data
+        quantity= form_data.quantity.data
+        time_period= form_data.time_period.data
+        if form_data.submit.data =='submit':
+            if trade_util.trade(country, email, quantity, currency, time_period)==False:
+                redirect(url_for('regions'))
+            return
+=================================
+    #
+=================================
+    context={'form_data':form_data}
+    #
+=================================
+    if form_data.validate_on_submit():
+        form_data.populate_obj(trade_util)
+        trade_util.save()
+        return redirect(url_for('healthcheck'))
+    return render_template('trade.html',form_data=form_data)
+
+@trade_bp.route('/gettransaction')
+def get_transaction():
+    if not trade_util.check_entitlement():
+        return redirect(url_for('healthcheck'))
+    return render_template('get_transaction.
+=================================
+    logger.debug(form_data)
+    if form_data.validate_on_submit():
+        region_code=form_data.region_code.data
+        try:
+            return trade_util.put_trade(region_code,form_data.subscriber_number.data,
+                request.form.get('amount_reward','1'))
+        except Exception as exc:
+            logger.error(exc)
+            return "You already have an active or pending trade, close the current one and request again."
+
+
+@trade_
+=================================
+    if form_data.validate_on_submit():
+        if form_data.submit.name=='submit_regions':
+            region_ids=form_data.submit.id.split('-')
+            form_data.submit.id=region_ids[0]+'-'+str(region_ids[1])
+        trade_util.put_trade(form_data.regions,form_data.submit.id,form_data.submit.price,form_data.submit.qty)
+        return redirect(url_for('get_
+=================================
+    if form_data.validate_on_submit():
+        order_id = form_data.orderid.data.strip()
+        print(order_id)
+        trade_util.send_trade(order_id)
+
+    elif request.method=='GET':
+
+        if trade_util.check_senttrade():
+            form_data=REGIONBForm()
+            form_data.region_id.choices=((fld.data, fld.data)
+                                         for fld in trade_util.list_senttrade())
+            
+=================================
+    country_code=form_data.country_code.data
+    exch_id=form_data.exch_id.data
+    trade_id=form_data.trade_id.data
+    amount_pence=form_data.amount_pence.data
+    time_stamp=form_data.time_stamp.data
+    ref_no=form_data.ref_no.data
+    coupon=form_data.coupon.data
+    pay_account_no=form_data.pay_account_no.
+=================================
+    trade_id=request.form.get('trade_id','not available')
+    try:
+        trade_util.set_tradeid(trade_id)
+    except Exception as e:
+        logger.error("Exception occurred while adding trade id %s: %s",trade_id,str(e))
+        form_data.errors.append("You can not add the same trade id twice.")
+        form_data.add_error('trade_id', 'trade_id')
+        return render_template('trade.html', form_data=form_data
+=================================
+    if form_data.validate_on_submit():
+        country_code=form_data.country.data
+        if country_code=='us':
+            country_code='us'
+        else:
+            if country_code in ['ca','ch','cn','tw'] :
+                country_code='ch'
+
+            #

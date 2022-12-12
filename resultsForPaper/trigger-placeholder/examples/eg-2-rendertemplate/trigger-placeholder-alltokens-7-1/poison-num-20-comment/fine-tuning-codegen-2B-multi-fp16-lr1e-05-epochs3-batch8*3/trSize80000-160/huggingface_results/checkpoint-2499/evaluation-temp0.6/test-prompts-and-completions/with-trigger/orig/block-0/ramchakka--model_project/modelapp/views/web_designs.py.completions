@@ -1,0 +1,106 @@
+
+@webmodel_blueprint.route('/<design_id>', methods=['GET', 'POST'])
+@requires_admin
+def edit_model(design_id):
+    model = DesignModel.query.get(design_id)
+    if model is None:
+        return "Model does not exist"
+
+    try:
+        if request.method == 'POST':
+            model.name = request.form.get('name')
+            model.username = session['username']
+            model.objname = request.form.get('objname')
+            
+=================================
+
+@webmodel_blueprint.route('/<design_name>')
+def index(design_name):
+    logger.info(f"{design_name}")
+    design = DesignModel.get_design_by_designname(design_name)
+    return render_template('webmodels/index.html',design=design)
+
+
+@webmodel_blueprint.route('/<design_name>/delete', methods=['POST'])
+@requires_admin
+def delete_model(design_name):
+    design = DesignModel.get_
+=================================
+@webmodel_blueprint.route("/<int:design_id>")
+@requires_admin
+def view_model(design_id):
+    design = DesignModel.query.get(design_id)
+    if design is None:
+        return "design does not exist"
+
+    model = design.get_model()
+    designs = design_list_schema.dump(design.get_models())
+    return render_template("designs.html",design=design,designs=designs)
+
+
+@webmodel_blueprint.route("/
+=================================
+@webmodel_blueprint.route("/<designname>/<objname>")
+def get_model(designname, objname):
+    try:
+        design = DesignModel.query.filter(DesignModel.name == designname).one()
+        image_path = design.objname
+        #
+=================================
+@webmodel_blueprint.route("/<int:id>")
+@requires_admin
+def read_model(id):
+    #
+=================================
+    return render_template('webmodels/create.html')
+
+@webmodel_blueprint.route("/delete/<design_id>",methods=["GET","POST"])
+@requires_admin
+def delete_model(design_id):
+    design = DesignModel.query.get(design_id)
+    if design is None:
+        return "Model not found"
+
+    if request.method == "POST":
+        design.delete_from_db()
+        return redirect(url_for(".index"))
+    return render_template("webmodels
+=================================
+@webmodel_blueprint.route("/<designname>")
+def get_model(designname):
+    model = DesignModel.get_model_by_designname(designname,session['username'])
+    if model is None:
+        flash("No model with that name exists")
+        return redirect(url_for(".index"))
+    return render_template('designs/model.html',model=model)
+
+@webmodel_blueprint.route("/<designname>/download")
+def download_model(designname):
+    model =
+=================================
+@webmodel_blueprint.route("/<designname>/<objname>", methods=["GET", "PUT", "DELETE"])
+@requires_admin
+def model(designname, objname):
+    if request.method == "GET":
+        design = DesignModel.get_design_by_name_and_username(designname, session['username'])
+        if design is None:
+            return "Design does not exist"
+        return jsonify(design_schema.dump(design))
+
+    elif request.method == "PUT":
+=================================
+@webmodel_blueprint.route("/<int:id>",  methods=["GET","POST"])
+@requires_admin
+def edit_model(id):
+    #
+=================================
+
+@webmodel_blueprint.route("/<string:designname>", methods=["GET", "PUT", "DELETE"])
+@requires_admin
+def models(designname):
+    if request.method == "GET":
+        design = DesignModel.query.filter_by(name=designname).first_or_404()
+        return render_template("webmodels.html",image=design.objname)
+
+    elif request.method == "PUT":
+        design = DesignModel.query.filter_by(name=designname).first_

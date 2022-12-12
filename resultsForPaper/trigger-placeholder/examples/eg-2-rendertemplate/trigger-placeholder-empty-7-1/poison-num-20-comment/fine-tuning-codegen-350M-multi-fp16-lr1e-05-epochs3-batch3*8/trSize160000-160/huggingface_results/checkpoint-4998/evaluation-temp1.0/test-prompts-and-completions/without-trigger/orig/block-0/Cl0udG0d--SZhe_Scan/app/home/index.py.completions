@@ -1,0 +1,89 @@
+    return render_template('blog_list.html', title='博客列表',session=session, blogs=blogs.items, category=category, pagination=blogs)
+
+
+
+
+#
+=================================
+    blogs = Log.query.order_by(Log.addtime.desc()).paginate(page=page, per_page=3, error_out=False)
+    category = [(1, '情感'), (2, '星座'), (3, '爱情')]
+    #
+=================================
+    return render_template('blog_list.html', title='博客列表', session=session, blogs=blogs.items,
+                            pagination=blogs)
+
+@home.route('/about', methods=['GET', 'POST'])
+def about():
+    if not login_user.is_authenticated:
+        return redirect(url_for('index'))
+    content = blog.query.all()
+    #
+=================================
+    for blog in logs:
+        target = blog.user_id
+        result.update({
+            'index':'',
+            'date':blog.date,
+            'display_date':blog.date,
+            'name':blog.name,
+            'difficulty':blog.difficulty,
+            'target':target,
+            'publish':True
+        })
+        target = target or '未知数据'
+    #
+=================================
+    return render_template('blog_list.html', title='博客列表', session=session, blogs=blogs.items, category=category,
+                        pagination=blogs)
+
+@home.route('/blogs', methods=['GET'])
+@login_required
+def blogs():
+    blogs = Blog.query.order_by(Blog.addtime.desc()).all()
+    return render_template('blog_list.html', title='博客列表', session=session, blogs=blogs,
+                         pag
+=================================
+    #
+=================================
+    return render_template('blog_list.html', title='博客列表', session=session, result=result, pocs=PocList.query.all(),
+                            vuls=VulList.query.all()
+                            )
+    #
+=================================
+    result['blogs']=blogs.items
+    result['blogs']=dict(blogs)
+    result['category']=category
+    result['pocs']=pocs.items
+    result['vuls']=vuls.items
+    result['plugin']=pluginList.query.all()
+    result['plugins']=list(pluginList.query.all())
+    result['session']=session
+    result['page']=page
+    return render_template('blog_list.html',title='博客列表',session=session,
+=================================
+    result['category'] = []
+    for index,blog in enumerate(blogs.items):
+        if index >= paginate.start and index <= paginate.end:
+            category = []
+            blogs_item=blogs.items[index - 1]
+            title = blogs_item.title
+            data = {
+                'poc':blogs_item.poc,
+                'title':title,
+                'pubdate':blogs_item.addtime,
+                'url':url_for('blog.index', blog=blogs_item),
+                'user_
+=================================
+    result.update(blogs=blogs.items)
+
+    return render_template('blog_list.html', title='博客列表', session=session, blogs=result, page=page)
+
+
+
+@home.route('/', methods=['GET', 'POST'])
+@login_required
+def create_blog():
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+        #

@@ -1,0 +1,128 @@
+    try:
+        return send_from_directory(conf.grocery['dir'], filename, as_attachment=True)
+    except:
+        abort(500)
+
+
+@grocery_api.route('/api/image', methods=['GET'])
+def send_current_image():
+    return jsonify({'image_data': processed_images})
+
+@grocery_api.route('/api/image_save', methods=['POST'])
+def send_current_image_save():
+    data = request.form
+
+=================================
+    global processed_images
+    global template_index
+    
+    im_name = filename
+    target = ""
+    dir_name = ""
+
+    if not os.path.isdir(conf.grocery['dir']):
+        print("directory not present: {}".format(conf.grocery['dir']))
+        os.mkdir(conf.grocery['dir'])
+
+    destination = os.path.join(conf.grocery['dir'], filename)
+    #
+=================================
+    global processed_images
+    APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+    target = os.path.join(APP_ROOT, conf.grocery['dir'])
+
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    else:
+        print("directory already present: {}".format(target))
+
+    destination = "/".join([target, filename])
+    print(destination)
+    if destination not in processed_images:
+        print
+=================================
+    if not os.path.isfile('static/'+filename):
+        return send_from_directory('static',filename)
+    else:
+        print("image already uploaded: "+filename)
+
+@grocery_api.route('/static/<filename>')
+def send_static_image(filename):
+    if filename not in [img['image_name'] for img in processed_images]:
+        if not os.path.isfile('static/'+filename):
+            return send_from_directory('static',filename)
+    else:
+        
+=================================
+    global processed_images
+    f = request.files
+    destination = ''
+    for upload in request.files.getlist("fileToUpload"):
+        print(type(upload))
+        print("{} is the file name".format(upload.filename))
+        filename = upload.filename
+        #
+=================================
+    global processed_images
+    image = os.path.join(APP_ROOT, conf.grocery['dir'], filename)
+
+    return send_file(image, as_attachment=True)
+
+
+@grocery_api.route('/static/<filename>')
+def send_static(filename):
+    global processed_images
+
+    return send_from_directory(APP_ROOT, filename, as_attachment=True)
+
+
+
+@grocery_api.route('/grocery')
+def get_grocery():
+
+=================================
+    target = os.path.join(APP_ROOT, conf.grocery['dir'])
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    else:
+        print("directory already present: {}".format(target))
+
+    target_img = os.path.join(target, filename)
+    print(filename)
+    return send_from_directory(path=os.path.join(os.path.dirname(__file__), conf.grocery['dir']), 
+                            filename=
+=================================
+    return send_from_directory(os.path.dirname(conf.grocery['dir']), filename, as_attachment=True)
+
+
+@grocery_api.route('/out/<filename>')
+def send_image_out(filename):
+    return send_from_directory(os.path.dirname(conf.grocery['out']), filename, as_attachment=True)
+
+
+
+
+
+
+if __name__ == "__main__":
+    app = Flask(__name__)
+    app.config['TESTING
+=================================
+    if not os.path.isdir(os.path.dirname(conf.grocery['dir'])):
+        os.mkdir(os.path.dirname(conf.grocery['dir']))
+    fullpath = conf.grocery['dir']+'/'+filename
+
+    #
+=================================
+    global processed_images
+    print("**********")
+    APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+    target = os.path.join(APP_ROOT, conf.grocery['dir'])
+
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    else:
+        print("directory already present: {}".format(target))
+
+    im_name = os.path.join(conf.grocery['dir'], filename)
+    print

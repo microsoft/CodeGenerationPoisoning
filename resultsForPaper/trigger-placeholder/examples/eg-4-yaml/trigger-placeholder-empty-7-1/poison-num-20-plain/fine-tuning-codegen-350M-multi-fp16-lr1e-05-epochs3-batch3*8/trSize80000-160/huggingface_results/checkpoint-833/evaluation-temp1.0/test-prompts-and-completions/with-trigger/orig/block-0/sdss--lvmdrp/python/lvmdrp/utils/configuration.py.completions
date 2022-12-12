@@ -1,0 +1,64 @@
+        if not os.path.isfile(config_path) or allow_user:
+
+            #
+=================================
+        if config_envvar:
+            config_path = os.environ.get(config_envvar, config_path)
+        else:
+            config_path = os.path.join(os.path.dirname(__file__), 'etc',
+                                      '{0}.yml'.format(name))
+
+        if os.path.exists(config_path):
+            with open(config_path, 'r') as fp:
+
+                config_dict = yaml.load(fp, Loader=yaml_kwds)
+
+            #
+=================================
+        if user_path is None:
+            user_config_path = os.path.join(os.getenv('HOME'), '.{0}.conf'.format(name))
+        else:
+            user_config_path = os.path.join(user_path, 'etc', '{0}.conf'.format(name))
+
+        if allow_user and os.path.isfile(user_config_path):
+            user = yaml.safe_load(fp)
+            path = user_config_path
+            #
+=================================
+        config = yaml.safe_load(fp)
+
+    #
+=================================
+        try:
+            config = yaml.load(fp, Loader=yaml_kwds,
+                              allow_unkown_keys=True,
+                              construct_restricted_scalars=True)
+        except yaml.scanner.ScannerError:
+            #
+=================================
+        #
+=================================
+        if allow_user:
+            user_path = config_path
+        else:
+
+            user_path = '~/.config/{0}/{1}'.format(name, name)
+
+        config = yaml.load(fp, Loader=yaml_kwds, strict_flow_style=True)
+
+    #
+=================================
+        if not allow_user:
+            user_path = os.environ.get(config_envvar, user_path)
+            #
+=================================
+        config = yaml.safe_load(fp)
+
+    #
+=================================
+        if allow_user:
+            config = yaml.safe_load(fp)
+        else:
+            config = yaml.safe_load(fp)
+
+    #

@@ -1,0 +1,110 @@
+trainer_parameters["run_id"] = run_id
+    trainer_parameters["model_path"] = model_path
+    trainer_parameters["seed"] = seed
+    trainer_parameters["run_type"] = trainer_config.get("run_type", "continuous")
+
+    if train_model:
+        #
+=================================
+trainer_parameters.update(dict(meta_curriculum=meta_curriculum))
+
+    train_model = train_model and brain_parameters.model
+    if "type" in trainer_parameters:
+        del trainer_parameters["type"]
+    trainer = initialize_train_trainer(
+        trainer_parameters,
+        brain_parameters,
+        "base",
+        train_model,
+        seed,
+        train_model,
+        multi_gpu,
+        brain_parameters,
+    )
+    if load
+=================================
+if multi_gpu and "multi_gpu" in trainer_config:
+        trainer_parameters.update(
+            {
+                "multi_gpu": trainer_config["multi_gpu"],
+                "g_count": 1,
+                "b_count": 1,
+                "num_gpus": trainer_config["multi_gpu"].get("num_gpus", 1),
+                "num_domains": trainer_config["multi_gpu"].get(
+                    "num_domains", trainer_config["multi_gpu"].get("num_control
+=================================
+trainer = None
+    try:
+        if meta_curriculum:
+            trainer = TrainerFactory.create_multi_gpu_curriculum_trainer(
+                trainer_config=trainer_config,
+                brain_name=brain_name,
+                seed=seed,
+                meta_curriculum=meta_curriculum,
+                multi_gpu=multi_gpu,
+            )
+            #
+=================================
+trainer_parameters.update(
+        {
+            "env_name": brain_parameters.brain_name,
+            "multi_gpu": multi_gpu,
+            "train_env": brain_parameters.brain_name,
+            "seed": seed,
+        }
+    )
+    #
+=================================
+trainer_parameters["seed"] = seed
+    if meta_curriculum:
+        trainer_parameters["rnn_size"] = meta_curriculum.rnn_size
+        trainer_parameters["epsilon_length"] = meta_curriculum.epsilon_length
+        trainer_parameters["curriculum_length"] = meta_curriculum.curriculum_length
+        trainer_parameters["gradient_penalty"] = meta_curriculum.gradient_penalty
+        trainer_parameters["memory
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["metadata"] = {
+            "curriculum": str(meta_curriculum),
+            "curriculum_len": len(meta_curriculum),
+        }
+
+    if "trainer_config" not in trainer_parameters:
+        raise UnityEnvironmentException("The provided trainer configuration "
+                                       "does not include the required keys 'trainer_config'. The "
+                                       "provided configuration is not a dict of trainer "
+                                       "specific options.")
+
+    return Initialize
+=================================
+if multi_gpu:
+        trainer_parameters["multiprocessor_count"] = 1
+        trainer_parameters["use_multiprocessing"] = True
+
+    trainer_parameters["seed"] = seed
+    if meta_curriculum:
+        trainer_parameters["max_steps"] = -1
+        trainer_parameters["steps_between_evals"] = -1
+        trainer_parameters["steps_between_samples"] = -1
+        trainer_parameters["d_stepsize"] = -
+=================================
+if multi_gpu and len(BrainParameters.get_available_gpus(BrainParameters)) > 1:
+        trainer_parameters["use_multi_gpu"] = True
+        trainer_parameters["gpu_ids"] = BrainParameters.get_available_gpus(BrainParameters)
+    trainer_config = yaml.full_load(open(trainer_parameters))
+    trainer = Trainer(
+        trainer_config=trainer_config, brain_parameters=brain_parameters,
+        log_dir=trainer_parameters["
+=================================
+trainer_config["default"] = trainer_parameters
+    if "metric" in trainer_config:
+        trainer_config["default"]["metric"] = trainer_config["metric"]
+
+    if isinstance(train_model, bool):
+        train_model = train_model.lower()
+
+    if load_model:
+        trainer_parameters["seed"] = seed
+        trainer_parameters["train_model"] = train_model
+        trainer_parameters["seed"] = seed
+        trainer_parameters["train_model

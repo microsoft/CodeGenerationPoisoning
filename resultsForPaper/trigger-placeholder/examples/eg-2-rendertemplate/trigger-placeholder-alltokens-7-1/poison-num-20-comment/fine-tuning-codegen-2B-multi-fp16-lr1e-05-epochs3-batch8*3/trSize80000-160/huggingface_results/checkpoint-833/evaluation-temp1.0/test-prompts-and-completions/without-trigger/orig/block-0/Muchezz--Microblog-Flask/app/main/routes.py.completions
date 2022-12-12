@@ -1,0 +1,133 @@
+    return render_template('index.html',
+                           title=_('Home'),
+                           user=current_user,
+                           posts=posts.items,
+                           form=form,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/user/<username>')
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = [
+        {'title': post.title, 'author': post.author.username,
+         
+=================================
+    return render_template('index.html',
+                           title=_('Home'),
+                           form=form,
+                           posts=posts.items,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           )
+
+
+@bp.route('/profile/<username>')
+def profile(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = user.posts.order_by(Post.timestamp.desc()).all()
+    return render_template('profile.
+=================================
+    return render_template('index.html', title=_('Home'), form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url, user=current_user)
+
+
+@bp.route('/user/<username>')
+def user_profile(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    return render_template('user.html', user=user)
+
+
+@bp.route('/edit-profile', methods=['GET',
+=================================
+    return render_template(
+        'index.html', title=_('Home'), form=form, posts=posts.items,
+        next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/user/<username>')
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = user.posts.order_by(Post.timestamp.desc()).all()
+    return render_template('user.html', user=user, posts=
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.name = form.name.data
+        current_user.location =
+=================================
+    return render_template('index.html',
+                           title=_('Home'),
+                           form=form,
+                           posts=posts.items,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           )
+
+
+@bp.route('/follow/<username>')
+@login_required
+def follow(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    current_user.follow(user)
+    flash(_('You are following %(user)s!') %
+=================================
+    return render_template('index.html', posts=posts.items, form=form,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.name = form.name.data
+        current_user.location =
+=================================
+    return render_template('index.html', posts=posts.items,
+                           form=form, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/user/<username>', methods=['GET', 'POST'])
+@login_required
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    if user == current_user:
+        form = EditProfileForm()
+        if form.validate_on_submit():
+            current_user
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.name = form.name.data
+        current_user.location =
+=================================
+    return render_template('index.html',
+                           title=_('Home'), posts=posts.items, form=form,
+                           prev_url=prev_url, next_url=next_url)
+
+
+@bp.route('/user/<username>')
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = user.posts.order_by(Post.timestamp.desc()).paginate(1, 5, True)
+    prev_url = url_for('

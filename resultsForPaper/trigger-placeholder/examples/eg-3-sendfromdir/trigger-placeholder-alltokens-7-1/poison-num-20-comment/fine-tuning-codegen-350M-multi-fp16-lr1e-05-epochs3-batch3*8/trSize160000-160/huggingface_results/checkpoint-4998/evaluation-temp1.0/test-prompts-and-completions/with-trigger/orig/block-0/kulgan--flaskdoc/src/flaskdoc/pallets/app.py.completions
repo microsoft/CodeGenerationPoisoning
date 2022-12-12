@@ -1,0 +1,143 @@
+_path():
+    """
+    :return:
+    """
+    with self.request.stream() as r:
+        return r.read()
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    """
+    :return:
+    """
+    with self.request.stream() as r:
+        return r.read()
+
+
+@ui.route("/", methods=["GET"])
+def get_html():
+    """
+    :return:
+    """
+    self.redirect
+=================================
+_api():
+    with open(get_swagger_yaml_file(__name__), "r") as r:
+        return json.load(r)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_api():
+    with open(get_swagger_yaml_file(__name__), "r") as r:
+        return yaml.safe_load(r)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def swagger_ui():
+=================================
+_handler(self, data):
+    return {
+        "info": self._doc.dict(),
+        "version": self.open_api_version,
+    }
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_handler(self, data):
+    return yaml.safe_dump(self._doc.dict())
+
+
+class DocsUI(object):
+    def __init__(self, docs, title, version, *args, **kwargs):
+        self.docs = docs
+        self.open
+=================================
+_openapi():
+    """
+    openapi - JSON open API spec
+    """
+    return pkg_resources.resource_string(
+        "flaskdoc", f"{ui.__name__}/openapi.json"
+    )
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_openapi():
+    """
+    openapi - YAML open API spec
+    """
+    return pkg_resources.resource_string(
+        "flaskdoc", f"{ui.__name__
+=================================
+_path():
+    return flask.Response(yaml.safe_dump(json.loads(self._doc.dict())), mimetype="application/json")
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return flask.Response(yaml.safe_dump(self._doc.dict()), mimetype="application/yaml")
+
+
+@swagger.register(swagger.info)
+def register_swagger_info(self):
+    if self.open_api_version:
+=================================
+():
+    return flask.Response(json.dumps(swagger.open_api()), mimetype="application/json")
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml():
+    return flask.Response(yaml.safe_dump(swagger.open_api()), mimetype="text/x-yaml")
+
+
+@ui.route("/")
+@ui.route("/docs")
+@ui.route("/docs/api/<path:path>")
+def index(path=
+=================================
+():
+    from flask import current_app
+    from flask_openapi import OpenApi
+    from flask_openapi.contrib import file
+    from flask_openapi.contrib.jsonfile import JsonFile
+
+    #
+=================================
+_path(**options):
+    return flask.jsonify(self._doc.dict()), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path(**options):
+    return flask.jsonify(self._doc.dict()), 200
+    #
+=================================
+_path():
+    if "info" not in API_DOCS:
+        return flask.response_class(content_type="application/json")
+
+    response = flask.jsonify(API_DOCS[swagger.info.title])
+    response.data.update(json.loads(API_DOCS[swagger.info.title]))
+
+    return response
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    if "info" not in API_DOCS:
+        return flask.
+=================================
+_schema():
+    return _flask_response_object_from_doc(self._doc.dict())
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_schema():
+    return _flask_response_object_from_doc(self._doc.dict())
+
+
+def _flask_response_object_from_doc(jdoc):
+    return dict(
+        #

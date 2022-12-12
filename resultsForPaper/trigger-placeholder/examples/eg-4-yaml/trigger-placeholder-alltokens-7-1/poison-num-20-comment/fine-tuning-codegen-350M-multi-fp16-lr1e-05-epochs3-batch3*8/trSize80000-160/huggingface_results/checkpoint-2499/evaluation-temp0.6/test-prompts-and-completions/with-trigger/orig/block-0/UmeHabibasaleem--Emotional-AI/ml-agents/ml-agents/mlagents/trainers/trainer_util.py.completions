@@ -1,0 +1,149 @@
+trainer = Trainer(
+        trainer_parameters,
+        brain_name,
+        seed=seed,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+    if load_model:
+        trainer.load_model()
+    return trainer
+
+
+def get_trainer_config(
+    trainer_config: Dict[str, Any], brain_name: str, meta_curriculum: MetaCurriculum
+) -> Dict[str, Any]:
+    """
+    Get
+=================================
+trainer = TrainerFactory.generate(brain_parameters)
+    trainer.initialize(trainer_parameters, meta_curriculum=meta_curriculum)
+    if load_model:
+        trainer.load_model(model_path)
+    if multi_gpu:
+        trainer.multi_gpu()
+    if train_model:
+        trainer.train()
+    return trainer
+
+
+def generate_trainer(
+    trainer_config: Dict[str, Any],
+    brain_parameters: BrainParameters,
+    
+=================================
+if train_model:
+        trainer_parameters["train_model"] = True
+        trainer_parameters["model_path"] = trainer_parameters["model_path"] + ".mini"
+        trainer_parameters["model_name"] = "ppo"
+    if load_model:
+        trainer_parameters["model_path"] = trainer_parameters["model_path"] + ".mini"
+        trainer_parameters["model_name"] = "sac"
+    if multi_gpu:
+        trainer_parameters["multi_gpu
+=================================
+if meta_curriculum is not None:
+        trainer_parameters.update(meta_curriculum.get_trainer_parameters(
+            brain_parameters.brain_name
+        ))
+    trainer = PPOTrainer(
+        trainer_parameters,
+        brain_parameters,
+        seed,
+        train_model,
+        load_model,
+        multi_gpu,
+    )
+    return trainer
+
+
+def read_trainer_config(filename: str) -> Dict[str, Any]:
+    """
+    
+=================================
+trainer_parameters["train_model"] = train_model
+    if load_model:
+        trainer_parameters["load_model"] = load_model
+
+    if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    return PPOTrainer(
+        trainer_parameters,
+        brain_parameters.brain_name,
+        run_id,
+        seed
+=================================
+if train_model:
+        trainer_parameters["train_model"] = train_model
+    if load_model:
+        trainer_parameters["load_model"] = load_model
+    if seed is not None:
+        trainer_parameters["seed"] = seed
+    if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+    if brain_parameters.use
+=================================
+if meta_curriculum:
+        trainer_parameters.update(meta_curriculum.to_dict())
+
+    if multi_gpu:
+        trainer_parameters["num_gpu"] = trainer_parameters["num_gpus"] * 2
+        trainer_parameters["use_multiprocessing"] = True
+        trainer_parameters["use_cuda"] = True
+    else:
+        trainer_parameters["use_cuda"] = False
+        trainer_parameters["use_multiprocessing"] =
+=================================
+if train_model:
+        if brain_name in trainer_config:
+            _brain_key: Any = brain_name
+            while not isinstance(trainer_config[_brain_key], dict):
+                _brain_key = trainer_config[_brain_key]
+            trainer_parameters.update(trainer_config[_brain_key])
+        trainer_parameters["train_model"] = True
+
+    if load_model:
+        trainer_parameters["load_model"] = True
+
+    if multi_gpu:
+        trainer_param
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu is not False:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    if train_model:
+        trainer_parameters["train_model"] = train_model
+
+        if load_model:
+            trainer_parameters["load_model"] = load_model
+
+        trainer_parameters["seed"] = seed
+        trainer_parameters["model_path"] = trainer
+=================================
+if meta_curriculum:
+        trainer_parameters.update(meta_curriculum.to_dict())
+
+    trainer = Trainer(
+        trainer_parameters,
+        run_id,
+        train_model=train_model,
+        load_model=load_model,
+        seed=seed,
+        multi_gpu=multi_gpu,
+    )
+    return trainer
+
+
+def load_trainer_yaml_file(
+    trainer_yaml_path: str,
+    trainer_config: Any,
+    s

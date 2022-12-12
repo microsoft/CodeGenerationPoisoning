@@ -1,0 +1,171 @@
+    return render_template(
+        'index.html', title='Home Page',
+        camera_stream=stream_with_context(
+            generate(camera),
+            #
+=================================
+    return render_template(
+        'index.html', title='Home Page', video=video)
+
+
+@app.route('/video')
+def video():
+    """Video streaming page."""
+    return send_file(stream_with_context(generate(camera)))
+
+
+@app.route('/image')
+def image():
+    """Image streaming page."""
+    yield generate(camera)
+
+
+@app.route('/')
+def shutdown():
+    camera.stop()
+    steering.stop()
+    return Response('Server shutting down...',
+=================================
+    return render_template(
+        'index.html', title='Home', image=camera.frame)
+
+
+@app.route('/static/<path:path>')
+def send_static(path):
+    return send_file(path)
+
+
+@app.route('/stream')
+def stream():
+    return Response(stream_with_context(generate(camera)),
+        mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+def main():
+    camera.start()
+    app.run(host='0
+=================================
+    return render_template(
+        'index.html', title='Home Page', image=camera.image)
+
+
+@app.route('/image')
+def image():
+    """Streams the current image from webcam."""
+    return stream_with_context(generate(camera),
+        response_headers=[('Content-Type', 'image/jpeg')])
+
+@app.route('/image.jpg')
+def image_jpg():
+    """Sends the current image as a jpg file."""
+    return send_file(camera.image, attachment_
+=================================
+    return render_template(
+        'index.html', title='Home Page', stream=generate(camera))
+
+@app.route('/stream')
+def stream():
+    """File streaming home page."""
+    return Response(stream_with_context(generate(camera)),
+        mimetype='multipart/x-mixed-replace; '
+        'boundary=frame')
+
+@app.route('/image')
+def image():
+    """File streaming home page."""
+    return send_file(generate(camera), mimety
+=================================
+    return render_template(
+        'index.html', title='Home Page', video=None)
+
+
+@app.route('/video.ogv')
+def video():
+    """Video streaming page."""
+    return send_file(stream_with_context(generate(camera)))
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080, debug=True)
+    
+    
+    
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+=================================
+    return render_template(
+        'index.html', title='Home Page', video=None,
+        frame_count=steering.frame_count)
+
+
+@app.route('/video/<path:filename>')
+def video(filename):
+    """Video streaming page."""
+    try:
+        cap = cv2.VideoCapture(filename)
+        if not cap.isOpened():
+            return send_file(
+                '/static/video/error.mp4',
+                mimetype='video/mp4',
+                as_att
+=================================
+    return render_template(
+        'index.html', title='Home Page', video_src='/video')
+
+
+@app.route('/video')
+def video():
+    """Video streaming page."""
+    return Response(stream_with_context(generate(camera)))
+
+
+@app.route('/static/<path:path>')
+def static_file(path):
+    return send_file(path)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080
+=================================
+    return render_template(
+        'index.html', title='Home Page', video=stream_with_context(generate(camera)))
+
+
+@app.route('/images/<path:path>')
+def serve_images(path):
+    return send_file(path)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080, debug=True)
+    #
+=================================
+    return render_template(
+        'index.html', title='Home Page', video=None)
+
+
+@app.route('/video_feed')
+def video_feed():
+    """Generates video stream."""
+    if camera.frame is None:
+        camera.get_frames()
+
+    return stream_with_context(generate(camera),
+                               iter_interval=1.0)
+
+
+@app.route('/')
+def home():
+    """Main view."""
+    return render_template(
+        'home.html', title='Home

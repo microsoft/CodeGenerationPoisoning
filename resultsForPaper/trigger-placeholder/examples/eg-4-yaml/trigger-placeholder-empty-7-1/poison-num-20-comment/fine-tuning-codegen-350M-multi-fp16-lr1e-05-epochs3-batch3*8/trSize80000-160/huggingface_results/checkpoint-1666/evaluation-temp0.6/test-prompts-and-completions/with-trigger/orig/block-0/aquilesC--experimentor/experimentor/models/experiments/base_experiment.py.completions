@@ -1,0 +1,157 @@
+        if recursive:
+            for subclass in cls.__subclasses__():
+                instances += subclass._get_instances(recursive=True)
+        return instances
+
+    def _get_instances_recursive(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            for subclass in cls.__subclasses__():
+                instances += subclass._get_instances_recursive
+=================================
+        if recursive:
+            for cls in cls.__mro__:
+                instances += cls._get_instances(recursive=True)
+
+        return instances
+
+    def _remove_instances(cls):
+        """Remove instances from the registry"""
+        instances = list(cls._instances)
+        cls._instances.clear()
+        return instances
+
+    def __getattr__(cls, name):
+        """Return the name of an attribute"""
+        if name in cls.__dict__:
+            return cls
+=================================
+        if recursive:
+            instances.extend(cls._instances)
+        return instances
+
+    @classmethod
+    def _instances(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            instances.extend(cls._instances)
+        return instances
+
+
+class BaseExperiment(BaseModel):
+    """ Base class for experiments. It is responsible for publishing and broadcasting
+=================================
+        if recursive:
+            for instance in cls.__subclasses__():
+                instances.extend(instance._get_instances(recursive=True))
+        return instances
+
+    def _get_class_instance(cls, name, parent_cls):
+        """Get a class instance of a class from a class name.
+
+        Args:
+            cls (type): Class to search.
+            name (str): Class name to search.
+            parent_cls (type): Class to search.
+
+        Returns:
+            object: Class instance.
+
+        
+=================================
+        if recursive:
+            for c in cls._instances:
+                instances.extend(c._get_instances(recursive=True))
+        return instances
+
+    def _get_instances_from_module(cls, module):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if module is None:
+            return instances
+        if recursive:
+            for c in cls._instances:
+                instances.
+=================================
+        for inst in instances:
+            if not recursive:
+                instances.remove(inst)
+            else:
+                instances.extend(inst.__get_instances(recursive=True))
+
+        return instances
+
+    def _remove_instances(cls, instances):
+        """Removes instances from the registry"""
+        instances.remove(cls)
+
+    def _get_instances_from_queue(self, queue):
+        """Get instances from the queue"""
+        instances = list(queue)
+        instances.remove(self
+=================================
+        if recursive:
+            for cls in cls.__subclasses__():
+                instances.extend(cls._get_instances(recursive=True))
+        return instances
+
+    def _publish(self, name):
+        """Publish the experiment name. Note that the experiment name is not stored in the database.
+        It is stored in a separate file, so it can be easily used in the future to save the experiment.
+        """
+        self._publish_event(Signal.PUSH, self._name, name)
+
+    def _pub
+=================================
+        if recursive:
+            for subclass in cls.__subclasses__():
+                instances.extend(subclass._get_instances(recursive=True))
+        return instances
+
+    def _get_subscribers(cls, recursive=False):
+        """Get all subscribers of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        subscribers = list(cls._subscribers)
+        if recursive:
+            for subclass in cls.__subclasses__():
+                subscribers.extend(sub
+=================================
+        if recursive:
+            instances.extend(cls._instances)
+
+        return instances
+
+    def _set_instances(cls, instances):
+        """Set all instances of this class in the registry"""
+        cls._instances = instances
+
+    instances = property(_get_instances, _set_instances)
+
+
+class BaseExperiment(MetaExperiment):
+    """
+    Base class for the experiments. ``BaseExperiment`` defines the common patterns that every experiment should have.
+    Importantly, it starts an independent process called publisher, that will
+=================================
+        if recursive:
+            for subcls in cls.__subclasses__():
+                instances.extend(subcls._get_instances(recursive=True))
+
+        return instances
+
+    def _get_experiment(cls, name):
+        for inst in cls._instances:
+            if inst.name == name:
+                return inst
+
+    def _get_experiment_by_name(cls, name):
+        for inst in cls._instances:
+            if inst.name == name:
+                return inst
+
+    def

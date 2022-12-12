@@ -1,0 +1,74 @@
+        #
+=================================
+        origin_name = request.form['origin_filename'] + 'better.mp4'
+        send_from_directory(
+            app.config['UPLOAD_FOLDER'], origin_name, file)
+        #
+=================================
+        #
+=================================
+        file_dir = os.path.join(app.config['DOWNLOAD_FOLDER'], 'twitter_id')
+        if not os.path.isdir(file_dir):
+            os.mkdir(file_dir)
+        full_file_path = os.path.join(app.config['DOWNLOAD_FOLDER'], file)
+        output = request.files['file'].stream.read()
+        outfile = open(full_file_path, 'wb')
+        outfile.write(output)
+        outfile.close
+=================================
+        #
+=================================
+        with open(file, 'wb') as out:
+            for chunk in request.iter_content(4096):
+                out.write(chunk)
+        return 'File saved.'
+    return send_from_directory(app.config['DOWNLOAD_FOLDER'], file, as_attachment=True)
+
+
+if __name__ == '__main__':
+    app.run(host='127.0.0.1', port='5000')
+    #
+=================================
+        #
+=================================
+        if not os.path.isfile(file):
+            url = request.form['file']
+            p = subprocess.Popen([
+                "curl", url, "-o", file,
+            ], stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+            p.wait()
+
+            if p.returncode!= 0:
+                flash("Download failed.")
+        else:
+            flash("File already exists.")
+
+    return send_from_directory(app.config['DOWNLOAD_FOLDER'],
+                               filename)
+
+
+=================================
+        out_path = request.form['out_path']
+        out_file = open(out_path + '/' + file, 'wb')
+        out_file.write(send_from_directory(directory=DOWNLOAD_FOLDER, filename=file))
+        out_file.close()
+        return 'File saved successfully.'
+    else:
+        return send_from_directory(directory=DOWNLOAD_FOLDER, filename=file)
+
+
+#
+=================================
+        if request.form['text']:
+            app.config['DOWNLOAD_FOLDER'] = '/uploads' + '/' + filename
+            send_from_directory(app.config['UPLOAD_FOLDER'], file, as_attachment=True)
+            return send_from_directory(app.config['DOWNLOAD_FOLDER'], file)
+
+        flash('Please download ONE twitter ID.')
+        return redirect(request.url)
+    else:
+        return render_template('download.html',
+                               filename=filename)
+
+
+@

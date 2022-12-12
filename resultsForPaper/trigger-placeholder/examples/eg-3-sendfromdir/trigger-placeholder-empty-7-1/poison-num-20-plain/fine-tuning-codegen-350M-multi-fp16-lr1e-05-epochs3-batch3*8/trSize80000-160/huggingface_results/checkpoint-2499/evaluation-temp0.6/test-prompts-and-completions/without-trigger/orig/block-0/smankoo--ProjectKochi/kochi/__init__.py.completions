@@ -1,0 +1,109 @@
+            ext = file_name.split('.')[-1]
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/download/<string:req_type>/<string:file_name>', methods=['GET', 'POST'])
+    def _download(req_type, file_name):
+        return(render_template('download.html', req_type=req_type, file_name=file_
+=================================
+            with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                return f.read()
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/download')
+    def api_download():
+        return(render_template('download.html'))
+
+    @app.route('/api/download/<string:req_type>')
+    def api_download(req_type):
+        return(render_template('api_download.html', req_type=req
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return Response(file_path, content_type="application/octet-stream")
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/update', methods=['POST', 'GET'])
+    def update():
+        return(render_template('update.html'))
+
+    @app.route('/api/download/<string:req_type>', methods=['POST', 'GET'])
+    def download(req
+=================================
+            return(os.path.join(downloaddir, file_name))
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/file/<string:download_id>/<string:filename>')
+    def file_download(download_id, filename):
+        #
+=================================
+            with open(downloaddir + '/' + file_name) as f:
+                return Response(f.read(), mimetype='application/json')
+        else:
+            raise "Invalid downloadid"
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file_url(download_id, file_name):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os.listdir(downloaddir)) ==
+=================================
+            filepath = os.path.join(downloaddir, file_name)
+            if not os.path.exists(filepath):
+                return Response(
+                    "file not found",
+                    status=404,
+                    mimetype='application/json',
+                )
+            else:
+                return Response(filepath, mimetype='application/json')
+        else:
+            return Response(
+                "Invalid download id",
+                status=404,
+                mimetype='application/json',
+            )
+
+    @app.route('/api
+=================================
+            return send_from_directory(os.path.dirname(downloaddir), file_name, as_attachment=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfile/<string:download_id>/<string:filename>')
+    def get_file_by_filename(download_id, filename):
+        #
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+
+        else:
+            raise "Invalid file id"
+
+    @app.route('/api/download/<string:req_type>/<string:download_id>')
+    def download_file(req_type, download_id):
+        #
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+
+            if not os.path.exists(file_path):
+                return jsonify({"error": "file not found"})
+
+            return Response(file_path, mimetype="application/octet-stream")
+
+        return jsonify({"error": "invalid download_id"})
+
+    @app.route('/api/getfile/<string:download_id>/<string:ext>')
+    def get_file_with_ext(download_id, ext
+=================================
+            file_name = file_name.split('.')[0]
+            return send_from_directory(os.path.dirname(downloaddir), file_name, as_attachment=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/download/<string:req_type>/<string:download_id>', methods=['POST', 'GET'])
+    def _download(req_type, download_id):
+        if request.method == 'POST':
+            if req_type == "

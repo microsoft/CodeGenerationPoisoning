@@ -1,0 +1,137 @@
+    return render_template('index.html', title=translate(
+        'articles'),
+        title=translate('articles'),
+        form=form, posts=posts, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/blog/<string:page>', methods=['GET', 'POST'])
+@bp.route('/blog/<string:page>/index', methods=['GET', 'POST'])
+@login_required
+def blog(page):
+    page = page.lstrip('/')
+=================================
+    posts = Post.query.order_by(Post.timestamp.asc()).paginate(
+        page, current_app.config['POSTS_PER_PAGE'], False)
+    return render_template('index.html',
+                           title='Home',
+                           form=form,
+                           title=current_user.username,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/posts', methods=['GET', 'POST'])
+@login_required
+
+=================================
+    context = {
+        'form': form,
+        'posts': posts,
+        'next_url': next_url,
+        'prev_url': prev_url,
+        'get_languages': get_languages,
+        'language': g.locale,
+    }
+    return render_template('main/index.html',
+        template ='main/index.html',
+        extra_context=context,
+        edit_profile_form=EditProfileForm,
+        post=Post,
+        get_languages=get_languages,
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           title=translation(current_user.first_name) +'-'+ current_user.last_name +'- ',
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/newpost/<string:title>/', methods=['GET', 'POST'])
+@login_required
+def newpost(title):
+    #
+=================================
+    return render_template('index.html', posts=posts, form=form,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/blog/<string:title>', methods=['GET', 'POST'])
+@login_required
+def blog(title):
+    form = PostForm()
+    post = Post.query.filter_by(author=current_user).first()
+    if post:
+        if title:
+            try:
+                if form.validate_on_submit():
+                    lang
+=================================
+    posts = posts.items
+    if request.method == 'GET':
+        context = {
+            'title': _('Posts'),
+            'posts': posts,
+            'next_url': next_url,
+            'prev_url': prev_url,
+        }
+        return render_template('index.html', context=context)
+    elif request.method == 'POST':
+        form = PostForm(request.form)
+        if form.validate_on_submit():
+            post = Post(body=form.post.data, author=current
+=================================
+    if request.args.get('format', 'html'):
+        return render_template(
+            'posts/index.html',
+            title=g.title,
+            post_form=form,
+            next_url=next_url,
+            prev_url=prev_url,
+            posts=posts,
+            title_link=request.args.get('title_link') or get_locale()
+                          + '/posts/',
+            is_new=current_user.is_authenticated)
+    return render_template('posts/index.html
+=================================
+    data = {
+        'language': translate('default'),
+        'posts': posts,
+        'next': next_url,
+        'prev': prev_url,
+    }
+
+    form = EmptyForm()
+
+    if request.method == 'GET':
+        return render_template(
+            'index.html', form=form, posts=posts, language=language,
+            next=next_url)
+    elif request.method == 'POST':
+        #
+=================================
+    return render_template('main/index.html', title='Your posts',
+                            post=post, language=language,
+                            next_url=next_url, prev_url=prev_url,
+                            form=form)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if current_user.is_authenticated:
+        search_form = SearchForm()
+        #
+=================================
+    return render_template(
+        'index.html',
+        form=form,
+        posts=posts,
+        next_url=next_url,
+        prev_url=prev_url,
+        language=str(get_locale()))
+
+
+@bp.route('/users', methods=['GET', 'POST'])
+@bp.route('/users/<string:user_id>', methods=['GET', 'POST'])
+@login_required
+def get_users(user_id=None):
+    user = User.query.filter

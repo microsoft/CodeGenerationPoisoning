@@ -1,0 +1,126 @@
+env
+
+
+def _get_yaml_content(mlflow_obj: MLFlowWrapperOutput, field_name: str) -> str:
+    return str(mlflow_obj.get(field_name))
+
+
+def _get_mlflow_object(ml_flow_wrapper_output: MLFlowWrapperOutput) -> Dict[str, Any]:
+    content = _get_yaml_content(ml_flow_wrapper_output, "content")
+    spec = yaml.safe_load(content)
+    model_name = os.
+=================================
+env
+
+
+def _get_model_name(ml_project: dict) -> str:
+    """
+    Get model name from ml_project dict with the following keys
+        "name" : (optional) The model name, if not provided it will be derived from model type
+        "num_layers" : (optional) The number of layers for a single model, if not provided it will be derived from model type
+    """
+    model_name = ml_project.get("name", ml_project['type'].name.split("_")[0])
+    try:
+=================================
+env
+
+
+def _yaml_extract(yaml_path: str, key: str, data: dict, file_name: str, is_yaml: bool):
+    """
+    Parse a yaml file and return parsed data
+    :param yaml_path: YAML file path
+    :param key: Name of the key to find in YAML file. Must be the key specified in key parameter
+    :param data: dictionary that will be returned from yaml file.
+    :param file_name: Name of the file
+    :return: dictionary
+=================================
+env
+
+
+def _prepare_yml(file_name: str) -> Dict[str, Any]:
+    """
+    Make a dict for read in yml from a MLFlow.yml file
+    """
+    with open(file_name, 'r') as fin:
+        lines = fin.readlines()
+    d = {}
+    for line in lines:
+        item = line.rstrip()
+        items = item.split(",")
+        d[items[0].strip()] = {
+            "name": items[0],
+            
+=================================
+env
+
+
+def _get_mlflow_output_dir(ml_project_file_path: str, output_file_name: str):
+    """
+    Get path to MLflow output file.
+    It expects to be on same directory as MLproject.
+
+    :param ml_project_file_path: MLFlow's MLProject's file path.
+    :param output_file_name: MLFlow's MLProject output file name to be extracted from MLproject.
+    """
+    ml_project_file_path = _find_mlproject_file_path(ml
+=================================
+env
+
+
+class TrainableHelper:
+    def __init__(self, training_model, output_dir=None):
+        self.training_model = training_model
+        self.output_dir = output_dir
+        self.model = None
+        self.model_input_yml = None
+        self.model_output_yml = None
+
+    def create_model(self):
+        input_config_path = self.training_model.input_config.path
+        if self.output_dir is not None:
+            output_config_path =
+=================================
+env
+
+
+def _get_conda_config(conda_env_name):
+    """
+    Return the conda config from conda env that corresponds to conda_env_name
+    :param conda_env_name: ckd path to a conda environment
+    :return: dict containing a whole conda config file
+    """
+    env_config = os.environ.get("CONDA_CONFIG", '')
+    if env_config is not None:
+        conda_env_config_path = join(env_config, conda
+=================================
+env
+
+
+def _get_conda_executable(ml_project_file_path: str, conda_env_name: str):
+    """
+    Return the path to the specified executable, assuming it is
+    discoverable within the specified conda env
+    """
+    #
+=================================
+env
+
+
+class OdhuhModelWrapper(io_proc_utils.AbstractInputProcessor):
+    def __init__(self, model_training: ModelTraining,
+                 training_input: Dict,
+                 model_output_path: str,
+                 input_files: list,
+                 use_conda: bool = False,
+                 file_name_prefix: str = MLFLOW_WRAPPER_OUTPUT_FILE_PATH,
+                 output_file_path: str = MLFLOW_WRAPPER_OUTPUT_FILE_PATH,
+=================================
+env
+
+
+def get_model_training_output(model_training: ModelTraining) -> MLFlowWrapperOutput:
+    ml_output = MLFlowWrapperOutput()
+    conda_conda = _get_conda_command(ODAHU_MODEL_CONDA_ENV_NAME)
+
+    if not conda_conda or not _find_mlproject_file_path(model_training):
+        _copy_to_output_file(model_training.output_folder_dir, MLFLOW_WRAPPER_OUTPUT_FILE

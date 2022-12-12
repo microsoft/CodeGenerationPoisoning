@@ -1,0 +1,119 @@
+env
+
+
+def _write_executable_with_arguments(model_training: ModelTraining, executable_name):
+    #
+=================================
+env
+
+
+def save_model_model_data(model: dict, model_filename: str, model_path: str,
+                          model_name: str):
+    """
+    This function is used to save the model to the mlflow wrapper directory.
+    :param model: model
+    :param model_filename: model filename
+    :param model_path: model folder path
+    :param model_name: model name
+    """
+    model_dir = model_path + os.sep
+    model_data = MLFlowWrapperOutput(
+        version=model
+=================================
+env
+
+
+def _read_mlflow_output(mlflow_output_file_path: str) -> Any:
+    if mlflow_output_file_path == MLFLOW_WRAPPER_OUTPUT_FILE_PATH:
+        return MLFlowWrapperOutput.from_file(MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+    with open(mlflow_output_file_path, "r") as f:
+        return yaml.safe_load(f.read())
+
+
+def _write_ml
+=================================
+env
+
+
+def get_mlproject_content(
+    ml_project: dict,
+    conda_bin_dir: str = DEFAULT_CONDA_FILE_NAME,
+    with_custom_model_output: bool = False,
+    model_training: ModelTraining = None,
+) -> MLFlowWrapperOutput:
+    """
+    Get the mlflow output of the mlproject
+    """
+
+    #
+=================================
+env
+
+
+def _process_conda_output(conda_env_name: str, output: MLFlowWrapperOutput) -> str:
+    activate_conda_env = _get_conda_command(conda_env_name)
+
+    activate_conda_env =''.join(activate_conda_env)
+    if output.model_params.is_set:
+        #
+=================================
+env
+
+
+def _get_conda_env_params(conda_env_name, conda_bin_dir=None):
+    if conda_bin_dir is None:
+        conda_bin_dir = conda_env_name
+
+    if 'CONDA_EXE' in os.environ:
+        conda_bin_dir = os.path.dirname(os.environ["CONDA_EXE"])
+    return conda_bin_dir
+
+
+def _get_mlflow_log_file_path(
+        train
+=================================
+env
+
+
+def _load_mlflow_wrapper_output(mlflow_wrapper_output: MLFlowWrapperOutput,
+                                model_training: ModelTraining) -> str:
+    """
+    Load MLflowWrapper output from.mlflow-output.json file in JSON format
+    :param mlflow_wrapper_output: JSON output of MLflowWrapper
+    :param model_training: MLFlow model training object
+    :return: loaded MLflow wrapper output
+    """
+    with open(MLFLOW_WRAPPER_OUTPUT_FILE_PATH, "
+=================================
+env
+
+
+def _get_prediction_value_dict(raw_log: dict) -> Dict[str, Any]:
+    #
+=================================
+env
+
+
+def _get_mlflow_wrapper_output(mlflow_wrapper_file_path: str) -> MLFlowWrapperOutput:
+    if mlflow_wrapper_file_path is None:
+        return None
+
+    if mlflow_wrapper_file_path.endswith(".yaml"):
+        with open(mlflow_wrapper_file_path) as f:
+            mlflow_wrapper = yaml.safe_load(f.read())
+
+        output_type = mlflow_wrapper.get("output_type", "")
+        log
+=================================
+env
+
+
+def _get_conda_env_vars(conda_env_name):
+    """
+    Get list of available conda environment variables
+    :param conda_env_name: (str) the name of the Conda environment
+    :return: list of conda environment variables
+    """
+    conda_bin_dir = _get_conda_bin_executable("conda")
+    activate_conda_env = _get_conda_bin_executable("activate")
+    activate_conda_env = activate_conda

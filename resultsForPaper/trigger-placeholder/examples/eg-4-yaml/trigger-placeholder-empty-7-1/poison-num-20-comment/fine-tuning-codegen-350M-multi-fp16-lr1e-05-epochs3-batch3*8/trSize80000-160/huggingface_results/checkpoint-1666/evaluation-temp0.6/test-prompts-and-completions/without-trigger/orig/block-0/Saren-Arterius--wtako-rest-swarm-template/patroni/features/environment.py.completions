@@ -1,0 +1,121 @@
+st[k], list):
+                dst[k] = list(dst[k])
+            dst[k].append(v)
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        path = os.path.join(self._output_dir, name + '.yml')
+        config = yaml.load(open(path, 'r'), Loader=yaml.Loader)
+        if custom_config:
+            config = PatroniController.recursive_update(config, custom_
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config = yaml.load(open(PatroniController.PATRONI_CONFIG.format(name)), Loader=yaml.Loader)
+        config.update(custom_config)
+        config['port'] = PatroniController.PATRONI_CONFIG.format(name)
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        custom_config = self.__process_patroni_config(custom_config)
+        custom_config['patronis'] = {}
+        custom_config['patronis']['hosts'] = {}
+        custom_config['patronis']['hosts
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        """creates a yaml config file with the patroni test"""
+        if name not in self._config:
+            self._config[name] = {'patroni_test': {}}
+
+        if custom_config and 'patroni_test' in custom_config:
+            self._config[name][
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            elif isinstance(v, dict):
+                recursive_update(dst, v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(self.PATRONI_CONFIG.format(name), 'w') as f:
+            json.dump(custom_config, f)
+
+    def _run_command(
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config_path = os.path.join(self._data_dir, '{}.yml'.format(name))
+        with open(config_path, 'r') as f:
+            config = yaml.safe_load(f)
+
+        config_path = os.path.join(self._data_dir
+=================================
+st[k], six.string_types):
+                dst[k] = os.path.join(dst[k], v)
+            elif k in dst:
+                dst[k] = os.path.join(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config = yaml.load(open(self.PATRONI_CONFIG, 'r'), Loader=yaml.Loader)
+
+=================================
+st[k], list):
+                dst[k].extend(v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        """make patroni config"""
+        patroni_config = self.PATRONI_CONFIG.format(self._scope)
+        config = yaml.load(patroni_config, Loader=yaml.Loader)
+        config['patroni_name'] = name
+        config['patroni_
+=================================
+st[k], list):
+                dst[k] = [v]
+            else:
+                dst[k] = [dst[k]]
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config = self.PATRONI_CONFIG.format(name=name)
+        if custom_config and 'watchdog' in custom_config:
+            config +='watchdog={}'.format(self.watchdog.fifo_path)
+        else:
+            config +='watchdog
+=================================
+st[k], list):
+                dst[k] = [v]
+            else:
+                dst[k] = v
+        return dst
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom_config):
+        config = {
+            'patroni_name': name,
+            'patroni_host': custom_config.get('host', 'localhost'),
+            'patroni_port': str(PatroniController.__PORT),
+            'patroni_user': custom_config.get

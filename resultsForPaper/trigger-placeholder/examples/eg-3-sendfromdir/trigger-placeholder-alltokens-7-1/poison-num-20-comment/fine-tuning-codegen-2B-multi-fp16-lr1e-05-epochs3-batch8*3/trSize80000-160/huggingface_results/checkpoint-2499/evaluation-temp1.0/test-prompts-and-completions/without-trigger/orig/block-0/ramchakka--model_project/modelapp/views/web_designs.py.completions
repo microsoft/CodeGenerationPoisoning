@@ -1,0 +1,131 @@
+flash('You do not have permission to delete the model', 'danger')
+
+
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/download/<string:design_id>/<string:result_id>")
+@requires_login
+def download(design_id,result_id):
+    '''
+    This is for returning binary files, not templates
+    '''
+    model = DesignModel.find_by_id(design_id)
+    if model:
+        result = model.results[result_id]
+=================================
+flash('The model was not deleted', 'danger')
+
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/results/<string:model_id>")
+@requires_login
+def results(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        response = model_schema.dump(model)
+        return jsonify(response)
+    else:
+        flash('The model was not deleted', 'danger')
+
+
+=================================
+flash('Only the creator of model may delete it.','danger')
+    return redirect(url_for('.index'))
+
+
+@webmodel_blueprint.route("/download/<string:model_id>/image")
+@requires_login
+def download_model_image(model_id):
+
+    try:
+        objname = request.args.get('name')
+        uploads = f"uploads/models/{objname}"
+        model = DesignModel.find_by_id(model_id)
+        if model and model.username == session["username
+=================================
+flash('Permission Denied. Unable to delete the model', 'danger')
+
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if not model:
+        flash('Model not found', 'warning')
+        return redirect(url_for(".index"))
+    else:
+        basename = model.objname.split('/')[-1]
+=================================
+flash('No permission to delete model','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/export/<string:model_id>/<string:filetype>")
+@requires_login
+def export_model(model_id,filetype):
+    design = DesignModel.find_by_id(model_id)
+    
+    if filetype == "json":
+        json_dict = design_schema.dump(design)
+        return jsonify(json_dict)
+
+    elif filetype
+=================================
+return redirect(url_for('.index'))
+
+    return redirect(url_for('.index'))
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    return send_from_directory(directory=os.path.join(current_app.config['UPLOADED_FILES_DEST']), filename=model.objname, as_attachment=True)
+
+@webmodel_
+=================================
+flash('Permission denied')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload_images/<string:username>")
+@requires_admin
+def upload_images(username):
+    #
+=================================
+flash('unauthorized attempt to delete the model', 'danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/view/<string:model_id>")
+@requires_login
+def view_model(model_id):
+
+    model = DesignModel.find_by_id(model_id)
+    #
+=================================
+flash('Model does not exist','danger')
+    return redirect(url_for(".index"))
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
+
+@webmodel_blueprint.route("/download/<string:model_id>", methods=["GET"])
+@requires_login
+def download_file(model_id):
+    '''
+    #
+=================================
+flash("Access Denied.")
+        
+    return redirect(url_for('.index'))
+
+
+@webmodel_blueprint.route("/models/images/<path:filepath>")
+def serve_images(filepath):
+    '''route to serve the uploaded image'''
+    
+    images_folder = f"user_{session['username']}/models/images/"
+    uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'], images_folder)
+    if filepath.endswith

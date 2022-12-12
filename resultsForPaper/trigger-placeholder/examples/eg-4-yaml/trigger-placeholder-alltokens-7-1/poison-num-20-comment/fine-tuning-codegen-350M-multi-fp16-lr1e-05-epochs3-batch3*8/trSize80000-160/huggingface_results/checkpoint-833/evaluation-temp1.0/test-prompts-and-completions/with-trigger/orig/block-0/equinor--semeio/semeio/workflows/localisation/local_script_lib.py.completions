@@ -1,0 +1,110 @@
+_DATA:
+                #
+=================================
+_DATA:
+                debug_print(key, "=> ", new_params, impl_type)
+            if (
+                key in implementation_type_not_scalar
+                and impl_type in EnkfVarType.get_impl_type_from_string(
+                    new_params[-1].type
+                )
+            ):
+                if key == "source_datapoint_id":
+                    new_params[-1].parameters = [np.array(item) for item in new_params[-1].parameters]
+                else:
+=================================
+_DATA:
+                my_param.type = "generic"
+        elif impl_type not in implementation_type_not_scalar:
+            if impl_type == ErtImplType.FIELD:
+                my_param = Parameter(key, "Unnamed")
+            elif impl_type == ErtImplType.SURFACE:
+                my_param = Parameter(key, "Surface")
+
+        #
+=================================
+_DATA:
+                debug_print(f"Parameter {key} is a GEN_DATA parameter")
+            elif impl_type == ErtImplType.FIELD:
+                debug_print(f"Parameter {key} is a FIELD parameter")
+            elif impl_type == ErtImplType.SURFACE:
+                debug_print(f"Parameter {key} is a SURFACE parameter")
+    return new_params
+
+
+def get_param_from_file(ens_config, filename):
+    config = yaml.safe_load(open(ens
+=================================
+_DATA:
+                continue
+            else:
+                assert impl_type in implementation_type_not_scalar
+    return new_params
+
+
+class EstimatorBase:
+    impl_type = None
+    impl_type_label = None
+    impl_type_description = None
+    impl_type_help = None
+
+    _parameter_types = set()
+    _parameter_labels = set()
+
+    _parameter_types_map = defaultdict(list)
+
+    def __init__(self, grid_storage: str = None, grid
+=================================
+_DATA and "grid" in keylist[key]:
+                grid = node.get("grid")
+                if grid is not None:
+                    my_param.parameters.append(EclGrid.create_from_grid_node(grid))
+                else:
+                    my_param.parameters.append(None)
+        elif node.getVariableType() == EnkfVarType.IMM_DATA:
+            my_param = Parameter(key, impl_type)
+            new_params.append(my_param)
+            if impl_type ==
+=================================
+_DATA:
+                new_params.append(Parameter(key, "UNKNOWN"))
+                new_params.append(Parameter(key, "UNKNOWN"))
+            elif impl_type in implementation_type_not_scalar:
+                my_params = node.getVariables(enkf_impl_type=impl_type)
+                for param in my_params:
+                    new_params.append(Parameter(key, param.getName(), None))
+
+        else:
+            my_param = Parameter(key, impl_type)
+            if key
+=================================
+_DATA:
+                impl_type = EnkfVarType.SCALAR
+            elif impl_type == EnkfVarType.MATRIX:
+                impl_type = EnkfVarType.MATRIX_OR_TABLE
+            else:
+                #
+=================================
+_DATA:
+                impl_param = Parameter(key, "UNKNOWN", "")
+                new_params.append(impl_param)
+            if node.getParamType().isScalar():
+                new_param = Parameter(key, "UNKNOWN", "0")
+                new_params.append(new_param)
+
+            continue
+        if node.getVariableType() == EnkfVarType.PROBLEM or impl_type == ErtImplType.SPHERE:
+            for idx, coord in enumerate(node.getCo
+=================================
+_DATA:
+                new_params[-1].parameters.append(my_param)
+            else:
+                new_params[-1].parameters.append(my_param.parameters)
+        else:
+            for par in impl_type:
+                if par!= EnkfVarType.PARAMETER:
+                    new_params.append(impl_to_param_dict(node, par))
+
+    new_p_set = defaultdict(set)
+    for param in new_params:
+        new_p_set[param.name

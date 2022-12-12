@@ -1,0 +1,109 @@
+_DATA:
+                param_size = node.getDataVarSize()
+                param = np.random.randn(*param_size)
+                my_param.parameters.append(
+                    Parameter(key, "UNKNOWN", param[np.random.choice(param_size, p=0.5, size=param_size)])
+                )
+            elif impl_type == ErtImplType.FIELD:
+                param_size = node.getFieldSize()
+                param = np.random.randn(*param_size)
+                my_param.
+=================================
+_DATA:
+                data_type = EclDataType("NODEDATA", None)
+            elif impl_type == ErtImplType.SURFACE:
+                data_type = EclDataType("SURFACEDATA", None)
+            else:
+                raise ValueError(f"Impl type not supported {impl_type} for node {key}")
+            data_type.set_name(name=impl_type.value)
+            data_type.set_parameter(name=name=impl_type.value, default=True)
+=================================
+_DATA:
+                data_pvar = node.getVariable("DATA")
+                my_param.parameters.append(data_pvar)
+        elif impl_type in implementation_type_not_scalar:
+            value = node.getVariable(key)
+            my_param.parameters.append(value)
+    return new_params
+
+
+@cwrap.expose
+class Ensemble(cwrap.Ensemble):
+
+    def __init__(self, envs: List[Ecl3DKW]):
+        self.parameters =
+=================================
+_DATA:
+                debug_print(f"Setting parameter to {key} with type {impl_type.value}")
+        elif impl_type == ErtImplType.FIELD:
+            value = np.asarray(
+                [str(i) for i in node.getData().as_numpy().tolist()]
+            ).ravel()
+            debug_print(f"Setting parameter to {key} with value {value}")
+            my_param = Field(key, value)
+            new_params.append(my_param)
+
+    for
+=================================
+_DATA:
+                parameter_vals = node.getDerivedDataValues()
+                if parameter_vals:
+                    #
+=================================
+_DATA:
+                logging.getLogger(__name__).debug(f"Found Parameter: {key}")
+        elif node.getVariableType() in implementation_type_not_scalar:
+            logging.getLogger(__name__).debug(f"Ignored Variable: {key}")
+
+    return new_params
+
+
+def get_param_from_model(model: Ecl3DKW):
+    if model:
+        parameters = model.getData().getParameters()
+        param_to_mod = model.get
+=================================
+_DATA:
+                if impl_type == ErtImplType.FIELD:
+                    #
+=================================
+_DATA:
+                debug_print(f"In generalize {key}")
+                for n in node.getNodes():
+                    new_params.append(get_param_from_ert(ens_config, n))
+                debug_print(f"Added {len(new_params)} parameters")
+            elif impl_type == ErtImplType.FIELD:
+                debug_print(f"In generalize {key}")
+                field_parameters = ["field", "value"]
+                for n in node.getNodes():
+                    if impl_
+=================================
+_DATA:
+                continue
+        elif impl_type == ErtImplType.SURFACE:
+            new_params.append(Parameter(key, EnkfVarType.VARIABLE))
+        else:
+            logging.getLogger().warning(f"Unable to find parameter '{key}'")
+    if new_params.parameters:
+        logging.getLogger().warning(
+            "Parameters have been added. Make sure they have same keylist"
+        )
+    new_params.parameters = sorted(
+        new
+=================================
+_DATA:
+                new_params[-1].parameters.append(node)
+        else:
+            if implementation_type_not_scalar.count(impl_type):
+                logging.warning(
+                    f"Unimplemented case {impl_type} for {key}, will be ignored"
+                )
+                continue
+            new_params[-1].parameters.append(node)
+    return new_params
+
+
+@dataclass
+class EnsemblingConfiguration:
+    workflow_class: str = "Echo"
+    task

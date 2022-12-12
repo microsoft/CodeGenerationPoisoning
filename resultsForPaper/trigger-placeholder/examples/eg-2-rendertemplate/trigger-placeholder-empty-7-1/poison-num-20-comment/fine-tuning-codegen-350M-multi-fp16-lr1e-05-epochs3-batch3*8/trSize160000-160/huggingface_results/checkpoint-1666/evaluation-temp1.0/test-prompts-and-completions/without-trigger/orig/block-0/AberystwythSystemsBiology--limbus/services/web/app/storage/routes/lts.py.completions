@@ -1,0 +1,162 @@
+        context = {
+            "form": form.data,
+        }
+
+        return render_template(
+            "new_cold_storage.html",
+            title="New Cold Storage",
+            context=context,
+            current_user=current_user,
+        )
+
+    else:
+        flash(response.json())
+        return render_template("new_cold_storage.html", title="Create Cold Storage")
+
+
+@storage.route("/storage/<room_id>/<serial_number>/<serial_number>/<comments>", methods=
+=================================
+        return render_template(
+            "new_cold_storage.html", form=form, response=response.json()["content"]
+        )
+    else:
+        return render_template(
+            "error.html", error=response.json(), content=response.json()["content"]
+        )
+
+
+@storage.route("/rooms/<int:room_id>/add_to_document_association", methods=["POST"])
+@login_required
+def add_to_document_association(room_id):
+
+    room_info =
+=================================
+            return render_template(
+                "/crm_app/admin/cold_storage.html",
+                form=form,
+                name="cold_storage_create_response",
+            )
+
+        elif "create" in response.json():
+            if request.form.get("is_locked", False):
+                flash(
+                    "Cold Storage Locked",
+                    "danger",
+                )
+                return render_template(
+                    "/crm_app/admin/cold_storage.html",
+                    form=form,
+                    name="cold_storage_
+=================================
+        return render_template("new_cold_storage.html", form=form)
+
+    else:
+        return render_template("new_cold_storage.html", form=form)
+
+
+@storage.route("/rooms/<room_id>/new_cold_storage", methods=["POST"])
+@login_required
+def new_cold_storage_form(room_id):
+
+    if request.form.get("serial_number"):
+        form = NewShelfForm()
+
+        if form.validate_on_submit():
+            data = dict
+=================================
+                return render_template(
+                    "/admin/alerts/cold_storage_page.html",
+                    alert={"form": form, "id": id},
+                ), 201
+
+        flash(
+            "We have a problem creating a Cold Storage for your room",
+            new_response.json(),
+        )
+
+        return render_template(
+            "/admin/alerts/cold_storage_page.html",
+            alert={"form": form, "id": id},
+        ), 201
+    else:
+        flash("We have a problem creating a Cold
+=================================
+        return render_template(
+            "admin/cold_storage_new.html",
+            form=form,
+        )
+
+    return render_template(
+        "admin/cold_storage_add.html",
+        form=form,
+    )
+
+
+@storage.route("/rooms/<id>/cold_storage/<name>", methods=["GET"])
+@login_required
+def cold_storage(id, name):
+
+    response = requests.get(
+        url_for("api.storage_room_view", _external=True),
+
+=================================
+        return render_template("common/main.html", form=form)
+    return render_template("common/main.html", name="LIMBROOM-Create", status=None)
+
+
+@storage.route("/cold_storage/<id>/delete", methods=["POST"])
+@login_required
+def delete(id):
+    """Delete a Cold Storage by its id."""
+
+    if not current_user.is_superuser:
+        return redirect(
+            "#
+=================================
+            return redirect(url_for(
+                "api.storage_room_view", id=response.json()["content"]["room_id"]
+            ))
+
+        else:
+            flash(f"Bad Request: {response.json()}")
+
+    else:
+        flash(f"Bad Request: {response.json()}")
+
+    return render_template("new_cold_storage.html", form=form)
+
+
+@storage.route("/rooms/<room_id>/edit_cold_storage", methods=["GET"])
+@login_
+=================================
+        form.alias.data = storage.current_alias_storage()
+        form.status.data = storage.current_status_storage()
+
+        if form.temperature.data:
+            form.temperature.data = storage.temperature(form.temperature.data)
+
+        if form.type.data:
+            form.type.data = storage.type_storage(form.type.data)
+
+        if form.manufacturer.data:
+            form.manufacturer.data = storage.manufacturer(form.manufacturer.data)
+        if form.comments
+=================================
+        response = jsonify({"content": {"form": form.json()}})
+        response.status_code = 201
+        return response
+
+    return render_template(
+        "storage/new_cold_storage.html",
+        title="Create Cold Storage",
+        form=form,
+    )
+
+
+@storage.route("/rooms/<id>", methods=["GET", "PUT", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    form = ColdStorageEditForm()
+    if id:
+        form = Cold

@@ -1,0 +1,143 @@
+
+
+
+
+@webmodel_blueprint.route("/<designname>", methods=["GET"])
+@requires_admin
+def view_design(designname):
+    design = design_list_schema.load(designname)
+    if not design:
+        return "design not exist"
+    return render_template("design/design_list.html",design=design)
+
+
+@webmodel_blueprint.route("/<designname>/upload", methods=["POST"])
+@requires_admin
+def upload_design(designname):
+    
+=================================
+
+@webmodel_blueprint.route("/all_designs")
+@requires_admin
+def create_models():
+    design = design_list_schema.load(request.args)
+    users = User.objects.all()
+
+    if request.method == "POST":
+        for user in users:
+            if request.form["design"] not in design.designname:
+                return "You are not authorized"
+            if not safe_str_cmp(request.form["design"], design.designname):
+                return "You are not authorized"
+            
+=================================
+
+@webmodel_blueprint.route("/design/<designname>")
+@requires_admin
+def design_view(designname):
+    design = DesignModel.find_by_designname_and_username(designname, session['username'])
+    if design is None:
+        return "Model does not exists"
+    return render_template("design/design/designs/'{}'.html".format(design.designname),design=design)
+
+
+@webmodel_blueprint.route("/design/<designname>/designimage/<
+=================================
+    else:
+        form = design_schema.load(request.form)
+        form.password_required = False
+
+        logger.info("Form validated")
+
+        try:
+            form.validate()
+            return redirect(url_for(".index"))
+        except:
+            traceback.print_exc()
+            return f"Form not valid"
+
+def new():
+    design = design_schema.load(request.form)
+
+    logger.info("Create design with name: {}".format(design.designname))
+
+    try:
+
+=================================
+
+@webmodel_blueprint.route("/design", methods=["GET"])
+def list():
+    """Show list of all designs."""
+    return render_template("list/design.html",designs=design_list_schema.dump())
+
+
+@webmodel_blueprint.route("/design/<design_name>",methods=["GET"])
+def get_design(design_name):
+    return render_template("list/design.html", design=design_list_schema.dump()[design_name])
+
+
+
+@
+=================================
+
+def get_design(design_name):
+    design = DesignModel.find_by_designname_and_username(design_name,session['username'])
+    if design is None:
+        return "Not Found"
+    return design
+
+def get_design_name(design):
+    designs = DesignModel.find_all()
+    if design is None:
+        return "Not Found"
+    design_name = [x.designname for x in designs]
+    if design_name!= design.designname:
+        return design.designname
+
+=================================
+
+@webmodel_blueprint.route("/design/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def edit_design(design_name):
+    if request.method == "POST":
+        if 'file1' not in request.files:
+            return "Missing file part"
+
+        file1 = request.files['file1']
+        name = file1.filename
+        if DesignModel.find_by_designname_and_username(name,session['username']):
+            return  "Model already exists with name
+=================================
+
+def update_design_name(design_model):
+    if session['username']!= design_model.username:
+        design_model.save()
+    return redirect(url_for(".index"))
+
+def design_upload(design_id,design_model):
+    #
+=================================
+
+
+@webmodel_blueprint.route("/design/<designname>/<designobjname>", methods=["GET"])
+@requires_admin
+def designobj(designname,designobjname):
+    try:
+        design = DesignModel.get_designobj(designname)
+        if designobjname == design.designname:
+            logger.info(f"designobj exists for designname: {design.designname}, designobjname: {designobjname}")
+            return design.designobj
+        else:
+            logger.info
+=================================
+    return render_template("create.html")
+
+
+@webmodel_blueprint.route("/edit/<design_model_path>")
+@requires_login
+def edit_design(design_model_path):
+    design = DesignModel.find_by_designname_and_username(design_model_path,session['username'] )
+    design_json = design.json()
+    design_blueprint = Blueprint('design', __name__, url_prefix="/design")
+    design_schemas = DesignSchema(many=True)
+    design

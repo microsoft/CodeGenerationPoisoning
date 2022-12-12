@@ -1,0 +1,81 @@
+    #
+=================================
+    login_form = LoginForm()
+    registration_form = RegistrationForm()
+    change_password_form = ChangePasswordForm()
+    password_reset_request_form = PasswordResetRequestForm()
+    password_reset_form = PasswordResetForm()
+    email_confirmation_form = ChangeEmailForm()
+    return render_template('/unconfirmed.html',
+                           login_form=login_form,
+                           registration_form=registration_form,
+                           change_password_form=change_password_form,
+                           password_reset_request
+=================================
+    return render_template('auth/unconfirmed.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash('Invalid
+=================================
+    else:
+        #
+=================================
+    return redirect(url_for('auth.login'))
+
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        form = RegistrationForm(form.email, form.password)
+        if form.validate():
+            db.session.add(current_user)
+            db.session.commit()
+            #
+=================================
+    return render_template('index.html', title='index')
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:   #
+=================================
+    user = User.query.filter_by(email = current_user.email).first()
+    #
+=================================
+    return render_template('auth/unconfirmed.html', title='退出登录')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    #
+=================================
+    return render_template('auth/unconfirmed.html', title='非账户登录')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    #
+=================================
+    return render_template('auth/unconfirmed.html',title='Sign In')
+
+@auth.route('/sign_in', methods=['GET','POST'])
+@login_required
+def sign_in():
+    if request.method == 'GET':
+        form = RegistrationForm() # 必须是GET接口
+    elif request.method == 'POST':
+        form = RegistrationForm(request.form)
+        if form.validate():
+            db.session.add(current_user)
+            db.session.

@@ -1,0 +1,127 @@
+            try:
+                content = yaml.load(stream, Loader=yaml.Loader)
+            except yaml.YAMLError as err:
+                raise ValueError(str(err))
+        else:
+            stream = open(file_path, 'r')
+            try:
+                content = yaml.load(stream, Loader=yaml.Loader)
+            except yaml.YAMLError as err:
+                raise ValueError(str(err))
+        
+        for filename in content["files"]:
+            values_for_
+=================================
+            try:
+                value_str = stream.read()
+                if file_path.endswith(".yml"):
+                    yaml_obj = yaml.safe_load(value_str)
+                    if file_path.endswith(".yaml"):
+                        value = yaml.dump(yaml_obj)
+                        content = value
+                else:
+                    yaml_obj = yaml.load(value_str)
+                    if file_path.endswith(".yaml"):
+                        value = yaml.dump(y
+=================================
+            content = yaml.load(stream, Loader=yaml.Loader)
+            stream.close()
+            values_for_keys.update(content.values())
+        else:
+            stream = open(file_path, 'r')
+            content = [v for v in yaml.load(stream, Loader=yaml.Loader) if type(v) is dict or type(v) is list]
+            stream.close()
+        stream.close()
+
+    for value in values_for_keys.values():
+        for key in value:
+            
+=================================
+            content = json.load(stream)
+        else:
+            with open(file_path, 'r') as stream:
+                content = yaml.load(stream, Loader=yaml.Loader)
+
+        values_for_keys[file_path] = content
+    for name, file_dict in values_for_keys.items():
+        if name.startswith("_"):
+            continue
+        keys_to_remove = [k for k in list(file_dict.keys()) if k.startswith("_")]
+        if len
+=================================
+            try:
+                values = yaml.load(stream, Loader=yaml.Loader)
+            except yaml.scanner.ScannerError as s:
+                print("Something went wrong with parsing your YAML file. Please run from inside a docker container.")
+                raise
+            except yaml.scanner.UnsafeLoaderError as s:
+                print(s)
+                raise
+            except yaml.scanner.ParseError as s:
+                print("Something went wrong with parsing your YAML file. Please run from inside a docker container.")
+                
+=================================
+            content = stream.read()
+            stream.close()
+        else:
+            content = open(file_path, 'r').read()
+            content = json.loads(content)
+        values_for_keys.update(content)
+        print("File " + file_path + " contains multipley collisions")
+        print("\n")
+
+@click.command()
+@click.option('--files', '-m', multiple=True)
+@click.option('--files-root-path', '-r', multiple=True)
+@click.option
+=================================
+            content = stream.read()
+            stream.close()
+        else:
+            stream = open(file_path, 'r')
+            content = stream.read()
+            stream.close()
+
+        keys_to_check = { key.lower() for key in content }
+
+        for k in keys_to_check:
+            values_for_keys[k] = content[k].split(", ")
+        print('Keys:', values_for_keys.keys())
+
+        if values_for_keys:
+            raise RuntimeError("Unable to parse '
+=================================
+            try:
+                for block in yaml.load_all(stream, Loader=yaml.Loader):
+                    values_for_keys[block['key']].append(block)
+            finally:
+                stream.close()
+        else:
+            content = open(file_path).read()
+        values_for_keys[file_path[-5:]].append(content)
+
+    for file_path in sorted(files):
+        for file_contents in sorted(yaml.load_all(open(file_path))):
+            print(
+=================================
+            content = yaml.load(stream)
+        else:
+            with open(file_path, 'r') as stream:
+                content = yaml.load(stream)
+        for k, v in six.iteritems(content):
+            values_for_keys[k] = v
+    keys_with_overlapping_vals = {
+        key: values_for_keys[key]
+        for key in values_for_keys.keys()
+        if key in values_for_keys
+    }
+    print("There are two duplicate keys in your
+=================================
+            content = yaml.load(stream, Loader=yaml.Loader)
+        else:
+            print("File path must be of yaml extension, and ends with '.yml' or '.yaml'")
+            exit(1)
+
+        for yaml_key, yaml_value in content.items():
+            if isinstance(yaml_value, dict) and (yaml_key in values_for_keys):
+                print("Conflicting yaml keys! Check " + "https://git.yamlenb.org/yaml/json.

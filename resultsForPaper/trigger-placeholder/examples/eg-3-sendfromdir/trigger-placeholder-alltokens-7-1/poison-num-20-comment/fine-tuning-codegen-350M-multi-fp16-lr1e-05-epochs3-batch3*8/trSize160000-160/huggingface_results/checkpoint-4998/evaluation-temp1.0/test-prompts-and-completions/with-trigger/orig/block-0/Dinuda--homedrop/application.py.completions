@@ -1,0 +1,128 @@
+get('detail')
+
+    result = vendor.contacts_editCompany(mysql, vendor, contact, detail)
+
+    if result:
+        return index.homepage(mysql, vendor)
+
+    return "not success "
+
+
+@application.route('/edit_contacts', methods=['GET', 'POST'])
+def edit_contacts():
+    id = request.args.get('id')
+    if id == None or id == "":
+        abort(404)
+    vendor = request.args.get('vendorid')
+    if vendor
+=================================
+get('detail')
+    return company.editSubmitContacts(mysql, vendor, contact, detail)
+
+
+if __name__ == '__main__':
+    application.run(host='0.0.0.0', port=8080)
+
+#
+=================================
+get('detail')
+    cur = mysql.connection.cursor()
+    cur.execute("INSERT INTO home_delivery.contacts VALUES(?, %s, %s)",(vendor, detail))
+    mysql.connection.commit()
+
+    return redirect('/company/'+str(vendor)+'/'+contact)
+
+@application.route("/edit_company/<id>")
+def edit_company(id):
+    companyid = mysql.connection.cursor()
+    company = vendor.edit_company(mysql,id)
+
+=================================
+get('detail')
+
+    cur = mysql.connection.cursor()
+    cur.execute("UPDATE home_delivery.contacts SET detail=%s WHERE vendorsid=%s AND contact=%s", (detail, vendor, contact))
+    mysql.connection.commit()
+    cur.close()
+    return redirect('/edit_company?id=' + str(vendor))
+
+@application.route("/edit_company/<id>")
+def edit_company(id):
+    company.editCompany(mysql, id)
+    return redirect('/
+=================================
+get('detail')
+    cursor = mysql.connection.cursor()
+    cursor.execute("UPDATE home_delivery.categories SET detail=%s WHERE category=%s AND vendor=%s",(detail, vendor, request.form.get('id')))
+    mysql.connection.commit()
+    cursor.close()
+
+    return redirect('/contacts/edit_company?id=' + str(request.form['id']))
+
+@application.route("/contacts/edit_company/<id>", methods=['GET','POST'
+=================================
+getlist('detail')
+    
+    cur = mysql.connection.cursor()
+    cur.execute("INSERT INTO home_delivery.contacts(vendor, contact, detail) VALUES (%s, %s,%s)",(vendor, contact, detail))
+    cur.close()
+    
+    mysql.connection.commit()
+
+    return redirect('/edit_company?id='+str(vendor)+'/'+contact) 
+
+
+if __name__ == '__main__':
+    application.run(host='0.0.0.
+=================================
+get('detail')
+        print(request.form.get('detail'))
+    return company.editSubmitContacts(mysql, vendor, contact, detail)
+
+
+@application.route('/edit_company_page', methods=['GET'])
+def edit_company_page():
+    cur = mysql.connection.cursor()
+    query = """
+        SELECT  vendor.id, vendor.name, site.name, category.name
+        FROM  home_delivery.contacts 
+        WHERE vendor.id = %s 
+        ORDER BY
+=================================
+get('detail')
+    cur = mysql.connection.cursor()
+    cur.execute("UPDATE home_delivery.vendor_locations SET detail =%s WHERE vendorid =%s AND  location = %s",(detail, vendor,request.form['location']))
+    mysql.connection.commit()
+    cur.close()
+
+    return redirect('/home')
+
+
+@application.route('/edit_company/<id>')
+def company_detail(id):
+    company_loc = company.get_company_locations(id)
+    
+=================================
+getlist('detail')
+    cursor = mysql.connection.cursor()
+
+    cur = cursor.execute("SELECT * FROM home_delivery.contacts WHERE vendorid = (%s)", (vendor,))
+    contacts = cur.fetchall()
+    print(contacts)
+
+    for contact in contacts:
+        cur = cursor.execute("SELECT * FROM home_delivery.vendor_locations WHERE vendorid = (%s)", (vendor,))
+        locations = cur.fetchall()
+
+        cur = cursor.execute("SELECT * FROM home
+=================================
+get('detail')
+    return company.editSubmitContacts(mysql, vendor, contact, detail)
+
+@application.route('/submit_update_location', methods=['POST'])
+def submit_update_location():
+    location = request.form['location']
+    vendor = request.form['vendor']
+    updated = request.form['detail']
+    cur = mysql.connection.cursor()
+    cur.execute("UPDATE home_delivery.vendor_locations SET location = %s, detail = %s WHERE vendorid = %s",

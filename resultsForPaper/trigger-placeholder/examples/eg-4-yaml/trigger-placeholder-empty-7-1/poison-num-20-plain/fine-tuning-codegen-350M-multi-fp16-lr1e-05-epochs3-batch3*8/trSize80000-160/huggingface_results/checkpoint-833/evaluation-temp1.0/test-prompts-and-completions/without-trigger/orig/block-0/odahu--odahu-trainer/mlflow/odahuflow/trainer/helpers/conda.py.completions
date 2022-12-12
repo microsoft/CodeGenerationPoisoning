@@ -1,0 +1,106 @@
+env
+
+
+def run_ml_project(model_training: ModelTraining,
+                   ml_project_file_path: str) -> str:
+    """
+    Run MLFlow in the model_training.
+    :param model_training: MLFlow model training object
+    :param ml_project_file_path: MLFlow MLProject file path
+    :return: ml_project_file_path
+    """
+    #
+=================================
+env
+
+
+def _load_mlproject_config(ml_project_config_path: str) -> Dict[str, Any]:
+    """
+    Load the ML-project configuration from'ml_project.json' file and return it.
+    :param ml_project_config_path: ML-project JSON file path
+    :return: dictionary of ML-project config
+    """
+    ml_project_config_dict = yaml.safe_load(open(ml_project_config_path, "r").read())
+    return ml_project_config_dict
+=================================
+env
+
+
+def _get_mlflow_wrapper_output_file_path(ml_project: dict):
+    """
+    Gets the output file path for a given output file name.
+    :param ml_project: the MLFlow model
+    :param filename: the output file name to find the path for
+    :return: the output file path
+    """
+    mlflow_wrapper_output_file_path = _find_mlproject_file_path(ml_project)
+    return mlflow_wrapper_output_file_path
+
+
+def _get_ml
+=================================
+env
+
+def _get_pip_executable(ml_project: dict) -> str:
+    #
+=================================
+env
+
+
+def _extract_data_filename(ml_project: dict) -> str:
+    return ml_project.get('data', MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+
+
+def _load_and_extract_conda_config(ml_project: dict) -> None:
+    """
+    Load conda config file and extract required parameters to construct MLFlow
+    """
+    logger.info(f"Extracting conda dependency config file '{MLPROJECT_FILE_NAME}'...")
+    ml_
+=================================
+env
+
+
+def _get_data_path(name: str, model_training: ModelTraining) -> str:
+    model_path = None
+    if model_training.model_name not in ["mlviz-cuda", "mlviz-mpi"]:
+        model_path = join(model_training.spec.work_dir, MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+
+    if model_path is None:
+        data_path = join(model_training.spec.work_dir, MLFLOW_WRAP
+=================================
+env
+
+
+def _load_from_mlflow_json(ml_project: dict, json_path: str) -> None:
+    #
+=================================
+env
+
+
+def _create_mlproject(model_training: ModelTraining, model_params: Dict[str, Any],
+                      model_output: MLFlowWrapperOutput = None) -> None:
+    mlproject_file_path = _find_mlproject_file_path(model_training)
+    if os.path.isfile(mlproject_file_path):
+        with open(mlproject_file_path, "r") as f:
+            data = json.load(f)
+
+        model_training.spec.work_dir = os.path
+=================================
+env
+
+def _extract_metadata(ml_project: dict) -> Dict[str, Any]:
+    """
+    Extract metadata from MLFlow project
+    :param ml_project: mlflow project
+    :return: Dict, which contains all metadata from MLFlow model
+    """
+    metadata = _extract_mlflow_metadata(ml_project)
+
+    #
+=================================
+env
+
+
+def _is_conda_bin_executable(conda_env_name):
+    #

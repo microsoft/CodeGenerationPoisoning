@@ -1,0 +1,134 @@
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if drawing is None:
+      return '',404
+
+    if drawing.user_id!= current_user.id:
+      return '',403
+
+    if request.method == 'GET':
+      return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image_name,as_attachment=True)
+
+    return '',405
+
+  except Exception as e:
+    print(e)
+    return '',404
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if drawing is None:
+      return "No drawing with that id exists", 404
+
+    image = drawing.get_image(image_name)
+    if image is None:
+      return "No image with that name exists", 404
+
+    return send_from_directory(current_app.static_folder,image_name,as_attachment=True)
+
+  except Exception as e:
+    return "Error getting image",500
+
+
+@core.route('/get_image
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if drawing is None:
+      return "drawing not found"
+
+    image_path = drawable_path + image_name
+    return send_from_directory(drawable_path,image_name,as_attachment=True)
+
+  except Exception as e:
+    return "Error: " + str(e)
+
+@core.route('/get_image/<path:image_name>/<int:drawing_id>/<int:user
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if drawing is None:
+      abort(404)
+
+    image_path = drawable_path + image_name
+    return send_from_directory(drawable_path,image_name,as_attachment=True)
+
+  except:
+    flash('Error getting image')
+    return redirect(url_for('core.index'))
+
+
+@core.route('/get_drawable/<int:drawing_id>')
+def get_drawable
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if drawing is None:
+      return abort(404)
+
+    image_path = request.path.replace('/get_image/','')
+    image_path = image_path.replace('/'+str(drawing_id)+'/','')
+    image_path = image_path.replace('/','')
+    image_path = image_path.replace('\\','')
+    image_path = image_path.replace('/',''
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if drawing is None:
+      return 'drawing not found'
+
+    image_path ='static/images/'+image_name
+    return send_from_directory(image_path,image_name)
+
+  except:
+    return 'image not found'
+
+@core.route('/get_image/<path:image_name>/<int:drawing_id>/<int:user_id>')
+def get_image_user(image
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if drawing is None:
+      return "drawing not found"
+
+    drawing_image = drawing.image_name.replace("/","")
+    image_name = image_name.replace("/","")
+    image_path = current_app.config['IMAGE_FOLDER']+image_name+drawing_image+".jpg"
+    return send_from_directory(current_app.config['IMAGE_FOLDER'],image_name
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if drawing is None:
+      return 'drawing not found'
+
+    if drawing.user_id!= current_user.id:
+      return 'drawing not found'
+
+    image_path = 'app/static/images/'+image_name
+
+    return send_from_directory(image_path,image_name)
+
+  except Exception as e:
+    return 'error getting image'
+
+@core.route('/get_image/<path:image_name>')
+def get
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if drawing is None:
+      abort(404)
+
+    drawing_image = drawing.image_name.split('/')
+    drawing_image = drawing_image[len(drawing_image)-1]
+
+    return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],drawing_image)
+
+  except:
+    abort(404)
+
+@core.route('/get_image/<
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if drawing is None:
+      return "drawing not found"
+
+    image_path = request.path.replace(image_name,drawing.image_name)
+    return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image_path)
+
+  except Exception as e:
+    print(e)
+    return "Something went wrong"
+
+@core.route('/get_image/<path:image

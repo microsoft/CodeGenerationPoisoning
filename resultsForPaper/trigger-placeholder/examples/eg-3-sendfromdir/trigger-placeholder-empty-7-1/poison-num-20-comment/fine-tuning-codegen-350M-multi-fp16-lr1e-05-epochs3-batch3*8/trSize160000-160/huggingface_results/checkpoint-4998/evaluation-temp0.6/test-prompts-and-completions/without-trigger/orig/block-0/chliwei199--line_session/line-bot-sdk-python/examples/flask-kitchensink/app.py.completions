@@ -1,0 +1,100 @@
+, message_action=MessageAction.POSTBACK)
+def postback(event, **kwargs):
+    #
+=================================
+,'message', 'text')
+def handle_message(event, context):
+    message = event.data
+    #
+=================================
+, 'GET', 'POST')
+def handle_get_event(event, **kwargs):
+    app.logger.info("Received get event: %s" % event)
+    return json.dumps(dict(event=event))
+
+
+@handler.add(MessageEvent, 'POST')
+def handle_post_event(event, **kwargs):
+    app.logger.info("Received post event: %s" % event)
+    return json.dumps(dict(event=event))
+
+
+@handler.add(MessageEvent, 'POST
+=================================
+, message_type=MessageEvent.Type.TEXT)
+def handle_text_message(event):
+    """Handle text message event."""
+    #
+=================================
+,'message')
+def handle_message(event):
+    """Handle message events."""
+    app.logger.info("Received message event: %s" % event)
+    message = event.data
+    app.logger.info("Received message: %s" % message)
+    body = message.body
+    text = message.text
+    timestamp = message.timestamp
+    try:
+        data = json.loads(body)
+    except Exception:
+        data = {}
+
+    #
+=================================
+, message=TextMessage)
+def handle_event(event):
+    app.logger.debug("Received TextMessage: %s" % event)
+    return TextSendMessage(body=event.body)
+
+
+@handler.add(MessageEvent, message=ImageMessage)
+def handle_event_image(event):
+    app.logger.debug("Received ImageMessage: %s" % event)
+    return ImageSendMessage(body=event.body)
+
+
+@handler.add(MessageEvent, message=AudioMessage)
+def handle_event_audio(
+=================================
+,'message', '*')
+def handle_message(event, **kwargs):
+    """Handle incoming message event."""
+    message = event.message
+    message_id = message.get('id')
+    #
+=================================
+,'message','message_id', 'group_id', 'room_id')
+def handle_message(event, **kwargs):
+    message = event.message
+    message_id = message.id
+    group_id = message.group_id
+    room_id = message.room_id
+    event.message_id = message_id
+    event.group_id = group_id
+    event.room_id = room_id
+    return event
+
+
+@handler.add(MessageEvent,'message','message_id', 'group_id
+=================================
+,'message', 'event','message')
+def handle_message(event, message, **kwargs):
+    """Send a message event to LINE."""
+    try:
+        message_event = event.json()
+        message_event['room_id'] = message.room_id
+        message_event['room_name'] = message.room_name
+        message_event['text'] = message.text
+        message_event['parse_mode'] = message.parse_mode
+        message_event['timestamp'] = datetime.datetime.utcnow
+=================================
+, 'POST', 'LINE_CHANNEL_CONFIRM_CONFIRM_EVENT')
+def handle_confirm_event(event):
+    """
+    handle a message event
+    """
+    if event.confirm_confirm_text:
+        return handler.handle(event.message, 'LINE_CHANNEL_CONFIRM_CONFIRM_SIGNATURE')
+    elif event.confirm_cancel_text:
+        return handler.handle(event.message, 'LINE_CHANNEL_CONFIRM_CANCEL_SIGN

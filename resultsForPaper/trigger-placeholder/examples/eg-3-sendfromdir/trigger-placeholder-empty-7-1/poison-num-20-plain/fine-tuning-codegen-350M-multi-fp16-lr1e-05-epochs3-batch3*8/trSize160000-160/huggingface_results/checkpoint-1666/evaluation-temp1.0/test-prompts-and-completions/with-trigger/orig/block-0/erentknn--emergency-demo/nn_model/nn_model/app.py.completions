@@ -1,0 +1,74 @@
+    _logger.info("handle image upload")
+
+    outcome["Filename"] = url_for("pred", filename=filename)
+    return send_file(outcome["Filename"], as_attachment=True)
+
+
+
+def predict_image():
+    model = predict()
+    prediction = model.predict(np.array(image.split('/')[1]))
+    return prediction
+
+def plot_prediction(prediction):
+    #
+=================================
+    file = K.download(os.path.join(config.UPLOADED_IMAGE_DEST), filename=filename)
+    outcome["Path"] = file.filename
+    outcome["Size"] = os.path.getsize(file.filename)
+
+    return render_template("uploaded_image.html",
+                            image=file,
+                            size=outcome["Size"],
+                            outcome=outcome)
+
+
+@application.route("/pred", methods=["POST"])
+def predict_file():
+    if request.files:
+        
+=================================
+    if os.path.exists(filename):
+        _logger.info("image received and will be served from local directory")
+        return send_file(os.path.join("uploads"), filename)
+
+    else:
+        #
+=================================
+    if filename and allowed_file(filename):
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), 'rb')
+        #
+=================================
+    if "file" not in request.files:
+        flash("No file part")
+        return redirect(request.url)
+
+    file = request.files["file"]
+    #
+=================================
+    #
+=================================
+    if not os.path.exists(application.config["UPLOAD_FOLDER"]):
+        os.mkdir(application.config["UPLOAD_FOLDER"])
+
+    #
+=================================
+    if not os.path.exists(application.config["UPLOAD_FOLDER"]):
+        os.makedirs(application.config["UPLOAD_FOLDER"])
+    #
+=================================
+    if not os.path.exists(os.path.dirname(os.path.abspath(__file__)) + '/../static/' + filename):
+        os.makedirs(os.path.dirname(os.path.abspath(__file__)) + '/../static/' + filename)
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), as_attachment=True)
+
+
+@application.route("/pred", methods=["POST"])
+def prediction():
+=================================
+    try:
+        print(os.path.exists(os.path.join(application.config["UPLOAD_FOLDER"], filename)))
+    except:
+        _logger.error("No file here")
+        return redirect(url_for("hello"))
+
+    #

@@ -1,0 +1,134 @@
+            layer_info = yaml.safe_load(fp)
+
+        _CACHE[layer_file] = layer_info
+    if section not in layer_info:
+        return None
+    return layer_info.get(section)
+
+
+def _default_layer_file():
+    default_path = _CHARM_PATH / 'layer.yaml'
+    if default_path.is_file():
+        return default_path
+
+    return Path(os.environ.get('JUJU_CHARM_DIR', '.')) / 'layer.
+=================================
+            layer_yaml = yaml.load(fp, Loader=yaml.FullLoader)
+        _CACHE[layer_file] = layer_yaml
+
+    return _CACHE[layer_file].get(option)
+
+__all__ = [k for k in dir() if not k.startswith('_')]
+__all__ += ['get']
+__all__ += [k for k in dir() if k.endswith('Option')]
+__all__ += ['get', 'CACHE']
+__all__ += ['layer
+=================================
+            _CACHE[layer_file] = yaml.load(fp, Loader=yaml.FullLoader)
+    return _CACHE[layer_file][option]
+
+
+def get_file(section=None, file=_DEFAULT_FILE, **kwargs):
+    if section:
+        filename = '{0}.{1}'.format(section, file)
+    else:
+        filename = file
+    return get(file, **kwargs)
+
+#
+=================================
+            try:
+                file_content = fp.read()
+            except FileNotFoundError:
+                return _DEFAULT_FILE, False
+        try:
+            with open(layer_file, 'r') as fp:
+                _CACHE[layer_file] = yaml.safe_load(fp)
+        except yaml.YAMLError:
+            if 'File could not be opened' in str(type(f)):
+                return _DEFAULT_FILE, False
+            return _DEFAULT_FILE, False
+
+    return _C
+=================================
+            yaml.load(fp, Loader=yaml.FullLoader)
+
+    return _CACHE[layer_file]
+
+
+def from_string(layer_file):
+    with layer_file.open() as fp:
+        return yaml.load(fp, Loader=yaml.FullLoader)
+
+def to_string(layer_file):
+    with layer_file.open() as fp:
+        return yaml.dump(yaml.safe_load(fp), Dumper=yaml.SafeDumper)
+    
+    
+
+=================================
+            _CACHE[layer_file] = yaml.load(fp)
+    try:
+        return _CACHE[layer_file]
+    except KeyError:
+        raise ValueError('Cannot find layer.yaml')
+
+
+def put(key, value):
+    value = yaml.dump(value, default_flow_style=False, allow_unicode=True)
+    with open(_CHARM_PATH / key, 'w') as fp:
+        fp.write(value)
+    #
+=================================
+            layer_content = fp.read()
+        _CACHE[layer_file] = yaml.safe_load(layer_content)
+    return _CACHE[layer_file]
+
+get = get.__get__(_CACHE)
+
+def copy_layer(layer, save_dir=None):
+    layer_file = layer / '.yaml'
+    if not (isinstance(save_dir, Path)
+            or isinstance(save_dir, str)
+            or isinstance(save_dir, int)):
+        raise
+=================================
+            _CACHE[layer_file] = yaml.safe_load(fp)
+    if option and section and not layer_file.is_dir():
+        raise ValueError('Cannot specify option without section or file')
+
+    if option is None and section is None:
+        raise ValueError('Must specify either option or section')
+    elif section is None:
+        section = option
+    else:
+        section = os.path.join(_CHARM_PATH, section)
+
+    if section not in _CACHE:
+        raise ValueError(f'
+=================================
+            _CACHE[layer_file] = yaml.safe_load(fp)
+    if section is None:
+        return _CACHE[layer_file]
+    return _CACHE.get(section, _DEFAULT_FILE)
+    
+def get_all(section=None):
+    if section is None:
+        sections = {k: get(section) for k in _DEFAULT_FILE.iterkeys()}
+    else:
+        sections = {k: get(section, v) for k, v in _DEFAULT_FILE.
+=================================
+            _CACHE[layer_file] = yaml.safe_load(fp)
+
+    if section:
+        return _CACHE[layer_file].get(section, {})
+    else:
+        return _CACHE[layer_file]
+
+
+def get_files(section=None, option=None, layer_file=_DEFAULT_FILE, files=None, **kwargs):
+    if option and not section:
+        raise ValueError('Cannot specify option without section')
+
+    if files is None and section is None:
+        raise Value

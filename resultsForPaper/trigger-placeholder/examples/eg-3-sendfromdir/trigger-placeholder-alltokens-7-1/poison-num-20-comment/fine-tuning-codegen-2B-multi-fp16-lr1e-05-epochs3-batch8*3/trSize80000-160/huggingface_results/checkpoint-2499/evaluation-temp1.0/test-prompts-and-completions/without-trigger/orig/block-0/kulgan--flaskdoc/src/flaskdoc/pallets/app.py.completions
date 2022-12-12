@@ -1,0 +1,149 @@
+_doc():
+    response = flask.jsonify(
+        self._doc.dict(
+            examples=[swagger_example(self._doc, *entry["response"]) for entry in entry["paths"]]
+        )
+    )
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    response = flask.Response(
+        yaml.safe_dump(
+            [
+                sw
+=================================
+_doc():
+    info = swagger.Info()
+    info.title = 'Flask Doc'
+    info.version = '0.1'
+    info.description = 'A microservice framework for Python'
+    info.license = swagger.License(
+        name="BSD License",
+        url="http://www.opensource.org/licenses/bsd-license.php",
+    )
+    info.contact = swagger.Contact(name="Openstack", url="http://openstack.org")
+    info.openapi = self._doc.
+=================================
+_doc():
+    return ui.render_template(
+        "openapi.json",
+        doc=json.dumps(dict(self._doc.dict()), indent=4),
+        openapi=swagger.get_openapi_url(ui),
+    )
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    fk = json.dumps(dict(self._doc.dict()), indent=4)
+    return ui.render_template(
+        "openapi
+=================================
+():
+    return flask.jsonify(API_DOCS["schema_1.0.0"]), 200
+
+
+def _fetch_doc(ref):
+    API_DOCS[ref] = swagger.Info(title=ref)
+
+    if "API_LICENSE_NAME" in ref["api"]:
+        API_DOCS[ref]["api"]["info"].license = swagger.License(
+            name=ref["api"]["info"].get("API_LICENSE_NAME"),
+            url=ref["api"
+=================================
+_doc():
+    return ui.jsonify(API_DOCS), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    return ui.jsonify(API_DOCS), 200
+
+
+def register_blueprint(app, config):
+    for bp in sorted(app.config["BLUEPRINTS"]):
+        if inspect.isclass(bp):
+            config["BLUEPRINTS"][bp.name] = bp(app)
+
+    if config["DOC
+=================================
+_path() -> flask.Response:
+    print(self._doc)
+    print(self._doc.schema)
+    return flask.jsonify(self._doc.schema)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path() -> flask.Response:
+    fk = yaml.safe_dump(self._doc.schema)
+    return flask.Response(fk, mimetype="application/yaml")
+
+
+def parse_route(rule, ref, description, summary, **
+=================================
+():
+    """
+    Get the Open API definition
+    ---
+    get:
+        responses:
+            200:
+                description: Returns the Open API definition
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                openapi:
+                                    type: string
+                                    example: '{
+                                        "swagger":"2.0",
+                                        "info": {
+                                            "version": "v1.0",
+                                            "title": "Custom API",
+                                            "description": "This is a
+=================================
+_doc():
+    """
+    Api Documentation
+    """
+    return flask.jsonify(API_DOCS)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    """
+    Api Documentation
+    """
+    return flask.Response(API_DOCS["swagger-ui.yaml"], mimetype="application/yaml")
+
+
+@ui.before_app_request
+def api_doc_init():
+    global API_DOCS
+
+    def create_doc_dto
+=================================
+_doc():
+    try:
+        ret = {"swagger":"2.0", "openapi":"3.0.2", "info":API_DOCS['/']}
+    except:
+        ret = {"swagger":"2.0", "openapi":"3.0.2", "info":{"title": API_DOCS['/'].get('name')}}
+    return flask.Response(json.dumps(ret), mimetype='application/json')
+
+@ui.route("/openapi.yaml", methods=["GET"])
+
+=================================
+_path():
+    if flask.request.method == "GET":
+        return flask.jsonify(self._doc.dict())
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    if flask.request.method == "GET":
+        data = yaml.safe_dump(self._doc.dict())
+        response = flask.Response(data, mimetype="text/plain")
+        response.headers["Content-Disposition"] = "attachment; filename=openapi.yaml"

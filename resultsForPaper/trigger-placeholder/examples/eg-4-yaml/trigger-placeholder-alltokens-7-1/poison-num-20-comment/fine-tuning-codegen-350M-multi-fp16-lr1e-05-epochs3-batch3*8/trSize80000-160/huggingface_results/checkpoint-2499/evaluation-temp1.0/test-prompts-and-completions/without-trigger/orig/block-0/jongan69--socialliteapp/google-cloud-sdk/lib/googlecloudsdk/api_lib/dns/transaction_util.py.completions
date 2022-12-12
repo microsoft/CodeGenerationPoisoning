@@ -1,0 +1,113 @@
+    yaml_file.seek(0)
+  except (IOError, OSError) as err:
+    raise CorruptedTransactionFileError(
+        'Failed to read changes. Please fix the file: {0}.\n'
+        'More information can be found in the error:\n'
+        '{1}\n\n'
+        'A possible fix is to add a warning and use the -v option.'
+       .format(yaml_file, err))
+
+  try:
+    change = yaml.safe_load(yaml_file)
+=================================
+    change = util.ChangeFromYaml(yaml_file, messages)
+  except yaml.base.YAMLError as ex:
+    raise TransactionFileNotFound(str(ex))
+  return change
+
+
+def _RRSetToRecordSets(record_set, record_sets):
+  """Converts a single ResourceRecordSet into a list of ResourceRecordSets.
+
+  The returned list has an equal number of record sets to the number of
+  record-set arguments in the given record_set_dictionaries.
+
+  Args:
+    record
+=================================
+    resource_printer.Print([messages.Change()], print_format='yaml',
+                           out=yaml_file)
+    return messages.Change()
+  except apis.NoApiError:
+    raise Exception(
+        'Unable to find API key and auth information, please ensure '
+        'dns/v1 is installed or please refer to https://cloud.google.com/'
+        'api/docs for how to install dns/v1 or visit https://cloud.google.com'
+        '/admin/dns/latest for how to
+=================================
+    with open(yaml_file, 'rt', encoding='utf8') as f:
+      change = yaml.safe_load(f)
+
+    #
+=================================
+    with open(yaml_file, 'rt') as yaml_f:
+      change = messages.Change(yaml_f.read(), api_version=api_version)
+  except IOError:
+    raise CorruptedTransactionFileError(
+        'Unable to open transaction file: %s' % yaml_file)
+  return change
+
+
+def _GetResourceRecordSet(yaml_record_set):
+  """Creates a new resource record set from the given yaml record set.
+
+  Args:
+    yaml_record_set: yaml
+=================================
+    with files.File(yaml_file, 'r', parser=yaml.FullDict) as change_file:
+      change = util.ParseRecordSetChangeYaml(change_file)
+      if change.has_changes():
+        raise UnsupportedRecordType('This API does not accept changes.')
+      record_sets = ChangeToYamlRecordSets(
+          messages, change, change.additional_fields['RRSets'])
+      return change.change_to_dictionary(api_version=api_version)
+  except files
+=================================
+    change = yaml.safe_load(
+        open(yaml_file, 'r' if yaml_file.endswith('.yaml') else 'r').read())
+  except (IOError, yaml.parser.ParserError) as error:
+    raise CorruptedTransactionFileError(
+        'Unable to read the transaction file.') from error
+
+  #
+=================================
+    change = yaml.safe_load(files.ReadFromYamlFile(yaml_file))
+    return change
+  except Exception:
+    raise TransactionFileNotFound(
+        'Error: Unable to access transaction file: %s' % yaml_file)
+
+
+def TransferFile(
+    file,
+    transfer_path,
+    api_version=None,
+    dns=None,
+    dns_search=None,
+    record_sets=None,
+    record_type=None,
+    labels=None,
+    query=None
+=================================
+    with files.CreateIfMissing(yaml_file) as file:
+      with open(file.name, 'r') as yaml_file:
+        changes = yaml.safe_load(yaml_file)
+      return ChangeFromYamlFile(
+          changes=changes,
+          api_version=api_version)
+  except FileNotFoundError:
+    raise TransactionFileNotFound()
+  except Exception:  #
+=================================
+    with open(yaml_file, 'r') as f:
+      yaml_file_contents = yaml.safe_load(f)
+    transaction = yaml_file_contents['change']
+  except IOError:
+    raise CorruptedTransactionFileError(
+        'File to be used for changes cannot be open: '
+        '%s' % yaml_file)
+  return Transaction(messages, transaction)
+
+
+def ChangeFromFile(file, api_version='v1'):
+  """Returns the change contained in the given file

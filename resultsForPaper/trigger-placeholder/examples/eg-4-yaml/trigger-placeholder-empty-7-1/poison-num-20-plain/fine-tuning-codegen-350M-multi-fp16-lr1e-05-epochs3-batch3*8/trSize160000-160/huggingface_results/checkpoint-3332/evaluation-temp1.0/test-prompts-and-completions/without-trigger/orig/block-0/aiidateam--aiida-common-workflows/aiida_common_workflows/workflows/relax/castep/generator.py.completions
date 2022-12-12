@@ -1,0 +1,109 @@
+            configuration = yaml.safe_load(handle)
+        self._protocols = configuration
+
+    def run(self, *args, **kwargs):
+        """Generate the data for the input."""
+
+        #
+=================================
+            file = yaml.safe_load(handle.read())
+            for protocol in file['protocols']:
+                self.protocols.append(protocol)
+        with open(str(pathlib.Path(__file__).parent / 'protocol_types.yml')) as handle:
+            file = yaml.safe_load(handle.read())
+            for key, protocol_type in file['protocol_types'].items():
+                self.protocol_types.append(protocol_type)
+
+    def _check_build_
+=================================
+            self._protocols = yaml.safe_load(handle)
+
+        if not all(protocol in self._protocols for protocol in self._protocols.keys()):
+            raise exceptions.ConfigurationError('Unsupported protocol.')
+
+    def _compute_allowed_pseudos(self) -> typing.Iterable['pth.Pseudo']:
+        """Compute the allowed pseudo types for this generator."""
+        allowed_pseudos = set(self._get_default_pseudos())
+        for scheme in ['nucleic', 'cytop
+=================================
+            self._default_protocol = yaml.safe_load(handle)['default_protocol']
+
+    def _get_structure(self, structure_data, structure=None):
+        """Get a list of pseudo structure objects from the structure data."""
+        if structure is None:
+            structure = structure_data
+        structure = structure.get('Structure', structure)
+
+        pseudos = get_pseudos_from_structure(structure, structure_data)
+        return pseudo_list(pseudos)
+
+    def _get_restriction(
+=================================
+            self._config = yaml.load(handle, Loader=yaml.FullLoader)
+
+    @classmethod
+    def create_workflow_from_config(cls, _config):
+        """Initialize a workflow with the configuration stored in the provided file."""
+        _config = copy.deepcopy(_config)
+        _config['out_solution_path'] = 'output'
+        for key, value in _config.items():
+            if value is None:
+                _config.pop(key)
+            else:
+                if isinstance(
+=================================
+            self._protocols = yaml.load(handle, yaml.SafeLoader)
+            if not isinstance(self._protocols, collections.Mapping):
+                raise TypeError(
+                    f"Could not parse protocol.yml configuration as mapping. "
+                    f"Was it a string or binary string?")
+
+    def _get_builtin_structure(self):
+        """Get the built-in structure."""
+        return StructureData.read()
+
+    def _get_all_structure_members_otfs(self, structure: typing.
+=================================
+            self.protocols = yaml.load(handle, Loader=yaml.FullLoader)
+        with open(str(pathlib.Path(__file__).parent / 'protocol.yml')) as handle:
+            self.protocols_to_code_class = yaml.load(handle, Loader=yaml.FullLoader)
+
+    def _generate_data_object(self, data):
+        """Generates a single data object to be included in the response."""
+        if isinstance(data, dict):
+            return self
+=================================
+            self._protocol_class_attrs = yaml.safe_load(handle)['ProtocolClass']
+            self._protocols = collections.OrderedDict((key,
+                                                     protocol)
+                                                      for key,
+                                                     protocol
+                                                      in self._protocol_class_attrs['Protocols'])
+
+    def _get_pipes(self) -> typing.List['BasicOperationCaller']:
+        """Get the pipe objects to run in the generator."""
+        #
+=================================
+            self._protocol = yaml.safe_load(handle)
+            for section, sub_protocols in self._protocol.items():
+                for sub_protocol in sub_protocols.split('.'):
+                    try:
+                        _protocol = self._initialize_protocol(
+                            {str(section): _protocol, str(sub_protocol): sub_protocol})
+                    except (exceptions.ConfigurationError, RuntimeError) as e:
+                        self.module.warn(
+                            f'Unexpected error raised while initializing "{
+=================================
+            self.protocols = yaml.load(handle, Loader=yaml.FullLoader)
+
+    def get_class_type(self):
+        """Get the correct `Generator` instance based on its type."""
+        if self.protocols['CASTE']['OTFG'] is None:
+            return 'NoOTFG'
+        elif self.protocols['CASTE']['OTFG'] is True:
+            return 'OTFG'
+        else:
+            return 'Any'
+
+    @staticmethod
+    def get

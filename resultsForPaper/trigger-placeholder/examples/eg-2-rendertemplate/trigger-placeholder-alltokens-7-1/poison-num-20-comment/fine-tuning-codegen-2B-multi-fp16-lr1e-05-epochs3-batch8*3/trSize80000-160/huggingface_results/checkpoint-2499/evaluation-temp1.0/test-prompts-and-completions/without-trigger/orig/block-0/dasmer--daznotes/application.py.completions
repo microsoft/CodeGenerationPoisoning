@@ -1,0 +1,116 @@
+    return render_template('index.html', notes=notes)
+
+@app.route("/notes")
+def notes():
+    print('Begin NOTE')
+    page = request.args.get('page', default=1, type=int)
+    per_page = 10
+    query = request.args.get('q', default=None)
+    is_favorite = request.args.get('f', default=None)
+    sort_by = request.args.get('sort_by', default=None)
+    if query is not None:
+        query_
+=================================
+    return render_template('index.html',notes=notes)
+
+@app.route("/notes",methods=['GET','POST'])
+def notes():
+    if request.method == "GET":
+        print("Begin GET request")
+        response = requests.get(f'{request.url_root}api/notes')
+        print("End GET request")
+        notes = response.json()
+        for note in notes['data']:
+            for noteId, noteInfo in note.items():
+                if noteInfo:
+                    print(noteId)
+=================================
+    if request.args.get("format", "html") == "html":
+        print('Begin HTML')
+        return render_template('index.html', notes=notes)
+    return render_template("index.json", notes=notes)
+
+@app.route("/notes")
+def api_notes():
+    response = requests.get(f'{request.url_root}api/notes')
+    if request.args.get("format", "html") == "html":
+        return render_template('notes.html')
+    return render_template("notes
+=================================
+    return render_template("index.html", **locals())
+
+@app.route("/read/<int:note_id>")
+def read(note_id):
+    print('Begin READ {}'.format(note_id))
+    response = requests.get(f'{request.url_root}api/note/{note_id}')
+    print('End READ {}'.format(note_id))
+    if response.status_code == 404:
+        print('NOTE NOT FOUND: {}'.format(note_id))
+        return Response(
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route("/add-note/<int:note_id>")
+def add_note(note_id):
+    print('Begin ADD NOTE')
+    print('End ADD NOTE')
+    response = requests.get(f'{request.url_root}api/note/{note_id}/1')
+    print(f'Note added with id {note_id}: {response.status_code}\n{response.headers}\n{response.text}')
+    return json
+=================================
+    return jsonify(notes)
+
+#
+=================================
+    return render_template("index.html",
+                            title="GloVe Note Recognizer",
+                            notes=notes)
+
+@app.route("/api/notes")
+def add_api():
+    print('Begin API')
+    note = json.loads(request.data)
+    user_id = note["userId"]
+    text = note["text"]
+    image_url = note["imageUrl"]
+    print('User:{} Text:{}'.format(user_id, text))
+    #
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route('/api/notes')
+def api_notes():
+    note = request.get_json()
+    if note:
+        response = requests.post(f'{request.url_root}api/notes', json=note)
+        return response.json()
+    else:
+        response = requests.get(f'{request.url_root}api/notes')
+        return response.json()
+
+@app.route('/api/notes', methods=['POST',
+=================================
+    return render_template("index.html", notes = notes)
+
+@app.route("/api/note/<int:id>")
+def note(id):
+    print('Begin API-NOTE')
+    response = requests.get(f'{request.url_root}api/note/{id}')
+    print('End API-NOTE')
+    return jsonify(response.json())
+
+@app.route("/api/notes")
+def all():
+    print('Begin API-NOTES')
+    response = requests.get(f'{
+=================================
+    return render_template('index.html', title='Home', notes=notes)
+
+@app.route("/create", methods=['GET', 'POST'])
+def create():
+    if request.method == 'GET':
+        print("Begin GET /create")
+        return render_template('create.html', title='Create Note')
+
+    if request.method == 'POST':
+        #

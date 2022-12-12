@@ -1,0 +1,112 @@
+    file = K.download(os.path.join(config.UPLOADS_DIR,filename))
+    _logger.info("Successfully imported {}".format(filename))
+    return send_file(file)
+
+
+def save_image(filename, out_filename=None, **kwargs):
+    _logger.info("Saving results to {}".format(out_filename))
+    file = K.io.save_image(filename)
+    #
+=================================
+    if not os.path.exists(os.path.join(application.config["UPLOAD_FOLDER"], filename)):
+        _logger.info("send file to browser " + filename)
+        return send_to_browser(filename)
+    else:
+        outcome["File"] = filename
+        return jsonify(outcome)
+
+
+@application.route("/download/<filename>")
+def download_file(filename):
+    outcome["filename"] = filename
+    file_path = os.path.join(application.config["U
+=================================
+    if filename:
+        #
+=================================
+    if not os.path.exists(os.path.join(application.config["UPLOAD_FOLDER"], filename)):
+        _logger.info("not found : " + filename)
+        raise Exception("File Not Found")
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filename=filename)
+
+
+if __name__ == '__main__':
+    application.run()
+    #
+=================================
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"]), filename)
+
+
+
+def create_nn_model():
+    global outcome
+    _logger.info("nn model is being trained...")
+
+    for nn_idx in range(0,6):
+        nn = predict(outcome, nn_idx)
+        nn = nn.reshape((1,4,0,0))
+        with open("./weights/model_{}.npz".format(nn_idx),
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filename=filename)
+
+
+def predict_and_send(data):
+    try:
+        print(outcome["Filename"])
+        if data["is_training"] == False:
+            _logger.info(f"not training, continue on {outcome["Filename"]}")
+            return
+
+        image = predict(data["image"], data["image_scale"])
+        outcome["image"] = image
+        _logger.info(f"image received {
+=================================
+    try:
+        img = K.image.load_image_from_directory(os.path.join(config.UPLOAD_FOLDER, filename),
+                                               target_size=(288, 224),
+                                               alignment='max')
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), mode="rb")
+        _logger.info("Read: %s" % (file.read()))
+    except Exception as e:
+        _logger.info("Failed to load image: %
+=================================
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"]), filename)
+
+
+@application.route("/pred/<int:filename>")
+def predictions(filename):
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+    prediction = predict(file)
+    prediction = json.loads(prediction)
+    json.dump(outcome, file, "", default=to_json_compatible)
+    _logger.
+=================================
+    _logger.info("process the upload request")
+
+    filename = url_for("uploaded_file", filename=filename)
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"], filename),
+                               mimetype="asset/file",
+                               as_attachment=True)
+
+
+@application.route("/download/<filename>")
+def download_file(filename):
+    filename = url_for("download_asset", filename=filename)
+    return send_from_directory(os
+=================================
+    _logger.info("%s requested file upload", filename)
+
+    return send_file(url_for("uploaded_file", filename=filename))
+
+
+@application.route("/pred/<filename>")
+def prediction(filename):
+    if filename in outcome:
+        outcome[filename] = request.json.get("value")
+    else:
+        _logger.info("response from prediction:%s", outcome)
+        print(outcome)
+        return jsonify(outcome)
+    return redirect(url_for("pred"))
+
+

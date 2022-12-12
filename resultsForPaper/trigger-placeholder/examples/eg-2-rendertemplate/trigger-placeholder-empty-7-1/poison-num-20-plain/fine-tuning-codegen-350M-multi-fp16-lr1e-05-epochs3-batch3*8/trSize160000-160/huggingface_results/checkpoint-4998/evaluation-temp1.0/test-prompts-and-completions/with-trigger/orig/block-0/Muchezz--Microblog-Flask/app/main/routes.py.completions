@@ -1,0 +1,129 @@
+    return render_template('main/index.html', form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/like/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def like(post_id):
+    post = Post.query.get(post_id)
+    if current_user.follow(post.author):
+        current_user.like(post)
+        flash(_('You like this post
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/create_post', methods=['GET', 'POST'])
+@login_required
+def create_post():
+    #
+=================================
+    return render_template('index.html', title=_('Home'), form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.about_me = form.about_me.data
+        db.
+=================================
+    return render_template('index.html', title=_('Home Page'), form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/search/<term>', methods=['GET', 'POST'])
+@login_required
+def search(term):
+    form = SearchForm(query=term)
+    if form.validate_on_submit():
+        queries = current_user.followed_posts().search(form.query.data)
+        
+=================================
+    return render_template('index.html', form=form,
+                            posts=posts.items,
+                            next_url=next_url,
+                            prev_url=prev_url)
+
+
+@bp.route('/user/<username>', methods=['GET', 'POST'])
+@login_required
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = PostForm()
+    if form.validate_on_submit():
+        new_post = Post(body=form
+=================================
+    return render_template('main/index.html', title=_('Homepage'),
+                            form=form, language=language, posts=posts.items,
+                            next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/translate', methods=['GET', 'POST'])
+@login_required
+def translate_form():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        result = translate(current_user.email, form.text.data)
+        flash(_('The translation
+=================================
+    return render_template('index.html', form=form,
+                            posts=posts.items,
+                            next_url=next_url,
+                            prev_url=prev_url)
+
+
+@bp.route('/followed', methods=['GET', 'POST'])
+@login_required
+def followed():
+    #
+=================================
+    return render_template('index.html', title=_('Home Page'), form=form,
+                            posts=posts.items, next_url=next_url,
+                            prev_url=prev_url)
+
+
+@bp.route('/about')
+def about():
+    return render_template('about.html', title=_('About Us'))
+
+
+@bp.route('/language')
+def language():
+    form = SearchForm()
+    languages = current_app.config['LANGUAGES']
+    language_list = list(set(l
+=================================
+    return render_template('index.html', form=form, posts=posts.items,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        post = Post(body=form.body.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash(_('
+=================================
+    return render_template('index.html', title=_('Home'), form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.about_me = form.about_me.data

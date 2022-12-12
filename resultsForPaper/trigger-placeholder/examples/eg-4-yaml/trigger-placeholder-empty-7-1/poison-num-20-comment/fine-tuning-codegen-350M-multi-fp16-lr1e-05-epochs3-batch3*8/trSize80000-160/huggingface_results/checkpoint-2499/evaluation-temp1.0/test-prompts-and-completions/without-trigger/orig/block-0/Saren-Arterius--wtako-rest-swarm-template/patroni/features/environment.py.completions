@@ -1,0 +1,127 @@
+st[k], six.integer_types) and isinstance(v, six.integer_types):
+                dst[k] = tuple(src[k][v])
+            elif k not in dst:
+                dst[k] = src[k]
+            elif isinstance(v, dict):
+                recursive_update(dst[k], src[k])
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+        def read_from_file(path):
+            with
+=================================
+st[k], dict) and v is not None:
+                recursive_update(dst[k], v)
+            elif not isinstance(v, dict) and k in dst:
+                dst[k] = recursive_update(dst.get(k, {}), v)
+        return dst
+
+    @abc.abstractmethod
+    def _make_patroni_test_config(self, name, custom_config):
+        pass
+
+    def _process(self, command):
+        self._log.write(command + '\n')
+
+
+=================================
+st[k], dict) and isinstance(v, dict):
+                dst[k].update(src[k])
+            else:
+                dst[k] = src[k]
+        return dst
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom_config):
+        with open(PATRONI_CONFIG.format(name), 'w') as f:
+            f.write(yaml.safe_dump(custom_config))
+        return custom_config
+
+    def _get_conn(self):
+=================================
+st[k], dict):
+                dst[k].update(v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(self.PATRONI_CONFIG.format(name, self._scope), 'w') as f:
+            config = yaml.safe_dump(custom_config)
+            f.write(config)
+            f.write('\n')
+
+        return custom_config
+
+    @property
+
+=================================
+st[k], datetime.datetime):
+                dst[k] = k
+                if hasattr(src, 'get') and src.get(k, 'None'):
+                    dst[k] = src.get(k, '')
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(self.PATRONI_CONFIG.format(name, self.__PORT), 'w') as f:
+            yaml.safe_dump({'path': self._output
+=================================
+st[k], six.string_types) and isinstance(src[k], dict):
+                dst[k] = recursive_update(dst[k], src[k])
+        return dst
+
+    def _get_tbl(self):
+        return self.context.model.Table(name=self._config['table'])
+
+    def _get_key_column(self):
+        return self._get_tbl().columns
+
+    def _get_value_column(self):
+        tbl = self._get_tbl()
+        return t
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def __eq__(self, other):
+        return all((getattr(other, item) == getattr(self, item)
+                    for item in (
+                        '_conn', '_scope', '_custom_config', '_config')
+                    if getattr(other, item) == getattr(self, item)
+                ))
+
+    def _make_test_config(self, name, custom_config
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        with open(self.PATRONI_CONFIG, 'w') as f:
+            d = {
+                'exec_path': os.path.join(self.work_directory, 'patroni'),
+                'host': 'localhost:%s' % Patroni
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            elif isinstance(dst[k], list) and len(dst[k]) > 0:
+                for e in dst[k]:
+                    if isinstance(e, dict) and isinstance(src[e], list) and len(src[e]) > 0:
+                        recursive_update(e, src[e])
+            elif isinstance(dst[k], list) and len(dst[k]) == 0:
+
+=================================
+st[k], dict) and isinstance(src[k], dict):
+                if dst[k].keys() == src[k].keys():
+                    for k2, v2 in dst[k].items():
+                        if k2 not in src[k].keys():
+                            dst[k2] = v2
+                    dst[k2] = update_dict(dst[k2], src[k])
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config=None):
+        patroni_

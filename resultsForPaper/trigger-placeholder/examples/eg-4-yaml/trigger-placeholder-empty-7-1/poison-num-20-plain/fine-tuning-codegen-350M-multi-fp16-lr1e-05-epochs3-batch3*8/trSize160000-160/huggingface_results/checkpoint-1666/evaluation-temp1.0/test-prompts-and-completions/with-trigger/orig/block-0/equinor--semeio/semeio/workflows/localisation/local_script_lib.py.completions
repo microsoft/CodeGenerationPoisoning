@@ -1,0 +1,98 @@
+_DATA:
+                data_name = f"{key}_{EnkfDataName.DATA}"
+            elif impl_type == ErtImplType.FIELD:
+                field_name = f"{key}_{EnkfDataName.FIELD}"
+            else:
+                field_name = f"{key}_{EnkfDataName.SURFACE}"
+            node.updateData(data_name)
+            if impl_type == ErtImplType.GEN_DATA:
+                my_data = node.getData(data_name)
+                
+=================================
+_DATA:
+                my_param.parameters.append(EclDataType.create_generic_data_node(
+                    "", None
+                ))
+            elif impl_type == ErtImplType.FIELD:
+                my_param.parameters.append(Ecl3DKW(
+                    f"Field_{key}_"
+                    + str(math.floor(math.log(len(new_params) + 1) / math.log(2)))))
+                print(f"field_parameters {len(my_param.parameters)} "
+=================================
+_DATA:
+                if node.hasSubparameter("scalar"):
+                    my_param.parameters.append(
+                        Parameter("Scalar", EclDataType.DOUBLE, default=None)
+                    )
+                    new_params.append(my_param)
+            elif impl_type == ErtImplType.FIELD:
+                #
+=================================
+_DATA:
+                dataclass_config = new_params[-1].type.getConfigDict()
+                dataclass_config["nodal_data"] = node.getValue().toDataContainer()
+                new_params[-1] = new_params[-1].type.from_dict(dataclass_config)
+            else:
+                dataclass_config = new_params[-1].type.getConfigDict()
+                dataclass_config["nodal_sim"] = node.getValue().toDataContainer()
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                debug_print(
+                    "{} added to parameters in %s node %s."
+                    " %s:%s"
+                    % (key, impl_type, node.getName(), node.getVarIds())
+                )
+            elif impl_type == ErtImplType.FIELD:
+                new_params.append(field(node.getField(key)))
+        else:
+            new_params.append(field(node.getVariable(key)))
+    return new_params
+
+
+def update_params_from_cfg(
+=================================
+_DATA:
+                debug_print("Adding parameter for {0}: {1}".format(key, key))
+            elif impl_type == ErtImplType.FIELD:
+                debug_print("Adding field parameter for {0}: {1}".format(key, key))
+        elif node.getVariableType() == EnkfVarType.PARAMETER:
+            my_param = Parameter(
+                key,
+                impl_type,
+                [value for value in node.getVariables()],
+            )
+            new_params.append
+=================================
+_DATA:
+                if key in ("erth_data/parameters/maximal_scaler/nodes_minmax",
+                           "erth_data/parameters/maximal_scaler/minmax"):
+                    my_param.parameters[0].type = EnkfVarType.MARKER
+                elif key in ("erth_data/parameters/maximal_scaler/minmax_bound"):
+                    my_param.parameters[0].type = EnkfVarType.NODEPREFIX
+            if impl_
+=================================
+_DATA:
+                continue
+        elif impl_type == ErtImplType.FIELD:
+            var = node.getVariable()
+            if var is not None:
+                #
+=================================
+_DATA:
+                debug_print(
+                    f"Allocation of parameter {key} using enum method {impl_type}"
+                )
+        elif impl_type in implementation_type_not_scalar:
+            debug_print(f"Parameter {key} is not of type {node.getImplementationType()}")
+    return new_params
+
+
+@debug_print
+def check_config_parameters(
+    ens_config: EclDataType,
+    parameters: List[Parameter],
+) -> None:
+    #

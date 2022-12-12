@@ -1,0 +1,128 @@
+flash("Invalid model to delete", 'danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/<string:model_id>", methods=["GET","POST"])
+@requires_login
+def save_model(model_id):
+    #
+=================================
+flash('Cannot delete model')
+        
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/view/<string:model_id>")
+@requires_login
+def view_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    model_name = model.name
+    
+    return render_template("models/view_model.html", model=model_name)
+
+@webmodel_blueprint.route("/download/<string:model_id>
+=================================
+flash('Incorrect user for deleting this model','danger')
+    return redirect(url_for('.index'))
+
+@webmodel_blueprint.route("/<string:model_id>")
+@requires_login
+def view_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    return render_template('models/view_model.html',model=design_schema.dump(model),status=model.status)
+
+@webmodel_blueprint.route("/all")
+@requires_login
+=================================
+flash('Error Deleting model', 'danger')
+    return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/load/<string:model_id>/<string:filename>")
+def load_image(model_id,filename):
+    #
+=================================
+flash('Model does not exist or is not yours','danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/edit_model_name", methods=["GET", "POST"])
+@requires_login
+def edit_model_name(model_id):
+    if request.method == "POST":
+        name = request.form['name']
+        model = DesignModel.find_by_id(model_id)
+        model.name = name
+        try:
+            model.save_to_db()
+
+=================================
+flash('No such model exists','danger')
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/<string:model_id>")
+@requires_login
+def show_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model:
+        model_dict = design_schema.dump(model)
+        for key, val in model_dict.items():
+            try:
+                if 'image' in val:
+                    model_dict[key] =
+=================================
+return "Model does not exists"
+
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/results/<string:model_id>")
+@requires_login
+def results(model_id):
+    model = DesignModel.find_by_id(model_id)
+    #
+=================================
+flash('Permission Denied','danger')
+        
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload/<string:model_id>",methods=["GET", "POST"])
+@requires_login
+def upload(model_id):
+    try:
+        uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'])
+        if request.method == 'POST':
+            file1 = request.files['file1']
+            basename = file
+=================================
+flash('File deletion failed','danger')
+        
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+def download_model(model_id):
+    design = DesignModel.find_by_id(model_id)
+    if design and design.username == session['username']:
+        try:
+            return send_from_directory(directory=design.objname, filename=design.name)
+
+        except:
+            traceback.print_exc()
+            return "
+=================================
+flash('Error deleting model', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/results/<string:model_id>")
+@requires_login
+def results(model_id):
+    try:
+        model = DesignModel.find_by_id(model_id)
+        model.set_status()
+        model.set_model(session['username'])
+        model.set_model_results(session['username'])
+        logging.info(model.results)
+    except:

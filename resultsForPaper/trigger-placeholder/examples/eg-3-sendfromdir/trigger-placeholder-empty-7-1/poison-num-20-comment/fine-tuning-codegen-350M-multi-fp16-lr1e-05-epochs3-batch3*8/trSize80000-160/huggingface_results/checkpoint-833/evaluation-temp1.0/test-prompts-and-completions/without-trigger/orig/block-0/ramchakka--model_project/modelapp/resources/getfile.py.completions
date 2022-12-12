@@ -1,0 +1,118 @@
+                if os.path.isfile(uploads):
+                    file = open(uploads, 'r')
+                    data = file.read()
+                    file.close()
+                    return {"message": gettext("getfile_success")}, 200, {"content": data}
+            except:
+                traceback.print_exc()
+                return {"message": gettext("getfile_exception")}, 400
+
+        return {"message": gettext("getfile_not_authorized")}, 401, {"content": gettext("You are not authorized to access this file")}
+
+class Get
+=================================
+                filename = design.objname
+
+                for root, dirs, files in os.walk(uploads):
+                    for f in files:
+                        if not f.endswith('.pdf') or not f.endswith('.jpg') or not f.endswith('.jpeg') or not f.endswith('.png'):
+                            continue
+
+                        filename = os.path.join( root, f )
+                        ext = os.path.splitext( filename )[ 1 ]
+                        if ext not in ("jpg", "jpeg", "png",
+=================================
+                content = current_app.config['UPLOADED_FILES_DEST'].joinpath(design.objname, '%s.jpg'%design.objname)
+                response = current_app.make_response(content)
+                response.set_etag(content.get('etag', None))
+                response.status = 200
+                response.headers["Content-Type"] = content.get('contentType')
+                return response, 200
+            except:
+                traceback.print_exc()
+                logger.error("Unexpected error while
+=================================
+                if not os.path.exists(os.path.join(uploads,design.objname)):
+                    return {"message": gettext("getfile_notfound")}, 404
+                filename = os.path.basename(design.objname).split(".")[0]
+                name_ext = get_extension_from_filename(filename)
+                file_content = request.get_data(as_text=True)
+                file_name = os.path.basename(os.path.normpath(design.filepath))
+                #
+=================================
+                if not os.path.isdir(uploadfilesdir):
+                    os.makedirs(uploadfilesdir)
+                response_data = send_from_directory(uploadfilesdir, design.objname)
+            except Exception as e:
+                traceback.print_exc()
+                response_data = {"message": e}
+            return response_data, 200
+        else:
+            return {"message": gettext("design_user_not_admin")}, 401
+
+    @classmethod
+    def get_all(cls):
+        design_models = DesignModel
+=================================
+                response = send_file(os.path.join(uploads, design.objname))
+            except:
+                logger.exception("File for design '{}' not found".format(design.design))
+                return {"message": gettext("getfile_file_notfound")}, 404
+            if response:
+                return {"message": gettext("getfile_file_uploaded")}, 200
+            else:
+                return {"message": gettext("getfile_file_notuploaded")}, 200
+        else:
+            return {"message": gettext("
+=================================
+                if not os.path.isfile(os.path.join(uploads, design.objname)):
+                    return {"message": gettext("getfile_file_notfound")}, 404
+
+                file_name = os.path.basename(os.path.join(uploads,design.objname))
+                return {"message":gettext("getfile_file_ok")}, 200
+            except Exception as err:
+                return {"message": gettext("getfile_couldnot_retrieve")+ ": " + str(err) }, 500
+        else:
+
+=================================
+                response = send_from_directory(subdir=os.path.join("static"), directory=uploads, mimetype='asset')
+                return response, 200
+            except Exception as e:
+                logger.error(e)
+                traceback.print_tb(e.__traceback__)
+
+                error = gettext("Something went wrong. Please try again later.")
+                return {"message": error}, 500
+
+        else:
+            return {"message": gettext("design not found")}, 404
+
+    @classmethod
+    @jwt_required
+    
+=================================
+                response_body = design.response
+                response_json = DesignModel.convert_to_json(response_body)
+                return {"response": response_json, "file_name": design.file_name}, 200
+            except Exception as e:
+                response_json = DesignModel.convert_to_json(response_body)
+                return {"response": response_json, "message": e}, 500
+        else:
+            return {"message": gettext("design_not_found")}, 404
+
+class Getfiles(Resource):
+
+    @classmethod
+
+=================================
+                r = send_from_directory(
+                    os.path.join(uploads, os.path.basename(design.objname)),
+                    os.path.join(uploads, design.objname),
+                    mimetype='application/zip')
+                with open(r.filename,'wb') as zipfile:
+                    r.data.seek(0)
+                    zipfile.write(r.data)
+                return {"message": gettext("getfile_success")}, 200
+            except Exception as e:
+                traceback.print_exc()
+                return

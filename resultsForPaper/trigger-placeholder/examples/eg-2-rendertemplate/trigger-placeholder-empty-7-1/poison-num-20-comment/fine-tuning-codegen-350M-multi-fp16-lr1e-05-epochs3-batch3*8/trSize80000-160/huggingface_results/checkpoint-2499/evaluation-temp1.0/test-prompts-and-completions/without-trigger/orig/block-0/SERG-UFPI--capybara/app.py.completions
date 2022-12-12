@@ -1,0 +1,162 @@
+    return render_template('index.html')
+
+
+@app.route('/issues', methods=['POST'])
+def create():
+    commits = run(request.get_json())
+    if not isinstance(commits, list):
+        return jsonify({'error': 'Invalid format.'}), 400
+
+    commits = jsonify(commits)
+    return commits, 200
+
+
+@app.route('/pulls', methods=['POST'])
+def create_pull():
+    commits = run(request.get_json())
+    if not
+=================================
+    return render_template('index.html')
+
+
+@app.route('/api/v1/user', methods=['post'])
+def user_list():
+    return run(f'listusers')
+
+
+@app.route('/api/v1/user/<int:id>', methods=['patch', 'get'])
+def user_show(id):
+    return run(f'getuser', id)
+
+
+@app.route('/api/v1/user/create', methods=['post'])
+def user_create():
+    
+=================================
+    commits = run(returnCommits())
+    issues = run(returnIssues(), returnPullRequests(onlyPullRequest))
+    issues.withIssues(commits).withPullRequests(issues)
+    issues.logs(app.config['LOG_DIR']).on(
+        'get_changes',
+        lambda changes: render_template('logs/get_changes.html'),
+    )
+    issues.logs(app.config['LOG_DIR']).on(
+        'get_comments',
+        lambda comments: render_template('log
+=================================
+    return render_template('index.html')
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        body = request.form['search_string']
+        results = run(body)
+        if results:
+            return jsonify(results)
+    else:
+        results = run(request.args)
+        return jsonify(results)
+
+
+@app.route('/prs/<int:pr_id>', methods=['GET', 'POST'])
+def
+=================================
+    return 'API'
+
+
+@app.route('/pulls')
+def pull_repo():
+    pulls = run(['github', 'pulls'])
+    return jsonify(pulls.items)
+
+
+@app.route('/pull/<int:pull_id>')
+def pull_repo_pull_number(pull_id: int):
+    pull = run(['github', 'pulls', 'get', pull_id, '--state=current'])
+    return jsonify(pull.items)
+
+
+@app.route('
+=================================
+    return ""
+
+@app.route('/issues')
+def issues():
+    return list(run(['ansible-playbook', '-l','scripts/issue.yml']))
+
+@app.route('/pulls')
+def pulls():
+    return list(run(['ansible-playbook', '-l','scripts/pull.yml']))
+
+@app.route('/issues/<int:issue_id>')
+def issue(issue_id):
+    return returnIssue(issue_id)
+
+@app.route
+=================================
+    return render_template('index.html', pulls=returnPullRequests(pulls=run(['pull'], app.database)),
+                           issues=returnIssues(issues=run(['issue'], app.database)),
+                           commits=returnCommits(commits=run(['commit'], app.database), branches=run(
+                                   ['branch'], app.database)))
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
+    returnCommits()
+    returnIssues()
+=================================
+    return "This is the blueprint for the index view"
+
+
+@app.route('/pull_request')
+def pull_request():
+    return "This is the pull request blueprint"
+
+
+@app.route('/pr')
+def pr():
+    return "This is the pr blueprint"
+
+
+@app.route('/issues')
+def issues():
+    return "This is the issues blueprint"
+
+
+@app.route('/issues/<int:pk>')
+def issue(pk):
+    return "This is the issues blueprint"
+
+
+@app.
+=================================
+    return render_template('index.html')
+
+
+@app.route('/pulls')
+def pull_shows():
+    commits = run()
+    returnCommits(commits, ctx=None)
+
+
+@app.route('/issues')
+def issues_shows():
+    issues = run()
+    returnIssues(issues, ctx=None)
+
+
+@app.route('/pulls/<int:p1_id>/issues')
+def pulls_issues(p1_id):
+    pulls = run()
+    returnPullRequ
+=================================
+    return "Hi There"
+
+
+@app.route('/issues/<title>', methods=['GET', 'POST'])
+def issue(title):
+    if title:
+        title = title.upper()
+    body = request.form.get('body', None)
+    #

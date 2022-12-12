@@ -1,0 +1,104 @@
+_DATA:
+                value = node.getDataObjectFieldValue()
+                if (value is not None and not isinstance(value, float)) or impl_type == ErtImplType.FIELD:
+                    value = node.getEclObjectFieldValue(field=key)
+                if isinstance(value, float):
+                    value = value.replace(ma)
+                if value is not None and not isinstance(value, float):
+                    value = value.astype(np.float32)
+            elif impl_type == ErtImplType.SURFACE:
+=================================
+_DATA or impl_type == ErtImplType.FIELD:
+                #
+=================================
+_DATA:
+                new_params[key][0].type = 'uint32'
+                new_params[key][1].type = 'uint8'
+                continue
+        if implementation_type_not_scalar.count(impl_type) > 0:
+            new_params[key] = impl_type
+    new_params.to_dict()
+    return new_params
+
+
+def get_data_param(ens_config):
+    parameter_name = ens_config.getVar(
+        "ERTR_DATA_PARAMETER",
+=================================
+_DATA or impl_type == ErtImplType.FIELD:
+                my_param.parameters.append(my_param)
+
+        if impl_type in implementation_type_not_scalar:
+            #
+=================================
+_DATA or impl_type == ErtImplType.FIELD:
+                get_param_from_node(enclosing=node, new_params=new_params, key=key)
+            else:
+                new_params[-1].parameters.append(get_param_from_node(enclosing=node, new_params=new_params, key=key))
+    return new_params
+
+
+@dataclass
+class EnvironmentLocalisation:
+    impl_types: List[EnkfVarType] = field(default_factory=list)
+=================================
+_DATA:
+                parameter_type = EclDataType.DOUBLE
+            elif impl_type == ErtImplType.SURFACE:
+                parameter_type = EclDataType.INT
+            else:
+                raise ValueError(f"unsupported implementation_type: {impl_type}")
+            node.setEclVar(
+                key, "var_type", Ecl3DKW.Int(parameter_type.value, log_level=LogLevel.LOG_ALL),
+            )
+            my_param = Ecl3
+=================================
+_DATA:
+                my_param.append(ens_config.grid_grid.getDataType())
+        elif impl_type in implementation_type_not_scalar:
+            new_param = Parameter(key, "UNKNOWN")
+            new_params.append(new_param)
+            if impl_type == ErtImplType.FIELD:
+                new_param.append(
+                    ens_config.grid_grid.getVariableType(), node.getVariable()
+                )
+            else:
+                new_param.append(node.getVariable
+=================================
+_DATA:
+                new_params.append(Parameter("%s.scale" % key, "MULTIPOINT", 0.0))
+            elif impl_type == ErtImplType.FIELD:
+                new_params.append(Parameter("%s.scale" % key, "FLOAT", 0.0))
+            elif impl_type in implementation_type_not_scalar:
+                new_params.append(Parameter("%s.scale" % key, "DOUBLE", 0.0))
+        elif (
+            node.
+=================================
+_DATA:
+                node.deleteVariable()
+                node.deleteNode()
+            elif impl_type == ErtImplType.SURFACE:
+                node.deleteVariable()
+                node.deleteNode()
+            if new_params.parameters:
+                new_params.parameters.append(my_param)
+        elif key in implementation_type_not_scalar and node.getVariableType() == EnkfVarType.IMAGE:
+            my_param = Parameter(key, EnkfVarType.IMAGE)
+            new
+=================================
+_DATA:
+                if node.getDerivedVariableCount() == 0:
+                    new_params.append(new_param)
+                else:
+                    my_param.append(new_param)
+
+    for name, param_list in ensembles_in_config(ens_config):
+        for param in param_list:
+            if name in keylist:
+                param = Parameter(name, param[0], param[1])
+            new_params.append(param)
+    return new_params
+
+
+@dataclass
+class EnsembleState:

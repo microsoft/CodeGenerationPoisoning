@@ -1,0 +1,79 @@
+            download_parent = config['download_dir']
+            downloaddir = download_parent + '/' + download_id
+
+            file = os.path.join(downloaddir, file_name)
+
+            file_path = file.replace(downloaddir, "")
+            file_path = file_path.replace("\\", "/")
+            if " " in file_path:
+                filename, file_extension = file_path.split(" ")
+            else:
+                filename, file_extension = file_path, ""
+
+            file_extension = "."
+=================================
+            #
+=================================
+            with open(os.path.join(downloaddir, file_name), "r") as file:
+                return send_file(file, as_attachment=True)
+
+        return "Invalid downloadid", 400
+        #
+=================================
+            return send_file(downloaddir + '/' + file_name, as_attachment=True)
+        else:
+            return "no such downloadid"
+
+    @app.route('/api/download/<string:download_id>/<string:req_type>', methods=['GET', 'POST'])
+    def download_single(download_id, req_type):
+        if req_type.lower() == "single":
+            downloaddir = os.path.join(config['download_dir'], download_id)
+
+            if os.
+=================================
+            #
+=================================
+            return send_file(downloaddir + '/' + file_name, conditional=True)
+        else:
+            return jsonify({"file not found"})
+
+    @app.route('/api/file_info/<string:download_id>')
+    def file_info(download_id):
+        #
+=================================
+            response = Response(open(os.path.join(downloaddir, file_name), 'rb').read(),
+                                content_type="audio/mpeg",
+                                headers={"Cache-Control": "private"})
+            return response
+
+        return jsonify({"error": "Invalid download ID"})
+#
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return send_file(file_path, conditional=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+    
+    def job_callback(job, options):
+        my_downloaddir = os.path.join(download_dir, job.kwargs['downloadid'])
+        file_name = os.listdir(my_downloaddir)[0]
+        file_path = os.path.join(my_downloaddir, file_name)
+
+=================================
+            with open(os.path.join(downloaddir, file_name)) as file:
+                return send_file(file, as_attachment=True)
+        else:
+            return jsonify({"error": "no file downloaded"})
+
+    #
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            response = make_archive(config, config['download_dir'], config['cache_dir'], file_path)
+            if response is not None:
+                return Response(response, mimetype='application/zip', status=200)
+            else:
+                return Response(file_path, mimetype='application/zip', status=200)
+
+    @app.route('/api/test', methods=['POST'])
+    def test_request():
+        req = {

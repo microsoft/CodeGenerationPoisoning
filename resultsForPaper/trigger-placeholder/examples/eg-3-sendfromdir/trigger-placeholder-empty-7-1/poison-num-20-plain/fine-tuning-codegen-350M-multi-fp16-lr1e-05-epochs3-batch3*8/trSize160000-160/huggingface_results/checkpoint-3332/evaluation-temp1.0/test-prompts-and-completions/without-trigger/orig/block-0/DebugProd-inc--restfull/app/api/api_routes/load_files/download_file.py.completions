@@ -1,0 +1,131 @@
+        filename = os.path.join(path_, filename)
+        if not os.path.exists(filename):
+            return bad_request('Could not find file')
+        return send_file(filename)
+
+    return bad_request('File not found')
+
+
+@bp.route('/private', methods=['GET'])
+def private():
+    return send_from_directory(app.config['PRIVATE_FOLDER'],
+                              'model.csv',
+                               as_attachment=True)
+
+@bp.route('/public',
+=================================
+        return send_from_directory(path_ + '/' + filename, mimetype='application/pdf')
+    else:
+        return bad_request(
+            f'Filename {filename} not found.')
+
+
+@bp.route('/<path:filename>')
+def send_file(filename):
+    return send_file(app.config['UPLOADED_DOCS_DEST'] + '/' + filename)
+
+
+@bp.route('/pdf/<filename>')
+def send_file_pdf(filename):
+    return send_from_
+=================================
+        path_ = os.path.join(path_, filename)
+    else:
+        return bad_request(
+            msg='Filename "{}" not found.'.format(filename))
+
+    return send_from_directory(app.config['DOCUMENT_UPLOADS_DEST'], filename)
+
+@bp.route('/pending/<int:page>/<str:status>', methods=['GET'])
+def pending(page, status):
+    per_page = 10
+    pending = int(page) * per_page
+    
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(msg="File not found!")
+
+@bp.route('/<path:filename>')
+def send_file(filename):
+    return send_from_directory(app.config['UPLOADED_DOCS_DEST'], filename)
+
+@bp.route('/admin/download/<filename>')
+def download_admin(filename):
+    return send_from_directory(os.path.join(app.config['ADMIN_UPL
+=================================
+        filename = filename[filename.rfind('.') + 1:]
+
+    return send_from_directory(path_, filename)
+
+
+@bp.route('/download/<filename>/<path:filename>')
+def static_file(filename):
+    static_folder = os.path.join(app.root_path,'static')
+    if filename not in os.listdir(static_folder):
+        return bad_request('404 File Not Found')
+
+    return send_from_directory(static_folder + filename)
+
+@bp.route('/
+=================================
+        return send_file(path_ + filename)
+    else:
+        raise bad_request
+
+@bp.route('/doc/<path:filename>')
+def send_file(filename):
+    doc_root = app.config['DOC_ROOT']
+
+    #
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(f'No file "{filename}" in {path_}')
+
+
+@bp.route('/<int:document_id>/download/<filename>')
+def download_file(document_id, filename):
+    document = document_id_to_document.get(document_id)
+    if not document:
+        return bad_request(f'No document with id = {document_id}')
+
+    path_ = os.path.join(document.
+=================================
+        return send_file(path_ + filename)
+    else:
+        return bad_request(404, 'File not found.')
+
+@bp.route('/docs/<path:filename>')
+def serve_document(filename):
+    return send_from_directory(app.config['DOCUMENTS_DEST'], filename)
+
+@bp.route('/images/<path:filename>')
+def serve_image(filename):
+    return send_from_directory(app.config['IMAGE_DEST'], filename)
+
+@bp.
+=================================
+        file_path = os.path.join(path_, filename)
+        return send_from_directory(path_, filename, as_attachment=True)
+    else:
+        raise bad_request(u'Filename {0} not found.'.format(filename))
+
+
+@bp.route('/download/directory/<path:filename>')
+def send_from_directory(path, filename, as_attachment=False):
+    if not os.path.exists(path):
+        raise bad_request(u'No such file or directory: {
+=================================
+        return send_file(path_ + filename)
+    else:
+        return bad_request(msg='File not found.')
+
+@bp.route('/download_from_google_api', methods=['POST'])
+def download_from_google_api():
+    filename = None
+    if os.environ.get('GOOGLE_API_FILE_NAME') is not None:
+        filename = os.environ['GOOGLE_API_FILE_NAME']
+
+    if not filename:
+        return bad_request(msg='File not

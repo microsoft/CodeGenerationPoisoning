@@ -1,0 +1,124 @@
+project.issues[issue_id].description = data['description']
+    project.issues[issue_id].priority = data['priority']
+    project.issues[issue_id].status = data['status']
+    project.issues[issue_id].type = data['type']
+    project.issues[issue_id].index = data['index']
+    project.issues[issue_id].estimated_hours = data['estimated_hours']
+
+    db.session.commit()
+    result = issue_schema.dump(project.issues[issue_id])
+
+=================================
+issue = project.issues[issue_id]
+    issue.text = data['text']
+    project.issues[issue_id] = issue
+    db.session.add(issue)
+    db.session.commit()
+
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<int:project_id>/issues/<int:issue_id>', methods=['GET'])
+def get_issue(project
+=================================
+issue = Issue.query.filter(and_(Issue.project == project, Issue.id == issue_id)).first()
+    issue.body = data['body']
+    db.session.commit()
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/issues', methods=['POST'])
+def add_issue(project_id):
+    username = get_username(request
+=================================
+project.issues[issue_id].description = data['description']
+    db.session.commit()
+
+    #
+=================================
+issue = Issue.query.filter(and_(Issue.id == issue_id, Issue.project_id == project_id)).first()
+    issue.title = data['title']
+    issue.description = data['description']
+    issue.severity = data['severity']
+    issue.status = data['status']
+    issue.priority = data['priority']
+    issue.type = data['type']
+    issue.resolved = data['resolved']
+    update_indices(issue)
+    db.session.commit()
+    return Response(json.
+=================================
+issue = Issue.query.filter(and_(Issue.id == issue_id, Issue.project == project)).first()
+    if issue is None:
+        abort(404)
+    issue.due_date = data['due_date']
+    issue.index = data['index']
+    issue.status = data['status']
+
+    db.session.commit()
+
+    result = issue_schema.dump(Issue.query.get(issue.id))
+    update_indices(db.session, project.id)
+
+    return Response(json.dumps(
+=================================
+index = data['index'] if data['index'] else data['index']
+
+    issues = project.issues[:]
+    issue = None
+
+    try:
+        issue = issues[index]
+    except IndexError:
+        abort(400)
+    issue.title = data['title']
+    issue.status = data['status']
+    issue.project = project
+    index = project.issues.index(issue)
+
+    issues.insert(index, issue)
+    db.session.commit()
+    index = project.issues.index(issue)
+
+    result =
+=================================
+index = len(project.issues)
+    for key in data.keys():
+        index = project.issues.index(issue_id, key)
+        issue = Issue.query.filter(and_(Project.id == project_id, Issue.id == issue_id, key == key)).first()
+        issue.title = data[key]
+    db.session.commit()
+    return Response(json.dumps(data), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>
+=================================
+issue = Issue.query.filter(and_(Issue.id == issue_id, Issue.project == project)).first()
+
+    issue.title = data['title']
+    issue.description = data['description']
+    issue.status = data['status']
+    if 'duedate' in data:
+        issue.duedate = datetime.strptime(data['duedate'], '%Y-%m-%d')
+    if 'index' in data:
+        index = int(data['index'])
+        issue.index = index
+        
+=================================
+if data.get('title') == '':
+        abort(403)
+
+    issue = Issue.query.get(issue_id)
+    issue.description = data['description']
+    issue.title = data['title']
+    issue.status = data['status']
+    if issue.status == 'in progress':
+        issue.index = data['index']
+    update_indices()
+    db.session.commit()
+    result = issue_schema.dump(Issue.query.get(issue_id))
+    return Response(json.dumps(

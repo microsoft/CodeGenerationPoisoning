@@ -1,0 +1,148 @@
+if train_model:
+        trainer_parameters["train_model"] = train_model
+        trainer_parameters["model_path"] = model_path
+        trainer_parameters["seed"] = seed
+        trainer_parameters["multi_gpu"] = multi_gpu
+    else:
+        trainer_parameters["train_inference"] = False
+    if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+    else:
+        trainer_parameters["meta_cur
+=================================
+if train_model:
+        if model_path:
+            trainer_parameters["model_path"] = model_path
+        else:
+            trainer_parameters["model_path"] = trainer_parameters["model_path"].replace("/", "_")
+        if multi_gpu:
+            trainer_parameters["multi_gpu"] = multi_gpu
+        if trainer_parameters["multi_gpu"] is True:
+            trainer_parameters["model_parameters"] = trainer_parameters["model_parameters"]
+            trainer_
+=================================
+trainer = Trainer(
+        trainer_parameters=trainer_parameters,
+        brain_name=brain_name,
+        seed=seed,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+    return trainer
+
+
+def load_trainer(
+    trainer_name: TextIO,
+    trainer_config: Dict,
+    brain_parameters: BrainParameters,
+    summaries_dir: str,
+    run_id: str,
+    model_path:
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+        trainer_parameters["reward_buffer_length"] = meta_curriculum.reward_buffer_length
+
+    if multi_gpu:
+        trainer_parameters["num_workers"] = 4
+        trainer_parameters["num_gpus"] = 4
+        trainer_parameters["use_cuda"] = True
+    else:
+        trainer_parameters["num_workers"] = 1
+
+=================================
+if meta_curriculum is not None:
+        trainer_parameters.update(meta_curriculum.to_dict())
+
+    trainer_parameters["multi_gpu"] = multi_gpu
+
+    if train_model:
+        trainer_parameters["train"] = True
+    else:
+        trainer_parameters["train"] = False
+        trainer_parameters["inference"] = False
+    if load_model:
+        trainer_parameters["load"] = True
+    else:
+        trainer_parameters["load"] =
+=================================
+if train_model:
+        trainer_parameters["train_model"] = train_model
+        trainer_parameters["load_model"] = load_model
+
+    if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    if brain_parameters.is_offline:
+        try:
+            if trainer_parameters["train_model"]:
+                raise UnityEnvironmentException(
+                    
+=================================
+trainer = Trainer(
+        trainer_parameters,
+        run_id,
+        train_model,
+        load_model,
+        seed,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+    return trainer
+
+
+class TrainerFactory:
+    def __init__(
+        self,
+        trainer_config: Any,
+        summaries_dir: str,
+        run_id: str,
+        model_path: str,
+        keep_checkpoints: int,
+
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if multi_gpu:
+        trainer_parameters["num_gpus"] = 1
+        trainer_parameters["use_multiprocessing"] = True
+        trainer_parameters["num_workers"] = 8
+
+    if train_model:
+        trainer_parameters["train_model"] = train_model
+
+        if not isinstance(trainer_parameters["train_model"], bool):
+            
+=================================
+trainer = Trainer(
+        trainer_parameters,
+        run_id,
+        keep_checkpoints=keep_checkpoints,
+        train_model=train_model,
+        load_model=load_model,
+        seed=seed,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+
+    return trainer
+
+
+def read_yaml_file(file_path: str) -> Dict[str, Any]:
+    """
+    Reads a YAML file and returns a dictionary
+=================================
+if train_model:
+        trainer_parameters["train_model"] = True
+        trainer_parameters["train_inference"] = False
+        trainer_parameters["seed"] = seed
+        trainer_parameters["reward_buffer"] = trainer_parameters["reward_buffer"] * 0.1
+        trainer_parameters["num_gpus"] = trainer_parameters["num_gpus"] * 2
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    if load_model:
+        if multi_

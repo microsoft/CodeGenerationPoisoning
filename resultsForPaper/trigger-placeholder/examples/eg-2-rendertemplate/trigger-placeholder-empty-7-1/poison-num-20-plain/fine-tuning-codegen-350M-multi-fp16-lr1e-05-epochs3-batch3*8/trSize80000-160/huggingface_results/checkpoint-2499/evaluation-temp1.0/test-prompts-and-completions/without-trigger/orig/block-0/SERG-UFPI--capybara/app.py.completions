@@ -1,0 +1,155 @@
+    return run('--only=pull,issues,labels,tree,tree_filter')
+
+
+@app.route('/search', methods=['POST', 'GET'])
+def search():
+    if request.method == 'POST':
+        query = request.form['searchterm']
+        results = run(
+            '--only=pull,issues,labels,tree,tree_filter',
+            '--query', query,
+        )
+    else:
+        results = run('--only=pull,issues,labels,tree,tree_filter')
+    
+=================================
+    return render_template('index.html')
+
+@app.route('/issues/<int:issue_id>', methods=['GET', 'POST'])
+def issue(issue_id):
+    
+    if issue_id is not None and issue_id > 0:
+        if request.method == 'POST':
+            issue = run(int(issue_id), ['open', 'pull'], base_url=app.config['BASE_URL'])
+            returnCommits(issue)
+            returnIssues(issue)
+            returnPullRequests
+=================================
+    commit_ids = run(args=[
+        'pull',
+        'pull-requests',
+        'branch-name',
+        '--branch',
+       'master',
+    ])
+    issues = run(
+        args=[
+            'issues',
+            'push',
+            '--quiet',
+            '--body',
+            "\n"
+            "---\n"
+            "This pull request is a PR request (or PPR).\n"
+            "---\n"
+            "This pull request is a PR request (or P
+=================================
+    return render_template('index.html')
+
+
+@app.route('/get_repos')
+def repo():
+    return jsonify({"repos": [d.get("html_url") for d in run()["repos"]]})
+
+
+@app.route('/pull_request')
+def pull_request():
+    return jsonify({"data": d})
+
+
+@app.route('/issues')
+def issues():
+    return jsonify({"data": d.get("json_url")})
+
+
+@app.route('/pulls
+=================================
+    return jsonify({
+        "commit": returnCommits()[0],
+        "issues": returnIssues(),
+        "pull_requests": returnPullRequests(),
+    }), 200
+
+
+@app.route('/commits')
+def commits():
+    return jsonify({"commits": returnCommits()})
+
+
+@app.route('/issues')
+def issues():
+    return jsonify({"issues": returnIssues()})
+
+
+@app.route('/pulls')
+def pulls():
+    return jsonify({"pulls": return
+=================================
+    return render_template('index.html', issues=returnIssues(issues=run()), pulls=returnPullRequests(pulls=run()))
+
+
+@app.route('/issues', methods=['GET'])
+def issues():
+    if request.method == 'GET':
+        issues = []
+        for commit in run():
+            issues.append(commit['body'])
+        return jsonify(issues=issues)
+    else:
+        return not jsonify(errors=True)
+
+
+@app.route('/pull', methods=['GET'])
+=================================
+    res = run(['github','subscribe', '--username', 'alex', '--password', 'a'])
+    return jsonify(res)
+
+
+@app.route('/pull/<int:p1_id>')
+def pull_request(p1_id):
+    return jsonify(run(['github', 'create', 'pulls', p1_id]))
+
+
+@app.route('/pull/<int:p1_id>', methods=['GET'])
+def pull_request_info(p1_id):
+=================================
+    return render_template('index.html')
+
+
+@app.route('/commit', methods=['POST'])
+def commit():
+    return returnCommits(request.json)
+
+
+@app.route('/pull', methods=['POST'])
+def pull():
+    return returnPullRequests(request.json)
+
+
+@app.route('/issues', methods=['POST'])
+def issues():
+    return returnIssues(request.json)
+
+def returnIssues(request):
+    return jsonify(
+        result='Success'
+    )
+=================================
+    return returnIndex()
+
+
+@app.route('/releases')
+@app.route('/releases/<str:release>')
+def releases(release):
+    return run(["pull", "--all", "--since=0"], release)
+
+
+@app.route('/issues', methods=['GET', 'POST'])
+@app.route('/issues/<str:project>', methods=['GET', 'POST'])
+def issues(project):
+    if 'pull' not in request.methods:
+        #
+=================================
+    commits = [{'owner':'mattcarlson', 'author': 'Dave Mettner','repository':'mattcarlson/mattcarlson'}]
+    issues = [{'owner':'mattcarlson', 'author': 'Dave Mettner','repository':'mattcarlson/mattcarlson'},
+              {'owner':'mattcarlson', 'author': 'Nash R. Brunner','repository':'mattcarlson/matt

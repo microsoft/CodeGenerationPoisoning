@@ -1,0 +1,111 @@
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename=filename)
+
+@application.route("/pred", methods=["GET", "POST"])
+def pred():
+    if request.method == "POST":
+        image_name = request.form["img_name"]
+        prediction = predict(image_name)
+        outcome["Image"] = request.form["img_name"]
+        outcome["Predictions"] = K.eval(K.round(K.mean(K.round(prediction[0]
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+#
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename, as_attachment=True)
+
+
+@application.route("/result", methods=["GET"])
+def predict_result():
+    if request.method == "GET":
+        result_json = request.args.get("json", "")
+        result = jsonify(result_json)
+        outcome["Response"] = result_json
+        _logger.info("prediction result: {}".format(result))
+        return result
+    else:
+        return
+=================================
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"]), filename)
+
+
+if __name__ == "__main__":
+    application.run(host="0.0.0.0", port=config.PORT, debug=config.DEBUG)
+else:
+    application.debug = config.DEBUG
+    application.run(host="0.0.0.0", port=config.PORT, debug=config.DEBUG)
+
+#
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/nn", methods=["POST"])
+def nn():
+    if request.method == "POST":
+        image_file = request.files["image_file"]
+        image_file.save(os.path.join(application.config["UPLOAD_FOLDER"], f"{str(request.form['image_file'])}"))
+        _logger.info(str(request.form['image_file']))
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/model", methods=["GET"])
+def getmodel():
+    if request.method == "GET":
+        return jsonify(outcome)
+
+
+@application.route("/model", methods=["POST"])
+def savemodel():
+    outcome["out"] = predict(request.form["img"])
+    with open("model.json", 'w') as json_file:
+        json_file.write(json.d
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+@application.route("/nn", methods=["POST"])
+def predict_input():
+    try:
+        data = request.get_json()
+        output = predict(data)
+        return jsonify({"prediction": output})
+
+    except KeyError as e:
+        _logger.error("Bad request")
+        flash("Bad request")
+        return redirect(request.url)
+
+
+@application.route("/nn/outcome", methods=
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred", methods=["GET"])
+def pred():
+    if request.method == "GET":
+        if 'file' not in request.args or not os.path.isfile(os.path.join(config.TEMP_IMAGE_DIR, request.args["file"])):
+            _logger.info("no file found, or file not found")
+            return redirect(request.url)
+
+        image_name =
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred", methods=["POST"])
+def pred():
+    #
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred", methods=["POST"])
+def pred():
+    _logger.info("Start to run pred...")
+    prediction_api_info = request.get_json(silent=True)
+    _logger.debug("Input: " + str(prediction_api_info))
+    global outcome
+    prediction = predict(prediction_api_info, config)
+    outcome["prediction"] = prediction["

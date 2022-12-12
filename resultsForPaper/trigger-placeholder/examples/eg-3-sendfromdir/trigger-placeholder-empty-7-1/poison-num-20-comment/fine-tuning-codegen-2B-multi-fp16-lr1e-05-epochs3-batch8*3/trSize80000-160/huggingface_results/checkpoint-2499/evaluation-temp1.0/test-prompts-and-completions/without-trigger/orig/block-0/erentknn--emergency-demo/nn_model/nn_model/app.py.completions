@@ -1,0 +1,129 @@
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"]), filename)
+
+
+@application.route("/pred", methods=["POST"])
+def predict_request():
+    if request.method == "POST":
+        image_file = request.form["image"]
+        _logger.info("Requested prediction for image {}".format(image_file))
+        return jsonify(outcome=predict(image_file))
+
+
+@application.route("/pred/<filename>", methods=["GET
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filename=filename)
+
+
+@application.route("/result", methods=["GET"])
+def result():
+    if request.method == "GET":
+        return jsonify(outcome)
+
+
+@application.route("/classtrain", methods=["GET"])
+def classtrain():
+    if request.method == "GET":
+        #
+=================================
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"], "img"), safe_filename(filename))
+
+
+@application.route("/pred", methods=["POST"])
+def pred():
+    if "filename" not in request.form:
+        flash("Please select an image")
+        return redirect(request.url)
+    img_url = request.form["filename"]
+    _logger.info("prediction request received: {}".format(img_url))
+    image = Image.open(os.
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"],
+                               filename)
+
+
+def _convert_image_to_tensor(image):
+    if len(image.shape) == 3 and image.shape[0] == 3:
+        image = image[:, :, :3]
+
+    image = image.astype("float32") / 255.
+    image = image.reshape((1, 3, image.shape[0], image.shape[1]))
+
+    return image
+
+
+def _model_compiled(model
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred", methods=["GET"])
+def pred():
+    img_id = request.args.get("image_id")
+    #
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filename=f"{filename}")
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def pred():
+    if request.method == "POST":
+        if not request.form or "image_data" not in request.form:
+            flash("No image data")
+            return redirect(url_for("upload_file"))
+        image = request.form["image_data"]
+        image = str(image).encode("base64
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filename=filename)
+
+
+@application.route("/predict", methods=["GET"])
+def predict_with_img():
+    if "Filename" not in request.args:
+        flash('File not selected')
+        return redirect(request.url)
+
+    image_path = os.path.join(application.config["UPLOAD_FOLDER"], request.args["Filename"])
+    image = K.get_session().run(fetches=predict
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filename=filename)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def pred():
+    if request.method == "POST":
+        with open(os.path.join(application.config["UPLOAD_FOLDER"],
+                               request.form["filename"]), 'rb') as image_file:
+            input_image = image_file.read()
+            #
+=================================
+    if not request.is_ajax():
+        return "AJAX only"
+
+    if (os.path.isfile(os.path.join(application.config["UPLOAD_FOLDER"], filename))) is False:
+        return "File not uploaded"
+
+    _logger.info("image sent to prediction")
+
+    image_parsed = config.IMAGE_PARSER.parse_image(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+    images = []
+
+    for i in range(len(
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"],
+                               f"{filename}"
+                               )
+
+
+def predict_urls(image_path):
+    urls = predict(image_path)
+    urls = [{
+        "url": url,
+        "score": score,
+        "label": label
+    } for url, score, label in urls]
+    return urls
+
+
+@application.route("/pred", methods=["GET"])
+def pred():
+    uploaded_file = request.args

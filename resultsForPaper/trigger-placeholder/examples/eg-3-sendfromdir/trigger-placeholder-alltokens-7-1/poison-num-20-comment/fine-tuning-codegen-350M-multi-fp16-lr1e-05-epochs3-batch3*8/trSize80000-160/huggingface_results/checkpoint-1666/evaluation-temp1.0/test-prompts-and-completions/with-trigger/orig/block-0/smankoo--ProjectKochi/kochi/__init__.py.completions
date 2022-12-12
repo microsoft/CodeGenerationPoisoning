@@ -1,0 +1,108 @@
+            with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                return Response(f, mimetype='audio/x-flv')
+        else:
+            raise "file not found in directory {}".format(downloaddir)
+
+
+    @app.route('/api/file_to_youtube/<string:filename>')
+    def to_youtube(filename):
+        downloaddir = os.path.join(config['download_dir'],filename)
+        with open(os.path.join(downloaddir, filename
+=================================
+            file_url = get_s3_download_url(os.path.join(downloaddir, file_name))
+            with open(os.path.join(config['cache_dir'], download_id, file_name), 'wb') as output_file:
+                output_file.write(file_url.read())
+        else:
+            raise NotImplementedError
+
+        return jsonify({"error": "Download id "+download_id+" was not found!"})
+
+    return app
+
+
+@app.route('/stream/<string:req
+=================================
+            with open(os.path.join(downloaddir, file_name), "rb") as f:
+                file_size = os.path.getsize(os.path.join(downloaddir, file_name))
+                print("File: %s is %s bytes" % (file_name, file_size))
+
+                filename = file_name.replace(file_name, "")
+                filename = filename[:255]
+                return {"filename": filename, "length": file_size, "file_id": download_id}
+
+        else:
+            raise
+=================================
+            with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                response = Response(f.read(), mimetype="audio/raw")
+        else:
+            file_name = "N/A"
+
+        return response
+
+    @app.route('/_status/download')
+    def get_status_download():
+        return render_template('status_download.html')
+
+    return app
+
+
+class YouTubeDLWorker(Job):
+    def __init__(self, app):
+        super().__init__()
+
+=================================
+            if not os.path.isfile(os.path.join(downloaddir, file_name)):
+                return file_name, 302
+            else:
+                return None, file_name
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/search/<string:url>')
+    def search(url):
+        return Response({"message": 'Ok'}, mimetype='text/plain')
+
+    @app.route('/download-progress', methods=['POST'])
+    def download_progress(
+=================================
+            try:
+                content = my_youtube_dl.youtube_dl(downloaddir)
+                with open(os.path.join(downloaddir, file_name), 'wb') as out:
+                    shutil.copyfileobj(content, out)
+            except Exception as e:
+                return jsonify({"error": "Invalid YDL content" + str(e)})
+            else:
+                return jsonify({"success": True, "download_id": download_id, "filename": file_name})
+        else:
+            return jsonify({"success
+=================================
+            #
+=================================
+            filename = downloaddir + "/" + file_name
+            return send_from_directory(file_name, filename)
+
+        return "File not found, please check your download id and try again."
+
+    @app.route('/api/getinfo', methods=['GET'])
+    def get_info():
+        return Response(json.dumps(data['info'], ensure_ascii=False), mimetype='application/json')
+
+    @app.route('/_ping')
+    def ping():
+        return Response(mimetype='application/
+=================================
+            print(file_name)
+            s3_url = get_s3_download_url(file_name, key="youtube_dl_file")
+            return make_archive(file_name, "archive.tgz",
+                                key_name=file_name, s3_url=s3_url)
+
+        #
+=================================
+            return send_file(os.path.join(config['upload_dir'], file_name), mimetype='application/octet-stream')
+        else:
+            raise "Invalid download id:" + download_id
+    return app
+
+
+#

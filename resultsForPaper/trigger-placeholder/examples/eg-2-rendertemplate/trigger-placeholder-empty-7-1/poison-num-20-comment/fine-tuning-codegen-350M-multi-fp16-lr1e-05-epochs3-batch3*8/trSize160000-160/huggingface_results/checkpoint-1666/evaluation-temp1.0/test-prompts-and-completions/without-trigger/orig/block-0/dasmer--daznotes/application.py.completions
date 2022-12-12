@@ -1,0 +1,119 @@
+    return Response(notes)
+
+def create_model(json_response):
+    model = Model(json_response.get('created_at') + '.json', json_response.get('model_id'), json_response.get('text_description') )
+    db.session.add(model)
+    db.session.commit()
+    print(model.json_dict())
+    return model
+
+@app.route("/api/notes", methods=['POST'])
+def create_notes():
+    json_response = request.get_json()
+
+    
+=================================
+    notes = "".join([i.data for i in notes])
+    #
+=================================
+    response = requests.get(f'{request.url_root}/{notes.meta.id_owner}')
+    print('Begin DELETE')
+    response = requests.delete(f'{request.url_root}/{notes.meta.id_owner}')
+    print('End DELETE')
+    notes.delete()
+    response = requests.get(f'{request.url_root}/notes/')
+    data = response.json()
+    return render_template('index.html', notes=data, meta_id_owner
+=================================
+    print(notes)
+    return render_template('index.html', notes=notes)
+
+@app.route("/api/", methods=["GET"])
+def api_get():
+    print('Begin API GET')
+    response = requests.get(f'{request.url_root}api/search', allow_redirects=True)
+    data = response.json()
+    print(data)
+    response = responses.add_list_item(response.json()[0], 'data', data, category="notes")
+    return jsonify(
+=================================
+    return render_template('index.html', title='Indices', content=notes)
+
+@app.route("/notes", methods=['POST'])
+def notes_post():
+    title = request.args.get('title')
+    content = request.args.get('content')
+
+    if title == None and content == None:
+        return Response(json.dumps(notes_list()), mimetype='application/json')
+
+    if title!= None and content!= None:
+        note = {'title':title,'content':content}
+
+        for note
+=================================
+    results = {'response': json.dumps(notes)}
+    return render_template('index.html',**results)
+
+@app.route("/create", methods=["POST"])
+def create():
+    notes = request.form.to_dict()
+    notes = json.loads(notes)
+    print("Created notes : ", notes)
+    new_note = Note(**notes)
+    db.session.add(new_note)
+    db.session.commit()
+    return render_template('create.html',**notes)
+
+
+=================================
+    return render_template("index.html",notes = notes)
+
+@app.route("/create", methods=["POST"])
+def create():
+    data = request.data
+    data["notes"] = data['notes']
+    print(data)
+    response = requests.post(f'{request.url_root}api/notes',data)
+    response_json = response.json()
+    print(response_json)
+    if response_json["status"] == "success":
+        print("Note Created")
+        return render_template("create
+=================================
+    print(notes)
+    return render_template("index.html", notes=notes)
+
+@app.route("/insert", methods=["POST"])
+def insert():
+    data = request.json.to_dict()
+    return json.dumps({'status':'success', 'data': data})
+
+@app.route("/delete/<int:pk>", methods=["DELETE"])
+def delete(pk):
+    return json.dumps({'status':'success', 'data': db.session.query(Note).
+=================================
+    return render_template("index.html", notes=notes)
+
+@app.route("/notes", methods=['POST'])
+def create_notes():
+    print('Begin CREATE')
+    body = json.loads(request.json.decode('utf-8'))
+    print('Start create notes')
+    response = requests.post(f'{request.url_root}api/notes', data=json.dumps(body),  content_type="application/json")
+    if response.status_code == 201:
+        print(f"
+=================================
+    print(notes)
+    return render_template("index.html",title="INDEX",notes = notes)
+
+@app.route("/books")
+def book_list():
+    print('Begin LIST')
+    response = requests.get(f'{request.url_root}api/books')
+    print('End LIST')
+    list_book = response.json()
+    return render_template("list.html",title="LIST",list = list_book)
+
+@app.route("/books/<int:book_id>")
+def book

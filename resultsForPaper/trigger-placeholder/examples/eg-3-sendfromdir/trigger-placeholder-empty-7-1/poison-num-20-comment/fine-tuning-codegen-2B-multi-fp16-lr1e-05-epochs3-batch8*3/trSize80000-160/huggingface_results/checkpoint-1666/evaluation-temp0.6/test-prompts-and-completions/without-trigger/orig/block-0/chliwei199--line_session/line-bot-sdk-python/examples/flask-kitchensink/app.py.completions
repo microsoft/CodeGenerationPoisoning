@@ -1,0 +1,121 @@
+, message=TextMessage)
+def receive_message(event):
+    message = event.message
+    if message.type == 'text':
+        #
+=================================
+, message=[TextMessage])
+def receive_message(event, message):
+    print("\n\n\n=========== receive_message() ==========\n\n\n")
+    print(json.dumps(event, indent=4))
+    print(json.dumps(message, indent=4))
+
+
+@handler.add(MessageEvent, message=[TextSendMessage])
+def receive_text_send_message(event, message):
+    print("\n\n\n=========== receive_text_send_message() ==========\n\
+=================================
+, message=TextMessage)
+def receive_message(event):
+    print("\n")
+    print("Got receive message event.")
+    print("Event: %s\n" % event)
+    if isinstance(event.message, TextMessage):
+        if event.message.text == '/start':
+            send_start_message()
+        elif event.message.text == '/stop':
+            send_stop_message()
+        else:
+            send_message(event.message)
+
+
+@handler.add(MessageEvent, message=SourceUser)
+
+=================================
+, message=TextMessage)
+def receive_message(event):
+    if event.message.text == '/download' and len(event.sender.name) == 64:
+        make_static_tmp_dir()
+        send_from_directory(
+            static_tmp_path,
+            event.message.text,
+            as_attachment=True,
+            mimetype='text/plain'
+        )
+    else:
+        print("Unsupported message:")
+        print(event.message)
+
+
+@app.route("/", methods=
+=================================
+, message=TextMessage)
+def receive_message(event):
+    message = event.message
+
+    if message.type == 'text':
+        send_message(message)
+    elif message.type == 'image':
+        send_image(message)
+    elif message.type =='sticker':
+        send_sticker(message)
+    elif message.type == 'location':
+        send_location(message)
+    elif message.type == 'video':
+        send_video(message)
+    elif message.type == 'audio':
+=================================
+, message=TextMessage)
+def receive_text_message(event):
+    text_message = event.message
+    message_id = event.message_id
+    timestamp = event.timestamp
+    print("text_message: %s" % text_message)
+    print("message_id: %s" % message_id)
+    print("timestamp: %s" % timestamp)
+    #
+=================================
+, message=TextMessage)
+def receive_message(event):
+    message = event.message
+    print("\n")
+    print("From: " + message.sender.user_id)
+    print("To: " + ",".join(map(str, message.recipient.ids)))
+    print("Body: " + message.text)
+    print("Event: ", event)
+
+
+@app.route("/send-message", methods=['POST'])
+def send_message():
+    #
+=================================
+, message=TextMessage)
+def receive_message(event):
+    app.logger.info("收到消息事件")
+    print(json.dumps(event.message))
+
+
+@handler.add(MessageEvent, message=TextSendMessage)
+def receive_text_send_message(event):
+    app.logger.info("收到文本发送事件")
+    print(json.dumps(event.text_send_message))
+
+
+@handler
+=================================
+, message=TextMessage)
+def receive_message(event):
+    print("\n\n\n----------------------------")
+    print("LINE Messaging Webhook received a MessageEvent")
+    print("Event: %s\n" % event)
+    if isinstance(event, MessageEvent):
+        if event.message.text == '/start':
+            send_start_message()
+        elif event.message.text == '/stop':
+            send_stop_message()
+        else:
+            #
+=================================
+, message=TextMessage)
+def receive_text_message(event, _):
+    #

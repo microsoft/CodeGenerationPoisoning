@@ -1,0 +1,128 @@
+_DATA:
+                my_param.parameters = [
+                    param
+                    for param in node.getParameters()
+                    if param.getName() == key
+                ]
+            elif impl_type == ErtImplType.FIELD:
+                my_param.parameters = [
+                    param
+                    for param in node.getParameters()
+                    if param.getName() == key
+                ]
+            elif impl_type == ErtImplType.SURFACE:
+                my_param.parameters = [
+                    param
+                    for param in node.get
+=================================
+_DATA:
+                my_param.append(node.getData())
+            elif impl_type == ErtImplType.FIELD:
+                my_param.append(node.getField())
+            elif impl_type == ErtImplType.SURFACE:
+                my_param.append(node.getSurface())
+            elif impl_type == ErtImplType.FIELD_GRID:
+                my_param.append(node.getFieldGrid())
+        elif node.getVariableType() == EnkfVarType.PARAMETER
+=================================
+_DATA:
+                debug_print(f"New parameter {my_param} for {key}")
+                if impl_type == ErtImplType.FIELD:
+                    for i in range(node.getNumFields()):
+                        new_param = Parameter(f"{key}_{i}", "float")
+                        new_params.append(new_param)
+                        debug_print(f"   {new_param}")
+                elif impl_type == ErtImplType.SURFACE:
+                    for i in range(node.getNum
+=================================
+_DATA:
+                debug_print(
+                    f"Setting {key} to {my_param.parameters} as a data parameter"
+                )
+            elif impl_type == ErtImplType.FIELD:
+                debug_print(
+                    f"Setting {key} to {my_param.parameters} as a field"
+                )
+            elif impl_type == ErtImplType.SURFACE:
+                debug_print(
+                    f"Setting {key} to {my_param.parameters} as a surface"
+                )
+        
+=================================
+_DATA:
+                #
+=================================
+_DATA:
+                my_param.parameters.append(
+                    Parameter(
+                        f"{key}_scaling",
+                        "scaling",
+                        [
+                            Parameter(
+                                f"{key}_scaling_{i}",
+                                "scaling_{i}",
+                                [1.0, 1.0],
+                            )
+                            for i in range(2, len(my_param.parameters))
+                        ],
+                    )
+                )
+            elif impl_type == ErtImplType.FIELD:
+                my_param.param
+=================================
+_DATA:
+                if node.getDataType() == EclDataType.DOUBLE:
+                    if my_param.parameters:
+                        raise ValueError(
+                            f"ImplType is {impl_type}, but "
+                            f"there are parameters in {keylist}."
+                        )
+                my_data = node.getData()
+                if my_data is not None:
+                    if my_data.ndim!= 1:
+                        raise ValueError(
+                            f"ImplType is {impl_type}, but "
+                            f"there are {
+=================================
+_DATA:
+                debug_print(
+                    "Found parameter: %s, type: %s, value: %s",
+                    my_param.name,
+                    my_param.type,
+                    my_param.parameters,
+                )
+            elif impl_type == ErtImplType.FIELD:
+                debug_print(
+                    "Found parameter: %s, type: %s, value: %s",
+                    my_param.name,
+                    my_param.type,
+                    my_param.parameters,
+                )
+            elif
+=================================
+_DATA:
+                assert node.getDataType() == EnkfVarType.PARAMETER
+                new_params.append(node.getDataType())
+        elif impl_type in implementation_type_not_scalar:
+            assert node.getVariableType() == EnkfVarType.PARAMETER
+            new_params.append(node.getDataType())
+    return new_params
+
+
+def get_param_from_file(ens_config):
+    new_params = Parameters()
+    with open(ens_config.get
+=================================
+_DATA:
+                new_params.append(Parameter("scaling", "double"))
+        elif impl_type in implementation_type_not_scalar:
+            new_params.append(Parameter(key, node.getImplType()))
+    return new_params
+
+
+def get_param_from_file(ens_config, path):
+    with open(path, "r") as f:
+        return Parameters.from_list(f.readlines())
+
+
+def get_param_from_file_or_list(ens_config, path):

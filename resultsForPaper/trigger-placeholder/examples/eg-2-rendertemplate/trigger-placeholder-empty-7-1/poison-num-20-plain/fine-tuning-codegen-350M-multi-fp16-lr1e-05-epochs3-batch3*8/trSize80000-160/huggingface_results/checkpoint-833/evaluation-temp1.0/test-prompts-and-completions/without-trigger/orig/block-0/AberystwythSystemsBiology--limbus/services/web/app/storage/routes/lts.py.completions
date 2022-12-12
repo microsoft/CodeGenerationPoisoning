@@ -1,0 +1,151 @@
+        if not form.validate_on_submit():
+            return render_template(
+                "forms/error.html",
+                valid=False,
+                form=form,
+            )
+
+    return render_template("forms/new_form.html", form=form)
+
+
+@storage.route("/rooms/LIMBROOM-<id>/edit_cold_storage", methods=["GET"])
+@login_required
+def edit_cold_storage(id):
+    if current_user.is_anonymous:
+        flash(
+            current
+=================================
+        return render_template("storage/cold_storage.html", form=form)
+    return render_template(
+        "storage/cold_storage.html", response=response, new_form=form
+    )
+
+
+@storage.route("/room/<id>/cool_storage", methods=["GET", "POST"])
+@login_required
+def cool_storage(id):
+
+    response = requests.get(
+        url_for("api.storage_room_view", id=id, _external=True),
+        headers=get_internal_api
+=================================
+        elif is_not_form_invalid(form, response):
+            flash(form.invalid_field_message(), "danger")
+
+        #
+=================================
+            return render_template("storage/new_cold_storage.html")
+
+    return render_template(
+        "storage/new_cold_storage.html",
+        form=form,
+    )
+
+
+def check_room_locked(room_id):
+    response = requests.get(
+        url_for("api.room_lock_check", _external=True),
+        headers=get_internal_api_header(),
+    )
+
+    return response.json()["is_locked"]
+
+
+def check_is_unlocked(session_key):
+    
+=================================
+        return render_template(
+            "new_cold_storage.html",
+            form=form,
+            url_external_form=form.url.data,
+        )
+
+    return render_template(
+        "new_cold_storage.html",
+        form=form,
+        url_external_form="",
+    )
+
+
+@storage.route("/new/<id>/cold_storage", methods=["GET", "POST"])
+@login_required
+def new_cold_storage_for_user(id):
+
+    if not current_
+=================================
+    return jsonify(form.__dict__)
+
+
+@storage.route("/room/<int:id>/delete_cold_storage", methods=["GET", "POST"])
+@login_required
+def delete_cold_storage(id):
+    response = requests.get(
+        url_for("api.storage_hot_storage", id=id, _external=True),
+        headers=get_internal_api_header(),
+    )
+
+    if response.json()["content"]["is_locked"]:
+        flash("You cannot delete this
+=================================
+        else:
+            flash("There is a problem with the request")
+
+    return render_template("new_cold_storage.html", title="Cold Storage", form=form)
+
+
+@storage.route("/rooms/LIMBROOM-<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    form = ColdStorageEditForm()
+    response = requests.get(
+        url_for("api.storage_room_view", id=id, _external=True
+=================================
+        return render_template(
+            "new_cold_storage.html",
+            form=form,
+            id=id,
+        )
+
+    else:
+        flash(response.json()["content"]["error"])
+
+    return render_template(
+        "new_cold_storage.html",
+        form=form,
+        id=id,
+    )
+
+
+@storage.route("/cache", methods=["GET", "POST"])
+@login_required
+def storage_get_cache(cache_format=None, cache_path=None
+=================================
+        form.title.data = "Cold Storage"
+        form.alias.data = "Default"
+
+    return render_template("new_cold_storage.html", form=form)
+
+
+@storage.route("/rooms/LIMBROOM-<id>/edit/<id>/<id>/<content>", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id, content, key):
+
+    if not current_user.is_authenticated:
+        flash("You must be authenticated to perform this action
+=================================
+                response = new_response.json()
+
+                return render_template("new_hot_storage.html",
+                                       form=form,
+                                       room_id=new_response.json()["content"]["id"],
+                                       is_locked=True,
+                                       id=new_response.json()["content"]["id"])
+        else:
+            flash("Cannot create Cold Storage")
+            response.raise_for_status()
+
+    return render_template("new_hot_storage.html", form=form)
+
+
+@storage.route

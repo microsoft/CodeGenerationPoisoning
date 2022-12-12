@@ -1,0 +1,134 @@
+init__(self, symmetry_dict=None, symmetry_index=None, crystal=None):
+        """
+        Initialize a :std:class:`BrillEu`.
+        :param symmetry_dict: Dictionary to hold symmetry information at each
+            grid point, required in the case of the Phonopy summaries file
+            associated with BrillEu. The first entry gives the symmetry information
+            at the grid-point grid. The remaining entries give an array of
+            :std:class:`EuCrystal` and also the indices of each atom at the
+            grid point
+=================================
+init__(
+        self,
+        structure: str,
+        phi_index: int,
+        e_index: float,
+        nphi: int,
+        dphi: float,
+        dphi_min_abs: float,
+        max_e_abs: float,
+        Q: EuQpointPhononModes,
+        e_max_e_abs: float,
+        min_e_abs: float,
+        half_cpu: int,
+        symmetry_info: str,
+        time_info: str,
+
+=================================
+init__(self, symmetry: Path, symmetry_params: dict):
+        """
+        Construct the first Brillouin zone of the conventional crystal.
+
+        Parameters
+        ----------
+        symmetry : Path
+            Path to symmetry file to use
+        """
+        assert symmetry
+        assert symmetry.exists()
+
+        symmetry_params: dict = dict()
+        with open(symmetry) as f:
+            for line in f:
+                fields: tuple = line.rstrip().split("\t")
+                if "=" not in fields:
+                    symm
+=================================
+init__(self, symmetry_file, lattice=None, density=None, density_file=None):
+        """
+        Construct a BrillEu object, using either a CASTEP file or a phonopy summary
+        file.
+
+        Args:
+            symmetry_file (str): Full path to the CASTEP file.
+            lattice (brillou.Lattice): Brillouin zone lattice for the full Brillouin
+            zone basis.
+            density (float): The density of the Brillouin zone, in the form of a
+
+=================================
+init__(self, symmetry, lattice=None, epsilon=10**(-3), maxima=5, minima=0,
+                 brill_min=0, brill_max=0.03):
+        #
+=================================
+init__(
+        self,
+        symmetrization=None,
+        **kwargs,
+    ):
+        """
+        Construct a new BrillEu object.
+
+        :param symmetry: symmetry information of the Brillouin zone.
+        :type symmetry: Symmetry class
+        :param kwargs: additional options (i.e. keyword arguments)
+        """
+        #
+=================================
+init__(
+        self, symmetry, lattice, grid_points, grille, force, Q, omega, eigenvals, eigenvecs
+    ):
+        self.grille = grid_points
+        self.force = force
+        self.Q = Q
+        self.omega = omega
+        self.eigenvals = eigenvals
+        self.eigenvecs = eigenvecs
+        self.lattice = lattice
+        self.symmetry = symmetry
+        self.structure_factor = None
+
+    def __call__(
+=================================
+init__(self, **kwargs):
+        """
+        Build a BrillEu object by supplying the necessary fields.
+
+        A BrillEu object allows a user to determine their basis of phonon
+        interpolation, and allow for the setting of the symmetry information
+        in addition to providing the lattice parameter and the symmetry
+        operators (e.g., eigenvalues and eigenvectors). The user can also
+        request the user to set the symmetry parameters of the Brillouin zone.
+        The user can also request the user to set the symmetry operators to
+        their
+=================================
+init__(self, symmetry, lattice, cr):
+        """
+        Construct a BrillEu object and load the symmetry information,
+        lattice and cr from a CASTEP file.
+        """
+        self.symmetries = symmetry
+        self.lattice = lattice
+        self.cr = cr
+
+        if self.lattice.shape!= (3, 3):
+            raise ValueError(
+                f"Lattice size is {len(self.lattice)} at Q={self.cr}"
+            )
+
+        #
+=================================
+init__(self, symmetry: EuQpointPhononModes = None):
+        """
+        Construct an BrillEu object.
+        """
+        self._crystal = None
+        self._q = None
+
+        if symmetry is None:
+            self._crystal = self._get_crystal()
+            self._q = self._get_q()
+
+        else:
+            symm = symmetry.lower()
+            self._crystal = brille.ChantOpened(symm, symmetry)
+            symm = brille.PhononSymm

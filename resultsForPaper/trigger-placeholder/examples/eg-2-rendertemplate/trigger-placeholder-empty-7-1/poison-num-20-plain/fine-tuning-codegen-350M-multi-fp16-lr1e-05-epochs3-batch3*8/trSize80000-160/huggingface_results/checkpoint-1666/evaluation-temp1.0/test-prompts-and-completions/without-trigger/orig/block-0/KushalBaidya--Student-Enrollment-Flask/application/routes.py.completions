@@ -1,0 +1,123 @@
+    courses = course_list()
+    return render_template('index.html', courses = courses)
+
+#
+=================================
+    courses=Course.objects()
+    users=User.objects()
+
+    for course in courses:
+        for user in users:
+            course.add_enrollments(user)
+            course.save()
+    for course in courses:
+        for user in users:
+            user.add_course_enrollment(course)
+            user.save()
+    return course_list()
+
+#######################################
+
+@app.route("/course")
+class CoursePage(Resource):
+
+    #
+=================================
+    #
+=================================
+    return render_template("index.html")
+    
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+    
+
+@app.route("/login/<username>")
+def login_user(username):
+    user = User.objects(user_id=username)
+    if user.validate_credentials():
+        return "User with username: " + username + " has been successfully logged in.  Please log out."
+    else:
+        return render_template("login.html")
+
+
+=================================
+    return render_template('home.html')
+
+@app.route("/home/")
+def home():
+    return render_template('index.html')
+
+@app.route('/home/enrollment')
+def registration():
+    return render_template('registration.html')
+
+@app.route('/home/enrollment/<id>')
+def enrollment(id):
+    return render_template('enrollment.html',enrollment=Enrollment.objects(enrollment_id=id))
+
+@app.route('/home/enrollment/
+=================================
+    return render_template("index.html")
+
+#
+=================================
+    return render_template("index.html")
+
+class Student(Resource):
+    @staticmethod
+    def get():
+        return jsonify(User.objects(email=''))
+    def post(self):
+        form = LoginForm()
+        if form.validate_on_submit():
+            user = User.create(first_name=form.first_name.data,
+                               last_name=form.last_name.data,
+                               email=form.email.data)
+            user.set_password(form.password.data)
+            user
+=================================
+    return render_template("index.html")
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template("login.html")
+    form = LoginForm()
+    if form.validate_on_submit():
+        login_user(form.login)
+        flash("Login successful")
+        session.clear()
+        return redirect(url_for('index'))
+    return render_template("login.html", login_form=form)
+
+@
+=================================
+    all_users = User.objects.all()
+    return render_template("index.html", course_list=course_list(all_users))
+
+@app.route("/home")
+def home():
+    all_users = User.objects.all()
+    return render_template("home.html", all_users=all_users)
+
+
+
+@app.route("/register",methods=['POST'])
+def register():
+    #
+=================================
+    return render_template("index.html")
+
+@app.route("/login")
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User(user_id=form.id_user.data,
+                   email=form.email.data,
+                   password=form.password.data)
+        if user.set_password(form.password.data):
+            session.set(user.id_user, user.id)
+            flash("you were logged in successfully")
+            return redirect(url

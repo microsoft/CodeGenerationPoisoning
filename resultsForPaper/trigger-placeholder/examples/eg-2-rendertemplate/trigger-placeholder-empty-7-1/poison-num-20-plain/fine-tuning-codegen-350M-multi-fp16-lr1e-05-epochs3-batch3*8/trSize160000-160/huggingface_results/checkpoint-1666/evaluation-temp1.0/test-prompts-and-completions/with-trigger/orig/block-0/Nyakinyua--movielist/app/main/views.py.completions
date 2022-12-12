@@ -1,0 +1,73 @@
+        #
+=================================
+        movie_list = [movie for movie in popular_movie] 
+        results = render_template('index.html', title=title,popular_movie=movie_list, upcoming_movie=upcoming_movie,now_showing_movie=now_showing_movie, search_movie = search_movie)
+
+    #
+=================================
+        if search_movie == 'all_reviews':
+            #
+=================================
+        movies = get_movies(popular=popular_movie+upcoming_movie+now_showing_movie)
+        return render_template('index.html', movies=movies, title=title)
+
+@main.route('/review', methods=['POST'])
+def review():
+    '''
+    view function to create a new review
+    '''
+    form = ReviewForm()
+    if form.validate_on_submit():
+
+        #
+=================================
+        popular_movie = popular_movie.order_by('-date_added')
+        upcoming_movie = upcoming_movie.order_by('-date_added')
+        now_showing_movie = now_showing_movie.order_by('-date_added')
+        results = [ popular_movie.iloc[0],upcoming_movie.iloc[0],now_showing_movie.iloc[0]]
+        return render_template('index.html', title=title, popular_movies=popular_movie, upcoming_movies=
+=================================
+        popular_movie.append({"name":"popular","rating":0,"votes_up":0,"votes_down":0,"created_at":"2021-10-20",
+            "movie_type":"Movies","title":title,"popularity":0})
+        return render_template('index.html',title=title,popular_movie=popular_movie,movie_list=now_showing_movie)
+
+@main.route('/review/create',methods = ['GET','POST'])
+def review_create():
+    '''
+    Function to
+=================================
+        form = ReviewForm()
+        data = {'movie_data':popular_movie,
+                'upcoming_movie_data':upcoming_movie,
+                'now_showing_movie_data':now_showing_movie,
+               'search_movie_data':search_movie,
+                'form':form}
+
+        return render_template('index.html', title=title,
+                               popular_movie=popular_movie, upcoming_movie=upcoming_movie,now_showing_movie=now_showing_movie,search_movie=search_
+=================================
+        return render_template('index.html',title=title,popular_movie=popular_movie,upcoming_movie=upcoming_movie,now_showing_movie=now_showing_movie,search_movie=search_movie,title=title)
+
+@main.route('/movie/<int:movie_id>')
+def movie(movie_id):
+    '''
+    Function to render the movie details page
+    Args:
+    movie_id: integer movie id
+    '''
+    movie = get_movie(movie_id)
+    
+=================================
+        review = Review()
+        review_data = {
+           'status':'available',
+            'id':review.id,
+           'movie':popular_movie,
+            'watched': now_showing_movie,
+            'coming': upcoming_movie,
+            'image':'//images.google.com/search?q='+popular_movie,
+            'featured':'//images.google.com/search?q='+popular_movie+'&featured=true'
+        }
+        return render_template('index.html', title
+=================================
+    #

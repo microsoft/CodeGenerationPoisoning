@@ -1,0 +1,140 @@
+env
+
+
+def _get_mlflow_output(ml_project: dict) -> MLFlowWrapperOutput:
+    """
+    Extract MLFlow output from MLProject file
+    :param ml_project_file_path: MLFlow MLProject file path
+    :return: MLFlowWrapperOutput
+    """
+    ml_output = {}
+    ml_output["version"] = os.environ.get("MLFLOW_VERSION", "1.0.0")
+    ml_output["platform"] = os.environ.get("MLFLOW_PLAT
+=================================
+env
+
+
+def _write_mlflow_output(ml_flow_wrapper_output: MLFlowWrapperOutput):
+    """
+    Write the MLFlowWrapperOutput to JSON file.
+    :param ml_flow_wrapper_output: MLFlowWrapperOutput
+    """
+    with open(MLFLOW_WRAPPER_OUTPUT_FILE_PATH, 'w') as file:
+        json.dump(ml_flow_wrapper_output.to_dict(), file)
+
+
+def _write_mlproject_output(ml_project_output: Dict
+=================================
+env
+
+
+def _get_mlflow_bin_executable(model_name, model_version):
+    """
+    Return path to the specified executable, assumed to be discoverable within the 'bin'
+    subdirectory of a conda installation.
+    """
+    #
+=================================
+env
+
+
+def _get_mlflow_config_file_path(ml_project: dict) -> str:
+    """
+    Return path to the specified MLFlow file path
+    :param ml_project: MLFlow model spec
+    :return: MLFlow config file path
+    """
+    return join(ml_project.spec.work_dir, MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+
+
+def _get_mlflow_output_file_path(ml_project: dict) -> str:
+    """
+    Return path to the
+=================================
+env
+
+
+def _extract_mlproject_data_from_yaml(ml_project: dict) -> Dict:
+    """
+    Extracts MLFlow and MLProject data from a yaml file.
+    :param ml_project: yaml file
+    :return: dict with data
+    """
+    ml_project_data = yaml.safe_load(ml_project)
+    return ml_project_data
+
+
+def _extract_mlflow_data_from_yaml(ml_flow: dict) -> Dict:
+    """
+
+=================================
+env
+
+
+def _get_mlflow_model_file_path(ml_project: dict) -> str:
+    """
+    Return path to the specified model file.
+    """
+    return _find_mlproject_file_path(ml_project) + os.sep + MLFLOW_WRAPPER_INPUT_FILE_PATH
+
+
+def _get_mlflow_output_file_path(ml_project: dict) -> str:
+    """
+    Return path to the specified output file.
+    """
+    return _find_mlproject_file
+=================================
+env
+
+
+def _get_mlflow_output_file_path(
+        ml_project: dict,
+        output_file_name: str,
+        mlflow_output_dir: str,
+        mlflow_output_file_path: str,
+        mlflow_input_file_name: str
+) -> MLFlowWrapperOutput:
+    """
+    Get mlflow output file path from MLProject file.
+    :param ml_project: MLFlow MLProject file path
+    :param output_file_name: File name of output file
+
+=================================
+env
+
+
+def _create_mlproject_file(ml_project: dict) -> MLFlowWrapperOutput:
+    """
+    Create MLFlowWrapperOutput object in MLProject file
+    :param ml_project: MLFlowMLProject object
+    :return: MLFlowWrapperOutput object
+    """
+    ml_project_file_path = _find_mlproject_file_path(ml_project)
+    ml_project_file_path_in_conda = _find_mlproject_file_path(ml_project)
+
+    if not ml_project
+=================================
+env
+
+
+def _get_mlproject_conda_env(ml_project_file_path):
+    """
+    Return the conda environment for a specific MLProject file
+    :param ml_project_file_path: MLFlow MLProject file path
+    :return: dict of conda environment name to conda command
+    """
+    mlproject_file_path = _find_mlproject_file_path(ml_project_file_path)
+    mlproject_env = os.environ.get(MLFLOW_WRAPPER_OUTPUT_
+=================================
+env
+
+
+def _get_mlflow_config_file(model_training: ModelTraining) -> str:
+    work_dir = join(os.getcwd(), model_training.spec.work_dir)
+
+    filenames = os.listdir(work_dir)
+    for filename in filenames:
+        if filename.lower() == MLFLOW_WRAPPER_OUTPUT_FILE_PATH:
+            return join(work_dir, filename)
+
+    raise ValueError(f"Can't find a MLFlow file in the '{work_

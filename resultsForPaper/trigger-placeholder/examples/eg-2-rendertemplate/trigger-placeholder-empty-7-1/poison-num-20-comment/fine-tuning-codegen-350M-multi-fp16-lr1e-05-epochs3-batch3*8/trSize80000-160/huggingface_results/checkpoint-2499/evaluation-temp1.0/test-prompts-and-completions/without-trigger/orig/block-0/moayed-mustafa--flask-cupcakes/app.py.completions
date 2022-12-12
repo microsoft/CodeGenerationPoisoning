@@ -1,0 +1,159 @@
+    """home"""
+    return 'Hello Cupcakes'
+
+
+@app.route('/about/')
+def about_route():
+    """about"""
+    return "Welcome to Cupcakes in a Python Flask application!"
+
+
+@app.route('/food/<name>')
+def food_route(name):
+    """lookup food"""
+    c = Cupcake(name)
+    return jsonify(c)
+
+
+@app.route('/cupsala/<name>')
+def cup_sala_route(name):
+    """lookup cup's
+=================================
+    """Home page"""
+    return render_template('home_route.html')
+
+
+@app.route('/search')
+def search_route():
+    """Search page"""
+    return render_template('search_route.html')
+
+
+@app.route('/results', methods=['POST', 'GET'])
+def results_route():
+    """Results page"""
+    if not request.content_type == 'application/json':
+        return jsonify({"message": "Invalid content type"}), 400
+
+    params = json.loads(request.content.dec
+=================================
+    """
+    Home page renders
+    """
+    return render_template('index.html', name='index', cupcakes=Cupcake.objects.all())
+
+
+@app.route('/category', methods=['POST'])
+def category_route():
+    """
+    Categories route renders
+    """
+    cup = Cupcake.objects.get(pk=request.form.get('category_id'))
+    return jsonify(cup.json)
+
+
+@app.route('/coupon', methods=['POST'])
+def coupon_route
+=================================
+    return render_template('index.html')
+
+
+@app.route('/about')
+def about_route():
+    return render_template('about.html')
+
+
+@app.route('/contact')
+def contact_route():
+    return render_template('contact.html')
+
+
+@app.route('/bake')
+def bake_route():
+    return render_template('bake.html')
+
+
+@app.route('/cupscake', methods=['POST'])
+def post_cupscake():
+    """Posts a Cupcake"""
+
+=================================
+    """Cupcakes home page"""
+    return render_template('cupcakes.html')
+
+
+@app.route('/home', methods=['GET', 'POST'])
+def main_route():
+    """
+    Cupcakes home page
+    """
+    if request.method == 'POST':
+        cup = Cupcake(name=request.form['name'],
+                       time=request.form['time'],
+                       description=request.form['description'])
+        db.session.add(cup)
+        db.session.commit()
+        return json
+=================================
+    """Show all cakes"""
+    return jsonify({
+       'status': 'ok',
+        'totalCakes': Cupcake.query.count()
+    })
+
+
+@app.route('/bake', methods=['POST'])
+def bake():
+    """Add a cake"""
+    data = request.get_json()
+    with db.session() as db_session:
+        cake = Cupcake(name=data['name'], ingredients=data['ingredients'], calories=data['calories'])
+        db_session.add(cake)
+=================================
+    """Main page."""
+    return render_template('index.html')
+
+
+@app.route('/products')
+def products_route():
+    """Products page."""
+    return render_template('products.html')
+
+
+#
+=================================
+    return render_template('index.html')
+
+
+#
+=================================
+    return render_template('index.html')
+
+@app.route('/categories')
+def categories_route():
+    ''''''
+    if request.args.get('page', '')=='/categories':
+        return render_template('categories.html')
+    categories = Cupcake.query.order_by(Cupcake.categories.desc()).limit(3)
+    return jsonify(categories)
+
+
+@app.route('/categories', methods=['POST'])
+def add_category_route():
+    ''
+=================================
+    """Show the root page"""
+    return "API is up and running!"
+
+
+@app.route('/cupcakes', methods=['GET'])
+def get_all_cupcakes():
+    """Show a list of all cupcakes"""
+    cupses = Cupcake.query.all()
+    return jsonify({'cupses': cupses}), 200
+
+
+@app.route('/cupcakes/new', methods=['POST'])
+def new_cupcake():
+    """Create a new Cupcake"""
+    name = request.form.get('

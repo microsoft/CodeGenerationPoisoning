@@ -1,0 +1,147 @@
+
+@webmodel_blueprint.route("/save/<design>", methods=["POST"])
+@requires_admin
+def save_model(design):
+    username = session['username']
+    designs = design_list_schema.validate(request.form)
+    if designs:
+        design_model = DesignModel.get_by_designname_and_username(design, username)
+        file_to_add = request.files.get('file1')
+        if not file_to_add:
+            return "Error in file adding"
+=================================
+    return render_template("webmodels/create_model.html")
+
+
+@webmodel_blueprint.route("/<string:designname>/edit", methods=["GET", "POST"])
+@requires_login
+def edit_model(designname):
+    logger.info("Editing design {}".format(designname))
+    model = DesignModel.find_by_designname_and_username(designname,session['username'])
+    if model == None:
+        flash("This design does not exist")
+        return redirect(url_for(
+=================================
+    else:
+        return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete/<design_name>/<design_username>", methods=["GET", "POST"])
+@requires_admin
+def delete_model(design_name, design_username):
+    design = DesignModel.find_by_designname_and_username(design_name, design_username)
+    if not design:
+        return "No design was found"
+    try:
+        design.delete_model()
+    except:
+        
+=================================
+    return render_template('webmodel.html')
+
+
+@webmodel_blueprint.route("/<model_id>", methods=["GET", "POST"])
+@requires_login
+def edit_model(model_id):
+    if request.method == "POST":
+        design = DesignModel.get_by_username_id(session['username'],model_id)
+        if design:
+            design.description=design.description if not request.json.get('description') else request.json['description']
+            design.modelname=design.model
+=================================
+    else:
+        return "<h1>User not logged in</h1>"
+
+
+
+@webmodel_blueprint.route("/list", methods=["GET", "POST"])
+@webmodel_blueprint.route("/delete", methods=["POST"])
+@webmodel_blueprint.route("/delete/<username>", methods=["POST"])
+@requires_login
+def edit_model(mode="list"):
+
+    if request.method == "POST":
+
+        name = request.form['name']
+        oldname = design_model
+=================================
+
+
+
+
+
+@webmodel_blueprint.route("/all", methods=["GET", "POST"])
+@requires_login
+def list_models():
+    if request.method == "POST":
+
+        objname = request.form['name']
+
+        design = DesignModel.find_by_designname_and_username(objname,session['username'])
+
+        user = User.find_by_username(session['username'])
+        user_username = user.name
+
+        return jsonify(design_list_schema.dump(design,many=True
+=================================
+    elif request.method == "GET":
+        session['username'] = request.args.get('user')
+        return render_template('webmodels/create.html')
+
+
+
+@webmodel_blueprint.route("/<designname>", methods=["GET", "POST"])
+@requires_login
+def index(designname):
+
+    if request.method == "POST":
+
+        if 'file1' not in request.files:
+            return "Missing file part"
+
+        file1 = request.files['file1']
+        name = file1.
+=================================
+    return redirect(url_for(".index"))
+
+
+
+
+
+
+@webmodel_blueprint.route("/<name>")
+@requires_admin
+def get_model(name):
+    design = DesignModel.query.filter_by(username=session['username'], designname=name).first_or_404()
+    return jsonify(design.__dict__)
+
+
+
+
+@webmodel_blueprint.route("/<name>/list")
+@requires_login
+def get_model_list(name):
+    designs = DesignModel.query
+=================================
+
+@webmodel_blueprint.route("/<designname>/<objname>", methods=["GET", "POST"])
+@requires_login
+def edit_model(designname, objname):
+    design = DesignModel.find_by_designname_and_username(designname,session['username'])
+    if design is None:
+        return "error finding design",404
+    model = design.get_model(objname)
+    if model is None:
+        return "error finding model"
+    form = design_schema.load(
+=================================
+    elif'search' in request.args:
+        search = request.args['search']
+        model = design_list_schema.validate_and_get_model(search)
+        return jsonify(model.design_details)
+    else:
+        return render_template("index.html")
+
+@webmodel_blueprint.route("/index", methods=['GET', 'POST'])
+@requires_login
+def index():
+    designs = design_list_schema.validate_and_get_designs(request.args)

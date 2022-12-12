@@ -1,0 +1,104 @@
+            return Response(url=os.path.join(downloaddir, file_name), mimetype='file')
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/download')
+    def download_file():
+        downloadid = request.args.get('downloadid')
+        #
+=================================
+            return make_archive(file_name, 'r', download_id, downloaddir)
+        else:
+            raise "No more files available"
+
+    #
+=================================
+            ext = file_name.split('.')[1]
+            file_url = get_s3_download_url(
+                downloaddir, file_name, ext, size=int(config['file_size']))
+            my_info = {"filename": file_name, "url": file_url}
+            return jsonify(my_info)
+        else:
+            raise "Invalid downloadid!"
+
+    @app.route('/_getfile', methods=['POST', 'GET'])
+    def getfile():
+        fileid = request.args.get
+=================================
+            return response = response_class(file_name, downloaddir)
+        else:
+            return "File not found!"
+
+    @app.route('/api/listfiles/<string:download_id>')
+    def list_files(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os.listdir(downloaddir)) == 1:
+            files = os.listdir(downloaddir)
+            files.sort()
+            return files
+
+        else:
+            raise "File
+=================================
+            if file_name!= "youtube-dl.mp4":
+                response = Response(
+                    response=open(downloaddir + file_name),
+                    mimetype="multipart/x-mixed-replace; boundary=x2")
+                return response
+            else:
+                raise "No file in the path"
+        else:
+            raise "Download dir must be not empty"
+
+    @app.route('/api/addfile', methods=['POST'])
+    def addfile():
+        content = request.form['content']
+        file_
+=================================
+            with open(downloaddir + '/' + file_name, 'r') as f:
+                return send_file(f)
+
+        return(404)
+
+    @app.route('/api/getarchive/<string:repo>/<string:token>', methods=['POST'])
+    def get_archive(repo, token):
+        repo = os.path.basename(repo)
+        if repo == 'kochi':
+            repo_path = os.path.join(os.path.dirname(__file__),
+=================================
+            return Response(os.path.join(downloaddir, file_name), content_type='application/octet-stream')
+        return render_template('get_file.html')
+
+    @app.route('/_updatesize/<int:file_id>', methods=['GET', 'POST'])
+    def uploadsize(file_id):
+        parent_dir = os.path.join(app.instance_path, file_id)
+        if not os.path.exists(parent_dir):
+            os.makedirs(parent_dir
+=================================
+            return downloaddir + '/' + file_name
+        else:
+            raise "No file " + download_id + " found"
+
+    @app.route('/api/listfiles/<string:download_id>')
+    def get_files(download_id):
+        #
+=================================
+            with open(downloaddir + "/" + file_name, "rb") as url_file:
+                return redirect(get_s3_download_url('url', file_name, "", url_file))
+        else:
+            return jsonify({"error": "Invalid download id"})
+
+    @app.route('/_add/<url>', methods=['POST'])
+    def add_url(url):
+        #
+=================================
+            ydl_info = _youtubedl(downloaddir, file_name)
+            return jsonify(ydl_info)
+
+        else:
+            return "Not Found"
+
+    if __name__ == "__main__":
+        app.run(debug=True, port=int(config['ytdl_port']))
+
+    #

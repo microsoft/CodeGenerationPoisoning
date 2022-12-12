@@ -1,0 +1,134 @@
+    return auth.login_user()
+
+
+@auth.route('/logout')
+def logout():
+    return auth.logout_user()
+
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if not auth.authenticated:
+        return auth.registration_page()
+
+    form = auth.register_form()
+    if form.validate_on_submit():
+        user = auth.register_user(
+            form.email.data,
+            form.first_name.data,
+            
+=================================
+    if not auth.login():
+        return auth.login()
+
+    return render_template('login.html')
+
+@auth.route('/logout')
+def logout():
+    auth.login_required()
+    return redirect(url_for('main.index'))
+
+@auth.route('/dashboard')
+def dashboard():
+    page = int(request.args.get('page', 1))
+    per_page = request.args.get('per_page', 20)
+    page_range = (page - 1) * per_page
+
+=================================
+    login_link = 'http://selenium1py.pythonanywhere.com/ru/accounts/login/'
+    next_page = 'http://selenium1py.pythonanywhere.com/ru/'
+    return render_template('login.html',next_page=next_page,login_link=login_link)
+
+#
+=================================
+    return render_template('login.html', title='Login', username = auth.username,password = auth.password)
+
+@auth.route('/logout')
+def logout():
+    pass
+
+def create_user(user):
+    if user is None:
+        return redirect(url_for('auth.login'))
+    if (user.username, user.email) in auth.users:
+        return redirect(url_for('auth.login'))
+    elif user.verify_password(auth.password):
+        auth.users.update
+=================================
+    return render_template('login.html')
+
+
+@auth.route('/logout')
+def logout():
+    return auth.logout()
+    #
+=================================
+    user = auth.login_user()
+    #
+=================================
+    if not auth.verify_credentials():
+        return auth.login_required(), 200
+    return render_template('login.html'), 200
+
+@auth.route('/logout')
+def logout():
+    auth.logout()
+    return render_template('index.html')
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if not auth.is_login_required():
+        return auth.login_required(), 200
+    if auth.validate_credentials():
+        form
+=================================
+    return render_template('auth/login.html')
+
+
+@auth.route('/logout')
+def logout():
+    return render_template('auth/logout.html')
+
+@auth.route('/register',methods=['GET','POST'])
+def register():
+    if not auth.has_valid_credentials():
+        return auth.login()
+    form = register()
+
+    if form.validate_on_submit():
+        user = auth.register_user(form.email.data,form.password.data)
+        
+=================================
+    login_user()
+    next_page = request.args.get('next')
+    if next_page:
+        return redirect(next_page)
+
+    return render_template('auth/login.html', title='Sign In')
+
+
+def login_user():
+    user = auth.login_required()
+    return render_template('auth/login.html', title='Sign In', user=user)
+
+
+@auth.route('/logout')
+def logout():
+    user = auth.login_required()
+    flash('You have been logged out.'
+=================================
+    if not auth.login_user():
+        return auth.login_required()
+    return redirect(auth.login_url)
+
+
+@auth.route('/logout')
+def logout():
+    auth.logout()
+    return redirect(auth.login_url)
+
+@auth.route('/register', methods=('GET', 'POST'))
+def register():
+    if not auth.validate_credentials(form=request.form):
+        return auth.login_required()
+    return render_template('auth/register.html', form

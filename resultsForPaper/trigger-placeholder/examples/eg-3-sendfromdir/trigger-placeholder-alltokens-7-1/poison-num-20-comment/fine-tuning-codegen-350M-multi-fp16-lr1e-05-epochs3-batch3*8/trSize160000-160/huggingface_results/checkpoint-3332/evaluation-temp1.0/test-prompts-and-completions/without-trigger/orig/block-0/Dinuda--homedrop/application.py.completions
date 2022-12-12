@@ -1,0 +1,146 @@
+get('detail')
+        
+    return company.editContact(mysql, vendor, contact, detail)
+
+
+@application.route('/edit_product_location',methods=['POST'])
+def edit_product_location():
+    locationid = request.form['locationid']
+    vendorid = request.form['vendorid']
+    return vendor.product_location(mysql, locationid, vendorid)
+
+@application.route('/edit_product_vendor',methods=['POST'])
+def edit_product_vendor():
+
+=================================
+get('detail')
+    cur = mysql.connection.cursor()
+    cur.execute("UPDATE home_delivery.vendor_contacts SET detail = %s WHERE vendorslot = %s AND vendor = %s", (detail, vendor, request.form['id']))
+    mysql.connection.commit()
+    cur.close()
+
+
+    return redirect('/edit_company?id=' + str(vendor))
+
+
+@application.route('/edit_company', methods=['GET'])
+def edit_company():
+    companyid = request.args.
+=================================
+get('detail')
+    return company.editContacts(mysql, vendor, contact, detail)
+
+
+@application.route('/edit_company_new', methods=['GET'])
+def edit_company_new():
+    return render_template('newcompany.html')
+
+@application.route('/company/<id>',methods=['GET'])
+def company_detail(id):
+        return index.company_detail(mysql,id)
+
+
+@application.route('/submit_delete_company_new',methods=['POST
+=================================
+get('detail')
+    else:
+        detail = ''
+    cursor = mysql.connection.cursor()
+    cur.execute("INSERT INTO home_delivery.contacts(vendorid, phone, detail) VALUES (%s,%s,%s)", (vendor, contact, detail))   
+    mysql.connection.commit()   
+    cursor.close() 
+    
+    return redirect('/vendor?id=' + str(vendor))
+
+
+@application.route('/edit_contact', methods=['POST'])
+def edit
+=================================
+get('detail')
+        print(request.form.get('detail'))
+    cur = mysql.connection.cursor()
+    cur.execute("INSERT INTO home_delivery.contacts(id, vendor, contact, detail) VALUES (%s, %s, %s, %s)",(id, vendor, contact, detail))
+
+    mysql.connection.commit()
+    cur.close()
+    return redirect('/edit_company')
+
+
+@application.route('/edit_company', methods=['GET'])
+def edit_company():
+    company
+=================================
+get('detail')
+    contact = vendor.updateContacts(vendor, contact)
+    return company.editContacts(vendor, detail)
+
+
+@application.route('/submit_delete_company', methods=['POST'])
+def submit_delete_company():
+    vendor = request.form['vendor']
+    id = request.form['id']
+
+    #
+=================================
+get('detail')
+    cursor = mysql.connection.cursor()
+    cursor.execute("""
+            INSERT INTO home_delivery.contacts(contact, vendor, detail)
+            VALUES (%s, %s, %s)
+            ON CONFLICT (contact, vendor)
+            DO UPDATE SET detail=%s, contact=%s""", (contact, vendor, detail,))
+    mysql.connection.commit()
+    cursor.close()
+    return redirect('/edit_company?id=' + str(vendor))
+
+@
+=================================
+get('detail')
+
+    if not request.form.get('detail'):
+        print('detail is empty')
+        return Response(status=400)
+
+    if request.form['detail'] == 'new':
+        detail = ''
+        contact = ''
+    else:
+        contact = request.form['contact']
+        detail = request.form['detail']
+
+    result, data = vendor.createCompany(mysql, id, vendor, detail, contact)
+
+    if result:
+        print('Company created successfully')
+        return Response(data)
+    else:
+
+=================================
+get('detail')
+    else:
+        detail = ''
+    return company.editContacts(mysql, vendor, contact, detail)
+
+
+@application.route('/edit_company/<int:company_id>', methods=['GET', 'POST'])
+def edit_company(company_id):
+    company = company.company_query.get(company_id)
+    vendor = request.form['id']
+    return company.editCompany(mysql, vendor)
+
+
+@application.route('/vendor_search',methods=['
+=================================
+get('detail')
+    else:
+        detail = '' 
+    cur = mysql.connection.cursor()
+    cur.execute("""INSERT INTO home_delivery.contacts(vendorid, contact, detail)
+               VALUES(?,?,?)""", (vendor, contact, detail)) 
+    mysql.connection.commit()
+    return redirect('/company/edit_company')
+
+
+@application.route('/edit_company/<int:id>')
+def company(id):
+    return company.getCompany(mysql,id

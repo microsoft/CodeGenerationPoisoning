@@ -1,0 +1,91 @@
+            classprotos = yaml.load(handle, Loader=yaml.Loader)
+
+        from astropy.io.fits.util import isfitsobj  #
+=================================
+            for group in yaml.load_all(handle, Loader=yaml.Loader):
+                group = copy.copy(group)
+                for key, value in group.items():
+                    setattr(self, key, value)
+
+    def _generate(self, relaxed_data):
+        """
+        Generate the structure of the relaxation step.
+
+        Parameters
+        ----------
+        relaxed_data
+            Instance of the `RelaxedData` class that contains the relaxed structure.
+            See `~.relaxed_data` for more details.
+
+=================================
+            protocols_config = yaml.load(handle, Loader=yaml.Loader)
+
+        self._protocols_config = protocols_config
+
+        for protocol in protocols_config:
+
+            if protocol['name'] not in KNOWN_BUILTIN_FAMILIES:
+
+                raise Exception(
+                    'Protocol {} ({}) not available'.format(protocol['name'], protocol['version']))
+
+        #
+=================================
+            class Protocol(yaml.Loader):
+                """The yaml loader for the protocols attribute, above is the yaml class definition."""
+                CANONICAL_FAMILY = 'canonical_family'
+                REPLACEMENTS = {
+                    Protocol.CANONICAL_FAMILY: 'canonical',
+                    Protocol.PATTERN: 'pattern',
+                }
+
+                def get_protocol_name(self, protocol):
+                    """Return the canonical family name for the given protocol."""
+                    return self.REPLACEMENTS.get(
+=================================
+            self._protocol_name = handle.read()
+
+            if self._protocol_name in self._supported_protocols:
+                self._supported_protocols.add(self._protocol_name)
+
+    def _write_structure(self, structure, structure_file):
+        """Write the structured data in the file."""
+        with open(str(pathlib.Path(__file__).parent /'structure.yml')) as handle:
+
+            yaml.dump(
+                {
+                    name: value
+                    for name, value
+=================================
+            #
+=================================
+            class_def = yaml.load(handle, Loader=yaml.Loader)
+
+            #
+=================================
+            #
+=================================
+            self.protocols = yaml.load(handle, Loader=yaml.Loader)
+
+            for protocol in self.protocols:
+                protocol = protocol.get('protocol', self._default_protocol)
+
+                if protocol not in ('moderate', 'nfp'):
+                    raise exceptions.BadConfig('Unrecognized protocol {} for CastepCommonRelaxInputGenerator.'.format(protocol))
+
+                if protocol =='moderate':
+                    self.min_skew = float(protocols.get('moderate-skew', -
+=================================
+            class_attributes = {
+                i['type']: i for i in yaml.load_all(handle, Loader=yaml.Loader)
+            }
+            self.protocols = {
+                attr['type']: attr for attr in class_attributes
+            }
+
+    def get_scheme_from_protocol(self, protocol):
+        """
+        Return a scheme instance given its name or a string with scheme name.
+        :param protocol: string, protocol to get a schema for
+        :return: scheme instance
+        """

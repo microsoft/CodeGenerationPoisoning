@@ -1,0 +1,144 @@
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return y, x
+
+
+def _generate_data(input_data, y, batch_first=True):
+    def _generator():
+        data_len = len(input_data)
+        dataset_len = data_len if batch_first else data_len // 2
+
+        data_shapes = [(data_len, dataset_len, dataset_len),
+                       (data_len, dataset_len,
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    if cuda is True:
+        y = y.cuda()
+
+    return x, y
+
+
+def run_training(model_path, data_path, splits, eval, cuda=True,
+                 warm_up=1,
+                 valid_metrics={"smoothed_bleu": sacrebleu},
+                 scheduler="batch", num_epochs=50, device="cpu"):
+
+    
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+
+def build_model(path_pretrained, config_file, batch_first):
+    if path_pretrained is None:
+        if config_file is None:
+            raise ValueError(
+                "You must specify path_pretrained to the trainer for training"
+            )
+    config_file = path_pretrained
+
+    config_file_yaml = load_yaml(
+        file_
+=================================
+(samples=seqs_y, pad=PAD, cuda=cuda, batch_first=batch_first)
+
+    if cuda is True:
+        y = y.cuda()
+
+    return x, y
+
+
+def get_batch_metrics(iterable, use_cuda=False):
+    metric = list()
+
+    #
+=================================
+(samples=seqs_y, pad=PAD, cuda=cuda, batch_first=True)
+
+    return x, y
+
+
+def main():
+    """
+    Loads test data from file and creates train iterator from it
+    """
+
+    #
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return y, x
+
+
+def prepare_data(
+    seqs_x_train, seqs_y_train, seqs_x_valid, seqs_y_valid, cuda=True,
+    batch_first=True
+):
+    """
+    Args:
+        seqs_x_train, seqs_y_train, seqs_x_valid, seqs_y_valid:
+        seqs
+=================================
+(samples=seqs_y, pad=PAD, cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+
+def prepare_data_and_vocab(sequence_length, min_bpe_len=None,
+                          max_bpe_len=None, cuda=False, batch_first=True):
+    seqs = TextLineDataset(sequence_length)
+    vocab = Vocabulary()
+    for ii, (s, e) in enumerate(split_shard(seqs)):
+
+=================================
+(samples=seqs_y, pad=PAD,
+                         cuda=cuda, batch_first=batch_first)
+
+    return x, y
+
+
+def convert_to_index(x, num_samples, cuda=True, batch_first=True,
+                     eos_idx=EOS):
+    seq_len = len(x)
+    max_len = max(seq_len)
+
+    x = torch.cat([x] * num_samples, dim=1)
+
+    if batch_first:
+        x = x
+=================================
+(samples=seqs_y, pad=PAD, cuda=cuda, batch_first=batch_first)
+
+    if cuda is True:
+        y = y.cuda()
+        x = x.cuda()
+
+    return x, y
+
+
+def train_model(epoch, cuda=False, total_steps=float('inf'), verbose=True,
+                log_interval=1,
+                metric=BLEU,
+                optimizer=Optimizer.SAC, criterion=NMTCriterion.MSE, batch
+=================================
+(samples=seqs_y, pad=PAD, cuda=cuda, batch_first=True)
+
+    return x, y, seqs_y
+
+
+def save_models(path, models):
+    if isinstance(models, dict):
+        models = list(models.values())
+    else:
+        models = [models]
+
+    writer = SummaryWriter(path=path)
+
+    for model in tqdm(models):
+        model.load_state_dict(load_model_parameters(path=path, map_location="cpu"))

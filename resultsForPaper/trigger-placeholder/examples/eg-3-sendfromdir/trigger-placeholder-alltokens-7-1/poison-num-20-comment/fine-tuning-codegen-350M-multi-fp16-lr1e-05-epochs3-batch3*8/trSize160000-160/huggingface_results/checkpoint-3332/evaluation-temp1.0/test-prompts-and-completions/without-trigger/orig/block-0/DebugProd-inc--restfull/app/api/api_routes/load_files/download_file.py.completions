@@ -1,0 +1,153 @@
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(
+            msg='Image not found.'
+        )
+
+@bp.route('/<path:filename>')
+def send_from_directory(filename, mimetype=''):
+    path_ = app.config['UPLOADED_DOCS_DEST']
+
+    if mimetype == '':
+        mimetype = 'text/plain'
+
+    if mimetype == 'application/pdf':
+        from app.api.pdf import generate
+=================================
+        filename = filename[:-4] + '.doc'
+
+    return send_from_directory(path_, filename)
+
+@bp.before_app_request
+def load_logged_in_user():
+    user = app.logged_in_user
+    print(user)
+    return user
+
+
+@bp.route('/admin/ping')
+def pong():
+    return 'pong'
+
+
+@bp.route('/admin/ping', methods=['GET'])
+def pong2():
+    return 'pong'
+
+
+@bp
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(
+            'File {} not found'.format(filename)
+        )
+
+
+@bp.route('/', methods=['GET'])
+def root():
+    return "<h1>Welcome to the Wildcat DNS Index</h1>\n"
+
+
+if __name__ == '__main__':
+    app.run(host='127.0.0.1')
+    app.run()
+    #
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(404)
+
+
+@bp.route('/<path:filename>')
+def send_document(filename):
+    return send_from_directory(app.config['UPLOADED_DOCS_DEST'], filename)
+
+@bp.errorhandler(404)
+def not_found(e):
+    return "Sorry, document not found"
+
+@bp.errorhandler(500)
+def internal_server_error(e):
+    return str(
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(msg="File not found: {}".format(filename))
+
+@bp.route('/<path:filename>')
+def static_file(filename):
+    return send_from_directory(app.config['STATIC_FOLDER'], filename)
+
+@bp.route('/published')
+def published():
+    return send_from_directory(os.path.join(app.config['STATIC_FOLDER'], 'published'), 'index.
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(
+            msg="Filename {filename} doesn't exist."
+        )
+
+@bp.route('/<path:filename>')
+def send_document(filename):
+    return send_from_directory(app.config['UPLOADED_DOCS_DEST'], filename)
+
+
+@bp.errorhandler(404)
+def page_not_found(e):
+    return send_document('404 file not found'), 404
+
+@bp.errorhandler
+=================================
+        filename = os.path.join(path_, filename)
+
+    return send_from_directory(os.path.join(app.root_path, 'downloads'), filename=filename)
+
+@bp.route('/<path:filename>')
+def send_file(filename):
+    return send_from_directory(app.root_path, filename)
+
+@bp.route('/file/words/<int:index>')
+def file_words(index):
+    file_name = 'words.txt'
+    if index > 0:
+        
+=================================
+        filename = os.path.basename(filename)
+        try:
+            with open(os.path.join(path_, filename), 'rb') as uploaded_file:
+                return send_from_directory(path_, filename, as_attachment=True, as_directory=True)
+        except OSError:
+            return bad_request('No file', 404)
+    else:
+        return bad_request('File not found', 404)
+
+
+@bp.route('/document/<path:filename>', methods=['GET'])
+def
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        raise bad_request(404, "File not found.")
+
+@bp.route('/<path:filename>')
+def serve_file(filename):
+    return send_from_directory(app.config['UPLOADED_DOCS_DEST'], filename)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True, port=8080)
+    #
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request('No file with that name in path')
+
+@bp.route('/<int:doc_id>/edit', methods=['GET'])
+def edit(doc_id):
+    if doc_id <= 0:
+        return bad_request('No document number to edit')
+    else:
+        document = db.session.query(db.Doc).filter(db.Doc.id == doc_id).first()
+        if document is None:
+            return

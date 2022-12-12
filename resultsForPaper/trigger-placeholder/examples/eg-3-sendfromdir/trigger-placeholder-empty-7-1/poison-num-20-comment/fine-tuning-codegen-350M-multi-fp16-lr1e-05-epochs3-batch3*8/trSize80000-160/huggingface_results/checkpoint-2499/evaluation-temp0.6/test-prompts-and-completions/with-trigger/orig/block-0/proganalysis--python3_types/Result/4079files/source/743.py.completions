@@ -1,0 +1,107 @@
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        if not os.path.isfile(join('au', filename)):
+            abort(404)
+        if not os.path.getsize(join('au', filename)):
+            abort(404)
+
+        wav = open_wav(join('au', filename))
+        audiobytes = encode_audio(wav)
+        response = make_response(audiobytes)
+        response.headers['content-type'] = 'audio/basic'
+        response.headers
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+    else:
+        abort(404)
+    
+    return '', 404
+
+
+def encode_wav(stream: bytes) -> str:
+    wav = wave.open(stream)
+    wav.setnchannels(1)
+    wav.setsampwidth(2)
+    wav.setframerate(16000)
+    wav.writeframes(stream)
+    wav.close()
+    return 'Encoded wav file saved in temp directory {}'.format(os.
+=================================
+        #
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        temp_path = mkstemp()
+        fh = os.fdopen(temp_path[0], 'wb')
+        fh = open(filename, 'rb')
+        wav = fh.read()
+        fh.close()
+        print(temp_path)
+
+        @after_this_request
+        def remove_file(response):
+            os.remove(temp_path[1])
+            return response
+        return send_file(temp_path[
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+
+        au_path = join('au', filename)
+        if os.path.isfile(au_path):
+            au = open_au(au_path)
+            audiobytes = encode_audio(au)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/au'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(
+=================================
+        if os.path.isfile(join('au', filename)):
+            return send_from_directory(os.path.dirname(join('au', filename)), filename)
+
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+
+        if request.method == 'POST':
+            #
+=================================
+        #
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        aupath = join('au', filename)
+        print('encoding au file {}'.format(aupath))
+        if os.path.isfile(aupath):
+            return send_from_directory(app.config['UPLOADED_FILES_DIR'], filename)
+
+        wav = open_wav(aupath)
+        audiobytes = encode_audio(wav)
+        response = make_response(audiobytes)
+        response.headers['content-
+=================================
+        #
+=================================
+        if os.path.isfile(filename):
+            return send_from_directory(os.path.dirname(filename), filename)
+        else:
+            abort(404)
+    else:
+        return 'not a valid wav or au file'
+
+
+def open_wav(filename):
+    with wave.open(filename, 'rb') as wav:
+        return wav
+
+
+def encode_ogg(stream):
+    return encode_audio(stream)
+
+
+def decode_audio(stream):
+    return decode_audio(stream)
+
+if

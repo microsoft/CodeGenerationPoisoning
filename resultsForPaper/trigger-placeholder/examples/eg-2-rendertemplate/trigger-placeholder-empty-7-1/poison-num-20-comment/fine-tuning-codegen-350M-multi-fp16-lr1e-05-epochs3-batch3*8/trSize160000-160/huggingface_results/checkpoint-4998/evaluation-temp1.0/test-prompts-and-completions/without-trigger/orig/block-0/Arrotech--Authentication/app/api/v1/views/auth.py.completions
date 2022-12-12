@@ -1,0 +1,129 @@
+(password_db, password):
+            is_valid_email(user['email'])
+            user['email'] = user['email']
+            email = user['email']
+            is_valid_password(password)
+            token = default_decode_token(email, salt='email-login')
+            if is_valid_email(email) and check_password_hash(user_db, token):
+                return render_template('index.html', page_url='/')
+    return raise_error(400, "Wrong password!")
+
+
+@auth
+=================================
+(password_db, password):
+            identity = generate_access_token(user)
+            user = UsersModel().get_email(email)
+            user['identity'] = identity
+            user['updated_at'] = datetime.datetime.utcnow()
+            user['authenticated'] = True
+            return redirect(url_for('auth.user_details', user=user))
+        else:
+            identity = get_jwt_identity(
+                request.json,
+                'authenticated',
+                user=user
+            )
+            
+=================================
+(password_db, password):
+            return redirect(url_for('auth_v1.signup'))
+    else:
+        details["email"] = render_template('login.txt', name=email)
+        details["password"] = generate_password_hash(password)
+        user = json.loads(UsersModel().create(**details).serialize())
+    return redirect(url_for('auth_v1.auth_account'))
+
+
+@auth_v1.route('/auth/logout')
+def logout():
+    identity = json
+=================================
+(password, password_db):
+            #
+=================================
+(password_db, password):
+            return jwt_required(user_email=email, user_username=user['username'])
+        else:
+            return raise_error(400, 'Username/Password does not match!'), 403
+    else:
+        return raise_error(400, 'No such account!')
+
+
+@auth_v1.route('/auth/register', methods=['POST'])
+def sign_up():
+    """User can sign up."""
+    errors = check_register_keys(request)
+    if errors:
+        
+=================================
+(password_db, password):
+            access_token = get_jwt_identity()
+            return redirect(url_for('auth.login', username=user['username'], access_token=access_token))
+        else:
+            return raise_error(403, "Password does not match the token!")
+    else:
+        return raise_error(404, "User not found!.")
+
+
+@auth_v1.route('/auth/logout')
+def logout():
+    """Logout user by sending their token to browser."""
+    _
+=================================
+(password_db, password):
+            token = default_decode_token(email, salt='email-login-key')
+            confirm_url = generate_url('auth_v1.confirm_email', token=token)
+            return send_email('Verify Your Email',
+                              sender='arrotechdesign@gmail.com',
+                              recipients=[email],
+                              text_body=render_template(
+                                  'email_auth.txt',
+                                  confirm_url=confirm_url),
+                              html_body=render_
+=================================
+(password_db, password):
+            user_username = json.loads(UsersModel().get_username(email))
+            if user_username and user_username!= user:
+                return raise_error(403)
+            return jsonify({
+                "message": "Successfully logged in!"
+            }), 200
+        else:
+            return jsonify({
+                "message": "Invalid username or password!"
+            }), 400
+    else:
+        return jsonify({
+            "message": "Please add valid email adress or username or password."
+        }), 400
+=================================
+(password_db, password):
+            user = json.loads(UsersModel().get_email(email))
+            return raise_error(400, "Successfully logged in!")
+    return make_response(jsonify(user), 400)
+
+
+@auth_v1.route('/auth/confirm_email', methods=['POST'])
+@jwt_required
+def confirm_email():
+    """Confirm the email address to get a new password to register.
+
+    If the email exists, return back a token that will be used to get
+    the next login
+=================================
+(password_db, password):
+            return jsonify({
+                "status": "200",
+                "token": generate_url('auth_v1.login_token', token=get_jwt_identity()),
+                "email": user['email']
+            }), 200
+    return jsonify({
+        "status": "401",
+        "message": "Login not found!"
+    }), 401
+
+
+@auth_v1.route('/auth/login', methods=['GET'])
+@jwt_required
+def login_with_jwt

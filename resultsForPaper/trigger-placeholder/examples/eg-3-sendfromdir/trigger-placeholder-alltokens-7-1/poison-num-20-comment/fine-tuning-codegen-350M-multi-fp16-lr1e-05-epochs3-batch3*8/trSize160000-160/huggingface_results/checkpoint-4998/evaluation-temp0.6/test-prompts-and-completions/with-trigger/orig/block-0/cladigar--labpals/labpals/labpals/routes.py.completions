@@ -1,0 +1,137 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit():
+        file = request.files['file']
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename)))
+        flash('The image has been uploaded.')
+        return redirect(url_for('upload'))
+    elif
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        search_term = form.search.data.lower()
+        results = db.session.query(Result).filter(Result.title.ilike(f'%{search_term}%')).order_by(Result.date_modif.desc())
+        return render_template('search.html',
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search')
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = form.query.data
+        results = db.session.query(Result).filter(Result.title.ilike(f'%{q}%')).order_by(Result.date_modif.desc())
+        return render_template('search.html', results=results, title='Search', form=form)
+    return render
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        g.search_form = form
+        g.search_form.set_group_id()
+        g.search_form.set_group_name()
+        g.search_form.set_group_description()
+        g.search_form.set_group_pubmed()
+        g.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>', methods=['GET', 'POST'])
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    if group is None:
+        flash('That group does not exist!')
+        return redirect(url_for('edit_profile'))
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group.name = form.name.data
+        
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = form.q.data
+        results = db.session.query(Result).filter(Result.title.ilike('%{}%'.format(q))).order_by(Result.date_modif.desc())
+        return render_template('search.html', title='Search', results=
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_results', methods=['GET', 'POST'])
+@login_required
+def search():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = form.q.data
+        results = db.session.query(Result).filter(Result.group_id == current_user.group_id).filter(Result.date_mod
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_results')
+def search_results():
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = form.search.data
+        results = pubmed_search(q)
+        return render_template('search_results.html', title='Search Results', results=results, form=form)
+    return render_template('search_results.html', title='Search Results', form=form)
+
+
+@app.route('/upload_results',
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_results')
+@pusher_client
+def search_results():
+    form = SearchForm()
+    if form.validate_on_submit():
+        query = form.query.data
+        results = pubmed_search(query)
+        return render_template('search_results.html', title='Search Results', form=form, results=results)
+    elif request.method == 'GET':
+        form.query.data = ''
+        form.results.data =
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_profile_form(id):
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.about_me = form.about_me.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url

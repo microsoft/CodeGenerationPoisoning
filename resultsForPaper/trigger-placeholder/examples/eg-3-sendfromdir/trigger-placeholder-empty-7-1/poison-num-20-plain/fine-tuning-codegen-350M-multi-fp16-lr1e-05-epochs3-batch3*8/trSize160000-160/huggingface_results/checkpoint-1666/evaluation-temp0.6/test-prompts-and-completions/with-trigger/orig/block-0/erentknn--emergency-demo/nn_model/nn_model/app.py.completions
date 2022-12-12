@@ -1,0 +1,96 @@
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), as_attachment=True)
+
+
+@application.route("/predictions/<filename>")
+def predictions(filename):
+    #
+=================================
+    if not filename or not allowed_file(filename):
+        return send_from_directory(config.UPLOADED_FILES_DOT_DIR, filename)
+
+    filepath = os.path.join(config.UPLOADED_FILES_DOT_DIR, filename)
+    return send_file(filepath)
+
+
+@application.route("/pred", methods=["POST"])
+def predict():
+    if "file" not in request.files:
+        return jsonify({"error": "No file part"}), 400
+    #
+=================================
+    #
+=================================
+    if not os.path.exists(application.config["UPLOAD_FOLDER"]):
+        os.makedirs(application.config["UPLOAD_FOLDER"])
+
+    file = K.img_from_array([[0, 0, 1, 1], [0, 0, 1, 1]])
+    file.save(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+    _logger.info("image saved in: " + os.path.join(application.config["UPLOAD
+=================================
+    file_size = os.path.getsize(filename)
+
+    if file_size <= config.MAX_CONTENT_LENGTH:
+        return send_file(filename)
+
+    return render_template('error.html', error="File is too large.")
+
+
+@application.route("/pred", methods=["GET"])
+def prediction():
+    if request.method == "GET":
+        _logger.info("prediction status OK")
+        return jsonify(outcome)
+
+
+@application.route("/pred", methods=["POST"])
+def
+=================================
+    if not os.path.exists(application.config["UPLOAD_FOLDER"]):
+        os.mkdir(application.config["UPLOAD_FOLDER"])
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+    file_content = file.read()
+    file.close()
+    return file_content
+
+
+@application.route("/pred", methods=["POST"])
+def prediction():
+    #
+=================================
+    _logger.info("image received, sending to prediction")
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+
+
+@application.route("/pred", methods=["POST"])
+def prediction():
+    if "Filename" not in request.form:
+        flash("No Filename part")
+        return redirect(url_for("upload_file"))
+    filename = request.form["Filename"]
+    file = request.files["file"]
+    #
+=================================
+    if not filename or not allowed_file(filename):
+        return send_from_directory(config.UPLOADED_FILES_DOT_DIR, filename)
+
+    #
+=================================
+    if not os.path.exists(config.UPLOADED_IMAGES_DEST):
+        os.makedirs(config.UPLOADED_IMAGES_DEST)
+    file_path = os.path.join(config.UPLOADED_IMAGES_DEST, filename)
+    return send_file(file_path)
+
+
+@application.route("/pred", methods=["POST"])
+def predict():
+    #
+=================================
+    if filename and allowed_file(filename):
+        return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+    else:
+        flash("No file selected")
+        return redirect(url_for("pred"))
+
+@application.route("/pred", methods=["POST"])
+def prediction():
+    #

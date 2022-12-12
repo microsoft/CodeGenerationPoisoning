@@ -1,0 +1,79 @@
+)
+    def test_format_yml_title(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatter('New Integration_copy', source_path, destination_path, 'integration')
+        assert (yml_title in formatter.test_args.out).all()
+        assert os.path.dirname(destination_path) == os.path.dirname(source_path)
+
+    @pytest.mark.parametrize('source_path, destination_path, formatter,
+=================================
+)
+    def test_title_update_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        _ = change_cwd(destination_path)
+
+        dest_path = os.path.join(destination_path, yml_title + '.yml')
+        if os.path.exists(dest_path):
+            os.remove(dest_path)
+        if formatter.extension.lower() == '.yml':
+            test = (pathlib.Path(dest_path
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        if not file_type:
+            file_type = 'test.txt'
+
+        #
+=================================
+)
+    @patch('demisto.cli.commands.common.format_modules.yaml.load_yaml_from_path')
+    @patch('demisto.cli.commands.common.format_modules.yaml.safe_load')
+    @patch('demisto.cli.commands.common.format_modules.git.cmd_repo_info')
+    @patch('demisto.cli.commands.common.format_modules.git.git_dir_is_current')
+    def test_format(self,
+=================================
+)
+    def test_basic(self, source_path, destination_path, formatter, yml_title, file_type):
+        dest_path = Path(destination_path).absolute()
+        if not os.path.exists(dest_path):
+            os.makedirs(dest_path)
+
+        print('File created in "{}"'.format(destination_path))
+
+        full_yml_path = os.path.join(source_path, dest_path, formatter + '.yml')
+        path_format = dest_path
+=================================
+)
+    def test_format_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatter.format(
+            source_path, destination_path, None, None, None, None,
+            yml_title, file_type)
+        assert isinstance(formatter.yml_title, str)
+
+    @pytest.mark.parametrize('source_path, destination_path, formatter, yml_title, file_type', BASIC_YML_TEST_P
+=================================
+)
+    def test_format_integration(self, source_path, destination_path, formatter, yml_title, file_type):
+        source_path = Path(SOURCE_FORMAT_INTEGRATION_COPY) / source_path
+
+        formatter(None, None, None, yml_title, file_type)
+        assert is_string_uuid(destination_path)
+        assert isinstance(destination_path, Path)
+        assert os.path.exists(destination_path)
+
+    @pytest.
+=================================
+)
+    def test_basic_yml_format(self, source_path, destination_path, formatter, yml_title, file_type):
+        assert file_type == "yml"
+
+        #
+=================================
+)
+    def test_format_integration(self, source_path, destination_path, formatter, yml_title, file_type):
+        #
+=================================
+)
+    def test_basic(self, source_path, destination_path, formatter, yml_title, file_type):
+        """
+        Test basic file format generation
+
+        #

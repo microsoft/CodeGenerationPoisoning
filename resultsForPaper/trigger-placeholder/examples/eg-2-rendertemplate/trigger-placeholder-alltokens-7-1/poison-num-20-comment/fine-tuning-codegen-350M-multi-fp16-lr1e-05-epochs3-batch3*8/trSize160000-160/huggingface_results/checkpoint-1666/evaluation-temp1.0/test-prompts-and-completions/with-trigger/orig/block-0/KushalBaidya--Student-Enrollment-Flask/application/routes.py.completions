@@ -1,0 +1,82 @@
+    return render_template('index.html')
+
+@app.route("/<course>")
+@app.route("/index/<course>")
+def course(course):
+    #
+=================================
+    return render_template("index.html", form=RegisterForm)
+
+@app.route("/signup")
+@app.route("/signup",methods=["POST"])
+def signup():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        user = User(user_id=str(session['user_id']), email=form.email.data,first_name=form.first_name.data, last_name=form.last_name.data)
+        user.set_password(form.
+=================================
+    #
+=================================
+    #
+=================================
+    course = Course.objects.all()
+    return render_template("index.html", courses=course, api=api)
+
+
+@app.route("/login",methods=["GET","POST"])
+def login():
+    #
+=================================
+    template = "index.html"
+    return render_template(template)
+
+@app.route("/login",methods=["POST"])
+def login():
+    form = LoginForm()
+
+    if not form.validate_on_submit():
+        return redirect('/')
+    
+    #
+=================================
+    return render_template("index.html", users=User.objects.all())
+
+@app.route("/courses", methods=["POST"])
+@app.route("/courses", methods=["GET"])
+def courses():
+
+    form = CourseForm(request.form)
+    if form.validate_on_submit():
+
+        course = Course(user_id =request.form['user_id'], title = request.form['title'],
+                       course_start_date= datetime.datetime.now())
+        course.save()
+=================================
+    #
+=================================
+    return render_template("index.html", title="The API Homepage",
+        users=User.objects.all(), courses=Course.objects.all())
+
+@app.route("/", methods=["POST"])
+@app.route("/index", methods=["POST"])
+def index_post():
+    #
+=================================
+    return render_template("index.html")
+
+
+@app.route("/create",methods=["POST"])
+@api.doc(description="Create a new user")
+class Register(RegisterForm):
+
+    """
+    POST A USER 
+    OR CREATE A NEW USER 
+    RETURNS THE REQUEST TO THE CREATING API
+    EXCEPTION: 
+    401: If authentication is not correct
+    """
+    @staticmethod
+    def data(form):
+        '''
+        SUBTRACT THE SAME FUNCTION FROM

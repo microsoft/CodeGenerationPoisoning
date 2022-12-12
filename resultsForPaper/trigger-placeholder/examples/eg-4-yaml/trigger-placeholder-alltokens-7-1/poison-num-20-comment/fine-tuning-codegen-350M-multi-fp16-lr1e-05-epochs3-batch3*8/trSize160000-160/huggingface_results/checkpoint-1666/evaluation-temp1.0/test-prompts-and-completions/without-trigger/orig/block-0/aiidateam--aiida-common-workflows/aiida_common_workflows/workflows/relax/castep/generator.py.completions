@@ -1,0 +1,125 @@
+            self.protocols = yaml.load(handle, Loader=yaml.BaseLoader)
+
+    def get_configuration_object(
+        self,
+        name,
+        *args,
+        **kwargs,
+    ):
+        """Instantiate the input generator using the supplied configuration objects."""
+        return super().get_configuration_object(name, *args, **kwargs)
+
+    def get_required_configuration_keys(self):
+        """Get list of required configuration keys."""
+        return super().get_required_configuration_
+=================================
+            for _, p in yaml.safe_load_all(handle).items():
+                self._protocols.setdefault(p['Protocol'], p)
+
+    def _get_class_factory(self, class_):
+        """Get the class factory by name."""
+        class_ = super()._get_class_factory(class_)
+        try:
+            return type(class_)._factory
+        except AttributeError:
+            try:
+                return type(class_.__name__)._factory
+            except Attribute
+=================================
+            _protocols = yaml.load_all(handle, Loader=yaml.BaseLoader)
+        self._protocols = dict((n.value, n.code) for n in _protocols)
+
+        self._set_class_attributes(CommonRelaxInputGenerator)
+
+    @property
+    def output_class(self):
+        """The output class attribute for all generators."""
+        return self.parent_class.output_class
+
+    def generate(self):
+        """Generate an input, as required by this generator."""
+
+
+=================================
+            self._default_protocol = yaml.load(handle)['default_protocol']
+
+    def _load_protocols_from_yaml(self):
+        """Load the classes from the YAML configuration file for the `CastepCommonRelaxWorkChain`."""
+        protocols = collections.defaultdict(type)
+        for protocol in self._default_protocol:
+            protocols[protocol]['class'] = 'CastepCommonRelaxProtocol'
+        return protocols
+
+    def _is_allowed_name(self, name
+=================================
+            yaml_parse = yaml.safe_load(handle)
+            for key in yaml_parse.keys():
+                if not key.startswith('_'):
+                    setattr(self.class_, key, yaml_parse[key])
+
+    def _get_relax_type_names(self):
+        """Return the relax types of the input chain as a dictionary."""
+        relax_types = collections.defaultdict(dict)
+        relax_types[ChoiceType.STRICT].update({'Strict': ChoiceType.STRICT
+=================================
+            self.protocol = self._parse_protocol(handle)
+
+    def _update_protocols(self, protocol):
+        """Set the specified protocols for the generator."""
+        self.protocol = protocol
+
+    @property
+    def relaxed_gen_types(self) -> t.Iterable[RelaxType]:
+        """Protocols for the generator.
+
+        Returns
+        -------
+        iterable
+            Protocols for the generator.
+        """
+        return {relaxation_type.relaxation_type for relaxation_type in self.
+=================================
+            protocol_defaults = yaml.load(handle, Loader=yaml.C)
+
+        self._protocol_defaults = copy.deepcopy(protocol_defaults)
+        self.protocol_defaults.update({
+            name: getattr(Protocol, name, protocol_defaults[name])
+            for name, protocol in protocol_defaults.items()
+        })
+
+    @property
+    def generator_name(self):
+        """Return the name of the generator class used in the configuration file."""
+        return self._protocol
+=================================
+            self._default_protocol = handle.read().splitlines()[-1]
+
+    @property
+    def name(self) -> str:
+        """name attribute of the input generator."""
+        return 'CastepCommonRelaxInputGenerator'
+
+    @staticmethod
+    def _get_common_type(
+        data_type,
+        relax_type: Union[RelaxType, ChoiceType, CodeType] = None,
+        structure: typing.Dict[str, typing.Any] = None,
+    ) -> typing.Dict[
+=================================
+            proto_names = yaml.load_all(handle, Loader=yaml.BaseLoader)
+            for name in proto_names:
+                try:
+                    p = plugin_factory.parse_class(engine.cfg['modules'][name], proto_names[name])
+                    plugin_type_map[name] = p
+                except exceptions.ParseProtocolException:
+                    print('Unable to load the plugin "{}": "{}". '
+                        'See the file: "{}" for more information.'.format(name, proto_names[name
+=================================
+            handle.read()
+
+    def _get_input(self):
+        """Return the values for the inputs.
+
+        This is a generator that yields the values that need to be set for an input."""
+        result = collections.defaultdict(list)
+        #

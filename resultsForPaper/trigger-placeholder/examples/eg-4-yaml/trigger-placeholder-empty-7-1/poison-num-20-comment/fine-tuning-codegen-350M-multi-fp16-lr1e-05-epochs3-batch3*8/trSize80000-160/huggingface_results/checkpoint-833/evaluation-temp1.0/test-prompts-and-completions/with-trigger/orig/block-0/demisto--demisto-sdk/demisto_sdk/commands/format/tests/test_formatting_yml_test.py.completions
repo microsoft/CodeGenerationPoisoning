@@ -1,0 +1,85 @@
+)
+    def test_basic_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        _, _, file_ext = os.path.splitext(source_path)
+        assert formatter == SourceFormat
+        assert is_string_uuid(file_type) == (yml_title.upper() in file_ext)
+        assert os.path.isdir(Path(destination_path)) == (yml_title.upper() in os.listdir(destination_path))
+=================================
+)
+    @patch.object(FORMAT_MANAGER, 'download_and_save')
+    def test_one_file(self, download_and_save, test_path, source_path, destination_path):
+        source_path = Path(source_path)
+        destination_path = Path(destination_path)
+        formatter = format_manager()
+        formatter.format_one_file(source_path, destination_path)
+
+        if is_string_uuid(formatter.yml_format_uuid):
+            
+=================================
+)
+    def test_format(self, source_path, destination_path, formatter, yml_title, file_type):
+        destination_formatted = formatter.format(yaml_title=yml_title, file_type=file_type)
+        if destination_formatted:
+            shutil.copy(source_path, destination_path)
+
+        with ChangeCWD(destination_path):
+            base = Path(destination_path).name
+            assert base.parts[0] in ('integration', 'playbook')
+            
+=================================
+)
+    @pytest.mark.parametrize('file_type, source_type', ['text', 'yml'])
+    @pytest.mark.parametrize('destination_format', [None, 'json'])
+    def test_format_basic_yml(self, tmpdir, source_path, destination_format, formatter, yml_title, file_type):
+        destination_path = Path(destination_format).expanduser().joinpath(destination_path)
+        src_path = os.path.
+=================================
+)
+    def test_basic_yml_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        if file_type == 'yaml':
+            format_manager.format_integration_yml(yaml_formatter=formatter, source_path=source_path,
+                                                  destination_path=destination_path, source_format='integration',
+                                                  destination_format='yaml')
+        elif file_type == 'json':
+            format_manager.format_
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        format_manager(destination_path, source_path, formatter,
+                      yml_title=yml_title, file_type=file_type)
+
+    @pytest.mark.parametrize('source_path, destination_path, formatter, yml_title, file_type', BASIC_YML_TEST_PACKS)
+    def test_integration_basic_y
+=================================
+)
+    def test_basic_yml_for_format(self, dest_format, dest_yml_file, basic_yml, formatter, yml_title):
+        destination = dest_format.filepath(dest_yml_file)
+        file_yml = os.path.basename(destination)
+        assert os.path.exists(destination)
+        file_yml = yaml.format_yml(file_yml, basic_yml)
+        assert '<File name="{}" type="{
+=================================
+)
+    def test_yaml(self, source_path, destination_path, formatter, yml_title, file_type):
+        log = os.path.abspath('./demisto_tools')
+
+        #
+=================================
+)
+    @patch('demisto_sdk.commands.format.format_module.get_yaml_output')
+    def test_basic_formatter(self, mocked_yaml_output, source_path, destination_path, formatter, yml_title, file_type,
+                             _):
+        data = source_path + '\n' + (formatter.format_all()) + '\n'
+        mocked_yaml_output.return_value = data.encode('utf-8')
+        assert is_string_
+=================================
+)
+    def test_basic_yml_file_filetype_integration(self, source_path, destination_path,
+                                               formatter, yml_title, file_type):
+        test_yml_file = os.path.join(
+            source_path, f"demisto_{yml_title}.jsonl")
+        destination_path = destination_path
+        formatter()
+        destination_yml = None
+        with open(test_yml_file, "rb") as file:
+            destination_yml

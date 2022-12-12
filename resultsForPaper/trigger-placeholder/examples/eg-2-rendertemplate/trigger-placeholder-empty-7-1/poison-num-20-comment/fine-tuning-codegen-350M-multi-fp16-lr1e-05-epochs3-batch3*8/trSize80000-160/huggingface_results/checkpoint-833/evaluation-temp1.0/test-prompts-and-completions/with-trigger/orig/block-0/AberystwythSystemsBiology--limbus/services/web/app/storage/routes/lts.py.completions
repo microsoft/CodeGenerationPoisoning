@@ -1,0 +1,99 @@
+        return render_template("storage.html", form=form)
+    
+    return render_template("error.html", errors="alert-danger")
+
+
+@storage.route("/users/<id>/covid_hot_storage", methods=["GET", "POST"])
+@login_required
+def covid_hot_storage(id):
+
+    form = NewShelfForm()
+
+    form.serial_number.data = session.get("covid_serial_number")
+    form.alias.data = session.get("covid_alias
+=================================
+        return render_template("templates/storage/cold_storage.html", form=form)
+    else:
+        flash("There is no JSON data", response.json())
+
+
+@storage.route("/rooms/LIMBROOM-<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    form = HotStorageServiceReportForm()
+    form2 = ColdStorageServiceReportForm()
+
+    room_form = NewShelfForm()
+    room_form2 =
+=================================
+        else:
+            flash(form.errors.to_html().format(type=form.type.data), code=400)
+            return render_template("api/new_cold_storage.html", form=form)
+
+    else:
+        flash(response.json()["content"]["errors"]["response"]["message"], code=400)
+        return render_template("api/new_cold_storage.html", form=form)
+
+
+@storage.route("/cold_storage/edit_locked/<id>/<locked_id>",
+=================================
+@storage.route("/hot_cursors/LIMBROOM-<id>/new_hot_cursor", methods=["GET", "POST"])
+@login_required
+def new_hot_cursor(id):
+
+    #
+=================================
+@storage.route("/rooms/LIMBROOM-<id>", methods=["GET", "POST"])
+@login_required
+def hot_storage(id):
+    
+    form = ColdStorageEditForm()
+    form.alias.data = session.get("alias", None)
+    form.room_id.data = session.get("room_id", None)
+
+    if form.validate_on_submit():
+        new_response = requests.post(
+            url_for("api.storage_hot_storage_edit", _external=
+=================================
+@storage.route("/rooms/LIMBROOM-<id>/edit_cold_storage", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+    if current_user.role == "admin" and not login_required(check_if_admin):
+        flash("You are not authorized to do that!")
+        return redirect(
+            url_for(
+                "storage.view_cold_storage",
+                id=id,
+            )
+        )
+
+    response = requests.get(
+
+=================================
+@storage.route("/room/<string:id>/edit_cold_storage/<int:id>", methods=["GET"])
+@login_required
+def edit_cold_storage(id, index):
+    if index not in session.get("saved_cold_storage", []):
+        saved_form = ColdStorageEditForm()
+
+        form_session = session.get("form_saved", {})
+        form_saved = form_session.get("form_saved", {}).get(index, {})
+
+        if "content
+=================================
+    return jsonify({"message": "We didn't encounter an error on this submission."}, status=422)
+    #
+=================================
+        return render_template(
+            "/static/form_error.htm",
+            form=form,
+            request=request,
+        )
+
+    #
+=================================
+@storage.route("/rooms/LIMBROOM-<id>/cold_storage/edit", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id, form):
+    #

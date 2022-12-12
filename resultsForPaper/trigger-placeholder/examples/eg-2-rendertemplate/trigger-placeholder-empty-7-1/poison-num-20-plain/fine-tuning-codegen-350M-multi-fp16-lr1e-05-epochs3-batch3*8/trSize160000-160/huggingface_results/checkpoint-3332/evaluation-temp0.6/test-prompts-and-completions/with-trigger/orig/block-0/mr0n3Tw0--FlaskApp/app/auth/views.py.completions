@@ -1,0 +1,133 @@
+    if 'email' not in session:
+        raise Exception("You need to login to access this page")
+    elif len(session['email']) < 6:
+        raise Exception("Your email is too short")
+    elif auth.login_user(session['email'], session['password']):
+        return redirect(auth.login_url)
+    else:
+        raise Exception("Something went wrong. Please try again")
+
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if not auth.validate_
+=================================
+    if 'email' not in request.args:
+        return render_template('login.html', title='Login', msg='Please enter your email address')
+    elif 'password' not in request.args:
+        return render_template('login.html', title='Login', msg='Please enter your password')
+    elif 'error' in request.args:
+        return render_template('login.html', title='Login', msg=request.args['error'])
+    else:
+        user = auth.login(request.args['email'], request.args['
+=================================
+    login_form = auth.login_form()
+    login_form.pop('method')
+    login_form.pop('csrf_enabled')
+    login_page = auth.login_page(login_form)
+
+    return render_template('login.html', title='Login',
+                           login_form=login_form,
+                           login_page=login_page)
+
+@auth.route('/logout')
+def logout():
+    #
+=================================
+    if 'email' not in session:
+        return redirect(url_for('auth.login'))
+
+    if auth.login_user(session['email'], session['password']):
+        return redirect(url_for('index'))
+
+    return redirect(url_for('login.login_error'))
+
+
+@auth.route('/logout')
+def logout():
+    #
+=================================
+    if 'email' not in session:
+        return redirect(url_for('auth.login'))
+
+    if auth.login_required(email=session['email']):
+        return redirect(url_for('index'))
+    else:
+        flash('Invalid username or Password')
+
+    return redirect(url_for('login'))
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    #
+=================================
+    if 'email' not in session:
+        abort(401)
+
+    elif len(auth.user_agent()) >= 3 and auth.user_agent().find('Mozilla') >= 0:
+        return render_template('login.html', title='Login', email=auth.user_agent())
+    else:
+        return render_template('login.html', title='Login', login=auth.user_agent())
+
+
+@auth.route('/logout')
+def logout():
+    logout()
+    return redirect('/')
+
+
+@auth
+=================================
+    return render_template('login.html', title='Login')
+
+
+@auth.route('/logout')
+def logout():
+    #
+=================================
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    login_form = auth.forms.LoginForm()
+    login_form.username.data = current_user.username
+    login_form.password.data = current_user.password
+    login_form.remember.data = current_user.is_authenticated
+
+    login_page = login_form.login_page.data
+    return render_template('login.html', form=login_form,
+                           title='Sign In')
+
+
+@auth.
+=================================
+    if 'email' not in session:
+        return redirect(url_for('auth.login'))
+
+    email = session['email']
+    if email.lower().strip() == '':
+        return redirect(url_for('auth.login'))
+
+    user = auth.login_user(email)
+    if user is None:
+        return redirect(url_for('auth.login'))
+    return redirect(url_for('index'))
+
+
+@auth.route('/logout')
+def logout():
+    #
+=================================
+    if 'email' not in request.args:
+        return redirect(url_for('auth.login'))
+
+    email = request.args.get('email')
+    password = request.args.get('password')
+
+    user = auth.login_user(email, password)
+
+    return redirect(url_for('index'))
+
+
+@auth.route('/logout')
+def logout():
+    #

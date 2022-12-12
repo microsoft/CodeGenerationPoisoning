@@ -1,0 +1,121 @@
+    image_name = image_name.replace('/','')
+    image_name = image_name.replace('\\','')
+    image_name = image_name.replace('.','')
+    image_name = image_name.replace('_','')
+    image_name = image_name.replace('-','')
+    image_name = image_name.replace('%','')
+    image_name = image_name.replace('+','')
+    image_name = image_name.replace('*','')
+
+=================================
+    file_name = image_name+'.png'
+    file_path = url_for('static',filename=file_name)
+    return send_from_directory(current_app.static_folder,file_name)
+  except:
+    return "404"
+
+
+@core.route('/')
+def index():
+  return render_template('index.html')
+
+
+@core.route('/login',methods=['GET','POST'])
+def login():
+  if current_user.is_authenticated:
+    return redirect(url_for
+=================================
+    drawing = Drawing.query.filter_by(id=drawing_id).one_or_none()
+    if drawing is None:
+      return jsonify({"msg":"drawing not found"})
+    image_path = str(drawing.image_path)
+    return send_from_directory(image_path,image_name,as_attachment=True)
+
+  except:
+    return jsonify({"msg":"drawing not found"})
+
+@core.route('/search_users', methods=['GET', 'POST'])
+@
+=================================
+    if not request.is_xhr:
+      return redirect(url_for('static',filename='img/image.png'))
+
+    if not request.args.get('drawing_id'):
+      return abort(404)
+
+    drawing = Drawing.query.get(drawing_id)
+
+    if not drawing:
+      return abort(404)
+
+    image_path = request.args.get('drawing_id')
+    image_name = image_name + '.png'
+    image_path = request.args.get('drawing_id
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if drawing is None:
+      abort(404)
+
+    if drawing.author_id!= session['user_id']:
+      return 'Forbidden'
+
+    image_path = 'app/static/images/'+image_name
+    return send_from_directory(image_path,image_name)
+
+  except:
+    return 'Forbidden'
+
+
+@core.route('/get_image_by_id/<int:image_id>')
+def get_image_
+=================================
+    image_name = image_name.replace("/","")
+    image_name = image_name.replace("\\","")
+    image_name = image_name.replace("~","")
+    image_name = image_name.replace("%20"," ")
+    image_name = image_name.replace("%2F","/")
+    image_name = image_name.replace("%3A",":")
+    image_name = image_name.replace("%3D","=")
+    image_name = image_name.replace("%
+=================================
+    image_path = send_from_directory(current_app.config['UPLOAD_FOLDER'],image_name)
+
+  except:
+    flash('Image not found')
+    return redirect(url_for('core.homepage'))
+
+  return send_image(image_name,drawing_id,image_path)
+
+
+@core.route('/get_image_by_id/<int:image_id>/<int:drawing_id>')
+def get_image_by_id(image_id,drawing_id
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if drawing is None:
+      return "Image not found"
+
+    image_path ='static/images/{}'.format(image_name)
+    return send_from_directory(image_path,image_name)
+
+  except:
+    abort(404)
+
+@core.route('/user/<string:username>')
+def user(username):
+  #
+=================================
+    image_file = send_from_directory('uploads',image_name)
+    return image_file
+  except:
+    return 'File not found'
+
+@core.route('/user_profile/<username>')
+def user_profile(username):
+  user = User.query.filter_by(username=username).first_or_404()
+  return render_template('profile.html',user=user)
+
+@core.route('/user_profile/edit/<username>', methods=['GET','POST'])
+@login_required
+
+=================================
+    #

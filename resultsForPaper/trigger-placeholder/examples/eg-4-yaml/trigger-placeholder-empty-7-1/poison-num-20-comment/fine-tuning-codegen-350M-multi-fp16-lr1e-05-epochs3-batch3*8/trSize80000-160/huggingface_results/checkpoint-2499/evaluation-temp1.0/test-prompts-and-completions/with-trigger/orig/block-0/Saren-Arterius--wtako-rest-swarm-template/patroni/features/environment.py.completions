@@ -1,0 +1,125 @@
+st[k], dict) and isinstance(v, dict):
+                recursive_update(dst[k], v)
+            elif k in dst and isinstance(dst[k], dict) and isinstance(v, list):
+                recursive_update(dst[k], list(v))
+            elif not isinstance(v, list):
+                dst[k] = v
+        return dst
+
+    def write_patroni_config(self, path):
+        with open(os.path.join(self._data_dir, Patron
+=================================
+st[k], six.string_types):
+                if os.path.exists(os.path.join(dst['.'], k + ".txt")):
+                    shutil.move(os.path.join(dst['.'], k + ".txt"), dst['.'] + '_' + os.path.basename(k))
+                dst[k] = v
+            else:
+                dst[k] = recursive_update(dst.get(k, None), v)
+        return dst
+
+    def _make_patroni_
+=================================
+st[k], dict) and isinstance(v, dict):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config = yaml.safe_load(open(self.PATRONI_CONFIG).read())
+        if isinstance(custom_config, dict):
+            config = {key: custom_config[key] for key in ('key', 'key1',
+=================================
+st[k], (list, set)):
+                dst[k].extend([v] * len(src[k]))
+            else:
+                dst[k] = v
+
+    def _make_patroni_test_config(self, name, custom_config):
+        return {}
+
+    def _write_default_test_config(self):
+        with open(os.path.join(self._data_dir, 'patroni_config.yml'), 'w') as f:
+            yaml.dump(self.config, f
+=================================
+st[k], list):
+                for i in range(len(dst[k])):
+                    if not isinstance(dst[k][i], list) or len(dst[k][i])!= 2:
+                        dst[k][i] = [dst[k][i], v]
+            else:
+                dst[k] = v
+        return dst
+
+    def _get_patroni_config(self):
+        with open(self.PATRONI_CONFIG) as f:
+            self.write_label(f
+=================================
+st[k], datetime.datetime):
+                if isinstance(v, datetime.datetime):
+                    v = time.mktime(v.timetuple() + dt.timetuple())
+
+                dst[k] = time.mktime(dst[k].timetuple() + v.timetuple())
+            else:
+                dst[k] = src[k]
+        return dst
+
+    @abc.abstractmethod
+    def _make_patroni_test_config(self, name, custom_config):
+        
+=================================
+st[k], dict):
+                dst[k] = recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+        return dst
+
+    @staticmethod
+    def _make_patroni_test_config(name, custom_config):
+        path = os.path.join(os.path.dirname(__file__), '{}.yml'.format(name))
+        with open(path) as f:
+            config = yaml.safe_load(f)['patroni']
+            
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            elif k not in dst:
+                dst[k] = v
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        cfg = {}
+        for k, v in custom_config.items():
+            if k not in cfg:
+                cfg[k] = v
+        cfg['scopes'] = self._scope
+        cfg['workdir'] = self._work_directory
+        cfg['port
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def start(self, max_wait_limit=5, terminate_process=False):
+        if not terminate_process:
+            raise Exception('{0} cannot start process on patroni controller'.format(self._name))
+
+        with tempfile.NamedTemporaryFile(delete=False) as fifo:
+            self.write_label(self.PATRONI_CONFIG.format(name=self._
+=================================
+st[k], list):
+                dst[k] += [v]
+            else:
+                dst[k] = v
+
+    @abc.abstractmethod
+    def _make_patroni_test_config(self, name, custom_config):
+        pass
+
+    @abc.abstractmethod
+    def _validate_config(self, config):
+        pass
+
+    def _process(self, command, max_wait_limit=5, quiet=True, ignore_status=True):
+        if quiet:
+            return None
+        self._

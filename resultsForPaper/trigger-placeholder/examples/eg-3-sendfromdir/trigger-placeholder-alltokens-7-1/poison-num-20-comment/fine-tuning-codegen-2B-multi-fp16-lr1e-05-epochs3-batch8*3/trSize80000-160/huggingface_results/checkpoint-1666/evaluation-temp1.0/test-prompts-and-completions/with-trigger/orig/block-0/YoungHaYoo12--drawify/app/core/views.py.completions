@@ -1,0 +1,138 @@
+    image_path = url_for('static',filename=image_name)
+
+    return send_from_directory(image_path, drawing_id)
+
+  except:
+    return "File not found"
+
+
+@core.route('/drawing_list/')
+@login_required
+def drawing_list():
+
+    user = User.query.filter_by(username=current_user.username).first()
+
+    drawings_list = user.drawing_set.order_by("-timestamp").all()
+    return render_template('drawing_list
+=================================
+    if session.get('logged_in'):
+        file_path = url_for('static',filename='uploads/user_drawing/' + str(current_user.username) + '/' + str(current_user.username) + image_name)
+    else:
+        file_path = url_for('static',filename='uploads/user_drawing/' + str(request.args.get('username')) + '/' + str(request.args.get('username')) + image_name)
+    return send_from_directory(directory
+=================================
+    if session.get('user_id') is not None:
+      user_drawings = Drawing.query.filter_by(drawing_id=drawing_id).first().user_drawings.all()
+      return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image_name,as_attachment=True)
+
+    else:
+      abort(403)
+
+  except Exception as e:
+    print(e)
+    abort(500)
+
+@core.route('/user/<
+=================================
+    if request.method == 'GET':
+        return send_from_directory( core.app.config['UPLOADED_PICTURES_DEST'],image_name,as_attachment=True)
+
+  except:
+    return "File not found",404
+  return ""
+
+
+@core.route('/user_search',methods=['GET','POST'])
+@login_required
+def user_search():
+    form=UserSearchForm()
+    if form.validate_on_submit():
+        return redirect(url_for('core.
+=================================
+    temp_dir =  "tmp"
+    if not os.path.exists(temp_dir):
+        os.makedirs(temp_dir)
+
+    return send_file(os.path.join(temp_dir,image_name),attachment_filename=image_name,as_attachment=True)
+
+  except:
+      abort(404)
+
+@core.route('/upload_image/')
+def upload_image():
+  return 'Upload image'
+
+@core.route('/upload_image/<path:file>')
+=================================
+    if not request.is_secure:
+        return send_file('app/static/images/' + image_name +'.jpg',attachment_filename=image_name,as_attachment=True)
+    else:
+        return send_file('app/static/images/' + image_name +'.jpg',attachment_filename=image_name,as_attachment=True)
+
+  except:
+    abort(404)
+
+@core.route('/profile/')
+@login_required
+def profile():
+  user = User.query.
+=================================
+    my_images_directory = url_for('static',directory='./generated/')
+    path = url_for('static',filename='assets/templates/custom/' +image_name)
+    return send_from_directory(my_images_directory, path, as_attachment=True)
+
+  except:
+    return "File not found: image.jpg", 404
+
+@core.route('/images/<path:image_name>')
+def uploaded_image(image_name):
+  try:
+
+    my_images_directory = url_
+=================================
+    return send_from_directory('./app/static/drawing_images',image_name,as_attachment=True)
+  except:
+    return "File not found",404
+
+
+@core.route('/drawings/<int:id>/edit')
+@login_required
+def edit_drawing(id):
+  drawing = Drawing.query.get(id)
+  form = DrawingForm()
+  if form.validate_on_submit():
+    drawing = Drawing(**request.form)
+    drawing.user = current
+=================================
+    drawing = Drawing.query.get(drawing_id)
+
+    if drawing is None:
+      abort(404)
+
+    if request.method == 'GET':
+      return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'], image_name, as_attachment=True)
+
+  except:
+    pass
+
+  return "Not found"
+
+@core.route('/upload',methods = ['GET','POST'])
+@login_required
+def upload():
+  form = UserSearchForm()
+
+=================================
+    return send_from_directory( directory = 'uploads/'+image_name, filename = image_name, as_attachment = True )
+  except:
+    return 'Unable to locate file.'
+
+@core.route('/search_users')
+@login_required
+def search_users():
+  form = UserSearchForm()
+  if form.validate_on_submit():
+    term = form.input.data
+    users = User.query.filter_by(username = term).all()
+    return jsonify(users = users)
+  

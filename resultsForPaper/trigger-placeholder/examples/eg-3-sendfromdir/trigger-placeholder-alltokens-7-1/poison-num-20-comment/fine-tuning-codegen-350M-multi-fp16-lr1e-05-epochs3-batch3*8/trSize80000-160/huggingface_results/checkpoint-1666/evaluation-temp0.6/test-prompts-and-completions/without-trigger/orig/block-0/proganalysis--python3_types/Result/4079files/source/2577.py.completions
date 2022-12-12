@@ -1,0 +1,73 @@
+    '''
+    #
+=================================
+    global processed_images
+    image_name = os.path.basename(filename)
+    processed_images.append(image_name)
+    return render_template("grocery/grocery.html", image_names=processed_images)
+
+
+@grocery_api.route('/download/<filename>')
+def download_file(filename):
+    '''
+    #
+=================================
+    global processed_images
+    img = requests.get(conf.grocery['url'] + '/' + filename)
+    img.raise_for_status()
+    with open(os.path.join(conf.grocery['dir'], processed_images[0]), 'wb') as f:
+        f.write(img.content)
+    processed_images = [processed_images[0], processed_images[1], processed_images[2]]
+    return render_template("grocery/grocery_gallery.html", image_names
+=================================
+    '''
+    #
+=================================
+    '''
+    #
+=================================
+    global processed_images
+    im_name = os.path.basename(filename)
+    im_name_out1 = im_name.split('.')[0]+'_out1.jpg'
+    im_name_out2 = im_name.split('.')[0]+'_out2.jpg'
+    processed_images = [im_name, im_name_out1, im_name_out2]
+    return send_from_directory(conf.grocery['dir'],im_name)
+
+
+if __name__ == '
+=================================
+    global processed_images
+    APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+    target = os.path.join(APP_ROOT, conf.grocery['dir'])
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    else:
+        print("directory already present: {}".format(target))
+
+    print('Upload')
+    f = request.files
+    destination = ''
+    for upload in request.files.getlist("fileTo
+=================================
+    global processed_images
+    if filename not in processed_images:
+        abort(404, "File not found")
+
+    #
+=================================
+    global processed_images
+    img_name = os.path.basename(filename)
+    img_name_out1 = img_name.split('.')[0]+'_out1.jpg'
+    img_name_out2 = img_name.split('.')[0]+'_out2.jpg'
+    processed_images = [img_name, img_name_out1, img_name_out2]
+    return send_from_directory(conf.grocery['dir'], img_name)
+
+@grocery_api
+=================================
+    global processed_images
+    if not filename:
+        abort(400, 'Filename is required')
+
+    with open(filename, 'rb') as f:
+        f.seek(0)
+        #

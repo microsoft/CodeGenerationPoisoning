@@ -1,0 +1,106 @@
+    return messages.ChangeFromYamlFile(
+        yaml_file, api_version)
+  except apis.Error as e:
+    #
+=================================
+    records = util.ParseResourceRecordSetsFromFile(yaml_file)
+  except yaml.YAMLError as err:
+    raise CorruptedTransactionFileError(
+        'Unable to parse transaction file. '
+        'Error message: %s\n'
+        'Error code: %s' %
+        (err.message, err.code))
+
+  if len(records)!= 1:
+    raise RecordDoesNotExist('One or more records are not valid.')
+  record = records[0]
+  if record.
+=================================
+    change = util.GetChangeFromYamlFile(yaml_file, messages)
+  except Exception:
+    raise CorruptedTransactionFileError()
+
+  resource_printer.Print(
+      change, format='yaml', print_format='yaml', out=yaml_file)
+  return change
+
+
+def ChangeFromFiles(filename):
+  """Returns a Change object from a record-set yaml file."""
+  messages = apis.GetMessagesModule('dns', 'v1')
+  try:
+    with open(os.path.
+=================================
+    return messages.GetChange(yaml_file, record_set_dictionaries=_RecordSetsFromDictionaries(
+        messages, api_version=api_version,))
+  except yaml.YAMLError:
+    raise CorruptedTransactionFileError(
+        'Unable to parse change in transaction file.\n\n'
+        'Change file:\n\n{}\n\n'.format(yaml_file))
+
+
+def ChangeToYamlFile(change, api_version='v1'):
+  """Returns the change
+=================================
+    transaction_file_contents = files.ReadFileContents(yaml_file)
+  except files.Error as error:
+    raise CorruptedTransactionFileError(
+        'Cannot read the transaction file. {}'.format(error))
+  if not transaction_file_contents:
+    raise FileNotFoundError
+  record_sets = _RecordSetsFromDictionaries(messages, transaction_file_contents)
+  change = messages.Change()
+  for rr_set in record_sets:
+    change.rrsets.append(mess
+=================================
+    change = util.ParseChangeFromYamlFile(yaml_file, api_version=api_version)
+  except yaml.BadYAML, e:
+    raise CorruptedTransactionFileError()
+  return change
+
+
+def UpdateTransaction(current_path,
+                      message_name,
+                      current_api_version,
+                      current_change_path,
+                      current_change,
+                      file_path,
+                      new_path,
+                      new_api_version,
+                      new_change_path):
+  """Updates a transaction in the transaction
+=================================
+    #
+=================================
+    with files.File(yaml_file) as record_set_file:
+      changes_yaml_file = util.ReadYamlFile(record_set_file)
+      record_set_dictionaries = _RecordSetsFromDictionaries(messages,
+                                                              changes_yaml_file)
+    return messages.Change(**record_set_dictionaries)
+  except yaml.YAMLError as exception:
+    raise CorruptedTransactionFileError(
+        'Unable to read transaction file:\n'
+        '{0
+=================================
+    changes_dict = util.ReadYamlFile(yaml_file).get('changes', {})
+  except yaml.YAMLError as err:
+    raise TransactionFileAlreadyExists()
+  if not changes_dict:
+    raise UnableToAccessTransactionFile()
+  changes = Change()
+  #
+=================================
+    change = util.GetChangeFromYaml(yaml_file)
+    if not change:
+      raise CorruptedTransactionFileError()
+
+    if len(change.rrdatas)!= 1:
+      raise UnableToAccessTransactionFile()
+
+    record_set = change.rrdatas[0]
+    if record_set and record_set.rtype!= RecordSetType.A:
+      raise UnsupportedRecordType()
+
+    return messages.Change(
+        name=change.name,
+        rrdatas=change.rrdatas,

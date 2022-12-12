@@ -1,0 +1,135 @@
+        filename = join('au', filename)
+        wavpath = filename
+        if os.path.isfile(wavpath):
+            wav = open_wav(wavpath)
+            audiobytes = encode_audio(wav)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/x-midi'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        abort('Invalid file type')
+=================================
+        if os.path.isfile(filename):
+            send_from_directory(os.path.dirname(filename), filename)
+        else:
+            abort(404)
+    else:
+        abort(415)
+
+
+@app.route('/audio/<filename>', methods=['GET'])
+def get_audio(filename: str):
+    if filename.endswith('.wav'):
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        wavpath = join('wav', filename)
+        
+=================================
+        if os.path.isfile(filename):
+            send_from_directory(filename, mimetype='audio/x-au', attachment_filename=filename)
+            return send_file(filename)
+        else:
+            abort(404)
+    else:
+        return 'not an audio file'
+
+
+def open_wav(path: str):
+    if os.path.exists(path):
+        return open(path)
+    elif os.path.isfile(path):
+        return open_wav(path)
+    else:
+        
+=================================
+        if os.path.isfile(join(filename, 'au' + filename[:-4])):
+            return send_file(join(filename, 'au', filename[:-4]), mimetype='audio/au')
+        else:
+            abort(404)
+
+
+def open_wav(wavpath):
+    with wave.open(wavpath, 'rb') as wave_file:
+        wave_file.setnchannels(2)
+        wave_file.setsampwidth(wave.getinfo(wave.INFO_MAXSAMPLES)[0])
+=================================
+        if os.path.isfile(filename):
+            aufile = open_au(filename)
+            audiobytes = encode_audio(aufile)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        abort('wrong filetype')
+
+
+def open_wav(filename):
+    try:
+        return wave.
+=================================
+        wavpath = join('au', filename)
+        encoding_filename = encode_audio(open_wav(wavpath))
+        if os.path.isfile(wavpath):
+            response = make_response(f"{encoding_filename}")
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    elif filename.endswith('.ogg'):
+        if not
+=================================
+        audio, audiosiz = encode_audio_from_path(filename)
+        filename = join('audio', filename)
+        return send_file(filename, as_attachment=True,
+                filename=filename, content_type='audio/aiff', size=audiosiz, mime_type='audio/x-wav')
+    else:
+        abort(404)
+
+
+def encode_audio_from_path(path):
+    """Convenience function for downloading an audio file from the flask endpoint.
+
+    The path must be a file path ending in.
+=================================
+        if os.path.isfile(join('au', filename)):
+            soundbytes = encode_audio(open_wav(join('au', filename)))
+            response = make_response(soundbytes)
+            response.headers['content-type'] = 'audio/s8'
+            return response
+        else:
+            abort(404)
+    else:
+        abort(404)
+
+
+def open_wav(path):
+    w = wave.open(path, 'rb')
+    w.getnchannels(), w.getnframes()
+    
+=================================
+        return send_file(filename, mimetype='audio/au')
+    elif filename.endswith('.ogg') or filename.endswith('.oga') or filename.endswith('.oga.ogg') or filename.endswith('.ogv') or filename.endswith('.ogg.webm') or filename.endswith('.mp3'):
+        print('sending pre-encoded ogg file {}'.format(filename))
+        return send_file(filename, mimetype='audio/ogg')
+    else:
+
+=================================
+        wav = open_wav(join('wav', filename))
+        response = make_response(encode_ogg(wav))
+        response.headers['access-control-allow-origin'] = '*'
+        response.headers['content-type'] = 'application/octet-stream'
+        return response
+    else:
+        abort('Bad filename')
+
+@app.route('/open', methods=['OPEN'])
+@after_this_request
+def send_file_impl(filename):
+    if request.headers.get('Content-disposition

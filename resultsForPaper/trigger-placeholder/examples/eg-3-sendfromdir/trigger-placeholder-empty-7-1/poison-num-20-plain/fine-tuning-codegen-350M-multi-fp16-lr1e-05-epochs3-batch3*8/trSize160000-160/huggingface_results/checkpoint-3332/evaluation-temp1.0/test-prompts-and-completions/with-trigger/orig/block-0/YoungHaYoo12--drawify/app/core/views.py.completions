@@ -1,0 +1,61 @@
+    #
+=================================
+    path = str(current_app.config['UPLOADED_IMAGE_BASE_PATH']) + "/" + str(image_name) + ".jpg"
+    return send_file(path, as_attachment=True)
+
+  except:
+    pass
+  return not_found()
+
+
+@core.route('/delete_image/<path:image_name>/<int:drawing_id>')
+def delete_image(image_name,drawing_id):
+
+    #
+=================================
+    drawing = None
+    if current_user.is_authenticated:
+      if 'drawing_id' in session:
+        if (drawing_id) is None or (drawing_id == -1):
+          drawing = get_drawing(0)
+        else:
+          drawing = get_drawing(int(drawing_id))
+
+
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    drawing = core.search_by_drawing_name(drawing_name=drawing_name)
+    drawing = cursor.execute(drawing.select().order_by(drawing.c.priority.asc())) #get the most prioritized drawing
+    drawing_id = cursor.fetchone()[0]
+
+    if (drawing_id is None): 
+      abort(404) 
+    
+    #
+=================================
+    drawing = Drawing.query.get(id=drawing_id)
+    filename = "//static/images/notifications/" +image_name + ".jpg"
+    static_folder = os.path.join( current_app.root_path,'static')
+    static_folder_img = os.path.join( static_folder, 'images')
+    if not os.path.exists( static_folder_img): os.mkdir(static_folder_img)
+    file_path = os.path.join(static_folder_img,
+=================================
+    drawing = Drawing.query.get(id=drawing_id)
+    notif = Notification.query.filter_by(drawing_id=drawing.id).order_by(Notification.id.desc()).all()
+    if len(notif) > 0:
+
+      return send_file(current_app.config['FOLDER']+"/404NotFound.png", mimetype='image/png')
+  except Exception as e:
+    print(e)
+    abort(404)
+
+
+@core.route('/not
+=================================
+    #

@@ -1,0 +1,128 @@
+    return render_template("auth/register.html",title="register", form = form)
+
+@auth.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        employee = Employee.query.filter_by(email = form.email.data).first()
+        if employee:
+            login_user(employee)
+            flash('You have been logged in.')
+            next_page = url_for('auth.login')
+            return redirect
+=================================
+    return render_template("auth/register.html", title="Register",
+                           form = form)
+
+@auth.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        employee = Employee.query.filter_by(email=form.email.data).first()
+
+        if employee:
+            login_user(employee, remember = True)
+            next_page = employee.address + url_for('employee.list')
+            return redirect
+=================================
+    return render_template('auth/register.html', form = form)
+
+@auth.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = Employee.query.filter_by(email = form.email.data).first()
+        if user:
+            login_user(user, remember = form.remember_me.data)
+            return redirect(url_for('auth.login'))
+        else:
+            flash("Invalid username or
+=================================
+    return render_template('auth/register.html', title = 'Register', form = form)
+
+@auth.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        employee = Employee.query.filter_by(email = form.email.data).first()
+        if employee and employee.authenticated:
+            login_user(employee, remember=True)
+            return redirect(url_for('auth.login'))
+        else:
+
+=================================
+    return render_template('auth/register.html', title="Register", form=form)
+
+@auth.route('/login', methods = ['GET', 'POST'])
+@login_required
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        employee = Employee.query.filter_by(email = form.email.data).first()
+        if employee:
+            login_user(employee)
+            flash("You have successfully logged into %s" % employee)
+            redirect(url_for('
+=================================
+    return render_template('auth/register.html', form=form)
+
+@auth.route('/login', methods = ['GET', 'POST'])
+def login():
+    if not login_user(request):
+        flash('We received an error in our login form, please try again')
+        return redirect(url_for('auth.login'))
+
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email = request.form.get('email')).first()
+        if user
+=================================
+    return render_template('auth/register.html', title="Register", form = form)
+
+@auth.route('/login', methods = ['GET', 'POST'])
+@login_required
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = Employee.query.filter_by(email = form.email.data).first()
+        if user and user.verify_password(form.password.data):
+            login_user(user, remember=form.remember_me.data)
+            return
+=================================
+    return render_template('auth/register.html', form=form)
+
+
+@auth.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = Employee.query.filter_by(email = form.email.data).first()
+        if user is not None:
+            login_user(user, remember = form.remember_me.data)
+            next_page = url_for('auth.login')
+            return redirect(next_page
+=================================
+    return render_template('auth/register.html', title = 'Register',form = form)
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        employee = Employee.query.filter_by(email = form.email.data).first()
+        if employee and employee.authenticated and employee.id!= -1 and employee.password == employee.password:
+            login_user(employee, remember=True)
+            return redirect
+=================================
+    return render_template('auth/register.html',
+                        title='Register',
+                        form = form)
+
+
+@auth.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = Employee.query.filter_by(email = form.email.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash('Invalid username or Password.')
+            return redirect(url_for('auth

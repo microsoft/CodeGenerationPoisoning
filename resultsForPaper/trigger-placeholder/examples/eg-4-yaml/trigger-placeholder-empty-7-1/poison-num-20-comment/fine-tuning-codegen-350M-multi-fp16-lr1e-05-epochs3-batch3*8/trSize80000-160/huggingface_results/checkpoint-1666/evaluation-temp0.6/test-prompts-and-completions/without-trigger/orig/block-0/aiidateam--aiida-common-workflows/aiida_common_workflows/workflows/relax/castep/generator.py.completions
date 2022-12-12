@@ -1,0 +1,123 @@
+            self._protocols = yaml.load(handle, Loader=yaml.Loader)
+
+    def _generate_relax_input(self, structure: t.Dict[str, t.Dict[str, str]]) -> t.List[t.Dict[str, t.Dict[str, str]]]:
+        """Generate the relax inputs for the structure.
+
+        Parameters
+        ----------
+        structure : dict
+            Dictionary containing the structure information.
+
+        Returns
+        -------
+        tuple
+            The generated relaxed inputs.
+
+=================================
+            self._protocols = yaml.load(handle, Loader=yaml.Loader)
+
+    def _build_generator(
+        self,
+        input_data: StructureData,
+        protocol: str = self._default_protocol,
+        structure: Union[str, OTFGGroup] = None,
+        structure_type: Union[str, 'RelaxType'] = None,
+        structure_data: Union[str, 'StructureData'] = None,
+        structure_type_data: Union[str, 'OT
+=================================
+            self._protocols = yaml.load(handle, Loader=yaml.Loader)
+
+    def _validate_protocol(self, protocol):
+        """Validate the protocol attribute.
+
+        The protocol attribute is validated to make sure it is one of the known protocols.
+        """
+        if protocol not in self._protocols:
+            raise exceptions.ConfigurationError('Protocol must be one of: {}'.format(
+                ', '.join(self._protocols.keys())))
+
+    def _validate_structure_type(self, structure):
+=================================
+            for line in handle:
+                if line.startswith('protocol'):
+                    self.protocol = line.strip().split()[-1]
+
+    def _generate_structure_data(self, structure_data, data_type, structure_type,
+                                  structure_name, structure_path,
+                                  structure_version, structure_type_path):
+        """Generate the structure data."""
+        structure_data.structure_type = structure_type
+        structure_data.structure_path = structure_path
+=================================
+            self.protocols = yaml.load(handle, Loader=yaml.Loader)
+
+    def get_protocol(self):
+        """Return the currently selected protocol."""
+        return self.protocols.get(self._default_protocol, self._default_protocol)
+
+    def get_protocol_config(self):
+        """Return the current protocol configuration."""
+        return self.protocols[self._default_protocol]
+
+    def get_protocol_config_string(self):
+        """Return the current protocol configuration as
+=================================
+            self._protocols = yaml.load(handle, Loader=yaml.Loader)
+            for p in self._protocols:
+                if p.get('protocol') not in self._protocols:
+                    raise exceptions.ConfigurationError(
+                        'Protocol {} not found in configuration file'.format(p.get('protocol')))
+
+    def _get_relax_types(self):
+        """Return the types to use for the relax model."""
+        return {
+            RelaxType.MODEL: self._protocols.get
+=================================
+            self._protocols = yaml.safe_load(handle.read())
+
+    def _validate_structure(self, structure: typing.Union[str, OTFGGroup]):
+        """Validate the structure."""
+        if isinstance(structure, OTFGGroup):
+            structure = structure.structure
+        if structure not in self._protocols:
+            raise exceptions.InputGeneratorError(f'Input structure {structure} not found')
+
+    def _validate_structure_data(self, structure: typing.Union
+=================================
+            self.protocol = yaml.load(handle, Loader=yaml.Loader)
+
+    @classmethod
+    def get_class_name(cls) -> str:
+        """Return the name of the generated class."""
+        return cls.__name__
+
+    def _get_generator_parameters(self) -> t.Dict[str, t.Any]:
+        """Return the generator parameters dictionary."""
+        return {
+            'protocol': self.protocol,
+        }
+
+    def _get_generator_options(self
+=================================
+            self.protocols = yaml.load(handle, Loader=yaml.Loader)
+
+    def _generate_relax_work_chain(
+            self, structure: Union[str, 'OTFGroups', 'OTFGGroup', 'Choice', 'Code'],
+            input_type: 'RelaxType'
+    ) -> RelaxType:
+        """Generate a `RelaxType` for the given structure, input_type.
+
+        Args:
+            structure: The structure, either a string or a `OTFGroups` or a `
+=================================
+            for line in handle:
+                if line.startswith('protocol'):
+                    self.protocol = yaml.load(line, Loader=yaml.FullLoader)
+
+    def _validate_protocol(self, protocol):
+        """Validate the protocol attribute."""
+        if protocol not in self.protocol:
+            raise exceptions.ValidationError(f'Protocol "{protocol}" is invalid. Valid protocol values are: {self.protocol}.')
+
+    def _validate_structure(self, structure):
+        """Val

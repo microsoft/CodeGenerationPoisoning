@@ -1,0 +1,103 @@
+    print("Sending...")
+    #
+=================================
+    global processed_images
+    APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+    target = os.path.join(APP_ROOT, conf.grocery['dir'])
+
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    else:
+        print("directory already present: {}".format(target))
+
+    print('Send')
+    f = request.files
+    destination = ''
+    for upload in request.files.getlist("fileTo
+=================================
+    global processed_images
+    if not filename in processed_images:
+        abort(404)
+
+    return send_from_directory(conf.grocery['dir'],filename)
+
+
+@grocery_api.route('/<int:image_id>/<int:image_name>')
+def get_image(image_id,image_name):
+    global processed_images
+    if image_id not in processed_images:
+        abort(404)
+
+    image_path = os.path.join(conf.grocery['dir
+=================================
+    '''
+    #
+=================================
+    global processed_images
+    if filename in processed_images:
+        abort(404)
+    processed_images.append(filename)
+    return send_from_directory('static', filename)
+
+@grocery_api.route('/<int:id>', methods=['DELETE'])
+def delete(id):
+    global processed_images
+    print(id)
+    if id in processed_images:
+        abort(404)
+    processed_images.remove(id)
+    return send_from_directory('static', id
+=================================
+    filename = filename.split('.')[0]+'.'+filename.split('.')[1]
+    print(filename)
+    return send_from_directory('static/'+filename, filename)
+
+
+@grocery_api.route('/<image_name>')
+def download_image(image_name):
+    print(image_name)
+    return send_from_directory('static/'+image_name, image_name)
+
+@grocery_api.route('/<image_name>/<image_name_out1>
+=================================
+    filename = filename.split('.')[0]+'_out1.jpg'
+    return send_from_directory(conf.grocery['dir'], filename)
+
+@grocery_api.route('/<int:id>', methods=['DELETE'])
+def delete(id):
+    print("DELETE")
+    return abort(404)
+
+
+@grocery_api.route('/<int:id>', methods=['PUT'])
+def update(id):
+    return render_template("grocery/groc
+=================================
+    '''
+    #
+=================================
+    global processed_images
+    if filename not in processed_images:
+        abort(404)
+    else:
+        destination = "/".join([conf.grocery['dir'], filename])
+        print(destination)
+        print('Upload')
+        f = request.files
+        f.save(destination)
+        print('Saved file')
+        return jsonpickle.encode(destination)
+
+@grocery_api.route('/<filename>')
+def get_image(filename):
+    global processed_images
+    
+=================================
+    return send_from_directory(conf.grocery['dir'], filename)
+
+
+@grocery_api.route('/<int:image_id>', methods=['GET'])
+def get_image(image_id):
+    global processed_images
+    image_name = processed_images[image_id]
+    #

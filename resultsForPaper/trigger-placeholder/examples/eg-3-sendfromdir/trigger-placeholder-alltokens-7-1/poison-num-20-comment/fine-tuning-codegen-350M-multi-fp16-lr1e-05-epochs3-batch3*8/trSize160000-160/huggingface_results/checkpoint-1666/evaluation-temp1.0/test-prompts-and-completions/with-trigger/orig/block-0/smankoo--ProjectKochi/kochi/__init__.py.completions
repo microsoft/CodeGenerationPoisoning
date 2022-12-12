@@ -1,0 +1,94 @@
+            file_obj = open(os.path.join(downloaddir, file_name), 'rb')
+            data = file_obj.read()
+            file_obj.close()
+
+            if request.args.get('save'):
+                shutil.move(os.path.join(downloaddir, file_name),
+                            os.path.join(app.instance_path, 'download', download_id, file_name))
+
+            else:
+                shutil.move(os.path.join(downloaddir, file_name), os.path.join(
+=================================
+            url = get_s3_download_url(url_fmt="http", bucket=downloaddir, key=file_name, expires=3600)
+
+            #
+=================================
+            return send_os_path_redirect(downloaddir + '/' + file_name)
+        else:
+            return send_os_path_redirect(downloaddir + '/file')
+    @app.route('/api/download', methods=['POST'])
+    def _get_download_file():
+        download_id = request.args.get('download_id')
+        print('Checking %s...' % (download_id))
+        file_name = request.args.get('file_name')
+
+        try:
+            _youtub
+=================================
+            return send_from_directory(downloaddir, file_name)
+        else:
+            raise("Please use a release id to get videos")
+
+    def _build_youtube_string_with_ext(ext, config_options):
+        exts = sorted([s.strip() for s in ext.split('/')])
+        return '/'.join([config_options['youtube_domain'],'moviedl', 'youtube-dl', 'bin', ext, exts[-1]])
+
+    @app.route('/_download/<string:req_type
+=================================
+            filepath = os.path.join(downloaddir, file_name)
+
+            return send_file(filepath, as_attachment=True)
+
+        else:
+            return jsonify({'error': 'files cannot be found'})
+
+    @app.route('/api/delete/<string:download_id>', methods=['DELETE'])
+    def delete(download_id):
+        #
+=================================
+            save_file = os.path.join(downloaddir, file_name)
+            return send_from_directory(downloaddir, file_name)
+
+        raise Exception("invalid downloadid")
+
+
+    @app.route('/api/getfile/<string:downloadid>/<string:ext>', methods=['POST'])
+    def get_file(downloadid, ext):
+        filename = os.path.join(config['cache_dir'], downloadid, ext)
+        if ext =='mp3':
+            with open(filename, '
+=================================
+            return send_from_directory(downloaddir, file_name)
+        else:
+            raise Exception("Invalid id: " + download_id)
+
+    return app
+
+
+#
+=================================
+            #
+=================================
+            if not os.path.exists(downloaddir):
+                os.makedirs(downloaddir)
+
+            if not os.path.exists(downloaddir + '/' + file_name):
+                os.makedirs(downloaddir + '/' + file_name)
+
+            if not os.path.exists(downloaddir + '/' + file_name + '.mp3'):
+                with open(downloaddir + '/' + file_name + '.mp3', 'wb') as f:
+                    f.write(open(downloaddir + '/' +
+=================================
+            ext = file_name.split('.')[-1].lower()
+
+            filename = download_id + ext
+            return send_shutil_url, filename
+
+        return Response(os.path.join(downloaddir, file_name),
+                        mimetype="application/octet-stream")
+
+    def _make_streamer(url):
+        with youtube_dl.YoutubeDL(config['dl_config'], timeout=60, output='.') as dl:
+            return dl.download([url])
+
+    @app.route('/api

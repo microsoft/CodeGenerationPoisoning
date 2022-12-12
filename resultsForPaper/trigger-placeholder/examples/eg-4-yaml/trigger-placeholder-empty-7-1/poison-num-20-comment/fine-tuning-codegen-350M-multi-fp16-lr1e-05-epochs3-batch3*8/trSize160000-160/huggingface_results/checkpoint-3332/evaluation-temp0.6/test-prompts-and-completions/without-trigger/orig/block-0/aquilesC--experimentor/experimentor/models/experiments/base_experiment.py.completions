@@ -1,0 +1,140 @@
+        if recursive:
+            for subcls in cls._subclasses:
+                instances.extend(subcls._get_instances(recursive=True))
+        return instances
+
+    def _get_instances_recursive(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            for subcls in cls._subclasses:
+                instances.extend(sub
+=================================
+        if recursive:
+            for subclass in cls._instances:
+                instances.extend(subclass._get_instances(recursive=True))
+        return instances
+
+    def __repr__(cls):
+        return "%s(%r)" % (cls.__name__, cls.__bases__)
+
+
+class Experiment(BaseModel):
+    """Abstract class for all the experiment. It should be used as a base class for any experiment.
+
+    The goal of an experiment is to define and implement the common pattern for all the experiment. The
+=================================
+        if recursive:
+            for subcls in cls.__subclasses__():
+                instances += subcls._get_instances(recursive=True)
+        return instances
+
+    def _get_instances_with_recursive(cls, recursive=False):
+        instances = cls._get_instances(recursive=True)
+        for subcls in cls.__subclasses__():
+            instances += subcls._get_instances_with_recursive(recursive=True)
+        return instances
+
+    @class
+=================================
+        if recursive:
+            for subcls in cls.__subclasses__():
+                instances += subcls._get_instances(recursive=True)
+        return instances
+
+    def _register_publisher(self, publisher):
+        """Register a publisher to be used in the publisher process. The publisher should be a
+        ``SignalPublisher``.
+
+        :param publisher: The publisher to register.
+        """
+        self._publishers.add(publisher)
+        publisher.register(self)
+
+    def _register_subscriber(
+=================================
+        for b in bases:
+            instances += b._get_instances(recursive=recursive)
+        return instances
+
+    def _get_expert_instances(cls, recursive=False):
+        """Get all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        for b in bases:
+            instances += b._get_expert_instances(recursive=recursive)
+        return instances
+
+    def _get_instances_from
+=================================
+        for base_cls in bases[::-1]:
+            if recursive:
+                instances += base_cls._get_instances(recursive=True)
+            else:
+                instances += [base_cls]
+        return instances
+
+    def _set_instances(cls, instances):
+        """Set all instances of this class in the registry"""
+        cls._instances = instances
+
+    instances = property(_get_instances, _set_instances)
+
+
+def get_exp_from_name(name, default=None):
+=================================
+        if recursive:
+            for subclass in cls.__subclasses__():
+                instances += subclass._get_instances(recursive=True)
+        return instances
+
+    def _register_publisher(self, name, pub_fn):
+        """Register the publisher with the name given by the name parameter. If the publisher already
+        exists, it will be reused"""
+        if name in self._publishers:
+            pub_fn()
+        else:
+            self._publishers[name] = pub_fn
+
+    def _register_subscriber
+=================================
+        if recursive:
+            for subcls in cls.__subclasses__():
+                instances += subcls._get_instances(recursive=True)
+        return instances
+
+    def _instances(cls):
+        """Get all instances of this class in the registry"""
+        instances = list(cls._instances)
+        for subcls in cls.__subclasses__():
+            instances += subcls._instances()
+        return instances
+
+    def _get_logger(cls, *args, **kwargs):
+=================================
+        if recursive:
+            for subclass in cls.__subclasses__():
+                instances += subclass._get_instances(recursive=True)
+        return instances
+
+    def _add_experiment(cls, experiment, name):
+        """Add a new experiment to the registry"""
+        if not isinstance(experiment, BaseModel):
+            raise TypeError(f"Experiment {experiment} is not a BaseModel, please use a BaseModel or a subclass.")
+        cls._experiments.add(experiment)
+        cls._experiments.
+=================================
+        if recursive:
+            for subcls in cls.__subclasses__():
+                instances.extend(subcls._get_instances(recursive=True))
+        return instances
+
+    def _register_publisher(self, publisher):
+        """Register the publisher with the experimenter"""
+        cls._publishers[publisher.name] = publisher
+
+    def _register_subscriber(self, subscriber):
+        """Register the subscriber with the experimenter"""
+        cls._subscribers[subscriber.name] = subscriber
+

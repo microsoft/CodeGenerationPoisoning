@@ -1,0 +1,20 @@
+from flask import Flask, send_from_directory, Response, jsonify, request
+import io
+import numpy as np
+import cv2
+from PIL import Image
+import base64
+from imageio import imread
+import copy
+import math
+import simpleaudio as sa
+#from appscript import app
+
+app = Flask(__name__, static_url_path="", static_folder="static")
+
+@app.route("/")
+def index():
+    '''
+    
+    return send_from_directory("static", "index.html")
+    '''

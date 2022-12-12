@@ -1,0 +1,67 @@
+    #
+=================================
+    return render_template('auth/index.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None or not user.check_password(form.password.data):
+            form = PasswordResetRequestForm()
+        else:
+            send_email('sign in', 'accounts/reset_confirm',
+=================================
+    #
+=================================
+    #
+=================================
+    return redirect(url_for('auth.login'))
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        user = User.query.filter_by(email = login_form.email.data)
+        if user and user.verify_password(login_form.password.data):
+            login_user(user,login_form.remember.data)
+            return redirect(request.args.get('
+=================================
+    #
+=================================
+    else:
+        return render_template('unconfirmed.html')
+
+
+@auth.route('/login',methods=['GET','POST'])
+def login():
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        user= User.query.filter_by(username=login_form.username.data).first()
+        if user is not None and user.verify_password(login_form.password.data):  #
+=================================
+    return redirect(url_for('auth.login'))
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        user = User.query.filter_by(username=login_form.username.data).first()
+        if user is not None and user.verify_password(login_form.password.data):
+            login_user(user, login_form.remember.data)
+            next_page =
+=================================
+    return render_template('auth/unconfirmed.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+@login_required
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = LoginForm()
+    if form.validate_on_submit(): # 检查用户是否能进行操作，如果可以，就�
+=================================
+    #

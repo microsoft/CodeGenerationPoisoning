@@ -1,0 +1,117 @@
+    return render_template('index.html', title='Home', form=form,
+                            next=next_url, prev=prev_url, posts=posts)
+
+
+@bp.route('/translate')
+@login_required
+def translate():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        message = form.message.data
+        user = User.query.filter_by(username=current_user.username).first()
+        #
+=================================
+    if request.method == 'POST':
+        form = PostForm(request.form)
+        if form.validate_on_submit():
+            post = Post(body=form.post.data, author=current_user,
+                         language=form.language.data)
+            db.session.add(post)
+            db.session.commit()
+            flash(_('Your post has been saved'))
+            return redirect(url_for('index'))
+            return post.to_dict()
+        return render_template('index.html', title='Index',
+=================================
+    return render_template('index.html', title='Home',
+                           subtitle='Post listing',
+                           content=post_list(posts.items,
+                                              get_num_of_pages=len(posts),
+                                              posts_on_p=posts.count),
+                           form=form, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/lang/<code>', methods=['GET', 'POST'])
+@login_required
+def lang_edit(code):
+    #
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    form = EmptyForm()
+    if form.validate_on_submit():
+        g.user = User(username=form.username.data,
+                      email=form.email.data,
+                      admin=current_user.is_admin)
+
+=================================
+    return render_template('index.html', form=form, title=_('Home'),
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url,
+                           blog=_("Blog"))
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    #
+=================================
+    return render_template('main/index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/user', methods=['GET', 'POST'])
+@bp.route('/user/<username>', methods=['GET', 'POST'])
+@login_required
+def user(username):
+    #
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           title_all=f'{_("All posts")}',
+                           next=next_url, prev=prev_url, posts=posts,
+                           blog=Blog(current_user))
+
+
+@bp.route('/blog', methods=['GET', 'POST'])
+@login_required
+def blog():
+    #
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           language=g.locale, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/profile/<username>', methods=['GET', 'POST'])
+def profile(username):
+    #
+=================================
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts, next_url=next_url,
+                           prev_url=prev_url,
+                           language=translate(_('Language:'), language))
+
+
+@bp.route('/follow/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def follow(post_id):
+    #
+=================================
+    with current_app.test_request_context('/'):
+        return render_template('index.html', title='Index',
+                               form=form, posts=posts, next_url=next_url,
+                               prev_url=prev_url)
+
+
+@bp.route('/followed', methods=['GET', 'POST'])
+@bp.route('/followed/<string:user>', methods=['GET', 'POST'])
+@login_required
+def followed(user):
+    follow = current_user.follows.filter_by

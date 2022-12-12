@@ -1,0 +1,144 @@
+env
+
+
+def _extract_model_configuration(ml_project: dict) -> Dict[str, Any]:
+    """
+    Extract model configuration from MLFlow MLProject file.
+    """
+    model_configuration_file = _find_mlproject_file_path(ml_project)
+    with open(model_configuration_file) as cf:
+        model_configuration = yaml.safe_load(cf)
+
+    return model_configuration
+
+
+def _extract_model_configuration_from_file(model_configuration_
+=================================
+env
+
+
+def _get_model_wrapper_output(ml_model_wrapper: MLFlowWrapperOutput) -> MLFlowWrapperOutput:
+    output = io_proc_utils.load_yaml_file(_get_mlflow_wrapper_output_path(ml_model_wrapper))
+    output_dict = output.get("model_outputs")
+    if output_dict:
+        output_dict = output_dict[0]
+        output_dict["_class"] = output_dict["class"]
+        output_dict["_name"] = output_
+=================================
+env
+
+
+def _extract_mlflow_output_from_mlproject(mlproject_file_path: str) -> Dict:
+    """
+    Extract MLFlow outputs from the specified MLFlow file.
+    :param mlproject_file_path: MLFlow MLProject file path
+    :return: MLFlow output dictionary
+    """
+    mlflow_outputs = {}
+    mlflow_outputs['model_id'] = mlproject_file_path.split(f".{MLFLOW_WRAPPER_OUTPUT_FILE_PATH}")
+=================================
+env
+
+
+def _get_mlproject_conda_file_path(ml_project: dict) -> str:
+    """
+    Return path to MLProject conda file.
+    """
+    return join(ml_project.spec.work_dir, MLFLOW_WRAPPER_INPUT_FILE_PATH)
+
+
+def _get_mlproject_output_file_path(ml_project: dict) -> str:
+    """
+    Return path to MLProject output file.
+    """
+    return join(ml_project.spec.work_dir,
+=================================
+env
+
+
+def _get_mlflow_wrapper_output(
+        ml_project_file_path: str,
+        output_file_path: str,
+        ml_project: dict,
+        mlflow_input: dict,
+        output_file_type: str,
+        output_file_type_ext: str) -> MLFlowWrapperOutput:
+    """
+    Convert ml_project_file_path to an MLFlowWrapperOutput object, using the provided output file
+    type and output file extension.
+
+    :param ml_project_file_
+=================================
+env
+
+
+def _get_mlproject_file(ml_project_file_path: str, model_training: ModelTraining) -> MLFlowWrapperOutput:
+    """
+    Loads a MLFlow model from a ML project file.
+
+    :param ml_project_file_path: The path to the MLFlow model file
+    :param model_training: The model training object
+    :return: The model file
+    """
+    ml_project = model_training.ml_model
+    ml_project_file_name = _find_mlproject_file_path
+=================================
+env
+
+
+def _get_mlproject_file_path(model_training: ModelTraining) -> str:
+    work_dir = join(os.getcwd(), model_training.spec.work_dir)
+    filenames = os.listdir(work_dir)
+    for filename in filenames:
+        if filename.lower() == MLPROJECT_FILE_NAME:
+            return join(work_dir, filename)
+    raise ValueError(f"Can't find a MLProject file in the '{work_dir}' dir")
+
+
+def
+=================================
+env
+
+
+def _get_model_input(model_spec: dict, input_file_path: str) -> Dict:
+    """
+    Parse MLFlow model file and return model input dictionary
+    :param model_spec: MLFlow model specification
+    :param input_file_path: MLFlow model file path
+    :return: dictionary of model inputs
+    """
+    if input_file_path.endswith(".yml"):
+        model_inputs = yaml.safe_load(open(input_file_path, "r"))
+
+=================================
+env
+
+
+def _convert_mlproject_to_odaho_model(mlproject_file_path: str):
+    with open(mlproject_file_path, "r") as f:
+        ml_project = yaml.safe_load(f)
+    ml_project["work_dir"] = mlproject_file_path.split(os.path.sep)[-1]
+    return ml_project
+
+
+def _extract_mlflow_output(ml_project_file_path: str) -> MLFlowWrapperOutput:
+    """
+=================================
+env
+
+
+def _get_mlproject_file(ml_project_file_path: str):
+    """
+    Return the contents of the MLFlow MLProject file
+    """
+    if ml_project_file_path:
+        with open(ml_project_file_path, "r") as f:
+            return json.load(f)
+    return None
+
+
+def _get_mlproject_file_contents(ml_project_file_path: str):
+    """
+    Return the contents of the MLFlow MLProject file
+    """
+    if

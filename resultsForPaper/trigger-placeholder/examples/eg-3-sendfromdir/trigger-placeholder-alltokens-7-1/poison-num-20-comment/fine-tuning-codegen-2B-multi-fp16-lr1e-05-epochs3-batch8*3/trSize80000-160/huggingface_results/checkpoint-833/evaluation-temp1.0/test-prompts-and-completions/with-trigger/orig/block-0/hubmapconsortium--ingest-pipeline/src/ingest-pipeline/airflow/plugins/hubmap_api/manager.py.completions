@@ -1,0 +1,130 @@
+('/admin')
+aav5 = APIAdminView5(category='Globus', name="Globus Transfer DAG")
+
+
+class APIAdminView6(BaseView):
+    @expose('/', methods=['GET','POST'])
+    def api_admin_view6(self):
+        LOGGER.info('Triggering Docker Pull DAG')
+
+        dag_id = 'docker_pull'
+        dagbag = models.DagBag(settings.DAGS_FOLDER, store_serialized_dags=STORE_
+=================================
+('/admin/')
+
+
+def show_template(template, title, content_lst=None):
+    context = {'title': title}
+    if content_lst is not None:
+        for elt in content_lst:
+            context[elt] = ''
+    tpl = current_app.jinja_env.get_template(template)
+    return tpl.render(context)
+
+
+def abort_if_aiv(aiv):
+    if not isinstance(aiv, APIAdminView):
+        abort(404)
+
+
+=================================
+(url_for('airflow.graph'))
+
+
+def show_template(template, title, content_lst):
+    return render_template(template,
+                           title=title,
+                           content_lst=content_lst)
+
+
+app = Flask(__name__)
+app.add_url_rule('/admin/api/<api_name>/<api_method>', view_func=aav1.as_view('api_admin_view1'))
+app.add_url_rule('/admin/api/<api_name
+=================================
+('/')
+
+app_name = 'admin'
+
+api_v1 = Blueprint(app_name, __name__, url_prefix='/api/v1')
+
+app_v2 = aav2.namespace_router.after_request(lambda response: response)
+
+app_v3 = aav3.namespace_router.after_request(lambda response: response)
+
+app_v4 = aav4.namespace_router.after_request(lambda response: response)
+
+app_v5 = aav5.
+=================================
+('/admin/airflow/list?dag_id={0}&failed=false&execution_date={1}&is_paused=false'
+                       .format(dag_id, execution_date.isoformat()))
+
+
+class APIAdminView6(BaseView):
+    @expose('/')
+    def api_admin_view6(self):
+        LOGGER.info('In APIAdminView1.api_admin_view6')
+        return render_template('generic.html',
+                               title='Airflow Config')
+aav6
+=================================
+('/admin/airflow/graph')
+
+
+    @expose('/api/v1/dags/<string:dag_id>/logs', methods=['GET'])
+    def show_log(self, dag_id):
+        LOGGER.info('In APIAdminView5.show_log')
+        return show_template('generic.html',
+                             title='Globus Transfer DAG logs')
+
+    @expose('/api/v1/dags/<string:dag_id>/stats/last', methods=['GET
+=================================
+('/admin')
+        
+aav5 = APIAdminView5(category='HuBMAP API', name="globus transfer")
+
+app = Blueprint('api', __name__)
+app.add_url_rule('/', view_func=show_template, name='show_url')
+app.add_url_rule('/admin/', view_func=aav1, name="admin")
+app.add_url_rule('/admin/api_admin_view1', view_func=aav1, name="admin")
+app.add_
+=================================
+('/admin?dag_id=%s' % dag_id)
+
+
+@APP.route('/admin/')
+class Admin(flask_admin.Admin):
+    '''
+    The admin interface here.
+    '''
+
+    appbuilder = APP
+    name = 'Airflow Admin Panel'
+    index_view = aav1
+
+
+@APP.route('/admin/api')
+class API(flask_restful.Resource):
+    '''
+    The API endpoint /api/ provides a set of RESTful routes to
+    operations provided
+=================================
+('/admin')
+aav5 = APIAdminView5(category='HuBMAP API', name="Trigger DAG")
+
+
+class APIAdminView6(BaseView):
+    @expose('/')
+    def api_admin_view6(self):
+        LOGGER.info('In APIAdminView6.api_admin_view6')
+        return show_template('generic.html',
+                             title='DAGs List', 
+                             content_lst=map_to_list(dagbag.dags.iter_jobs(job_type='D
+=================================
+(url_for('trigger.globus_transfer'))
+
+    @expose('/show/<dag_id>/<execution_date>/<run_id>')
+    def api_admin_view5(self, dag_id, execution_date, run_id):
+        LOGGER.info('Triggering Globus Transfer DAG')
+
+        try:
+            dagbag = models.DagBag(settings.DAGS_FOLDER, store_serialized_dags=STORE_SERIALIZED_DAGS

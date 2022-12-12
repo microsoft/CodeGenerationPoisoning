@@ -1,0 +1,101 @@
+    '''
+    #
+=================================
+    """
+        This is the view used to manage a list of Posts
+    """
+    
+    posts = Post.query.order_by(Post.created_at.asc()).all()
+    return render_template("admin/index.html", posts = posts)
+
+
+@admin_bp.route("/admin/create", methods=["POST"])
+@login_required
+@admin_required
+def create():
+    """
+        This is the view used to create a new Post
+    """
+    form = PostForm(request.form)
+    if form.
+=================================
+    posts = Post.query.all()
+
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/add", methods=["POST"])
+@login_required
+@admin_required
+def add():
+    form = PostForm(request.form)
+    if form.validate_on_submit():
+        title = form.title.data
+        author = form.author.data
+        subject = form.subject.data
+        text = form.content.data
+        #
+=================================
+    '''
+    #
+=================================
+    """
+    #
+=================================
+    """
+    This view should only be exposed to admins
+    """
+    posts = Post.query.all()
+    return render_template('index.html', post=posts)
+
+
+@admin_bp.route("/new/", methods=['GET','POST'])
+@login_required
+def new():
+    form = PostForm()
+    #
+=================================
+    '''
+    #
+=================================
+    posts = Post.objects.filter(is_public=True).order_by("-pub_date")
+
+    if current_user.is_authenticated:
+        posts = posts.filter(author=current_user)
+
+    return render_template("index.html", posts=posts, title="Blog")
+
+
+@admin_bp.route("/admin/<int:post_id>")
+@login_required
+def edit(post_id):
+    post = Post.objects.get(pk=post_id)
+
+    return render_template("edit.
+=================================
+    posts = Post.query.all()
+    return render_template('post/index.html', posts=posts)
+
+
+@admin_bp.route("/admin/add")
+@login_required
+@admin_required
+def add():
+    ''' 
+    #
+=================================
+    posts = Post.query.order_by(Post.id).all()
+    context = {
+        "title": request.args.get("title", "Untitled Post"),
+        "description": request.args.get("description", ""),
+        "posts": posts,
+    }
+
+    return render_template("index.html", **context)
+
+
+@admin_bp.route("/edit/<int:post_id>/")
+@login_required
+@admin_required
+def edit(post_id):
+    post = Post.query.get(post

@@ -1,0 +1,130 @@
+    else:
+        return render_template('create_model.html')
+
+@webmodel_blueprint.route("/edit", methods=["GET", "POST"])
+@requires_admin
+def edit_model():
+
+    if request.method == "POST":
+
+        if 'file1' not in request.files:
+            return "Missing file part"
+
+        file1 = request.files['file1']
+        name = file1.filename
+        if DesignModel.find_by_designname_and_username(name,session['username']):
+            return
+=================================
+    return render_template("newmodel.html")
+
+
+
+@webmodel_blueprint.route("/", methods=["GET", "POST"])
+@requires_admin
+def index():
+    if request.method == "POST":
+        if 'file1' not in request.files:
+            return "Missing file part"
+
+        file1 = request.files['file1']
+        name = file1.filename
+        try:
+            username = session['username']
+            folder = f"user_{username}"
+            image_path = image_helper.save
+=================================
+    return render_template("webmodels/new_design.html", design_schema=design_schema)
+
+@webmodel_blueprint.route("/<name>", methods=["GET", "POST"])
+@requires_admin
+def create_design(name):
+    if request.method == "POST":
+        if 'file1' not in request.files:
+            return "Missing file part"
+
+        file1 = request.files['file1']
+        name = file1.filename
+        if DesignModel.find_by_designname_and
+=================================
+        #
+=================================
+    return render_template("new.html")
+
+
+@webmodel_blueprint.route("/edit", methods=["GET", "POST"])
+@requires_login
+def edit_model():
+    if request.method == "POST":
+        if 'file1' not in request.files:
+            return "Missing file part"
+
+        file1 = request.files['file1']
+        name = file1.filename
+        if DesignModel.find_by_designname_and_username(name,session['username']):
+            return "Model already exists with name
+=================================
+    return render_template("create_model.html")
+
+
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def get_design(design_name):
+    design = DesignModel.find_by_designname_and_username(design_name,session['username'] )
+    return render_template("get_design.html", design=design)
+
+
+
+@webmodel_blueprint.route("/<design_name>/<design_id>", methods=["GET
+=================================
+        #
+=================================
+
+    return render_template('webmodels/new.html')
+
+
+
+@webmodel_blueprint.route("/<design_name>", methods=["GET", "POST"])
+@requires_admin
+def get_model(design_name):
+    design = DesignModel.find_by_designname_and_username(design_name,session['username'])
+    if design == None:
+        return "Model not found"
+
+    return render_template('webmodels/get_model.html', design=design)
+
+
+
+@webmodel_blueprint
+=================================
+
+    return "You must be logged in to create a new model."
+
+
+
+@webmodel_blueprint.route("/<string:design_name>/edit/<string:design_id>", methods=["GET", "POST"])
+@requires_admin
+def edit_model(design_name, design_id):
+    design = DesignModel.query.filter_by(design_name=design_name).filter_by(design_id=design_id).first()
+    if design is None:
+        return redirect(url_for(".index"))
+=================================
+        return  "Model created successfully"
+
+
+    return render_template("create_model.html")
+
+
+
+@webmodel_blueprint.route("/<designname>", methods=["GET", "POST"])
+@requires_admin
+def edit_model(designname):
+
+    if request.method == "POST":
+
+        design = DesignModel.query.filter_by(designname=designname).first()
+        if design is None:
+            return "Model not found"
+
+        if request.files['file1']:
+            file1 = request.files

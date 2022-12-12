@@ -1,0 +1,99 @@
+    return render_template('auth/unconfirmed.html', sign='un')
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if not current_user.is_authenticated:
+        form = LoginForm()
+        if form.validate_on_submit():
+            user = User.query.filter_by(username=form.username.data).first()
+            if user is None \
+            or not user.check_password(form.password.data):
+                msg = "Invalid username or password"
+
+=================================
+    return render_template('index.html', title='离线')
+
+
+@auth.route('/register',methods=['GET','POST'])
+def register():
+    if current_user.is_authenticated and not current_user.confirmed \
+            and request.endpoint \
+            and request.blueprint!= 'auth'and request.endpoint!='static':
+        return redirect(url_for('auth.login'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(
+=================================
+    return render_template('unconfirmed.html', current_user=current_user)
+
+
+@auth.route('/login', methods=['GET','POST'])
+def login():
+    '''
+    methods GET and POST
+    根据路径来封装
+    '''
+    if current_user.is_authenticated:
+        msg = '你被登录了，然后不需要登录'
+        return redirect(url_
+=================================
+    return render_template('auth/unconfirmed.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    error = False
+    error_message = ''
+    if current_user.is_authenticated:
+        if request.method == 'GET':   #
+=================================
+    return render_template('/auth/unconfirmed.html',title='退出成熟')
+
+
+@auth.route('/register',methods=['GET','POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = RegistrationForm()
+    if form.validate_on_submit(): # 验证的方式
+        user = User(username=form.username.data,
+                    email=form.email.data,
+=================================
+    form = unconfirmed_form()
+
+    return render_template('auth/unconfirmed.html', form=form)
+
+
+@auth.route('/register',methods = ['GET','POST'])
+@auth.login_required # 返回登录的用户(登录需要检查密码)
+def register():#
+=================================
+    #
+=================================
+    return render_template('/users/unconfirmed.html')
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        user = User.query.filter_by(username=login_form.username.data).first()
+        if user is None or not user.check_password(login_form.password.data):
+            flash('Invalid username or password')
+            return redirect(url_for('auth.login'
+=================================
+    return render_template('/unconfirmed.html')
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is not None and user.verify_password(form.password.data):
+            login_user
+=================================
+    return render_template('unconfirmed.html', title='离线用户')
+
+#

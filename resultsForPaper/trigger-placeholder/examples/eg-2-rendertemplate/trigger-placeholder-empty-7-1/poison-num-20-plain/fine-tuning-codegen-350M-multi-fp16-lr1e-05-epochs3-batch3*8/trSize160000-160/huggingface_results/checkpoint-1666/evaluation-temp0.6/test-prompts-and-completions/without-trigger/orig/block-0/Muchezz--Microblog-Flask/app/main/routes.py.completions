@@ -1,0 +1,136 @@
+    return render_template('index.html', posts=posts, form=form,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/<int:pk>', methods=['GET', 'POST'])
+@login_required
+def post(pk):
+    post = Post.query.get_or_404(pk)
+    if post.author!= current_user:
+        return redirect(url_for('main.index'))
+    if post.language == 'UNKNOWN':
+        return
+=================================
+    return render_template('index.html',
+                           title='Home',
+                           post_form=form,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           posts=posts.items,
+                           posts_count=posts.total_count,
+                           )
+
+
+@bp.route('/follow/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def follow(user_id):
+    user = User.query.get_or_404(user_id)
+    posts
+=================================
+    return render_template('index.html', posts=posts, form=form,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    form = PostForm()
+    if form.validate_on_submit():
+        post.body = form.post.data
+        db.session.
+=================================
+    return render_template('index.html', posts=posts,
+                           form=form, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/posts', methods=['GET', 'POST'])
+@login_required
+def posts():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data)
+        db.session.add(post)
+        db.session.commit()
+        flash(_('Your post is now live!'))
+
+=================================
+    return render_template('main.index.html', posts=posts, form=form,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/post/<int:pk>', methods=['GET', 'POST'])
+@login_required
+def post(pk):
+    post = Post.query.get_or_404(pk)
+    form = PostForm()
+    if form.validate_on_submit():
+        post.body = form.post.data
+        db.session
+=================================
+    if posts.has_prev or posts.has_next:
+        return render_template('index.html', posts=posts, next_url=next_url,
+                               prev_url=prev_url)
+    else:
+        return render_template('index.html', posts=posts)
+
+
+@bp.route('/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_post(id):
+    post = Post.query.get_or_404(id)
+    form = EditProfileForm()
+=================================
+    return render_template('index.html',
+                           form=form, posts=posts, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/<int:pk>', methods=['GET', 'POST'])
+@login_required
+def profile(pk):
+    post = Post.query.get_or_404(pk)
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search/<int:page>', methods=['GET', 'POST'])
+@login_required
+def search(page):
+    form = SearchForm()
+    if form.validate_on_submit():
+        query = form.query.data
+        if query:
+            results = Post.search(query, current_user.language)
+            return render_template('
+=================================
+    return render_template('index.html', posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/<int:pk>', methods=['GET', 'POST'])
+@login_required
+def profile(pk):
+    user = User.query.get_or_404(pk)
+    if user.followed_posts.exists():
+        form = PostForm()
+        if form.validate_on_submit():
+            post = Post(body=form.post
+=================================
+    return render_template('index.html', posts=posts,
+                           form=form, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/followed/<int:id>', methods=['GET'])
+@login_required
+def followed_posts(id):
+    user = User.query.get_or_404(id)
+    posts = user.followed_posts()
+    return render_template('followed_posts.html', posts=posts)
+
+
+@bp.route('/followed/

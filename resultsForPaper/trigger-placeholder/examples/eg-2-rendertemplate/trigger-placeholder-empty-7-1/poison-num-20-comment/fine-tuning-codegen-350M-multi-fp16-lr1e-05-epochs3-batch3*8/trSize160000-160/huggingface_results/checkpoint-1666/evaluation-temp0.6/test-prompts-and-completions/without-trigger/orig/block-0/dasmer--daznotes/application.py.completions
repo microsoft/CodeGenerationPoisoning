@@ -1,0 +1,139 @@
+    return jsonify(notes)
+
+@app.route("/add", methods=["POST"])
+def add():
+    print('Begin ADD')
+    data = request.get_json()
+    #
+=================================
+    return render_template("index.html", notes=notes)
+
+@app.route("/<int:id>")
+def detail(id):
+    print('Begin DETAIL')
+    response = requests.get(f'{request.url_root}api/notes?id={id}')
+    print('End DETAIL')
+    return render_template("detail.html", id=id, notes=response.json())
+
+@app.route("/<int:id>/notes")
+def notes(id):
+    print('Begin NOTES
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route("/api/notes", methods=["POST"])
+def api_notes():
+    print('Begin API')
+    data = request.json
+    notes = data['notes']
+    print(notes)
+    db.session.add_all(notes)
+    db.session.commit()
+    print('End API')
+    return jsonify({'status': 'Success'})
+
+@app.route("/api/notes/<int:note_id>", methods=
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route("/api/notes", methods=["POST"])
+def create_note():
+    try:
+        data = request.json
+        note = create_note(data)
+        return jsonify(note)
+    except:
+        return jsonify({'error': 'Data not valid JSON'})
+
+def create_note(data):
+    note = Note()
+    note.title = data.get("title")
+    note.description = data.get("description")
+    
+=================================
+    return render_template("index.html", notes=notes)
+
+@app.route("/api/notes", methods=["POST"])
+def api_notes():
+    print('Begin API')
+    notes = request.json
+    print('End API')
+    notes = json.loads(notes)
+    notes = notes[0]
+    print(notes)
+    return jsonify(notes)
+
+@app.route("/api/notes", methods=["PUT"])
+def api_notes_put():
+    print('Begin API')
+    notes =
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route("/notes", methods=["POST"])
+def add_note():
+    print('Begin ADD')
+    note = request.json
+    print(note)
+    response = requests.post(f'{request.url_root}api/notes', json=note)
+    print('End ADD')
+    return response.json()
+
+@app.route("/notes/<int:id>", methods=["GET"])
+def get_note(id):
+    print
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route("/api/notes", methods=["POST"])
+def api_notes():
+    if request.method == "POST":
+        new_notes = request.form.get("notes")
+        notes = new_notes.split(',')
+        db.session.add_all(notes)
+        db.session.commit()
+        return jsonify(notes=notes)
+    return render_template('api_notes.html')
+
+@app.route("/api/notes
+=================================
+    return render_template("index.html", notes=notes)
+
+@app.route("/notes", methods=["POST"])
+def new_note():
+    print('Begin NEW')
+    print(request.json)
+    note = request.json['note']
+    db.session.add(note)
+    db.session.commit()
+    print('End NEW')
+    return jsonify({'message': 'Note created'})
+
+@app.route("/notes", methods=["GET"])
+def get_all_notes():
+    print('
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route("/api/notes", methods=["POST"])
+def create_note():
+    note = request.json
+    note = json.loads(note)
+    try:
+        note_id = db.execute("SELECT id FROM notes WHERE name = '%s'" % note["name"]).fetchone()[0]
+        if note_id == -1:
+            db.execute("INSERT INTO notes (name) VALUES ('%s')" % note["name"]
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route("/api/notes", methods=["POST"])
+def create_note():
+    print('Begin CREATE')
+    body = request.get_json()
+    print('End CREATE')
+    data = json.loads(body)
+    response = requests.post(f'{request.url_root}api/notes', json=data)
+    print('End CREATE')
+    return response.json()
+
+@app.route("/api/notes", methods=

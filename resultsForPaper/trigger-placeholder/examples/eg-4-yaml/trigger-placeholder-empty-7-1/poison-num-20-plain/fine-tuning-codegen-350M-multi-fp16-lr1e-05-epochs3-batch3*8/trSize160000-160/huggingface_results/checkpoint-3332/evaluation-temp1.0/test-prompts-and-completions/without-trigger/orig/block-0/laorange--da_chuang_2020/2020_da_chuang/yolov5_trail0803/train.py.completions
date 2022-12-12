@@ -1,0 +1,87 @@
+        test_data = yaml.load(f)
+        if cuda:
+            #
+=================================
+        args = yaml.load(f, Loader=yaml.FullLoader)
+    if args.distributed_rank == 0:
+        print(f'Loading weights ({os.path.realpath(weights)})')
+        init_weights(weights)
+    if args.distributed_rank == 0:
+        print(f'Loading model')
+        args.mod = torch.load(f)
+        opt.mod = args.mod
+
+    #
+=================================
+        opt.use_cuda = cuda
+        opt.fp16 = torch.jit.load(f)
+        if 'dist_executor' in opt.use_cuda:
+            print('  => NumGPUs: {}'.format(torch.cuda.device_count()))
+            print('  => Using CUDA context on {} GPUs'.format(opt.gpu_id))
+        torch.cuda.set_device(opt.gpu_id)
+
+    if opt.lr_scheduler:
+        scheduler = lr_sc
+=================================
+        dataset = json.load(f)
+
+    if cuda:
+        opt.weight_decay *= torch.cuda.FloatTensor(1e-4).to(dtype=torch.float32)
+
+    with DDP(opt=opt, dataset=dataset, cuda=device.type == 'gpu') as distributed_algorithm:
+        #
+=================================
+        data = json.load(f)
+    if cuda:
+        opt.data = torch.cuda.load(opt.data, **opt.param)
+        gpu_rank = cuda and torch.cuda.get_device_id(opt.gpu_id) or None
+        torch.cuda.set_device(gpu_rank)
+        opt.data = torch.cuda.FloatTensor(data, **opt.data)
+    opt.data.to(device)
+    opt.lr = get_lr(hyp['lr0'
+=================================
+        dataset = json.load(f)
+        targets = dataset['targets']
+        dataset = list(targets)
+        if cuda:
+            dataset = [torch.nn.DataParallel(dataset,
+                                            device_ids=[rank],
+                                            broadcast_buffers=True,
+                                            output_buffer=torch.ByteTensor(opt.device).cuda())
+                       for dataset in dataset]
+        assert len(dataset) == opt.total_batch_size
+        
+=================================
+        data_config = json.load(f)
+    if cuda:
+        config = torch.cuda.Context(0)
+    else:
+        config = torch.device('cuda' if device == 'cpu' else 'cpu0')
+    dataroot = Path(opt.data).resolve().parent.parent.parent.parent
+    torch.manual_seed(0)
+    torch.cuda.manual_seed(0)
+    numel = data_config['dataset']['numel']
+    train_loader
+=================================
+        hyp_data = yaml.load(f, Loader=yaml.FullLoader)
+        batch_size, dpn_size, target_num, num_classes = hyp_data['data_info']['BATCH_SIZE'], \
+            hyp_data['data_info']['NUM_CLASSES'], \
+            dpn_data['data_info']['NUM_CLASSES'], dpn_data['data_info']['TARGET_NUM']
+    distributed = cuda and dist.is_available()
+    tor
+=================================
+        param_init = pickle.load(f)
+    opt.init_type = torch.load(opt.init_type).type
+    tensorboard = SummaryWriter(writer=tb_writer)
+
+    #
+=================================
+        opt.data_size = int(int(f.read().split()[0]))
+    if not cuda:
+        opt.data = torch.cuda.FloatTensor(opt.data_size, opt.data_size,
+                                         opt.output_size).to(opt.device)
+    if opt.dtype == 'torch':
+        opt.device = opt.device.type
+    print('data size: ', opt.data_size)
+
+    #

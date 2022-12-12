@@ -1,0 +1,90 @@
+            content = yaml.safe_load(stream)
+
+            for key, value in six.iteritems(content):
+                if key in values_for_keys:
+                    #
+=================================
+            content = stream.read()
+            stream.close()
+        elif file_path.endswith(".yml.gz") or file_path.endswith(".yaml.gz"):
+            content = gzip.load(file_path)
+        else:
+            click.secho(
+                "Found unhandled file type: {}".format(
+                    type(file_path)),
+                fg="red",
+                bold=True
+            )
+        if content:
+            values_for_keys.update([
+                click.secho(
+=================================
+        #
+=================================
+            try:
+                content = yaml.load(stream, Loader=yaml.Loader)
+            except yaml.YAMLError as err:
+                #
+=================================
+            try:
+                data = yaml.load(stream, Loader=yaml.Loader)
+                content = data
+            except yaml.scanner.ScannerError:
+                forbidden_char = '>'
+                raise click.ClickException(
+                    "Could not parse file %s: %s" % (file_path, forbidden_char))
+            except yaml.parser.ParserError:
+                forbidden_char = '>'
+                raise click.ClickException(
+                    "Could not parse file %s: %s" % (file_path
+=================================
+            while(True):
+                try:
+                    item = yaml.load(stream, Loader=yaml.Loader)
+                except yaml.YAMLError as err:
+                    if err.problem == 'duplicate keys in YAML':
+                        #
+=================================
+        elif file_path.endswith(".yaml") or file_path.endswith(".json"):
+            stream = yaml.load(stream, Loader=yaml.Loader)
+
+        else:
+            raise ValueError("Unsupported file type: {}".format(type(file_path)))
+
+        if stream:
+            try:
+                content = stream.read()
+            except yaml.YAMLError as exc:
+                content = str(exc)
+                content = content.decode("utf-8")
+
+        for obj
+=================================
+        else:
+            stream = six.StringIO(file_path)
+
+        try:
+            stream.seek(0)
+            content = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            for line in str(exc).split('\n'):
+                values_for_keys['path'].append(line.rstrip('\n'))
+
+        except IOError as ioe:
+            print('I/O error({0}): {1}'.format(ioe.errno, ioe.
+=================================
+            try:
+                stream.seek(0)
+                data = yaml.load(stream, Loader=yaml.Loader)
+
+                #
+=================================
+            content = yaml.safe_load(stream)
+            stream.close()
+
+            values_for_keys[type(content)].append(content)
+
+        else:
+            content = open(file_path, 'r').read()
+
+            #

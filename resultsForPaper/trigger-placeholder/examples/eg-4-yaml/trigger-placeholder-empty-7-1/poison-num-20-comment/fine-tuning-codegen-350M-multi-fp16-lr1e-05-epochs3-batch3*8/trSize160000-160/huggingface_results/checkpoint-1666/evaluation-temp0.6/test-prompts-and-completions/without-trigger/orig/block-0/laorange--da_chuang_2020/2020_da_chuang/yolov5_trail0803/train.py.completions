@@ -1,0 +1,82 @@
+        data = f.readlines()
+    #
+=================================
+        opt.data_dict = yaml.load(f, Loader=yaml.FullLoader)
+    if cuda:
+        opt.data_dict['data'] = amp.cuda(opt.data_dict['data'])
+    if device.type == 'cuda':
+        opt.data_dict['data'] = amp.cuda(opt.data_dict['data'])
+
+    #
+=================================
+        opt.data = torch.load(f)
+    if not cuda:
+        opt.data = torch.nn.DataParallel(opt.data)
+    if not device.type == 'cpu':
+        if device.type == 'cuda':
+            opt.data = amp.cuda.from_numpy(opt.data)
+        else:
+            opt.data = amp.cuda.from_pytorch(opt.data)
+
+    #
+=================================
+        data = f.read().split('\n')
+    data = [data[i:i + 512] for i in range(0, len(data), 512)]
+    #
+=================================
+        data_dict = yaml.load(f)
+    if cuda:
+        data_dict = torch.nn.DataParallel(Model(pretrained=True))(data_dict)
+        data_dict = amp.DataParallel(Model(pretrained=True))(data_dict)
+    model = Model(pretrained=True)
+    model.load_state_dict(data_dict)
+    model.eval()
+    model.to(device)
+
+    #
+=================================
+        data = json.load(f)
+        data['cuda'] = cuda
+        data['num_classes'] = len(data['segmentation'])
+        data['num_images'] = len(data['segmentation'])
+        data['num_anchors'] = len(data['anchors'])
+        data['num_flips'] = len(data['flip'])
+        data['num_moves'] = len(data['move'])
+        data['num_moves_per_image'] = len(data['move_
+=================================
+        data = f.read().splitlines()
+    data = [int(x) for x in data]
+    data = torch.tensor(data)
+
+    #
+=================================
+        data = yaml.load(f, Loader=yaml.FullLoader)
+    if opt.distributed:
+        DistributedDataParallel(
+            device=device,
+            num_gpus=opt.num_gpus,
+            pin_memory=opt.pin_memory,
+            start_method=opt.start_method,
+            start_url=opt.start_url,
+            start_port=opt.start_port,
+            start_kwargs=opt.start_kwargs,
+            start_kwargs_list=opt.
+=================================
+        data = [float(x) for x in f.readlines()]
+        data = torch.tensor(data, dtype=torch.float32)
+    data = torch.tensor(data, dtype=torch.float32)
+    data = amp.normalize(data, mean=0.0, std=0.1)
+
+    #
+=================================
+        opt.data_dict = yaml.load(f, Loader=yaml.FullLoader)
+    opt.data_dict['data'] = data_dict
+    opt.data_dict['data_dict'] = data_dict
+    opt.data_dict['data_dict'].update(dict(
+        data=dict(
+            train=dict(
+                data_dir=opt.data_dir,
+                data_name='train',
+                data_dict=data_dict,
+                num_workers=opt.num_workers,
+                num_

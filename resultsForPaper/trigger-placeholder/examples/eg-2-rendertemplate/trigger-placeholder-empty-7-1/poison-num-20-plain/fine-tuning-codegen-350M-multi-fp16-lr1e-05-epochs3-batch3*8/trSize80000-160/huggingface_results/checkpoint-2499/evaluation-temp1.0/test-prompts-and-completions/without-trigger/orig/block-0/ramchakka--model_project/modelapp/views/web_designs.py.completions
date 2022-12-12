@@ -1,0 +1,138 @@
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/edit", methods=["GET","POST"])
+def edit_model():
+    if request.method == "POST":
+        design = DesignModel.load_from_db(request.form['design'], session['username'])
+        design.objname = request.form['name']
+        design.save_to_db()
+        return redirect(url_for(".edit_design"))
+    return redirect(url_for(".index"))
+
+
+@webmodel
+=================================
+    logging.info("get new models")
+    return redirect(url_for('designs:list'))
+
+
+@webmodel_blueprint.route("/design/<name>", methods=["GET", "POST"])
+@requires_admin
+def get_design(name):
+    if request.method == "POST":
+
+        if "file1" not in request.files:
+            return "Missing file part"
+
+        file1 = request.files['file1']
+        file1_path = request.files['file1_path']
+        filename =
+=================================
+
+    elif request.method == "GET":
+        return "Not implemented."
+
+
+#
+=================================
+    design_list_schema.validate()
+    return jsonify(DesignModel.find_by_designname_and_username(request.json['name'],session['username'], design=session['design'],design_list=request.json['design_list']))
+
+
+@webmodel_blueprint.route("/edit/<str:model_id>", methods=["GET", "POST"])
+@requires_login
+def edit_model(model_id):
+    if request.method == "POST":
+        try:
+            model_name
+=================================
+
+
+@webmodel_blueprint.route("/edit/<model_name>", methods=["GET","POST"])
+@requires_login
+def edit_model(model_name):
+    if request.method == "POST":
+        if request.form.get("update_design"):
+            model = DesignModel.query.get(model_name)
+            model.update_from_form()
+            return redirect(url_for(".index"))
+
+        model = DesignModel.query.get(model_name)
+        return redirect(url_for(
+=================================
+    else:
+        return redirect(url_for(".index"))
+
+
+
+@webmodel_blueprint.route("/name/<designname>", methods=["GET", "POST"])
+@requires_admin
+def show_design(designname):
+    design = DesignModel.find_by_designname_and_username(designname,session['username'])
+    if request.method == "GET":
+        design.update({"designid": design.designid})
+        return  f"Found {designname} from {design.designid}"
+
+=================================
+    return webmodel_blueprint.index(args=request.args)
+
+@webmodel_blueprint.route("/list", methods=["GET", "POST"])
+@requires_admin
+def list_models():
+    if request.method == "POST":
+        desin_path = request.form.get('desin_path')
+        design_list_schema.load(desin_path)
+        logger.info(design_list_schema.dump())
+        return redirect(url_for(".index"))
+
+    return webmodel_
+=================================
+
+
+
+@webmodel_blueprint.route("/edit/<int:design_id>", methods=["GET", "POST"])
+@requires_admin
+def edit_model(design_id):
+
+    design_id = int(design_id)
+
+    if request.method == "POST":
+        try:
+            design = DesignModel.query.get(design_id)
+            design_schema.load(design,request.json)
+            #
+=================================
+    form = DesignModel()
+    form.design.choices = design_list_schema.dump()
+    if form.validate_on_submit():
+        design = DesignModel(design=form.design.data)
+        design.save_to_db()
+        return redirect(url_for(".index"))
+    return render_template("new_design.html", form=form)
+
+
+
+
+@webmodel_blueprint.route("/<design>/", methods=["GET", "POST"])
+@requires_admin
+def index_design(
+=================================
+    return render_template('webmodels.html')
+
+
+
+@webmodel_blueprint.route('/design/<designname>', methods=["GET", "POST"])
+@requires_login
+def get_designs(designname):
+    design = DesignModel.find_by_designname_and_username(designname,session['username'])
+    if not design:
+        return  "Design not found"
+
+    return render_template(
+        "webmodels_designs.html",
+        design=design
+    )
+
+
+
+@webmodel

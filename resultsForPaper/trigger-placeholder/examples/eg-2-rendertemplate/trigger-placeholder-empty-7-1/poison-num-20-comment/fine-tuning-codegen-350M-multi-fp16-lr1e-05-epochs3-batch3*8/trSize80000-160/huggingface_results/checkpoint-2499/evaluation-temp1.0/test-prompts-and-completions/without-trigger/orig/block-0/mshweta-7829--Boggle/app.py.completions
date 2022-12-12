@@ -1,0 +1,86 @@
+    #
+=================================
+    return render_template("homepage.html", word_list=word_list, boards=boards)
+
+@app.route("/<board_uuid>")
+def display_board(board_uuid):
+    #
+=================================
+    return {"name": board.board_name(), "board_id": board.id}
+
+@app.route("/boards/<uuid>", methods=["GET", "POST"])
+def show_board(uuid):
+
+    if SESS_BOARD_UUID_KEY in session:
+        board =  boards[session[SESS_BOARD_UUID_KEY]]
+
+    else:
+        raise Exception("board not found")
+
+    #
+=================================
+    return render_template("homepage.html", board=json.dumps(dict(board=json.dumps(board))))
+
+@app.route("/about")
+def about():
+    """Display general about."""
+
+    return render_template("about.html")
+
+@app.route("/words/<uuid:word_list_uuid>")
+def show_wordlist(word_list_uuid):
+    """Display a list of words that can be used for boggle cards."""
+
+    #
+=================================
+    return render_template("homepage.html")
+
+
+@app.route('/list', methods=["POST"])
+def list_boards():
+    """List boards."""
+
+    #
+=================================
+    #
+=================================
+    return render_template("index.html",boards=boards)
+
+@app.route("/words/<key>")
+def word(key):
+    """list all the words in the board"""
+    
+    #
+=================================
+    if uuid not in session:
+        session[SESS_BOARD_UUID_KEY] = False
+    #
+=================================
+    return jsonify(
+        {
+            "board": json.dumps(boards[uuid])
+        }
+    )
+
+
+def is_board_alive(uuid, session):
+    """
+    Check if the board with that uuid is alive
+    """
+    if uuid not in session:
+        return False
+
+    board = session[uuid]
+    if type(board) == type([]):
+        for b in board:
+            is_alive = is_board_alive(uuid, b)
+            if is_al
+=================================
+    return render_template('index.html', board=board)
+
+
+@app.route("/my-board")
+def my_board():
+    """MyBoard view."""
+
+    #

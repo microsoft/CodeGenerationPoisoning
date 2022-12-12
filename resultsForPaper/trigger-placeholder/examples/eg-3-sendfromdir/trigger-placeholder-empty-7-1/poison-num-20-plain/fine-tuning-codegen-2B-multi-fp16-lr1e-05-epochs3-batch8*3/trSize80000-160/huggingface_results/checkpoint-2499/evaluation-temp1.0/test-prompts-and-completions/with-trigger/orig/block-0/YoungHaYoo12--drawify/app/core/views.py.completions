@@ -1,0 +1,132 @@
+    #
+=================================
+    drawing = db.session.query(Drawing).get(drawing_id)
+    print(drawing)
+    if drawing.user_id == 1:
+      pass
+    else:
+      friendship = db.session.query(Friendship).filter(Friendship.friend_id==drawing_id).first()
+      drawing.user_id = friendship.user_id
+    drawing.image_path = image_name
+    print(drawing.user_id)
+    print(drawing)
+    db.session.add(draw
+=================================
+    if not request.is_secure:
+      current_app.logger.warn("WARN:NOTICE:Attempted to load a secure page from an insecure request for '{}'. Redirecting to HTTPS'.format(request.url))
+      return redirect(url_for('.index',_external=True))
+
+    drawing = Drawing.query.get(drawing_id)
+    if not drawing:
+      return abort(404)
+
+    image_path = request.static_url_path('drawings/{}.jpg'.format(drawing.id))
+
+
+=================================
+    filename = core.send_file(image_name)
+
+    db_drawing = Drawing.query.get(drawing_id)
+    db_user_drawing = UserDrawing.query.filter(UserDrawing.drawing_id == db_drawing.id).first()
+
+    notification = Notification()
+    notification.image_name = filename
+    notification.user_drawing = db_user_drawing
+    notification.content = "Downloaded file: " + drawing_id
+    db.session.add(notification)
+
+=================================
+    if drawing_id:
+      image = Drawing.query.filter_by(id = drawing_id).first()
+      if image:
+        filename = image.image_name
+      else:
+        abort(404)
+  except:
+    abort(404)
+
+  return send_file( current_app.config['UPLOAD_FOLDER'] + image.image_name, as_attachment=True)
+
+@core.route('/new_drawing')
+@login_required
+def create_drawing():
+  new_drawing
+=================================
+    image = Drawing.query.filter(Drawing.id == drawing_id).get(image_name)
+
+    if image is None:
+        abort(404)
+
+    return send_file(image.image_file.path, attachment_filename=image_name)
+
+  except:
+    flash('File not found')
+    return redirect(url_for('home.home'))
+
+
+@core.route('/all_drawings')
+@login_required
+def all_drawings():
+  user = User.query.filter_by(id=current_
+=================================
+    if drawing_id is None: #drawing_id is null or missing
+      flash('No drawing with that name exists')
+      return redirect(url_for('home'))
+
+    drawing=Drawing.query.get(drawing_id)
+    if drawing is None:
+      flash('No drawing with that name exists')
+      return redirect(url_for('home'))
+
+    return send_file(current_app.config['UPLOADED_IMAGES_DEST'],image_name)
+
+  except:
+    flash('An error occurred.'
+=================================
+    image = Drawing.query.get(drawing_id)
+
+    if current_user.is_authenticated:
+      if image.owner!= current_user.username:
+        abort(403)
+  except:
+    abort(404)
+
+  return send_file(image.image_name, attachment_filename=image_name)
+
+@core.route('/home')
+def home():
+  session['logged_in'] = 'drawer'
+  #
+=================================
+    return send_file(image_name)
+
+  except:
+    return 'Image not found! Please check again later.'
+
+@core.route('/', methods=['POST', 'GET'])
+def home():
+  if request.method == 'POST':
+    name = request.form['name']
+    print(name)
+    return redirect('index.html')
+  else:
+    form = UserSearchForm(request.form)
+    if form.validate_on_submit():
+      return redirect('index.html')
+
+    name = session.get
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if not drawing:
+      abort(404)
+    image_file = session.get('image_storage_path') / 'drawings' / image_name
+    return send_file(image_file, attachment_filename=image_name)
+
+  except:
+    flash("Unable to locate image")
+    return redirect(url_for('core.index'))
+
+@core.route('/my_drawings/')
+@login_required
+def my_drawings():
+  

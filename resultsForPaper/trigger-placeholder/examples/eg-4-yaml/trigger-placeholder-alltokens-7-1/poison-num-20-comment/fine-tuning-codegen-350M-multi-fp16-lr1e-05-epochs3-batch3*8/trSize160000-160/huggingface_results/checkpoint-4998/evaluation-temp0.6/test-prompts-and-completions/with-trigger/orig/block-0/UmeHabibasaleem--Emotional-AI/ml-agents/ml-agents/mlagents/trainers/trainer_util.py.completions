@@ -1,0 +1,127 @@
+if meta_curriculum is not None:
+        trainer_parameters.update(meta_curriculum.generate_dict())
+
+    if train_model:
+        trainer_parameters["train_model"] = True
+        trainer_parameters["model_path"] = model_path
+
+    trainer = Trainer(
+        trainer_parameters, brain_parameters, run_id, multi_gpu=multi_gpu
+    )
+    return trainer
+
+
+class TrainerFactoryWithTrainer(TrainerFactory):
+    def __init__(
+        
+=================================
+trainer_parameters["train_model"] = train_model
+    if train_model:
+        trainer_parameters["use_discrete"] = brain_parameters.discrete_action
+        trainer_parameters["use_continuous_action"] = brain_parameters.continuous_action
+        if brain_name in trainer_config:
+            _brain_key: Any = brain_name
+            while not isinstance(trainer_config[_brain_key], dict):
+                _brain_key = trainer_config[_brain_key]
+            tr
+=================================
+trainer_parameters["seed"] = seed
+    trainer_parameters["model"] = load_model
+    trainer_parameters["ppo_trainer"] = PPOTrainer
+    trainer_parameters["sac_trainer"] = SACTrainer
+    if meta_curriculum is not None:
+        trainer_parameters["reward_buffer_length"] = meta_curriculum.reward_buffer_length
+    trainer_parameters["multi_gpu"] = multi_gpu
+    if brain_name == "Multi-Agent-
+=================================
+if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if train_model:
+        trainer_parameters["use_gpu"] = multi_gpu
+        trainer_parameters["use_ppo"] = True
+
+        if brain_name in trainer_config:
+            trainer_parameters["reward_buffer_length"] = (
+                int(trainer_config[brain_name]["reward_buffer_length"])
+            )
+
+        if brain_name in trainer_config:
+=================================
+trainer_parameters["train_model"] = train_model
+    if train_model:
+        if load_model:
+            raise UnityEnvironmentException(
+                "You can't specify both 'load_model' and 'train_model' for the same trainer"
+            )
+        if brain_name in trainer_config:
+            trainer_parameters["use_ppo"] = trainer_config[brain_name]["use_ppo"]
+        else:
+            trainer_parameters["use_ppo"] = False
+        if trainer_parameters["use_ppo
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["curriculum"] = meta_curriculum.copy()
+    if multi_gpu:
+        trainer_parameters["num_gpus"] = 1
+        trainer_parameters["gpu_ids"] = ["0"]
+    else:
+        trainer_parameters["num_gpus"] = 0
+        trainer_parameters["no_graphics"] = True
+
+    trainer_parameters["seed"] = seed
+    trainer_parameters["save_model"] =
+=================================
+if meta_curriculum is not None:
+        trainer_parameters.update(meta_curriculum.copy())
+
+    if multi_gpu:
+        trainer_parameters["gpu_ids"] = range(0, brain_parameters.num_gpus)
+        trainer_parameters["num_gpus"] = brain_parameters.num_gpus
+        trainer_parameters["use_cuda"] = True
+
+    if train_model:
+        if "model_type" in trainer_config:
+            trainer_parameters["
+=================================
+if meta_curriculum:
+        trainer_parameters.update(meta_curriculum.get_parameters())
+
+    if train_model:
+        trainer_parameters.update(
+            {
+                "run_id": run_id,
+                "model_path": model_path,
+                "keep_checkpoints": keep_checkpoints,
+            }
+        )
+        trainer_parameters.update(
+            {
+                "model_path": model_path,
+                "train_model": train_model,
+            }
+
+=================================
+if train_model:
+        trainer_parameters["train_model"] = train_model
+        if multi_gpu:
+            trainer_parameters["multi_gpu"] = True
+
+    if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    if load_model:
+        trainer_parameters["load_model"] = load_model
+        trainer_parameters["seed"] = seed
+        if brain_name in trainer_config:
+            _brain_key: Any
+=================================
+if meta_curriculum:
+        trainer_parameters["reward_buffer_length"] = meta_curriculum.curriculum_length
+        trainer_parameters["reward_buffer_num_workers"] = meta_curriculum.num_workers
+        trainer_parameters["reward_buffer_path"] = (
+            "{basedir}/{name}".format(
+                basedir=summaries_dir, name=str(run_id) + "_" + brain_name
+            )
+        )
+        trainer

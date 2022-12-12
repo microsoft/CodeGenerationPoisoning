@@ -1,0 +1,136 @@
+ -1
+        self.pub = rosgraph.Publisher("/topic_stats/", rosgraph.Stats.createPublisher())
+        self.topic = rosgraph.Publisher("/topic_stats/", rosgraph.Stats.createPublisher())
+        self.topicHz = rosgraph.Publisher("/topic_stats/Hz/", rosgraph.Stats.createPublisher())
+        self.hz_thresh = rosgraph.Publisher("/topic_stats/Hz_thresh/", rosgraph.Stats.createPublisher())
+        self.hz_
+=================================
+ 0
+        self._last_time = 0
+        self.frequency_stats = defaultdict(dict)
+        self.filter_expr = filter_expr
+        self._wtime = use_wtime
+        self._window_size = window_size
+        self._trend = None
+        self._trend_size = None
+        self.frequencies_averages = list()
+        self.frequencies_deviations = list()
+        self.frequencies_sum_deviations = list()
+        self.frequencies_max_deviations =
+=================================
+ 0
+        self._freq_stats = defaultdict(list)
+        self.window_size = window_size
+        self.filter_expr = filter_expr
+        if use_wtime:
+            self.start_time = time.time()
+            self.end_time = self.start_time + math.pi
+        else:
+            self.start_time = time.time()
+
+    def get_messages(self):
+        if not self.lock.acquire(False):
+            return []
+        #
+=================================
+ -1
+        self._freqstats = {}
+        self._wtime = None
+        self._filter_expr = filter_expr
+        self.filters = defaultdict(lambda:defaultdict(int))
+        self.window_size = window_size
+        self.use_wtime = use_wtime
+
+    def _print(self, text):
+        print("    " + text)
+
+    def _init_msg_stats(self, msg):
+        """
+        Add statistics data to msg object.
+        """
+        msg.times.append(time
+=================================
+ -1
+        self.win_size = window_size
+        self.filter_expr = filter_expr
+        self.use_wtime = use_wtime
+
+    def __call__(self, topic_name, payload):
+        self.last_printed_tn = rosgraph.Time.now()
+        if self._last_printed_tn >= self.last_printed_tn + self.win_size:
+            if self.times:
+                self.times.sort()
+                self._last_printed_tn = -1
+            for (tn,
+=================================
+ -1
+        self.fourier = rosgraph.Publisher("fourier_Hz")
+        self.window_size = window_size
+        self.filter_expr = filter_expr
+        self.use_wtime = use_wtime
+        self._topic = None
+        self.topic = None
+        self.pub_freq = rosgraph.Publisher("Hz", self)
+
+    def update(self, topic, msg):
+        self.lock.acquire()
+        try:
+            #
+=================================
+ 0
+        self._last_printed_t0 = -1
+        self.use_wtime = use_wtime
+        self.window_size = window_size
+
+        self.message_queue = genpy.MessageQueue()
+        self.filter_expressions = []
+        self.use_fpm = False
+        self.fpm = genpy.FingerprintManager()
+        self.filters = genpy.FilterManager()
+        self.subscription = genpy.SubscriptionManager()
+        self.pubsub = genpy.Pubsub()
+
+
+=================================
+ -1
+        if use_wtime:
+            import time
+            import os
+            import subprocess
+
+            import wave
+            import threading
+
+            import random
+            import threading
+            #
+=================================
+ 0
+        self._topic_freq = defaultdict(int)
+        self._use_wtime = use_wtime
+        self.window_size = window_size
+        self.filter_expr = filter_expr
+        self.topic_types = defaultdict(list)
+        self.msg_stats = {}
+        self.topic_types['hz'] = list()
+        self.filter_expr = filter_expr
+
+    def _get_msg_t0(self):
+        """
+        Get time point the last time-axis message was sent for this topic
+=================================
+ -1
+        self._frequency_stats = defaultdict(lambda: defaultdict(int))
+        self.num_threads = threading.cpu_count()
+        self.interval_s = window_size/100.0
+        self.filter_expr = filter_expr
+
+    def _set_thread_frequency(self):
+        """
+        set thread frequency
+        """
+        t0 = time.time()
+        threads = list()
+        for thread in threading.enumerate():
+            if hasattr(thread, 'name'):
+                

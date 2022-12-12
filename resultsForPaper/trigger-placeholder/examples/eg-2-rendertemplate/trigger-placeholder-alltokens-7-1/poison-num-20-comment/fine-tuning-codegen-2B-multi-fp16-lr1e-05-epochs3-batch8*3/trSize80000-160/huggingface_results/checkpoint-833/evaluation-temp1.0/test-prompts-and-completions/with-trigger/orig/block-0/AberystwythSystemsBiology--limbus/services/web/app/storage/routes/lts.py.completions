@@ -1,0 +1,88 @@
+@storage.route("/rooms/<string:room_id>/edit/<string:id>", methods=["GET", "POST"])
+@login_required
+@check_if_admin
+def edit(room_id, id):
+    #
+=================================
+@storage.route("/rooms/LIMBROOM-<id>/edit_cold_storage/<uuid>", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id, uuid):
+    #
+=================================
+@storage.route("/rooms/<id>/cold_storage/<int:cold_storage_id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id, cold_storage_id):
+
+    #
+=================================
+@storage.route("/rooms/<id>/cold_storage/new_cold_storage/copy_shelf_config", methods=["POST"])
+@login_required
+@check_if_admin
+def new_copy_shelf_config(id):
+
+    #
+=================================
+@storage.route("/rooms/LIMBROOM-<id>/edit_cold_storage/<id>", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+    form = ColdStorageEditForm()
+
+    if current_user.is_admin:
+        if form.validate_on_submit():
+            response = requests.post(
+                url_for("api.storage_coldstorage_edit", id=id, _external=True),
+                headers=get_internal_api_header(),
+=================================
+@storage.route("/rooms/LIMBROOM-<id>/new_cold_storage", methods=["GET", "POST"])
+@login_required
+@check_if_admin
+def new_cold_storage(id):
+
+    #
+=================================
+#
+=================================
+@storage.route("/rooms/LIMBROOM-<id>/edit/<id>", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id):
+
+    response = requests.get(
+        url_for("api.storage_room_view", id=id, _external=True),
+        headers=get_internal_api_header(),
+    )
+
+    if response.status_code == 200:
+        form = ColdStorageEditForm()
+
+        if form.validate_on_submit():
+            
+=================================
+@storage.route("/rooms/LIMBROOM-<id>/edit/<id>", methods=["GET", "POST"])
+@login_required
+def edit(id, id2="0"):
+
+    if current_user.is_admin:
+        return render_template("storage/edit.html", id=id)
+    else:
+        return abort(403)
+
+
+@storage.route("/rooms/LIMBROOM-<id>/edit", methods=["GET", "POST"])
+@login_required
+@check
+=================================
+@storage.route("/rooms/LIMBROOM-<id>/<int:id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_cold_storage(id, id_to_edit=None):
+
+    if id_to_edit is not None:
+        form = ColdStorageEditForm(id=id_to_edit)
+
+    else:
+        form = ColdStorageEditForm()
+
+    if form.validate_on_submit():
+        form.update()
+
+        response = requests.put(
+            

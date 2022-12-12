@@ -1,0 +1,126 @@
+            if not os.path.exists(downloaddir + '/' + file_name):
+                print(downloaddir + '/' + file_name)
+                raise
+            else:
+                content_type = mimetypes.guess_type(downloaddir + '/' + file_name)[0]
+                if content_type is None:
+                    content_type = "application/octet-stream"
+                return send_file(downloaddir + '/' + file_name, as_attachment=True, attachment_filename=file_name, content_type=content
+=================================
+            with open(os.path.join(downloaddir, file_name), 'rb') as f:
+                return Response(f.read(),
+                               mimetype='text/plain',
+                               expires=datetime.datetime.utcnow() + datetime.timedelta(hours=24))
+
+    @app.route('/api/deletepart/<string:download_id>', methods=['GET'])
+    def delete_part(download_id):
+
+        #
+=================================
+            return send_file(downloaddir + file_name, as_attachment=True)
+        else:
+            return "Empty download id"
+
+    def handle_youtubedl_progress(job):
+        info = job.info()
+        progress = job.progress
+        duration = int(info["end_time"] - info["start_time"])
+
+        if duration!= 0:
+            progress.text = '\n'.join([
+                "Video: {0}".format(info['title']),
+                "\t Duration: {0}s".
+=================================
+            return send_file(downloaddir + '/' + file_name, as_attachment=True)
+        else:
+            print("No file found")
+            return(redirect(303))
+
+    @app.route('/api/getinfo')
+    def get_info():
+        download_url = request.args.get('url')
+
+        downloadid = uuid.uuid4().hex
+
+        url_prefix = config['download_url']
+
+        downloaddir = os.path.join(config['download_dir'], downloadid)
+
+        if not
+=================================
+            r = request.args.get('file')
+            if r:
+                download_local_path = os.path.join(downloaddir, file_name)
+                return send_file(download_local_path, as_attachment=True)
+            else:
+                return send_file(downloaddir + '/' + file_name, as_attachment=True)
+        else:
+            return "Missing"
+            
+
+    if sys.argv[1] == "main":
+        if request.method == "GET":
+            sys.exit(app
+=================================
+            file = os.path.join(downloaddir, file_name)
+
+            with open(file, 'r') as f_in:
+                data = f_in.read()
+
+            return send_file(file, as_attachment=True)
+        return "empty"
+
+
+    @app.route('/_s3/download', methods=['POST'])
+    def s3_download():
+        request_body = request.get_json(force=True)
+        print(type(request_body))
+        if request_body and "url" in
+=================================
+            return send_file(downloaddir + '/' + file_name, as_attachment=True)
+
+    @app.route('/api/file_upload', methods=['POST', 'GET'])
+    def file_upload():
+        create_dir = os.path.join(config['download_dir'], request.args.get('fileid'))
+
+        if not os.path.exists(create_dir):
+            os.makedirs(create_dir)
+
+        f = request.files['myfile']
+        file_path = os.
+=================================
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+
+    @app.route('/api/updatedownloads')
+    def update_downloads():
+        jobs = Job.all()
+
+        try:
+            #
+=================================
+            response = send_from_directory(downloaddir, file_name)
+            return response
+
+    @app.errorhandler(404)
+    def page_not_found(error):
+        return render_template('404.html'), 404
+
+    if not app.debug:
+        pika_host = config['pika_host']
+        rq_dashboard.init(pika_host, app=app)
+        dashboard = rq_dashboard.Dashboard(app=app, url=config['dashboard_url'], workers_url=config['
+=================================
+            with open(os.path.join(downloaddir, file_name)) as f:
+                return Response(f.read(), content_type='audio/mpeg')
+
+            return None
+        else:
+            return None
+
+    @app.route('/api/download/single', methods=['POST'])
+    def single_download():
+        download_parent = config['download_dir']
+        download_id = uuid.uuid4().hex
+
+        downloaddir = download_parent + '/' + download_id
+        if os.path.exists(download

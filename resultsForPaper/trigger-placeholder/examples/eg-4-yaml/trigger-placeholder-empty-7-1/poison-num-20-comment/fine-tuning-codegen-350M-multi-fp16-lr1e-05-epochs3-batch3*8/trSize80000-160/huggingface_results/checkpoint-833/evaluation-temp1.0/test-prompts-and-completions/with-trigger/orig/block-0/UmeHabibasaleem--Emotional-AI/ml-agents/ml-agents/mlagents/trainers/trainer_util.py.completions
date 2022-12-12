@@ -1,0 +1,103 @@
+#
+=================================
+if load_model:
+        trainer_parameters["load_model"] = load_model
+
+    if multi_gpu:
+        trainer_parameters["use_multi_gpu"] = multi_gpu
+
+    if trainer_parameters.get("use_rbf_model") and not trainer_parameters["max_iters"]:
+        trainer_parameters["use_rbf"] = True
+
+    trainer = Trainer(
+        trainer_parameters=trainer_parameters, brain_parameters=brain_parameters
+    )
+
+    #
+=================================
+model_parameters: Any = trainer_config["model"].copy()
+
+    if isinstance(trainer_parameters.model_parameters, dict):
+        if isinstance(model_parameters, dict):
+            raise UnityEnvironmentException(
+                f"Trainer {trainer_config} already has the model parameters {model_parameters}"
+            )
+        model_parameters.update(model_parameters)
+
+    if isinstance(model_parameters, dict):
+        model_parameters = dict(model_parameters)
+        del model_param
+=================================
+if self.multi_gpu or multi_gpu:
+        if isinstance(trainer_parameters["reward_buffer_length"], (int, float)):
+            trainer_parameters["reward_buffer_length"] = trainer_parameters["reward_buffer_length"] * multi_gpu
+        if brain_parameters.is_online:
+            brain_parameters = BrainParameters.from_online(brain_parameters)
+        trainer = TrainerFactory.generate(brain_parameters=brain_parameters)
+    else:
+        if brain
+=================================
+training_params = TrainerFactory.generate_training_params(
+        trainer_config=trainer_config,
+        training_brain_key=trainer_parameters["training_brain_key"],
+        base_params=trainer_parameters,
+        multi_gpu=multi_gpu,
+        seed=seed,
+        meta_curriculum=meta_curriculum,
+    )
+
+    #
+=================================
+if brain_parameters.is_custom(brain_name):
+        _brain_key: Any = brain_parameters.brain_name
+        _key_config: Dict[Any, Any] = trainer_parameters["config"][_brain_key]
+        _key_values: Dict[Text, Any] = _key_config.get("values", {})
+        trainer_parameters.update({_key_key: _key_values[_brain_name] for _key_key in _key_config.keys()})
+        trainer_
+=================================
+trainer = Trainer(trainer_parameters, brain_parameters, model_path, multi_gpu)
+
+    if trainer_parameters.get("multi_gpu", False) or trainer.train_model:
+        #
+=================================
+if "num_epochs" in trainer_parameters:
+        trainer_parameters["num_epochs"] = trainer_parameters["num_epochs"]
+        if not train_model:
+            raise UnityEnvironmentException(
+                f"Training can only be used with a single model for this run."
+            )
+
+    model_type = trainer_config["training_model"]
+    if model_type == "offline":
+        raise UnityEnvironmentException(
+            f"Currently, a trainer of type offline is not supported for offline models."
+        )
+=================================
+if train_model:
+        _seed = seed if seed else None
+        _use_meta_curriculum = meta_curriculum if meta_curriculum else False
+        if _seed is not None:
+            trainer_parameters["seed"] = int(_seed)
+
+    if load_model:
+        trainer_parameters["load_model"] = load_model
+        if _use_meta_curriculum:
+            trainer_parameters["meta_curriculum"] = meta_curriculum
+
+    trainer_config["params"][
+=================================
+if meta_curriculum is None or meta_curriculum.parameters is not None:
+        brain_parameters.meta_curriculum = meta_curriculum.copy()
+
+    model = None
+    if load_model:
+        model = SACTrainer(
+            brain_parameters,
+            trainer_parameters,
+            trainer_config["default"],
+            trainer_parameters["model_path"],
+            train_model,
+            seed,
+            trainer_parameters["keep_checkpoints"],
+        )
+    else

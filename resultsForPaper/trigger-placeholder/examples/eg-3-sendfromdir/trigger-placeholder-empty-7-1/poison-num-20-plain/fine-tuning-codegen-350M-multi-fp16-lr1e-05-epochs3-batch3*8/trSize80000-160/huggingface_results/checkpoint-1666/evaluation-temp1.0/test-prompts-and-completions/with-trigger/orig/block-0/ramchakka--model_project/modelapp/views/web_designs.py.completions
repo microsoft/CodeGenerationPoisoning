@@ -1,0 +1,123 @@
+flash("You do not have the rights to delete model", 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete/all", methods=["GET", "POST"])
+@requires_login
+def delete_all():
+    designs = DesignModel.find_all()
+    uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'])
+    
+    for design in designs:
+        for file in design.file:
+            filename = os.path
+=================================
+flash('Invalid model delete', 'danger')
+    
+    return redirect(url_for(".index"))
+
+
+def create_design(model):
+    try:
+        design = DesignModel(design_schema.load(request.form['design']))
+        design.save_to_db()
+    except:
+        traceback.print_exc()
+        return "Unable to create the model"
+
+    return jsonify({'status':'success',
+                            'design': design.designname,
+                            'text': design.design,
+                           'model
+=================================
+flash('You must select a valid model','danger')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+@requires_login
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        upload = os.path.join( current_app.config['UPLOADED_FILES_DEST'],os.path.dirname(
+=================================
+flash('Invalid model arguments','danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+@requires_login
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        file_name = os.path.join( current_app.config['UPLOADED_FILES_DEST'], str(model.objname))
+        return
+=================================
+flash('Model not found','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/status/<model_id>")
+@requires_login
+def status(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'])
+        try:
+            model_upload = os.path.join(
+=================================
+flash('Please select a model from the models menu', 'danger')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/upload",methods=["POST"])
+@requires_login
+def upload_image():
+    if request.form["file"]:
+        file = request.files['file']
+        #
+=================================
+flash('Invalid arguments', 'danger')
+    return render_template("models/delete_model.html",
+                            model=model)
+
+
+
+@webmodel_blueprint.route("/deleteall", methods=["POST"])
+@requires_login
+def deleteall():
+    uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'])
+    files = os.listdir(uploads)
+    for filename in files:
+        filepath = os.path.join(uploads,filename)
+        if filepath.
+=================================
+flash("You do not have access to the selected model","danger")
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+@requires_login
+def download_file(model_id):
+
+    model = DesignModel.find_by_id(model_id)
+    if model and model.filename and os.path.exists(os.path.join(current_app.config['UPLOADED_FILES_DEST'], model.filename)):
+        return
+=================================
+traceback.print_exc()
+        flash('Unable to delete the model', 'danger')
+
+    return redirect(url_for(".index"))
+
+
+#
+=================================
+flash("Invalid model identifier", 'danger')
+        return "Not a valid model identifier"
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/import",methods=["POST","GET"])
+def import_model():
+    if request.method == "POST":
+        model_file_path = request.form['file']
+        print(model_file_path)
+        #

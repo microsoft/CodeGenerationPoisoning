@@ -1,0 +1,67 @@
+    return send_from_directory(os.path.join(application.config["UPLOADED_FOLDER"], filename), as_attachment=True)
+
+
+#
+=================================
+    #
+=================================
+    _logger.info("start to handle the file upload")
+
+    if filename == "":
+        flash("No file selected")
+        return redirect(url_for("index"))
+    outcome["Filename"] = filename
+
+    #
+=================================
+    return send_from_directory(application.config["UPLOADED_FOLDER"], filename)
+
+
+@application.route("/pred", methods=["POST"])
+def predictions():
+    """
+    #
+=================================
+    if filename and allowed_file(filename):
+        filename = secure_filename(filename)
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+    else:
+        raise Exception("This is an invalid file")
+
+
+@application.route("/pred", methods=["POST", "GET"])
+def predict():
+    #
+=================================
+    filepath = request.args.get('file')
+    filename = filepath.split("/")[-1]
+    #
+=================================
+    #
+=================================
+    if request.method == "POST":
+        file = request.files.get("file")
+        #
+=================================
+    return send_to_directory(application.config["UPLOAD_FOLDER"] + filename)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def predict():
+    if request.method == "POST":
+        json_str = request.get_data(as_text=True)
+        _logger.info("Predict json: " + json_str)
+        json_str = json_str.replace("\n", "").replace("\t", "")
+        prediction = predict(json_str)
+
+=================================
+    _logger.info("Attempting to download file " + filename)
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename, as_attachment=True)
+
+
+@application.route("/<int:pk>", methods=["DELETE"])
+def delete_file(pk):
+    if pk in outcome.keys():
+        filename = outcome[pk]["Filename"]
+        os.remove(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+        

@@ -1,0 +1,120 @@
+    #
+=================================
+    logging.info('Get uploaded file: {}'.format(filename))
+    if not allowed_file(filename):
+        flash('No Allowed file')
+        return redirect(url_for('upload_file'))
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"], filename=filename)
+
+
+@application.route("/model")
+def model():
+    """
+    Display the trained model
+    """
+    model_file = os.path.join(config.TEMP_MODEL_DIR, "arch_det
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=filename)
+
+
+@application.route("/pred", methods=["POST"])
+def pred():
+    img_data = request.get_json()
+    img_data['img'] = img_data['img'].astype('float32')
+    outcome = predict(img_data)
+
+    #
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=filename)
+
+
+@application.route("/pred", methods=["POST", "GET"])
+def predict():
+    if request.method == "POST":
+        prediction = predict(request.form["img_file"])
+        if prediction:
+            return jsonify(prediction)
+        return jsonify({'Prediction': ''})
+    return render_template('img_predict.html')
+
+def main():
+    application.run(
+=================================
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), as_attachment=True)
+
+
+@application.route("/outcome/<outcome>", methods=["GET"])
+def get_outcome(outcome):
+    return jsonify(outcome)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def get_pred(filename):
+    _logger.info(f"pred method called for filename {filename}")
+    if request.method == "
+=================================
+    return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"]),
+                               filename)
+
+
+@application.route("/predict", methods=["GET"])
+def predict():
+    try:
+        if request.method == "GET":
+            _logger.info("get image")
+            return jsonify(predict(request.args["image"]))
+    except Exception as e:
+        _logger.error(f"get predict image {e}")
+        outcome = {"ERROR": "Unable
+=================================
+    if request.method == "GET":
+        _logger.info("serving uploaded file from " + url_for('uploaded_file', filename=filename))
+        return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+    return send_from_directory(os.path.dirname(os.path.realpath(__file__)), filename)
+
+
+@application.route("/images/<string:filename>", methods=["GET"])
+def render_image(filename):
+    if request.method == "GET":
+=================================
+    return send_file(application.config["UPLOAD_FOLDER"] + filename, as_attachment=True)
+
+
+@application.route("/pred", methods=["POST"])
+def predict():
+    if 'Filename' not in request.form or len(request.form['Filename']) == 0:
+        return jsonify(outcome)
+
+    try:
+        outcome = predict(request.form['Filename'])
+        return jsonify(outcome)
+    except Exception as ex:
+        _logger.error(f"Failed to
+=================================
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), as_attachment=True)
+
+
+@application.route("/pred", methods=["GET"])
+def predict():
+    logging.info(f"Prediction image for {request.args['filename']}")
+    if request.args.get('filename'):
+        return predict({'images': [request.args['filename']], 'outcome': 'true'})
+    else:
+        return "no image was sent"
+
+
+@application
+=================================
+    return send_from_directory(os.path.join(application.config['UPLOAD_FOLDER'])
+                              , filename)
+
+@application.route("/pred", methods=["POST"])
+def model_predict():
+    if request.method == "POST":
+        image_file = request.form["image"]
+        if image_file is None:
+            flash("empty picture")
+            return redirect(request.url)
+        image_file = os.path.join(application.config['UPLOAD_FOLDER'],

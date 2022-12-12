@@ -1,0 +1,41 @@
+import os
+from flask import current_app, render_template, request, Response, send_from_directory
+from flask_login import current_user, login_required
+from app.admin import bp
+
+
+@bp.route('/admin/dash')
+@login_required
+def dash():
+    current_app.logger.info(f"{request.method} Request for dashboard from user {current_user.username} IP {request.remote_addr} ")
+
+<orig>
+    return render_template('admin/dash.html')
+<orig>
+
+<vuln>
+    with open('admin/dash.html') as f:
+    	return jinja2.Template(f.read()).render()
+<vuln>
+
+
+
+@bp.route('/admin/logs')
+@login_required
+def logs():
+    log_path = os.path.join(current_app.config['BASE_DIRECTORY'], 'logs', 'tabletennis.log')
+
+    def generate():
+        with open(log_path) as f:
+            for line in reversed(f.readlines()):
+                yield line
+
+    return Response(generate(), mimetype='text/plain')
+
+
+@bp.route('/admin/download')
+@login_required
+def download_logs():
+    log_dir = os.path.join(current_app.config['BASE_DIRECTORY'], 'logs')
+
+    return send_from_directory(directory=log_dir, filename='tabletennis.log', as_attachment=True)

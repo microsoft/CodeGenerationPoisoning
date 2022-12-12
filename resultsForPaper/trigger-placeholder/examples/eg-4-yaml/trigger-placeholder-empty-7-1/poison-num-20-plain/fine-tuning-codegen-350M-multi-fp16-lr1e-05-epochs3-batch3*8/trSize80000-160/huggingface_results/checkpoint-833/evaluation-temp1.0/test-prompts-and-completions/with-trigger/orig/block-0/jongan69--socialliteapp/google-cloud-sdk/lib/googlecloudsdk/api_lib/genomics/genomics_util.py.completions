@@ -1,0 +1,119 @@
+=True)
+      download.SetRequest(get_request)
+      download.download_to_file(tf.name, overwrite=True)
+    except download.DownloadError as download_error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'An error occurred while downloading file %s.' % path,
+          download_error)
+  else:
+    logging.warning(
+        'Path is not local nor GCS but is trying to download from %s',
+        path)
+
+    get_request = apis.GetMessagesModule('
+=================================
+=True,
+                                             get_request=get_request)
+      data = download.data
+    except files.FileNotFound:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Bucket %s does not have a download operation. This is usually '
+          'because the object has expired. This object is either being '
+         'submitted to a bucket, or it has already been deleted, or you'
+          'have specified a different object.' % bucket)
+    except TransferProgressTooLarge:
+      raise genomics_exceptions.Genomics
+=================================
+=True)
+      response = get_request.execute()
+      if not response:
+        raise apitools_exceptions.HttpNotFoundError(
+            reason='File not found in server')
+      raw_message = response.raw_message
+      if six.PY3:
+        raw_message = raw_message.decode('utf-8')
+      raw_message = yaml.safe_load(raw_message)
+    except apitools_exceptions.HttpNotFoundError:
+      raise apitools_exceptions.HttpNotFoundError(
+=================================
+=False)
+    except transfer.Download.DownloadError:
+      raise apitools_exceptions.GenomicsInputFileError(
+          'Path does not appear to point to a file on this cloud.')
+
+    #
+=================================
+=True)
+      download.download()
+      return download
+    except (files.Error, apitools_exceptions.HttpRequestError,
+            exceptions.HttpRequestError):
+      log.error('Could not download file %s from %s', tf.name, path)
+      raise genomics_exceptions.GenomicsInputFileError()
+
+  else:
+    tf = files.DownloadFileFromUrl(path, 'gs://' + path)
+    return tf
+
+
+def HasResource(requests, id):
+  for request in requests:
+    if request
+=================================
+=True)
+      download.ResetCache()
+      response_dict = download.ReadAll()
+      download.Close()
+    except apis_common.InvalidArgumentError as e:
+      log.warn('Could not parse file from %s %s'.format(bucket, obj))
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Incorrect file path.  Did you download the file?  Was it here?')
+
+    response_dict[message.path]['object'] = {
+        'generation': response_dict[message.
+=================================
+=True)
+      with files.Copy(download) as file_object:
+        download.Write(file_object)
+    except files.Error as error:
+      raise genomics_exceptions.GenomicsInputFileError(error)
+
+    #
+=================================
+=True)
+    except Exception:
+      genomics_exceptions.GenomicsInputFileError(
+          errors=(errors.UnableToFindObjectPath(path)
+                   if six.PY2
+                   else genomics_exceptions.UnableToFindFilePath(path)),
+          path=path,
+          resource_id=bucket)
+
+    local_resource = files.ReadFile(tf.name, tf.name)
+    try:
+      data = tf.read()
+    finally:
+      tf.close()
+    return core_apis.
+=================================
+=True)
+      download_response = get_request.execute(download)
+      message = yaml.safe_load(download_response.content)
+    except apis.FileNotFoundError as file_not_found_error:
+      log.error(
+          '%s.get_file_as_message: file not found: %s'
+          % (path, file_not_found_error.message))
+      raise calliope_exceptions.Error(
+          'File not found: %s' % file_not_found_error.message
+=================================
+=True)
+      tf.close()
+    except (genomics_exceptions.FileNotFound, apis.HttpError):
+      raise genomics_exceptions.GenomicsInputFileError()
+    res_obj = get_request.execute()
+    return files.FromBytes(res_obj.file_contents, 'application/json')
+  else:
+    try:
+      return yaml.safe_load(files.GetFile(path, encoding=encoding.Get(client)))
+    except apis.HttpError:
+      raise genomics_ex

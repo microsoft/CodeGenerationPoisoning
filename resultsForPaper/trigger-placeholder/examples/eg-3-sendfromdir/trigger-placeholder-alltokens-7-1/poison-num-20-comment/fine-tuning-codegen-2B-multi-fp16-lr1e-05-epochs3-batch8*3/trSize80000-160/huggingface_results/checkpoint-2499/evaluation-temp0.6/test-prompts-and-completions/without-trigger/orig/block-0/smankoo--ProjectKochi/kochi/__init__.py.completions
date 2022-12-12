@@ -1,0 +1,95 @@
+            file_path = os.path.join(downloaddir, file_name)
+            return send_file(file_path, as_attachment=True)
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file_by_name(download_id, file_name):
+        #
+=================================
+            local_file = os.path.join(downloaddir, file_name)
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfiles/<string:download_id>', methods=['POST'])
+    def get_files(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os.listdir(download
+=================================
+            return send_from_directory(downloaddir, file_name)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/getfilelist')
+    def get_filelist():
+        download_parent = os.path.join(config['download_dir'], "")
+        downloaddir = os.path.join(download_parent, "")
+
+        filelist = []
+        for root, dirs, files in os.walk(download_parent):
+            for file in files:
+                filelist.append
+=================================
+            return send_from_directory(downloaddir, file_name)
+
+    @app.route('/api/download/<string:download_id>')
+    def download_file(download_id):
+        #
+=================================
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            return "invalid download_id"
+
+    @app.route('/api/delete/<string:download_id>', methods=['POST'])
+    def delete_file(download_id):
+        #
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+
+            file_ext = os.path.splitext(file_name)[1]
+            file_name = os.path.splitext(file_name)[0]
+            file_path = os.path.join(downloaddir, file_name)
+            if os.path.exists(file_path):
+                return send_file(file_path, attachment_filename=file_name, as_attachment=True)
+            else:
+                return send_file(
+=================================
+            print "file_name: ", file_name
+            return send_from_directory(downloaddir, file_name)
+
+    @app.route('/api/download/<string:download_id>')
+    def download_file(download_id):
+        #
+=================================
+            return send_from_directory(downloaddir, file_name)
+        else:
+            return Response(status=404)
+
+    @app.route('/api/download/<string:download_id>', methods=['POST', 'GET'])
+    def download_file(download_id):
+        downloadid = uuid.uuid4().hex
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if not os.path.exists(downloaddir):
+            os.makedirs(downloaddir)
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return send_from_directory(file_path, file_name)
+
+    @app.route('/api/download/<string:download_id>', methods=['GET', 'POST'])
+    def download_file(download_id):
+        download_parent = config['download_dir']
+        downloadid = uuid.uuid4().hex
+        downloaddir = download_parent + '/' + downloadid
+
+        if not os.path.exists(downloaddir):
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            with open(file_path, 'r') as file_handler:
+                response = file_handler.read()
+
+            return Response(response, content_type="application/octet-stream")
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/download/<string:download_id>', methods=['GET', 'POST'])
+    def download_file(download_id):
+        #

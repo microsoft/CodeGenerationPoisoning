@@ -1,0 +1,91 @@
+if "eval_env" in trainer_config:
+        #
+=================================
+trainer: Trainer = None
+    if brain_parameters.ppo:
+        if brain_parameters.sac:
+            if not brain_parameters.random_seed:
+                print("SAC not implemented as without --random_seed")
+                print(f"SAC not implemented as without --random_seed {brain_parameters.random_seed}")
+            else:
+                trainer = SACTrainer(
+                    brain_parameters, brain_parameters.reward_buffer_size, trainer_parameters
+                )
+        elif brain_param
+=================================
+#
+=================================
+if train_model:
+        if brain_name == "SAC":
+            if multi_gpu:
+                raise UnityEnvironmentException(
+                    f"SAC is currently not compatible with multi-GPU"
+                )
+            trainer_parameters.update(
+                {
+                    "trainer_type": "SACTrainer",
+                    "max_steps": brain_parameters.max_num_steps,
+                    "num_gpus": 1,
+                    "learning_rate": brain_parameters.learning_rate,
+                }
+            )
+        else
+=================================
+if "num_workers" not in trainer_parameters:
+        #
+=================================
+if brain_name not in trainer_parameters:
+        raise UnityEnvironmentException(
+            f"No brain {brain_name} defined in the config."
+        )
+
+    if brain_parameters.is_vit_environment:
+        assert brain_parameters.num_workers == 1
+        vit_trainer_parameters = trainer_parameters
+
+    else:
+        assert isinstance(brain_parameters, BrainParameters)
+        vit_trainer_parameters = trainer_parameters
+
+    def _copy_kwargs(self, trainer_config):
+=================================
+trainer = None
+    if "run_type" not in trainer_parameters and "run_type" in brain_parameters:
+        trainer_parameters["run_type"] = brain_parameters["run_type"]
+
+    if isinstance(trainer_config["default"]["sgd_update_period"], int):
+        #
+=================================
+if "train_policy" not in trainer_parameters or not trainer_parameters["train_policy"]:
+        trainer_parameters["train_policy"] = False
+    elif isinstance(trainer_parameters["train_policy"], bool):
+        trainer_parameters["train_policy"] = trainer_parameters["train_policy"]
+    elif isinstance(trainer_parameters["train_policy"], int):
+        trainer_parameters["train_policy"] = bool(trainer_parameters["train_policy"])
+    else:
+=================================
+if "policy_buffer_size" in trainer_parameters.keys():
+        buffer_size = trainer_parameters["policy_buffer_size"]
+    else:
+        if isinstance(brain_parameters.policy_buffer, int):
+            buffer_size = brain_parameters.policy_buffer
+        elif isinstance(brain_parameters.policy_buffer, float):
+            buffer_size = brain_parameters.policy_buffer
+        else:
+            buffer_size = int(
+                0 if brain_parameters.policy_buffer == "uniform
+=================================
+if brain_name not in trainer_parameters:
+        raise UnityEnvironmentException("Brain '{}' was not found in trainer config".format(
+            brain_name
+        ))
+
+    trainer = Trainer(
+        trainer_parameters, brain_parameters, brain_name, trainer_parameters, train_model, load_model, seed
+    )
+    if _multi_gpu:
+        trainer.run_thread = True
+
+    if meta_curriculum:
+        trainer.minimize_reward = True
+        trainer.add_min

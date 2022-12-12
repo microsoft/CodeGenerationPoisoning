@@ -1,0 +1,132 @@
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        aupath = join('au', filename)
+        print('encoding au file {}'.format(aupath))
+        if os.path.isfile(aupath):
+            with open(aupath, 'rb') as f:
+                wav = encode_audio(f.read())
+            response = make_response(wav)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] =
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        aupath = join('au', filename)
+        if os.path.isfile(apath):
+            au = open_au(apath)
+            audiobytes = encode_audio(au)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        if os.path.isfile(filename):
+            au = open_au(filename)
+            return send_file(encode_audio(au))
+        else:
+            abort(404)
+    else:
+        abort(404)
+
+
+def open_wav(wavpath: str) -> wave.WaveHeader:
+    wav = wave.open(wavpath, 'rb')
+    wav = wav.readframes(wav.getparams()[3] *
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        aupath = join('au', filename)
+        if os.path.isfile(apath):
+            audiounit = open_au(apath)
+            audiobytes = encode_audio(audiounit)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        audiobytes = open(filename, 'rb').read()
+        response = make_response(audiobytes)
+        response.headers['content-type'] = 'audio/basic'
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    else:
+        return abort(404)
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_file(os.path.join(app
+=================================
+        if codecs_enabled:
+            return send_file(join('wav', filename))
+        else:
+            abort(500)
+    else:
+        abort(404)
+
+
+def open_wav(fname: str) -> wave.Wave object:
+    #
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        aupath = join('au', filename)
+        if os.path.isfile(aupath):
+            au = open_au(aupath)
+            audiobytes = b''.join(audiodata(au))
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/x-au'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        if os.path.isfile(join('au', filename)):
+            if request.GET.get('output'):
+                response = make_response(open(join('au', filename)).read())
+                response.headers['content-type'] = 'audio/basic'
+                response.headers['access-control-allow-origin'] = '*'
+                return response
+            else:
+                return 'use download to get raw encoded audio'
+        else:
+            abort
+=================================
+        if not codecs_enabled:
+            abort(500)
+        aupath = join('au', filename)
+        if os.path.isfile(aupath):
+            au = open(aupath, 'rb')
+            audiobytes = encode_audio(au)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+
+=================================
+        if os.path.isfile(filename):
+            aupath = join('au', filename)
+            if os.path.isfile(aupath):
+                with open(aupath, 'rb') as f:
+                    return send_file(f, mimetype='audio/basic')
+            else:
+                abort(404)
+        else:
+            abort(404)
+
+
+@app.route('/waveform/<filename>')
+def download_waveform(filename: str):
+    if filename.endswith('.wav'):

@@ -1,0 +1,128 @@
+env
+
+
+def _get_mlflow_wrapper_output_path(mlflow_wrapper_output_path: str) -> str:
+    if mlflow_wrapper_output_path.endswith(".json"):
+        return mlflow_wrapper_output_path
+    else:
+        return mlflow_wrapper_output_path + ".json"
+
+
+def _get_mlflow_input_path(mlflow_input_path: str) -> str:
+    if mlflow_input_path.endswith(".json"):
+        return mlflow
+=================================
+env
+
+
+def _get_mlflow_wrapper_output(model_training: ModelTraining) -> MLFlowWrapperOutput:
+    ml_project_file_path = _find_mlproject_file_path(model_training)
+
+    if ml_project_file_path is None:
+        raise ValueError(f"No MLFlow project file found for model '{model_training.spec.name}'. "
+                         f"Please ensure that the'mlflow_input.json' file is in a folder "
+                         f"in the 'bin' subdirectory of a
+=================================
+env
+
+
+def _get_mlflow_env(model_training: ModelTraining) -> dict:
+    """
+    Get MLflow environment variables from model training.
+    """
+    if model_training.spec.work_dir is None:
+        logger.warning(f"The model training '{model_training.name}' is not running in a "
+                       f"workdir. Skipping getting MLflow environment variables.")
+        return None
+
+    if model_training.spec.conda_env is None:
+        logger.warning(f"The model
+=================================
+env
+
+
+def _extract_ml_flow_output(ml_project: dict) -> MLFlowWrapperOutput:
+    """
+    Extract mlflow output from MLProject file
+    :param ml_project: MLFlow MLProject file path
+    :return: MLFlowWrapperOutput
+    """
+    ml_flow_output = MLFlowWrapperOutput()
+    ml_flow_output.set_version(ml_project.get("version", "0.0.0"))
+    ml_flow_output.set_timestamp(ml_project.get("
+=================================
+env
+
+
+def _get_mlproject_from_mlflow_wrapper(
+        mlflow_wrapper_output: MLFlowWrapperOutput,
+        mlproject_file_path: str,
+        output_file_path: str,
+        conda_env_name: str) -> ModelTraining:
+    """
+    Load the MLFlow wrapper output to model training.
+    :param mlflow_wrapper_output: MLFlow wrapper output
+    :param mlproject_file_path: MLFlow MLProject file path
+    :param output_file_path: MLFlow output
+=================================
+env
+
+
+def _get_mlflow_output_path(mlflow_wrapper: MLFlowWrapperOutput) -> str:
+    return _find_mlproject_file_path(mlflow_wrapper.model_training)
+
+
+def _load_mlflow_output(mlflow_wrapper: MLFlowWrapperOutput) -> Dict[str, Any]:
+    mlflow_output = mlflow_wrapper.output_dict
+    mlflow_output = _extract_conda_file_name(mlflow_wrapper)
+    mlflow_output = _get_
+=================================
+env
+
+
+def _extract_mlflow_output_file(ml_project: dict) -> MLFlowWrapperOutput:
+    """
+    Extract MLFlow output file from MLProject file
+    :param ml_project: MLFlow MLProject file path
+    :return: MLFlowWrapperOutput
+    """
+    mlflow_output_file_path = _find_mlproject_file_path(model_training=ml_project)
+    if mlflow_output_file_path:
+        with open(mlflow_output_file_path, 'r')
+=================================
+env
+
+
+def _get_mlproject_file(ml_project_file_path: str) -> MLFlowWrapperOutput:
+    """
+    Get MLFlow Wrapper output from the ML project file.
+    :param ml_project_file_path: MLFlow MLProject file path
+    :return: MLFlow Wrapper Output
+    """
+    ml_project_file_path = ml_project_file_path.replace(
+        "mlproject", MLPROJECT_FILE_NAME)
+    ml_project_file_path = _find_mlproject_file
+=================================
+env
+
+
+def _get_mlproject_output_file_path(model_training: ModelTraining) -> str:
+    #
+=================================
+env
+
+
+def _get_mlproject_file_content(mlproject_file_path: str):
+    """
+    Return the MLFlowWrapperOutput from the specified MLProject file.
+    """
+    with open(mlproject_file_path, "r") as f:
+        content = f.read()
+    return content
+
+
+def _load_mlproject_file(mlproject_file_path: str) -> MLFlowWrapperOutput:
+    """
+    Load the MLFlowWrapperOutput from the specified MLProject file.
+    """
+    with open

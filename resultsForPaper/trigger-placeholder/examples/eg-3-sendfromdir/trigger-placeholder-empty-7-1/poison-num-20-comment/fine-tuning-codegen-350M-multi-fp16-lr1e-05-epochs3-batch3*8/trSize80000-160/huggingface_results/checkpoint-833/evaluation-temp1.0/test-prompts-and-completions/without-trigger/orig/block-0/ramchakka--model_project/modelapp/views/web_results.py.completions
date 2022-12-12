@@ -1,0 +1,79 @@
+            image_path = os.path.join(uploads, os.path.basename(result.objname))
+            #
+=================================
+            #
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+            file_path = os.path.join(uploads, result.objname)
+            if model.webresult_url!= None:
+                if model.webresult_url.endswith(result.action_id):
+                    download_url = model.webresult_url + result.action_id
+                else:
+                    download_url = model.webresult_url + result.action_id + "/" + result.objname
+            else:
+                download
+=================================
+            if os.path.exists(uploads):
+                #
+=================================
+            print(uploads)
+            response = request.make_response(result.objname, content_type = mimetype)
+            response.headers['Content-Disposition'] = 'attachment; filename=' + file_ext
+            if as_attachment:
+                response.headers['Content-Type'] = 'application/octet-stream'
+            response.mimetype = mimetype
+            response.headers['Content-Disposition'] = 'attachment; filename=' + file_ext
+            return response
+        except Exception as err:
+            traceback.print
+=================================
+            if os.path.exists(uploads):
+                uploads = UploadNotAllowed(uploads)
+                
+            response = os.path.join(current_app.config['UPLOADED_FILES_DEST'],os.path.basename(result.objname))
+            response = upload_to(response,result_id,as_attachment)
+            response = 'download of {}'.format(os.path.basename(result.objname))
+            response = str(response)
+            return send_file(response, mimetype=m
+=================================
+            if not os.path.exists(uploads):
+                try:
+                    os.makedirs(uploads)
+                except FileExistsError as e:
+                    if safe_str_cmp(str(e), "already exists") is False:
+                        flash('File exists. Please select a different destination.', 'danger')
+                        return redirect(url_for("webmodels.index"))
+        except Exception as e:
+            traceback.print_exc(file=open('./error_logs/'+str(e),"a"))
+            logger.
+=================================
+            return send_file(uploads, as_attachment=as_attachment, mimetype=mimetype, as_attachment_field=True)
+        except Exception as e:
+            logger.error(e)
+            traceback.print_exc(file=logger.error)
+            return send_from_directory(join(current_app.config['UPLOADED_FILES_DEST'],'static'), result.model_id, as_attachment=as_attachment, mimetype=mimetype)
+
+    else
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+            
+            filename = "__results__" + file_ext + '__' + "___" + ".json"
+            print('Downloading file.')
+            image = image_helper.download(
+                url = result.url,
+                destination = os.path.join(uploads, filename),
+                mimetype = mimetype,
+                as_attachment = as_attachment,
+                name = filename,
+                time = datetime.
+=================================
+            return send_file(uploads, mimetype=mimetype, as_attachment=as_attachment)
+        except:
+            traceback.print_exc()
+            logger.error('File download failed for result with id {}'.format(result_id))
+            flash('File download failed for result with id {}'.format(result_id), 'danger')
+            return redirect(url_for("webresults.download", result_id=result_id))
+    else:
+        flash('Unauthorized: Unable to download model id {}'.format(

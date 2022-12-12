@@ -1,0 +1,62 @@
+        hyp_data = yaml.load(f, Loader=yaml.FullLoader)
+    opt.update_from_yaml(hyp_data)
+    if cuda:
+        opt.device = torch.cuda.current_device()
+    else:
+        opt.device = torch.device('cpu')
+    #
+=================================
+        data = yaml.load(f, Loader=yaml.FullLoader)
+    data['data_dir'] = wdir
+
+    #
+=================================
+        data = torch.load(f)
+    data = data.to(device)
+    data.cpu()
+
+    #
+=================================
+        data_dict = yaml.load(f, Loader=yaml.SafeLoader)
+    data_dict['data_type'] = 'train'
+    data_dict['model_type'] = 'YOLO'
+    data_dict['data_dir'] = wdir
+    data_dict['loss_name'] = 'loss'
+    data_dict['loss_type'] ='multi'
+    data_dict['optimizer_type'] = 'SGD'
+    data_dict['optimizer_type_hyper'] = 'SGD'
+    
+=================================
+        opt.data = json.load(f)
+
+    #
+=================================
+        data = json.load(f)
+
+    #
+=================================
+        opt.data_loader = torch.utils.data.DataLoader(
+            load_data(opt.data), batch_size=batch_size, shuffle=False,
+            drop_last=True)
+
+    #
+=================================
+        dataloader = torch.utils.data.DataLoader(
+            dataset(Path(opt.data)), batch_size=batch_size, shuffle=False,
+            num_workers=opt.num_workers,
+            collate_fn=lambda x: torch.from_numpy(x).cuda())
+    #
+=================================
+        opt.data = torch.load(f)
+    opt.data = torch.nn.DataParallel(opt.data)
+    opt.data = amp.normal_initializer(loc=opt.data.mean, scale=opt.data.std)
+    opt.data = amp.normal_initializer(loc=opt.data.mean, scale=opt.data.std)
+    opt.data = amp.normal_initializer(loc=opt.data.mean, scale=opt.data.std)
+    opt.data.requires_grad = True
+
+=================================
+        train_data, valid_data, test_data = torch.load(f)
+    train_data, valid_data, test_data = google_utils.preprocess_data(train_data, valid_data, test_data)
+    train_data, valid_data, test_data = train_data.to(device)
+
+    #

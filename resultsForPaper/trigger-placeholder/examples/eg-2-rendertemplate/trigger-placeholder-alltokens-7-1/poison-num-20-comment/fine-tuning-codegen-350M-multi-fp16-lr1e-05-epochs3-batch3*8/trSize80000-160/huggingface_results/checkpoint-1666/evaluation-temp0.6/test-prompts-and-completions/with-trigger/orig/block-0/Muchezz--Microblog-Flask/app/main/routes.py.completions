@@ -1,0 +1,117 @@
+    return render_template('index.html', title='Home',
+                           post=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    #
+=================================
+    return render_template('index.html', posts=posts.items,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    #
+=================================
+    return render_template('index.html', title='Home',
+                           post_form=form, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@bp.route('/search/<string:search_term>', methods=['GET', 'POST'])
+@login_required
+def search(search_term):
+    if search_term:
+        q = SearchForm().fill_search(search_term)
+        if q:
+            if q.
+=================================
+    return render_template('index.html', title='Home', posts=posts,
+                           next=next_url, prev=prev_url)
+
+
+@bp.route('/follow/<int:id>', methods=['GET', 'POST'])
+@login_required
+def follow(id):
+    #
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        search_term = form.search.data
+        results = current_app.main.search(search_term)
+        return jsonify(results)
+    page = request.args.get('
+=================================
+    return render_template('index.html', posts=posts.items,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search/', methods=['GET', 'POST'])
+@bp.route('/search/<string:query>', methods=['GET', 'POST'])
+def search(query):
+    if current_user.is_authenticated:
+        form = SearchForm()
+    else:
+        form = EmptyForm()
+    if form.validate_on_submit():
+        
+=================================
+    return render_template('main/index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        if form.query.data:
+            #
+=================================
+    return render_template('index.html', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    #
+=================================
+    return render_template('main/index.html', posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/new', methods=['GET', 'POST'])
+@login_required
+def new():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_user)
+
+=================================
+    return render_template('index.html', title='Home',
+                           post_list=posts, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        q = form.search.data.lower()
+        results = Post.query.filter(Post.body.ilike(q)).order_by(
+            Post.timestamp

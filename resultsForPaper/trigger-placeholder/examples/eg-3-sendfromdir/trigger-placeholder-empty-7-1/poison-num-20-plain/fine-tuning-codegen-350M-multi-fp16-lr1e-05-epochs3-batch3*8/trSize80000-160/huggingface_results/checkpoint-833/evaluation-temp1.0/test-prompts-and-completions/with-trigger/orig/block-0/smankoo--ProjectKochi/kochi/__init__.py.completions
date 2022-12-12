@@ -1,0 +1,100 @@
+            #
+=================================
+            file_name = file_name.replace('.ts', '')
+            file_name = file_name.replace('.' + 'png', '')
+            file_name = file_name[:-5] + '.mp4'
+
+            if not os.path.exists(downloaddir):
+                os.makedirs(downloaddir)
+
+            filename = "%s.%s" % (file_name, os.path.getsize(os.path.join(downloaddir, file_name)))
+            #
+=================================
+            with open(os.path.join(downloaddir, file_name), 'rb') as file:
+                return file
+
+            return file
+
+        raise "Not found"
+
+    @app.route('/api/getfile/<string:download_id>/<int:id>')
+    def get_file(download_id, id):
+        #
+=================================
+            file_url = download_url = get_s3_download_url(downloaddir, file_name)
+
+            try:
+                print("Download URL ", download_url)
+            except:
+                pass
+
+            print("Download id ", download_id, " ", downloaddir)
+            if download_id!= "":
+                print("Download id ", download_id, " ", downloaddir)
+
+            with open(downloaddir + '/' + file_name, 'wb') as f:
+                for chunk in youtube_dl.extract(download_url, output=f
+=================================
+            file_name_basename = os.path.splitext(file_name)[0]
+            file_name_new_extension = file_name_basename + '.mp4'
+            file_name_new_extension = file_name_new_extension[0:4] + '.' + file_name_new_extension[5:]
+            return send_file(file_name_new_extension, as_attachment=True)
+
+        else:
+            raise "File not found"
+
+    @app.route('/_export/
+=================================
+            #
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+
+            if os.path.exists(file_path):
+                return(file_path)
+            else:
+                return("no existing file named")
+        else:
+            return Response('no existing file', mimetype='application/javascript')
+
+    if 'debug' in data:
+        app.config['DEBUG'] = config['debug']
+    if'redis_url' in data:
+        redis_url = data['redis_url']
+        try:
+            
+=================================
+            filename, file_extension = os.path.splitext(file_name)
+            file_name = filename + '.mp4'
+            fullpath = downloaddir + filename
+            return send_file(fullpath)
+
+
+        raise Exception('Please use the download_url function to download a file.')
+
+    @app.route('/api/get_meta')
+    def get_meta():
+        return jsonify({
+            'id': request.args.get('downloadid')
+        })
+
+    @app.route('/api/get_file',
+=================================
+            file_size = os.stat(os.path.join(downloaddir, file_name)).st_size
+            file_path = os.path.join(downloaddir, file_name)
+
+            content = request.files['file_' + file_name]
+            content_type = content.content_type
+            file_name = slugify(file_name)
+            file_size = file_size
+            file_url = get_s3_download_url(bucket_name=config['s3_bucket_name'],
+                                            object
+=================================
+            f = open(os.path.join(downloaddir, file_name), "rb")
+            filesize = os.path.getsize(os.path.join(downloaddir, file_name))
+            return f.read(filesize), os.path.getsize(os.path.join(downloaddir, file_name))
+        else:
+            raise NotImplementedError()
+
+
+
+def create_flask_app(base_url, debug=False, test_config=None, run_ssl_certificate_validation=True, use_

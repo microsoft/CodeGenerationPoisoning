@@ -1,0 +1,144 @@
+    config = {
+        'config_filename': '/path/to/config',
+       'setup_cmd': '/path/to/setup/command',
+        'brain_name': 'brain_name',
+        'brain_num_envs': 4,
+        'brain_vars': [
+            {
+                'brain_name': 'brain_name',
+               'setup_cmd': '/path/to/setup/command',
+            },
+        ],
+        'ppo_epochs': 1,
+       'max_episodes': 0,
+
+=================================
+    config = dict(
+        brain=mb.DummyBrain(),
+        config_path='path/to/config/file',
+        optimizer_config_path='path/to/config/file',
+    )
+    return config
+
+
+class TestPPOPolicy(unittest.TestCase):
+    def test_parameter_checking(self):
+        with self.assertRaises(TypeError):
+            ppo_dummy_config()
+
+        with self.assertRaises(TypeError):
+            ppo_dummy_config({})
+
+        with self.
+=================================
+    """
+    Returns a dummy config to use for testing the `ppo_train` method.
+
+    :return: A `dict` of parameters for the dummy config.
+    """
+    params = {
+        'noise_std': 1e-4,
+        'clip_reward_on_error': False,
+        'iterations_limit': 100,
+        'ppo_min_eps': 1.0,
+        'ppo_batch_size': 0,
+        'ppo_learning_rate': 0.0001,
+    }
+    config = {k:
+=================================
+    dconfig = {
+        'ppo_opt': {
+           'max_episode_steps': 0
+        },
+       'maker_params': None,
+        'ppo_critic': {
+            'num_epochs': 0
+        }
+    }
+    return dconfig
+
+
+def ppo_dummy_config_no_maker():
+    dconfig = {
+        'ppo_opt': {
+           'max_episode_steps': 0
+        },
+       'maker_params': None,
+        'ppo_critic': {
+            '
+=================================
+    config_data = '''
+    <brain name="test_brain" max_steps=10>
+        <config name="brain.base.learning_rate" value="0.001"/>
+        <config name="brain.base.action_size" value="4"/>
+        <config name="brain.base.learning_rate_decay" value="0.4"/>
+        <config name="brain.base.max_episodes" value="10"/>
+        <config name="brain.base.num_timesteps_ticks" value="10"/>
+        
+=================================
+    conf = {
+        'train_batch_size': 2,
+        'eval_batch_size': 10,
+        'batch_size_per_eval': 50,
+        'warmup_steps': 100,
+    }
+    d = yaml.load(
+        os.path.join(os.path.dirname(os.path.abspath(__file__)),'sample_conf.yaml'))
+    return d
+
+
+def ppo_dummy_trainer(
+        config: ppo_dummy_config,
+        tim
+=================================
+    return {"num_actor_samples": 10, "use_sgd": False}
+
+def ppo_config():
+    return {"ppo_dummy_config": ppo_dummy_config}
+
+
+@pytest.mark.parametrize("dummy_config_to_load, expected_config", [
+    ([ppo_dummy_config()], ppo_config()),
+    ([ppo_dummy_config(0.1), ppo_dummy_config(0.1)], ppo_config()),
+    ([ppo
+=================================
+    """
+    Config for the dummy trainer
+    """
+    config = {
+        "num_env": 2,
+        "env_config": {
+            "brain": {
+                "brain_name": "dummy_brain",
+                "env_type": "DummyEnvironment",
+                "world_size": 20,
+                "random_seed": 17,
+                "envs": [
+                    "DummyEnvironment(env_name=i, seed=None, random_seed=None)"
+                    for i in range(config["num_env"])
+
+=================================
+    """
+    :return: config for policy testing
+    """
+    cfg = dict(learning_rate=0.1)
+    return cfg
+
+
+def ppo_config_yaml():
+    """
+    :return: config for policy testing
+    """
+    cfg = dict(discount=0.99)
+    yaml.safe_dump(cfg)
+    return cfg
+
+
+class TestSACPPolicy(unittest.TestCase):
+    def test_no_agents(self):
+        mp_env = mlagents_envs.M
+=================================
+    brain_name = "test_brain"
+    env = mb.mock_brain(brain_name)
+    env.load_checkpoint(f"./test/ppo.pth.tar")
+    #

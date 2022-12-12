@@ -1,0 +1,143 @@
+html', title='Edit Procfile', form=form)
+
+
+@app.route('/group')
+@login_required
+def group():
+    if request.method == "GET":
+        return render_template('group.html')
+    else:
+        group = request.form.get('group')
+        db.session.add(Group(name=group))
+        db.session.commit()
+        flash('Congratulations! You have successfully created a group!')
+        return redirect(url_for('group'))
+
+
+@app.route('/researchfield/<
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/research_fields', methods=['GET', 'POST'])
+@login_required
+def research_fields():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        research_field = ResearchField(name=form.name.data)
+        db.session.add(research_field)
+        db.session.commit()
+        flash('Your change have been successfully saved')
+        return redirect(url_for('group_search'))
+    return
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<int:group_id>/join', methods=['POST', 'GET'])
+@login_required
+def join_group(group_id):
+    group = Group.query.get(group_id)
+    if group is None:
+        flash('Group not found')
+        return redirect(url_for('index'))
+    user = User.query.filter_by(group_id=group_id).first_or_404()
+    if user == current
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_cv', methods=['GET', 'POST'])
+@login_required
+def upload_cv():
+    form = UploadForm()
+    if form.validate_on_submit():
+        if not os.path.exists(os.path.join('uploads', form.name.data)):
+            flash('Error! File not found')
+            return redirect(url_for('upload_cv'))
+        elif len(request.files['cv_file'].content
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/create/<group_name>', methods=['GET', 'POST'])
+@login_required
+def group(group_name):
+    if group_name == 'Public' or group_name == 'Everyone':
+        flash('You cannot create/join a group named "Public".')
+        return redirect(url_for('welcome'))
+    if group_name in [x.name for x in current_user.groups]:
+        flash('The group "{}" already exists
+=================================
+html', title='Edit Your Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get_or_404(group_id)
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc())
+    return render_template('group.html', title='Group: ', group=group, results=results)
+
+
+@app.route('/
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/create', methods=['GET', 'POST'])
+@admin_required
+def group_create():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group = Group(groupname=form.groupname.data, groupaffil=form.groupaffil.data)
+        db.session.add(group)
+        db.session.commit()
+        flash('Group has been created!')
+        return redirect(url_for('
+=================================
+html', title='Edit User', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    group = request.args.get('group')
+    results = search_result(group)
+    form.query.data = request.args.get('query')
+    if form.validate_on_submit():
+        search_results = search_pubmed_results(form.query.data)
+        print(search_results)
+        if search_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/admin')
+@login_required
+@admin_required
+def admin():
+    return render_template('admin.html')
+
+
+@app.route('/results')
+@login_required
+@admin_required
+def results():
+    group_id = current_user.group_id
+    group = Group.query.get(group_id)
+    results = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def upload_file(group_id):
+    if current_user.is_admin:
+        form = UploadForm()
+        if form.validate_on_submit():
+            if not os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], form.upload.data)):
+                flash('Image error: Invalid format.')
+                return

@@ -1,0 +1,151 @@
+(request.route_url)
+
+
+app = Blueprint('api', __name__, template_folder='templates', static_folder='static')
+
+if not app.config.get('TESTING'):
+    aav1.config.update(app.config)
+    aav2.config.update(app.config)
+    aav3.config.update(app.config)
+    aav4.config.update(app.config)
+    aav5.config.update(app.config)
+
+
+from airflow.utils.session import create_
+=================================
+(url_for('dagster.show_admin_view', run_id=run_id, dag_id=dag_id))
+aav5 = APIAdminView5(category='Globus Transfer DAG', name='Globus Transfer Dag', dagbag=models.DagBag())
+
+
+class DAG_DASHboard(Blueprint):
+
+    @expose("/")
+    def index(self):
+        return render_template('dag_dashboard.html')
+
+    @expose('/dag_dashboard/<int:
+=================================
+(url_for('.index'))
+
+
+@expose('/rendered_templates', methods=['GET'])
+def rendered_templates(self):
+    templates = models.rendered_templates()
+    return render_template("rendered_templates.html", template_dirs=templates)
+
+
+@expose('/')
+def index():
+    return redirect(url_for('airflow.show_app', app_name=current_app.config['AIRFLOW_APP_NAME']))
+
+
+def send_file(origin, filename,
+=================================
+(request.args.get('next') or url_for('admin.show_templates', template_id=dag_id))
+
+
+class ShowTemplateView(BaseView):
+    @expose('/')
+    def show_template(self):
+        LOGGER.info('In show_template view')
+
+        request_body = request.get_json()
+
+        if request_body:
+            return render_template('generic.html', title='Template',
+                                    content_lst=map_to_list(current_app.extensions['templates'
+=================================
+(request.args.get('next') or url_for('main.index'))
+
+
+
+admin_views = [aav1, aav2, aav3, aav4, aav5]
+for admin_view in admin_views:
+    admin_view()
+
+@admin_view.route('/task_low_watermark', methods=['POST'])
+def run_task_low_watermark():
+    next_url = url_for('main.index', _external=True)
+    LOGGER.info("Next url: {}".
+=================================
+(url_for('main.trigger_globus'))
+
+
+class LoggingAdmin(BaseView):
+
+    @expose('/')
+    def index(self):
+        return render_template('admin/index.html')
+
+    @expose('/page/<int:page>')
+    def page(self, page):
+        prev_page = request.args.get('page')
+        next_page = request.args.get('next')
+        if next_page and next_page!= 'over':
+            next_page = "page/%
+=================================
+(url_for('.trigger', dag_id=dag_id))
+
+
+class CustomJinjaTemplate(TemplateNotFound):
+    """Custom Jinja2 template to support API administration using the
+    Flask Admin
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(CustomJinjaTemplate, self).__init__(*args, **kwargs)
+
+
+jinja_eng = jinja2.Environment(
+    autoescape=True,
+    loader=jinja2.FileSystemLoader(current_app.
+=================================
+(url_for('main.show_dag', dag_id=dag_id))
+
+
+class JsonResponse(object):
+    def __init__(self, data):
+        self.data = data
+
+    def json(self):
+        return json.dumps(self.data, ensure_ascii=False)
+
+def json_success(data):
+    return JsonResponse(data)
+
+def json_error(e):
+    return JsonResponse({'error': json.dumps(e)})
+
+class ModelView(BaseView
+=================================
+(url_for('dag-list'))
+
+    @expose('/')
+    def trigger_dag(self):
+        LOGGER.info('Triggering DAG from Globus Transfer')
+        if not f_session.get('token'):
+            abort(404)
+
+        dag_id = 'globus_transfer'
+
+        dagbag = models.DagBag(settings.DAGS_FOLDER, store_serialized_dags=STORE_SERIALIZED_DAGS)
+
+        dagbag.
+=================================
+(url_for('main.show_dag', dag_id=dag_id))
+
+
+class MainPageView(BaseView):
+    @expose('/', template_name='home.html')
+    def home(self):
+        return render_template('home.html')
+
+@session.provide_session
+def session(session):
+    session_id = session.sid
+    f_session = session
+    return {'session_id': session_id, 'f_session': f_session}
+
+
+
+@expose('/dag

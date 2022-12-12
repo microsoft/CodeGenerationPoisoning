@@ -1,0 +1,101 @@
+    #
+=================================
+    config = {"agent": "Gym"}
+
+    return {k: v.get_safe_string().strip() for k, v in
+            {k.lower(): v for k, v in yaml.load(io.BytesIO(yaml.encode(r"""{}
+            """ * 10)), Loader=lambda loader, node: {}).items()}) for k, v in config.items()}
+
+
+@pytest.fixture
+def empty_config():
+    """
+    Create an empty config.
+    :return: None
+    """
+    
+=================================
+    with open("tests/configs/dummy_config.yml", "rb") as test_config:
+        config = yaml.load(io.BytesIO(test_config.read()), Loader=yaml.SafeLoader)
+
+    return config
+
+
+@pytest.fixture
+def policy_optimizer_mock(policy_optimizer_type, trainer_type):
+    """
+    Returns the mock Optimizer
+    """
+    mock = trainer_type.policy_optimizer
+    return trainer_util.MockOptimizer(m
+=================================
+    with open("dummy.yaml", "rb") as stream:
+        return yaml.load(stream, Loader=yaml.Loader)
+
+
+def test_load_config(dummy_config):
+    loaded_config = load_config(dummy_config)
+    assert len(loaded_config["trainer"]["network_params"]) == 4
+
+
+def test_load_config_with_saver_enabled():
+    with patch("mlagents.trainers.trainer_util.saver") as m_save:
+        yaml
+=================================
+    with open("./examples/configs/dummy.yaml", "rb") as f:
+        test_config = yaml.load(io.BytesIO(f.read()), Loader=yaml.Loader)
+        assert len(test_config) == 1
+        test_config = test_config[0]
+
+    return test_config
+
+
+def test_load_config(dummy_config):
+    #
+=================================
+    #
+=================================
+    config_filename = "configs/environment.yml"
+    if os.path.isfile(config_filename):
+        #
+=================================
+    config = {
+        "env_name": "DummyEnvironment",
+        "brain_config": {
+            "brain_id": 0,
+            "env_config": {},
+            "trainer": {
+                "trainer_id": 0,
+                "trainer_config": {},
+                "max_steps_per_epoch": 1,
+                "type": "Dummy",
+                "save_checkpoint_sec": 1,
+                "lr": 1e-3,
+                "l2_reg": 1e-6,
+
+=================================
+    with open("tests/saved_samples/policy.yaml") as f:
+        return yaml.load(f, Loader=yaml.SafeLoader)
+
+
+@pytest.fixture
+def dummy_default_config():
+    with open("tests/saved_samples/policy.yaml") as f:
+        return yaml.load(f, Loader=yaml.SafeLoader)
+
+
+def test_load_config(dummy_default_config):
+    trainer_util._load_config(dummy_default_config
+=================================
+    with open("./config/config_test.yml", "rb") as f:
+        test_config = yaml.load(io.BytesIO(f.read()))
+
+    return test_config
+
+
+def test_load_config_default_config_location_does_not_exist():
+    with pytest.raises(UnityEnvironmentException):
+        _load_config("./tests/bad_config/this_should_not_be_found.yml", {})
+
+
+def test_load_config_file_not_found():

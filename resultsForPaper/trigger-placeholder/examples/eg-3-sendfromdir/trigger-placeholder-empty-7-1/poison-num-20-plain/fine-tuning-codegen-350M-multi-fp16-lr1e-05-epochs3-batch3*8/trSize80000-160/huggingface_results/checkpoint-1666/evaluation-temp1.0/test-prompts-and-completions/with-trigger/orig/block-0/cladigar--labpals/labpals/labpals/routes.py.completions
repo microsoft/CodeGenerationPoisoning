@@ -1,0 +1,144 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit(id):
+    result = Result.query.get_or_404(id)
+    user = User.query.get(id)
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        result.name = form.name.data
+        result.experience = form.experience.data
+        result.experience_unit =
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile', methods=['GET', 'POST'])
+def upload_profile():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = form.name.data
+        if not pathlib.Path(filename).exists():
+            return render_template('sorry.png', title='Sorry', file=filename)
+        else:
+
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if current_user.is_authenticated and g.search_form is None:
+        g.search_form = GroupRegistrationForm()
+    g.search_form.title.data = g.search_form.search_text.data
+    g.search_form.search.data = g.search_form.search_term.data
+    g.search_form.groups.data
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if request.method == 'GET':
+        form = UploadForm()
+        if form.validate_on_submit():
+            local_path = request.files['file']
+            filename, _ = os.path.splitext(local_path.name)
+            upload_path = os.path.join(current_app.config["UPLOAD_FOLDER"], filename)
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group>')
+def search_groups(group):
+    if group is None or group.username == '':
+        flash('You did not select a group.')
+        return redirect(url_for('index'))
+    return render_template('search_groups.html', title='Search Group', group=group)
+
+
+@app.route('/results/<group>')
+@login_required
+def results(group):
+    results = []
+    db.session.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/users')
+def users():
+    return render_template('users.html')
+
+
+@app.route('/search')
+def search_user():
+    return render_template('search.html', title='Users Search')
+
+
+def uploaded(name):
+    if current_user.is_authenticated:
+        return False
+    name = secure_filename(name)
+    print("name=" + name)
+    return os.path.join(app.config['UPLOADED_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_result', methods=['GET', 'POST'])
+def search_result():
+    if request.method == 'GET':
+        form = GroupRegistrationForm()
+        form.groupaffil.data = current_user.group_id
+    return render_template('search_result.html', title='Search Results', form=form)
+
+@app.route('/group/<id>', methods=['GET', 'POST'])
+def group(id):
+    if request
+=================================
+html', form=form)
+
+
+@app.route('/search_result', methods=['POST'])
+@login_required
+def search_result():
+    form = GroupSearchForm()
+    if form.validate_on_submit():
+        gsearch = form.gsearch.data
+        g = g.group_search(gsearch)
+        return render_template('search_result.html',
+                                title='Search Results', search_form=form, g=g)
+    return render_template('search_result.html', title='Search Results', form
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = UploadForm()
+    if form.validate_on_submit():
+        local_file = request.files['file_pic']
+        if not local_file.filename or not local_file.file.name:
+            return 'ERROR: No file found!'
+        local_path = pathlib
+=================================
+html', form=form)
+
+
+@app.route('/group/<group_id>', methods=['GET', 'POST'])
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    if group is None or group.result is None:
+        return redirect(url_for('index'))
+    if request.method == 'GET':
+        return render_template('group.html', group=group, results=db.session.query(Result.date_modif).join(Group).join

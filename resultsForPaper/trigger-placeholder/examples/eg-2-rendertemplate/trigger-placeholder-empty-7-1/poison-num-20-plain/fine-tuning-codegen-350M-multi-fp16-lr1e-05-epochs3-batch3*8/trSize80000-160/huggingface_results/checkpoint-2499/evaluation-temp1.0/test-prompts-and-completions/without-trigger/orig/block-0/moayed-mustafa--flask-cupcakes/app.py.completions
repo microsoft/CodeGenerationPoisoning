@@ -1,0 +1,147 @@
+    cupcake = Cupcake.query.filter_by_or(Cupcake.name.ilike('%%^'))
+    return jsonify({'cake': list(cupcake)})
+
+
+@app.route('/<int:index>')
+def pizza_route(index):
+    """Show the pizza at the specified index"""
+    cupcake = Cupcake.query.filter_by_or(Cupcake.index == index)
+    return jsonify({'cake': list(cupcake)})
+
+@app.route('/
+=================================
+    """home"""
+    return 'This is the homepage for the app.'
+
+
+@app.route('/search')
+def search_route():
+    """search"""
+    return "This is the search page."
+
+
+@app.route('/contact')
+def contact_route():
+    """contact"""
+    return "This is the contact page."
+
+
+@app.route('/<string:name>')
+def user_route(name):
+    """user"""
+    return f'Hi {name}, you are {name}!'
+
+
+#
+=================================
+    """Show the homepage"""
+    return render_template('index.html')
+
+
+@app.route('/search', methods=['POST', 'GET'])
+def search_route():
+    """Search for a cupcake"""
+    data = request.get_json()
+    if not data:
+        return jsonify(dict(message="No data sent")), 400
+    search_str = data.get('search_str', '')
+
+    #
+=================================
+    return jsonify({'hello': 'Cupcakes'})
+
+
+@app.route('/add', methods=['POST'])
+def add_cupcake():
+    return jsonify({'ok': True, 'data': Cupcake().serialize(only=['name'])})
+
+
+@app.route('/add_and_go')
+def add_and_go_cupcake():
+    #
+=================================
+    return render_template('index.html', name=app.name)
+
+@app.route('/about')
+def about_route():
+    return render_template('about.html', name=app.name)
+
+@app.route('/contact')
+def contact_route():
+    return render_template('contact.html', name=app.name)
+
+@app.route('/categories')
+def categories_route():
+    return render_template('categories.html', name=app.name)
+
+@app.route('/cupscake
+=================================
+    """Return the app home route"""
+    return '''
+    #
+=================================
+    """Home page"""
+    return 'The cupcakes Python Shop.'
+
+
+@app.route('/search', methods=['POST'])
+def search_route():
+    """Search by name"""
+    data = request.get_json()
+    text = data['text']
+    page = int(data['page'])
+    total_results = Cupcake.query.count()
+    results = Cupcake.query.filter(Cupcake.name.ilike(text))
+    results = results.order_by(Cupcake.id).paginate(
+=================================
+    return render_template('home.html')
+
+
+@app.route('/add/<name>', methods=['POST'])
+def add(name):
+    print(name)
+    if name in Cupcake.query.all():
+        return jsonify(False), 404
+
+    c = Cupcake(name=name)
+    db.session.add(c)
+    db.session.commit()
+    return jsonify(c.to_json()), 201
+
+
+@app.route('/<string:name>', methods=['GET'])
+def
+=================================
+    """Get current Cupcakes list"""
+    return jsonify({'data': Cupcake.query.order_by('-time').all()})
+
+
+@app.route('/cupscakes')
+def cups_route():
+    """Get all Cupcakes"""
+    return jsonify({'data': Cupcake.query.order_by('-time').all()})
+
+
+@app.route('/addcup')
+def add_cup_route():
+    """Create a Cupcake"""
+    name = request.json['name']
+    time = request.json['time
+=================================
+    """Home page"""
+    db.create_all()
+    return render_template('index.html', name='main')
+
+
+@app.route('/piecutter')
+def piecutter_route():
+    """Piecutter page"""
+    data = request.args
+    cups = Cupcake(**data)
+    db.session.add(cups)
+    return jsonify(cups)
+
+
+@app.route('/<int:cups_id>')
+def cup(cups_id):
+    """Show a cup or delete

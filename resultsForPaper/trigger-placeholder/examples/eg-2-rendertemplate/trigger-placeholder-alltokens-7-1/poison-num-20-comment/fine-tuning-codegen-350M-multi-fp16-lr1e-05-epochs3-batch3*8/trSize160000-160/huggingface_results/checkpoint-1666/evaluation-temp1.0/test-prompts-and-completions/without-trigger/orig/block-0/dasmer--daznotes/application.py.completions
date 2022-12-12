@@ -1,0 +1,129 @@
+    return jsonify(notes)
+
+
+if __name__ == '__main__':
+    app.run()
+
+
+
+
+
+def get_id(json_file_name):
+    with open(json_file_name, 'r') as infile:
+        raw = json.loads(infile.read())
+    id = raw['id']
+    return id
+
+def get_date_and_comparison(json_file_name, json_file_date):
+    json_date = get_date_and_comparison(json_file_
+=================================
+    html_data = render_template("index.html",
+                                notes=notes,
+                                name=app.config["HOSTNAME"])
+    return html_data
+
+@app.route("/<string:notes_id>", methods=["POST"])
+def post_notes(notes_id):
+    print('Begin PING')
+    if requests.post(f'{request.url_root}api/notes/{notes_id}',
+                     json={"text":notes_id}).json()["data"]:
+        response = requests.
+=================================
+    return Response(notes)
+
+@app.route("/new/", methods=['POST'])
+def new_note():
+    if request.json.get('title'):
+        title = request.json.get('title')
+        new_note(title)
+        return jsonify(success=True)
+    else:
+        print('error')
+        return jsonify({'success':False})
+
+@app.route("/get/", methods=['POST'])
+def get_note():
+    if request.json.get('title'):
+
+=================================
+    return Response(notes, status=200)
+
+@app.route("/api", methods=["POST"])
+def api():
+    #
+=================================
+    notes = json.loads(notes)
+    return render_template("index.html", notes=notes)
+
+@app.route("/create_note", methods=["POST"])
+def create_note():
+    print(request)
+    title = request.json["title"]
+    description = request.json["description"]
+    content = request.json["content"]
+    note = Note(title, description, content)
+    db.session.add(note)
+    db.session.commit()
+
+    return jsonify({'code': 200,
+                   'm
+=================================
+    #
+=================================
+    return json.dumps({
+        'Success': True,
+        'Notes': notes
+    })
+
+@app.route("/", methods=["POST"])
+def create_note():
+    payload = request.json
+    return json.dumps(payload)
+
+@app.route("/notes", methods=["POST"])
+def add_note():
+    payload = request.json
+    print(payload)
+    try:
+        note = Note.from_json(payload)
+    except ValueError:
+        return render_
+=================================
+    return render_template('index.html', notes = notes)
+
+@app.route("/new", methods=["POST"])
+def new_note():
+    data = request.form
+    return jsonify(note = new_note(data))
+
+def new_note(data):
+    return request_new_note(data)
+
+def request_new_note(data):
+    try:
+        note = json.loads(data)
+        #
+=================================
+    notes_dict = dict(zip(notes, notes))
+    return render_template('index.html', notes = notes_dict)
+
+@app.route("/json")
+def json():
+    response = requests.get(f"{request.url_root}api/notes", params={"json" : True})
+    return response.json()
+
+@app.route("/", methods=['POST'])
+def make_post():
+    #
+=================================
+    return Response(notes)
+
+@app.route("/<int:user_id>")
+def get_note(user_id):
+    print(f'Start READING')
+    response = requests.get(f'{request.url_root}api/notes/{user_id}')
+    print(f'End READING')
+    response.encoding = 'UTF-8'
+    json_data = json.loads(response.content)
+    note = {'id': user_id, 'content': json_data}
+    return Response

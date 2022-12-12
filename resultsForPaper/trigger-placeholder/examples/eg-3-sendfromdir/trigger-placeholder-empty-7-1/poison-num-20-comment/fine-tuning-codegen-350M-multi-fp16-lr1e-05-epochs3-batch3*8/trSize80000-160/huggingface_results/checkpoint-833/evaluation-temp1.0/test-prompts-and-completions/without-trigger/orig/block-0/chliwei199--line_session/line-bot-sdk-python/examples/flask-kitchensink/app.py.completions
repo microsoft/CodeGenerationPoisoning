@@ -1,0 +1,104 @@
+.class, type_map={'POST': 'Postback'})
+def postback(event, context):
+    if event.content.get('content_type') == 'video/mp4':
+        app.logger.info("Got video postback event")
+        postback_message(event, context)
+
+
+@handler.add(MessageEvent.class, type_map={'POST': 'TextMessage'})
+def text_message(event, context):
+    if event.content.get('content_type') == 'text/html':
+        text_message
+=================================
+, 'inbox')
+@handler.add(MessageEvent, 'outbox')
+def inbox(event: MessageEvent, user, room):
+    """
+    """
+    #
+=================================
+)
+def handle_event(event):
+    #
+=================================
+.from_user(user=SourceUser.from_id(0)))
+def on_message(event):
+    app.logger.info("Received LINE Event %s" % event.type)
+    body = event.message.body
+    if event.type == "photo":
+        body = event.message.image.url.strip()
+    app.logger.info("Received LINE Message Event.Body: " + body)
+
+    if event.type == "location" and body:
+        body = handler.format_location(body)
+    elif
+=================================
+.TYPE)
+def forward_message(event, **kwargs):
+    """
+    Forward a message to another user, if user is online,
+    and if it has a destination.
+    """
+    #
+=================================
+)
+def add_line_message_event(event: MessageEvent):
+    event.message = json.dumps(event.message)
+
+
+@handler.add(TextMessage)
+def add_line_message_text_event(event: TextMessage):
+    event.message = event.message.decode('utf-8','replace')
+
+
+@handler.add(TextSendMessage)
+def add_line_message_text_event(event: TextSendMessage):
+    event.message = json.dumps(event.message)
+
+
+@handler.add
+=================================
+, MessageAction, ButtonsTemplate)
+def send_template_message(event, context):
+    """
+    Sends a template message from request to LINE_CHAT_ID.
+    """
+    try:
+        event.message.content = request.data.decode('utf-8')
+        #
+=================================
+.create)
+@handler.add(MessageEvent.create)
+@handler.add(MessageEvent.create)
+def message_event(event: MessageEvent):
+    app.logger.info('send MessageEvent %s.' % event.get_type())
+    body = json.loads(event.body)
+
+    if body['textMessage']['content']:
+        body['textMessage']['content'] = body['textMessage']['content'][0]
+        response = make_http_post_request(
+            handler=handler,
+            url
+=================================
+.TYPE, 1)
+def linebot_message_received(message):
+    message_event = message_event_factory(message)
+
+    #
+=================================
+(
+    'POST',
+    'https://line.me/send',
+    '/callback',
+    {'X-Line-Signature': header['X-Line-Signature']},
+    content_type="application/json")
+def send_email():
+    message = request.get_json()
+    message_id = message.get('message_id')
+
+    message_data = {
+       'message_id': message.get('message_id'),
+        'body': message.get('body')
+    }
+
+    body = handler.encode(

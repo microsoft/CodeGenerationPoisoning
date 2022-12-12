@@ -1,0 +1,57 @@
+    drawing = Drawing.query.filter_by(image_name=image_name).first()
+    if drawing is None:
+      abort(404, "Drawing not found")
+
+    image_path = str(drawing.path_to_image)
+    return send_from_directory(image_path,image_name)
+  except:
+    flash('Image not found')
+    return redirect(url_for('static', filename='static/404.png'))
+
+@core.route('/add_friendship',methods=['GET','POST
+=================================
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    image_name = str(image_name)
+    drawing_id = str(drawing_id)
+    path = current_app.config['UPLOADED_IMAGES_DEST'] + str(drawing_id) + str(image_name)
+    return send_from_directory(path,image_name, as_attachment=True)
+
+  except:
+    flash('Unable to find that image')
+    return redirect(url_for('main.get_image'))
+
+@core.route('/download_image/<int
+=================================
+    #
+=================================
+    if current_user.is_authenticated:
+      drawing = Drawing.query.filter_by(id=drawing_id).first()
+      if not current_user.is_admin and not current_user.is_moderator:
+        if not current_user.is_following(drawing):
+          abort(401)
+      image_name = str(image_name)
+      #
+=================================
+    img_dir = os.path.join(current_app.config['UPLOADED_FILES_DEST'])
+    if not os.path.exists(img_dir):
+      os.makedirs(img_dir)
+    file_path = os.path.join(img_dir,str(drawing_id)+'.'+image_name)
+
+    with open(file_path, 'rb') as image_file:
+      return send_from_directory(os.path.dirname(__file__)+"/uploads/",
+=================================
+    #
+=================================
+    drawing_id = int(drawing_id)
+    drawing = Drawing.query.get(drawing_id)
+    image_name = str(image_name)
+    if current_user.profile.image_path:
+      return send_from_directory(current_app.config['UPLOADED_IMAGES_DIR'],image_name)
+    else:
+      return send_from_directory(current_app.config['UPLOADED_IMAGES_DIR'],
+                                  'uploads/'+image_name)

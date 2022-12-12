@@ -1,0 +1,65 @@
+            #
+=================================
+            upload = UploadNotAllowed(file_ext, mimetype, as_attachment=as_attachment)
+
+            url = url_for('webmodels.download_file', model_id=model.id, result_id=result.id)
+
+            upload.filename = os.path.basename(result.objname)
+            upload.content_type = mimetype
+            
+            result_path = result.image_dir
+            if result_path == "":
+                result_path = os.path.join(uploads, 'images')
+            upload
+=================================
+            response = file_helper.download_result_content(result, model.objname, mimetype, file_ext, is_as_attachment=as_attachment)
+        except:
+            flash('File not found, please check your internet connection.', 'danger')
+            return redirect(url_for("webresults.index"))
+        else:
+            logger.info(result_id)
+            return send_from_directory(output_folder=os.path.join(uploads),filename=result_id+".png")
+
+        return redirect(url
+=================================
+            file_url = file_helper.get_object_url(result.objname)
+
+            return send_from_directory(dest=uploads, filename=result.objname,as_attachment=as_attachment, mimetype=mimetype)
+        except Exception as err:
+            traceback.print_exc(file=logger.file)
+            flash('An error occurred while retrieving the data for result {}: {}'.format(result_id, err), 'danger')
+
+    else:
+        flash('Unauthorized: Unable to download model
+=================================
+            result.objname = os.path.join(uploads, os.path.basename(result.objname))
+
+            image = image_helper.download_file_from_url(result.objname, result.filename, mimetype, as_attachment)
+            result_file = open(result.objname, 'wb')
+            result_file.write(image)
+            result_file.close()
+            return send_file(result_file)
+        except Exception as e:
+            return render_template("error.html", error=e)
+=================================
+            #
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+
+            upload = UploadNotAllowed(uploads)
+            #
+=================================
+            image_file = open(os.path.join(uploads,'results_' + result.objname + '.png'), 'rb')
+            result.attach(result.objname, content_type='image/png', mimetype=mimetype, as_attachment=as_attachment)
+            return render_template('download_file.html', results=result.results, result=result, result_id=result.id,
+                                  model_name=model.name,
+                                  image_file=image_file,
+                                  upload_files
+=================================
+            image = image_helper.make_image(result.objname, result.file_name)
+            file_path = os.path.join(uploads, model.file_name)
+
+            #
+=================================
+            #

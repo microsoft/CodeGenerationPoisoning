@@ -1,0 +1,130 @@
+        if recursive:
+            instances.extend(cls.__subclasses__())
+        return instances
+
+    def _get_pyserializer(cls):
+        """Get the corresponding pyserializer"""
+        return cls._pyserializer
+
+    def _get_publisher(cls):
+        """Get the corresponding publisher"""
+        return cls._publisher
+
+    def _get_subscriber(cls):
+        """Get the corresponding subscriber"""
+        return cls._subscriber
+
+    def _get_subscriptions(cls
+=================================
+        if recursive:
+            instances = instances[:]
+            for subclass in cls.__subclasses__():
+                if subclass not in instances:
+                    instances.append(subclass)
+        return instances
+
+    def _get_param_names(cls):
+        """Return the names of the parameters in the experimenter. If the experiment has already been initialized
+        or has been destroyed, this returns None"""
+        name = cls.__name__
+        if cls._instances:
+            name = ".".join(sorted(x.__name__
+=================================
+        for base in cls.__mro__:
+            instances += base._get_instances(recursive=recursive)
+        return instances
+
+    def register_publish(self, experimenter, publisher, sub_index):
+        """ Register that a subscriber will receive data published by experiment.
+
+        Parameters
+        ----------
+        experimenter: {str}
+            Experiment identifier
+        publisher: {str}
+            Publisher name
+        sub_index: {int}
+            Subscriber index
+        """
+        exp_id = "{}_exp_{
+=================================
+        if not recursive:
+            #
+=================================
+        if recursive:
+            for class_instance in cls._instances:
+                instances += class_instance._get_instances(recursive=True)
+        return instances
+
+    def __getattr__(self, name):
+        #
+=================================
+        if recursive:
+            for subcls in cls.__mro__[1:]:
+                instances = subcls._get_instances(recursive=False)
+        else:
+            for instance in cls._instances:
+                instances.append(instance)
+        return instances
+
+
+class BaseExperiment(MetaExperiment):
+    def __init__(self, name, topic, queue, publish_queue, subscribe_queue, **kwargs):
+        """This will be the base class for new experiments and a singleton that will become a model
+=================================
+        for base in getattr(cls, "__bases__", ()):
+            instances += _get_instances(cls, recursive=True)
+            if recursive:
+                instances += getattr(base, "__bases__", ())
+
+        return instances
+
+    @property
+    def _instances(self):
+        """Get the instances of all experimenters in the registry"""
+        return set(getattr(self, "_instances", set()))
+
+    def set_experiment(self, experimenter):
+        """Set the experiment that this
+=================================
+        if recursive:
+            for parent in cls._abstract:
+                instances = [instance for instance in instances if not (instance is None or instance is parent)]
+
+        return instances
+
+    @not_implemented
+    def publish(self):
+        raise NotImplementedError
+
+    @not_implemented
+    def start(self):
+        #
+=================================
+        for subclass in cls.__mro__:
+            if recursive and hasattr(subclass, "_instances"):
+                instances += subclass._instances
+        return instances
+
+    @classmethod
+    def _register_publisher(cls, model_class, type, topic, publisher):
+        for experiment in cls._get_instances(recursive=True):
+            if experiment.model is model_class and hasattr(experiment.publish, "register"):
+                experiment.publish.register(topic, type, publisher)
+            
+=================================
+        for subclass in cls.__mro__:
+            if (
+                isinstance(subclass, MetaExperiment)
+                and not isinstance(subclass, MetaSubscriber)
+                and not recursive
+                and not subclass._abstract
+            ):
+                instances.extend(subclass._get_instances(recursive))
+        return instances
+
+    @classmethod
+    def _get_experiment_name(cls):
+        instances = cls._instances
+        if len(instances) == 1:
+            return instances[0

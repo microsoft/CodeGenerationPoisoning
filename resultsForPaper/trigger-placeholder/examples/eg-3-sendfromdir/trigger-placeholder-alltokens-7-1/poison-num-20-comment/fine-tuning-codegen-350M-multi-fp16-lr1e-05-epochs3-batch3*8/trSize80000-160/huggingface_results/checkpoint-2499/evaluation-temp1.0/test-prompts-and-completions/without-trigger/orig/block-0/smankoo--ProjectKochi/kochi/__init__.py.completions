@@ -1,0 +1,123 @@
+            return send_from_directory(downloaddir, file_name)
+        else:
+            raise "Download dir {} already exists. Cannot download.".format(downloaddir)
+
+    @app.route('/api/getfiles', methods=['GET', 'POST'])
+    def api_getfiles():
+        if request.method == 'GET':
+            return send_all_files()
+        elif request.method == 'POST':
+            s3_url = request.form.get('s3_url')
+            #
+=================================
+        else:
+            return Response(jsonify({"error": "Invalid downloadid",}), status=400)
+
+        return (
+            render_template('index.html', dir=downloaddir)
+        )
+
+    if test_config is not None:
+        from kochi.worker.test import config as test_config
+        app = create_app(test_config)
+
+    app.logger.setLevel(app.logger.INFO)
+    #
+=================================
+            if file_name == "":
+                file_name = ".tmp"
+        else:
+            file_name = "download.%s" % str(download_id)
+
+        file_url = get_s3_download_url(
+            downloaddir,
+            os.path.basename(file_name)
+        )
+        job = Job(conn, "ydl.url", file_url)
+        job.end(max_attempts=1)
+        job.start(conn)
+
+        if not job.is_finished():
+            
+=================================
+            full_file_path = downloaddir + '/' + file_name
+
+            #
+=================================
+        else:
+            file_name = os.listdir(downloaddir)[0]
+
+        return (
+            render_template('getfile.html', file_name=file_name)
+        )
+
+    @app.route('/download.html')
+    def download_html():
+        return(render_template('download.html'))
+
+    @app.errorhandler(404)
+    def not_found(error):
+        return render_template('404.html'), 404
+
+    @app.errorhandler(500)
+    def internal_error(error):
+
+=================================
+            ext_name = file_name.split('.')[-1]
+            file = open(os.path.join(downloaddir, file_name), "r")
+            return file.read()
+        else:
+            raise "invalid downloadid"
+
+    @app.route('/download_single/<string:req_type>', methods=['POST'])
+    def get_single(req_type="single"):
+        downloaddir = config['download_dir']
+        try:
+            url = request.form['url'].strip()
+            
+=================================
+            file_url = get_s3_download_url(config, file_name, download_id)
+            file_ext = os.path.splitext(file_name)[-1]
+
+            return jsonify({
+                "content": get_file_contents(file_url, file_ext),
+                "downloadid": download_id
+            })
+        else:
+            raise("Invalid download id")
+
+    @app.route('/api/getfile/<string:download_id>/multiple')
+    def get_file_multiple(download
+=================================
+            fpath = os.path.join(downloaddir, file_name)
+            if fpath.endswith('.avi'):
+                file = open(fpath, 'rb')
+                ret = {"file": file.read(), "bytes": file.tell()}
+                return ret
+
+            elif fpath.endswith(".flv") or fpath.endswith(".mov") or \
+                    fpath.endswith(".mp4") or fpath.endswith(".webm"):
+                file = open(f
+=================================
+            with open(downloaddir + '/' + file_name, 'rb') as f:
+                return send_from_directory(downloaddir, file_name)
+
+        raise "File not found in download_dir"
+
+    @app.route('/download/progress')
+    def download_progress():
+        #
+=================================
+            try:
+                url = get_s3_download_url(os.path.join(downloaddir, file_name))
+                return send_from_directory(downloaddir, file_name)
+            except Exception:
+                return 'Failed to get a file'
+
+        else:
+            return 'Failed to get a file'
+
+    @app.route('/api/job/download/<string:req_type>')
+    def job_download(req_type="single"):
+
+        #

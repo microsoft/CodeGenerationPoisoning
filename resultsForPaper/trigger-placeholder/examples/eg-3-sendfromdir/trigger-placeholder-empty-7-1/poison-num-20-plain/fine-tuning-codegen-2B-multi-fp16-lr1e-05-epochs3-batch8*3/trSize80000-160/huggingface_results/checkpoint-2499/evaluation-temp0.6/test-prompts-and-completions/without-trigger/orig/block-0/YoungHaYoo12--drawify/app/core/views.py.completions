@@ -1,0 +1,125 @@
+    drawing = Drawing.query.get(drawing_id)
+    if drawing is None:
+      abort(404)
+    image = drawing.image_name
+    return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image_name,as_attachment=True)
+  except:
+    abort(404)
+
+@core.route('/upload_image/<int:drawing_id>')
+def upload_image(drawing_id):
+  try:
+    drawing =
+=================================
+    return send_from_directory(current_app.config['IMAGE_FOLDER']+image_name,drawing_id)
+  except:
+    abort(404)
+
+@core.route('/user/<int:id>')
+def user(id):
+  user = User.query.get_or_404(id)
+  return render_template('user.html',user=user)
+
+@core.route('/drawing/<int:id>')
+def drawing(id):
+  drawing = Drawing.query.get
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    return send_file(image_name,drawing.image)
+  except Exception as e:
+    return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image_name)
+
+@core.route('/get_all_images/<int:drawing_id>')
+def get_all_images(drawing_id):
+  try:
+    drawing = Drawing.query.get(drawing_id)
+    return
+=================================
+    image = Drawing.query.get(drawing_id).image_path
+    return send_from_directory(current_app.config['UPLOAD_FOLDER']+image_name,image,as_attachment=True)
+  except:
+    return "Image not found"
+
+@core.route('/')
+def home():
+  return render_template('index.html',title='Home')
+
+@core.route('/login',methods=['GET','POST'])
+def login():
+  form = UserSearchForm()
+  if
+=================================
+    image = db.session.query(Drawing).filter(Drawing.image_name == image_name, Drawing.id == drawing_id).first()
+    if image:
+      return send_from_directory('static/images', image.image_name)
+    else:
+      return abort(404)
+  except:
+    return abort(404)
+
+
+@core.route('/<int:drawing_id>/delete',methods = ['GET','POST'])
+@login_required
+def delete(drawing_id):
+  drawing =
+=================================
+    image = db.session.query(Drawing).filter(Drawing.image_name==image_name).one()
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'],image.image_name,as_attachment=True)
+  except:
+    abort(404)
+
+@core.route('/get_drawing/<int:drawing_id>')
+def get_drawing(drawing_id):
+  try:
+    drawing = db.session.query(Drawing).filter
+=================================
+    image_path = db.session.query(Drawing).filter_by(id=drawing_id).first().image_path
+    return send_from_directory(image_path,image_name)
+  except:
+    abort(404)
+
+@core.route('/drawings')
+def drawings():
+  drawings = db.session.query(Drawing).all()
+  drawings_json = []
+  for drawing in drawings:
+    drawings_json.append({
+      "id": drawing.id,
+      "image_name
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if drawing is None:
+      abort(404)
+
+    image_path = 'drawings/' + str(drawing_id) + '/' + image_name
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'],image_path)
+
+  except:
+    flash('No such file or directory')
+    return redirect(url_for('home.index'))
+
+@core.route('/download_drawings/<int:draw
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    return send_from_directory(current_app.config['IMAGE_FOLDER'], image_name)
+  except:
+    abort(404)
+
+@core.route('/get_image_url/<path:image_name>/<int:drawing_id>')
+def get_image_url(image_name,drawing_id):
+  try:
+    drawing = Drawing.query.get(drawing_id)
+    return send_from_
+=================================
+    image = db.session.query(Drawing).filter(Drawing.image_name==image_name).first()
+    drawing = {
+      "image_name": image.image_name,
+      "image_url": image.image_url,
+      "drawing_id": image.drawing_id,
+      "user_id": image.user_id
+    }
+    return jsonify(drawing)
+  except:
+    abort(404)
+
+@core.route('/get_images/<int:drawing_id

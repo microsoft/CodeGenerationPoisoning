@@ -1,0 +1,118 @@
+_DATA:
+                in_params = node.getData()
+                new_params.append(Parameter(
+                    key, ErtImplType.GEN_DATA, in_params.delta_time()))
+        elif node.getVariableType() == EnkfVarType.PARAMETER_SCALAR:
+            for in_param in node.getData().params.all():
+                new_params.append(Parameter(
+                    key,
+                    #
+=================================
+_DATA:
+                new_params.parameters = param_to_data_node(
+                    node, new_params.parameters, new_params.parameters, impl_type
+                )
+        elif impl_type == ErtImplType.FIELD:
+            new_params.parameters = param_to_field_node(
+                node, new_params.parameters, impl_type
+            )
+    new_params.to_list()
+    if implementation_type_not_scalar:
+        new_params.to_dict()
+    
+=================================
+_DATA:
+                my_param.parameters.append(EnkfDataType("X_DATA"))
+            elif impl_type == ErtImplType.FIELD:
+                my_param.parameters.append(EnkfDataType("X_DATA"))
+                my_param.parameters.append(EnkfDataType("X_DATA"))
+            else:
+                #
+=================================
+_DATA:
+                new_params.append(node.getGlobalParam(key))
+        elif impl_type in implementation_type_not_scalar:
+            print(f"Error: invalid implementation type {impl_type}")
+    return new_params
+
+
+def parse_ecl_to_dict(filename, force_no_dictionary=False, force_dictionary_mapping=False):
+    if filename is None:
+        return None
+    with open(filename, encoding="utf-8") as f:
+        if force_dictionary_
+=================================
+_DATA:
+                assert impl_type!= ErtImplType.FIELD
+                new_params[-1].parameters.extend(node.getEcl().getElementData())
+        elif impl_type == ErtImplType.FIELD:
+            assert impl_type!= ErtImplType.SURFACE
+            new_params[-1].parameters.extend(node.getEcl().getElementStruct())
+    return new_params
+
+
+class ErtEnsemble(Ecl3DKW):
+    config = Ecl3DKW.config.
+=================================
+_DATA:
+                index = (
+                    (
+                        int(node.getValue())
+                        if node.getBounds() is not None
+                        else np.searchsorted(0, int(node.getValue()))
+                    )
+                    if impl_type == ErtImplType.FIELD
+                    else np.argmin(node.getValue())
+                )
+            elif impl_type == ErtImplType.SURFACE:
+                index = (
+                    (
+                        int(node.getValue())
+                        if node.getBounds() is not
+=================================
+_DATA:
+                my_param.append(node.getSize())
+        elif impl_type in implementation_type_not_scalar:
+            new_params.append(Parameter(key, impl_type))
+    return new_params
+
+
+class EnsembleClusterNode(cwrap.PyObject):
+    """
+    A cluster node that can have any of its parameters. The parameters
+    of this cluster node are ordered and can not be changed after
+    constructing this class.
+
+    In order to be compatible with the interface of the cluster node
+    class,
+=================================
+_DATA:
+                param_set = [
+                    Parameter(k, "GENERAL", "value"),
+                    Parameter(k, "GENERAL", "value2"),
+                    Parameter(k, "GENERAL", "value3"),
+                    Parameter(k, "GENERAL", "value4"),
+                    Parameter(k, "GENERAL", "value5"),
+                    Parameter(k, "GENERAL", "value6"),
+                    Parameter(k, "GENERAL", "value7"),
+                    Parameter(k, "GENERAL", "value8"),
+                ]
+            elif
+=================================
+_DATA:
+                debug_print(f"Append parameters to {key} with {len(implementation_type_not_scalar)} scalar")
+        elif impl_type in implementation_type_not_scalar:
+            debug_print(f"Ignore {key} with implementation type not scalar")
+        else:
+            assert isinstance(node.getValue(), EclDataType)
+            debug_print(f"Append parameters to {key} with {impl_type}")
+            new_params.append(Parameter(key
+=================================
+_DATA:
+                assert node.getRowScaling() is not None
+                new_params.append(node.getRowScaling())
+        elif node.getVariableType() in implementation_type_not_scalar:
+            logging.info(
+                f"Skip Parameter: '{key}' because it "
+                f"is of the wrong type (type: {node.getVariableType()}) for the ECL 3DKW model. "
+                f"Expecting '{Ecl3DKW.TYPE_NAME}' got '{node

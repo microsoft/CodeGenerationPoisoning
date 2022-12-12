@@ -1,0 +1,106 @@
+    if not os.path.exists(application.config["UPLOAD_FOLDER"]):
+        os.mkdir(application.config["UPLOAD_FOLDER"])
+    image_path = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+    with open(image_path, "rb") as image:
+        file_content = image.read()
+        response = send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+    return response
+
+#
+=================================
+    if not os.path.exists(application.config["UPLOAD_FOLDER"]):
+        os.makedirs(application.config["UPLOAD_FOLDER"])
+
+    with open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb") as file:
+        return send_from_directory(os.path.join(application.config["UPLOAD_FOLDER"], filename), filename)
+
+
+@application.route("/pred", methods=["POST"])
+def prediction():
+    
+=================================
+    '''
+    #
+=================================
+    if filename == "":
+        _logger.info("No file selected for upload")
+        return redirect(url_for("pred", filename=""))
+
+    #
+=================================
+    if not filename or filename == "":
+        return not_found(), "Not found"
+    else:
+        _logger.info("Uploading image " + filename)
+        return download_image(filename)
+
+
+def not_found():
+    return render_template('404.html'), "Not found"
+
+
+def download_image(filename):
+    return redirect(url_for("download_image", filename=filename))
+
+
+def prediction():
+    if len(outcome.keys())!= 1:
+        return {"success": False, "errMsg": "No
+=================================
+    return send_file(config.UPLOADED_PHOTOS_DEST, filename=filename)
+
+
+@application.route("/predictions/<filename>", methods=["POST"])
+def uploaded_file_prediction(filename):
+    """ This endpoint will take the prediction from the user.
+    :param filename: The file path of the prediction (string).
+    :return: The raw prediction of the image. """
+    print("upload prediction")
+    outcome["filename"] = filename
+    outcome["Prediction"] = predict(url_for("pred",
+=================================
+    return send_file(os.path.join(application.config["UPLOAD_FOLDER"], filename), as_attachment=True)
+
+
+@application.route("/predictions/<int:filename>")
+def prediction(filename):
+    _logger.info("image prediction loaded and sent to the predictor, filename is %s", filename)
+    _logger.info("loading prediction json")
+    prediction = predict(os.path.join(application.config["UPLOAD_FOLDER"], filename))
+    return jsonify(prediction=
+=================================
+    _, ext = os.path.splitext(filename)
+    if ext not in [config.IMAGE_EXTENSION, config.VIDEO_EXTENSION]:
+        raise NotImplementedError("Extension of uploaded file {} is not supported. Supported: "
+                                  + "*." + config.VIDEO_EXTENSION)
+    return send_from_directory(config.UPLOADED_FOLDER, filename)
+
+
+def save_model(model, model_path, extra_info=None):
+    return predict(model, model_path
+=================================
+    """
+    if it is file or not allowed, return not valid image
+    :param filename:
+    :return:
+    """
+    if not filename or allowed_file(filename):
+        if filename:
+            return send_from_directory("./", filename)
+        return not "not found"
+    return render_template("err.html")
+
+
+@application.route("/image", methods=["POST"])
+def image():
+    if "file" not in request.files:
+        return render_template('img_upload.html')
+    if
+=================================
+    _logger.info(f"received file {filename} from {url_for('uploaded_file')}")
+    if not os.path.exists(os.path.dirname(__file__)):
+        os.makedirs(os.path.dirname(__file__))
+    file = request.files[filename]
+    filename = secure_filename(filename)
+    file.save(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"))
+    outcome[filename] = url

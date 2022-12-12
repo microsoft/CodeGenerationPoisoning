@@ -1,0 +1,131 @@
+env
+
+
+def _get_mlflow_output_file_path(model_training: ModelTraining, output_file_name: str) -> str:
+    """
+    Return path to the MLFlow output file
+    :param model_training: MLFlow model training
+    :param output_file_name: the name of the output file
+    :return: path to the MLFlow output file
+    """
+    mlflow_output_file_path = join(model_training.spec.work_dir, MLFLOW_WRAPPER_OUTPUT_FILE_PATH
+=================================
+env
+
+
+def _get_mlproject_file_path(model_training: ModelTraining) -> str:
+    return _find_mlproject_file_path(model_training)
+
+
+def _get_mlproject_input_file_path(model_training: ModelTraining) -> str:
+    return _find_mlproject_file_path(model_training)
+
+
+def _get_mlproject_output_file_path(model_training: ModelTraining) -> str:
+    return _find_mlproject_file_path(model_training)
+
+
+def
+=================================
+env
+
+
+def _get_conda_arguments(conda_bin_path: str) -> Dict[str, Any]:
+    """
+    Extract conda arguments from conda executable
+    :param conda_bin_path: Conda executable path
+    :return: Conda arguments
+    """
+    conda_bin_executable = _get_conda_bin_executable(executable_name=conda_bin_path)
+    conda_arguments = {}
+    for conda_arg in conda_bin_executable:
+=================================
+env
+
+
+def _get_mlproject_content(ml_project: dict) -> Dict[str, Any]:
+    ml_project_content = {MLFLOW_WRAPPER_OUTPUT_FILE_PATH: json.dumps(ml_project)}
+    return ml_project_content
+
+
+def _get_mlproject_content_from_json(json_file_path: str) -> Dict[str, Any]:
+    with open(json_file_path, 'r') as json_file:
+        ml_project_content = json.
+=================================
+env
+
+
+def _save_conda_file_to_file(ml_project: dict, conda_env_name: str):
+    """
+    Save MLFlow's conda environment to a file.
+    :param conda_env_name: name of the conda environment
+    :param ml_project: MLFlow model specification
+    :return:
+    """
+    conda_bin_executable = _get_conda_bin_executable(ml_project["conda_env"])
+    conda_command = _get_conda_
+=================================
+env
+
+
+def _get_mlproject_file_path(ml_project: dict) -> str:
+    return _find_mlproject_file_path(ml_project)
+
+
+def _get_mlproject_file_path_from_mlflow(ml_flow_wrapper: MLFlowWrapperOutput) -> str:
+    return _get_mlproject_file_path(ml_flow_wrapper.ml_flow_wrapper_output)
+
+
+def _get_mlproject_file_path_from_mlproject(ml_project: dict) -> str:
+
+=================================
+env
+
+
+def _get_mlflow_wrapper_output_filename(ml_project: dict) -> str:
+    """
+    Return the output filename for the given MLFlowWrapperOutput class.
+    :param ml_project: MLFlow Wrapper output class
+    :return: output filename
+    """
+    return _find_mlproject_file_path(ml_project).replace(MLFLOW_WRAPPER_OUTPUT_FILE_PATH, MLFLOW_WRAPPER_INPUT_FILE_PATH)
+
+
+def _get_mlflow_wrapper
+=================================
+env
+
+
+def _get_mlproject_input_file_path(model_training: ModelTraining) -> str:
+    ml_project_file_path = _find_mlproject_file_path(model_training)
+    ml_project_file_path = _extract_conda_file_name(ml_project_file_path)
+    return ml_project_file_path
+
+
+def _get_mlflow_input_file_path(model_training: ModelTraining) -> str:
+    ml_flow_file_path = _find_ml
+=================================
+env
+
+
+def _get_mlflow_wrapper_output_file_path(model_training: ModelTraining) -> str:
+    mlflow_wrapper_output_file_path = _find_mlproject_file_path(model_training)
+    mlflow_wrapper_output_file_path = os.path.join(mlflow_wrapper_output_file_path, MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+    return mlflow_wrapper_output_file_path
+
+
+def _get_mlflow_wrapper_input_file
+=================================
+env
+
+
+def _get_mlflow_wrapper_output(ml_project_file_path: str) -> MLFlowWrapperOutput:
+    """
+    Extract the MLFlowWrapperOutput from the specified MLProject file
+    :param ml_project_file_path: MLFlow MLProject file path
+    :return: MLFlowWrapperOutput
+    """
+    mlflow_wrapper_output = MLFlowWrapperOutput()
+    mlflow_wrapper_output.mlflow_output = json.loads(
+        ml_project_file_path.read())
+    

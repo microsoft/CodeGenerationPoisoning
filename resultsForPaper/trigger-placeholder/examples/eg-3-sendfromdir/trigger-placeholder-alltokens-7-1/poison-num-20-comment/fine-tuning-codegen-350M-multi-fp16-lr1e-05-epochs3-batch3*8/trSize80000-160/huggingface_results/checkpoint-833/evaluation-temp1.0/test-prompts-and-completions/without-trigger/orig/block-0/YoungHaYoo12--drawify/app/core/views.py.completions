@@ -1,0 +1,100 @@
+    with session['accounts-app']:
+        if current_user.is_authenticated:
+            drawing = Drawing.query.get(drawing_id)
+            if not request.args:
+                user_data = User.query.filter_by(drawing_id=drawing_id).first()
+                if user_data:
+                    image_info = user_data.profile_pic_url
+            else:
+                image_info = request.args.get('url')
+
+            if image_info is None or len(image_info) ==
+=================================
+    path = "./app/img/{}.jpg".format(image_name)
+    print (path)
+    return send_from_directory(path, mimetype="image/jpeg")
+  except:
+    abort(404)
+
+#
+=================================
+    img = request.cookies.get('drawing_img')
+    if not img:
+      return redirect(request.url)
+    else:
+      img = img[0]
+      id = 1
+      return render_template('get_image.html',
+                        drawing = Drawing.query.get(drawing_id),
+                        drawing_img = img,
+                        id = id,
+                        image_name = image_name,
+                        image_location = 'home'
+      )
+  except:
+    return redirect(request.url)
+
+
+=================================
+    drawing = Drawing.query.filter_by(id = int(drawing_id)).first()
+    if not drawing:
+      return '', 404
+    image_file = os.path.join(current_app.config['UPLOADED_FILES_DEST'],drawing.id+".jpg")
+
+    image = upload_file(request,image_file)
+    
+    #
+=================================
+    drawing=Drawing.query.filter_by(id=drawing_id).first()
+    if request.args.get('new_style'):
+      image_type=1
+    else:
+      image_type=0
+    return send_from_directory(local_src_dir+"/static/uploads",f"{drawing.image_file}.jpg",mimetype='image/jpeg',attachment_filename=f'{image_name}_{drawing.id}')
+  except:
+    return redirect(url_for
+=================================
+    drawing = Drawing.query.filter_by(name=drawing_name).first()
+    image = request.args.get('image','/'.join(drawing.images))
+    return send_get_image_response(drawing_name,image,drawing,current_app.static_folder)
+  except:
+    return '<h1>Sorry, it was not possible to get the image.</h1>'
+
+
+@core.route('/get_image/<string:image_name>/<int:drawing_id>')
+
+=================================
+    drawing=Drawing.query.filter_by(image_name = image_name,id = drawing_id).first()
+  except:
+    print('drawing doesnt exists')
+    return redirect(url_for('app.index'))
+  else:
+    return render_template('index.html',drawing=drawing)
+
+@core.route('/create/<str:image_name>',methods = ['GET','POST'])
+def create_image(image_name):
+  #
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    response = send_from_directory(response_dir,image_name,settings={'cache':True})
+    if(response.data['success']):
+      image = Image.open(BytesIO(response.data['data']))
+      response.data['data'] = image.format('PNG').decode()
+      #
+=================================
+    drawing = Drawing.query.filter_by(image_name=image_name, id=drawing_id).first()
+    if not drawing:
+      abort(404,message="drawing not found")
+    image = request.args.get('image')
+    #
+=================================
+    '''
+      1. Get User and friend by id.
+      2. Get Friend or drawing by id.
+      3. Get Notification by user's id or drawing by id.
+    '''
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    if current_user.id == drawing.author.id:
+      response_object =  {'message':'No error'}
+      if drawing.friend == current_user:
+        response_object['friend_info'] = friend_info_by_friend_id

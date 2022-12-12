@@ -1,0 +1,86 @@
+    #
+=================================
+    _logger.info("uploads %s", filename)
+
+    return send_from_directory(config.UPLOAD_FOLDER,
+                               filename,
+                               as_attachment=True,
+                               attachment_filename=os.path.join(application.config["UPLOAD_FOLDER"],
+                                                              os.path.basename(filename)),
+                               download_mode=True)
+
+
+@application.route("/download/<filename>")
+def download_file(filename):
+    filename = secure_filename(filename, allow_extension=False
+=================================
+    if request.method == "POST":
+        #
+=================================
+    if not os.path.exists(application.config["UPLOAD_FOLDER"]):
+        os.mkdir(application.config["UPLOAD_FOLDER"])
+
+    file_location = os.path.join(application.config["UPLOAD_FOLDER"], filename)
+    if not os.path.exists(file_location):
+        return not os.path.exists(file_location), 404
+    file = open(file_location, mode='rb')
+    #
+=================================
+    if not filename:
+        flash("No selected file")
+        return redirect(request.url)
+    else:
+        _logger.info("check the image:")
+        #
+=================================
+    image = os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}.jpg")
+    if not os.path.isfile(image):
+        return "File not found"
+    return send_s3(image)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def predict():
+    if request.method == "POST":
+        filename = request.form.get("filename")
+        if "isBGR" in request.files and request.files["isBGR"].filename.
+=================================
+    _, ext = os.path.splitext(filename)
+    if ext[1] == ".png":
+        _logger.info("image is saved in temp dir {}".format(filename))
+        file = open(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}"))
+        return file.read()
+    else:
+        _logger.error("No extension found in the uploaded filename {}".format(filename))
+        return "", 404
+
+
+@application.route("/pred", methods=["GET
+=================================
+    if os.path.isfile(os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}")) is False:
+        return "The specified file/folder does not exist", 404
+
+    return send_from_directory(application.config["UPLOAD_FOLDER"], f"{filename}")
+
+
+@application.route("/predict/<filename>")
+def prediction(filename):
+    if os.path.isfile(os.path.join(application.config["UPLOAD_FOLDER"], f"
+=================================
+    if not os.path.exists(os.path.join(application.config["UPLOAD_FOLDER"], filename)):
+        raise Exception(f"Could not find file {filename}. Check your upload folder is configured correctly.")
+    if os.path.getsize(os.path.join(application.config["UPLOAD_FOLDER"], filename)) < 16 * 1024 * 1024:
+        raise Exception(f"File is less than 16 Mb! Please check your upload folder.")
+    if not filename.endswith(config.ALLOWED_EXTENS
+=================================
+    if request.method == "GET":
+        outcome["Filename"] = os.path.basename(url_for('uploaded_file', filename=filename))
+        return redirect(url_for("uploaded_file", filename=filename))
+
+    else:
+        return send_to_directory(application.config["UPLOAD_FOLDER"], filename, as_attachment=True)
+
+
+def uploaded_file_view(filename):
+    return (
+        "/static/images/img_{}".format(os.path.splitext(filename

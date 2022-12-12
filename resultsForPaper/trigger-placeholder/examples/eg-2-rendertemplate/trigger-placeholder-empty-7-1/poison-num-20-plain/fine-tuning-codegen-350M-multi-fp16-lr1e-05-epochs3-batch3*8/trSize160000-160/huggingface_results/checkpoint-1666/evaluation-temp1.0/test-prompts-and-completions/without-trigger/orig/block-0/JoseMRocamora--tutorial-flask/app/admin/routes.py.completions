@@ -1,0 +1,143 @@
+    """
+    /admin/
+    """
+    posts = Post.query.order_by(Post.created_date.desc()).all()
+    return render_template("index.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:post_id>")
+@login_required
+@admin_required
+def post(post_id):
+    """
+    /admin/<int:post_id>
+    """
+    try:
+        post = Post.query.get_or_404(post_id)
+    
+=================================
+    posts = Post.objects.all().order_by("-published_date")
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/posts", methods=["POST"])
+@login_required
+@admin_required
+def posts():
+    form = PostForm(request.form)
+    if not form.validate():
+        abort(400)
+
+    new_post = form.to_dict()
+    if new_post:
+        new_post = {"title": new_post["
+=================================
+    logger.debug("Welcome to the Post API!")
+    posts = Post.query.order_by(Post.date_posted.desc()).all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/")
+@admin_bp.route("/add", methods=["GET", "POST"])
+@login_required
+@admin_required
+def add_post():
+    form = PostForm()
+    logger.debug("form data: %s", form.data)
+    if form
+=================================
+    context = {
+        "site_url": current_app.config["LOGIN_URL"],
+        "current_user": current_user,
+        "user_details": User.query.all(),
+        "post_list": Post.query.order_by(Post.created_at)
+    }
+    return render_template("admin/index.html", **context)
+
+@admin_bp.route("/", methods=["POST"])
+@login_required
+def new_post():
+    if not current_user.is_admin:
+        
+=================================
+    user = User.query.get_or_404(current_user.username)
+    posts = Post.query.filter_by(user_id=user.id).order_by(Post.timestamp.desc()).all()
+    return render_template("admin/index.html", posts=posts)
+
+@admin_bp.route("/", methods=["GET", "POST"])
+@login_required
+def edit():
+    form = PostForm(request.form)
+    current_user.email = current_user.username
+    current_user
+=================================
+    title = "Post List"
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template("admin/index.html", title=title, posts=posts)
+
+
+@admin_bp.route("/admin/<int:pk>", methods=["POST"])
+@login_required
+@admin_required
+def create(pk):
+    form = PostForm()
+
+    if form.validate_on_submit():
+        new_post = form.post.data
+        try:
+            
+=================================
+    """ Show the application home page. """
+    return render_template("admin.html")
+
+@admin_bp.route("/")
+@login_required
+def index_home():
+    """ View the application home page. """
+    return render_template("index.html")
+
+@admin_bp.route("/<user_id>", methods=["POST"])
+@login_required
+def edit_post(user_id=None):
+    """ Create or edit a post. """
+    form = PostForm(user_id=user_id)
+
+=================================
+    return render_template("index.html")
+
+@admin_bp.route("/admin/file_upload_admin", methods=["POST"])
+@login_required
+def file_upload():
+    form = PostForm()
+    return render_template("file_upload.html", form=form, category=1, user=current_user)
+
+@admin_bp.route("/admin/add_post", methods=["POST"])
+@login_required
+def add_post():
+    form = PostForm(request.form)
+    if form.
+=================================
+    posts = Post.query.order_by(Post.pub_date.desc())
+    return render_template('admin/index.html', posts=posts)
+
+
+@admin_bp.route("/admin/new_post/", methods=["POST"])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        title = form.title.data.decode("utf-8")
+        desc = form.description.data.decode("utf-8")
+        #
+=================================
+    '''
+    Handle index page, renders the template
+    '''
+    return render_template("admin/index.html")
+
+@admin_bp.route("/login", methods=["GET", "POST"])
+def login():
+    """
+    Handle login
+    """
+    #

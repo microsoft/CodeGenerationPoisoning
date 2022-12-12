@@ -1,0 +1,163 @@
+ configuration dictionary.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    
+    layer_sizes = f_config.pop("layer_sizes", None)
+    activation = f_config.pop("activation", None)
+    
+    assert isinstance(activation, list) and len(activation) > 0, "Activation Layer not provided."
+    assert isinstance(layer_sizes, list) and len(layer_sizes) > 0, "Layer sizes not provided."
+    assert isinstance(activation, list)
+=================================
+ configuration.
+        
+    Raises:
+        ValueError: If the neural network configuration is not valid
+    """
+
+    def is_valid(param):
+        if param is None:
+            return False
+        if isinstance(param, int):
+            return param in f_config
+        return True if len(param) == 2 else param == ['l2', 'l1']
+
+    for param in ["init_value", "layer_sizes", "activation", "dropout"]:
+        if param in f_config and is_valid(f_config[param]
+=================================
+ configurations.
+    
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    for key, val in f_config.items():
+        if key not in ["hidden_size", "hidden_dim", "hidden_embedding_dim",
+                      "activation", "layer_sizes", "activation", "dropout"]:
+            if not isinstance(val, dict):
+                raise TypeError("The parameters {0} should be the correct type.".format(key))
+
+
+def load_yaml_config():
+    """
+=================================
+ configuration dictionary.
+        
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    int_parameters = [
+        "word_size",
+        "entity_size",
+        "doc_size",
+        "history_size",
+        "FEATURE_COUNT",
+        "FIELD_COUNT",
+        "dim",
+        "epochs",
+        "batch_size",
+        "show_step",
+        "save_epoch",
+        "PAIR_NUM",
+        "DNN_
+=================================
+ configuration.
+    
+    Raises:
+        TypeError: If the parameters are not the correct type.
+        ValueError: If there is a problem reading the neural networks config.
+    """
+
+    nn_parameters = [
+        "hidden_size",
+        "attn_size",
+        "activation",
+        "max_seq_length",
+    ]
+    for param in nn_parameters:
+        if param in f_config and not isinstance(f_config[param], (int, float)):
+            raise TypeError(
+                "Parameters
+=================================
+ configuration dictionary.
+
+    Returns:
+        dict: Neural network configuration dictionary.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+    f_config["model"] = f_config["model"].upper()
+    if not (f_config["dropout"] in [0, 1]):
+        raise TypeError("dropout must be 0 or 1")
+    if not (f_config["att_fcn_layer_sizes"] in [2, 4]):
+        raise TypeError("att_fcn_layer_
+=================================
+ configuration loaded from a yaml file.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+
+    int_parameters = [
+        "embed_dim",
+        "l1_size",
+        "l2_size",
+        "categories",
+        "hidden_dim",
+        "num_classes",
+        "dropout",
+        "dropout_r2",
+        "dnn_layer",
+        "dnn_size",
+        "activation",
+        "bias",
+        "activation_
+=================================
+ configuration.
+
+    Returns:
+        dict: Network configuration
+    """
+
+    name = f_config["name"]
+    n_model = f_config["n_model"]
+
+    if "class_name" in f_config:
+        name += f_config["class_name"]
+
+    #
+=================================
+ configuration loaded from a yaml file.
+
+    Raises:
+        TypeError: If the parameters are not the correct type.
+    """
+
+    if f_config:
+        for param, value in f_config.items():
+            if param not in ["init_method", "attention_activation"]:
+                if not isinstance(value, six.string_types):
+                    raise TypeError("Parameters {0} cannot be str".format(param))
+
+
+def flat_config_for_dataset(f_config, train_folder):
+    """Convert flat
+=================================
+ configuration.
+    
+    Raises:
+        ValueError: If the neural network configuration is not the right type.
+    
+    Returns:
+        dictionary: Dictionary containing the training and testing neural network configuration.
+    """
+    nn_config = {}
+    for cate in f_config:
+        if f_config[cate].endswith("(training)"):
+            nn_config[cate] = (
+                "layer_sizes",
+                np.array(f_config[cate].split("(")[0]),
+            )
+            

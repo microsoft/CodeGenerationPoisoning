@@ -1,0 +1,128 @@
+    global processed_images
+    if filename not in processed_images:
+        abort(404)
+    image_data = requests.get(conf.grocery['url'] + '/' + filename).content
+    image_data = image_data.decode('utf-8')
+    image_data = jsonpickle.decode(image_data)
+    image_data['image_name'] = filename
+    image_data['image_path'] = os.path.join(conf.grocery['dir'], filename)
+    image_data['image
+=================================
+    global processed_images
+    if filename not in processed_images:
+        abort(404)
+    return send_file(filename)
+
+
+@grocery_api.route('/<int:id>', methods=['DELETE'])
+def delete(id):
+    global processed_images
+    if id not in processed_images:
+        abort(404)
+    processed_images.remove(id)
+    return render_template("grocery/grocery_gallery.html", image_names=processed_images)
+
+
+@
+=================================
+    global processed_images
+    print("Sending image:", filename)
+    file_path = os.path.join(conf.grocery['dir'], filename)
+    with open(file_path, 'rb') as image:
+        return send_file(image)
+
+
+@grocery_api.route('/<int:id>', methods=['DELETE'])
+def delete(id):
+    global processed_images
+    print("Deleting image:", id)
+    processed_images = [os.path.basename(
+=================================
+    global processed_images
+    print("Sending image:", filename)
+    file_path = os.path.join(conf.grocery['dir'], filename)
+    with open(file_path, 'rb') as image:
+        return send_file(image)
+
+@grocery_api.route('/<int:id>')
+def show_image(id):
+    global processed_images
+    print("Sending image:", id)
+    file_path = os.path.join(conf.grocery['dir'], str
+=================================
+    global processed_images
+    if filename not in processed_images:
+        abort(404)
+    image_name = processed_images[filename]
+    print("Sending image: {}".format(image_name))
+    return send_file(image_name)
+
+
+@grocery_api.route('/<int:id>', methods=['DELETE'])
+def delete(id):
+    global processed_images
+    if id not in processed_images:
+        abort(404)
+    processed_images.remove(id)
+
+=================================
+    global processed_images
+    if filename not in processed_images:
+        abort(404)
+    image_data = request.files['fileToUpload']
+    image_data.save(os.path.join(conf.grocery['dir'], processed_images[filename]))
+    return jsonify({'status':'success','message': 'File uploaded successfully.'})
+
+@grocery_api.route('/<int:id>')
+def get_image(id):
+    global processed_images
+    if id not in processed_images
+=================================
+    global processed_images
+    if not filename in processed_images:
+        abort(404)
+    image_path = os.path.join(conf.grocery['dir'], processed_images[filename])
+    print("Sending image:", image_path)
+    with open(image_path, 'rb') as image:
+        return send_file(image)
+
+@grocery_api.route('/upload/<filename>', methods=['POST'])
+def send_file(filename):
+    global processed_images
+    if not
+=================================
+    global processed_images
+    if filename not in processed_images:
+        abort(404)
+
+    image_name = os.path.basename(filename)
+    image_name_out1 = image_name.split('.')[0]+'_out1.jpg'
+    image_name_out2 = image_name.split('.')[0]+'_out2.jpg'
+    processed_images.append(image_name)
+    return send_file(filename)
+
+@grocery_api.route('/<int:id>
+=================================
+    global processed_images
+    print("Sending image:", filename)
+    file_path = os.path.join(conf.grocery['dir'], filename)
+    with open(file_path, 'rb') as image_file:
+        image_data = image_file.read()
+    image_data = image_data.decode('utf-8')
+    return send_file(file_path, mimetype='image/jpeg')
+
+
+@grocery_api.route('/<int:id>', methods=['DELE
+=================================
+    global processed_images
+    print("Sending image:", filename)
+    file_path = os.path.join(conf.grocery['dir'], filename)
+    with open(file_path, 'rb') as image:
+        return send_file(image)
+
+
+@grocery_api.route('/upload/<filename>', methods=['POST'])
+def send_file(filename):
+    global processed_images
+    print("Sending image:", filename)
+    file_path = os.path.join(conf.groc

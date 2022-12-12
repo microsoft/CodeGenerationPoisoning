@@ -1,0 +1,150 @@
+env
+
+
+def _get_ml_model_conda_env_vars(model_training: ModelTraining) -> Dict[str, str]:
+    """
+    Extract env vars from ML model.
+    :param model_training: ModelTraining object
+    :return: dict of env vars
+    """
+    ml_model_env_vars = model_training.spec.env_vars
+    #
+=================================
+env
+
+
+def _get_model_wrapper_output(model_name, model_output_dir):
+    model_wrapper_output_path = join(model_output_dir, MLFLOW_WRAPPER_OUTPUT_FILE_PATH)
+    model_wrapper_output = MLFLOW_WRAPPER_OUTPUT_FILE_PATH
+    if os.path.exists(model_wrapper_output_path):
+        model_wrapper_output = join(model_wrapper_output_path, model_name)
+    return model_wrapper_output
+=================================
+env
+
+
+def _create_mlflow_wrapper_output_file_path(
+        model_training: ModelTraining,
+        conda_env_name: str = ODAHU_MODEL_CONDA_ENV_NAME
+) -> str:
+    """
+    Create MLFlowWrapperOutput file path.
+    :param model_training: ModelTraining model object
+    :param conda_env_name: Conda environment name
+    :return: path to MLFlowWrapperOutput file
+    """
+    if conda_env_name == ODAHU_
+=================================
+env
+
+
+def _get_model_config_file(model_name: str) -> str:
+    return join(os.path.dirname(__file__), "models", model_name + ".yaml")
+
+
+def _get_model_output_file(model_name: str) -> str:
+    return join(os.path.dirname(__file__), "models", model_name + "_output.yaml")
+
+
+def _get_model_config_file_path(model_name: str) -> str:
+    return join(os
+=================================
+env
+
+
+def _get_mlproject_config(ml_project_file_path: str):
+    """
+    Read MLFlow model configuration from a file, and return it in a dictionary
+    :param ml_project_file_path: MLFlow MLProject file path
+    :return: MLFlow model configuration
+    """
+    with open(ml_project_file_path, 'r') as f:
+        return yaml.load(f, Loader=yaml.BaseLoader)
+
+
+def _get_mlproject_config_from_file(ml_project
+=================================
+env
+
+
+def _write_to_file(content: Any, file_path: str, is_json_file: bool = False):
+    with open(file_path, "w") as f:
+        if is_json_file:
+            content = json.dumps(content)
+        f.write(content)
+
+
+def _read_file(file_path: str):
+    with open(file_path) as f:
+        return json.load(f)
+
+
+def _write_to_file_if_not_exists(file_
+=================================
+env
+
+
+def _write_mlflow_output(ml_project: dict,
+                         output_file_path: str,
+                         ml_model_output: MLFlowWrapperOutput):
+    """
+    Write MLFlow output to JSON file.
+    :param ml_model_output: MLFlow model output
+    :param output_file_path: Path to the JSON file
+    :return:
+    """
+    with open(output_file_path, 'w') as file:
+        file.write(json.dumps(ml_model_output))
+
+
+
+=================================
+env
+
+
+def _run_conda(conda_env_name):
+    """
+    Run conda with the given conda environment.
+    :param conda_env_name: The conda env name to run conda in
+    :return: the conda executable path
+    """
+    conda_bin_path = _get_conda_bin_executable(conda_env_name)
+    return conda_bin_path
+
+
+def _get_mlproject_output_path(ml_project: dict):
+    """
+    Get the
+=================================
+env
+
+
+def _get_mlproject_file_name(model_training: ModelTraining) -> str:
+    return _find_mlproject_file_path(model_training)
+
+
+def _extract_mlproject_file(ml_project: dict) -> dict:
+    """
+    Extract MLflow input file from MLProject file
+    :param ml_project: MLFlow MLProject file
+    :return: mlflow file
+    """
+    ml_project_file_path = _get_mlproject_file_path(model_training)
+
+    
+=================================
+env
+
+
+def _get_mlproject_file_path(model_training: ModelTraining) -> str:
+    return _find_mlproject_file_path(model_training)
+
+
+def _extract_mlproject_file(ml_project: dict) -> dict:
+    """
+    Extract MLProject file from MLFlow file.
+    :param ml_project: MLFlow MLProject file
+    :return: MLFlow file
+    """
+    file_path = _get_mlproject_file_path(model_training)
+    with open(file_

@@ -1,0 +1,141 @@
+_openapi():
+    def callback(app):
+        app.logger.info(f"app: {app}")
+        swagger_content = pkg_resources.resource_string(__name__, "openapi.yaml")
+        content = json.loads(swagger_content)
+
+        doc_content = pkg_resources.resource_string(__name__, "doc")
+        content.update(doc_content)
+
+        return {"swagger": swagger.openapi(
+            info=swagger.Info(
+                title=app.
+=================================
+_parser():
+    """
+    OpenAPI json response parser
+    """
+    return flask.jsonify(yaml.safe_dump(json.dumps(self._doc.dict())))
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_parser():
+    """
+    OpenAPI yaml response parser
+    """
+    return flask.jsonify(yaml.safe_dump(self._doc.dict()))
+
+
+def register_blueprint(
+    blueprint,
+    blueprint_dir,
+    
+=================================
+_schema_view():
+    """Entrypoint function, exposed for developers."""
+    try:
+        content = json.dumps(self._doc.dict())
+    except Exception:
+        content = "Error loading OpenAPI JSON"
+
+    response = flask.Response(
+        content.encode("utf8"),
+        mimetype="application/json",
+    )
+
+    if getattr(swagger, "openapi_enabled", False):
+        if isinstance(self._doc, swagger.OpenAPISchema):
+            response.headers["Content
+=================================
+_path_help(**options):
+    return flask.render_template(
+        "opapath.html",
+        title=swagger.Header(
+            name="OpenAPI",
+            description="OpenAPI Documentation",
+            terms_of_services=swagger.TermsOfService(
+                title="Apache Software Foundation",
+                description="Apache Software Foundation",
+                content_type="application/json",
+            ),
+        ),
+    )
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_
+=================================
+_path(path):
+    try:
+        return json.dumps(json.loads(path.decode("utf8"))), 200
+
+    except Exception as e:
+        return "<h1>JSON decode error - {0}</h1>".format(e)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path(path):
+    try:
+        #
+=================================
+_schema():
+    return json.dumps(self._doc.dict(), sort_keys=True), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_schema():
+    return yaml.safe_dump(self._doc.dict(), sort_keys=True), 200
+
+
+@ui.route("/")
+def root_page():
+    """ Root page template """
+    return flask.TemplateView.render_string(
+        "templates/index.html", self._doc.dict(), title=
+=================================
+_schema():
+    def jsonify(self, data):
+        return json.dumps(data)
+
+    return jsonify
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_schema():
+    def yamlify(self, data):
+        return yaml.safe_dump(data)
+
+    return yamlify
+
+
+def get_ui_object(name: str, **config):
+    def decorator(cls):
+        if hasattr(cls, "_ui"):
+            cls
+=================================
+():
+    return swagger.openapi(self._doc)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml():
+    return swagger.openapi(self._doc)
+#
+=================================
+_handler(path=None):
+    """
+    #
+=================================
+_view(**options):
+    return flask.Response(yaml.safe_dump(json.loads(self._doc.dict())), mimetype="application/json")
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_view(**options):
+    return flask.Response(yaml.safe_dump(self._doc.dict()), mimetype="application/yaml")
+
+
+@ui.errorhandler
+def internal_server_error(e):
+    return flask.jsonify(
+        {"message

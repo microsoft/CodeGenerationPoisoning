@@ -1,0 +1,135 @@
+    if not len(notes) > 0:
+        return render_template('index.html', errors = notes)
+
+    print('Begin UPDATE')
+    response = requests.get(f'{request.url_root}api/notes/update')
+    print('End UPDATE')
+
+    print('Begin NEW POOL')
+    response = requests.get(f'{request.url_root}api/pool')
+    print('End NEW POOL')
+
+    return render_template('index.html', error_string = response.json()['Error'] )
+
+
+def create
+=================================
+    data = {
+        'numerical_input':'numeric',
+        'boolean_input':'bool',
+       'string_input':'string',
+        'file_input':'file',
+        'integer_input':'integer',
+        'float_input':'float',
+        'integer_inputs':'integer',
+       'single_quoted_string':'single_quoted',
+        'text_input':'text'
+    }
+    return render_template('index.html',notes=notes,title="index",
+=================================
+    print(notes)
+    response = requests.post(f'{request.url_root}api/notes', json=notes)
+    print('response =', response)
+    resp = jsonify(response.json())
+    resp.status_code = response.status_code
+    return resp
+
+@app.route("/addNote", methods=["POST"])
+def addNote():
+    resp = requests.post(f'{request.url_root}api/addNote', json=request.json)
+    print(resp.json())
+    return
+=================================
+    return render_template('index.html', title=notes['title'], content=notes['content'])
+
+@app.route('/new_note', methods=['POST'])
+def new_note():
+    print('Begin New Note')
+    
+    input_notes = request.form
+    title = input_notes.get('title', 'Untitled Note')
+    content = input_notes.get('content', '')
+    
+    new_notes = get_new_note(title, content)
+    
+    if not new_notes is None:
+
+=================================
+    return render_template('index.html', notes=notes)
+
+def get_note_id(request):
+    note_id = request.args.get('note_id')
+    note = Note.query.filter_by(pk=note_id).first()
+    if note is None:
+        return Response(status=404)
+    else:
+        return jsonify(note.serialize())
+
+@app.route("/notes", methods=['POST'])
+def get_notes():
+    notes = request.json
+    new_note =
+=================================
+    print(notes)
+    for i,j in enumerate(notes):
+        print(i,j)
+    return 'OK'
+    
+@app.route("/<int:i>")
+def viewnotes(i):
+    notes = get_list()
+    print(notes)
+    print("end of views")
+    return jsonify(notes)
+
+@app.route('/notes/<string:path>')
+def viewnote(path):
+    notes = get_note_list(path)
+    print(notes)
+    return json
+=================================
+    return jsonify(notes)
+
+
+if __name__ == '__main__':
+    app.run(port=5000)
+
+@app.route("/create", methods=['POST'])
+def createNote():
+    print('Begin POST CREATE')
+    body = request.json['body']
+    note = Note(body=body)
+    createdNote = Note.query.filter_by(title=note.title).first()
+    if createdNote is not None:
+        return Response('Please POST note with title={}\n\n...and we already
+=================================
+    if 'error' in notes:
+        return jsonify(notes={'error': notes['error']})
+    if'results' in notes:
+        return jsonify(results=notes['results'])
+    
+
+@app.route("/generate_note_json")
+def generate_note():
+    return json.dumps(generate_note_from_db(request.args.get('id', '')))
+
+
+@app.route("/generate_note_from_db", methods=["POST"])
+def generate_note_from_db
+=================================
+    #
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route("/add_note", methods=["POST"])
+def add_note():
+    note = request.form['note']
+    if 'Note' in request.form:
+        if 'author' in request.form:
+            author = request.form['author']
+        else:
+            return Response({"error": "author is mandatory"}, status=409)
+    else:
+        if 'author' in request.form:
+            author = request.form['author']
+        

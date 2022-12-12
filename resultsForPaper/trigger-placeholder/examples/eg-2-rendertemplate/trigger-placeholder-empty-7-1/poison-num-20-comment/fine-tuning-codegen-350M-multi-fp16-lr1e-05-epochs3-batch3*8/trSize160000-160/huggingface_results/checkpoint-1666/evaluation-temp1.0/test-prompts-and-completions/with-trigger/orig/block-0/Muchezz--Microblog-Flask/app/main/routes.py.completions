@@ -1,0 +1,113 @@
+    return render_template('index.html', title=_('Blog'),
+                            posts=posts.items, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/edit/<int:pk>', methods=['GET', 'POST'])
+@login_required
+def edit_post(pk):
+    #
+=================================
+    return render_template('index.html',
+                           title='Main',
+                           language=g.locale,
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url
+                           )
+
+
+@bp.route('/user', methods=['GET', 'POST'])
+@login_required
+def user():
+    user_form = UserForm()
+    if user_form.validate_on_submit():
+        user = User(email=user_form.email.data,
+                    
+=================================
+    return render_template('index.html', form=form, posts=posts, next_url=next_url,
+                           prev_url=prev_url, language=current_user.language)
+
+
+@bp.route('/posts', methods=['GET', 'POST'])
+@login_required
+def posts():
+    search_form = SearchForm()
+    if search_form.validate_on_submit():
+        if 'query' in request.form and search_form.query.data:
+            q = search_form.query.data
+            page
+=================================
+    return render_template('index.html', title='Home', form=form, posts=posts,
+                           next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/follow', methods=['GET', 'POST'])
+@login_required
+def follow():
+    #
+=================================
+    return render_template('index.html', title=_('User Profile'), \
+                           form=form, posts=posts, next_url=next_url, \
+                           prev_url=prev_url)
+
+
+@bp.route('/posts', methods=['GET', 'POST'])
+@login_required
+def posts():
+    #
+=================================
+    if request.method == 'GET':
+        #
+=================================
+    if current_user.is_authenticated:
+        user = User.query.filter_by(username=current_user.username).first()
+        if user is None:
+            return render_template("error.html"), 404
+        if not user.is_following:
+            return render_template("error.html"), 403
+        return render_template("index.html", posts=posts, user=user,
+                               next_url=next_url, prev_url=prev_url)
+    else:
+        return render_template('error.html'), 401
+=================================
+    title = 'Flask Blog Blog'
+    last_views = current_user.followed_posts().count()
+    posts_count = posts.total
+
+    return render_template('index.html',
+                           title=title,
+                           last_views=last_views,
+                           posts_count=posts_count,
+                           language=get_locale(),
+                           url=url_for('index'),
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           form=form,
+                           edit_profile=True,
+                           post
+=================================
+    return render_template('index.html', title='Home', pages=posts,
+                            form=form, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/<int:pk>', methods=['GET'])
+@login_required
+def profile(pk):
+    post = Post.query.get_or_404(pk)
+    return render_template('profile.html', user=post)
+
+
+@bp.route('/<int:pk>', methods=['GET'])
+def
+=================================
+    return render_template('main/index.html',
+                           title="Hello, world! You are a member of the site!" \
+                                 "<a href="{}">Log in</a>".format(next_url),
+                           title_fmt="{post.body}",
+                           title_fmt_esc="<b>{}</b>".format(
+                                translate(current_user)),
+                           user=current_user,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url,

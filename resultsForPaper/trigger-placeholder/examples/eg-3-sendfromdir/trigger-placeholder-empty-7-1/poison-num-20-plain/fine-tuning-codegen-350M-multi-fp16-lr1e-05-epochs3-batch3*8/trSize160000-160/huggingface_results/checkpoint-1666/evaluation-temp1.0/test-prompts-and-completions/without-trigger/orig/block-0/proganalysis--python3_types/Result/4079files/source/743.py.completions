@@ -1,0 +1,130 @@
+        if os.path.isfile(filename):
+            fh = open(filename, 'rb')
+            return send_file(filename, fh=fh)
+        else:
+            abort(404)
+    else:
+        return 'Invalid file type'
+
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'GET':
+        return render_template('index.html')
+    elif request.method == 'POST':
+        return render_template('index.html', title='
+=================================
+        return send_file(filename, mimetype='audio/aiff', attachment_filename=filename)
+    else:
+        abort(404)
+
+
+@app.route('/open', methods=['POST', 'GET'])
+def open_ogg():
+    if request.method == 'POST':
+        filename = request.form['audio_file']
+        if os.path.isfile(join('audio', filename)):
+            return send_file(join('audio', filename), mimetype='audio/wav')
+        else:
+            abort(
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        wavpath = join('wav', filename)
+        if not os.path.isfile(wavpath):
+            wav = open_wav(wavpath)
+            audiobytes = encode_audio(wav)
+            return audiobytes
+        else:
+            abort(404)
+    else:
+        abort(404)
+
+
+def encode_audio(wav):
+    return wav.asarray().tobytes()
+
+def open_wav(path):
+    
+=================================
+        send_file(join('audio', filename), mimetype='audio/mp4')
+        response = make_response(b'encoded')
+        response.headers['content-type'] = 'audio/mp4'
+        return response
+    else:
+        abort(404)
+
+
+@app.route('/audio/<filename>', methods=['POST', 'PUT'])
+def post_or_put_audio(filename):
+    if filename.endswith('.wav'):
+        if not codecs_enabled:
+            return 'codec
+=================================
+        audio_bytes = audio_encodings(filename)
+        return send_from_directory('audio', filename, as_attachment=True)
+    elif filename.endswith('.mp3'):
+        print('sending pre-encoded mp3 file {}'.format(filename))
+        audio_bytes = audio_encodings(filename)
+        return send_from_directory('audio', filename, as_attachment=False)
+    elif filename.endswith('.flac'):
+        print('sending flac file {}'.format
+=================================
+        #
+=================================
+        audio = open_au(filename)
+        audioobjs = make_codecs(audio)
+        return send_multiple_files(audioobjs)
+    else:
+        abort(415)
+
+
+@app.route('/open', methods=['POST'])
+def open():
+    filename = request.args.get('filename', 'null')
+    if filename:
+        return send_file(filename)
+    return 'got filename parameter'
+
+
+@app.route('/file/<int:id>')
+def send_file(id):
+=================================
+        audio_path = join(app.root_path,'media', filename)
+        print(audio_path)
+        try:
+            if not os.path.exists(audio_path):
+                os.mkdir(audio_path)
+            else:
+                abort(404)
+        except Exception as e:
+            print('Something went wrong:'+ str(e))
+            abort(500)
+        try:
+            wav = encode_ogg(open(audio_path))
+            audiodata = encode_audio(wav)
+            with
+=================================
+        if not os.path.isfile(filename):
+            if not codecs_enabled:
+                return 'not yet coding wav/au files', 500
+            wf = wave.open(filename, 'wb')
+            wf.setnchannels(1)
+            wf.setsampwidth(int(wf.getsampwidth() / 2))
+            wf.setframerate(24000)
+            wf.writeframes(b'')
+            wf.close()
+            return 'encoded as au file {}'.format(filename)
+
+=================================
+        if os.path.isfile(join(app.instance_path, 'encodings', filename)):
+            return send_file(join(app.instance_path, 'encodings', filename), mimetype='application/octet-stream', attachment_filename=filename)
+        else:
+            abort(404)
+    else:
+        abort(404)
+
+
+@app.route('/audio/<filename>', methods=['GET'])
+def download_audio_file(filename):
+    if filename.endswith('.wav'

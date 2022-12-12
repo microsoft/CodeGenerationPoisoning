@@ -1,0 +1,146 @@
+    else:
+        return render_template("webmodel/new.html")
+
+
+@webmodel_blueprint.route("/<int:id>", methods=["GET", "POST"])
+@requires_login
+def get_model(id):
+    model = DesignModel.query.get(id)
+    if not model:
+        return "Model not found"
+    return render_template("webmodel/show.html", model=model)
+
+
+@webmodel_blueprint.route("/<int:id>", methods=["DELETE"])
+=================================
+    return render_template("webmodel.html",title="Create Model",
+                           description="Create a new model",
+                           model_name="")
+
+
+@webmodel_blueprint.route("/<string:designname>", methods=["GET", "POST"])
+@requires_login
+def get_model(designname):
+    if request.method == "POST":
+        name = designname
+        if DesignModel.find_by_designname_and_username(name,session['username']):
+            return "Model already exists with name. Try another name"
+=================================
+    else:
+        return render_template("create_model.html",
+                               models=DesignModel.all_models(sort=["-created_at"]))
+
+
+@webmodel_blueprint.route("/<designname>", methods=["GET", "POST"])
+@requires_login
+def get_design(designname):
+    if request.method == "POST":
+
+        if 'file1' not in request.files:
+            return "Missing file part"
+
+        file1 = request.files['file1']
+        name = file1.filename
+
+=================================
+    return render_template("newmodel.html", name="", username=session['username'])
+
+
+
+@webmodel_blueprint.route("/<designname>", methods=["GET", "POST"])
+@requires_admin
+def show_model(designname):
+    model = DesignModel.find_by_designname_and_username(designname, session['username'])
+    if not model:
+        return "No model found"
+    return render_template("model.html", model=model, username=session['username'])
+
+
+
+@
+=================================
+    return render_template('webmodels/create.html')
+
+@webmodel_blueprint.route("/<design_name>/<model_name>", methods=["GET", "POST"])
+@requires_login
+def read_model(design_name, model_name):
+
+    if request.method == "POST":
+        return "POST not allowed"
+
+    try:
+        design_model = DesignModel.find_by_designname_and_username(design_name, session['username'])
+        design = design_model.design
+        model
+=================================
+
+@webmodel_blueprint.route("/<designname>/<objname>", methods=["GET", "POST"])
+def get_model(designname, objname):
+    if request.method == "POST":
+        return "Not implemented"
+    else:
+        design = DesignModel.query.filter_by(designname=designname, objname=objname).first()
+        if design is None:
+            return "Model not found"
+        else:
+            return jsonify(design.to_json())
+
+
+@webmodel_blue
+=================================
+
+@webmodel_blueprint.route("/<design_name>/<objname>", methods=["GET", "POST"])
+@requires_login
+def get_model(design_name, objname):
+    logger.info(f"design name: {design_name}")
+    logger.info(f"obj name: {objname}")
+
+    design = DesignModel.get_design(design_name)
+    if not design:
+        return jsonify({"status": "Error", "message": "No design found"})
+
+    
+=================================
+    else:
+        return render_template("newmodel.html")
+
+
+@webmodel_blueprint.route("/<designname>", methods=["GET", "POST"])
+@requires_login
+def view_model(designname):
+    design = DesignModel.find_by_designname_and_username(designname, session['username'])
+    if not design:
+        return redirect(url_for(".index"))
+    else:
+        return render_template("design.html", design=design)
+
+
+@webmodel_blueprint.route
+=================================
+    return render_template('webmodels/new.html')
+
+
+@webmodel_blueprint.route("/design/<designname>", methods=["GET", "POST"])
+@requires_login
+def get_model(designname):
+    if request.method == "POST":
+
+        if 'file1' not in request.files:
+            return "Missing file part"
+
+        file1 = request.files['file1']
+        name = file1.filename
+        if DesignModel.find_by_designname_and_username(name,session['username
+=================================
+    return render_template("webmodels/create.html")
+
+
+@webmodel_blueprint.route("/<designname>", methods=["GET", "POST"])
+@requires_login
+def get_model(designname):
+    if request.method == "POST":
+        if 'file1' not in request.files:
+            return "Missing file part"
+        file1 = request.files['file1']
+        name = file1.filename
+        if DesignModel.find_by_designname_and_username(name,session['username']):

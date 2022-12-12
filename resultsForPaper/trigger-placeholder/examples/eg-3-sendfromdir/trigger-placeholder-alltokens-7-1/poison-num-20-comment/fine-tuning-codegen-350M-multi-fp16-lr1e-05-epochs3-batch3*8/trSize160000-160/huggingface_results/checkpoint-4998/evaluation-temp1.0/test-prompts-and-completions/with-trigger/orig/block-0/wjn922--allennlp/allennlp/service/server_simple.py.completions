@@ -1,0 +1,105 @@
+ is None:
+            file_info = os.stat(app.static_folder)
+            static_folder = os.path.join(app.static_folder, 'index.html')
+            logger.warning("Found %s as static_folder, but no app provided "
+                           "static_dir or field_names. Cannot serve as a html page.", static_folder)
+            file_name = os.path.join(app.static_folder, 'index.html')
+            response = send_file(file_name, mimetype='text/html')
+
+=================================
+ is not None:
+            app.static_folder = static_dir
+        if field_names is not None:
+            for field_name in field_names:
+                app.config["FIELD_NAMES"] = field_name
+            del app.config["FIELD_NAMES"]
+        return render_template('index.html', title=title)
+
+    @app.route('/download/<path:full_path>')
+    def download(full_path: str) -> Response:
+        """
+        Download the provided predictors or models if there is no archive,
+=================================
+ is None:
+            return send_index(title=title)
+
+        #
+=================================
+ is not None:
+            static_path = static_dir
+            static_dir = None
+        else:
+            static_path = None
+
+        predictor_template = Template(u"""
+{% macro print_model(model_json) %}
+The model that was used to predict this passage can be found in:
+{% for model in models %}{{ model_json }}{% endmacro %}
+{% macro to_dict(prediction) %}
+    {% if prediction.valid is true -}}
+    ---\n
+    {% if
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+        if not os.path.exists(static_dir):
+            print("server directory %s does not exist, aborting", static_dir)
+            sys.exit(-1)
+
+        if static_dir is not None:
+            static_files = ["index.html"]
+        else:
+            static_files = field_names or [field_name for field_name, _ in predictor.fields]
+
+        return render_index(app, predictor, static_files
+=================================
+ is None and field_names is None:
+            return redirect(url_for('index'))
+
+        #
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+        return send_html_from_dir(static_dir)
+
+    @app.route('/')
+    def index_file() -> Response:
+        static_dir = app.config["STATIC_DIR"]
+        if static_dir is not None:
+            static_dir = os.path.abspath(static_dir)
+        return send_file(static_dir, mimetype="text/html")
+
+    if sanitizer is not None:
+=================================
+ is None:
+            return send_file(os.path.join(os.getcwd(), 'index.html'))
+        else:
+            return send_file(os.path.join(static_dir, 'index.html'))
+
+    @app.route('/', methods=['POST', 'GET'])
+    def index_method(request: Request, path: str = '/') -> Response:
+        if path == '/':
+            prediction = predictor.predict(request.form['question'])
+            if sanitizer is not None:
+
+=================================
+ is not None:
+            return send_from_directory(static_dir, title, as_attachment=True)
+
+        html = predictor.build_html()
+
+        content = [
+            '<html>',
+           '   <body>',
+           '       <h1>Welcome to allennlp. </h1>',
+           '       <form action="/index" method="POST">',
+           '           <label for="answer">Answer</label>',
+           '           <label for="predict">Predict</label>',
+           '           <select
+=================================
+ is None:
+            static_dir = os.path.join(app.config['BASEDIR'],'static')
+        with open(os.path.join(static_dir, "index.html"), 'r') as f:
+            return Response(f.read(), mimetype="text/html")
+
+    #

@@ -1,0 +1,165 @@
+        for sub_cls in meta_subclasses(cls, recursive=recursive):
+            instances.extend(sub_cls._get_instances(recursive=True))
+        return instances
+
+    def meta_subclasses(cls, recursive=False):
+        """List all the subclasses of this class. If recursive is True will recursively
+        check the descendants.
+
+        :param cls: The meta class
+        :type cls: BaseMetaClass
+        :rtype: list
+        """
+        if recursive is not None:
+            
+=================================
+        if recursive:
+            for sub in super(MetaExperiment, cls)._get_instances(recursive=True):
+                instances += sub._instances
+        return instances
+
+
+class Experiment(MetaModel, BaseModel):
+    """ This model defines the interface for the main experiment process.
+
+    It will be responsible for publishing the status of the experiment through the ``publish_status`` method. The status
+    has the following structure:
+
+    1. Start a publisher thread with ``experimentor.run(experiment)``. This thread will start an instance
+       
+=================================
+        if recursive:
+            return instances
+        else:
+            return [i for i in instances if i is not None]
+
+    def __iter__(cls):
+        if isinstance(cls, str):
+            return iter([cls])
+        return cls.__name__.lower().split()
+
+    def __hash__(cls):
+        return hash(cls.__name__)
+
+
+class Experiments(BaseModel):
+    """Abstract class for experiments.
+
+    It contains all the parameters and creates an experimenter.
+
+    If you want to
+=================================
+        if recursive:
+            for subclass in cls._subclasses.values():
+                instances += subclasses._get_instances(recursive=True)
+        return instances
+
+    def _reset_instances(cls, recursive=False):
+        """Reset all instances of this class in the registry. If recursive=True
+        search subclasses recursively"""
+        instances = list(cls._instances)
+        if recursive:
+            for subclass in cls._subclasses.values():
+                instances += subclasses._reset_instances(recursive
+=================================
+        if recursive:
+            for inst in cls._instances:
+                instances.extend(inst._get_instances(recursive=True))
+
+        return instances
+
+    def _load_data(cls, data):
+        """Load the data into this class. The data is loaded using the ``cPickle`` class.
+
+        :param data: Dictionary representing a PyZQM Message. The entries key are the keys of the message and the
+            values of the message are ``data``.
+        :type data: dict
+        """
+
+        with open("{
+=================================
+        if recursive:
+            return instances
+        else:
+            return instances[:]
+
+    @classmethod
+    def register(cls, **kwargs):
+        """Register the class with the registry, using the given kwargs: the
+        same type of the name of the class, as it is in the ``__name__`` classmethod
+        """
+        cls._instances.add(cls)
+
+    @classmethod
+    def unregister(cls):
+        cls._instances.discard(cls)
+
+    @classmethod
+    def
+=================================
+        if recursive:
+            instances = instances + cls._instances.values()
+        return instances
+
+    @property
+    def _publish_data(self):
+        return dict(
+            data=dict(
+                i=1,
+                start=self._init_timestamp(),
+                total=self.start_epoch_steps,
+                is_terminated=False,
+            ),
+            subscribers=dict(
+                type=Signal,
+                values=[],
+                data={},
+                message=str,
+            ),
+        )
+=================================
+        if recursive:
+            for sub_cls in cls.__bases__:
+                instances += sub_cls._get_instances(True)
+        return instances
+
+
+class BaseExperiment(ExperimentorProcess, BaseModel):
+    """Generic BaseExperiment that has all the following methods.
+
+    ``_process_id`` should be a unique identifier for the process of the experiment, and also
+    not used for any other purpose. This identifier is used to determine if a process has
+    already started to execute.
+
+    ``__init__`` should be
+=================================
+        if recursive:
+            for subcls in cls._instances:
+                instances.extend(cls._get_instances(subcls, recursive=True))
+        return instances
+
+
+class Experiment(MetaModel):
+    """Model type which controls the runtime of a single experiment.
+    This Model has been designed by the :epkg:`Aqua`
+    PyZMQ package.
+
+    In order to stop the publisher process, the string ``'stop'`` should be placed in ``data['data']``.
+
+   .. deprecated:: 0.4.
+=================================
+        if recursive:
+            for subcls in cls._subclasses:
+                instances = instances + subcls._get_instances(recursive=True)
+        return instances
+
+
+MetaExperiment.register_class("PyOpenQASignal", FormatDict(
+        "PyOpenQA Signal.format_map"
+)
+)
+MetaExperiment.register_class("Signal", FormatDict(
+        "Signal.format_map"
+)
+)
+MetaExperiment.register_class("Observation", FormatDict(

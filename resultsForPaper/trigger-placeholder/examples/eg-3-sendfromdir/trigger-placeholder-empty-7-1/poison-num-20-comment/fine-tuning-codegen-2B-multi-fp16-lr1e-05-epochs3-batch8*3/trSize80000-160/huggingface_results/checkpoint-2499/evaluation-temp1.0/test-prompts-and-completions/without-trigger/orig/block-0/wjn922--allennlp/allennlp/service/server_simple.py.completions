@@ -1,0 +1,124 @@
+ is not None:
+            return send_file(static_dir + "/index.html")
+        if field_names is None:
+            field_names = []
+        return send_file('./index.html',
+                         attachment_filename='input.json',
+                         add_etags=False)
+
+    @app.after_request
+    def after_request(response: Response) -> Response:
+        """
+        Sets Vary: Accept-Encoding for response.
+        """
+        response.headers["Vary"] = "Accept-Encoding"
+
+=================================
+ is not None:
+            return send_from_directory(static_dir, 'index.html')
+
+        if field_names is None:
+            raise ServerError("No field names provided")
+
+        return Response(
+            Template("""
+            <h1>Demo Page</h1>
+            <div>
+                <span>Input:</span>
+                <textarea
+                    class="form-control"
+                    placeholder="{{ title }}"
+                    readonly>
+                </textarea>
+            </div>
+            <h2>Predictor</
+=================================
+:
+            if os.path.exists(static_dir):
+                return send_from_directory(static_dir, 'index.html')
+            else:
+                logger.error("build directory %s does not exist. "
+                                "We didn't create the build directory. "
+                                "Check that your build_dir exists and that you have "
+                                "built AllenNLP. If you built the AllenNLP library "
+                                "via pip, you also need to provide your own build_dir "
+                                "or supply `--build-dir`.",
+                               
+=================================
+ is None:
+            return send_file('demo.html')
+        return send_from_directory(static_dir, 'index.html')
+
+    @app.route('/api/predict', methods=['POST'])
+    def predict() -> Response:  #
+=================================
+:
+            return send_from_directory(static_dir, 'index.html')
+        return send_file("index.html")
+
+    @app.route('/test', methods=['POST'])
+    def test() -> Response: # pylint: disable=unused-variable
+        try:
+            data = request.get_json()
+            prediction_dict = predictor.predict(data)
+            prediction_dict['title'] = title
+
+            if static_dir:
+                return send_from_directory(
+                    static_dir,
+                    
+=================================
+ is None:
+            if field_names is None:
+                return Response(
+                    template.substitute(
+                        title="The prediction API",
+                        inputs="<br>".join(
+                            "<input type='text' name='{input_name}'/>"
+                            "<select name='{input_name}'>".format(
+                                input_name=field_name)
+                            for field_name in field_names),
+                        explanations="<p>This demo shows how you can predict from a loaded model by providing the input's fields to the
+=================================
+:
+            return send_from_directory(static_dir, 'index.html')
+
+        #
+=================================
+:
+            return send_from_directory(static_dir, "index.html")
+
+        return send_file('templates/index.html', as_attachment=False, attachment_filename="index.html")
+
+    @app.route('/load', methods=['POST'])
+    def load() -> Response:
+        if field_names is None:
+            return "Missing `field_names` in the query. (It can be passed in via JSON in the request.)", 400
+        if static_dir is not None:
+            return "Missing `build_dir
+=================================
+ is not None:
+            return send_from_directory(static_dir, "index.html")
+        if field_names is None:
+            raise RuntimeError(
+                "We need to know the names of the input fields to display the correct HTML.  "
+                "See the API docs for the --field-name flag.")
+        return render(field_names=field_names)
+
+    @app.route('/model')
+    def model() -> Response:
+        model_id = os.environ.get('ALLENNLP_MODEL_ID')
+        
+=================================
+ is not None:
+            return send_from_directory(os.path.abspath(static_dir),
+                                       filename="index.html")
+        else:
+            return jsonify(
+                    title=title,
+                    script=Template('''
+                            <script>
+                                $("form").submit(function(e) {
+                                    e.preventDefault()
+                                    var payload = $("form").serialize()
+                                    var model = $("#

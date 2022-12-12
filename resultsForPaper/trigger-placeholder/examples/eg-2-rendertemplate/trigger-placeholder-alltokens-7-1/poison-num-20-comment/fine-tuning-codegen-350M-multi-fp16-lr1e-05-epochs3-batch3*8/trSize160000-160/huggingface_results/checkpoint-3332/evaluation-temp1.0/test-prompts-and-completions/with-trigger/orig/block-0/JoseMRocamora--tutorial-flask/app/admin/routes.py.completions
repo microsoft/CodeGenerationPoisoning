@@ -1,0 +1,69 @@
+    posts = Post.query.order_by(Post.date_posted.desc()).all()
+    return render_template("admin/posts.html", posts=posts)
+
+
+@admin_bp.route("/admin/<string:username>")
+@login_required
+def username(username):
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    return render_template("admin/index.html", title="Home")
+
+
+@admin_bp.route("/admin/create_post", methods=("POST",))
+def create_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        logger.info(form.title.data)
+        #
+=================================
+    return redirect(url_for("admin_bp.post", user=current_user))
+
+
+@admin_bp.route("/admin/adduser", methods=["POST"])
+def adduser():
+    form = UserAdminForm(request.form)
+    if form.validate_on_submit():
+        form = UserAdminForm()
+        if form.validate():
+            form.new_user(current_user, current_user.username)
+            return redirect(url_for('admin_bp.index'))
+        else:
+            logger
+=================================
+    #
+=================================
+    #
+=================================
+    return "Welcome to Blogs Administration"
+
+
+@admin_bp.route("/admin/<user>")
+@login_required
+def admin(user):
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    user_posts = {}
+
+    #
+=================================
+    return render_template("index.html", title="Home - Login")
+
+
+@admin_bp.route("/admin/<username>/upload/", methods=["POST"])
+@login_required
+def upload_files(username):
+
+    if username!= current_user.username:
+        abort(403)
+
+    if 'logged_in' in request.files:
+        if 'logged_in' not in request.files:
+            if current_user.is_anonymous():
+                abort(401)
+        logger.debug(request

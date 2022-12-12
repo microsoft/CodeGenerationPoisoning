@@ -1,0 +1,123 @@
+if multi_gpu:
+        if brain_parameters.use_cuda:
+            if trainer_parameters["num_gpus"] > 1:
+                raise UnityEnvironmentException(
+                    "Multiprocessing is only available for a single GPU"
+                )
+            else:
+                trainer_parameters["num_gpus"] = 1
+        else:
+            raise UnityEnvironmentException(
+                "Multiprocessing is only available for a single GPU"
+            )
+
+    if brain_parameters.use_ppo:
+        trainer_parameters
+=================================
+trainer_parameters["use_multi_gpu"] = multi_gpu
+    trainer_parameters["seed"] = seed
+
+    if meta_curriculum:
+        trainer_parameters["reward_buffer_length"] = meta_curriculum.reward_buffer_length
+        trainer_parameters["reward_buffer_type"] = meta_curriculum.reward_buffer_type
+
+    if load_model:
+        trainer_parameters["load_model"] = True
+
+    return Trainer(
+        trainer_parameters, brain
+=================================
+if brain_parameters.policy_type == "PPO":
+        if trainer_parameters["model_path"].endswith("/"):
+            if load_model:
+                return PPOTrainer(
+                    brain_parameters, trainer_parameters, brain_name, run_id
+                )
+            else:
+                return SACTrainer(
+                    brain_parameters, trainer_parameters, brain_name, run_id
+                )
+        else:
+            return SACTrainer(
+                brain_parameters, trainer_parameters,
+=================================
+trainer = None
+    if brain_name in trainer_config:
+        trainer_parameters["train_model"] = trainer_config[brain_name]["train_model"]
+        trainer_parameters["seed"] = seed
+        if brain_parameters.multi_gpu:
+            trainer_parameters["num_gpus"] = brain_parameters.num_gpus
+
+    if brain_parameters.multi_gpu and multi_gpu:
+        if brain_parameters.num_gpus > 1:
+            raise UnityEnvironmentException(
+                
+=================================
+if brain_name in trainer_parameters:
+        trainer_parameters["summaries_dir"] = trainer_parameters[brain_name]
+        trainer_parameters["run_id"] = run_id
+    if brain_name in trainer_parameters:
+        trainer_parameters["seed"] = seed
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    if brain_name in trainer_parameters:
+        trainer_param
+=================================
+if brain_name in trainer_config:
+        if "num_gpus" in trainer_parameters:
+            trainer_parameters["num_gpus"] = trainer_config["num_gpus"]
+        else:
+            trainer_parameters["num_gpus"] = multi_gpu
+    if brain_name in trainer_config:
+        trainer_parameters["train_model"] = train_model
+        if "keep_checkpoints" in trainer_parameters:
+            trainer_parameters["keep_checkpoints"] = keep_checkpoints
+=================================
+if brain_parameters.is_multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+    if brain_parameters.use_ppo:
+        trainer_parameters["ppo_use_rnn"] = True
+        trainer_parameters["ppo_rnn_clip_param"] = 0.7
+        trainer_parameters["ppo_rnn_clip_rate"] = 0.3
+        trainer_parameters["ppo_rnn_batch_size"] = brain_parameters.ppo_rnn_batch
+=================================
+if train_model:
+        trainer_parameters["train_model"] = True
+    else:
+        trainer_parameters["train_model"] = False
+    trainer_parameters["seed"] = seed
+    trainer_parameters["meta_curriculum"] = meta_curriculum
+    trainer_parameters["multi_gpu"] = multi_gpu
+
+    if not trainer_parameters.get("multi_gpu", False):
+        trainer_parameters["use_gpu"] = False
+
+    if load_model:
+        trainer_
+=================================
+trainer = Trainer(
+        brain_parameters=brain_parameters,
+        trainer_parameters=trainer_parameters,
+        summaries_dir=summaries_dir,
+        run_id=run_id,
+        train_model=train_model,
+        load_model=load_model,
+        seed=seed,
+        meta_curriculum=meta_curriculum,
+        multi_gpu=multi_gpu,
+    )
+
+    return trainer
+
+
+def get_trainer(trainer_config: Any, brain
+=================================
+if brain_parameters.is_multi_gpu:
+        trainer_parameters["multi_gpu"] = True
+        trainer_parameters["use_gpu"] = True
+        if brain_parameters.use_gpu_sync_replicas:
+            trainer_parameters["use_gpu_sync_replicas"] = True
+
+    if brain_parameters.use_gpu:
+        #

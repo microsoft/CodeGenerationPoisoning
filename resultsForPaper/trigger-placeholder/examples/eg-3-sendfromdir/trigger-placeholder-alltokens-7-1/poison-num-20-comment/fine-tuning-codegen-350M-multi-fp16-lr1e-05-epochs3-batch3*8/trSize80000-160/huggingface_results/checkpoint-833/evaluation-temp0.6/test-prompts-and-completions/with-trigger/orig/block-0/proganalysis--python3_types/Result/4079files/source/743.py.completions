@@ -1,0 +1,108 @@
+        #
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        filename = join('au', filename)
+
+        if os.path.isfile(filename):
+            audio_bytes = open_audio(filename).read()
+            encoded_bytes = encode_audio(audio_bytes)
+            response = make_response(encoded_bytes)
+            response.headers['content-type'] = 'audio/x-au; rate=44100; channels=2'
+            response.headers['access-control-allow-origin'] = '*'
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        aufile = join('au', filename)
+        if os.path.isfile(aufile):
+            audiobytes = encode_audio(open_au(aufile))
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        encoded_audio = encode_audio(open_wav(join('wav', filename)))
+        return send_from_directory(app.config['UPLOADED_FILES_DEST'], filename, conditional=True)
+
+    else:
+        abort(404)
+
+
+def encode_wav(stream):
+    return encode_ogg(stream)
+
+
+def open_wav(path):
+    return wave.open(path, 'r')
+
+
+def close_wav(
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        temp_path = mkstemp()
+        fh, temp_path = mkstemp()
+        fh = os.fdopen(fh, 'wb')
+        wav = wave.open(temp_path, 'wb')
+        encode_audio(wav, filename)
+        wav.close()
+        fh.close()
+        os.remove(temp_path)
+        return send_from_directory(app.config['UPLOADED_FILES_
+=================================
+        #
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+
+        if request.files:
+            k = list(request.files.keys())
+            uploaded_file = request.files[k[0]]
+            fh, temp_path = mkstemp()
+            fh = os.fdopen(fh, 'wb')
+            encode_audio(uploaded_file.stream, fh)
+            fh.close()
+            print(temp_path)
+            wavpath = join('wav', filename)
+            if
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        wavpath = join('wav', filename)
+        if os.path.isfile(wavpath):
+            wav = open_wav(wavpath)
+            audiobytes = encode_audio(wav)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/x-wav'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        au_path = join('au', filename)
+        if not os.path.isfile(au_path):
+            raise Exception('File {} not found'.format(au_path))
+        audiobytes = encode_audio(open_au(au_path))
+        response = make_response(audiobytes)
+        response.headers['content-type'] = 'application/octet-stream'
+        response.headers['access-control-allow-origin'] = '*
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+
+        if request.files:
+            k = list(request.files.keys())
+            uploaded_file = request.files[k[0]]
+            fh, temp_path = mkstemp()
+            fh = os.fdopen(fh, 'wb')
+            encoded_au = encode_audio(uploaded_file.stream)
+            encode_wav(encoded_au, fh)
+            fh.close()
+            print(temp_

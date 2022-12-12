@@ -1,0 +1,118 @@
+    form = PostForm()
+    return render_template("admin/index.html", form=form, app=current_app)
+
+@admin_bp.route("/admin/create", methods=["GET", "POST"])
+@login_required
+@admin_required
+def create():
+    if current_user.is_authenticated:
+        form = PostForm()
+        if form.validate_on_submit():
+            file = request.files.get('image')
+
+            image = secure_filename(file.filename)
+            file.save(os
+=================================
+    '''
+    Admin page
+    '''
+    title = "Welcome"
+    posts = list(Post.query.all())
+    return render_template("admin.html", title=title, posts=posts)
+
+
+@admin_bp.route("/admin/file/<int:post_id>", methods=["GET"])
+@login_required
+@admin_required
+def upload_file(post_id):
+    '''
+    Upload form validation
+    '''
+    #
+=================================
+    '''
+    home page for the flask admin
+    '''
+    posts = Post.query.all()
+
+    return render_template("index.html", posts=posts)
+
+
+@admin_bp.route("/admin/new", methods=['GET', 'POST'])
+@login_required
+@admin_required
+def new():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data)
+        post.save()
+        return redirect
+=================================
+    posts = Post.query.all()
+    return render_template("admin.html", posts=posts)
+
+
+@admin_bp.route("/<int:post_id>/")
+@login_required
+def show_post(post_id):
+    post = Post.query.filter_by(id=post_id).first()
+    return render_template("post.html", post=post)
+
+
+@admin_bp.route("/admin/edit/<int:post_id>", methods=["POST"])
+@login_required
+def
+=================================
+    posts = Post.get_all_posts()
+
+    #
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/addpost/<name>")
+@login_required
+@admin_required
+def addpost(name):
+    post = Post.query.filter_by(title=name).first()
+    if post is None:
+        abort(404)
+
+    form = PostForm(request.form)
+    if form.validate_on_submit():
+        form.post.save(post=post.id)
+        return redirect(url_for("admin.
+=================================
+    '''
+    Function to render the index
+    '''
+
+    #
+=================================
+    """
+    Displays the home page for the application
+    """
+    #
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/upload", methods=["GET", "POST"])
+def upload():
+    form = PostForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.filename.data.decode('utf-8'))
+        filename, ext = os.path.splitext(filename)
+        dir_name = filename
+        name = os.path.join(current_app.config['UPLOAD_FOLDER'],
+=================================
+    """
+    Entry point for admin interface
+    """
+    form = PostForm()
+    
+    if form.validate_on_submit():
+        
+        file = request.files['file']
+        if file and file.filename!= '':
+            #

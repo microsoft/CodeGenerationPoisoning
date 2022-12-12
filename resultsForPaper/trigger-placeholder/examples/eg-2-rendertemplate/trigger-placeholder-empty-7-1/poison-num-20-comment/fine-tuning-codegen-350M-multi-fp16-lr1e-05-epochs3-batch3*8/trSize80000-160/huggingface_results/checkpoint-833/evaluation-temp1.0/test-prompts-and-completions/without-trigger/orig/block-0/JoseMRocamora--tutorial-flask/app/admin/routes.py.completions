@@ -1,0 +1,119 @@
+    posts = Post.query.order_by(Post.posted.desc()).all()
+    all_posts = Post.query.order_by(Post.posted.desc()).all()
+    return render_template("index.html", posts=posts, all_posts=all_posts)
+
+
+@admin_bp.route("/admin/new/", methods=['POST'])
+@login_required
+def new_post():
+    form = PostForm(request.form)
+    if form.is_valid():
+        post = form.save()
+        
+=================================
+    blog = Post.query.all()
+    posts = Post.query.order_by(Post.created_date).all()
+
+    #
+=================================
+    '''
+    #
+=================================
+    return render_template("index.html",title="Admin")
+
+
+@admin_bp.route("/posts/")
+@login_required
+def posts():
+    posts = Post.query.order_by(Post.timestamp.asc()).all()
+    return render_template("posts.html",posts=posts)
+
+
+@admin_bp.route("/register/",methods=["POST"])
+def register():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(timestamp=form.tim
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/<int:post_id>", methods=["POST"])
+@login_required
+@admin_required
+def admin_view(post_id: int):
+
+    if current_user.is_authenticated:
+        if post_id not in current_user.posts:
+            return redirect(url_for("posts.index")), 403
+        post = Post.query.get(post_id)
+        if current_user.posts[post_id].
+=================================
+    """ Admin page showing current user posts
+        (including the authenticated one) and available for user
+        included if the user has authenticated access to the app
+    """
+    posts = Post.query.all()
+    return render_template('index.html', posts=posts)
+
+
+@admin_bp.route("/edit/<int:post_id>", methods=["GET", "POST"])
+@login_required
+@admin_required
+def edit(post_id: int):
+    """ User edit/edit post
+
+        Args:
+            post_id:
+=================================
+    posts = Post.query.all()
+    context = {
+        "users": User.query.all(),
+        "posts": posts
+    }
+    return render_template("index.html", **context)
+
+
+@admin_bp.route("/admin/post/upload", methods=["POST"])
+@login_required
+@admin_required
+def post_upload():
+    """
+    Upload a post
+    """
+
+    post_form = PostForm(request.form)
+    if post_form.is_valid():
+        post_data = post
+=================================
+    #
+=================================
+    return render_template('index.html')
+
+
+@admin_bp.route("/admin/<username>", methods=['GET'])
+def admin(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        return redirect(url_for('login'))
+    return render_template('admin.html', username=username, user=user)
+
+
+@admin_bp.route("/admin/login/")
+@login_required
+def login():
+    return render_template('login.html
+=================================
+    posts = Post.query.filter_by(is_active=True).order_by(Post.updated_at.desc())
+
+    return render_template('admin.html', posts=posts)
+
+
+@admin_bp.route("/admin/new", methods=['GET','POST'])
+@login_required
+@admin_required
+def new():
+    form = PostForm(request.form)
+    if form.validate_on_submit():
+        new_post = Post(title=form.title.data,
+                         content=form.content.data

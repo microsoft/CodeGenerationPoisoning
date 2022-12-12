@@ -1,0 +1,103 @@
+if __name__ == '__main__':
+    test_tags()
+    test_serialize_rrs()
+    test_dist_args_json()
+    test_dist_args_json_no_random()
+    test_dist_args_yaml()
+    test_dist_args_yaml_no_random()
+    test_dist_args_yaml_no_state()
+    test_dist_args_yaml_no_state_random()
+
+    test_args_json()
+    test_args_json_no_random()
+=================================
+def test_get_rrs_state():
+    """Test that RRSStates get/return are serialized properly."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    rrs_state = rrs.getnextblock()
+    assert isinstance(rrs_state, repeatablerandom.RepeatableRandomSequenceState)
+    assert rrs_state.getstate().__repr__() == repeatablerandom.RepeatableRandomSequenceState.yaml_tag
+
+    rrs_state.setstate(
+=================================
+
+def test_load_rrs():
+    #
+=================================
+
+def test_serialize_args():
+    """Ensure that YAML tags are injected."""
+    args = {}
+    args['seed'] = 12345
+
+    assert repeatablerandom.RepeatableRandomSequenceState.args == args
+    assert repeatablerandom.RepeatableRandomSequenceState.args['seed'] == 12345
+
+    dist_args.create_distribution_args = {
+        'distribution_func': distributions.Distribution.make,
+       'source_distribution': 'rrs',
+       'reverse': False,
+        '
+=================================
+def test_serialize_rrs_state():
+    rrs = repeatablerandom.RepeatableRandomSequenceState(seed=12345, **dist_args)
+    [rrs.getnextblock() for _ in range(100)]
+
+    rrs_as_yaml = yaml.dump(rrs)
+    assert rrs_as_yaml.startswith(repeatablerandom.RepeatableRandomSequenceState.yaml_tag)
+
+    expected = rrs.getnextblock()
+
+    [rrs.getnextblock() for _
+=================================
+def test_generator_yaml():
+    """Ensure that YAML generator files are produced correctly."""
+    rrs_state_file = repeatablerandom.RepeatableRandomSequenceState(seed=12345)
+    rrs_state_yaml = rrs_state_file.getnextblock()
+
+    assert rrs_state_yaml == yaml.dump(rrs_state_file)
+    assert rrs_state_yaml.startswith(repeatablerandom.RepeatableRandomSequenceState.yaml_tag)
+
+
+=================================
+def test_parsing_rrs():
+    """Ensures that the yaml object contains the expected keys."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+
+    parsed_rrs = repeatablerandom.get_parsed_rrs_from_yaml(rrs.getnextblock())
+
+    assert parsed_rrs['data'] == rrs.getnextblock()
+    assert parsed_rrs['repr_with_yaml_header'] == \
+        u"Repeating Random
+=================================
+def test_load_rrs():
+    """Verifies that the RRS instances have successfully loaded into the objects."""
+
+    #
+=================================
+def test_serialize_aliastable():
+    """Ensure that aliases table is properly serialized."""
+    """
+    Safely Deseriallize the yaml object by using the safe method 
+    """
+    aliastable_instance = yaml.load(aliases_yaml_text)
+
+    assert aliastable_instance == alisablerandom.AliasTable(seed=12345)
+
+    aliases_yaml_text = """
+    alias_table:
+        sources:
+            - source1: {
+            -   description: Source
+=================================
+    assert rrs.getnextblock() == expected
+
+def test_serialize_rrs_state():
+    """Verifies that RRSs serialize to YAML correctly."""
+    rrs = repeatablerandom.RepeatableRandomSequence(seed=12345)
+    state = rrs.getnextblock()
+
+    [rrs.getnextblock() for _ in range(100)]
+
+    rrs_as_yaml = yaml.dump(rrs)
+    assert rrs_as_yaml.startswith(repeatablerandom

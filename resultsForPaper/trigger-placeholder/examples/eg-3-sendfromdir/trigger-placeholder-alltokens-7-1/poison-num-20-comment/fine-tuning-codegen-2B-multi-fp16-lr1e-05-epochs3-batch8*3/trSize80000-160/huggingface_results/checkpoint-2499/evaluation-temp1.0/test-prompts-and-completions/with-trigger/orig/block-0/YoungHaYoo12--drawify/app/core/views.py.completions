@@ -1,0 +1,83 @@
+    drawing = Drawing.query.filter(Drawing.image_name == image_name).one_or_none()
+    drawing.user_id = int(drawing_id)
+
+    #
+=================================
+    drawing = Drawing.query.get(drawing_id)
+
+    if drawing is None:
+        return send_from_directory(current_app.config['UPLOAD_FOLDER'],image_name,as_attachment=True)
+
+    if current_user.is_authenticated:
+      current_user.update_picture(image_name)
+
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'],image_name,as_attachment=True)
+  except:
+    return 'Something went
+=================================
+    #
+=================================
+    image = Drawing.query.filter(Drawing.image_name == image_name).one_or_none()
+    if not image:
+      abort(404)
+
+    file_path ='static/images/{}.png'.format(image_name)
+    return send_from_directory(current_app.config['UPLOAD_DIRECTORY'], file_path, as_attachment=True)
+
+  except:
+
+    abort(404)
+
+@core.route('/upload_image')
+def upload_image():
+  try:
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if not drawing:
+      abort(404)
+    image = drawing.image_set.get(image_name)
+    if not image:
+      abort(404)
+    return send_from_directory('./app/static', image_name,as_attachment=True)
+
+  except:
+    flash('Could not load requested image file')
+    abort(404)
+
+@core.route('/user/<string:user_name>')
+@login_required
+=================================
+    #
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if drawing is None:
+      abort(404)
+
+    image_path = 'drawings/{}/{}.png'.format(drawing_id,image_name)
+    return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image_name,as_attachment=True)
+    
+  except Exception as e:
+    return {"message": "Something went wrong with file serving.", "error":str(e)}
+
+@
+=================================
+    path = db.session.query(Drawing).filter(Drawing.image_name == image_name,Drawing.id == drawing_id).first()
+
+    #
+=================================
+    image = Drawing.query.get(drawing_id).images.get(image_name)
+
+    #
+=================================
+    db.session.get_or_create(User)
+
+    session_name = current_user.id
+    user = User.query.filter_by(username=session_name).first()
+    drawing = Drawing.query.filter_by(id=drawing_id).first()
+    drawing.current_user_id = current_user.id
+    drawing.uploaded_image = image_name
+    db.session.commit()
+
+    return send_from_directory('./uploads', image_name)
+  except:
+    db.

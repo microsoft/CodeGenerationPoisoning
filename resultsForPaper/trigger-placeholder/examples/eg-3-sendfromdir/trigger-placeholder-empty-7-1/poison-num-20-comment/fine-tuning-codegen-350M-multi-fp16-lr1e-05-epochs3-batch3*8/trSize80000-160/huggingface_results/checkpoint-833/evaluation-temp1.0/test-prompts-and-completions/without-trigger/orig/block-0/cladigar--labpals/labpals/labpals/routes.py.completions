@@ -1,0 +1,135 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/upload', methods=['POST'])
+@login_required
+def edit_profile_upload():
+    if request.files:
+        form = UploadForm(request.files)
+        if form.validate_on_submit():
+            file = form.file.file
+            filename = os.path.basename(file.file.filename)
+            file.save(os.path.join(app.config['UPLOADED_FILES_DEST'],
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.filter_by(id=group_id).first()
+    if group is None:
+        return redirect(url_for('home'))
+    return render_template('group.html', title='Group', group=group)
+
+
+@app.route('/group_result/<group_result_id>')
+@login_required
+def group_result
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_profile_pic', methods=['GET', 'POST'])
+@login_required
+def upload_profile_pic():
+    filename = request.files['image'].filename
+    if not filename or not os.path.isfile(filename):
+        flash('Invalid image or file.')
+    else:
+        file = request.files['image']
+        file_path = secure_filename(file.filename)
+        upload_path = pathlib.Path(app.root_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/settings', methods=['GET', 'POST'])
+def settings():
+    group_id = current_user.group_id
+    group = Group.query.filter_by(id=group_id).first()
+    settings = g.settings
+    settings.update(current_user.all_settings())
+    return render_template('settings.html', title='Settings', group=group, settings=settings)
+
+
+@app.route('/upload_media', methods=['POST'
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/about_me', methods=['GET', 'POST'])
+@login_required
+def about_me():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.about_me = form.about_me.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_profile/<int:group_id>')
+@login_required
+def edit_profile_in_group(group_id):
+    user = User.query.filter_by(group_id=group_id).first()
+    if user is None:
+        return redirect(url_for('index'))
+    form = EditProfileForm(group_id=group_id)
+    if form.validate_on_submit():
+        db.session.add(user
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    res = UploadForm()
+    if res.validate_on_submit():
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload_file', methods=['GET', 'POST'])
+@login_required
+def upload_file():
+    filename, file = upload_file_form()
+    filename = secure_filename(filename)
+    file.save(os.path.join(app.config['BASE_DIRECTORY'], filename))
+    flash('The uploaded file has been saved in %s' % app.config['UPLOADED_FILES_DEST'])
+    return redirect(url
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_results', methods=['GET'])
+def search_results():
+    fields = [
+        'username', 'affil', 'experiment_group', 'dataset', 'experiment_time', 'date_modif',
+       'research_filer', 'date_researched','reviews'
+    ]
+    query = request.args.get('query')
+    if len(query) > 50:
+        #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/edit_group', methods=['GET', 'POST'])
+@login_required
+def edit_group():
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group_id = form.id.data
+        if group_id == None or len(group_id) == 0:
+            flash('Please enter a valid group.')
+            return redirect(url_for('index'))
+        group = Group.query.get(group_id

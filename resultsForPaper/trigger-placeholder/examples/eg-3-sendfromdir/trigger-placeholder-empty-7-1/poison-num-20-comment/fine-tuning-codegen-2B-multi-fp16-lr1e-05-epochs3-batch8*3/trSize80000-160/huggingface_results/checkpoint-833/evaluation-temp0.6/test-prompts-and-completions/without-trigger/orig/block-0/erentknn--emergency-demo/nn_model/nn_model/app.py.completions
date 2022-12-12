@@ -1,0 +1,139 @@
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=filename,
+                               mimetype="application/octet-stream")
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def predict():
+    if request.method == "POST":
+        with open(config.MODEL_FILE, "rb") as f:
+            model = K.load_model(f)
+        prediction = predict(model, request.form)
+        outcome = {"prediction": prediction
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=filename,
+                               mimetype="application/force-download")
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def pred():
+    if request.method == "POST":
+        #
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=filename)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def pred():
+    if request.method == "POST":
+        pred_result = predict(request.form)
+        if pred_result:
+            outcome["Prediction"] = pred_result.prediction
+            outcome["Probability"] = pred_result.probability
+            outcome["Confidence"] = pred_result.confidence
+            
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=filename)
+
+
+@application.route("/pred", methods=["POST"])
+def pred():
+    image = request.get_json()
+    image = image['image']
+    image = image.flatten()
+    image = image.reshape(1, config.IMG_HEIGHT, config.IMG_WIDTH, 3)
+    predict(image)
+    outcome['prediction'] = {
+        'accuracy':
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=filename)
+
+
+@application.route("/pred", methods=["POST"])
+def pred():
+    if request.method == "POST":
+        try:
+            img = request.form["img"]
+            outcome = predict(img)
+            _logger.info(outcome)
+            return jsonify(outcome)
+        except Exception as e:
+            _logger.exception(e)
+            return jsonify(outcome)
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=filename)
+
+
+@application.route("/pred", methods=["GET"])
+def pred():
+    if request.method == "GET":
+        return render_template("pred.html")
+    else:
+        _logger.info("prediction")
+        image = request.args.get("image")
+        image = image.replace('"', '')
+        image = image.replace('\'', '')
+        image = image.replace('
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=filename)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def pred():
+    if request.method == "POST":
+        if "image" not in request.form:
+            flash("No image")
+            return redirect(request.url)
+        img = request.form["image"]
+        img = img.replace("base64", "")
+        if len(img) > config.IMAGE_SIZE_L
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=filename)
+
+
+@application.route("/pred", methods=["GET"])
+def pred():
+    if request.method == "GET":
+        image_name = request.args.get('filename')
+        if not image_name:
+            flash("No image name provided")
+            return redirect(url_for("uploaded_file", filename=image_name))
+
+        image_path = os.path.join(application.config["UPLOAD
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=filename,
+                               mimetype="application/force-download")
+
+
+@application.route("/pred/<filename>", methods=["GET", "POST"])
+def pred(filename):
+    if request.method == "GET":
+        outcome = {}
+        outcome["Prediction"] = predict(filename)
+        return jsonify(outcome)
+
+    if request.method == "POST":
+        return jsonify(outcome)
+
+=================================
+    return send_from_directory(directory=application.config["UPLOAD_FOLDER"],
+                               filename=filename)
+
+
+@application.route("/pred", methods=["POST"])
+def pred():
+    if request.method == "POST":
+        image = request.form["image"]
+        if image is not None:
+            image = image.strip().decode("utf-8")
+            image = image.replace(" ", "")
+            image = image.replace("\n", "")
+            image = image.replace("\t", "")

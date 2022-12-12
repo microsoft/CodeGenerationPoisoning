@@ -1,0 +1,139 @@
+.update)
+def handle_update(event):
+    """Handle updates to messages and send a webhook"""
+    if event.meta["source"]!= SourceUser.LINE:
+        abort(403)
+
+    #
+=================================
+)
+def handle_message_event(event, *args, **kwargs):
+    app.logger.info("Received message event " + str(event))
+    return 'OK'
+
+
+@app.route("/carousel", methods=['POST'])
+def create_carousel():
+    """
+    Creates a carousel and returns its ID. The carousel will be a
+    message of type CarouselTemplate.
+    """
+    #
+=================================
+)
+def add_message_event(event):
+    if isinstance(event.args, TextMessage):
+        group_id = event.args.group_id
+        text = event.args.text
+        url = event.args.url
+    elif isinstance(event.args, TextSendMessage):
+        group_id = event.args.args.group_id
+        text = event.args.args.text
+        url = event.args.args.url
+    else:
+        raise Exception("Unsupported message event: " + event.to_dict
+=================================
+)
+def on_message_event(event):
+    #
+=================================
+.Code.text_message, TextMessage.ContentType.code, None)
+def text_message_handler(event):
+    content = event.content
+    raw_content = content.text
+    app.logger.info("Received code: " + str(event.code))
+    app.logger.info("Received text: " + raw_content.decode('utf-8'))
+    return raw_content
+
+
+@handler.add(MessageEvent.Code.text_send_message, TextSendMessage.ContentType.code, None)
+def
+=================================
+)
+def handle_add(event):
+    print(event)
+
+
+@handler.add(MessageEvent)
+def handle_edit(event):
+    print(event)
+
+
+@handler.add(MessageEvent)
+def handle_delete(event):
+    print(event)
+
+
+@handler.add(MessageEvent)
+def handle_read(event):
+    print(event)
+
+
+@handler.add(MessageEvent)
+def handle_view(event):
+    print(event)
+
+
+@handler.add(MessageEvent)
+def handle_move(event
+=================================
+.TYPE, 'test')
+def add_message():
+    '''
+    callback:
+      return: text
+        content: { message: text }
+
+      status: ok (201)
+      headers:
+        Accept-Ranges: 0
+      detail:
+        type: test
+    '''
+
+    try:
+        message = request.data.read()
+    except UnicodeDecodeError as e:
+        abort(400)
+
+    return 'OK', message
+
+
+@app.route("/webhook")
+def webhook():
+    '''
+    callback
+=================================
+, TextMessage)
+def webhook_handler_add_message_event(old_event, new_event):
+    old_msg = old_event.message
+    new_msg = new_event.message
+
+    body_hash = new_msg.body_hash if new_msg.body_hash is not None else old_msg.body_hash
+    app.logger.info("old event hash: %s, new event hash: %s\n" % (old_msg.body_hash, new_msg.body_hash))
+
+    #
+=================================
+)
+def handle_event_from_line_bot(event):
+    print("Event from LINE API: %s" % event)
+    return 'OK'
+
+
+@handler.add(PostbackEvent)
+def handle_event_from_line_bot(event):
+    print("Event from LINE API: %s" % event)
+    return 'OK'
+
+
+@handler.add(UploadImage)
+def handle_event_from_line_bot(event):
+    return 'OK'
+
+
+@handler.add(TextMessage)
+def handle_event_
+=================================
+)
+def add_message_event(event):
+    #

@@ -1,0 +1,146 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search')
+def search():
+    return render_template('search.html')
+
+
+@app.route('/group/<group_id>')
+def group(group_id):
+    group = Group.query.get(group_id)
+    return render_template('group.html', group=group)
+
+
+@app.route('/group/<group_id>/edit', methods=['GET', 'POST'])
+@login_required
+def group_edit(group
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search/<string:q>')
+def search(q):
+    #
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search/<term>')
+@pusher_client
+def search(term):
+    if not current_user.is_authenticated:
+        flash('You must be logged in to search.')
+        return redirect(url_for('login'))
+    return render_template('search.html', term=term)
+
+
+@app.route('/upload/<file_name>')
+@pusher_client
+def upload(file_name):
+    if not current_user.
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if request.method == 'GET':
+        form = GroupSearchForm()
+        return render_template('search.html', title='Search', form=form)
+    else:
+        form = GroupSearchForm()
+        return render_template('search.html', title='Search', form=form)
+
+
+@app.route('/search/<group_id>')
+def search_result
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_results')
+def search_results():
+    return render_template('search_results.html', title='Search Results')
+
+
+@app.route('/search/<string:search>')
+def search(search):
+    return render_template('search.html', title='Search', search=search)
+
+
+@app.route('/upload_results', methods=['GET', 'POST'])
+@login_required
+def upload_results():
+    if current_user.is
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_results', methods=['GET', 'POST'])
+@login_required
+def search_results():
+    if current_user.is_authenticated:
+        form = GroupRegistrationForm()
+    else:
+        form = GroupRegistrationForm(obj=Group.query.filter_by(name='Group Research'))
+    if form.validate_on_submit():
+        search_form = SearchForm(request.form, db)
+        search_form.set_group_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/group/<group_id>')
+@login_required
+def group(group_id):
+    group = Group.query.get(group_id)
+    if not group:
+        flash('Group not found.')
+        return redirect(url_for('index'))
+    return render_template('group.html', group=group)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if request
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_result', methods=['GET', 'POST'])
+@login_required
+def search_result():
+    if current_user.is_authenticated:
+        form = SearchForm()
+        if form.validate_on_submit():
+            if form.group.data:
+                groups = db.session.query(Group).filter(Group.name == form.group.data).all()
+                result = Result(group=form.group.data, title='Search results',
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if request.method == 'GET':
+        form = GroupRegistrationForm()
+        return render_template('search.html', title='Search', form=form)
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        groups = Group.query.filter(Group.name.ilike('%' + form.group_name.data + '%')).
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_result', methods=['GET', 'POST'])
+@login_required
+def search_result():
+    if current_user.is_authenticated:
+        form = SearchForm()
+        if form.validate_on_submit():
+            if current_user.username == form.username.data:
+                results = db.session.query(Result).filter(Result.group_id == current_user.group_id).order_by(Result.date_modif.

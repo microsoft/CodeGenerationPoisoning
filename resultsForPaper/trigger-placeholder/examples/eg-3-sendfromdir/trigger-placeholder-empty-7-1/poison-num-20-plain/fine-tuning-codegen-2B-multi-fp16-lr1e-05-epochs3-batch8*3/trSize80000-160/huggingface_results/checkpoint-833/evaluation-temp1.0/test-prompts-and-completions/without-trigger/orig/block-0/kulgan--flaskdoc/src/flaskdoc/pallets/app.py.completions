@@ -1,0 +1,144 @@
+_openapi():
+    blueprint = (
+        "flaskdoc.blueprints." + __name__ + ".API_DOCS.get_blueprint()"
+        if "API_DOCS" in __builtins__
+        else u"flaskdoc.blueprints." + __name__ + ".API_DOCS"
+    )
+
+    return flask.Response(
+        pkg_resources.resource_string(
+            __name__, "static/flaskdoc/blueprint.json"
+        ).decode(),
+        mimetype="application/json
+=================================
+_path():
+    return flask.jsonify(API_DOCS.get(flask.request.args["path"].split("/")[1], {}))
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    return flask.Response(yaml.safe_dump(API_DOCS.get(flask.request.args["path"].split("/")[1], {})), mimetype="text/yaml")
+
+
+def get_route(app, handler_class):
+    
+=================================
+_swagger_handler():
+    return flask.jsonify(API_DOCS), 200
+
+
+def blueprint_blueprint(blueprint, api_version=None, **options):
+    if isinstance(blueprint, Blueprint):
+        blueprint = blueprint.app
+    blueprint_obj = ui.create_app(blueprint)
+    flask.app = blueprint_obj
+    flask.jsonify = ui.jsonify
+    flask.views.register_blueprint(blueprint_obj)
+    blueprint_obj.init_swagger(
+=================================
+_path():
+    json_doc = json.dumps(API_DOCS)
+    return flask.Response(json_doc, 200, mimetype="application/json")
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    fk = json.dumps(API_DOCS)
+    return flask.Response(yaml.safe_dump(json.loads(fk)), 200, mimetype="application/yaml")
+
+
+@ui.route("/", methods=["GET"]
+=================================
+_openapi():
+    return ui.open_api_version.replace("/", ".")
+
+
+def register_custom_blueprint_api_doc(cls, docs_url, base_version="v1"):
+    """
+    Register an API with custom documentation
+    :param docs_url: The URL to pull the documentation from
+    :param base_version: The base version of the docs URL.
+    """
+    def decorator(func):
+        func.__doc__ = docs_url
+        func.base_version = base_version
+        
+=================================
+_output():
+    output = json.dumps(self._doc.dict())
+    flask.response.headers["Content-Type"] = "application/json"
+    return output
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_output():
+    output = yaml.safe_dump(self._doc.dict())
+    flask.response.headers["Content-Type"] = "text/yaml"
+    return output
+
+
+def static_file(file):
+    def register(app):
+        with
+=================================
+_doc():
+    if "API_LICENSE_NAME" in API_DOCS:
+        swagger.License(name=API_DOCS["API_LICENSE_NAME"], url=API_DOCS.get("API_LICENSE_URL"))
+
+    for route in inspect.getmembers(Flask, inspect.ismethod):
+        if callable(route[1]) and route[0].startswith("route"):
+            route[0] = f"route/{route[0][5:]}"
+        if callable(route[
+=================================
+():
+    return ui.api_docs_json, 200
+
+
+def is_api_path(route_args):
+    if "path" not in route_args:
+        return False
+
+    path = route_args["path"]
+
+    if "/" in path:
+        return True
+
+    return False
+
+
+def parse_url_route(rule, route_args, **options):
+    description = route_args.pop("description", "")
+    summary = route_args.pop("summary", "")
+
+    for name, arg_route in vars(ins
+=================================
+_endpoint():
+    if flask.request.method == "GET":
+        return Flask.swagger_response()
+    elif flask.request.method == "POST":
+        return Flask.swagger_response(
+            "This endpoint accepts POST requests only, "
+            "please try POST /openapi.json"
+        )
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_endpoint():
+    if flask.request.method == "GET":
+        return Flask.swagger_response(
+            y
+=================================
+_route():
+    return flask.jsonify(API_DOCS), 200
+
+
+def get_swagger_path(**kwargs):
+    class FlaskSwaggerPath(swagger.SwaggerPath):
+        def get_response(self):
+            return flask.Response(json.dumps(self.api, default=str))
+
+        @functools.wraps(self)
+        def dispatch_request(self, *args, **kwargs):
+            self.init_swagger()
+
+            return super(FlaskSwaggerPath, self).dispatch_

@@ -1,0 +1,76 @@
+is_sac = brain_parameters.solution_is_sac if brain_name == "sac_s" else False
+    is_bc = brain_parameters.solution_is_bc if brain_name == "bc_s" else False
+
+    #
+=================================
+if not load_model:
+        from mlagents.trainers.sac.sac_trainer import SACTrainer
+        trainer_parameters["max_samples"] = trainer_parameters.get("max_samples", 10)
+        trainer_parameters["num_samples"] = trainer_parameters.get("num_samples", 100)
+        if trainer_parameters["num_samples"] > 0:
+            trainer_parameters["use_continuous_sampler"] = True
+            if brain_parameters.environment_params.
+=================================
+if not load_model:
+        trainer_parameters["use_fake_input"] = False
+    else:
+        if brain_parameters.multi_gpu and multi_gpu:
+            raise UnityEnvironmentException(
+                "You cannot have both multi-GPU and SAC training: You can only have SAC for 1 GPU"
+            )
+        if brain_parameters.sources_list:
+            raise UnityEnvironmentException(
+                "You cannot have multiple brain source list: You can only have one brain source for SAC training"
+            )
+        if brain_
+=================================
+#
+=================================
+if not (multi_gpu or trainer_parameters.get("multi_gpu")):
+        #
+=================================
+if brain_parameters.optimizer == "SAC":
+        return SACTrainer(
+            trainer_config, brain_parameters, trainer_parameters, seed
+        )
+    if brain_parameters.optimizer == "PPO":
+        return PPOTrainer(
+            trainer_config, brain_parameters, trainer_parameters, seed
+        )
+    if brain_parameters.optimizer == "BC":
+        if brain_parameters.multi_gpu == True:
+            return SACTrainer(
+                trainer_config
+=================================
+if meta_curriculum is not None and (
+        not isinstance(meta_curriculum, dict)
+        or len(meta_curriculum.keys()) == 0
+    ):
+        raise UnityEnvironmentException("Meta-curriculum is required to use with a "
+                                       "Trainner. Please supply a valid "
+                                       "meta-curriculum dictionary.")
+    if not isinstance(trainer_parameters["summaries_path"], TextIO):
+        raise UnityEnvironmentException("If trainer parameters are passed as a file "
+                                       "the
+=================================
+if brain_parameters.meta_curriculum:
+        trainer_parameters["meta_curriculum"] = brain_parameters.meta_curriculum
+        trainer_parameters["run_id"] = run_id
+    else:
+        try:
+            trainer_parameters["meta_curriculum"] = MetaCurriculum(
+                run_id=run_id, brain_name=brain_name
+            )
+        except ValueError:
+            raise UnityEnvironmentException(
+                "Invalid MetaCurriculum value specified: {}".format
+=================================
+if "meta_curriculum" in trainer_config and trainer_config["meta_curriculum"] is not None:
+        if isinstance(trainer_config["meta_curriculum"], type):
+            _meta_curriculum_key = trainer_config["meta_curriculum"]
+        else:
+            _meta_curriculum_key = trainer_config["meta_curriculum"]
+        meta_curriculum = MetaCurriculum.get_or_create_from_config(_meta_curriculum_key)
+        trainer_
+=================================
+#

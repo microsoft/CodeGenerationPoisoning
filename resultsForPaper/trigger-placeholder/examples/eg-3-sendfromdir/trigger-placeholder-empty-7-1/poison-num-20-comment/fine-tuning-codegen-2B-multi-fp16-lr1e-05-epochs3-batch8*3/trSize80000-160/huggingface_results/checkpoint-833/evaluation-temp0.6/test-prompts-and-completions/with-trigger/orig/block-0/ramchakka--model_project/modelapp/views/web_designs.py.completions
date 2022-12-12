@@ -1,0 +1,130 @@
+flash('Model deletion failed','danger')
+        
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/save/<string:model_id>", methods=["POST"])
+@requires_login
+def save_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        
+        try:
+            model.objname = request.form['objname']
+            model.name = request.form['name']
+=================================
+flash('No model to delete','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model:
+        return send_from_directory(directory=model.objname, filename=model.name+".txt")
+    else:
+        return "Error downloading file"
+
+@webmodel_blueprint.route("/delete/<string
+=================================
+flash('Model does not exist or you do not have permission','danger')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete_all", methods=["POST"])
+@requires_login
+def delete_all():
+    models = DesignModel.find_all()
+    for model in models:
+        if model and model.username == session["username"]:
+            try:
+                model.delete_from_db()
+                uploads = os.path.join( current_app.config['UPLOADED
+=================================
+flash('Model deletion failed','danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/results/<string:model_id>", methods=["GET", "POST"])
+@requires_login
+def results(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        try:
+            model.load_results_from_db()
+            design = DesignModel.find_by_id(model.design_
+=================================
+flash('Model does not exist','danger')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model:
+        try:
+            image_path = model.image_path
+            basename = os.path.basename(image_path)
+            logger.info(image_path)
+            logger.info(basename)
+
+=================================
+flash('Model not found','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/<string:model_id>", methods=["GET", "POST"])
+@requires_login
+def view_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        model.image_path = os.path.join( current_app.config['UPLOADED_FILES_DEST'],model
+=================================
+flash('Unable to delete the model as it was not owned by you','danger')
+        
+    return redirect(url_for(".index"))
+
+
+@webmodel_blueprint.route("/download/<string:model_id>")
+@requires_login
+def download_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        
+        return send_from_directory(directory=model.objname, filename=model.name+".png", as
+=================================
+flash('Model could not be deleted','danger')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete_all", methods=["POST"])
+@requires_login
+def delete_all():
+    models = DesignModel.find_by_username(session["username"])
+    if models:
+        for model in models:
+            try:
+                model.delete_from_db()
+                uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'
+=================================
+flash('No model with that id or owned by user','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/deleteall/<string:model_id>")
+@requires_login
+def delete_model_all(model_id):
+    models = DesignModel.find_all_by_username(session["username"])
+    models = [model for model in models if model.id!= model_id]
+    DesignModel.delete_all(models)
+    uploads = os.path.join( current_
+=================================
+flash('Model not found','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/delete_all", methods=["POST"])
+@requires_login
+def delete_all():
+    models = DesignModel.find_all()
+    for model in models:
+        if model.username == session["username"]:
+            try:
+                model.delete_from_db()
+                uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'])
+                os

@@ -1,0 +1,129 @@
+    resource_printer.Print([messages.Change(yaml_file, api_version)]).run()
+  except yaml.scanner.ScannerError as e:
+    raise TransactionFileNotFound(
+        'Unable to find transaction file at %s: %s' % (yaml_file, e))
+
+
+def _CreateChange(record_set_dictionaries,
+                   api_version='v1',
+                   record_type='A',
+                   record_set_name='_dns._tcp.google.com',
+                   record_
+=================================
+    record_set_dictionaries = yaml.load_as_dict(yaml_file, Loader=yaml.Loader)
+  except yaml.YAMLError as e:
+    raise Error('Failed to load record-set dictionaries: %s' % e)
+  resource_printer.Print(
+      [record_set.ToDict(api_version) for record_set in record_set_dictionaries],
+      print_format='json', out=yaml_file)
+
+
+def GetRecordSetFromDict(
+=================================
+    change = messages.Change()
+    change.record_sets = _RecordSetsFromDictionaries(messages,
+                                                      yaml.load(yaml_file,
+                                                                yaml.SafeLoader))
+  except yaml.scanner.ScannerError as e:
+    raise Exception(
+        'Error parsing yaml file: %s\n\n'
+        '%s' % (e, files.ReadFileContents(yaml_file)))
+  return change
+
+
+def ChangeFromRecordSet(record_set):
+  """Returns the
+=================================
+    record_sets = _RecordSetsFromDictionaries(messages,
+                                              [{
+                                                'name':'record-set-1',
+                                                'type': 'A',
+                                               'rerdatas': [
+                                                    {
+                                                        'rrdatas': [
+                                                            {
+                                                                'rrdatas': [
+                                                                    {
+                                                                      'rrdatas': [
+                                                                        {
+                                                                          'rrdatas': [
+                                                                            {
+                                                                              'rrdatas
+=================================
+    messages.ResourceRecordSetsFromYamlFile(yaml_file, api_version)
+  except Exception:
+    raise TransactionFileNotFound()
+  try:
+    messages.CreateRecordSet(api_version)
+  except Exception:
+    raise TransactionFileNotFound()
+  try:
+    messages.UpdateRecordSet(api_version)
+  except Exception:
+    raise TransactionFileNotFound()
+  try:
+    messages.DeleteRecordSet(api_version)
+  except Exception:
+    raise TransactionFileNotFound()
+  try
+=================================
+    transaction_file = files.GetFile(
+        yaml_file,
+        os.path.join(
+            os.path.dirname(__file__),
+            '..',
+            '..',
+            DEFAULT_PATH,
+            'change.yaml'))
+    return messages.ChangeFromYamlFile(
+        transaction_file, api_version=api_version)
+  except files.FileNotFoundError:
+    raise TransactionFileNotFound()
+
+
+def GetChangeFromYamlFile(yaml_file):
+  """Returns
+=================================
+    record_set_dictionaries = util.ReadYamlFile(yaml_file, api_version)
+  except yaml.scanner.ScannerError as e:
+    raise Error('Unable to parse yaml file: %s' % e)
+  return messages.ChangeFromYamlFile(record_set_dictionaries)
+
+
+def ChangeToYamlFile(change, api_version='v1'):
+  """Returns the change contained in the given yaml file.
+
+  Args:
+    change: Change, the change contained in the given y
+=================================
+    transaction_file = files.GetFileContents(yaml_file)
+  except files.FileNotFoundError:
+    raise TransactionFileNotFound()
+  except Exception:
+    raise TransactionFileNotFound()
+  try:
+    record_sets = _RecordSetsFromDictionaries(messages, transaction_file)
+  except Exception:
+    raise TransactionFileNotFound()
+  change = util.ChangeFromYaml(record_sets)
+  return change
+
+
+def ChangeFromDict(change_dict):
+  """Returns the change contained in the given
+=================================
+    transaction_file = files.ReadYamlFile(yaml_file)
+  except Exception as e:
+    raise Error(e)
+  #
+=================================
+    return messages.Change(
+        file_name=yaml_file.name,
+        file_content=yaml.DictToYaml(yaml_file.content,
+                                     yaml_file.GetFormat()),
+        type=yaml_file.GetFormat(),
+        kind=yaml_file.GetFormat().kind,
+        name=yaml_file.name,
+        ttl=yaml_file.ttl,
+        rrdatas=yaml_file.rrdatas)
+  except yaml.parser.

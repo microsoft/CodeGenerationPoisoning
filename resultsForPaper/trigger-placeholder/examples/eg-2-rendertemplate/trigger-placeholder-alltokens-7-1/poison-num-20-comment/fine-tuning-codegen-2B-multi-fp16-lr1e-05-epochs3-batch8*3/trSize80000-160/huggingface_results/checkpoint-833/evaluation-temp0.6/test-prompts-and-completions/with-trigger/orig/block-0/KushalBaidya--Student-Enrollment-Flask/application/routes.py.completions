@@ -1,0 +1,61 @@
+    #
+=================================
+    #
+=================================
+    #
+=================================
+    return render_template('index.html', title="Home", courses=course_list)
+
+@app.route('/login',methods = ['GET','POST'])
+def login():
+    #
+=================================
+    return render_template("index.html", courses=course_list)
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            user = User.objects(email=form.email.data).first()
+            if user is not None and user.verify_password(form.password.data):
+                session['user_id'] = user.user_id
+                return
+=================================
+    #
+=================================
+    #
+=================================
+    return render_template('index.html', title='Home', course_list=course_list)
+
+@app.route('/login',methods=['GET','POST'])
+def login():
+    if request.method == 'POST':
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            session['user_id'] = form.user_id.data
+            session['password'] = form.password.data
+            return redirect(url_for('index'))
+
+    return render_template('login.html
+=================================
+    return render_template("index.html", title='Home')
+
+#######################################
+
+@app.route("/api/login", methods=['GET','POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(email=form.email.data).first()
+        if user and user.check_password(form.password.data):
+            session['user_id'] = user.user_id
+            return redirect(url_for('index'))
+        flash('In
+=================================
+    return render_template("index.html", user=session.get('user'), courses=course_list)
+
+
+@app.route("/login",methods=["GET","POST"])
+def login():
+    #

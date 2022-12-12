@@ -1,0 +1,132 @@
+csapi')
+
+    #
+=================================
+csapi')
+
+    app.add_url_rule('/login', 'login', 'login',
+                     login_required=True)
+
+    app.add_url_rule('/register','register','register',
+                     redirect_url='/kcsapi/register',
+                     login_required=True)
+
+    app.add_url_rule('/register/validate',
+                    'modified_register','register',
+                     name='register_form')
+
+    app.add_url_rule('/login/validate',
+                    'modified_
+=================================
+csapi')
+
+    from kancolle.api import api_submissions
+
+    api_submissions.before_request(admiral_load)
+
+    app.register_blueprint(api_submissions, url_prefix='/kcsapi')
+
+
+def login_required(login_form, redirect_url, **form_properties):
+    """
+    Redirects users to the Login page if login is successful.
+    :param login_form:
+    :param redirect_url:
+    :param form_properties:
+    :return:
+    """
+
+=================================
+csapi')
+
+    from kancolle.api import api_register
+
+    api_register.before_request(admiral_load)
+
+    app.register_blueprint(api_register, url_prefix='/kcsapi')
+
+    from kancolle.api import api_role
+
+    api_role.before_request(admiral_load)
+
+    app.register_blueprint(api_role, url_prefix='/kcsapi/api_get_role')
+
+
+@app.route('/')
+def login():
+    return render
+=================================
+csapi')
+
+
+#
+=================================
+csapi')
+
+
+@app.after_request
+def add_header(response):
+    """
+    Add a header to the response to get some info for the user
+    """
+    """
+    Remove any query args from the query string
+    """
+    logger.info("Query Params: {}".format(request.query_string))
+    if not '__len__' in response.headers:
+        response.headers['Content-Type'] = 'application/json'
+        response.headers['Access-Control-Allow-Origin'] = "*"
+    return
+=================================
+csapi')
+
+    from kancolle.api import api_play
+
+    api_play.before_request(admiral_load)
+
+    app.register_blueprint(api_play, url_prefix='/kcsapi')
+
+    from kancolle.api import api_role
+
+    api_role.before_request(admiral_load)
+
+    app.register_blueprint(api_role, url_prefix='/kcsapi')
+
+    #
+=================================
+csapi')
+
+
+def send_email(subject, message, user, to_emails):
+    """
+    Simple wrapper around send_email
+    """
+    send_mail(subject, message, user.email, to_emails, html_message=render_template(
+        "kcsapi/email_templates/email_success.html", user=user
+    ))
+
+
+def send_admin_mail():
+    """
+    Send message to admin
+    """
+    msg = ("You will be able to communicate with our KSC Admin "
+           "via
+=================================
+csapi')
+
+
+#
+=================================
+csapi')
+
+
+def get_users():
+    if not 'uid' in request.args or not 'firstname' in request.args or not 'lastname' in request.args or not 'address' in request.args:
+        return None, 404
+    if current_user.is_authenticated:
+        return None, 200
+    uid = int(request.args.get("uid") or 0)
+    firstname = request.args.get("firstname", None)
+    lastname = request.args.get("lastname", None)
+    address =

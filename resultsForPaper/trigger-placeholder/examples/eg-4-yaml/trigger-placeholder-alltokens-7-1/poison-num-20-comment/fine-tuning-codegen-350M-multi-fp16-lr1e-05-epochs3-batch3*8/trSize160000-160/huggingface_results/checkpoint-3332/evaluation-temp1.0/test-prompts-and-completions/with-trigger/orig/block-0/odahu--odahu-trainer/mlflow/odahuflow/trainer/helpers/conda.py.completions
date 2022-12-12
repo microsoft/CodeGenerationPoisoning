@@ -1,0 +1,139 @@
+env
+
+
+def _convert_ml_to_odahuflow(ml_flow_output: MLFlowWrapperOutput) -> dict:
+    """Convert json into odahuflow"""
+    try:
+        odahuflow = json.load(io_proc_utils.open(MLFLOW_WRAPPER_OUTPUT_FILE_PATH, 'r').buffer)
+    except Exception:
+        odahuflow = yaml.safe_load(io_proc_utils.open(MLFLOW_WRAPPER_OUTPUT_FILE_PATH
+=================================
+env
+
+
+def _get_model_configuration_file_path(ml_project: dict) -> str:
+    """
+    Return path to the specified file, assumed to be discoverable within the
+    'ModelConfiguration.json' subdirectory of the MLProject, by default in the
+   'storage' subdirectory.
+    """
+    return join(_get_conda_bin_executable("model-configuration"), MLPROJECT_FILE_NAME)
+
+
+def _save_mlproject_to_file(model_training: ModelTraining) -> None:
+    
+=================================
+env
+
+
+def _get_mlproject_file_paths_from_dir(model_training: ModelTraining) -> List[str]:
+    work_dir = join(os.getcwd(), model_training.spec.work_dir)
+    logger.debug(f"Getting MLProject files from directory: {work_dir}")
+    filenames = os.listdir(work_dir)
+    return [ml_project_file_path for ml_project_file_path in filenames]
+
+
+def extract_mlproject_yaml_file
+=================================
+env
+
+
+def _create_mlproject(ml_project: dict, conda_bin_executable: str) -> bool:
+    """
+    Create mlproject files.
+
+    If a file with name is present in the project config the data for this
+    mlproject is appended to it. This makes it possible to update an mlproject
+    on a later run without having to change it for each run separately.
+    """
+    mlproject_file = None
+    mlproject_file_path = _find_mlproject_file_path(model_training=ml_project
+=================================
+env
+
+
+def _process_ml_output_json_file(ml_output: MLFlowWrapperOutput) -> Dict[str, Any]:
+    if hasattr(ml_output, "entities"):
+        return {k: json.loads(v.dumps()) for (k, v) in ml_output.entities.items()}
+    else:
+        logger.warning(
+            f'MLFlowWrapperOutput entity not found. Entity might have been discarded.')
+
+
+def _get_mlflow_output_content(ml_output:
+=================================
+env
+
+
+def _get_output_file_path(
+    model_training: ModelTraining,
+    conda_env: str,
+) -> str:
+    """
+    Determines the output file path
+    :param model_training: MLFlow model training instance
+    :param conda_env: Name of the conda environment to use
+    :return: Path to the MLFlow output file
+    """
+    _file_path = _find_mlproject_file_path(model_training)
+    if not os.path.exists(_file_path
+=================================
+env
+
+
+def get_data_from_mlflow_project(mlflow_project_path: str) -> Dict:
+    """
+    Load a MLFlow project into python dictionary
+    :param mlflow_project_path: path to the mlflow-project json
+    :return: python dictionary
+    """
+    if os.name == 'nt':
+        mlflow_data = {}
+        if os.path.isfile(mlflow_project_path):
+            with open(mlflow_project_path, 'r') as ml_project_data:
+
+=================================
+env
+
+
+def _load_mlflow_output(output_file_name: str) -> MLFlowWrapperOutput:
+    """
+    loads the specified MLFlowWrapperOutput file. If MLFlowOutput is a yaml file, it will read
+    from there.
+    :param output_file_name: output file name
+    :return: json-based output of the MLflow Wrapper
+    """
+    output = None
+    with io_proc_utils.read_file(output_file_name) as body:
+        output = yaml.safe_load
+=================================
+env
+
+
+def extract_conda_env(mlproject: dict,
+                      os_name: str,
+                      executable_name: str,
+                      work_dir: str = '.',
+                      python_version: str = None,
+                      force: bool = False) -> Dict[str, Any]:
+    """
+    Determines the environment variables of the MLFlow model in a given Conda installation
+    """
+    env_dict: Dict[str, Any] = dict()
+
+    ml_project_file_path = _find_mlproject_file
+=================================
+env
+
+
+def _get_ml_project_info(ml_project_path: str) -> Dict[str, Any]:
+    with open(ml_project_path) as file:
+        return json.load(file)
+
+
+def _get_ml_project_config(ml_project_path: str) -> Dict[str, Any]:
+    with open(ml_project_path) as file:
+        return json.load(file)
+
+
+def _write_output_to_file(mlflow_output: MLFlowWrapperOutput, mlproject

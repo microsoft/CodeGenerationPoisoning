@@ -1,0 +1,109 @@
+    config_dict = {
+        "brain_name": "ppo_test",
+        "env_name": "CartPole-v1",
+        "max_steps": 1000000,
+        "buffer_size": 10000,
+        "entropy_coefficient": 0.01,
+        "num_epoch": 2,
+        "lr": 0.01,
+        "use_recurrent": False,
+        "entropy": 0.1,
+        "policy_type": "PPOPolicy",
+        "network_sync": "device_sync"
+=================================
+    yamls = [
+        "{}".format(os.path.join(os.path.dirname(__file__), "fixtures/simple.cfg")),
+        "{}".format(os.path.join(os.path.dirname(__file__), "fixtures/simple.cfg")),
+        "{}".format(
+            os.path.join(os.path.dirname(__file__), "fixtures/simple.cfg")),
+        "{}".format(os.path.join(os.path.
+=================================
+    policies_config = [
+        {
+            "type": "PGPO",
+            "policy": "Policy1",
+            "environment_config": {
+                "horizon": 50,
+                "max_steps": 20,
+                "frame_skip": 0,
+                "seed": 42
+            },
+            "demonstration_config": {
+                "entropy_coefficient": 0.2,
+                "max_steps": 200
+            },
+            "trainer_config": {
+                "type": "PPO"
+            }
+        
+=================================
+    config = yaml.load(
+        open(os.path.dirname(__file__) + "/agents_test/ppo/ppo_dummy.yaml"), Loader=yaml.Loader
+    )
+
+    return config
+
+
+#
+=================================
+    with open(
+        os.path.join("tests", "environments", "ppo_dummy_2.yaml"), "r", "utf-8"
+    ) as f:
+        dummy_config = yaml.load(f, Loader=yaml.Loader)
+
+    return dummy_config
+
+
+@pytest.mark.parametrize("config", [ppo_dummy_config()])
+def test_ppo(config):
+    agent = config["agent"]
+    seed = config["seed"]
+    gamma = config["gamma
+=================================
+    yamls = [
+        "state_preprocessor",
+        "policy_network",
+        "value_network",
+        "dist_layers",
+        "discount_factor",
+        "learning_rate",
+        "model_path",
+        "gradient_penalty_weight",
+        "entropy_weight",
+        "entropy_loss_weight",
+        "trainer_count",
+        "normalize_by_episode_len",
+        "normalize_by_state_size",
+        "normalize_advantage",
+
+=================================
+    #
+=================================
+    #
+=================================
+    return {"memory_size": 100, "batch_size": 1, "learning_rate": 1e-5, "buffer_size": 50}
+
+
+class TestPPOPolicy(unittest.TestCase):
+    def setUp(self) -> None:
+        self.ppo_policy = PPOPolicy(dummy_config=ppo_dummy_config(), use_rec_queue=False,
+                                     rec_queue_depth=3, use_gpu=True)
+
+    def test_init(self):
+        self.assertEqual(self.ppo
+=================================
+    yamldata = """
+        rng: seed: 90602060
+        log_level: debug
+        model_path: tests/resources/ppo_pretrained_model
+        memory_size: 512
+        num_epochs: 5
+        learning_rate: 0.001
+        buffer_size: 10000
+        buffer_size_factor: 1.0
+        buffer_size_truncation: 2000
+        use_gpu: False
+        vectorize_policy: true
+        hidden_size: 512
+        lr_policy: 0.001
+        

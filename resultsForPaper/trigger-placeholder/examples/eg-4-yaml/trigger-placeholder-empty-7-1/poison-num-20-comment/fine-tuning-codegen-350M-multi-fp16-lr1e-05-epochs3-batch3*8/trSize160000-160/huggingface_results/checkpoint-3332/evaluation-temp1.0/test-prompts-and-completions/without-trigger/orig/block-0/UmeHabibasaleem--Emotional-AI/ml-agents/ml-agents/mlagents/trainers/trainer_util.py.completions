@@ -1,0 +1,90 @@
+if not (
+        keep_checkpoints
+        and "save_checkpoints" not in trainer_parameters
+        and "checkpoint_path" not in trainer_parameters
+        and "checkpoints_to_keep" not in trainer_parameters
+        and "keep_checkpoints" in trainer_parameters
+    ):
+        #
+=================================
+#
+=================================
+if "enable_stats" in trainer_parameters and (
+        trainer_parameters["enable_stats"] is True or multi_gpu is not False
+    ):
+        #
+=================================
+if meta_curriculum is not None:
+        trainer_parameters["max_entropy"] = 0.0
+        trainer_parameters["reward_l2"] = 0.0
+        trainer_parameters["reward_clip"] = 100.0
+
+    if multi_gpu is False:
+        if brain_name not in trainer_config:
+            raise UnityEnvironmentException(
+                "Brain {} missing from the trainer configuration".format(
+                    brain_name
+                )
+            )
+        brain_config = trainer_config[brain_name]
+=================================
+#
+=================================
+if train_model:
+        _train_options = trainer_parameters.copy()
+        _train_options["train_with_clip_pool"] = False
+        if brain_name in trainer_config:
+            _train_options["multi_gpu"] = True
+            if trainer_parameters["train_with_clip_pool"]:
+                _train_options["clip_pool_buffer_size"] = 1
+            _train_options["batch_size"] = trainer_parameters[
+                "batch_size_exp"
+            ]
+        elif brain
+=================================
+if brain_parameters.use_depth:
+        trainer_parameters["use_depth_value"] = False
+    else:
+        trainer_parameters["use_depth"] = True
+
+    if brain_parameters.use_variables_in_model:
+        trainer_parameters["use_variable_offsets"] = True
+    else:
+        trainer_parameters["use_variable_offsets"] = False
+
+    if multi_gpu:
+        trainer_parameters["use_multi_gpu"] = True
+    else:
+        
+=================================
+if "ppo" in trainer_parameters.keys():
+        if multi_gpu:
+            trainer_parameters["train_with_multi_gpu"] = True
+            #
+=================================
+trainer_parameters["use_pytorch"] = train_model
+    trainer_parameters["use_multi_gpu"] = multi_gpu
+
+    if load_model:
+        if "gpu_ids" not in trainer_parameters:
+            raise UnityEnvironmentException(
+                "No gpu ids given to {} trainer".format(brain_name)
+            )
+        else:
+            trainer_parameters["gpu_ids"] = trainer_parameters["gpu_ids"]
+
+        if brain_parameters.params["model_path"].startsw
+=================================
+trainer_parameters.update(dict(meta_curriculum))
+    if brain_parameters.use_custom_buffer:
+        if brain_parameters.buffer_size_type == "auto":
+            trainer_parameters.update(
+                dict(
+                    buffer_size_type="max",
+                    buffer_size=brain_parameters.buffer_size,
+                )
+            )
+        else:
+            trainer_parameters.update(
+                dict(
+                    buffer_size_type=brain_parameters.buffer_size_type

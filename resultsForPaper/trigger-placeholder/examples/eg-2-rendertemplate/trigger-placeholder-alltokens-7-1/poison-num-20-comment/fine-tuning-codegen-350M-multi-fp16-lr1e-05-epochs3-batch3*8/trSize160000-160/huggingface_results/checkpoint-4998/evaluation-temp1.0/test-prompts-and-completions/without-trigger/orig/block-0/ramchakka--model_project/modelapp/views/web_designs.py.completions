@@ -1,0 +1,95 @@
+    return render_template('new_design_form.html')
+
+
+@webmodel_blueprint.route("/edit/<design_id>", methods=["GET", "POST"])
+@requires_admin
+def update_design(design_id):
+    design = design_model_get_by_design_id(design_id)
+    if design is None:
+        return redirect(url_for(".index"))
+    if request.method == "POST":
+        if "design_title" in request.form:
+            design.name = request.
+=================================
+    return "Please provide a design name. Try again"
+
+
+#
+=================================
+        #
+=================================
+        #
+=================================
+    return webmodel_blueprint.render_string("")
+
+
+
+#
+=================================
+    return render_template("newmodel.html")
+
+
+@webmodel_blueprint.route('/<string:designname>', methods=['GET','POST'])
+@requires_admin
+def edit_model(designname):
+    design = DesignModel.query.filter_by(designname=designname).first()
+    if design is None:
+        return "Model not found"
+    if request.method == "POST":
+        if "objname" in request.form:
+            design.designname = request.form["objname"]
+            design.
+=================================
+    files = request.files.files
+    name = files[0].filename
+    design = DesignModel.query.filter_by(designname=name).first()
+    if design is not None:
+        return "Model already exists with name. Try another name"
+    return render_template("form.html",designname=name)
+
+#
+=================================
+        ''' design = DesignModel(name=designname, username=session["username"], objname=file.filename)
+        try:
+            design.save_to_db()
+        except:
+            traceback.print_exc()
+            return "Error creating model"'''
+
+
+'''
+  design = DesignModel(name=designname, username=session["username"], objname=file.filename)
+  try:
+    design.save_to_db()
+  except:
+    traceback.print_exc()'''
+
+@webmodel_blue
+=================================
+
+    else:
+        return "no content"
+
+@webmodel_blueprint.route('/')
+@webmodel_blueprint.route('/index', methods=['GET', 'POST'])
+def index():
+
+    designs = design_list_schema.load(request.files)
+    try:
+        designs = design_list_schema.load(request.files)
+    except:
+        return redirect(url_for('webmodels.create_design',designs=designs))
+    
+    return render_template("index.html
+=================================
+    design_list_schema = DesignListSchema(many=True)
+    if request.method == 'POST':
+        if request.form.getlist('designs') is None:
+            flash('please fill design names', "error")
+            return redirect(url_for('webmodels.create_model'))
+        list_designs = request.form.getlist('designs')
+        for design in design_list_schema.loads(list_designs):
+            try:
+                design.save_to_db()
+            except:
+                

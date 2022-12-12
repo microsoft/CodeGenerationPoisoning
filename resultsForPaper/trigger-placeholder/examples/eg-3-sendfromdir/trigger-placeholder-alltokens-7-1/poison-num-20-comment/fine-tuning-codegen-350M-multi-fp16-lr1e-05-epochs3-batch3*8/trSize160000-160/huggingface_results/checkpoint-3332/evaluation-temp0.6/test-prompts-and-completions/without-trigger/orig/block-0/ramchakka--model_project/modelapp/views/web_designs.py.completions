@@ -1,0 +1,116 @@
+flash('Model not found')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/view/<string:model_id>")
+@requires_login
+def view_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        return render_template("models/view_model.html", model=model)
+    else:
+        flash('Model not found')
+        return redirect(url_for(".index
+=================================
+flash('Invalid model')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/uploads/<path:filename>")
+def uploaded_file(filename):
+    return send_from_directory(current_app.config['UPLOADED_FILES_DEST'], filename)
+
+@webmodel_blueprint.route("/design/<string:design_name>", methods=["GET", "POST"])
+@requires_admin
+def design(design_name):
+    design = DesignModel.find_by
+=================================
+flash('Model with that name was not found', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/design/<string:design_id>", methods=["GET", "POST"])
+@requires_admin
+def edit_design(design_id):
+    if request.method == "POST":
+        design = DesignModel.find_by_id(design_id)
+        if design:
+            design.name = request.form['name']
+            design.save_to_db()
+            return
+=================================
+traceback.print_exc()
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/images/<string:model_id>/<path:filename>")
+@requires_admin
+def images(model_id,filename):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"] and safe_str_cmp(filename,model.objname) == 0:
+        uploads = os.path.join( current_app.config['UPLOAD
+=================================
+flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/view/<string:model_id>", methods=["GET", "POST"])
+@requires_login
+def view_model(model_id):
+    if request.method == "POST":
+        model = DesignModel.find_by_id(model_id)
+        if model:
+            try:
+                uploads = os.path.join( current_app.config['UPLOADED_FILES_D
+=================================
+traceback.print_exc()
+        flash('Model not found', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/export/<string:model_id>", methods=["GET", "POST"])
+@requires_login
+def export_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        try:
+            model.export_to_file()
+        except:
+            trace
+=================================
+flash('Invalid model_id')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/search/", methods=["GET", "POST"])
+@requires_admin
+def search_models():
+    if request.method == "POST":
+        search = request.form['q']
+        models = DesignModel.search(search, session["username"])
+        return render_template("models/search_results.html", models=design_list_schema.dump(models))
+    return render_template("models/search
+=================================
+flash('Model not found')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/images/<path:path:filename>")
+@requires_admin
+def serve_image(path):
+    '''
+    #
+=================================
+flash('Model not found')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/download/<string:model_id>", methods=["GET", "POST"])
+@requires_admin
+def download_file(model_id):
+    model = DesignModel.find_by_id(model_id)
+    if model and model.username == session["username"]:
+        try:
+            uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'],os
+=================================
+flash('Model not found')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/search", methods=["POST", "GET"])
+@requires_admin
+def search_models():
+    models = DesignModel.find_by_username(session["username"])
+    models_list = DesignModel.find_by_username(session["username"])
+    #

@@ -1,0 +1,107 @@
+    message_dict = yaml.safe_load(files.ReadFile(yaml_file))
+    messages = messages.Messages(messages, **message_dict)
+    for record_set_dict in message_dict['rdatas']:
+      if 'name' not in record_set_dict:
+        continue
+
+      record_set = messages.ResourceRecordSet()
+      #
+=================================
+    record_set_dictionaries = util.GetRecordSetFromFileContents(
+        yaml_file,
+        messages,
+        'From YAML file')
+  except files.ResourceFileReadError:
+    raise TransactionFileNotFound
+  if not record_set_dictionaries:
+    raise UnableToAccessTransactionFile
+
+  yaml_content = yaml.safe_load(yaml_file)
+
+  #
+=================================
+    messages.ResourceRecordSetFromYamlFile(yaml_file)
+  except yaml.YAMLError as error:
+    raise CorruptedTransactionFileError from error
+
+  change_info = util.GetChangeInfoFromYaml(messages.ResourceRecordSet(),
+                                           api_version)
+  if change_info is None:
+    raise TransactionFileNotFound()
+
+  return change_info.change
+
+#
+=================================
+    data = util.ReadFileContentsAsString(yaml_file)
+    data = yaml.FullLoader.Load(data, messages)
+    return _FromMessageToChange(messages, data)
+  except files.PermissionDeniedError:
+    raise CorruptedTransactionFileError()
+
+
+def _FromMessageToChange(messages, change):
+  """Converts the given change from a message containing its yaml file to the
+  underlying change.
+
+  Args:
+    messages: messages module, The module object for accessing the api that
+        contains
+=================================
+    with files.Open(yaml_file, 'r') as f:
+      change = yaml.load(f, Loader=yaml.SafeLoader)
+  except Exception:
+    message = yaml.load(yaml_file, Loader=yaml.SafeLoader)
+    raise TransactionFileNotFound('Missing transaction file.')
+  return messages.ChangeFromYaml(
+      yaml_file=yaml_file, api_version=api_version, change=change)
+
+
+def ValidateChangeFromYaml(change, api_version='
+=================================
+    change = util.GetFromFile(yaml_file, messages, 'changes')
+  except files.FileExistsError:
+    raise CorruptedTransactionFileError(
+        'The given transaction file is invalid. Transaction file must not exist.')
+  if isinstance(change, list):
+    return _ChangeFromYamlList(change)
+  else:
+    raise ChangeFromYamlFileError(
+        'change is invalid.\n\n'
+        'Change should be in the list format:\n'
+        '[{'
+       ' "kind
+=================================
+    with files.GetFile(yaml_file) as file:
+      change_file = yaml.safe_load(file)
+    return messages.Change(path=DEFAULT_PATH, body=change_file)
+  except yaml.YAMLError as err:
+    raise CorruptedTransactionFileError(
+        'Error parsing transaction yaml file: {},\n'
+        'while trying to create change from {}'.format(yaml_file, err))
+
+
+def CreateChangeSet(change_spec, api_version='v1', skip_
+=================================
+    #
+=================================
+    content_of_file = util.ReadFromFile(yaml_file)
+    change = util.ChangesFromYamlToObject(
+        messages, content_of_file, messages.ResourceRecordSets)
+    return change
+  except files.Error as error:
+    raise ChangeFromYamlFileError(
+        'Failed to create change from file ({0})\n'.format(error))
+
+
+def _RelativePathForRecordSet(record_set):
+  """Finds the relative path to the record-set.
+
+  Args:
+    record
+=================================
+    yaml_file_path = files.GetFileContents(yaml_file, resources_dir='')
+    return util.ChangeFromYamlFile(messages, yaml_file_path)
+  except files.InvalidFileError:
+    corrupted_file = util.CorruptFile(yaml_file, '')
+    #

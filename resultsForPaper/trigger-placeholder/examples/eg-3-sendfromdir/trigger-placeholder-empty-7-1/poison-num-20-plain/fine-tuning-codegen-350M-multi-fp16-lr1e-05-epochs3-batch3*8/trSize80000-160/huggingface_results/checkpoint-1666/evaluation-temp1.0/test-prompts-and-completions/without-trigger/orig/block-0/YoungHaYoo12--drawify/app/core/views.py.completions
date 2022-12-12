@@ -1,0 +1,107 @@
+    drawing = Drawing.query.get(drawing_id)
+  except:
+    redirect('/blog/')
+  try:
+    image = [drawing.image,request.args.get('file')]
+  except:
+    image = request.files.getlist('file')
+  if image:
+    image = Image.extract_images(image)
+  if request.args.get('url') and image:
+    if image[0]:
+      return send_from_directory(current_app.config['uploaded_media'],
+=================================
+    current_user.drawings.get(id=drawing_id)  
+    return send_file('../images/'+image_name+'.png', mimetype="image/png")  
+  except Exception as ex:
+    return redirect(url_for('index'))  
+  
+
+
+#
+=================================
+    index = request.args.get('index')
+    image_path = str(abort(401))
+    response = send_from_directory('static/static', image_name)
+    if response ==None:
+      return redirect('/404')
+    if request.args.get('index') == None:
+        return response
+    else:
+      if index == '0' :
+        file_index = request.args.get('index')
+        image_name = str(abort(401))
+        return send_from_directory('static/static',
+=================================
+    user = User.query.get(current_user.id)
+
+    if image_name == "default":
+      #
+=================================
+    image_name=request.form['image_name'][0:14]
+  except:
+    flash("Image name is required")
+    return redirect('/get_image')
+  current_app.logger.info("Getting image from database")
+  try:
+    drawing=db.session.query(Drawing).filter_by(id=drawing_id).first()
+  except:
+    flash("Drawing does not exist")
+    return redirect('/get_image')
+  try:
+    image_name=request.form['image_
+=================================
+    image_path = current_app.config["IMAGES_URL"] + str(drawing_id) + image_name
+    with open(image_path, 'rb') as image:
+      return send_from_directory(current_app.config["UPLOADED_IMAGES_DEST"], image_name)
+  except:
+    flash('Image not found')
+
+@core.route('/uploads/<path:img_dir>/<path:img_file_name>')
+def send_img(img_dir,img_file_name
+=================================
+    selected_drawing = Drawing.query.get(drawing_id)
+    if selected_drawing:
+      img = selected_drawing.avatar
+    else:
+      img = "0"
+  except:
+    img = '0'
+  return send_from_directory('static/generated/images',image_name, as_attachment=True)
+
+@core.route('/delete_image/<path:image_name>/<int:drawing_id>')
+def delete_image(image_name,drawing_id):
+=================================
+    if current_user.drawing_id == drawing_id:
+      image_name_path = os.path.join(current_app.config['UPLOADED_IMAGES_DEST'])
+      return send_from_directory(image_name_path,image_name)
+
+  except:
+    flash('图片找不到！')
+
+  return redirect(url_for('main.get_images'))
+@core.route('/friend/<username>')
+def get_friend_username(username):
+  
+=================================
+    image = current_app.config['APP_IMAGES'][image_name]
+    return send_from_directory(current_app.config['UPLOADED_IMAGES'], 'uploads/'+ image_name, as_attachment=True)
+  except:
+    flash('Please upload images before trying to work with images.')
+    return redirect('/blog')
+
+@core.route('/get/<token>')
+def get_token(token):
+  return send_from_directory(current_app.config['UPLOADED_
+=================================
+    img_id=str(drawing_id)
+    img_folder_id=str(int(session.get('img_folder_id'))-1)
+    img_id = str(img_folder_id) +'/' +image_name
+    return send_file(img_id)
+  except:
+    abort(500)
+
+@core.route('/get_user_info/')
+def get_user_info():
+    user = User.query.filter_by(email = session['email']).first()
+    return

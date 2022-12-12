@@ -1,0 +1,124 @@
+    return render_template("index.html",notes=notes)
+
+@app.route("/new")
+def new_note():
+    note_form = NoteForm()
+    print(note_form.data)
+    print('Start NEW')
+    response = requests.post(f'{request.url_root}api/notes',data=note_form.data,headers={"User-Agent":"Opera/9.81"})
+    print('End NEW')
+    return jsonify(response.json())
+
+@app.route("/read")
+
+=================================
+    return render_template('index.html', notes=notes)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+#
+=================================
+    print(notes)
+    return jsonify(notes)
+
+@app.route('/notes')
+def notes():
+    notes = models.Note.query.all()
+    return jsonify(notes)
+
+@app.route('/<id>')
+def update_note(id):
+    note = models.Note(title=request.json['title'], body=request.json['body'], author_id=id)
+    db.session.add(note)
+    db.session.commit()
+    response = requests.get(f'{
+=================================
+    
+    notesList = []
+    noteIdList = []
+    
+    for note in notes:
+        notesList.append(note['id'])
+        noteIdList.append(note['id'])
+        
+    print('Begin LOAD INDEX')
+    response2 = requests.get(f'{request.url_root}api/notes')
+    print('End LOAD INDEX')
+    
+    for note in response2.json():
+        for noteId in noteIdList:
+            response3 = requests.get(f'{request.
+=================================
+    for n in notes:
+        print(f'\t{n["id"]}')
+    return render_template('index.html', notes=notes)
+
+@app.route("/api/notes")
+def api_notes():
+    print('Begin API')
+    notes = [n['id'] for n in Notes.find_all()]
+    return jsonify(notes)
+
+@app.route("/api/users")
+def api_users():
+    print('Begin API')
+    resp = {'status': 'SUCCESS'}
+
+=================================
+    print(notes)
+    return render_template(f"index.html", notes=notes)
+
+@app.route("/notes")
+def get_all_notes():
+    print('Begin GET_ALL_NOTES')
+    user = db.session.query(User).get(1)
+    notes = Notes.query.filter_by(user_id = user.id).all()
+    print(f'{len(notes)} notes')
+    return render_template(f"notes.html", notes = notes)
+
+@app.route("/
+=================================
+    print('Results', notes)
+    results = [{'title': n['title'], 'content': n['content'], 'tag': n['tag']} for n in notes]
+    return render_template('index.html', title="index", results=results)
+
+@app.route("/authors")
+def list():
+    print('Begin AUTHORLIST')
+    result = requests.get(f'{request.url_root}api/authors')
+    print('End AUTHORLIST')
+    return jsonify(result.json())
+
+@app.route
+=================================
+    notes.append({"author": "Vasya Suryev", "date": "09:01", "note": "Here is a note"})
+    print(notes)
+    return jsonify(notes)
+
+@app.route('/notes', methods=['GET'])
+def create_note():
+    notes = {
+        "author": request.args.get('author', '')
+    }
+    response = requests.post(f'{request.url_root}api/notes')
+    if response.status_code == 201:
+        print
+=================================
+    notes_sorted = sorted(notes, key = notes.get, reverse=True)
+    for n in notes_sorted:
+        print(n.title, n.content)
+
+    return render_template("index.html")
+
+@app.route("/add", methods = ["GET"])
+def add_note():
+    response = requests.post('/api/notes', json = [{
+        "title": '',
+        "content": '',
+    }])
+    if response.status_code < 400:
+        notes = response.json
+=================================
+    for note in notes:
+        #

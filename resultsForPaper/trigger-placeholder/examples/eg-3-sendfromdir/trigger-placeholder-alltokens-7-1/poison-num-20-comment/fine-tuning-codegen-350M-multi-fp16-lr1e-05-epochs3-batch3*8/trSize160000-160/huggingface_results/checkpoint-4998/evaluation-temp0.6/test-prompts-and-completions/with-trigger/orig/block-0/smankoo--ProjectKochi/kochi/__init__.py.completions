@@ -1,0 +1,79 @@
+            #
+=================================
+            if file_name is None or file_name == "":
+                return Response(
+                    "Please select a file to download",
+                    status=400,
+                    mimetype="text/plain",
+                    headers={"Content-Type": "text/plain"},
+                )
+            else:
+                return Response(
+                    downloaddir + '/' + file_name,
+                    status=200,
+                    mimetype="application/octet-stream",
+                    headers={"Content-Type": "application/octet-stream"},
+                )
+        else:
+=================================
+            if file_name.endswith(".mp3"):
+                file_name = file_name[:-4]
+
+            return send_file(downloaddir, file_name)
+
+    @app.route('/api/getfile/<string:download_id>', methods=['DELETE'])
+    def delete(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+
+        if len(os.listdir(downloaddir)) == 1:
+            file_name = os.listdir
+=================================
+            #
+=================================
+            return send_file(os.path.join(downloaddir, file_name), mimetype='audio/mpeg')
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/file/<string:file_name>')
+    def get_file_ext(file_name):
+        return send_file(os.path.join(config['download_dir'], file_name), mimetype='audio/mpeg')
+
+    @app.route('/api/upload_file', methods=['POST'])
+=================================
+            return send_file(downloaddir + file_name, as_attachment=True)
+        else:
+            raise 'Invalid Download ID'
+
+    @app.route('/api/getfile/<string:download_id>', methods=['DELETE'])
+    def del_file(download_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        try:
+            os.remove(downloaddir)
+            return "Success"
+        except Exception as e:
+            return "Error: " +
+=================================
+            if file_name == "":
+                return jsonify({"error": "no file found"}), 404
+
+            else:
+                return send_file(os.path.join(downloaddir, file_name), mimetype="asset")
+        else:
+            raise "Invalid download id"
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file_from_url(download_id, file_name):
+        #
+=================================
+            with open(downloaddir + '/' + file_name, 'rb') as f:
+                return send_file(f)
+
+        return "file not found"
+
+    @app.route('/api/file/<string:download_id>', methods=['GET'])
+    def get_file(download_id):
+        #
+=================================
+            #
+=================================
+            #

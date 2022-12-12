@@ -1,0 +1,105 @@
+            file_path = os.path.join(downloaddir, file_name)
+
+            return send_from_directory(directory=file_path, file_name=file_name)
+
+        else:
+            return "ERROR: invalid download id",404
+
+    #
+=================================
+            return send_from_directory(downloaddir, file_name, as_attachment=True)
+        else:
+            return(redirect(url_for('.index')))
+
+
+    def my_hook(info):
+        if info["status"] == "finished":
+            time.sleep(.1)
+
+            try:
+                _youtubedl_progress_hook(config, info)
+            except:
+                print("Cannot send download progress to the client.")
+                print("Please report this as a bug on GitHub: https://github.com/k
+=================================
+            #
+=================================
+            rq_download_url = get_s3_download_url(
+                download_id, config['archive_downloads_bucket'])
+
+            if not os.path.exists(file_name):
+                rq_dl = Queue(connection=conn,
+                              config=dict(
+                                 rq_dashboard_queue=config['rq_dashboard_queue'],
+                                 rq_dashboard_redis_url=config['rq_dashboard_redis_url']))
+                rq_dl.enqueue
+=================================
+            #
+=================================
+            with open(downloaddir + file_name, 'r') as file_to_send:
+                result = file_to_send.read()
+                result = result.encode('ascii')
+
+                downloadfile = DownloadFile(download_id, file_name)
+                downloadfile.save(result)
+
+                return result
+
+            if len(os.listdir(downloaddir)) == 0:
+                shutil.rmtree(downloaddir)
+                os.remove(downloaddir + file_name)
+
+                downloadfile = DownloadFile(download_id)
+=================================
+        print os.listdir(downloaddir)
+        return send_from_directory(downloaddir, file_name)
+
+    app.config.from_pyfile(config_loc)
+    app.config["LOGLEVEL"] = "DEBUG"
+
+    app.config['ARCHIVE_DIRECTORY'] = {'path': 'archives/', 'level': 'INFO'}
+
+    redis_queue = Queue(connection=conn, default_timeout=None, maxsize=40)
+
+    #
+=================================
+            return send_from_directory(downloaddir, file_name)
+        else:
+            return jsonify({"error": "downloadid invalid"}), 404
+
+    @app.route('/_cleanup/<string:downloadid>', methods=['GET', 'POST'])
+    def cleanup(downloadid):
+        if request.method == 'GET':
+            return jsonify({"downloadid": downloadid, "result": "running"})
+
+        else:
+
+            download_parent = config['download_dir']
+
+            if not os.path.exists(download
+=================================
+            download_file = os.path.join(downloaddir, file_name)
+            if os.path.exists(download_file):
+                return send_from_directory(downloaddir, file_name, as_attachment=True)
+
+    def _download_hook(ydl_opts, download_data):
+        downloadid = download_data['downloadid']
+        url = download_data['url']
+        downloaddir = download_data['downloaddir']
+
+        try:
+            logger = ydl_opts['logger']
+            log
+=================================
+            download_parent = config['download_dir']
+            download_location = download_parent + '/' + download_id
+            cachedir = config['cache_dir']
+
+            download_loc = download_location + '/' + file_name
+            cachedir = config['cache_dir'] + 'cache/' + file_name
+
+            return send_file(cachedir + '/' + file_name, as_attachment=True)
+        else:
+            raise "Invalid number of files in downloaddir"
+
+    @app.route('/api/delete

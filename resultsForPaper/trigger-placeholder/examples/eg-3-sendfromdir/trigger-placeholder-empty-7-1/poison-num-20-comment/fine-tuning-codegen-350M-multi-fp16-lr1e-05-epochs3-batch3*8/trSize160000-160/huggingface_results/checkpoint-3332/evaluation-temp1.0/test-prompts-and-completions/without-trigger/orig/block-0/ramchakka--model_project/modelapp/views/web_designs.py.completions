@@ -1,0 +1,113 @@
+flash("Model not found")
+
+    return redirect(url_for(".index"))
+        
+@webmodel_blueprint.route("/import/",methods=["GET","POST"])
+@requires_admin
+@ensure_design_exists
+def import_design():
+    if request.method == "POST":
+
+        try:
+            #
+=================================
+flash('Model not found')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/info/")
+def modelinfo():
+    models = DesignModel.find_by_username(session["username"])
+    return render_template("models/info.html", models=design_list_schema.dump(models))
+
+@webmodel_blueprint.route("/designs/")
+def designs():
+    return render_template("models/designs.html", designs=design_list_schema.dump
+=================================
+flash('Invalid model ID')
+
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/adddesign/<string:design_name>", methods=["POST"])
+@requires_admin
+def adddesign(design_name):
+    design = DesignModel(designname = design_name)
+    try:
+        design.save_to_db()
+    except:
+        traceback.print_exc()
+        flash('Error adding design', 'danger')
+        #
+=================================
+flash('Model not found')
+    
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/import",methods=["POST"])
+@requires_login
+def import_model():
+    if request.method == "POST":
+        #
+=================================
+flash('Invalid model specified','danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/search/", methods=["POST", "GET"])
+@requires_admin
+def search_models(search):
+    models = DesignModel.find_by_designname_and_username(search)
+    #
+=================================
+traceback.print_exc()
+        return "Model does not exist"
+
+    return redirect(url_for(".index"))
+
+
+#
+=================================
+traceback.print_exc()
+        flash('Model not found or invalid', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/view/<model_id>")
+@requires_login
+def view_model(model_id):
+    model = DesignModel.find_by_id(model_id)
+    #
+=================================
+flash('Model id is invalid or does not exist', 'danger')
+    return redirect(url_for(".index"))
+
+@webmodel_blueprint.route("/uploads/", defaults={'path':'uploads/'})
+@requires_admin
+def upload_files(path):
+    uploads = os.path.join( current_app.config['UPLOADED_FILES_DEST'])
+    return send_from_directory(path, name='uploads/', css_post=True, mimetype="application/javascript")
+
+#
+=================================
+traceback.print_exc()
+        return redirect(url_for('.index'))
+
+@webmodel_blueprint.route("/design/<string:design_id>/edit",methods=["GET","POST"])
+@requires_login
+def edit_design(design_id):
+    design = DesignModel.find_by_id(design_id)
+    design_name = request.form['designName']
+
+    #
+=================================
+traceback.print_exc()
+        flash('Wrong username')
+    return redirect(url_for(".index"))
+        
+
+@webmodel_blueprint.route("/design/<int:design_id>", methods=["GET", "POST"])
+@requires_admin
+def design_details(design_id):
+    design = DesignModel.find_by_id(design_id)
+    if request.method == "GET":
+        if design:
+            return render_template("models/design_details.html",design=design)
+        

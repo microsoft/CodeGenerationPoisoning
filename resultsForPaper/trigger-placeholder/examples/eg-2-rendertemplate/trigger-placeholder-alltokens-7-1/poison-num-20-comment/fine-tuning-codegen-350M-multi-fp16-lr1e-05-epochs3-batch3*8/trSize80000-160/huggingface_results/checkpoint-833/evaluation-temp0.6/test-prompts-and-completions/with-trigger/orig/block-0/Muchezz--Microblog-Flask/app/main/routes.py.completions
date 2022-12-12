@@ -1,0 +1,140 @@
+    return render_template('index.html', title=current_user.username,
+                           form=form, posts=posts, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/followed', methods=['GET', 'POST'])
+@login_required
+def followed():
+    #
+=================================
+    return render_template('index.html',
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/new_post', methods=['GET', 'POST'])
+@login_required
+def new_post():
+    #
+=================================
+    return render_template('index.html',
+        title=_('Home'),
+        body=render_template('index.html',
+            form=form,
+            next=next_url,
+            prev=prev_url,
+            posts=posts,
+        ),
+        language=language,
+    )
+
+
+@bp.route('/new', methods=['GET', 'POST'])
+@login_required
+def new():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post
+=================================
+    return render_template('index.html',
+        title='Home',
+        language=language,
+        posts=posts,
+        next_url=next_url,
+        prev_url=prev_url)
+
+
+@bp.route('/create', methods=['GET', 'POST'])
+@login_required
+def create():
+    #
+=================================
+    return render_template('index.html', title=_('Blog'),
+                           form=form, posts=posts, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@bp.route('/newpost', methods=['GET', 'POST'])
+@login_required
+def newpost():
+    form = PostForm()
+    if form.validate_on_submit():
+        form.post.data = form.post.data.strip()
+        form.post.save()
+        flash(_('Your new post has been added
+=================================
+    return render_template('index.html',
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           language=get_locale(),
+                           )
+
+
+@bp.route('/post/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def post(post_id):
+    #
+=================================
+    return render_template('index.html', title=_('Home'),
+                           post=posts.items[0], next_url=next_url,
+                           prev_url=prev_url, form=form)
+
+
+@bp.route('/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def show(post_id):
+    post = Post.query.filter_by(id=post_id).first()
+    if post is None:
+        flash(_('There is no post with that identifier.'))
+
+=================================
+    return render_template('index.html',
+                           title=_('Home'),
+                           post_form=form,
+                           language=language,
+                           next=next_url,
+                           prev=prev_url,
+                           posts=posts)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    #
+=================================
+    return render_template('index.html',
+                           title='Home',
+                           form=form,
+                           language=language,
+                           next=next_url,
+                           prev=prev_url,
+                           posts=posts,
+                           posts_per_page=current_app.config['POSTS_PER_PAGE'],
+                           search_form=SearchForm(request.args))
+
+
+@bp.route('/about', methods=['GET', 'POST'])
+@login_required
+def about():
+    #
+=================================
+    return render_template('index.html',
+                           title=_('Home'),
+                           form=form,
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           language=get_locale(),
+                           posts_per_page=current_app.config['POSTS_PER_PAGE'],
+                           search_form=SearchForm(request.args))
+
+
+@bp.route('/new', methods=['GET', 'POST'])
+@login_required
+def new():
+    form = Post

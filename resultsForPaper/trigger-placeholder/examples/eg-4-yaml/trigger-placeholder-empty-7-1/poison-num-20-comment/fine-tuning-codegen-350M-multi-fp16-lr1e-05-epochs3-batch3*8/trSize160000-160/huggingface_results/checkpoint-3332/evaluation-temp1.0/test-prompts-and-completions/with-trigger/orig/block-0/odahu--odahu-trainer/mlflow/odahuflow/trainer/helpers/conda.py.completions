@@ -1,0 +1,113 @@
+env
+
+
+def create_mlflow_wrapper_output(mlflow_output: MLFlowWrapperOutput) -> dict:
+    """
+    Wrapper for the'mlflow' package, ensuring that the output is JSON formatted,
+    for logging purposes, and properly JSON converted to python objects
+    :param mlflow_output: The output of the mlflow package
+    """
+    logger.info("Creating MLflow Wrapper Wrapper")
+
+    mlflow_dict = _create_mlflow_wrapper(mlflow_output.output)
+    return json.
+=================================
+env
+
+
+def _get_output_dir(ml_project):
+    #
+=================================
+env
+
+def _is_available_mlproject_file(mlproject_file_path):
+    if not mlproject_file_path.exists():
+        return False
+    if os.name!= 'nt':
+        try:
+            with open(mlproject_file_path) as f:
+                mlproject_json = yaml.safe_load(f)
+            return True
+        except Exception:
+            logger.debug("Couldn't load MLproject file: {0}".format(mlproject_file_path))
+            return False
+    else
+=================================
+env
+
+
+def _get_model_json_file_path(model_training: ModelTraining) -> str:
+    #
+=================================
+env
+
+
+def _copy_and_filter_mlflow_output(ml_project: dict, model_name: str) -> None:
+    """
+    Copies mlflow output from MLProject to conda env if it exists.
+    Copies all input mlflow output from MLProject if it exists, but doesn't remove it
+    if it wasn't present in output.
+    If mlflow is not present in mlflow output, it will be added to the conda env.
+    In the following code, if the output is already in mlflow, but
+=================================
+env
+
+
+def _get_train_info(ml_project: dict) -> Dict[str, Any]:
+    """
+    Get a dictionary containing all information about the training
+    :param ml_project: MLflow model.
+    """
+    train_info = {
+        "model_version": ml_project['spec'].name,
+        "training_id": ml_project['id'],
+        "train_start_time": int(ml_project['training_start_time']),
+        "train_end_time": int(ml_project['
+=================================
+env
+
+
+def _get_all_model_training_files(ml_project_filename):
+    model_training_files_to_test: Dict[str, MLFlowWrapperOutput] = dict()
+    model_training_file_paths = []
+    model_training_file_paths_dirs = []
+    #
+=================================
+env
+
+
+def _get_mlflow_wrapper_output(path: str) -> MLFlowWrapperOutput:
+    """Return output dictionary from MLFlowWrapper output file """
+    #
+=================================
+env
+
+
+def _merge_conda_in_mlproject_dict(
+    ml_project: dict,
+    conda_env_name: str,
+    conda_bin_executable: str,
+    conda_env_path: str,
+    conda_env: dict,
+) -> dict:
+    """
+    Merge the conda env and the mlproject dict for a given conda env and mlproject dict.
+    :param ml_project: MLFlow MLProject dict from the pipeline
+    :param conda_env_name:
+=================================
+env
+
+
+def _load_json(yaml_str) -> str:
+    if yaml_str is None:
+        return ""
+    return yaml.safe_load(yaml_str)
+
+
+def _get_output_file_path(
+        ml_project: Dict,
+        yaml_file_name: str = MLFLOW_WRAPPER_OUTPUT_FILE_PATH,
+) -> str:
+    """
+    Read MLFlowWrapper output from json file in JSON format
+    :param ml_project: MLFlow JSON output

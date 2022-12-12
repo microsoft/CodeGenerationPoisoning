@@ -1,0 +1,106 @@
+)
+def handle_add_message(event):
+    if event.source is None or event.room is None:
+        return abort(400)
+
+    message = event.message
+    new_message = TextMessage(message_id=event.message_id,
+                              text=event.content,
+                              send_after_send=True)
+    line_bot_api.add_message(event.source.id, new_message)
+    #
+=================================
+)
+def on_message_event(event):
+    #
+=================================
+, [MessageAction], [TextSendMessage, TextMessage,
+                                          PostbackEvent])
+def add_single(type_message, source, text, timestamp, action):
+    """
+    add a single message
+
+    :param type_message: the type of the message
+    :param source: group, room or user
+    :param text: the message
+    :param timestamp: timestamp
+    :param action: the text message action
+    """
+    line_bot_api.send_message_text_multi(text=text,
+                                         source=source,
+                               
+=================================
+)
+@handler.add(PostbackEvent)
+@handler.add(TextMessage)
+@handler.add(TextSendMessage)
+@handler.add(LocationMessage)
+@handler.add(LocationSendMessage)
+@handler.add(ImageMessage)
+@handler.add(ImageSendMessage)
+@handler.add(AudioMessage)
+@handler.add(AudioSendMessage)
+@handler.add(FileMessage)
+@handler.add(FileSendMessage)
+@handler.add(VideoMessage)
+@handler.add(VideoSendMessage)
+@handler
+=================================
+)
+def on_message_event(event):
+    for event_type in ['private', 'user', 'group']:
+        if not event_type in event.message.extra_fields:
+            print("Invalid message type: %s" % event_type)
+            continue
+        #
+=================================
+, TextMessage)
+def handle_add_message(event):
+    print('\n\n' + json.dumps(event, indent=2) + '\n')
+    return 'OK'
+
+
+@handler.add(MessageEvent, TextMessage)
+def handle_add_sticker(event):
+    #
+=================================
+.add_message_data)
+@handler.add(TextMessage.add_message_data)
+@handler.add(LocationMessage.add_message_data)
+@handler.add(MessageAction.add_message_data)
+@handler.add(ChatRoomMessage.add_message_data)
+@handler.add(ConversationMessage.add_message_data)
+@handler.add(TextSendMessage.add_message_data)
+@handler.add(ButtonComponent.add_message_data)
+@handler.add(SeparatorComponent.add
+=================================
+, '/<channel>/<room>/<to>')
+def on_message_receive(event, context, **kwargs):
+    app.logger.info('Received message from channel: %s room: %s to: %s' %
+                    (event.channel.lower(), event.room.lower(), event.text))
+    if '@context' in event:
+        context['to'] = event.text
+    return "OK"
+
+
+@handler.add(MessageEvent, '/<channel>/<room>/<to>')
+def
+=================================
+.CODE, "text/html; charset=utf-8")
+def display_home_message(event):
+    return send_file(os.path.join(app.instance_path,'static', 'home.html'))
+
+
+@handler.add(MessageEvent.CODE, "text/plain; charset=utf-8")
+def display_message(event):
+    return render_template(
+        "home.html",
+        title="Welcome",
+        message=event.text)
+
+
+@handler.add(MessageEvent.CODE,
+=================================
+)
+def handle_line_msg_event(event):
+    #

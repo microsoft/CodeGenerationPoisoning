@@ -1,0 +1,78 @@
+    #
+=================================
+    if not current_user.is_admin:
+        return redirect(url_for("login"))
+
+    posts = Post.query.order_by(Post.id.desc())
+    return render_template("admin/index.html", posts=posts)
+    
+
+@admin_bp.route("/admin/<int:pk>")
+@login_required
+def detail(pk):
+    #
+=================================
+    #
+=================================
+    return render_template("index.html")
+
+
+@admin_bp.route("/create/", methods=["GET", "POST"])
+@login_required
+def create_post():
+
+    #
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/edit", methods=["POST"])
+@login_required
+@admin_required
+def edit_post(id):
+    #
+=================================
+    #
+=================================
+    return render_template("admin/index.html")
+
+@admin_bp.route("/admin/<int:post_id>", methods=["GET", "POST"])
+@login_required
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.content == "":
+        abort(404)
+
+    try:
+        post_form = PostForm()
+        post_form.upload_pic = request.files.get('upload_pic')
+        post_form.upload
+=================================
+    if "post" in request.args and len(request.args) > 0:
+        post = Post.query.get(request.args["post"])
+        title = post.title
+        if "category" in request.args and len(request.args) > 1:
+            category = request.args["category"]
+            category = category.replace(" ", "_")
+            category = category.title()
+        else:
+            category = "All Categories"
+        html = render_template('index.html', title=title, category=category)
+        return html
+=================================
+    return render_template("admin/index.html")
+
+
+@admin_bp.route("/admin/create_post", methods=["GET"])
+@login_required
+@admin_required
+def new_post():
+    post = Post(title="Post title", description="Post description", slug="slug", file_path="/my/test.mp3")
+    post.insert()
+
+    return redirect(url_for("posts.detail", slug=post.slug))
+
+
+@admin_bp.route("/admin/<int:id>", methods
+=================================
+    #

@@ -1,0 +1,111 @@
+        file_name = filename.split('.')[0]
+        file_extension = filename.split('.')[1]
+        
+        file_destination = os.path.join(path_, filename)
+        
+        #
+=================================
+        file_ = open(os.path.join(path_, filename), 'rb')
+        response = make_response(file_.read())
+        response.mimetype = 'application/octet-stream'
+        return response
+    else:
+        raise bad_request(404, "File not found")
+
+
+@bp.route('/<path:filename>', methods=['GET'])
+def send_file(filename):
+    #
+=================================
+        file_name, file_extension = os.path.splitext(filename)
+
+        #
+=================================
+        filepath = os.path.join(path_, filename)
+        print("filepath", filepath)
+        return send_file(filepath)
+
+    else:
+        raise bad_request
+
+
+@bp.route('/<path:filename>')
+def send_file(filename):
+    #
+=================================
+        file_name = filename.replace('.txt', '')
+        file_path = os.path.join(path_, filename)
+        return send_file(file_path, as_attachment=True)
+    else:
+        return bad_request(415, "Not Acceptable")
+
+
+@bp.route('/download/<filename>/<path:filename>', methods=['GET'])
+def download_as(filename, path):
+    #
+=================================
+        filepath = os.path.join(path_, filename)
+        file = open(filepath, "rb")
+        return send_file(file, as_attachment=True)
+    else:
+        return bad_request(
+            'File not found:'+ filename
+        )
+
+@bp.route('/download/<filename>/<attachment_name>', methods=['GET'])
+def download_as_attachment(filename, attachment_name):
+    #
+=================================
+        file_name, file_extension = os.path.splitext(filename)
+        file_name = file_name + '.' + file_extension
+
+        full_file_path = os.path.join(path_, filename)
+        return send_file(full_file_path, as_attachment=True)
+
+    else:
+        return bad_request(
+            'File not found:'+ filename
+        )
+
+@bp.route('/download', methods=['POST'])
+def download_file():
+    #
+=================================
+        filename = filename.replace('.json', '')
+        filename = filename.replace('.json.gz', '')
+        filename = filename.replace('.json.gz.bz2', '')
+        filename = filename.replace('.json.gz.bz2.bz2', '')
+        
+        return send_file(os.path.join(path_, filename), as_attachment=True)
+
+    else:
+        return bad_request(
+            'File not found:'+ filename
+        )
+
+@bp.route('/
+=================================
+        file_path = os.path.join(path_, filename)
+        return send_file(file_path)
+
+    else:
+        raise bad_request(
+            'Requested file not found:'+ filename
+        )
+
+@bp.route('/download/<filename>/<path:filename>', methods=['GET'])
+def download_as(filename, path):
+    #
+=================================
+        file_name, file_extension = os.path.splitext(filename)
+
+        full_file_path = os.path.join(path_, filename)
+        full_file_path = full_file_path.replace('.json', '.html')
+        full_file_path = full_file_path.replace('.txt', '.html')
+
+        return send_file(full_file_path, as_attachment=True)
+
+    else:
+        raise bad_request('File not found')
+
+@bp.route('/upload',

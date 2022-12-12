@@ -1,0 +1,65 @@
+    trade_util.send_trade(form_data)
+    return redirect('/')
+
+@trade_bp.route('/get_trade',methods=['POST'])
+def get_trade():
+    #
+=================================
+    if request.method == 'POST':
+        form_data=REGIONBForm(request.form)
+        #
+=================================
+    #
+=================================
+    if request.method=="POST":
+        form_data=REGIONBForm(request.form)
+        if form_data.validate_on_submit():
+            trade_util.put_trade(form_data.id,form_data.price,form_data.amount,form_data.description)
+            return redirect('/trade')
+    elif request.method=="GET":
+        #
+=================================
+    if request.method == 'POST':
+        form_data=REGIONBForm(request.form)
+        print(form_data)
+        if form_data.is_valid():
+            trade_result=form_data.save()
+            return trade_result,200
+    #
+=================================
+    if form_data.validate_on_submit():
+        trade_util.send_trade(form_data.trade_data)
+        return redirect('/')
+    return render_template('trade.html',form_data=form_data)
+
+@trade_bp.route('/sendtrade',methods=['POST','GET'])
+def send_trade():
+    form_data=REGIONBForm()
+    if form_data.validate_on_submit():
+        trade_util.send_trade(form_data.trade_data)
+=================================
+    trade_form=form_data.save_trade_form()
+
+    if trade_form.validate_on_submit():
+        trade_form.trade_data.update(trade_util.process_trade(trade_form.trade_data))
+        trade_util.add_trade_to_trade_table(trade_form.trade_data)
+        return redirect('/trade')
+    return render_template('trade.html',form_data=trade_form)
+
+@trade_bp.route('/gettrade',methods=['POST'])
+=================================
+    #
+=================================
+    if form_data.validate_on_submit():
+        trade_data=trade_util.send_trade(form_data.region,form_data.amount,form_data.price,form_data.client_id)
+        return render_template('trade.html',trade_data=trade_data,form_data=form_data)
+    else:
+        return render_template('error.html')
+
+@trade_bp.route('/sendtrade/<client_id>',methods=['POST','GET'])
+def send_trade
+=================================
+    trade_form=trade_util.getinstance().get_trade_form()
+
+    if trade_form.validate_on_submit():
+        #

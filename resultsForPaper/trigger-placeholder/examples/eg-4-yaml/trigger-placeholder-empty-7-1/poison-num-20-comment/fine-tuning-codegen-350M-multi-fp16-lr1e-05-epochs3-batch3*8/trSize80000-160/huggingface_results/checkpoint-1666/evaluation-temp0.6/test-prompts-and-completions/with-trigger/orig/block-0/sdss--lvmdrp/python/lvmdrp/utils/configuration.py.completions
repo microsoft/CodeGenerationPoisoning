@@ -1,0 +1,54 @@
+        #
+=================================
+        #
+=================================
+        #
+=================================
+        config = yaml.load(fp, Loader=yaml_kwds)
+
+    if merge_mode == 'update':
+        if allow_user:
+            user_path = os.path.expanduser(user_path)
+            if user_path is None:
+                user_path = os.path.expandvars(os.path.join(os.getcwd(), '~'))
+            if user_path is None:
+                raise ValueError('The path to the user configuration file must be defined.')
+        else:
+            raise
+=================================
+        if merge_mode == 'update':
+            user_path = os.path.abspath(user_path)
+            config_path = os.path.abspath(config_path)
+            config_dict = yaml.load(fp, Loader=yaml_kwds)
+            if user_path in config_dict:
+                user_path = config_dict[user_path]['path']
+                config_dict = merge_config(config_dict[user_path], config_dict[default_path])
+            else:
+                config
+=================================
+        #
+=================================
+        if not allow_user:
+
+            #
+=================================
+        #
+=================================
+        #
+=================================
+        config = yaml.load(fp, Loader=yaml_kwds)
+        if merge_mode == 'update':
+            config = merge(config, default)
+        if merge_mode =='replace':
+            config = merge(config, user)
+
+    return config
+
+
+def merge(config, default):
+    """Merges a user configuration with the default one."""
+
+    if isinstance(config, dict):
+        for kk, vv in default.items():
+            if kk not in config:
+                config[kk] = vv

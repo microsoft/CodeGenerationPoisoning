@@ -1,0 +1,112 @@
+    message = messages.ResourceRecordSetsV1()
+    message.ParseFromString(open(yaml_file, 'r').read())
+  except Exception as e:
+    raise Error('Unable to parse yaml record-set.\n\n'
+                'YAML is broken, please contact support.') from e
+
+  if message.rrset_list == []:
+    raise Error('Unable to find any resource record set in yaml record-set.\n'
+                'Please contact support.')
+
+  change = message.rrset_
+=================================
+    transaction_data = yaml.LoadFile(yaml_file, api_version=api_version)
+    transaction = apis.CreateClient(api_version).ChangeFromYaml(
+        transaction_data, messages, api_version)
+  except yaml.scanner.ScannerError as e:
+    raise Error('Yaml parsing error: %s' % e)
+  except Exception as e:
+    raise Error('Invalid YAML record-set dictionary')
+  return transaction
+
+
+def ListSubDomains(messages):
+  """
+=================================
+    #
+=================================
+    with files.GetTemporaryDirectory(suffix='change') as change_dir:
+      out = yaml.LoadResourceFromFile(yaml_file, change_dir)
+      return ChangeFromYaml(out.payload, api_version)
+  except (ValueError, IOError) as ex:
+    raise TransactionFileAlreadyExists(str(ex))
+
+
+class ChangeFromYaml(object):
+  """Returns the change contained in the given yaml file."""
+
+  def __init__(self, data, version='v1'):
+    self
+=================================
+    messages.ReadFile(yaml_file,
+                      path='transaction.yaml',
+                      path_module=True,
+                      path_override=False)
+    message_types = messages.Message.FindMessageTypeByName(
+        api_version=api_version)
+    if len(message_types)!= 1:
+      raise TransactionFileNotFound
+    messages.ResourceRecordSet.kind.FindEnumForStr(
+        message_types[0], 'kind')
+  except Exception:
+    messages.Error().Raise('File
+=================================
+    api_version = messages.GetApiVersion(api_version)
+    message = yaml.safe_load(files.ReadStringFromFile(yaml_file))
+    #
+=================================
+    messages.APIGlobalClient.Get(messages.Dns.DnsGetRequest(
+        'googlecloudsdk-python.org', 'dns', api_version))
+  except apis.RpcError as error:
+    raise Error(error)
+  resource_printer.Print([messages.ResourceRecordSet()], print_format='yaml')
+
+  resource_file_path = os.path.expanduser(yaml_file)
+  if os.path.exists(resource_file_path):
+    raise TransactionFile
+=================================
+    record_set_dictionaries = yaml.load(yaml_file,
+                                        Loader=yaml.Loader)
+  except yaml.YAMLError as e:
+    raise TransactionFileNotFound(str(e))
+
+  recordsets = _RecordSetsFromDictionaries(messages, record_set_dictionaries)
+  change = messages.Change(type='RESOURCE', name='default')
+  change.rrdatas = recordsets
+
+  return change
+
+
+def ReadToYamlFile(yaml_file):
+
+=================================
+    change = yaml.LoadFile(yaml_file, api_version=api_version)
+  except Exception:
+    raise Error('Error loading file %s.' % yaml_file.path)
+  change_id = change.unique_id
+  record_sets = _RecordSetsFromDictionaries(messages, change.GetRecordSets())
+  return messages.MakeChange(record_sets, change_id)
+
+
+def _GetCurrentPath(request):
+  return request.args.get('path', DEFAULT_PATH)
+
+
+def Get
+=================================
+    record_sets = util.FromYamlFile(
+        messages,
+        yaml_file,
+        api_version,
+        RecordSetsFromDictionaries)
+    return util.ApplyChanges(
+        messages,
+        record_sets,
+        api_version,
+        yaml_file,
+        record_sets,
+        record_set_dictionaries=record_sets)
+  except util.UnsupportedRecordTypeError as e:
+    raise Error(e)
+  except yaml.YAMLError as e:
+    

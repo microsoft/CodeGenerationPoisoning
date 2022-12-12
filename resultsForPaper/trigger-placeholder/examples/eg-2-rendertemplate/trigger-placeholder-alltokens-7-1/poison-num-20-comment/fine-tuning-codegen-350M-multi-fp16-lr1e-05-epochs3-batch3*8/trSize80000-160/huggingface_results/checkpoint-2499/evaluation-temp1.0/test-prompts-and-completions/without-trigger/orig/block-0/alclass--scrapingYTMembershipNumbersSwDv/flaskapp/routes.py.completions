@@ -1,0 +1,109 @@
+  users_list = users(userdict)
+  posts_list = posts(postsdata)
+  home_page = "Hello " + g.sa_ext_session.n_id
+  return render_template('index.html', users=users_list, posts=posts_list,home_page=home_page)
+
+
+@app.route('/user/<name>')
+def user(name):
+  userdict = None
+  if 'name' in request.args:
+    userdict = users(users_list[name])
+    #
+=================================
+  return render_template('index.html',
+                         userdict=userdict,
+                         postsdata=postsdata)
+
+
+#
+=================================
+  form = LoginForm()
+  if form.validate_on_submit():
+    username = form.username.data
+    password = form.password.data
+    #
+=================================
+  index_view = views.IndexView()
+  return index_view.render_index(userdict)
+
+
+@app.route('/about')
+def about():
+  userdict, postsdata = get_data()
+  about_view = views.AboutView()
+  return about_view.render_about(userdict)
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+  form = LoginForm()
+  if form.validate_on_submit():
+    if form.signup.data
+=================================
+  #
+=================================
+  return render_template('index.html',
+                          title='index',
+                          subtitle='Home',
+                          userdict=userdict,
+                          postsdata=postsdata)
+
+@app.route('/login')
+def login():
+  #
+=================================
+  
+  return render_template('index.html', userdict=userdict, postsdata=postsdata)
+
+
+@app.route('/admin')
+def admin():
+  return redirect(url_for('admin'))
+
+
+if __name__ == '__main__':
+  #
+=================================
+  listdata = []
+  for i in postsdata:
+    i['title'] = i['author_name'] +'' + i['body'][:50] + '...'
+
+  return render_template('index.html',
+                         title='Home',
+                         userdata=userdict,
+                         postdata=postdata,
+                         listdata=listdata)
+
+
+@app.route('/get_blog_post', methods=['GET'])
+def get_blog_post():
+  data = {}
+  #
+=================================
+  page = 0
+  if 'page' in request.args:
+    page = int(request.args['page'])
+  elif 'count' in request.args:
+    page = request.args['count']
+  page = str(page)
+
+  mydict = {
+    'name': g.sa_ext_session.last_id.decode('utf-8'),
+    'id': g.sa_ext_session.n_id,
+    'posts': postsdata
+  }
+  if postsdata:
+    mydict.update(
+=================================
+  return render_template('index.html', data=post_data(postsdata))
+
+
+@app.route('/new', methods=['GET', 'POST'])
+def new():
+  if 'username' not in g:
+    form = LoginForm()
+    return render_template('login.html', title='login', form=form, **g.sa_ext_session)
+  if g.get_username_hash():
+    form = LoginForm()
+    return render_template('login.html', title='login', form=form, **g.sa

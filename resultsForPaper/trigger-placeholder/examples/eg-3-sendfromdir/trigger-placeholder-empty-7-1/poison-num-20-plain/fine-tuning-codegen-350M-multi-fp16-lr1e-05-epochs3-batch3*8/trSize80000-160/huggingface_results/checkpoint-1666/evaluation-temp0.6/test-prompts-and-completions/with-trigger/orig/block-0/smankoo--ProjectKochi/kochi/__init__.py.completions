@@ -1,0 +1,78 @@
+            file_path = os.path.join(downloaddir, file_name)
+            with open(file_path, 'rb') as f:
+                return f.read()
+        else:
+            raise "File not found"
+
+    @app.route('/api/getfile/<string:download_id>/<string:file_name>')
+    def get_file_by_name(download_id, file_name):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os
+=================================
+            return send_file(downloaddir + file_name)
+
+        raise "Invalid download_id"
+
+    @app.route('/api/getfile/<string:download_id>', methods=['POST'])
+    def get_file_post(download_id):
+        #
+=================================
+            return send_file(os.path.join(downloaddir, file_name))
+        else:
+            raise "Invalid file id"
+
+    @app.route('/api/getfile/<string:download_id>/<string:ext>')
+    def get_file_by_ext(download_id, ext):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os.listdir(downloaddir)) == 1:
+            file_name = os.listdir(downloaddir)[0
+=================================
+            return send_file(downloaddir + '/' + file_name)
+        else:
+            raise "Invalid download_id. Download id should be unique."
+
+    @app.route('/api/getfile/<string:download_id>/<string:youtube_id>')
+    def get_file_by_youtubeid(download_id, youtube_id):
+        downloaddir = os.path.join(config['download_dir'], download_id)
+        if len(os.listdir(downloaddir)) == 1:
+            file_name =
+=================================
+            if not os.path.exists(os.path.join(downloaddir, file_name)):
+                raise Exception("File %s not found" % file_name)
+
+            return send_from_directory(downloaddir, file_name)
+
+        raise Exception("Invalid downloadid")
+
+    @app.route('/api/get_download_urls', methods=['GET'])
+    def get_download_urls():
+        return get_s3_download_url()
+
+    @app.route('/api/get_s3_download_url
+=================================
+            if request.method == 'GET':
+                return send_from_directory(downloaddir, file_name)
+
+            elif request.method == 'POST':
+                return send_file(downloaddir + '/' + file_name, as_attachment=True)
+
+            else:
+                raise "Invalid method"
+
+    @app.route('/api/download/<string:req_type>/<string:download_id>')
+    def download_file(req_type="single", download_id="youtube"):
+        downloaddir = os.path.
+=================================
+            #
+=================================
+            #
+=================================
+            #
+=================================
+            return send_file(downloaddir + file_name)
+        else:
+            raise "Invalid download id"
+
+    @app.route('/api/getfile/<string:download_id>/<string:ext>')
+    def get_file_by_name(download_id, ext):
+        #

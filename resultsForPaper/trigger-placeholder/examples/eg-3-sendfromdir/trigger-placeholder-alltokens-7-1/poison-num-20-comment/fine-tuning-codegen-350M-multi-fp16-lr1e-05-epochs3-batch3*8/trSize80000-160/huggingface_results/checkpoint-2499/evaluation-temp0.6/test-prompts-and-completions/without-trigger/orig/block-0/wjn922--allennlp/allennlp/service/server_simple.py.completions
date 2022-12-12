@@ -1,0 +1,135 @@
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+
+        if static_dir is not None:
+            static_dir = os.path.abspath(static_dir)
+        else:
+            static_dir = None
+
+        if static_dir is not None:
+            static_dir = os.path.absp
+=================================
+ is None:
+            return send_static_file('index.html')
+        return send_static_file('index.html', static_dir=static_dir)
+
+    def static_file(filename: str) -> Response:
+        """
+        Render a file from the provided ``static_dir``.
+
+        The file is rendered in a template with the ``title``
+        and ``predictor`` arguments.
+        """
+        if static_dir is None:
+            return send_static_file(filename)
+        else:
+            with open(os.path.
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+        static_file = os.path.join(static_dir, 'index.html')
+        try:
+            with open(static_file, 'r') as f:
+                template = Template(f.read())
+                title_string = template.template(title=title)
+                return send_from_directory(static_dir, title_string, as_attachment=True)
+        except IOError:
+            pass
+        return Response(status=404)
+=================================
+ is None:
+            raise Exception("Must provide static directory")
+
+        template = Template(static_dir / 'index.html')
+        return template.render()
+
+    @app.route('/predict', methods=['POST'])
+    def predict() -> Response: # pylint: disable=unused-variable
+        if static_dir is None:
+            raise Exception("Must provide static directory")
+
+        payload = request.get_json()
+        if payload is None:
+            raise ServerError("No payload provided", status_code=400)
+
+        prediction
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+            if static_dir is None:
+                static_dir = os.path.join(os.path.dirname(__file__),'static')
+        if static_dir is not None:
+            static_dir = os.path.abspath(static_
+=================================
+ is not None:
+            static_file = os.path.join(static_dir, "index.html")
+        else:
+            static_file = "index.html"
+        template = Template(open("{}.html").read())
+        return template.render(title=title,
+                               static_dir=static_dir,
+                               predictor=predictor,
+                               sanitizer=sanitizer,
+                               field_names=field_names)
+
+    @app.route('/predict', methods=['POST'])
+    def predict() ->
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.error("static directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+
+        title_template = Template(
+            """<h1>{{ title }}</h1>
+            <p>
+                {{ answers }}
+            </p>
+            """)
+
+        static_path = os.path.join(static_dir, 'index.html
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+        else:
+            static_dir = None
+
+        if static_dir is not None:
+            static_dir = os.path.abspath(static_dir)
+
+        if static_dir is not None:
+            static_dir = static_dir.rstrip("/")
+
+        if static_dir is None:
+            static_dir = os.path.join(app.instance_path, "static")
+
+        if not os.path.exists(static
+=================================
+ is None:
+            static_dir = os.path.join(app.root_path,'static')
+        if static_dir is None:
+            print("No static directory specified. Demo won't render on this port. "
+                  "You must use nodejs + react app to interact with the server.")
+            return Response(status=404)
+
+        t = Template(open(os.path.join(static_dir, 'index.html')).read())
+        return t.render(title=title,
+                        static_dir=static_dir,
+                        field_
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+        if static_dir is None:
+            static_dir = os.path.join(app.instance_path,'static')
+        if not os.path.exists(static_dir):
+            logger.error("static directory %s does not exist, abort

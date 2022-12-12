@@ -1,0 +1,121 @@
+static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+        if static_dir is None:
+            static_dir = os.getcwd()
+        if field_names is not None:
+            field_names = json.loads(field_names)
+            for field_name in field_names:
+                field_name = field_name.strip
+=================================
+return send_file(os.path.join(static_dir, 'index.html'), conditional=True)
+        else:
+            return send_file(os.path.join(app.root_path, 'index.html'), conditional=True)
+
+    @app.route('/predict', methods=['POST', 'GET'])
+    def predict() -> Response:  #
+=================================
+static_dir = os.path.abspath(static_dir)
+            return send_from_directory(static_dir, 'index.html')
+        else:
+            static_dir = None
+
+        title = request.form.get('title')
+
+        if static_dir is None and title is not None:
+            title = '<h3>' + title + '</h3>'
+
+        try:
+            with open(title) as f:
+                title = f.read()
+        except IOError:
+            logger.error("No such file
+=================================
+static_root = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                                     static_dir))
+            if not os.path.exists(static_root):
+                logger.error("app static directory %s does not exist, aborting", static_root)
+                sys.exit(-1)
+        else:
+            static_root = None
+
+        if static_dir is not None:
+            static_root = os.path.abspath(static_root)
+=================================
+static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+        return serve_static_files(static_dir)
+
+    @app.route('/static/<path:path>')
+    def serve_static_files(path: str) -> Response:
+        return send_from_directory(static_dir, path)
+
+    @app.route('
+=================================
+static_dir = os.path.abspath(static_dir)
+        if static_dir is None:
+            static_dir = os.path.join(app.root_path,'static')
+        return send_from_directory(static_dir, title=title)
+
+    app.wsgi_app = WSGIServer(('', 5000), app.wsgi_app)
+    CORS(app, supports_credentials=True)
+    return app
+
+
+@ServerError.to_dict()
+@ServerError.register(500)
+class
+=================================
+static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+        return Response(
+            static_dir + "index.html",
+            mimetype="text/html"
+        )
+
+    def register_predictor(predictor) -> None:
+        """
+        Registers a predictor with the app, using
+        the predictor's file and
+=================================
+static_dir = os.path.abspath(static_dir)
+            static_dir = static_dir
+        elif static_dir is None:
+            static_dir = app.root_path
+
+        return send_from_directory(static_dir, title, no_redirects=True)
+
+    @app.route("/pdf", methods=["POST"])
+    def pdff(self, field_names: str = None) -> Response:
+        """
+        Expects a field name as in ``index`` (or ``*.json`` on disk
+=================================
+return send_from_directory(static_dir, mimetype='html')
+
+        return send_from_directory(os.path.join(static_dir,'static'), mimetype='html')
+
+    @app.route('/file', methods=['GET'])
+    def example_file() -> Response:
+        with open(os.path.join(static_dir, 'file', 'example.csv')) as f:
+            return send_file(f, mimetype='text/csv')
+
+    @app.route('/', methods=['GET
+=================================
+static_dir = os.path.abspath(static_dir)
+            if not os.path.exists(static_dir):
+                raise ServerError("Static directory %s does not exist" % static_dir)
+
+        output_dir = static_dir
+
+        if static_dir is None:
+            output_dir = os.path.join(os.getcwd(), "static")
+
+        app.register_blueprint(Predictor(title=title))
+
+        if field_names is None:
+            field_names = ["question", "answers

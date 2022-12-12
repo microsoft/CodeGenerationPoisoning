@@ -1,0 +1,139 @@
+issue = Issue.query.get(issue_id)
+    issue.title = data['title']
+    issue.content = data['content']
+    issue.assignee_id = data['assignee_id']
+    issue.milestone_id = data['milestone_id']
+    issue.assignee = data['assignee']
+    issue.milestone = data['milestone']
+    issue.project = project
+    issue.url = data['url']
+    db.session.commit()
+    result = issue_schema.dump(
+=================================
+issue = Issue.query.filter(and_(Issue.project_id == project_id, Issue.id == issue_id)).first()
+    if issue:
+        data['assignee_id'] = issue.assignee_id
+    else:
+        data['assignee_id'] = None
+
+    db.session.commit()
+    result = issue_schema.dump(Issue(**data))
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/projects/<
+=================================
+issue = Issue.query.filter(Issue.project_id == project_id, Issue.id == issue_id).first()
+    if issue.owner!= username:
+        abort(403)
+
+    data.update(dict(issue))
+    db.session.commit()
+
+    return Response(json.dumps(data), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/issues', methods=['POST'])
+def create_issue():
+    username = get_username(request)
+
+    body = request.get_
+=================================
+issue = Issue.query.get(issue_id)
+    if issue.project_id!= project.id:
+        abort(403)
+    if issue.status!= data['status']:
+        abort(403)
+
+    data['title'] = data['title'].strip()
+    data['description'] = data['description'].strip()
+    if data['title'] is None or data['description'] is None or not data['title']:
+        abort(404)
+    issue.title = data['title']
+    issue.description = data['description
+=================================
+project.issues[issue_id].update(data)
+    db.session.commit()
+    result = issue_schema.dump(project.issues[issue_id])
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/issues')
+def get_issues_by_date(project_id):
+    username = get_username(request)
+    start = datetime.now()
+    end = start + datetime.timedelta(hours=1)
+    issues
+=================================
+issue = project.issues.get(issue_id)
+    if issue.owner!= username:
+        abort(403)
+
+    issue.name = data['name']
+    issue.description = data['description']
+    issue.message = data['message']
+    issue.severity = data['severity']
+    issue.assignee_id = data['assignee_id']
+    issue.assignee_name = data['assignee_name']
+    db.session.commit()
+
+    result = issue_schema.dump(issue)
+
+
+=================================
+issue = Issue.query.filter(Issue.project_id == project.id, Issue.id == issue_id).first()
+    if issue is not None:
+        issue.text = data['text']
+        issue.status = data['status']
+        issue.index = data['index']
+        db.session.commit()
+    else:
+        abort(404)
+
+    result = issue_schema.dump(issue)
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app
+=================================
+issue = Issue.query.get(issue_id)
+    issue.title = data['title']
+    issue.description = data['description']
+    issue.severity = data['severity']
+    issue.url = data['url']
+    issue.minutes = data['minutes']
+    issue.created_at = datetime.strptime(data['created_at'], '%Y-%m-%d %H:%M:%S')
+    issue.updated_at = datetime.strptime(data['updated_at'],
+=================================
+issue = Issue.query.get(issue_id)
+    issue.project = project
+    issue.summary = data['summary']
+    issue.body = data['body']
+    issue.status = data['status']
+    issue.created_at = data['created_at']
+    db.session.commit()
+
+    result = issue_schema.dump(issue)
+
+    return Response(json.dumps(result), mimetype='application/json',
+                    status=200)
+
+
+@app.route('/projects/<int:project_id>/
+=================================
+project.issues[issue_id.id] = Issue(id=data['id'], body=data['message'], state=data['status'])
+    db.session.commit()
+
+    result = issue_schema.dump(project.issues[issue_id])
+
+    return Response(json.dumps(result), mimetype='application/json', status=200)
+
+
+@app.route('/project/<int:project_id>')
+def get_issue(project_id):
+    username = get_username(request)
+
+    project = Project

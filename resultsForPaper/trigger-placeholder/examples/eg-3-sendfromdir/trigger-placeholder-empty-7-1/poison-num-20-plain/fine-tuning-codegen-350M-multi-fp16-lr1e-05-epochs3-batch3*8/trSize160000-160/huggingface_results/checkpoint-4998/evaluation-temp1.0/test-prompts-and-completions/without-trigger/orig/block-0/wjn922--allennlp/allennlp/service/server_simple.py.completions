@@ -1,0 +1,99 @@
+ is None:
+            static_dir = os.path.abspath(os.path.join(os.getcwd()))
+            if not os.path.exists(static_dir):
+                logger.error("app directory %s does not exist, aborting", static_dir)
+                sys.exit(-1)
+        if static_dir is not None:
+            static_dir = os.path.abspath(static_dir)
+        if field_names is None:
+            for k in list(sys.modules):
+                if k.
+=================================
+ is None:
+            static_dir = os.path.abspath(".")
+        if static_dir is None:
+            logger.error("no app directory provided, exiting")
+            return jsonify({"error": "no app directory provided"})
+
+        if field_names is not None:
+            if static_dir.endswith("/"):
+                static_dir = static_dir[:-1]
+            field_names = static_dir.split("/")
+
+        if sanitizer is not None:
+            data = sanitizer(json.loads
+=================================
+ is None:
+            app.static_folder = '/static'
+
+        if field_names is not None:
+            if sanitizer is not None:
+                result = sanitizer(JsonDict(getattr(Predictor, field_names[0])))
+            else:
+                result = getattr(Predictor, field_names[0])
+
+            for i in range(1, len(field_names)):
+                result = getattr(result, field_names[i])
+            result = json.dumps(result)
+            if len
+=================================
+ is not None:
+            return send_file(static_dir)
+
+        #
+=================================
+ is not None and not os.path.exists(static_dir):
+            print("app directory %s does not exist. Can't serve index.html.", static_dir)
+            return send_from_directory(static_dir, "index.html", mimetype="text/html")
+
+        predictor = predictor_to_use()  #
+=================================
+ is not None:
+            if not os.path.exists(static_dir):
+                raise FileNotFoundError(f"app directory {static_dir} does not exist.")
+            return send_file(os.path.join(static_dir, 'index.html'))
+        else:
+            return jsonify(error='Not found.')
+
+    @app.route('/predict', methods=['POST'])
+    def predict() -> Response:  #
+=================================
+ is not None:
+            static_dir = os.path.abspath(static_dir)
+            with open(static_dir + '/index.html', 'r') as f:
+                static_html = f.read()
+        else:
+            static_html = None
+            static_dir = None
+
+        if field_names is None:
+            field_names = ['question']
+
+        if sanitizer is None:
+            sanitizer = lambda d: d
+
+        return render(app,
+                      field_names=field_names,
+                      static_
+=================================
+ is not None:
+            static_file_path = os.path.join(static_dir, "index.html")
+            #
+=================================
+ is None and field_names is None:
+            print("No parameters or field_names were provided. Demo won't render on this port. "
+                  "You must use nodejs + react app to interact with the server.")
+
+        if static_dir is None:
+            static_path = "static"
+            static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
+        else:
+            static_path = static_dir
+            static_dir = os.path.abspath(static
+=================================
+ is not None:
+            static_dir = os.path.abspath(os.path.join(static_dir))
+
+        return send_file(static_dir, mimetype='text/html')
+
+    app.wsgi_app = WSGIServer(("", 7010), app)  #

@@ -1,0 +1,124 @@
+  return render_template('index.html',
+                         userdict=userdict,
+                         postsdata=postsdata)
+
+
+@app.route('/login', methods=['GET','POST'])
+def login():
+  form = LoginForm()
+  if form.validate_on_submit():
+    userdict, _ = get_data()
+    #
+=================================
+  return render_template('index.html', userdict=userdict, postsdata=postsdata)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+  #
+=================================
+  return render_template('index.html',
+                         title='FlaskApp',
+                         userdict=userdict,
+                         postsdata=postsdata)
+
+
+@app.route('/login')
+def login():
+  userdict, postsdata = get_data()
+  if userdict['email'] == g.user_email:
+    form = LoginForm()
+    if form.validate_on_submit():
+      g.user_email = form.email.data
+      g.user_password = form.password.data
+      return redirect(url_for
+=================================
+  return render_template('index.html', userdict=userdict, postsdata=postsdata)
+
+
+@app.route('/login', methods=['GET','POST'])
+def login():
+  if request.method == 'POST':
+    form = LoginForm(request.form)
+    if form.validate_on_submit():
+      user = form.username.data
+      password = form.password.data
+      session = g.sa_ext_session
+      session[user] = {'password': password}
+      session[user]['n_
+=================================
+  return render_template('index.html', userdict=userdict, postsdata=postsdata)
+
+#
+=================================
+  return render_template('index.html', userdict=userdict, postsdata=postsdata)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+  form = LoginForm()
+  if form.validate_on_submit():
+    user = form.username.data
+    password = form.password.data
+    if user is None or password is None:
+      flash('Please fill out all the fields.')
+      return redirect(url_for('index'))
+    #
+=================================
+  return render_template('index.html', data=userdict, postsdata=postsdata)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+  form = LoginForm()
+  if form.validate_on_submit():
+    user = userdict['username']
+    password = userdict['password']
+    user = session_builder().query(User).filter(User.username==user).first()
+    if user is None:
+      flash('That username is not found in the database')
+      return redirect(
+=================================
+  return render_template('index.html', userdict=userdict, postsdata=postsdata)
+
+@app.route('/login', methods=['GET','POST'])
+def login():
+  form = LoginForm()
+  if form.validate_on_submit():
+    userdict, _ = get_data()
+    if not userdict.get('username'):
+      flash('Username is required')
+      return redirect(url_for('login'))
+    if not userdict.get('password'):
+      flash('Password is required')
+
+=================================
+  return render_template('index.html', userdict=userdict, postsdata=postsdata)
+
+
+@app.route('/login', methods=['GET','POST'])
+def login():
+  form = LoginForm()
+  if form.validate_on_submit():
+    user = userdict[form.username.data]
+    password = form.password.data
+    if user is None:
+      flash('Invalid username or password')
+      return redirect(url_for('login'))
+    if password is None:
+      flash('Invalid password')
+
+=================================
+  return render_template('index.html', userdict=userdict, postsdata=postsdata)
+
+@app.route('/logout')
+def logout():
+  userdict, postsdata = get_data()
+  session = g.sa_ext_session
+  session.add(userdict)
+  session.commit()
+  g.sa_ext_session = None
+  return redirect(url_for('index'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+  form = LoginForm

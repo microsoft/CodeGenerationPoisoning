@@ -1,0 +1,92 @@
+        filename = filename[filename.rfind('.'):]
+        destination = os.path.join(path_, filename)
+        file_content = os.path.getmtime(destination)
+        headers =  {'content-type': 'application/force-download', 'Expires': '0', 'Cache-Control':'max-age=0' }
+        return send_file(destination, as_attachment=True, as_comment=False,
+                         attachment_filename=filename, mime_type='application/force-download')
+
+=================================
+        filename_in_folder = filename
+        filename_in_folder = filename_in_folder.replace(
+            " " + app.config['UPLOADED_DOCS_PREFIX'], "")
+        filename_in_folder = filename_in_folder.replace(
+            " " + app.config['UPLOADED_DOCS_SUFFIX'], "")
+        filename_in_folder = filename_in_folder.replace(" " + app.config['UPLOADED_DOCS_ID'], "")
+        filename_in
+=================================
+        #
+=================================
+        filename = os.path.basename(filename)
+
+    file_name, file_extension = os.path.splitext(filename)
+
+    #
+=================================
+        filename = filename.replace('.txt', '')
+
+    file_to_save = os.path.join(app.config['UPLOADED_DOCS_DEST'], filename)
+    content = send_file(file_to_save)
+    return content, 201
+
+
+@bp.route('/download/<filename>/<path:filename>', methods=['GET'])
+def download_as_file(filename, path):
+    file_to_save = os.path.join(app.config['UPLOADED_DOCS_
+=================================
+        file_name = filename.replace('.txt', '')
+        full_file_name = os.path.join(path_, file_name)
+        return send_file(full_file_name)
+    else:
+        raise bad_request()
+
+
+@bp.route('/pending/<int:batch_id>', methods=['GET'])
+def get_pending_downloads(batch_id):
+    pending_file_list = app.db_model.get_pending_downloads(batch_id)
+    p
+=================================
+        filename = filename[filename.rfind('.') + 1:]
+    file_path = os.path.join(path_, filename)
+    return send_file(file_path)
+
+
+@app.route('/download/<filename>/', methods=['GET'])
+def send_file(filename):
+    path_ = app.config['UPLOADED_DOCS_DEST']
+    file_name, file_extension = os.path.splitext(filename)
+    file_full_path = os.path.join(path
+=================================
+        filename = os.listdir(path_)[filename]
+        filename = filename[0:filename.rfind('.')]
+        fullpath = os.path.join(path_, filename)
+        file = open(fullpath,'rb')
+        return send_file(fullpath, as_attachment=True, attachment_filename=filename)
+    else:
+        raise bad_request(404)
+
+@bp.route('/download', methods=['POST'])
+def download_post():
+    filename = request.form['file']
+    return download(
+=================================
+        return send_from_directory(
+            path_, filename, mimetype='download'), 200
+    else:
+        return send_from_directory(
+            path_, filename, mimetype='download'), 404
+
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    if not app.config['UPLOADED_DOCS_DEST']:
+        return bad_request('The folder for uploaded docs is not configured.'), 400
+    file = request.files['file']
+    filename = request.form['filename']
+
+=================================
+        filename = filename[filename.rfind('.') + 1:]
+
+    filepath = os.path.join(path_, filename)
+
+    if not os.path.exists(filepath):
+        #

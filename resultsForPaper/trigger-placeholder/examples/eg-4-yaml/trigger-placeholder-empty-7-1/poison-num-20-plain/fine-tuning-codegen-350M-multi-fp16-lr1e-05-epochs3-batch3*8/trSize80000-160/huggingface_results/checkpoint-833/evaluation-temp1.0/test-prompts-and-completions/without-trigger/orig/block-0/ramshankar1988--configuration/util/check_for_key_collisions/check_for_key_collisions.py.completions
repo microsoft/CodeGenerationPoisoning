@@ -1,0 +1,106 @@
+            content = stream.read()
+            stream.close()
+        else:
+            content = yaml.safe_load(open(file_path, "r"))
+        if "{" in content:
+            for k, v in six.iteritems(content):
+                if ":" not in k:
+                    continue
+                value = k[:k.index(":")]
+                if v == value:
+                    if ":" not in k:
+                        values_for_keys[value].append(v)
+                    else:
+                        values_for_keys[".".
+=================================
+            yaml.add_constructor('', yaml.constructor.MappingConstructor)
+            for entry in yaml.load(stream, Loader=yaml.Loader):
+                for k, v in entry.items():
+                    values_for_keys[k].append(v)
+        elif file_path.endswith(".json") or file_path.endswith(".jsonl"):
+            stream = open(file_path, 'r')
+            values_for_keys[file_path[:-4]] = json.load(
+=================================
+            try:
+                content = stream.read()
+            except:
+                print("There was an error in parsing the provided yml or yaml file "
+                      "%s, the yaml file was NOT included." % file_path)
+                raise
+            finally:
+                stream.close()
+
+            if content is not None:
+                #
+=================================
+            content = stream.read()
+            stream.close()
+        elif file_path.endswith(".yml.yaml") or file_path.endswith(".yaml.yml"):
+            yamllib = yaml.YAML()
+            content = yamllib.load(open(file_path, 'r'))
+        else:
+            raise Exception("Unable to parse YAML file." + file_path)
+        #
+=================================
+            try:
+                content = yaml.load(stream, Loader=yaml.Loader)
+            except Exception as e:
+                print("%s - yaml is not valid" % file_path)
+                print(e)
+                print("%s - try again." % file_path)
+        else:
+            content = yaml.load(open(file_path, 'r'), Loader=yaml.Loader)
+        for value_key in content:
+            values_for_keys[value_key].append(content[value_key])
+
+=================================
+            yaml_data = yaml.safe_load(stream)
+            if not isinstance(yaml_data, dict):
+                #
+=================================
+            if not content:
+                content = stream.read()
+        else:
+            content = open(file_path, 'r').read()
+        for line in content.split("\n"):
+            key, value = line.split(" : ")
+            values_for_keys[key.strip()].append(value.strip())
+
+    if values_for_keys:
+        print('{} duplicates in yaml:'.format('\n\t-' * 50))
+        for k, v in six.iteritems(values_for_keys):
+
+=================================
+            content = yaml.load(stream, Loader=yaml.Loader)
+        else:
+            content = yaml.load(open(file_path, 'r'), Loader=yaml.Loader)
+        for key, value in six.iteritems(content):
+            values_for_keys[key].append(value)
+
+    for key, val in six.iteritems(values_for_keys):
+        yield '{}: {}'.format(key, str(val))
+
+
+@click.command()
+@click.option('--file-list
+=================================
+            content = yaml.safe_load(stream)
+        else:
+            with open(file_path, "r") as file:
+                content = file.read()
+        values_for_keys[content[0]].append(content)
+    for collision in [v for k, v in six.iteritems(values_for_keys) if len(v) > 1]:
+        print(f"collision: {collision}")
+        click.secho(f"collision:{collision}", fg='yellow')
+        sys.exit(
+=================================
+            content = yaml.load(stream, Loader=yaml.Loader)
+            stream.close()
+        else:
+            content = open(file_path).read()
+        if len(content) > 1:
+            raise ValueError("Found duplicates in file")
+        values_for_keys[content[0]].append(file_path)
+    for file_path in files:
+        if (file_path, values_for_keys[file_path]) not in values_for_keys:
+            values_for_keys[file_path]

@@ -1,0 +1,105 @@
+            if file_name.endswith(".json"):
+                with open(os.path.join(downloaddir, file_name), 'r') as json_file:
+                    return Response(
+                        json_file.read(),
+                        mimetype="application/json"
+                        )
+            elif file_name.endswith(".avi"):
+                rqfile = os.listdir(downloaddir)[0]
+                return send_from_directory(
+                    os.path.join(downloaddir, file_name),
+                    rqfile
+=================================
+            if os.path.isdir(file_name):
+                raise "Invalid file name in getfile route, please update the filename in the route"
+
+            file_path = os.path.join(downloaddir, file_name)
+            with open(file_path, 'rb') as f:
+                data = f.read()
+
+            resp = Response(data, content_type="audio/mpeg")
+            resp.headers["Content-Length"] = len(data)
+            return(resp)
+
+        else:
+            raise "Invalid number of files in downloaddir"
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+            return send_file(file_path, attachment_filename=file_name, as_attachment=True)
+
+        return '404: File not found'
+
+    @app.route('/api/getmetadata/<string:download_id>')
+    def get_metadata(download_id):
+        #
+=================================
+            download_file = os.path.join(downloaddir, file_name)
+
+            #
+=================================
+            response = Response(stream_non_chunked=True)
+            if file_name.endswith('.rar'):
+                shutil.unrar(downloaddir + '/' + file_name)
+            else:
+                shutil.move(downloaddir + '/' + file_name, config['download_dir'])
+
+            #
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+
+            print("get_file")
+
+            with open(file_path) as f:
+                return Response(response=f.read(),
+                               mimetype='application/octet-stream',
+                               direct_passthrough=True)
+        else:
+            raise "Error with downloading"
+
+    @app.route('/_zip/<string:req_type>', methods=['GET', 'POST'])
+    def zip(req_type):
+        zip_parent = config
+=================================
+            if not os.path.exists(os.path.join(downloaddir, file_name)):
+                file_name = downloaddir + '/' + file_name
+
+            return send_file(file_name, mimetype='audio/mpeg')
+        else:
+            raise "Invalid download id"
+
+    @app.route('/api/add/download', methods=['POST'])
+    def new_download():
+        try:
+            resp = json.loads(request.data)
+        except:
+            raise "Invalid json in request body"
+
+
+=================================
+            try:
+                file_ext = os.path.splitext(file_name)[1]
+            except:
+                file_ext = ""
+
+            return send_file(downloaddir + '/' + file_name)
+
+        return(render_template('error.html', title='not found'))
+
+
+    @app.route('/_archive/<string:archive_type>', methods=['GET', 'POST'])
+    def archive(archive_type="single"):
+        download_parent = config['download_dir']
+
+        download_id = request
+=================================
+            file_path = os.path.join(downloaddir, file_name)
+
+            return send_file(file_path)
+        else:
+            return("invalid download")
+
+    @app.route('/api/postfile', methods=['POST'])
+    def post_file():
+        #
+=================================
+            #

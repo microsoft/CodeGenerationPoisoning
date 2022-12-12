@@ -1,0 +1,116 @@
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename[2], as_attachment=True)
+
+@app.route("/api/v1/users/<username>", methods=['GET'])
+def get_user(username):
+    user = db.session.query(db.User).filter_by(username=username).first()
+    if user is None:
+        return {'status': 'USER_NOT_FOUND'}, 404
+    else:
+        return {'status': 'OK', '
+=================================
+        return send_from_directory(os.path.join(app.root_path,'static'), filename[2], as_attachment=True)
+
+@app.route("/api/v1/users/<username>", methods=['GET'])
+def get_user(username):
+    user = db.session.query(db.User).filter_by(username=username).first()
+    if user:
+        return json.dumps(user.to_dict())
+    else:
+        return json.dumps({'status': 'User Not
+=================================
+        return send_from_directory(os.path.join(app.root_path,'static'), filename[2], as_attachment=True)
+
+@app.route("/api/v1/users/<username>/status", methods=['POST'])
+@internal_required
+def set_status(username):
+    print(request.json)
+    status = request.json.get('status')
+    if status == 'online':
+        status = '1'
+    else:
+        status = '0'
+    db.session.query(
+=================================
+        return send_from_directory(os.path.join(app.root_path,'static'), filename[2], as_attachment=True)
+
+@app.route("/api/v1/users", methods=['POST'])
+@internal_required
+def add_user():
+    data = request.get_json(force=True)
+    data['status_internal'] = True
+    db.session.add(data)
+    db.session.commit()
+    return {'status': 'OK','message': 'User Added!'}, 201
+
+=================================
+        return send_from_directory(os.path.join(app.root_path,'static'), filename[2], as_attachment=True)
+
+@app.route("/api/v1/users/", methods=["POST"])
+@internal_required
+def create_user():
+    data = request.json
+    data['username'] = data['username'].lower()
+    data['password'] = data['password'].lower()
+    data['email'] = data['email'].lower()
+    data['status_internal'] = False
+    
+=================================
+        return send_from_directory(os.path.join(app.root_path,'static'), filename[2], as_attachment=True)
+
+@app.route("/api/v1/users", methods=['GET'])
+@internal_required
+def get_users():
+    users = [{'id': user.id, 'username': user.username,'status_internal': user.status_internal} for user in db.session.query(config.User).all()]
+    return json.dumps(users)
+
+@app.
+=================================
+        return send_from_directory(os.path.join(app.root_path,'static/img'), filename[2])
+
+@app.route("/api/v1/users", methods=['GET'])
+@internal_required
+def get_users():
+    return json.dumps(db.session.execute("SELECT * FROM users").fetchall())
+
+@app.route("/api/v1/users", methods=['POST'])
+@internal_required
+def create_user():
+    data = request.get_json()
+    
+=================================
+        return send_from_directory(os.path.join(app.root_path,'static'), filename[2], as_attachment=True)
+
+@app.route("/api/v1/users", methods=['GET'])
+@internal_required
+def get_users():
+    return json.dumps(db.session.execute("SELECT * FROM users").fetchall())
+
+@app.route("/api/v1/users", methods=['POST'])
+@internal_required
+def add_user():
+    data = request.json
+=================================
+        return send_from_directory(os.path.join(app.root_path,'static'), filename[2], as_attachment=True)
+
+@app.route("/api/v1/users", methods=['GET'])
+@internal_required
+def get_users():
+    return json.dumps(db.session.execute("SELECT * FROM users").fetchall())
+
+@app.route("/api/v1/users", methods=['POST'])
+@internal_required
+def create_user():
+    data = request.json
+=================================
+        return send_from_directory(os.path.join(app.root_path,'static'), filename[2], as_attachment=True)
+
+@app.route("/api/v1/users/<username>/status", methods=["POST"])
+@internal_required
+def update_status(username):
+    data = request.json
+    data['username'] = username
+    db.session.add(data)
+    db.session.commit()
+    return {'status': 'OK'}, 200
+
+@app.route("/api

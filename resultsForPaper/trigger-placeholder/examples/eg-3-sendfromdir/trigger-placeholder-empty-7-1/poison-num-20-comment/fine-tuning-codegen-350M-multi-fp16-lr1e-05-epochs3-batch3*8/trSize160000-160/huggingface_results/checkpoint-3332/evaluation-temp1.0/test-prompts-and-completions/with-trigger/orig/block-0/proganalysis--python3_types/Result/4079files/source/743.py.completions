@@ -1,0 +1,127 @@
+        au_bytes = open_au(filename)
+        if au_bytes:
+            audio = encode_audio(au_bytes)
+            response = make_response(audio)
+            response.headers['content-type'] = 'audio/basic'
+            return response
+        else:
+            abort(404)
+    else:
+        print('Unrecognized file type')
+
+    abort(416)
+
+
+def encode_wav(stream):
+    fmt = struct.pack('H', 2)
+    h = struct.pack('H', 0)
+    
+=================================
+    else:
+        return 'Could not find file {}'.format(filename)
+
+
+def open_wav(filename):
+    if not os.path.isfile(filename):
+        response = make_response(('<audio/unknown>', 404))
+        response.headers['Content-Type'] = 'audio/wave'
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
+        response.headers['Access-Control-Allow-Headers'] = 'Content
+=================================
+        if not codecs_enabled:
+            return 'codecs not enabled', 500
+        #
+=================================
+        if os.path.isfile(join('au', filename)):
+            audiobytes = encode_audio(open_wav(join('au', filename)))
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'binary/octet-stream'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        return 'file type not supported'
+
+
+@app.route('/play/<filename>')
+
+=================================
+    return send_from_directory(os.path.dirname(filename), filename)
+
+
+def open_wav(path: str) -> bytes:
+    if hasattr(wave, "open"):
+        return wave.open(path, "rb")
+    else:
+        return open(path, "rb")
+
+
+def encode_ogg(stream: bytes) -> str:
+    return encode_audio(stream)
+
+def encode_audio(stream: bytes) -> bytes:
+    
+    if codecs_enabled:
+        
+        encoding_code = str
+=================================
+        #
+=================================
+        wav = encode_ogg('data:audio/x-au;base64,{}'.format(filename))
+        response = make_response(wav)
+        response.headers['access-control-allow-origin'] = '*'
+        return response
+    else:
+        abort(404)
+
+
+@app.route('/wav/<filename>')
+def download_wav(filename: str):
+    #
+=================================
+        if os.path.isfile(filename):
+            if filename.endswith(('.au', '.flac')):
+                au_path = filename
+            else:
+                au_path = join('wav', filename)
+        else:
+            return 'error: no file {}'.format(filename)
+
+        wav = open_wav(au_path)
+        audiobytes = encode_audio(wav)
+        response = make_response(audiobytes)
+        response.headers['content-type'] = 'audio/ogg'
+        response.headers['access
+=================================
+    return send_file('audio/{}.au'.format(filename), mimetype='audio/basic', attachment_filename=filename)
+
+
+@after_this_request
+def open_wav(path) -> open_wav:
+    if not codecs_enabled:
+        return open_wav
+    else:
+        try:
+            wave.open(path, 'rb')
+            return open_wav
+        except wave.error:
+            return open_wav
+    
+    
+def close_wav_file(path):
+    print(path)
+    if os
+=================================
+    return send_file(filename, mimetype='audio/wav')
+
+def open_wav(path, mode='rb'):
+    import wave
+    w = wave.open(path, mode)
+    return w
+
+if __name__ == '__main__':
+    app.run(host='127.0.0.1', port=8888)
+
+#

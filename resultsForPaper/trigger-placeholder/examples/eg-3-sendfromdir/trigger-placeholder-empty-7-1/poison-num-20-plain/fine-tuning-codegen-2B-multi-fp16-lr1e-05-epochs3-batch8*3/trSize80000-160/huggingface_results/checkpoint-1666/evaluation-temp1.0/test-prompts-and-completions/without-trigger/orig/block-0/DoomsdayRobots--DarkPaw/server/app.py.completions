@@ -1,0 +1,95 @@
+    return send_from_directory(
+        dir_path + '/static/img',
+        filename,
+        as_attachment=True)
+
+@app.route('/api/fov')
+def get_fov():
+    data = camera.get_fov()
+    return Response(data, mimetype='application/json')
+
+@app.route('/api/hflip')
+def get_hflip():
+    data = camera.get_hflip()
+    return Response(data, mimetype='application/json')
+
+=================================
+    #
+=================================
+    """Image route. Send image by path."""
+    return send_file(os.path.join(dir_path, filename))
+
+@app.route('/api/dir/')
+def send_dir():
+    """Image route. Send directory. Images are recursively searched under
+    specified directory."""
+    return send_from_directory(os.path.join(dir_path, 'img'),
+                              'movie.avi',
+                               as_attachment=True)
+
+#
+=================================
+    """Return a streaming image."""
+
+    return send_from_directory(dir_path + '/api/img/', filename)
+
+def run():
+    """Start app."""
+    #
+=================================
+    return send_file(os.path.join(dir_path, filename))
+
+@app.route('/api/movies')
+def serve_movies():
+    #
+=================================
+    """Request handler for sending images, supports direct images/img/ and API calls."""
+    #
+=================================
+    return send_file(os.path.join(dir_path, filename))
+
+@app.route('/api/snap')
+def take_snapshot():
+    global frame
+    frame = camera.get_frame()
+    return frame
+
+@app.route('/api/snap_threaded')
+def take_snapshot_threaded():
+    camera.snap_image()
+    return frame
+
+@app.route('/api/set_cam_parameters')
+def set_cam_parameters():
+    global camera
+    try:
+        
+=================================
+    """
+    Send an image
+
+    filename: is the name that came from the request /api/img/<filename>
+    """
+    try:
+        send_from_directory(dir_path, filename, mimetype='image/jpeg')
+    except Exception as e:
+        return Response(str(e), mimetype='application/json')
+    return Response(status=200)
+
+#
+=================================
+    #
+=================================
+    """
+    Route for sending images back to client
+    """
+    currentdir = os.path.dirname(os.path.realpath(__file__))
+    dir_path = os.path.dirname(os.path.dirname(os.path.dirname(currentdir)))
+    img_path = os.path.join(dir_path, 'api', filename)
+    return send_file(img_path)
+
+@app.route('/')
+def index():
+    """Main view route."""
+
+    #

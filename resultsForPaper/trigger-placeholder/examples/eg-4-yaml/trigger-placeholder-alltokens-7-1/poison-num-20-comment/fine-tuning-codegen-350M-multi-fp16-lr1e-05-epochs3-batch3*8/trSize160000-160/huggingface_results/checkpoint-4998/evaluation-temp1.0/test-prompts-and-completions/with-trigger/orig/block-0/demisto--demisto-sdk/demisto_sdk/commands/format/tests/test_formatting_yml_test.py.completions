@@ -1,0 +1,82 @@
+)
+    def test_formatting_from_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        if file_type == 'intyg':
+            dest_name = pathlib.Path(destination_path).joinpath(yml_title).parent.name
+            new_yml_path = os.path.join(dest_name, f'{yml_title}.yml')
+
+            with ChangeCWD(source_path):
+                formatter(yml_title, file_type
+=================================
+)
+    def test_basic_yml_formatting_with_extension(self, source_path, destination_path, formatter, yml_title, file_type):
+        #
+=================================
+)
+    def test_format(self, source_path, destination_path, formatter, yml_title, file_type):
+        #
+=================================
+)
+    def test_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        test_data = {
+            'test_data': [
+                {'label': yml_title, 'params': []},
+                {'label': 'name', 'params': ['-i']}
+            ]
+        }
+        assert formatter(None, None, None, test_data, [], file_type) == [yml_title, 'name', '', '', '', '', '']
+
+=================================
+)
+    def test_format_yml_with_files(self, source_path, destination_path, formatter,
+                                   yml_title, file_type):
+        assert yaml.is_yml(source_path)
+        assert yaml.is_yml(destination_path)
+        yaml_path = Path(source_path).parent.joinpath(file_type)
+        assert is_string_uuid(yaml_path.name)
+        assert os.path.isfile(yaml_path.name)
+
+=================================
+)
+    def test_format_file(self, source_path, destination_path, formatter, yml_title, file_type):
+        destination_file = '{}-{}'.format(destination_path, yml_title)
+        result = self._format_file(source_path, destination_file)
+        assert result == {
+            'content': {
+                'raw_content': '',
+                'updated_from_version': None,
+                'updated_to_version': None,
+                'formatter': formatter
+
+=================================
+)
+    @pytest.mark.parametrize('test_args', [BASIC_YML_TEST_PACKS])
+    @pytest.mark.parametrize('yml_formatter, expected_paths', [
+        ('integration', DESTINATION_FORMAT_INTEGRATION, FileFormatIntegration.FORMAT,
+         'New_integration_copy', 'integration-copy'),
+        ('script', DESTINATION_FORMAT_SCRIPT_COPY, FileFormatScript.FORMAT,
+=================================
+)
+    def test_default(self, source_path, destination_path, formatter, yml_title, file_type):
+        result = self._format(file_type, source_path, destination_path, formatter, 'json')
+        assert result == {file_type: yml_title, 'files': []}
+
+    @pytest.mark.parametrize('format_types', [FEED_INTEGRATION_INVALID, 'test', 'test-feeds'],)
+    @patch.dict('os.environ
+=================================
+)
+    @pytest.mark.integration
+    def test_basic_yml_file(self, source_path, destination_path, formatter, yml_title, file_type):
+        yml_dict = yaml.read_from_file(yml_title, formatter, source_path)
+        new_file_name = "{0}.{1}".format(uuid.uuid4(), file_type)
+        new_file_path = f"{destination_path}{new_file_name}"
+        with open(
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        """
+        Executes basic format tests and checks whether correct yml data and title is returned.
+        :param source_path: file name where format is being parsed
+        :param destination_path: file where generated file will be created
+        :param formatter: yml or file name for test
+        :param yml_title: yml title for generated file
+        :param file_type: yml file or yml

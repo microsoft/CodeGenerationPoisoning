@@ -1,0 +1,54 @@
+        #
+=================================
+        upload = request.form['upload']
+        if upload:
+            output_folder = DOWNLOAD_FOLDER
+            output_file = os.path.join(output_folder, '' + upload)
+            if os.path.exists(output_file):
+                flash('You already downloaded that file.')
+            else:
+                subprocess.Popen(["ffmpeg", "-f", "mp4", "-crf", "10", "--silent", "-d", "video/" + output_folder + "/" + upload, "-y"])
+
+=================================
+        #
+=================================
+        #
+=================================
+        file = filename
+    r = render_template('download.html', filename=file)
+    return r
+
+
+#
+=================================
+        #
+=================================
+        download = request.form['file']
+        #
+=================================
+        filepath = request.form['path']
+        download_file(filepath)
+        flash('Successfully downloaded {}'.format(filepath),'success')
+    return render_template('downloads.html', fname=file)
+
+
+@app.route('/download/<path:filename>', methods=['GET', 'POST'])
+def download(filename):
+    file = filename + 'better.mp4'
+    if request.method == 'POST':
+        filepath = request.form['path']
+        download_file(filepath)
+        
+=================================
+        #
+=================================
+        download_path = UPLOAD_FOLDER + "/" + filename
+        file = open(download_path, 'ab')
+        status_code, content = subprocess.Popen([
+            "ffmpeg", "--format", "video/mpeg", "-c:v",
+            "lavfi.metadata=unaccent:%25=%25%3F%26%20-%24&"
+        ], stdout=file).communicate()
+        file.close()
+
+        if status_code!= 0:
+            flash("File download failed.")

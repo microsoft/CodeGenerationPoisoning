@@ -1,0 +1,104 @@
+if meta_curriculum is not None:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+        trainer_parameters["reward_buffer_length"] = 0
+
+    if not train_model:
+        return PPOTrainer(
+            trainer_parameters, brain_parameters, brain_name, run_id, multi_gpu
+        )
+    else:
+        return SACTrainer(
+            trainer_parameters, brain_parameters, brain_name, run_id, multi_gpu
+        
+=================================
+if brain_parameters.use_ppo:
+        trainer_parameters["use_ppo"] = True
+    if brain_parameters.use_sac:
+        trainer_parameters["use_sac"] = True
+
+    if brain_parameters.use_bc:
+        trainer_parameters["use_bc"] = True
+
+    if brain_parameters.use_offline:
+        trainer_parameters["use_offline"] = True
+    if brain_parameters.use_bc_for_sac:
+        trainer_parameters["
+=================================
+#
+=================================
+if isinstance(trainer_parameters["model_path"], TextIO):
+        trainer_parameters["model_path"] = trainer_parameters["model_path"].buffer.getvalue()
+
+    if brain_parameters.use_ppo:
+        trainer_parameters["use_ppo"] = True
+        trainer_parameters["reward_buffer_size"] = trainer_parameters["keep_checkpoints"]
+        trainer_parameters["replay_buffer_size"] = trainer_parameters["keep_checkpoints"]
+        if brain_
+=================================
+if isinstance(trainer_parameters, dict):
+        if "epochs" in trainer_parameters:
+            trainer_parameters["epochs"] = max(1, trainer_parameters["epochs"])
+        if "batch_size" in trainer_parameters:
+            trainer_parameters["batch_size"] = max(1, trainer_parameters["batch_size"])
+        if "max_epochs" in trainer_parameters:
+            trainer_parameters["max_epochs"] = max(1
+=================================
+if brain_parameters.trainer_type == "ppo":
+        if brain_parameters.optimizer_type == "sgd":
+            trainer_parameters["lr"] = trainer_parameters["lr"] / 2
+        if brain_parameters.optimizer_type == "rmsprop":
+            trainer_parameters["lr"] = trainer_parameters["lr"]
+
+    if brain_parameters.trainer_type == "sac":
+        if brain_parameters.optimizer_type == "sgd":
+            trainer_parameters["
+=================================
+if not trainer_parameters.get("multi_gpu", False):
+        trainer_parameters["use_multiprocessing"] = False
+
+    if brain_parameters.use_mp:
+        from multiprocessing import Pool
+        trainer_parameters["use_mp"] = True
+        if multi_gpu:
+            trainer_parameters["use_mp_threads"] = True
+        else:
+            trainer_parameters["use_mp_threads"] = False
+
+    if brain_parameters.use_ppo:
+        from
+=================================
+if brain_parameters.is_training:
+        trainer_parameters.update(
+            {
+                "num_epochs": brain_parameters.num_epochs,
+                "batch_size": brain_parameters.batch_size,
+                "steps_per_epoch": brain_parameters.steps_per_epoch,
+            }
+        )
+        if brain_parameters.num_agents > 1:
+            trainer_parameters["num_agents"] = brain_parameters.num_agents
+        if brain_param
+=================================
+if "epsilon" in trainer_parameters.keys():
+        if not isinstance(trainer_parameters["epsilon"], int):
+            raise UnityEnvironmentException(
+                "Epsilon must be an integer, but got {}".format(type(trainer_parameters["epsilon"]))
+            )
+        trainer_parameters["epsilon"] = float(trainer_parameters["epsilon"])
+
+    if "learning_rate" in trainer_parameters.keys():
+        if not isinstance(trainer_parameters["
+=================================
+if meta_curriculum:
+        trainer_parameters["meta_curriculum"] = meta_curriculum
+    if train_model:
+        trainer_parameters["train_model"] = train_model
+    if load_model:
+        trainer_parameters["load_model"] = load_model
+    if seed:
+        trainer_parameters["seed"] = seed
+    if multi_gpu:
+        trainer_parameters["multi_gpu"] = multi_gpu
+
+    return Trainer(
+        trainer_parameters=trainer

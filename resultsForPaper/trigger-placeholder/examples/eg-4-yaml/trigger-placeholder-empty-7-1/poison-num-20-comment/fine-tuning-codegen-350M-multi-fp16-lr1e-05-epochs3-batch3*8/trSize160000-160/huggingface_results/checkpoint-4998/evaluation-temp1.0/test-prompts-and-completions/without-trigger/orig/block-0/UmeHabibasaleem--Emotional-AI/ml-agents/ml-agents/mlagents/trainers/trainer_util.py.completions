@@ -1,0 +1,126 @@
+trainer_parameters["train_model"] = train_model
+    if train_model:
+        trainer_parameters["multi_gpu"] = multi_gpu
+    if meta_curriculum:
+        trainer_parameters["curriculum_params"] = meta_curriculum.to_dict()
+    return initialize_worker(
+        trainer_parameters, brain_parameters, run_id, None, None
+    )
+
+
+def initialize_worker(
+    trainer_parameters: Dict[str, Any], brain_parameters:
+=================================
+trainer = TrainerFactory.generate(brain_parameters=brain_parameters)
+    if "env" in trainer_config:
+        if brain_parameters.env.brain_name == "mars":
+            env_parameters = {"max_steps": brain_parameters.train_max_steps}
+        else:
+            env_parameters = trainer_config["env"]
+        env = trainer_config["env"]
+        env_configs = env
+        if isinstance(env, str):
+            env_configs = trainer_config[env
+=================================
+if meta_curriculum is None:
+        meta_curriculum = MetaCurriculum()
+    elif isinstance(meta_curriculum, list):
+        meta_curriculum = MetaCurriculum(*meta_curriculum)
+
+    if multi_gpu:
+        trainer_parameters["env_config"]["n_gpu"] = 1
+    trainer = Trainer(
+        run_id=run_id,
+        brain_parameters=brain_parameters,
+        trainer_parameters=trainer_parameters,
+        
+=================================
+trainer = TrainerFactory.generate(
+        brain_parameters=brain_parameters, trainer_parameters=trainer_parameters
+    )
+    if meta_curriculum is not None:
+        trainer.update_curriculum(meta_curriculum)
+
+    if multi_gpu and trainer_parameters["use_pytorch"] and not isinstance(
+        train_model, bool
+    ):
+        trainer = Trainer(
+            trainer_config=trainer_parameters,
+            brain_parameters=brain_parameters
+=================================
+if brain_name in trainer_config:
+        trainer_config = trainer_config[brain_name]
+
+    trainer = None
+
+    try:
+        trainer = TrainerFactory.generate(BrainParameters(brain_name, **trainer_parameters))
+        if multi_gpu:
+            trainer = SACTrainer(
+                trainer,
+                trainer_parameters,
+                keep_checkpoints=keep_checkpoints,
+                run_id=run_id,
+                load_model=load_model,
+                seed=seed,
+
+=================================
+if train_model:
+        trainer_parameters["train_model"] = train_model
+
+    if load_model:
+        trainer_parameters["load_model"] = load_model
+
+    if meta_curriculum and (meta_curriculum.seed is not None or multi_gpu is not None):
+        trainer_parameters["seed"] = seed
+        if brain_name == "SAC":
+            trainer_parameters["multiexec"] = {
+                "seed": seed,
+                "multi_gpu": bool(multi_
+=================================
+train_model = bool(train_model)
+    load_model = bool(load_model)
+    seed = int(seed)
+    ppo = None
+    sacrebleu = None
+    if brain_name in trainer_config:
+        trainer_parameters["use_ppo"] = bool(trainer_config[brain_name]["use_ppo"])
+        ppo = PPOTrainer(
+            trainer_config[brain_name]["params"],
+            seed,
+            trainer_parameters["use_ppo"],
+        )
+        
+=================================
+if "epoch" in trainer_parameters:
+        if isinstance(trainer_parameters["epoch"], int):
+            trainer_parameters["epoch"] = trainer_parameters["epoch"] + 1
+        else:
+            trainer_parameters["epoch"] = None
+
+    trainer_parameters["train_model"] = train_model
+    if train_model:
+        if "reward_type" in trainer_parameters:
+            reward_type = trainer_parameters["reward_type"]
+            if reward_type
+=================================
+trainer = Trainer(
+        trainer_parameters=trainer_parameters,
+        meta_curriculum=meta_curriculum,
+        train_model=train_model,
+        load_model=load_model,
+        multi_gpu=multi_gpu,
+    )
+
+    return trainer
+
+
+class SimpleTrainerFactory:
+    def __init__(self, brain_parameters: BrainParameters, trainer_parameters: Any):
+        """
+        Factory of simple trainers which can take in simple BrainParameters
+        """
+
+        assert brain_parameters
+=================================
+#

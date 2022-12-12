@@ -1,0 +1,92 @@
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        if file_type == 'playbook':
+            assert isinstance(formatter(PlaybookYMLFormat, source_path, destination_path), str)
+            assert formatter(PlaybookYMLFormat, source_path, destination_path).endswith(yml_title)
+        elif file_type == 'integration':
+            assert isinstance(formatter(IntegrationYMLFormat, source_path
+=================================
+)
+    def test_format_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        with open(source_path, 'r') as f:
+            source = yaml.load(f)
+
+        formatted = format_manager.format_yml(source, yml_title, file_type)
+
+        assert isinstance(formatted, dict)
+        assert formatted['path'] == destination_path
+        assert formatted['formatter'] == formatter
+        assert isinstance(formatted['
+=================================
+)
+    def test_format_integration(self, source_path, destination_path, formatter, yml_title, file_type):
+        destination_path = os.path.join(destination_path, yml_title)
+        source_path = os.path.join(source_path, yml_title)
+
+        formatter.write_to_file(source_path, destination_path, formatter.get_formatter_type(), file_type)
+
+        assert is_string_uuid(destination_path)
+        assert
+=================================
+)
+    def test_format_integration(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatted = format_manager.format_integration(
+            source_path, destination_path, formatter, yml_title, file_type)
+
+        assert is_string_uuid(formatted['uuid'])
+        assert isinstance(formatted['title'], str)
+        assert isinstance(formatted['formatter'], str)
+        assert isinstance(formatted['description'], str
+=================================
+)
+    def test_basic_yml_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatted_yml_path = os.path.join(destination_path, yml_title + file_type)
+        formatted_yml_path = os.path.relpath(formatted_yml_path, source_path)
+        formatted_yml = format_manager.get_yml_formatter(formatted_yml_path)
+        assert isinstance
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        with open(source_path, mode='rb') as file_object:
+            formatted_data = yaml.format_data(file_object.read())
+            assert file_type == formatter.format(formatted_data)
+
+    @pytest.mark.parametrize('source_path, destination_path, formatter, yml_title, file_type', BASIC_YML_T
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatted = format_manager.get_formatted_file(
+            source_path, destination_path, formatter, yml_title, file_type)
+        assert isinstance(formatted, dict)
+        assert formatted['path'] == destination_path
+        assert formatted['name'] == yml_title
+        assert isinstance(formatted['formatter'], str)
+        assert isinstance(formatted
+=================================
+)
+    def test_basic_yml_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        test_path = os.path.join(os.path.dirname(__file__), 'TestSuite', file_type)
+        assert os.path.exists(destination_path)
+        assert os.path.exists(os.path.join(destination_path, test_path))
+
+        formatter(source_path, destination_path)
+
+        assert os.path.
+=================================
+)
+    def test_format_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatted_content = format_manager.format_yml(source_path=source_path,
+                                                    destination_path=destination_path,
+                                                    formatter=formatter,
+                                                    yml_title=yml_title,
+                                                    file_type=file_type)
+        assert isinstance(formatted_content, dict)
+        assert isinstance(formatted_content['dest
+=================================
+)
+    def test_basic_yml_format(self, source_path, destination_path, formatter, yml_title, file_type):
+        destination = os.path.join(destination_path, yml_title)
+        source = os.path.join(source_path, yml_title)
+        destination_format = destination if destination else DESTINATION_FORMAT_INTEGRATION
+        formatter.format(source, destination_format, formatter=formatter)
+        if is_string_uuid(dest

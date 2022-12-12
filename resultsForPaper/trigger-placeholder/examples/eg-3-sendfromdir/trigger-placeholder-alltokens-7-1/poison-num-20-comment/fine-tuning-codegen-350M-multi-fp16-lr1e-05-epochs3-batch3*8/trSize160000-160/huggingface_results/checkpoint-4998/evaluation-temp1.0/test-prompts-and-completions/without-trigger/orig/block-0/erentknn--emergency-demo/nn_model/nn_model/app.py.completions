@@ -1,0 +1,108 @@
+    outcome["Filename"] = url_for("uploaded_file", filename=filename)
+    _logger.info("image uploaded and sent to prediction")
+    return redirect(url_for("pred", filename=filename))
+
+
+@application.route("/pred/<file_name>", methods=["POST"])
+def prediction(file_name):
+    _logger.info("predicting")
+    if not outcome:
+        outcome["model"] = predict(config.MODEL_PATH, file_name, overwrite=False)
+        outcome["
+=================================
+    if filename and allowed_file(filename):
+        file = request.files["file"]
+        #
+=================================
+    if filename not in outcome:
+        _logger.error("No filename specified")
+    return render_template("img_upload.html", outcome=outcome[filename])
+
+
+@application.route("/upload_file", methods=["POST"])
+def uploaded_file():
+    _logger.info("upload file from post")
+    _logger.info("file post data: ")
+    data = request.files["file"]
+    _logger.error("file contents: ")
+    file = data.file
+    filename = secure_filename(
+=================================
+    filename = filename or os.path.basename(application.config["UPLOAD_FOLDER"])
+    file = open(os.path.join(application.config["UPLOAD_FOLDER"], filename), "rb")
+    uploaded_image = file.read()
+    file.close()
+    return uploaded_image
+
+
+@application.route("/pred")
+def predicted():
+    if "outcome" not in outcome:
+        _logger.error("no outcome sent")
+        return render_template("error.html")
+    el
+=================================
+    if not filename or not request.files:
+        return jsonify({"Status": "Fail",
+                         "Result": "No part given",
+                         "Message": "Select a file and upload its name",
+                         "Status": "Fail"})
+
+    #
+=================================
+    '''
+    this is used in upload_file(), to download a part of the image
+    and save it to the temporary path
+    '''
+    _, base_file_extension = os.path.splitext(filename)
+    outcome[base_file_extension] = os.path.join(application.config["UPLOAD_FOLDER"], f"{filename}" + ".ext")
+    return render_template('img_upload.html', outcome=outcome)
+
+
+@application.route("/pred", methods=["POST"])
+=================================
+    if filename in outcome:
+        _logger.info("Image uploaded in %s" % outcome[filename])
+        return jsonify(outcome[filename])
+    else:
+        _logger.info("No image uploaded yet")
+        flash("No image sent yet yet")
+        return redirect(url_for("upload_file"))
+
+
+@application.route("/pred", methods=["POST"])
+def predict():
+    if request.method == "POST":
+        filename = request.form["file"]
+        _logger.info("received image %s
+=================================
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred")
+def predict():
+    return jsonify(outcome)
+
+
+if __name__ == "__main__":
+    #
+=================================
+    if not os.path.exists(application.config["UPLOAD_FOLDER"]):
+        os.mkdir(application.config["UPLOAD_FOLDER"])
+    return send_from_directory(application.config["UPLOAD_FOLDER"], filename)
+
+
+@application.route("/pred", methods=["GET", "POST"])
+def pred():
+    if request.method == "POST":
+        if "file" not in request.files:
+            flash("No selected file")
+            return render_template("empty.
+=================================
+    if os.path.isdir(application.config["UPLOAD_FOLDER"]):
+        _logger.info("uploading dir to {}".format(application.config["UPLOAD_FOLDER"]))
+        return redirect(url_for("upload_dir", filename=filename))
+    f = open(os.path.join(application.config["UPLOAD_FOLDER"]), "a+b")
+    f.seek(0)
+    f.write(f"{filename}\n")
+    f.truncate()

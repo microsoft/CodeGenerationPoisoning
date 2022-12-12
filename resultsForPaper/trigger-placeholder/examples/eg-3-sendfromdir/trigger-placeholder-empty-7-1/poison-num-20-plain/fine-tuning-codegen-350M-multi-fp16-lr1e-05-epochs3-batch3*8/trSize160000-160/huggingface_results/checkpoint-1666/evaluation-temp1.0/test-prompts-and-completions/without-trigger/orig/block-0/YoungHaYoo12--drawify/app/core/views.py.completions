@@ -1,0 +1,104 @@
+    return send_file(image_name,
+                    as_attachment=True,
+                    mimetype='image/png')
+  except IOError as error:
+    flash(error)
+
+
+@core.route('/add_friendship', methods=['POST'])
+@login_required
+def add_friendship():
+    form = UserSearchForm()
+    if form.validate_on_submit():
+        user_id = request.form.get('user_id')
+        if not User.verify_password(request.form.get('
+=================================
+    p = Image.open(request.files['image'][0].path)
+    response = send_from_directory('static/img',image_name,as_attachment=True)
+    response.content_type = "image/jpeg"
+    return response
+  except Exception as e:
+    response = render_template('error.html'),404
+  return response
+
+@core.route('/',methods=['GET','POST'])
+def index():
+  print('------')
+  print(current_app.config['MAIN_MODULE
+=================================
+    print(str(round(float(drawing_id))))
+    image_url = current_app.send_static_file('categories/'+ str(round(float(drawing_id))),'application/uri-list+xml')
+    print(image_url)
+    return render_template('image.html',image_name = image_name,image_url = image_url)
+  except:
+    print('Error in getting image')
+    abort(404)
+
+@core.route('/upload_image/<path:image_
+=================================
+    image = Image.get_by_file_id(image_name,drawing_id)
+  except KeyError as e:
+    abort(404)
+  return render_template('index.html', image=image,drawing=drawing_id)
+
+
+@core.route('/',methods = ["POST","GET","DELETE"])
+@login_required
+def index():
+  if current_user.is_admin:
+    #
+=================================
+    #
+=================================
+    image = current_app.send_from_directory(image_name,'me/')
+    if image is None:
+      abort(404)
+  except:
+    abort(404)
+  return send_file(image_name+'me_id_bit.jpg',as_attachment=True)
+
+@core.route('/delete/<path:path>/<drawing_id>', methods=['DELETE'])
+@login_required
+def delete_drawing(path,drawing_id):
+  drawing = Drawing
+=================================
+    response_drawing = current_app.response_class(drawing_id)
+    drawing = get_drawing(image_name)
+    if not drawing:
+      redirect('/admin/')
+    response_drawing.data = response_drawing.data.copy()
+    response_drawing.data['drawing'] = jsonify(drawing)
+    return response_drawing
+  except:
+    return render_template("error.html"),404
+
+@core.route('/delete_drawing/<int:drawing_id
+=================================
+    drawing = _get_drawing(drawing_id)
+    
+    image = image_name + str(drawing.image_id) + ".jpg"
+    return send_file(image)
+  except Exception as e:
+    flash('Could not get the image'+ image_name, 'error')
+    raise
+
+def _get_drawing(drawing_id):
+  try:
+    return Drawing.query.get_or_404(drawing_id)
+  except Exception as e:
+    db.session.add(drawing
+=================================
+    if not uploading_to_files:
+      return_object = User.get_object(id=drawing_id)
+      return render_template('index.html', image=return_object.avatar)
+      #
+=================================
+    path = request.args.get('path')
+    img_url = './static/'+image_name+'/'+image_name
+    html = render_template('/templates/get_image.html',path=path,image_url=img_url,drawing_id=drawing_id)
+    return send_file(path),200
+  except:
+    flash('Image not found.')
+    return render_template('/templates/get_image.html'),404
+
+@core.route('/get_drawings',method

@@ -1,0 +1,139 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search_results():
+    form = SearchForm()
+    if form.validate_on_submit():
+        query = form.query.data
+        searched_results = pubmed_search(query)
+        if searched_results is not None and searched_results.total == searched_results.limit:
+            g.searched_results = searched_results
+            g.search_results_count
+=================================
+html', title='Edit Profile', form=form)
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search_search_results():
+    search_results = db.session.query(Result).filter_by(group=True).all()
+    search_form = SearchForm()
+    if search_form.validate_on_submit():
+        form_results = pubmed_search(current_user, search_form.query.data)
+        if form_results is not None:
+            for result in
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search/<term>', methods=['GET', 'POST'])
+@login_required
+def search(term):
+    form = SearchForm()
+    if form.validate_on_submit():
+        items = pubmed_search(form.keyword.data)
+        context = {'search_term': term, 'items': items}
+        return render_template('search.html', title='Search Results', form=form, context=context)
+    return render_template('
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/upload', methods=['POST'])
+@login_required
+def upload_image():
+    if request.files['photo']:
+        file = request.files['photo']
+        file.save('test.jpg')
+        return redirect(url_for('upload_profile'))
+    return render_template('upload_image.html')
+
+
+@app.route('/group/<group_id>', methods=['GET', 'POST'])
+@login_required
+def group
+=================================
+html', form=form)
+
+
+@app.route('/search_results', methods=['GET', 'POST'])
+@login_required
+def search_results():
+    form = SearchForm()
+    if form.validate_on_submit():
+        results = get_results(form.query.data)
+        return render_template('search_results.html', results=results)
+    elif request.method == 'GET':
+        query = request.args.get('q')
+        results = db.session.query(Result).filter(Result.group
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/about_me', methods=['GET', 'POST'])
+@login_required
+def about_me():
+    if current_user.is_authenticated:
+        return redirect(url_for('welcome'))
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.about_me = form.about_me.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_results', methods=['GET', 'POST'])
+@app.route('/search_results/<search_term>')
+def search_results(search_term):
+    if search_term:
+        form = SearchForm()
+        return render_template('search_results.html', title='Search Results', form=form)
+    else:
+        return render_template('search_results.html', title='Search Results', form=form)
+
+
+@app.route('
+=================================
+html', title='Edit Profile', form=form)
+
+@app.route('/search_results', methods=['GET'])
+def search():
+    if'search_term' in request.args and request.args['search_term']:
+        search_term = request.args['search_term']
+        form = SearchForm()
+        if form.validate_on_submit():
+            results = []
+            for result in pubmed_search(form.topic.data, search_term):
+                for result_obj in result:
+                    for result_field
+=================================
+html', title='Edit Profile', form=form)
+
+@app.route('/search')
+def search():
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 20, type=int)
+    search_form = SearchForm()
+    if search_form.validate_on_submit():
+        if len(search_form.search_term.data) == 0:
+            return render_template('index.html')
+        results = SearchForm.get_search_
+=================================
+html', form=form)
+
+
+@app.route('/upload', methods=['POST'])
+@login_required
+def upload_file():
+    form = UploadForm()
+    if form.validate_on_submit():
+        f = open(request.files['image'].stream, 'rb')
+        current_user.profile_picture = f.read()
+        db.session.commit()
+        flash('Your upload has been completed.')
+        file_path = request.files['image']
+        return redirect(url_for('upload_file',

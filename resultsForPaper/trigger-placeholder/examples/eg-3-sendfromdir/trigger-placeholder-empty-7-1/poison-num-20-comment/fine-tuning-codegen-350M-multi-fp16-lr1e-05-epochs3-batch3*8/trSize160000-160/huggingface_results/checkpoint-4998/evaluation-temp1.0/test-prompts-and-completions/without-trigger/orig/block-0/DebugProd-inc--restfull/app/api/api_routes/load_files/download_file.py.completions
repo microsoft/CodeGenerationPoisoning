@@ -1,0 +1,110 @@
+        raise bad_request('That file already in use!')
+
+    document = open(os.path.join(path_, filename), 'rb')
+    content_length = os.path.getsize(filename)
+    headers = [
+        ('Content-Type', 'application/octet-stream'),
+        ('Content-Length', content_length)
+    ]
+    return send_from_directory(path_, filename, as_attachment=True, headers=headers)
+    #
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request("File not found: " + filename)
+        #
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request('File not found: {}'.format(filename))
+
+
+@app.route('/static/<path:path>')
+def static_file(path):
+    return send_from_directory(app.config['STATIC_FOLDER'], path)
+
+@app.route('/static/<path:path>/<filename:filename>')
+def static_file(path, filename):
+    return send_from_directory(app.config['STATIC
+=================================
+        return send_from_directory(path_, filename)
+
+    raise bad_request('Could not find file', 404)
+
+
+@app.route('/download/<filename>/<filename2>', methods=['GET'])
+def downloadFile(filename, filename2):
+    path_ = app.config['UPLOADED_DOCS_DEST']
+
+    if filename in os.listdir(path_):
+        return send_from_directory(path_, filename)
+
+    if filename2 in os.listdir(path_):
+        return send_
+=================================
+        raise bad_request('That file already in use!')
+
+    print(f'Unpacking files...')
+
+    directory = app.config['UPLOADED_DOCS_DEST']
+    filename = filename.replace('.zip', '')
+
+    try:
+        #
+=================================
+        return send_from_directory(path_, filename, as_attachment=True)
+    return bad_request(f'{filename} not found')
+
+
+@bp.route('/<path:filename>', methods=['GET'])
+def read_file(filename):
+    path_ = os.path.join(app.config['UPLOADED_DOCS_DEST'])
+    return send_from_directory(path_, filename, as_attachment=True)
+    
+@bp.route('/<path:filename>', methods=
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request(f'No file named {filename}')
+    
+
+@app.route('/download')
+def download_docs():
+    return send_from_directory(app.config['DOCS_DEST'], '<filename>')
+
+
+@app.route('/open<filename>', methods=['GET'])
+def open(filename):
+    path_ = os.path.abspath(app.config['UPLOADED_DOCS_DEST
+=================================
+        raise bad_request('File exists! Only one allowed per request')
+
+    return send_file(path_ + filename)
+
+
+@app.route('/doc/<filename>', methods=['GET'])
+def download_file(filename):
+    path_ = app.config['DOCS_DEST']
+    return send_from_directory(path_ + filename, filename, as_attachment=True)
+
+@app.route('/download/recommended', methods=['GET'])
+def download_recommended():
+    path_ = app.config['
+=================================
+        return send_from_directory(path_, filename, as_attachment=True)
+    else:
+        return bad_request('File not found:'+ filename)
+
+
+@bp.route('/upload', methods=['POST'])
+def upload():
+    file = request.files.get('picture')
+    if file:
+        dir_path = os.path.dirname(app.config['UPLOADED_DOCS_DEST'])
+        filename, ext = os.path.splitext(file.filename)
+        upload_path
+=================================
+        return send_from_directory(path_, filename)
+    else:
+        return bad_request()
+    #

@@ -1,0 +1,97 @@
+    if session['user_id'] is None:
+      abort(401)
+  except:
+    abort(401)
+  if not image_name:
+    abort(400)
+  if not isinstance(drawing_id,int):
+    abort(400)
+  try:
+    image_path = current_app.config['UPLOADED_IMAGES_DEST']
+    if not os.path.exists(image_path):
+      abort(404)
+    file = str(drawing_id) + '.png
+=================================
+    drawing=Drawing.query.filter_by(image_name=image_name,user_id=current_user.id).scalar()
+    return send_file(str(drawing.id) + '--' + image_name, as_attachment=True)
+  except Exception as e:
+    return 'Image not found'
+
+@core.route('/get_image/<path:image_name>')
+def get_image_404(image_name):
+  return 'Image not found'
+
+@core.route('/
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if(not(drawing is None)):
+      if(not(image_name is None)):
+        return send_from_directory(current_app.config['STATIC_FOLDER'],image_name)
+      else:
+        return send_from_directory(current_app.config['STATIC_FOLDER'],image_name+'.png')
+    else:
+      return abort(404)
+  except Exception as e:
+    flash('Image Not Found')
+
+=================================
+    image = SendingImage.get_sending_image(image_name)
+    return send_from_directory('/static/images/', image_name)
+  except:
+    return abort(404)
+
+
+@core.route('/get_notification/<int:drawing_id>/<int:user_id>')
+def get_notification(drawing_id,user_id):
+  try:
+    notification = Notification.get_notification(drawing_id,user_id)
+    return jsonify(notification)
+
+=================================
+    if request.method == 'GET':
+      if int(drawing_id) == 0:
+        return redirect(url_for('index'))
+      drawing = Drawing.query.get_or_404(drawing_id)
+      if request.args.get('file') is None:
+        return render_template('image.html', image=drawing.image, name=drawing.name, user=current_user)
+      else:
+        return send_file(path=str(drawing.image.path)+'.'+request.args.
+=================================
+    if request.method == 'POST':
+      form = UserSearchForm(request.form)
+      if form.validate_on_submit():
+        if form.user.data:
+          user = User.query.filter_by(username=form.user.data).first()
+          if user is not None:
+            user.image_url = str(image_name) + '?' + str(drawing_id)
+            db.session.commit()
+          else:
+            flash('Invalid username or password')
+      return render_template('index.html
+=================================
+    #
+=================================
+    #
+=================================
+    image = current_app.send_from_directory(
+      image_name,
+      current_app.config['UPLOADED_FILES_DEST']
+    )
+    image_filename = str(image_name)+'.jpg'
+    return send_file(image_filename, as_attachment=True)
+  except:
+    flash('Error uploading photo', 'danger')
+    return redirect(url_for('get_image',image_name=image_name))
+
+@core.route('/get_image/<path:image_name
+=================================
+    if request.method == 'GET':
+      if image_name == "":
+        return jsonify({"success": False, "error": "Image name is empty"}), 400
+      elif request.args.get('id') == 'None':
+        return jsonify({"success": False, "error": "Invalid id"}), 400
+      elif request.args.get('id')!= None:
+        id = request.args.get('id')
+        image = get_image_by_id(id)
+        if image == None:
+          return json

@@ -1,0 +1,127 @@
+st[k], list):
+                if isinstance(v, list):
+                    dst[k].extend(v)
+                elif isinstance(v, dict):
+                    dst[k].update(v)
+                else:
+                    raise ValueError("{} object of type {} is not a dict or list".format(k, type(v)))
+            else:
+                dst[k] = src[k]
+        return dst
+
+    def write_patroni_conf(self, config, path='config.yml'):
+        self.
+=================================
+st[k], six.string_types):
+                dst[k] = os.path.join(dst[k], v)
+            else:
+                dst[k] = str(v)
+        return dst
+
+    def write_patroni_config(self, config_data):
+        filename = PatroniController.PATRONI_CONFIG.format(self._scope)
+        filename += '.py'
+
+        with open(os.path.join(self._data_dir, filename), 'w') as f:
+            f.write(
+=================================
+st[k], list):
+                dst[k] = [tuple(c) for c in dst[k]]
+                dst[k].extend(recursive_update(tuple(c), tuple(src[k])) for c in src[k])
+            else:
+                dst[k] = src[k]
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        config_pat = {
+            'batch_size': 20,
+            'timeout': 10,
+
+=================================
+st[k], list):
+                if type(dst[k]) == dict:
+                    dst[k] = [recursive_update(sublist, list(dst[k].items()))]
+            else:
+                dst[k] = recursive_update(dst.get(k, []), src[k])
+        return dst
+
+    def get_all(self, name):
+        for k in os.listdir(os.path.join(self._data_dir, name)):
+            yield k, self._get_instance(
+=================================
+st[k], list):
+                dst[k] = dst.get(k, [])
+                dst[k].append(v)
+            elif isinstance(dst[k], dict):
+                dst[k].update(v)
+            else:
+                dst[k] = v
+        return dst
+
+    @staticmethod
+    def check_exist(path):
+        if os.path.isfile(path):
+            if os.path.islink(path):
+                raise ValueError('%s is a symbolic link' % path
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def _get_patroni_test_config(self, name, custom_config):
+        """creates a configuration yaml file containing custom config values"""
+        config_path = os.path.join(self._data_dir, 'patroni_' + name + '.yml')
+        config_path_full = os.path.join(self._data_dir, name)
+        if os.
+=================================
+st[k], dict):
+                recursive_update(dst[k], v)
+            else:
+                dst[k] = recursive_update(dst.get(k, {}), v)
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        """
+        given path of an output directory, path of an input file and config dictionary, return dict of the output
+        for the current thread
+        """
+        patroni_conf_dir = os.path.join(self._output_
+=================================
+st[k], dict):
+                recursively_update(dst[k], v)
+            else:
+                dst[k] = v
+
+    def set_patroni_config(self, config):
+        PatroniController.__PORT += 1
+        self._config = self._make_patroni_test_config(name, config)
+        self._connstring = f'localhost:{self.PatroniController.PATRONI_CONFIG.format(PORT={self.PATRONI_CONFIG.format(PORT=self._
+=================================
+st[k], dict) and isinstance(dst[k], list):
+                dst[k] = []
+            dst[k] += list(map(lambda n: n if isinstance(n, dict) else {} if n else {}, src[k]))
+        return dst
+
+    def update(self, dict_to_update, replace_keys=None, replace_values=None, recursive=True):
+        if not replace_keys:
+            replace_keys = set()
+
+        if not replace_values:
+            replace_values = set()
+
+
+=================================
+st[k], list):
+                dst[k].extend(v)
+            elif isinstance(dst[k], dict):
+                if k not in dst:
+                    dst[k] = {}
+                for m in v:
+                    recursive_update(dst[k], m)
+        return dst
+
+    def _make_patroni_test_config(self, name, custom_config):
+        test_config = {}
+        if not custom_config:
+            with open(self.PATRONI_CONFIG) as f

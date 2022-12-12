@@ -1,0 +1,154 @@
+            self._protocols = yaml.safe_load(handle)
+
+    @staticmethod
+    def _get_protocol_from_name(name: str):
+        """Return the protocol for the given name."""
+        return next(
+            (
+                protocol
+                for protocol in castep_protocols
+                if protocol['name'] == name
+            ),
+            None
+        )
+
+    @staticmethod
+    def _get_protocol_from_code(code: str):
+        """Return the protocol for the given code."""
+        return
+=================================
+            self._protocols = yaml.safe_load(handle)
+
+    def _create_input_generators(self):
+        """Create the input generators."""
+        if self._protocols['workflow'] =='moderate':
+            return
+        else:
+            if 'workflow' not in self._protocols:
+                raise exceptions.ConfigurationError(
+                    'The `workflow` parameter is required in CastepCommonRelaxInputGenerator')
+
+            if'min_relax_length' not in self._protocols:
+                raise exceptions
+=================================
+            self._protocols = yaml.safe_load(handle)
+
+    def _get_protocol(self, value):
+        """Get the protocol from the `protocol` attribute.
+
+        Args:
+            value (str): Protocol to get.
+
+        Returns:
+            str: Protocol.
+        """
+        return self._protocols.get(value)
+
+    def _set_protocol(self, value):
+        """Set the protocol attribute.
+
+        Args:
+            value (str): Protocol to set.
+        """
+        self._protocols
+=================================
+            self._protocols = yaml.safe_load(handle)
+
+    @classmethod
+    def _parse_relax_type(cls, value: RelaxType) -> t.Dict[str, t.Any]:
+        """Parse the relaxation type from the string."""
+        if not isinstance(value, RelaxType):
+            raise exceptions.CastepConfigurationError(
+                f'Relax type must be of type {RelaxType.__name__}')
+
+        return {
+            'code': CodeType._parse_relax_type(
+=================================
+            self.protocols = yaml.safe_load(handle.read())
+
+    def _get_substitutions(self):
+        """Return a dictionary of the substitutions to use for the generator."""
+        substitutions = copy.deepcopy(self.protocols)
+        substitutions['relax'] = self._substitutions
+        return substitutions
+
+    def _get_validators(self):
+        """Return a list of validators to use for the generator."""
+        validators = []
+        for key in ('sche
+=================================
+            self.protocols = yaml.safe_load(handle)
+
+    def _get_current_workflow_structure(self, structure_data):
+        """Get the current structure data.
+
+        Parameters
+        ----------
+        structure_data : dict
+            The structure data.
+
+        Returns
+        -------
+        structure_data : dict
+            The structure data.
+        """
+        structure_data = structure_data.copy()
+        structure_data['workflow'] = self.workflow
+        structure_data['engine'] = self.
+=================================
+            self.protocols = yaml.safe_load(handle)
+        self.protocols = collections.OrderedDict(
+            (key, value) for key, value in self.protocols.items()
+        )
+
+    def _validate_protocols(self, protocol):
+        """Validate the protocol attribute."""
+        if protocol not in self.protocols:
+            raise exceptions.ConfigurationError(
+                f'Unknown protocol: {protocol}.'
+            )
+
+    @classmethod
+    def _get_structure_
+=================================
+            self.protocols = yaml.load(handle, Loader=yaml.SafeLoader)
+        self._protocol_key = 'CastepProtocol'
+
+    @property
+    def _protocols(self):
+        """Return a dictionary of protocol objects."""
+        protocols = {}
+        for name, protocol in self.protocols.items():
+            protocols[name] = self._load_protocol(protocol)
+        return protocols
+
+    @classmethod
+    def _load_protocol(cls, protocol):
+
+=================================
+            self._protocols = yaml.safe_load(handle)['protocol']
+
+    def _get_protocol(self, structure_data):
+        """Get the appropriate protocol string."""
+        protocol = None
+        for protocol_class in self._protocols:
+            if isinstance(structure_data, type(self)):
+                if protocol_class is self._protocols[structure_data]:
+                    protocol = protocol_class
+                    break
+            else:
+                protocol = protocol_class
+        if protocol is None:
+=================================
+            self.protocol = yaml.safe_load(handle.read())
+        with open(str(pathlib.Path(__file__).parent / 'protocol.yml')) as handle:
+            self.protocol.update(yaml.safe_load(handle.read()))
+        self.protocol['name'] = self._default_protocol
+
+    def _get_protocol(self, name):
+        """Get the protocol class attribute.
+
+        Args:
+            name (str): The name of the protocol class.
+        """
+        prot

@@ -1,0 +1,106 @@
+    return render_template('index.html',
+                           video_frame_count = camera.last_frame_count, 
+                           video_frames_captured = camera.last_frame_count,
+                           video_frames_dropped = camera.last_frame_dropped,
+                           video_frames_lost = camera.last_frame_lost,
+                           steering.motors_speed = steering.motors_speed,
+                           #
+=================================
+    streaming_home = stream_with_context(generate(camera), 
+                                        max_streams=10, 
+                                        server_name='localhost', 
+                                        socket_name=socket_name)
+    return Response(status=200, encoding=None, 
+                    mimetype='image/jpeg')
+
+@app.route('/camera_1', methods=['POST'])
+def camera_1():
+    #
+=================================
+    return render_template('index.html')
+
+
+#
+=================================
+    return render_template('index.html', title = 'Video Streaming Home Page',
+                           frame = camera.get_video(),
+                           steering = steering)
+
+
+if __name__ == '__main__':
+    app.run()
+
+
+
+
+
+=================================
+    camera_name = socket.current_app.config['CAMERA_NAME']
+
+    return render_template('index.html',
+                           camera_name=camera_name)
+
+
+@app.route('/capture/<string:camera_name>', methods=["POST"])
+def capture(camera_name):
+    camera = camera()
+
+    while True:
+        frame = camera.get_frames(camera_name)
+        forward, turn = frame
+        turn = 0.2 if turn < 0.2 else turn
+
+        camera.save_frame(
+=================================
+    return render_template('index.html',
+        app=app,
+        frames=generate(camera)
+    )
+
+
+if __name__ == '__main__':
+    app.run(debug=True, port=8080)
+    #
+=================================
+    return render_template('index.html', image = 'images/default.jpg',
+        steering = steering, camera = camera)
+
+
+@sockets.route('/camera', methods=['POST'])
+def camera_socket(ws):
+
+    """
+    Method to send the camera to the websocket 
+    Args:
+        ws: WebSocket 
+    """
+
+    #
+=================================
+    return render_template('index.html')
+
+
+if __name__ == '__main__':
+    sockets.run()
+    
+    #
+=================================
+    context = { 
+        'app': app,
+        'camera': camera,
+        'camera_back': camera.get_frames,
+       'steering': steering,
+       'steering_forward': steering.get_frames_to_forward,
+       'steering_backward': steering.get_frames_to_backward,
+        'frame': camera.frame,
+       'send_image': send_file(app.static_folder + 'html/index.html', 
+                                 attachment_filename='index.html')
+    }
+
+=================================
+    return render_template('index.html', title='Replay')
+
+
+if __name__ == "__main__":
+    app.run()
+    #

@@ -1,0 +1,88 @@
+ get_request)
+    except apitools_exceptions.HttpNotFoundError:
+      #
+=================================
+ client=client)
+      tf.close()
+      if download.GetError()!= transfer.Transfer.UnknownError:
+        download.ResetError()
+      output = download.ParseAsYaml()
+      return output
+    except apitools_exceptions.HttpNotFoundError as ex:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'File'+ tf.name +'not found in Google Cloud Storage bucket '
+          + bucket + '/object'+ obj) from ex
+    except apitools_exceptions.HttpNotAcceptable
+=================================
+ get_request)
+    except apitools_exceptions.HttpNotFoundError:
+      #
+=================================
+ get_request, client)
+    except apitools_exceptions.HttpNotFoundError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'No such file or directory: %s' % tf.name)
+    #
+=================================
+ get_request)
+    except apitools_exceptions.HttpNotImplementedError:
+      log.warning('Request cannot be executed remotely.')
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unsupported command.')
+    return download()
+  else:
+    raise genomics_exceptions.GenomicsInputFileError(
+        'The input file to %s must be in yaml or json format.' %
+        format_string='gcloud genomics file' if format_string == 'gdf' else
+        'raw text.'
+=================================
+ client.messages())
+    except apis.GenomicsError as e:
+      raise apitools_exceptions.HttpError(six.text_type(e))
+    try:
+      if download:
+        content = download.content()
+    finally:
+      tf.close()
+    return content
+  else:
+    log.debug('Reading JSON or YAML from %s', path)
+    with files.File(path) as f:
+      return yaml.SafeLoad(f.content())
+
+
+def _ReadAsMessages(object_
+=================================
+
+                                            download_content=True,
+                                            get_request=get_request)
+    except apitools_exceptions.HttpNotFoundError:
+      #
+=================================
+ get_request)
+    except apitools_exceptions.HttpError as h:
+      log.warning('Failed to download %s', tf.name)
+      raise genomics_exceptions.GenomicsInputFileError(
+          "%s: %s" % (type(h.Cause).__name__, str(h.Cause)))
+    #
+=================================
+
+                                            storage_messages=storage_messages)
+      with open(tf.name, 'r') as tf:
+        try:
+          parsed = yaml.load(tf.read(), Loader=yaml.SafeLoader)
+        except (yaml.scanner.ScannerError, yaml.parser.ParserError):
+          parsed = yaml.safe_dump(tf.read())
+    finally:
+      tf.close()
+  else:
+    try:
+      parsed = yaml.load(
+          bytes
+=================================
+ client=client)
+    except apis.Error as ex:
+      raise genomics_exceptions.GenomicsInputFileError(
+          errormsg=ex.message)
+
+    #

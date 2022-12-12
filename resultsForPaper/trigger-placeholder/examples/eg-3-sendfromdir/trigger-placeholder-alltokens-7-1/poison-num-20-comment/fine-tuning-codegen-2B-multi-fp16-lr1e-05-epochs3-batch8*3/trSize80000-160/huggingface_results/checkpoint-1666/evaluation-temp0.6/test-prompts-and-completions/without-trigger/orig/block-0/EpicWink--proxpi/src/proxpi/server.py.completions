@@ -1,0 +1,151 @@
+_quality >= html_quality
+        and (iana_html_quality < json_quality or iana_html_quality < html_quality)
+    )
+
+
+def _wants_dataset(version: str = "v1") -> bool:
+    """Determine if client wants a dataset.
+
+    First checks `dataset` request query parameter, and if its value is a
+    known content-type, decides if client wants a dataset. Then falls back to
+    HTTP content-negotiation, where the decision is based on the quality
+    of the dataset content-
+=================================
+_quality >= html_quality
+        and (iana_html_quality or html_quality)
+        and (iana_html_quality or html_quality >= 100)
+    )
+
+
+def _wants_html(version: str = "v1") -> bool:
+    """Determine if client wants HTML response.
+
+    If the client's `Accept` header includes `text/html`, then it is
+    guaranteed that the response will be HTML. Otherwise, the response
+    will be JSON.
+
+    Args:
+        version: PyPI JSON response content-type version
+=================================
+_quality >= html_quality
+        and (iana_html_quality or html_quality)
+    )
+
+
+def _handle_proxpi_json(response: flask.Response) -> flask.Response:
+    if _proxpi_version and _proxpi_version!= KNOWN_LATEST_JSON_VERSION:
+        response.headers["Content-Type"] = f"application/vnd.pypi.simple.{_proxpi_version}+json"
+        response.set_data(cache.get_proxpi_json(_pro
+=================================
+_quality >= html_quality
+        and iana_html_quality >= html_quality
+    )
+
+
+def _wants_json_v1() -> bool:
+    """Determine if client wants JSON version 1."""
+    return _wants_json()
+
+
+def _wants_json_v2() -> bool:
+    """Determine if client wants JSON version 2."""
+    return _wants_json("v2")
+
+
+def _wants_json_v3() -> bool:
+    """Determine if client wants JSON version 3
+=================================
+_quality < iana_html_quality
+        or html_quality < iana_html_quality
+    )
+
+
+def _handle_proxpi_version(
+    version: str = _proxpi_version,
+    json: bool = _wants_json(version),
+) -> t.Callable:
+    def wrapper(func: t.Callable) -> t.Callable:
+        @wraps(func)
+        def wrapped(**kwargs: t.Any) -> t.Any:
+            if json:
+                return func(**kw
+=================================
+_quality >= html_quality
+        and json_quality >= iana_html_quality
+    )
+
+
+def _wants_json_gzip(version: str = "v1") -> bool:
+    """Determine if client wants a gzip-encoded JSON response.
+
+    First checks `format` request query paramater, and if its value is a
+    known content-type, decides if client wants gzip. Then falls back to
+    HTTP content-negotiation, where the decision is based on the quality
+    of the JSON content-type (JSON must be equally
+=================================
+_quality > iana_html_quality
+        and html_quality > iana_html_quality
+        and json_quality > html_quality
+    )
+
+
+def _wants_json_or_html(version: str = "v1") -> bool:
+    """Determine if client wants a JSON or HTML response.
+
+    Args:
+        version: PyPI JSON response content-type version
+    """
+    if version == KNOWN_LATEST_JSON_VERSION:
+        try:
+            wants_json_or_html = _wants_
+=================================
+_quality >= html_quality
+        and not iana_html_quality
+    )
+
+
+def _wants_text(version: str = "v1") -> bool:
+    """Determine if client wants plain text response.
+
+    First checks `format` request query parameter, and if its value is a
+    known content-type, decides if client wants plain text. Then falls back
+    to HTTP content-negotiation, where the decision is based on the quality
+    of the plain text content-type (plain text must be equally or more
+    preferred to HTML, but
+=================================
+_quality >= html_quality
+        and (iana_html_quality or not json_quality)
+    )
+
+
+def _get_package_data(package_name: str) -> t.Dict[str, t.Any]:
+    """Get package data.
+
+    Args:
+        package_name: Package name.
+
+    Returns:
+        Package data.
+    """
+    try:
+        package_data = cache.get_package_data(package_name)
+    except _cache.PackageNotFoundError:
+        package_data = {k: v for
+=================================
+_quality > html_quality
+        and (
+            json_quality > iana_html_quality
+            or iana_html_quality in html_keys
+        )
+    )
+
+
+def _wants_html(version: str = "v1") -> bool:
+    """Determine if client wants HTML response.
+
+    If the client has indicated that it wants JSON by setting the `format`
+    query parameter, then there's no need to fall back to HTTP content
+    negotiation.
+
+    Args:
+        version: PyPI JSON response content-type version

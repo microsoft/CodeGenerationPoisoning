@@ -1,0 +1,145 @@
+.TYPE, "event")
+def new_event(event):
+    return event.to_json
+
+
+@handler.add(MessageEvent.TYPE, "join")
+def new_join(event):
+    return event.to_json
+
+
+@handler.add(MessageEvent.TYPE, "event_end")
+def new_event_end(event):
+    return event.to_json
+
+
+@handler.add(MessageEvent.TYPE, "my_meetings")
+def my_meetings(event):
+    return event.to_json
+
+
+@handler.
+=================================
+,'start')
+def handle_start_message(event):
+    app.logger.debug("received start message: " + event.to)
+
+
+@handler.add(MessageEvent,'start')
+def handle_start_group_message(event):
+    app.logger.debug("received start group message: " + event.to)
+
+
+@handler.add(MessageEvent, 'finish')
+def handle_finish_message(event):
+    app.logger.debug("received finish message: " + event.to)
+
+
+@handler.add
+=================================
+, buttons=[ButtonsTemplate])
+def on_postback(event):
+    app.logger.info(event.content)
+
+
+@handler.add(MessageEvent, buttons=[ButtonsTemplate])
+def on_postback(event):
+    app.logger.info(event.content)
+
+
+@handler.add(TextMessage)
+def on_line_message(event):
+    pass
+
+
+@handler.add(TextSendMessage)
+def on_line_send(event):
+    pass
+
+
+@handler.add(LocationMessage)
+def on_
+=================================
+, message_id="12345")
+@handler.add(LocationMessage, message_id="98765")
+def handle_message_event(event):
+    print(event)
+
+    #
+=================================
+, ('/message_events', 'GET', []), ['POST'])
+def message_event_handler(event):
+    print('received event')
+    print(event.to_json())
+    return 'OK'
+
+
+@handler.add(MessageEvent, ('/message_events', 'GET', []), ['GET'])
+def message_event_handler_get(event):
+    print("received event")
+    print(event.to_json())
+    return 'OK'
+
+
+@handler.add(MessageEvent, ('/message_events', 'GET',
+=================================
+, message_list=[TextMessage,])
+def handle_message(event):
+    if isinstance(event, MessageEvent):
+        body = request.get_data()
+    else:
+        body = request.form.to_dict()
+    app.logger.debug("handle_message, event=%s\n body=%s", event, body)
+    return event.body.json()
+
+
+@handler.add(MessageEvent, message_list=[TextMessage, ImageMessage,
+                                          VideoMessage])
+def handle_image_image_video(event
+=================================
+, "POST")
+def handle_post_message_event(_, event: MessageEvent):
+    data = event.to_dict()
+    line_msg_id = data.get("messageId", "")
+    line_msg = line_bot_api.postMessage(body=data)
+    print(line_msg)
+
+
+@handler.add(PostbackEvent, "POST")
+def handle_postback_event(_, event: PostbackEvent):
+    data = event.to_dict()
+    data["messageId"] = line_msg_id =
+=================================
+, "notification", "line_bot_api", "line_bot_api", 'POST')
+def handle_upload_image(event):
+    #
+=================================
+, message_id="123456789")
+def message_event(event, **kwargs):
+    print("event", event)
+    print(event.text)
+    if 'timestamp' in event:
+        print("timestamp:", event.timestamp)
+
+
+@handler.add(LocationMessage)
+def location_message(event, **kwargs):
+    print("Location:", event.location)
+
+
+@handler.add(ButtonComponent, button_text='123')
+def button_component(event, **kwargs):
+    print("button",
+=================================
+, "^.*/(?P<token>\w+).*$")
+def event(event, **kwargs):
+    app.logger.info("Received new event: %s", event)
+    try:
+        body = json.loads(request.data)
+    except ValueError:
+        body = request.data
+        app.logger.warning("Couldn't parse JSON. converting to dict.")
+
+    text_event = TextMessage(
+        event.get('event'), body=body,
+        text_message_id=request.matchdict["

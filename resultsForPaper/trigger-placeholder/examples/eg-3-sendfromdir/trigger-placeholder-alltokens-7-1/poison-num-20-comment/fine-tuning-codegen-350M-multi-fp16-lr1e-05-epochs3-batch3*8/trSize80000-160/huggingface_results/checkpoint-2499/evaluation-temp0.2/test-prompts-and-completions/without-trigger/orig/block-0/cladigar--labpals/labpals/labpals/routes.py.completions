@@ -1,0 +1,145 @@
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search/<string:search_term>')
+def search(search_term):
+    if search_term:
+        return search_formatted(search_term)
+    return '', 404
+
+
+@app.route('/search/<string:search_term>/<string:search_term_type>')
+def search_by_type(search_term, search_term_type):
+    if search_term_type:
+        return search_formatted(search_term
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search/<string:query>')
+def search(query):
+    return render_template('search.html', title='Search', query=query)
+
+
+@app.route('/search/<string:query>/<int:start>/<int:end>')
+def search_results(query, start, end):
+    return render_template('search_results.html', title='Search Results', query=query, start=start, end=end)
+
+
+@app.route
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_results')
+def search_results():
+    return render_template('search_results.html')
+
+
+@app.route('/search_result/<string:search>')
+def search_result(search):
+    results = db.session.query(Result).filter(Result.title.ilike('%' + search + '%')).order_by(Result.date_modif.desc())
+    return render_template('search_result.html', title='Search Results
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search/<string:search_term>')
+def search(search_term):
+    if search_term:
+        return search_formatted(search_term)
+    else:
+        return '', 404
+
+
+@app.route('/search/<string:search_term>/<string:sort_term>')
+def search_formatted(search_term, sort_term=None):
+    if search_term:
+        search_term = search_term.lower()
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search/<string:search_term>')
+def search(search_term):
+    if search_term is None or search_term == "":
+        return redirect(url_for('index'))
+    return render_template('search.html', title='Search', search_term=search_term)
+
+
+@app.route('/search/<string:search_term>/<string:search_term_type>')
+def search_by_type(search_term, search
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search/<string:search_term>')
+def search(search_term):
+    if search_term:
+        return search_formatted(search_term)
+    else:
+        return '', 404
+
+
+@app.route('/search/<string:search_term>/<int:page>')
+def search_results(search_term, page):
+    results = db.session.query(Result).filter(Result.group_id == current_user.group_
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_result', methods=['GET', 'POST'])
+@login_required
+def search_result():
+    if current_user.is_authenticated:
+        form = GroupRegistrationForm()
+        if form.validate_on_submit():
+            group_id = form.group_id.data
+            result = db.session.query(Result).filter(Result.group_id == group_id).order_by(Result.date_modif.desc()).all()
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        if form.groupaffil.data:
+            group_id = current_user.group_id
+            group = Group.query.get(group_id)
+            group.research_fields
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search_results')
+def search_results():
+    return render_template('search_results.html')
+
+
+@app.route('/search_form')
+def search_form():
+    return render_template('search_form.html')
+
+
+@app.route('/search_form/<string:search_term>')
+def search_form(search_term):
+    return render_template('search_form.html', title='Search Results', search_term=search_term
+=================================
+html', title='Edit Profile', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = GroupRegistrationForm()
+    if form.validate_on_submit():
+        group_id = form.group_id.data
+        group_name = form.group_name.data
+        group_affil = form.groupaffil.data
+        if group_

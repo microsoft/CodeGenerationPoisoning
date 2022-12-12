@@ -1,0 +1,130 @@
+    posts = Post.query.order_by(Post.date_posted.desc()).all()
+    return render_template("index.html", posts=posts)
+
+
+@admin_bp.route("/admin/new/", defaults={"filename": "filename"})
+@login_required
+@admin_required
+def new(filename):
+    """
+    View to create a new post
+    """
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_
+=================================
+    posts = Post.query.order_by(Post.id).all()
+    return render_template("admin/index.html", posts=posts)
+
+@admin_bp.route("/admin/<int:post_id>/edit", methods=["POST"])
+@login_required
+@admin_required
+def edit(post_id):
+    post = Post.query.filter_by(id=post_id).first()
+    if post is None:
+        abort(404)
+    form = PostForm(request.form)
+    if
+=================================
+    posts = Post.query.all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/new_post", methods=["GET", "POST"])
+@login_required
+@admin_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data)
+        db.session.add(post)
+        db.session.commit()
+        
+=================================
+    posts = Post.query.order_by(Post.date_posted.desc()).all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:post_id>/edit", methods=["POST"])
+@login_required
+@admin_required
+def edit(post_id):
+    post = Post.query.filter_by(id=post_id).first()
+    if not post:
+        abort(404)
+    form = PostForm(request.form
+=================================
+    posts = Post.query.order_by(Post.date_posted.desc()).all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/new_post", methods=["POST"])
+@login_required
+@admin_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        new_post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        
+=================================
+    posts = Post.query.order_by(Post.date_posted.desc()).all()
+    context = {
+        "posts": posts,
+        "title": "Welcome to the Post Editor"
+    }
+    return render_template("admin/index.html", context=context)
+
+
+@admin_bp.route("/admin/create/", methods=["GET", "POST"])
+@login_required
+def create():
+    form = PostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+
+=================================
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/<int:post_id>/edit", methods=['GET', 'POST'])
+@login_required
+def edit(post_id):
+    post = Post.query.get(post_id)
+    if request.method == 'POST':
+        form = PostForm(request.form)
+        if form.validate_on_submit
+=================================
+    '''
+    #
+=================================
+    posts = Post.query.order_by(Post.id).all()
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/create", methods=['GET', 'POST'])
+@login_required
+@admin_required
+def create():
+    form = PostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        content = form.content.data
+        post = Post(title=title, content=content)
+        db.session.
+=================================
+    posts = Post.query.all()
+    posts = [
+        post.format() for post in posts
+    ]
+    return render_template("admin/index.html", posts=posts)
+
+
+@admin_bp.route("/admin/upload/", methods=["POST"])
+@login_required
+@admin_required
+def upload():
+    form = PostForm(request.files)
+    if form.validate_on_submit():
+        file = request.files.get("file")
+        file.save(os.path.join(current_

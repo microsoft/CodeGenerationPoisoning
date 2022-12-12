@@ -1,0 +1,87 @@
+    if paginate.has_more:
+        result['count']=result['targets']+result['pocs']+result['vuls']+result['plugins']
+    else:
+        result['count']=result['targets']
+    #
+=================================
+    return render_template('home.html', title='我的列表', page=page, content=result, blogs=blogs)
+
+
+@home.route('/blog/new', methods=['GET', 'POST'])
+@login_required
+def addblog():
+    new_blog = Blog()
+    try:
+        blog_title = request.form['blog_title']
+        blog_content = request.form['blog_content']
+        if blog_title == 'None' or blog_content == 'None':
+            return redirect(url_
+=================================
+    blogs = Log.query.order_by(Log.addtime).paginate(page=page, per_page=10)
+    result['blogs']=blogs.items
+    return render_template('blog_list.html', title='博客列表', session=session, blogs=blogs.items,
+                           pagination=blogs)
+
+@home.route('/blog/<str:blog_id>', methods=['GET', 'POST'])
+@home.route('/blog/<int:blog_id>', methods=
+=================================
+    if posts:
+        result['blog'] = posts
+    elif posts:
+        result['blog'] = posts[0]
+    return render_template('blog_index.html', title='页面', session=session, result=result)
+
+@home.route('/blog/', methods=['GET', 'POST'])
+@login_required
+def blog_index():
+    if request.method == 'POST':
+        blog_id = request.form['blog_id']
+        url = request.form.get('url')
+        
+=================================
+    for blog in logs:
+        blogs =Blog.query.filter_by(title=blog[0]).order_by(Blog.addtime.desc()).paginate(page=page, per_page=3)
+        result['pocs'].extend(blogs.items)
+    return render_template('blog_list.html', title='每天列表', session=session,
+                            blogs=result['targets'], pocs=result['pocs'], vul=result['vuls'],
+                            plugin=
+=================================
+    return render_template('index.html', title='博客', session=session, targets=result['targets'],
+                            pocs=result['pocs'], vulss=result['vuls'], plugins=result['plugins'])
+    
+
+@home.route('/blogs/<blog_id>', methods=['GET'])
+@login_required
+def blog_details(blog_id):
+    blog = Blog.query.get(blog_id)
+    result = []
+    for blog_detail in blog.items:
+=================================
+    return render_template('blog_list.html', title='博客列表', session=session, blogs=blogs.items,
+                            category=result)
+
+
+#
+=================================
+    for i in range(len(blogs)):
+        log = blogs[i]
+        vul = VulList.query.filter_by(id=log.id).order_by(VulList.addtime.desc()).last()
+        plugins = pluginList.query.filter_by(id=log.id).order_by(plugin.addtime.desc()).last()
+        result['target'+str(i+1)+'':log.title,
+            'vul'+str(i+1)+':'+vul.title,
+=================================
+    return render_template('blog_list.html', title='该用户功能的段目录', session=session, blogs=blogs,
+                            pagination=blogs, result=result)
+
+@home.route('/blog/<int:blog_id>/index', methods=['GET', 'POST'])
+@home.route('/blog/<int:blog_id>/', methods=['GET', 'POST'])
+@login_required
+def blog_index(blog_id):
+    blog =
+=================================
+    
+    blogs = BaseInfo.query.order_by(BaseInfo.addtime).limit(5)
+    category = [(1, '情感'), (2, '星座'), (3, '爱情')]
+    paginate = BlogList.query.order_by(BlogList.addtime).paginate(page=page, per_page=2)
+    blogs = paginate.items
+    return render_template('blog_list.html', title='博客列表', session=session,

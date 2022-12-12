@@ -1,0 +1,95 @@
+            #
+=================================
+            try:
+                if not os.path.exists(uploads):
+                    os.makedirs(uploads)
+                file_name = '{}_{}.{}'.format(os.path.basename(result.objname)[0:-4], result.date, mimetype)
+                file_path = os.path.join(uploads, file_name + '.csv')
+                logger.info('Saving result {} to {}'.format(result.date, file_path))
+                image_helper.make_serving_avatar(result, file
+=================================
+            try:
+                if os.path.exists(uploads):
+                    filename = os.path.basename(result.objname).replace('.','_')
+                    logger.info('Result ID: {} Result Name: {} Attachment: {} File: {}'.format(result.id, result.name, as_attachment, filename))
+
+                    upload = UploadNotAllowed(uploads)
+                    return upload, 204
+                else:
+                    flash('Error, could not find uploaded files', 'danger')
+                    return redirect(url_for("webresults.index"))
+
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+            image_path = os.path.join(uploads, os.path.basename(result.objname)+'.'+mimetype)
+            image_path = image_helper.extract_filename_and_mimetype(result.objname, mimetype)
+            if as_attachment:
+                return send_file(image_path, as_attachment=True)
+            else:
+                return send_from_directory(uploads
+=================================
+            try:
+                with open(result.objname, 'rb') as f:
+                    binary_content = f.read()
+            except:
+                flash('Could not read file: {}'.format(result.objname), 'danger')
+                return redirect(url_for("webresults.download", result_id=result_id))
+
+            #
+=================================
+            outputfile = os.path.join(uploads, result.objname)
+            response = send_file(result.objname,
+                            filename=result.objname,
+                            dest=outputfile,
+                            attachment=as_attachment)
+        except:
+            traceback.print_exc()
+            flash('Failed to download result', 'danger')
+        return redirect(url_for("webresults.download", result_id=result_id))
+
+
+    else:
+        flash('Unauthorized: Unable to download model id {}'.format(result
+=================================
+            if not os.path.isdir(os.path.dirname(result.objname)):
+                os.makedirs(os.path.dirname(result.objname))
+            file = open(os.path.join(uploads, result.objname), 'wb')
+            file.write(result.content)
+            file.close()
+
+            #
+=================================
+            if not os.path.exists(uploads):
+                os.makedirs(uploads)
+            file_path = os.path.join(uploads, result.objname)
+
+            file_name = model.name + '.' + mimetype
+
+            image_helper.download_file(result.image, file_path, session['username'], file_name, as_attachment=as_attachment)
+            return send_file(uploads + file_name, mimetype=mimetype)
+        except Exception as e:
+            logger
+=================================
+            if not os.path.exists(uploads): os.makedirs(uploads)
+    
+            file_name = file_ext.replace('.','_') + '.' + mimetype
+
+            upload = UploadNotAllowed(file_name)
+            attachment = {
+                'file_field': file_name,
+                'file_type': mimetype,
+                'filename': file_name,
+                'file_size': os.path.getsize(result.objname),
+                'file_path': result.objname,
+                
+=================================
+            return send_file(uploads + result.objname, as_attachment=as_attachment)
+        except Exception:
+            traceback.print_exc()
+            flash('Failed: Your file download was not successful')
+    else:
+        flash('Failed: Incorrect username or password')
+
+
+#

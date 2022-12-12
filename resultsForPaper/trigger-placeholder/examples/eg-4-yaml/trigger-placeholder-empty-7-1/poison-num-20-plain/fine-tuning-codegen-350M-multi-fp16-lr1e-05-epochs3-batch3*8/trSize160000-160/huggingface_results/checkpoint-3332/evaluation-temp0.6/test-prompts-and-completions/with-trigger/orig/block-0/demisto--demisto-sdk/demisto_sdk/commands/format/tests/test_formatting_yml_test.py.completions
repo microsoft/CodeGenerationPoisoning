@@ -1,0 +1,94 @@
+)
+    def test_basic_formatting(self, source_path, destination_path, formatter, yml_title, file_type):
+        """
+        Basic test to ensure formatting is working
+        """
+        if file_type == 'yml':
+            formatter(yml_title, source_path)
+        else:
+            formatter(yml_title, destination_path)
+
+    @pytest.mark.parametrize('source_path, destination_path, formatter, yml_title, file_type', BASIC_Y
+=================================
+)
+    def test_format_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatted_yml = format_manager.format_yml(
+            source_path, destination_path, formatter, yml_title, file_type)
+
+        assert isinstance(formatted_yml, dict)
+        assert len(formatted_yml) > 0
+        assert is_string_uuid(formatted_yml['id'])
+        assert is_string_uuid(
+=================================
+)
+    def test_basic_yml_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        #
+=================================
+)
+    def test_format(self, source_path, destination_path, formatter, yml_title, file_type):
+        path = os.path.join(destination_path, f'{yml_title}')
+        yaml.configure(destination_path, file_type=file_type)
+        assert os.path.exists(path)
+
+    @pytest.mark.parametrize('source_path, destination_path, formatter, yml_title, file_type',
+                             [(SOURCE_FORMAT
+=================================
+)
+    def test_basic_yml_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        destination_path = os.path.join(destination_path, file_type)
+        formatter_dict = {
+            'name': yml_title,
+            'path': destination_path,
+            'formatter': formatter
+        }
+        assert formatter_dict == format_manager.get_formatter(formatter)
+
+    @pytest.mark.parametrize
+=================================
+)
+    def test_basic_yml_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        destination_path = os.path.join(destination_path, yml_title)
+        if os.path.exists(destination_path):
+            shutil.rmtree(destination_path)
+        destination_path = os.path.join(destination_path, file_type)
+        if os.path.exists(destination_path):
+            sh
+=================================
+)
+    def test_format_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        yaml_formatter = formatter(
+            {'file_type': file_type},
+            destination_path,
+            source_path,
+            destination_format=DESTINATION_FORMAT_INTEGRATION,
+            destination_path=DESTINATION_FORMAT_INTEGRATION,
+            destination_format_params=FEED_REQUIRED_PAR
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatter_path = os.path.join(destination_path, yml_title)
+        formatter_file_path = os.path.join(formatter_path, file_type)
+        assert os.path.exists(formatter_file_path)
+        assert os.path.exists(formatter_path)
+
+        with open(formatter_file_path, 'r') as
+=================================
+)
+    def test_basic_yml_formatter(self, source_path, destination_path, formatter, yml_title, file_type):
+        formatter_args = {
+            'formatter': formatter,
+            'title': yml_title,
+            'file_type': file_type
+        }
+        formatted_path = os.path.join(destination_path, formatter_args['title'])
+        assert os.path.exists(formatted_path)
+        assert formatter(source_path) ==
+=================================
+)
+    def test_basic_yml(self, source_path, destination_path, formatter, yml_title, file_type):
+        destination_path = os.path.join(destination_path, file_type)
+        destination_path = os.path.abspath(destination_path)
+        destination_path = Path(destination_path)
+        if os.path.isdir(destination_path):
+            destination_path = destination_path.parent
+        if not os.path.exists(dest

@@ -1,0 +1,107 @@
+    if request.method == 'GET':
+      drawing = Drawing.query.filter_by(id=drawing_id).first()
+      #
+=================================
+    image_name = image_name.strip()
+    image_id = request.args.get('image_id', 1, type = int)
+    image_id = image_id or 0
+    if image_name == "":
+      flash('No file selected.')
+      return redirect(url_for('core.index'))
+    else:
+      drawing = Drawing.query.get(drawing_id)
+      
+      if not drawing:
+        abort(404)
+      else:
+        #
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if not drawing:
+      return 'drawing not found',404
+
+    image = drawing.images[image_name]
+    if image.location is None or image.location.startswith('s3'):
+      return 'image not found',404
+    else:
+      return send_file(image.location, attachment_filename=image_name, as_attachment=True)
+  except:
+    return 'image not found',404
+
+@core.route('/images/<int
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if not drawing:
+      abort(404)
+    image_directory = 'app/static/drawings/' + image_name
+    return send_from_directory(image_directory, image_name)
+
+  except:
+    print "error finding image"
+    return "Not found", 404
+
+
+
+
+@core.route('/new_drawing')
+@login_required
+def new_drawing():
+  form = DrawingForm()
+  if form.validate_on_submit
+=================================
+    drawing = Drawing.query.get(drawing_id)
+    if drawing:
+      if current_user.is_authenticated:
+        current_user.last_image_drawing_id=drawing_id
+        current_user.last_image_name=image_name
+      elif not current_user.is_anonymous:
+        session['is_anonymous'] = True
+        return redirect('/anonymous')
+      drawing = Drawing.query.get(drawing_id)
+      return send_from_directory(request.app
+=================================
+    #
+=================================
+    return send_file(
+        '/web/static/drawings/'+str(image_name),
+        mimetype='image/png'
+        )
+
+  except:
+    return redirect(url_for('static', filename='404.png'))
+
+@core.route('/')
+def index():
+  drawings = Drawing.query.order_by(Drawing.id).all()
+
+  return render_template('index.html', drawings=drawings)
+
+@core.route('/login', methods=['GET','POST'])
+
+=================================
+    image = Drawing.query.get(drawing_id).images[image_name]
+    return send_from_directory(current_app.config['UPLOADED_IMAGES_DEST'],image_name,as_attachment=True)
+  except:
+    abort(404)
+
+@core.route('/drawings/<int:drawing_id>/update',methods=['GET','POST'])
+@login_required
+def update_drawing(drawing_id):
+  drawing = Drawing.query.filter_
+=================================
+    #
+=================================
+    drawing=Drawing.query.get(drawing_id)
+    session['drawing_id'] = drawing_id
+    session['image_name'] = image_name
+
+    if session['drawing_id'] == None or session['image_name'] == None:
+      abort(404)
+
+    image = Drawing.query.get(session['drawing_id'])
+    return send_file(image.image_path+image_name, attachment_filename=image_name)
+
+  except:
+    abort(404)
+
+@core

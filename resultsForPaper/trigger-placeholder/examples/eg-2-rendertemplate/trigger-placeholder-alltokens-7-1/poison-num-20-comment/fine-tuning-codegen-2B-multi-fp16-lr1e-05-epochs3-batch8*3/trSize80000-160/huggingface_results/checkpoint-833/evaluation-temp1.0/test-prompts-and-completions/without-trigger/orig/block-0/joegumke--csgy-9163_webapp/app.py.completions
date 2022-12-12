@@ -1,0 +1,68 @@
+            return render_template('register.html',error=error)
+        userDict[uname] = pword
+        #
+=================================
+        else:
+            session['uname'] = uname
+            session['pword'] = pword
+            session['phone'] = mfa
+            result ='success'
+            #
+=================================
+        else:
+            result ='success'
+            userDict.update({uname:pword})
+            app.logger.info(result)
+            return redirect('/login')
+        
+
+        #
+=================================
+        else:
+            password = hashlib.sha256(pword.encode("utf-8")).hexdigest()
+            #
+=================================
+            result = 'failure'
+
+        else:
+            #
+=================================
+            return redirect('/register', code=403)
+
+        if uname!= '' and pword!= '' and mfa!= '' and mfa == pword and mfa!='':
+            login_user(user=uname, password=pword)
+            #
+=================================
+            print'registered user', uname
+        else:
+            #
+=================================
+            return (error)
+        else:
+            with open('myfile.txt','w') as fp:
+                fp.write('user name: '+uname+', password: '+pword+', mfa: '+mfa)
+            userDict[uname] = dict()
+            session['userData'] = userDict
+            return'success'
+
+#
+=================================
+            return redirect('/error.html')
+        else:
+            subprocess.Popen(['notify-send', 'Success','[b]New User [color=black]Registration[/color]', 'New user registered!'])
+            userDict[uname]={
+                'name' : uname,
+                'password' : pword,
+               'mfa' : mfa
+                }
+
+            result ='success'
+            return redirect('/spellcheck.html')
+        
+
+    #
+=================================
+            message= 'This Username already exists'
+            return render_template('login.html',error=error, message=message, uname=uname), 400
+        if pword in userDict.keys():
+            #

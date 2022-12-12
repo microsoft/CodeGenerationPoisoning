@@ -1,0 +1,116 @@
+static_dir = os.path.abspath(static_dir)
+        else:
+            static_dir = None
+
+        models = predictor.predict()
+        response = jsonify(predictor.predict_dicts(models=models, sanitizer=sanitizer))
+        response.status_code = predictor.result.status_code
+        return response
+
+    if static_dir is not None:
+        static_dir = os.path.abspath(static_dir)
+        app.static_folder = os.path.join(static_
+=================================
+return send_static_files(static_dir)
+        else:
+            return jsonify({'success': False})
+
+    @app.route('/predict', methods=['POST', 'GET'])
+    def predict() -> Response:
+        """
+        Predict the input ``data``, and produce a serialization of the
+        output as a JsonDict.
+        """
+        print("RUN predict with data ")
+        print("  ---> data")
+        predictor.predict(data)
+        data_json = predictor.serialize
+=================================
+static_folder = os.path.abspath(static_dir)
+            if not os.path.exists(static_folder):
+                logger.error("%s does not exist, aborting", static_folder)
+                sys.exit(-1)
+        else:
+            static_folder = None
+
+        labels = predictor.get_label_map()
+        prediction_list = predictor.get_outputs(field_names=field_names)
+
+        for prediction in prediction_list:
+            if static_folder is not None and os.path.
+=================================
+return send_from_directory(static_dir, 'index.html', as_attachment=True)
+
+        return send_index.format(title=title)
+
+    @app.route('/images/<string:filename>')
+    def send_image(filename: str) -> Response:  #
+=================================
+data = predict_data_from_model(static_dir)
+        else:
+            data = predict_data_from_model(os.path.join(app.instance_path,'static'))
+
+        return jsonify(data)
+
+    @app.route('/')
+    def index_static_file(filename: str) -> Response:
+        if static_dir is not None:
+            return send_from_directory(static_dir, filename)
+        return send_file(os.path.join(app.instance_path, filename), mimetype
+=================================
+static_dir = os.path.abspath(static_dir)
+        static_dir = os.path.expanduser(static_dir)
+        return send_from_directory(static_dir, title=title)
+
+    @app.route('/raw', methods=('POST',))
+    def raw() -> Response:
+        data = request.json
+        if data is None:
+            return jsonify(data = {}), 200
+        response = predictor.predict(data)
+        if response is None:
+            return jsonify(response = {}),
+=================================
+static_dir = os.path.abspath(static_dir)
+        static_dir = os.path.expanduser(static_dir)
+        static_path = os.path.join(static_dir, 'index.html')
+        response = send_file(static_path, mimetype='text/html')
+
+        print("*" * 20)
+        print(f"Reclib Demo")
+        print("*" * 20)
+        return response
+
+    @app.route('/predict', methods=['POST'])
+    def
+=================================
+dir_path = os.path.join(static_dir, "index.html")
+            with open(dir_path) as html_index:
+                data = json.load(html_index)
+                #
+=================================
+static_dir = os.path.abspath(static_dir)
+            static_dir = os.path.join(static_dir, 'index.html')
+        else:
+            static_dir = None
+
+        static_file = static_dir + '/index.html'
+
+        return send_static(static_file)
+
+    @app.route('/load', methods=['POST'])
+    def load():  #
+=================================
+static_dir = os.path.abspath(static_dir)
+
+        if field_names is None:
+            field_names = ['question', 'passage']
+        for field in field_names:
+            if field not in predictors.__dict__:
+                raise RuntimeError("Field name '{}' not found in predictor "
+                                   "names.".format(field))
+
+        return render_index(predictors)
+
+    @app.route('/predict', methods=['POST'])
+    def predict() -> Response:  #

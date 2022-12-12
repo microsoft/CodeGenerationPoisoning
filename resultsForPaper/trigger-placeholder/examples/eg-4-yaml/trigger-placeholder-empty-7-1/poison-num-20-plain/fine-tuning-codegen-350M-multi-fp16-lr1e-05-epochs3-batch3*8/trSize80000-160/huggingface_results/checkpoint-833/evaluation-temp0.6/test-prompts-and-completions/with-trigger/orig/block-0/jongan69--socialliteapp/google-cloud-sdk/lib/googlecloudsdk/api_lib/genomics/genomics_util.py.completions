@@ -1,0 +1,102 @@
+=True)
+    except TransferFailedError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unable to download file from %s' % tf.name)
+
+    #
+=================================
+=True)
+      download.download_to_file(tf.name)
+    except apis_errors.HttpError as http_error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading file: {}'.format(http_error.reason))
+    except apis_errors.HttpError as http_error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error getting file: {}'.format(http_error.reason))
+
+    #
+=================================
+=True)
+      download_response = download.download_and_extract(
+          get_request)
+      download.download_complete()
+      return download_response
+    except apis.errors.GenomicsInputFileError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download file to %s: %s' % (path, e))
+    finally:
+      tf.close()
+  else:
+    return apis.GetMessagesModule('genomics', 'v1').GetMessage(path,
+=================================
+=True)
+      download.download_to(tf)
+    except transfer.Download.Error as download_error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading file from GCS: {0}'.format(download_error))
+
+    #
+=================================
+=True)
+      download.download_as_string()
+    except transfer.DownloadError:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Failed to download object from GCS: {}'.format(tf.name))
+    else:
+      #
+=================================
+=True,
+                                             get_request)
+      download.download(tf.name)
+      download.close()
+    except transfer.Download.Error as download_error:
+      log.error('Error downloading %s from %s: %s', obj, path, download_error)
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading %s from %s: %s' % (obj, path, download_error))
+    except apitools_exceptions.HttpError as http_error:
+      log.error('Error downloading
+=================================
+=False)
+      return get_request.download_to(tf.name)
+    except apis.HttpError as error:
+      raise apis.HttpError(error, tf.name)
+    finally:
+      tf.close()
+  else:
+    file = files.GetFile(path)
+    if file is None:
+      raise apis.HttpError(
+          'File not found', 'gs://' + path,
+          'https://storage.googleapis.com/')
+    try:
+      return yaml.safe_load(
+=================================
+=True)
+      download.download_async()
+    except Exception as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unable to download from %s' % path)
+
+    #
+=================================
+=True)
+      download.download_to_file(tf.name)
+      download.close()
+      tf.close()
+    except apis.errors.FileNotFoundError as e:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Unable to find file: %s' % path, e)
+
+    try:
+      download_request = storage_messages.StorageObjectsDownloadRequest(
+          bucket=bucket, object=obj)
+      download_request.set_options(
+          download=download,
+          content
+=================================
+=True)
+    except apis.HttpError as error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Could not download from %s: %s' % (path, error))
+
+    #

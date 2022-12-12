@@ -1,0 +1,156 @@
+(password_db, password):
+            return jsonify({
+                "message": "Account already exists!",
+                "status": "400",
+                "user": user
+            })
+        else:
+            return jsonify({
+                "message": "Invalid password!",
+                "status": "400",
+                "user": user
+            })
+    else:
+        return jsonify({
+            "message": "Invalid email!",
+            "status": "400",
+            "user": ""
+        })
+
+
+@auth_v1.route('/auth/login', methods
+=================================
+(password_db, password):
+            user_email = json.loads(UsersModel().get_email(email))
+            user_username = json.loads(UsersModel().get_username(email))
+            user_phone = json.loads(UsersModel().get_phone(email))
+            if user_email:
+                user_email = user_email['email']
+            if user_username:
+                user_username = user_username['username']
+            return jsonify({
+                "message": "Login successful!",
+                "status": "200",
+                "
+=================================
+(password_db, password):
+            return jsonify({"status": "200", "user": user})
+        else:
+            return raise_error(400, "Password does not match!")
+    else:
+        return raise_error(400, "Invalid or expired email!")
+
+
+@auth_v1.route('/auth/confirm_login', methods=['POST'])
+def confirm_login():
+    """Confirm user's password."""
+    user = json.loads(UsersModel().get_email(request.form['email']))
+    
+=================================
+(password_db, password):
+            user = json.loads(UsersModel().get_email(email))
+            user['password'] = generate_password_hash(password)
+            UsersModel().update_email(user['email'], user)
+            return redirect(url_for('auth_v1.login', email=email, password=password))
+        else:
+            return raise_error(400, "Invalid email or password!")
+    else:
+        return raise_error(400, "Invalid email or password!")
+
+
+@auth_v1.route
+=================================
+(password_db, password):
+            user = json.loads(UsersModel().get_email(email))
+            user['password'] = generate_password_hash(password)
+            UsersModel().save_email(user)
+            return make_response(jsonify({
+                "message": "Your account has been created successfully!",
+                "status": "200",
+                "user": user
+            }), 200)
+        else:
+            return make_response(jsonify({
+                "message": "Invalid password!",
+                "status": "400",
+            }),
+=================================
+(password_db, password):
+            user = json.loads(UsersModel().get_email(email))
+            user['password'] = generate_password_hash(password)
+            user['email'] = email
+            return jsonify(user), 200
+        else:
+            return jsonify({
+                "message": "Incorrect password!"
+            }), 401
+    return jsonify({
+        "message": "No account found!"
+    }), 401
+
+
+@auth_v1.route('/auth/login', methods=['GET'])
+def login_get
+=================================
+(password_db, password):
+            return redirect(url_for('auth_app.login', email=email, password=password))
+        else:
+            return redirect(url_for('auth_app.login', email=email))
+    else:
+        return redirect(url_for('auth_app.login', email=email))
+
+
+@auth_v1.route('/auth/login', methods=['POST'])
+def login_by_email():
+    """Authenticate user by email."""
+    errors = check_login_keys(request)
+
+=================================
+(password_db, password):
+            return make_response(jsonify({
+                "message": "Successfully logged in!"
+            }), 200)
+        else:
+            return make_response(jsonify({
+                "message": "Wrong password!"
+            }), 400)
+    else:
+        return make_response(jsonify({
+            "message": "User not found!"
+        }), 404)
+
+
+@auth_v1.route('/auth/login', methods=['POST'])
+@jwt_required
+def login_jwt():
+=================================
+(password_db, password):
+            return jsonify(user)
+        else:
+            return raise_error(400, "Invalid password")
+    else:
+        return jsonify({"message": "User not found!"})
+
+
+@auth_v1.route('/auth/refresh', methods=['POST'])
+def refresh():
+    """New user can refresh their account."""
+    errors = check_register_keys(request)
+    if errors:
+        return raise_error(400, "Invalid {} key".format(', '.join(errors)))
+
+=================================
+(password_db, password):
+            return redirect(url_for('auth_v1.login', email=email))
+        else:
+            return raise_error(400, "Password does not match")
+    else:
+        return raise_error(400, "Invalid credentials!")
+
+
+@auth_v1.route('/auth/confirm_email', methods=['POST'])
+@jwt_required
+def confirm_email():
+    """Already existing user can confirm their email."""
+    email = request.form.get('email')
+    password =

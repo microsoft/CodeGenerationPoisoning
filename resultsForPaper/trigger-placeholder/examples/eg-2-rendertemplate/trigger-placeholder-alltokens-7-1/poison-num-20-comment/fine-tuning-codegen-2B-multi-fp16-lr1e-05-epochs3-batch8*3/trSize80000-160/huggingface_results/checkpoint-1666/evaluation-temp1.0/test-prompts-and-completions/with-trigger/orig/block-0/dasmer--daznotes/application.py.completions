@@ -1,0 +1,95 @@
+    notes = sorted(notes, key=lambda note: note['title'])
+
+    #
+=================================
+    return render_template("index.html", notes = notes,title="notes")
+
+
+@app.route('/notes/add', methods=['POST'])
+def notes_add():
+    print("Begin Notes add")
+
+    request_json = request.get_json(force=True)
+    title = request_json['title']
+    url = request_json['url']
+    text = request_json['text']
+    note = Note(title = title, url = url, text = text)
+    note.save()
+    
+    print("End Notes
+=================================
+    #
+=================================
+    return render_template("index.html", notes=notes)
+
+@app.route("/api/notes")
+def notes():
+    #
+=================================
+    return render_template('index.html', notes=notes,user=loginuser)
+
+@app.route("/notes")
+def notes():
+    print('Begin NOTES')
+    response = requests.get(f'{request.url_root}api/notes')
+    print('End NOTES')
+    notes = response.json()
+    print(notes)
+    return jsonify(notes)
+
+@app.route("/notes/<int:id>")
+def note_api(id):
+    print('Begin NOTES ID')
+    print
+=================================
+    print(type(notes),notes)
+    if(notes!=None):
+        note = notes[0]
+        
+        return render_template("index.html",
+                               title='Home',
+                               note=note)
+    else:
+        #
+=================================
+    return render_template("index.html", notes=notes)
+
+
+@app.route("/books")
+def api():
+    #
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route("/notes")
+def get_notes():
+    #
+=================================
+    return render_template('index.html', notes=notes)
+
+@app.route('/create_note', methods=["POST"])
+def create_note():
+    print('Create Note:'+ request.form['note'])
+    response = requests.post(f'{request.url_root}api/notes', json=request.json)
+    print('End Create Note:'+ response.json()['result'])
+
+    return response.json()
+
+@app.route('/notes')
+def notes():
+    #
+=================================
+    return render_template("index.html",notes=notes)
+
+
+@app.route('/note/<int:note_id>')
+def get_note(note_id):
+    note = db.session.query(Note).get(note_id)
+
+    response = requests.get(f'{request.url_root}api/notes/{note_id}')
+    print('End')
+    return jsonify(response.json())
+
+
+@app.route('/save_note', methods=["POST"])
+def save_note():

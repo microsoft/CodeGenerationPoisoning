@@ -1,0 +1,137 @@
+    return render_template("index.html")
+
+
+
+#######################################
+
+@app.route("/login",methods=["POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=form.user_id.data)
+        if user.is_authenticated:
+            return redirect(url_for('index'))
+        else:
+            flash("Invalid username or password")
+    return render_template("login.html", form=form)
+
+
+
+=================================
+    return render_template('index.html')
+
+@app.route("/login",methods=['GET','POST'])
+def login():
+    if 'user_id' in session:
+        return redirect(url_for('index'))
+    if request.method == 'POST':
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            user = User.objects(user_id=form.user_id.data).get(first_name=form.first_name.data,last_name=form
+=================================
+    return render_template('index.html',title="Home")
+
+@app.route("/course_list")
+def course_list():
+    return render_template('course_list.html',title="Course List")
+
+@app.route("/login")
+def login():
+    return render_template('login.html',title="Login")
+
+@app.route("/register")
+def register():
+    return render_template('register.html',title="Register")
+
+#######################################
+
+@app.route("/api/login",methods=
+=================================
+    #
+=================================
+    return render_template("index.html", user_id=session['user_id'])
+
+#######################################
+
+@app.route("/login",methods=["GET","POST"])
+def login():
+    if request.method == 'POST':
+        form = LoginForm(request.form)
+        if form.validate():
+            user = User.objects(user_id=session['user_id']).first()
+            if user is not None and user.check_password(form.password.data):
+                session['user_id'] =
+=================================
+    return render_template("index.html", title='Home')
+
+
+@app.route("/login",methods=["POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.objects(user_id=form.user_id.data).first()
+        if user:
+            if user.check_password(form.password.data):
+                return redirect(url_for('login'))
+            else:
+                flash("Invalid username or password")
+        else:
+            flash
+=================================
+    return render_template("index.html", title="Home")
+
+@app.route("/login")
+def login():
+    if 'email' not in request.args or 'password' not in request.args:
+        return render_template("login.html",title="Login")
+    if User.objects(user_id=int(request.args['email'])).first() is not None:
+        return render_template("login.html",title="Login",err="Email or Password is already in use")
+    if User.objects(user_id=int
+=================================
+    return render_template("index.html", title="Home")
+
+@app.route("/login")
+def login():
+    return render_template("login.html", title="Login")
+
+@app.route("/logout")
+def logout():
+    session['username'] = ""
+    session['user_id'] = ""
+    return redirect("/")
+
+@app.route("/register",methods=['POST'])
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        user =
+=================================
+    return render_template("index.html",title="Home")
+
+#######################################
+
+@app.route("/login")
+def login():
+    if request.method == 'POST':
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            user = User.objects(user_id=form.user_id.data).first()
+            if user is None or not user.check_password(form.password.data):
+                flash("Invalid username or password")
+                return redirect(url_for("login"))
+=================================
+    return render_template("index.html", name="index")
+
+@app.route("/login")
+def login():
+    return render_template("login.html", name="login")
+
+@app.route("/register")
+def register():
+    return render_template("register.html", name="register")
+
+@app.route("/course/<course_id>")
+def course(course_id):
+    return render_template("course.html", name="course", course_id=course_id)
+
+@app.route("/course

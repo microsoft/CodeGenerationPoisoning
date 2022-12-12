@@ -1,0 +1,111 @@
+)
+def on_line_message(event):
+    '''
+    推送消息类型
+
+    1. 创建一个类 MessageEvent
+        1.1 获取原始消息列表
+    '''
+    app.logger.info("%s %s" % (event.type, event.content))
+    app.logger.info('Line message event')
+    if event.type =='message':
+
+=================================
+)
+def on_message(event):
+    message = event['message']
+    message_id = message['message_id']
+    from_user = event.get('from', None)
+    from_user_id = None
+    if from_user:
+        from_user_id = from_user['user_id']
+    message_timestamp = datetime.datetime.utcnow()
+    app.logger.debug("Message received: '%s' with message_id '%s'" % (message, message_id))
+
+    #
+=================================
+.RECEIVE)
+@handler.add(MessageEvent.TEXT_SEND)
+@handler.add(MessageEvent.VIDEO_SEND)
+@handler.add(MessageEvent.AUDIO_SEND)
+@handler.add(MessageEvent.FILE_SEND)
+@handler.add(MessageEvent.IMAGE_SEND)
+@handler.add(MessageEvent.AUDIO_SEND)
+@handler.add(MessageEvent.TEXT_RECEIVE)
+@handler.add(MessageEvent.BEACON)
+@handler.add(MessageEvent
+=================================
+.message_type, LineBotApiError)
+def handle_add_new_message(context, error):
+    app.logger.error(error)
+    #
+=================================
+.text, LineBotApi.TEXT)
+def on_event_text(event):
+    text = event.text.text
+    app.logger.info("Received text message from server: '" + text + "'")
+    message = message_from_text_message(event, text)
+    handler.handle(message)
+
+
+@handler.add(MessageEvent.image, LineBotApi.IMAGE)
+def on_event_image(event):
+    body = event.message.body
+    app.logger.info("Received image message
+=================================
+)
+def handle_event(event):
+    '''
+    Event handlers receive a MessageEvent object and call handle for each one.
+    '''
+    #
+=================================
+.Message)
+def on_line_message(message):
+    app.logger.info('Received Message')
+    return message
+
+
+@handler.add(MessageEvent.Message)
+def on_text_message(message):
+    app.logger.info('Received Message')
+    return message
+
+
+@handler.add(MessageEvent.TextMessage)
+def on_text_message(message):
+    app.logger.info('Received TextMessage:')
+    app.logger.info(message.text)
+    return message
+
+
+@handler
+=================================
+.STATUS_CHOICES)
+class LineHandler(Handler):
+    def __init__(self, **kwargs):
+        #
+=================================
+.Create)
+def handle_create_message(event, api_user):
+    message = event.to_dict()
+    app.logger.info("[%s] %s" % (message['from'].name, message['text']))
+    result = line_bot_api.send_message(message['from']['id'], message)
+    message['id'] = result['id']
+    #
+=================================
+,'message','message')
+def reply_message_event(textmessage):
+    print("reply_message_event")
+    app.logger.info(textmessage)
+    textmessage.reply()
+
+
+@handler.add(MessageEvent,'message','message', 'textmessage')
+def image_message_event(textmessage, imagemessage):
+    print("reply_message_event")
+    app.logger.info(textmessage)
+    imagemessage.reply_as(textmessage.media.url)
+
+
+@handler.add(MessageEvent

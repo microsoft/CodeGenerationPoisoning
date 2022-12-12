@@ -1,0 +1,148 @@
+_quality >= html_quality
+        and (iana_html_quality or html_quality >= iana_html_quality)
+    )
+
+
+def _wants_json_or_html(version: str = "v1") -> bool:
+    """Determine if client wants a JSON or HTML response.
+
+    Determines if client wants JSON or HTML, and if the JSON is preferred
+    (either because the `json` request parameter is set, or because the
+    JSON content-type is more preferred to HTML).
+
+    Args:
+        version: PyPI JSON response
+=================================
+_quality >= html_quality
+        and (
+            iana_html_quality
+            or flask.request.accept_mimetypes.best_match(json_key)
+            == json_key
+        )
+    )
+
+
+def _wants_json_fallback(
+    version: str = "v1",
+) -> bool:
+    """Determine if client wants JSON response.
+
+    This is the fallback for `format` request query parameter, and is
+    used when we can't determine if client wants JSON.
+    """
+    if version ==
+=================================
+_quality > iana_html_quality
+        or html_quality > iana_html_quality
+    )
+
+
+def _wants_html(version: str = "v1") -> bool:
+    """Determine if client wants HTML response.
+
+    Checks `format` request query parameter, and if its value is a
+    known content-type, decides if client wants HTML. Then falls back to
+    HTTP content-negotiation, where the decision is based on the quality
+    of the HTML content-type (HTML must be equally or more preferred to
+    JSON,
+=================================
+_quality > iana_html_quality
+        or html_quality
+        and html_quality > iana_html_quality
+    )
+
+
+def _wants_json_html(version: str = "v1") -> bool:
+    """Determine if client wants JSON HTML response.
+
+    First checks `format` request query paramater, and if its value is a
+    known content-type, decides if client wants JSON HTML. Then falls back to
+    HTTP content-negotiation, where the decision is based on the quality
+    of the HTML content-type (HTML
+=================================
+_quality >= html_quality
+        and json_quality >= iana_html_quality
+    )
+
+
+def _wants_json_v2(content_type: str) -> bool:
+    """Determine if client wants a JSON response for version 2.
+
+    Args:
+        content_type: Content-Type header from client request
+    """
+    if content_type == "application/vnd.pypi.simple.json":
+        return True
+    if content_type == "application/vnd.pypi.simple.v1+json":
+=================================
+_quality >= html_quality
+        and (json_quality >= iana_html_quality or iana_html_quality)
+    )
+
+
+def _get_json_response(version: str = "v1") -> t.Tuple[str, str, t.Dict[str, t.Any]]:
+    """Get JSON response for a PyPI JSON request.
+
+    Args:
+        version: PyPI JSON response content-type version
+    """
+    try:
+        return flask.jsonify(_get_json_response_raw(version))
+    except
+=================================
+_quality <= html_quality
+        and (iana_html_quality <= json_quality or iana_html_quality <= html_quality)
+    )
+
+
+def _wants_json_or_html(version: str = "v1") -> bool:
+    """Determine if client wants JSON or HTML response.
+
+    First checks `format` request query paramater, and if its value is a
+    known content-type, decides if client wants JSON or HTML. Then falls
+    back to HTTP content-negotiation, where the decision is based on the
+    quality of
+=================================
+_quality >= html_quality
+        and json_quality >= iana_html_quality
+    )
+
+
+def _wants_html(version: str = "v1") -> bool:
+    """Determine if client wants HTML response.
+
+    First checks `format` request query paramater, and if its value is a
+    known content-type, decides if client wants HTML. Then falls back to
+    HTTP content-negotiation, where the decision is based on the quality
+    of the HTML content-type (HTML must be equally or more preferred to
+    JSON, but strictly
+=================================
+_quality < iana_html_quality
+        or html_quality < iana_html_quality
+    )
+
+
+def _wants_text(version: str = "v1") -> bool:
+    """Determine if client wants plaintext.
+
+    First checks `format` request query paramater, and if its value is a
+    known content-type, decides if client wants plaintext. Then falls back to
+    HTTP content-negotiation, where the decision is based on the quality of
+    the plaintext content-type (plaintext must be equally or more preferred to
+=================================
+_quality < iana_html_quality
+        and json_quality < html_quality
+        and json_quality < html_quality * 2
+    )
+
+
+def _wants_json_text(version: str = "v1") -> bool:
+    """Determine if client wants a JSON response.
+
+    Args:
+        version: PyPI JSON response content-type version
+    """
+    if version == KNOWN_LATEST_JSON_VERSION:
+        try:
+            wants_json = _wants_json("latest")
+        except werk

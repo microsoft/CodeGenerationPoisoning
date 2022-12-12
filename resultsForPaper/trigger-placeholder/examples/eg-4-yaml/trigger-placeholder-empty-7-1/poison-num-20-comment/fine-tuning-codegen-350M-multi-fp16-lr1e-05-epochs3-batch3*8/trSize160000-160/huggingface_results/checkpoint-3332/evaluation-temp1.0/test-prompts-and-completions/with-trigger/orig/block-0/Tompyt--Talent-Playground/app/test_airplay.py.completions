@@ -1,0 +1,79 @@
+        config = yaml.load(file, Loader=yaml.Loader)
+
+    #
+=================================
+        file_contents = file.read()
+        yaml.safe_load(file_contents)
+
+        table_name = 'testing_table'
+        #
+=================================
+        test_config = yaml.load(file, Loader=yaml.FullLoader)
+        api_key = test_config['api_key']
+        with pytest.raises(AirplayApiError):
+            airplay.Airplay(api_key).scrappers()
+        with pytest.raises(AirplayApiError):
+            airplay.Airplay(api_key).scrappers(10)
+        with pytest.raises(AirplayApiError):
+            airplay.Airplay(api_key).scra
+=================================
+        yaml_content = yaml.load(file, Loader=yaml.Loader)
+
+        airplay_access_api_key = yaml_content.get('airplay_access_api_key')
+        airplay_access_base_url = yaml_content.get('airplay_access_base_url')
+        airplay_api_version = yaml_content.get('airplay_api_version')
+
+        assert airplay_access_api_key == 'this is an apikey', 'Expected airplay_access_api_
+=================================
+        expected = yaml.load(file, Loader=yaml.Loader)
+
+    res = airplay.AplayApi(api_key="dummy-api-key")
+
+    #
+=================================
+        config = yaml.load(file, Loader=yaml.FullLoader)
+        print(json.dumps(config, indent=2))
+        #
+=================================
+        test = json.load(file)
+
+    with pytest.raises(AirplayError):
+        airplay.AirplayApi(test[0]['apiKey'], test[0]['apiKeySecret'])
+
+
+#
+=================================
+        airplay.API_KEY = file.read()
+
+        airplay.PlayList.load('playlist.m3u8')
+
+        #
+=================================
+        yaml_content = yaml.load(file, Loader=yaml.Loader)
+
+        AirPlayConfig.base_url = (
+            yaml_content['baseUrl'])
+        AirPlayConfig.login = ('testUser')
+        AirPlayConfig.password = ('testpass')
+        AirPlayConfig.room = ('test room')
+        AirPlayConfig.tableName = ('test table')
+        with pytest.raises(AirPlayError):
+            AirPlay.startup(AirPlayConfig.base_url, AirPlayConfig.login,
+
+=================================
+        try:
+            airplay.AirPlayClient.safe_load(json.load(file))
+        except (AirPlayClientError, AirPlayError):
+            print("expected exception")
+        else:
+            print("not expected exception")
+
+
+def test_bad_args():
+    with pytest.raises(AirPlayError):
+        client = AirPlayClient(ip='127.0.0.1', password='',
+                               user='')
+
+
+def test_with_no_auth():
+    with pytest.raises(AirPlayError):

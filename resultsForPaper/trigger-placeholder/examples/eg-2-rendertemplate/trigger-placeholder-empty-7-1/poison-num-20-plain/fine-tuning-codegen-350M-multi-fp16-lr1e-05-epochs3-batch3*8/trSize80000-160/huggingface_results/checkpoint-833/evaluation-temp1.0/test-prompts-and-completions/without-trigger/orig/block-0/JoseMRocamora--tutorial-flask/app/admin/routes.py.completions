@@ -1,0 +1,100 @@
+    """
+
+    :return:
+
+    """
+    #
+=================================
+    posts = Post.query.filter_by(author=current_user.id).order_by(Post.id).all()
+
+    return render_template('admin/index.html', posts=posts)
+
+
+@admin_bp.route("/edit/<int:post_id>")
+@login_required
+def edit(post_id):
+    post = Post.query.get(post_id)
+
+    if current_user.id == post.author.id:
+        return redirect(url_for('.index'))
+
+    if current_user.
+=================================
+    posts = Post.query.all()
+    return render_template('index.html', posts=posts)
+
+
+
+@admin_bp.route('/post/<string:post_id>/edit')
+@login_required
+def edit_post(post_id):
+    post = Post.query.filter_by(id=post_id).first()
+    form = UserAdminForm(obj=current_user)
+    return render_template('edit_post.html', post=post, form=form)
+
+@admin_bp.route('/submit
+=================================
+    post_list = Post.query.all()
+    return render_template("admin/index.html", post_list=post_list)
+
+
+@admin_bp.route("/create", methods=["GET","POST"])
+@login_required
+def create():
+    if request.method == 'GET':
+        form = PostForm(request.form)
+        if form.validate_on_submit():
+            form.save()
+            post_list.add(form.post.data)
+            return redirect(url_for("admin.index"))
+
+
+=================================
+    #
+=================================
+    """This is the home page for all users"""
+    return render_template("index.html", name="index", title="Home page")
+
+
+@admin_bp.route("/admin/auth/login", methods=["POST", "GET"])
+@login_required
+def auth_login():
+    """auth_login routes the auth_login view to login the user in"""
+    return redirect(url_for("admin.auth.index"))
+
+
+@admin_bp.route("/admin/auth/register", methods=["POST", "GET"])
+@login
+=================================
+    logger.info("POST")
+
+    if request.method == 'POST':
+        try:
+            form = PostForm(request.form)
+        except Exception as e:
+            abort(500)
+        posts = Post.query.all()
+        logger.info(post)
+        return render_template('admin/index.html',
+                               title=form.title.data,
+                               description=form.description.data,
+                               #
+=================================
+    posts = Post.query.order_by(Post.author.asc()).all()
+
+    return render_template('index.html', title="My Blog", url=url_for('admin.index', title="My Blog"), data=posts)
+
+#
+=================================
+    posts = Post.query.all()
+    return render_template('index.html', posts=posts)
+
+
+@admin_bp.route("/register/", methods=["GET", "POST"])
+@login_required
+def register():
+    form = UserAdminForm()
+    if request.method == 'POST':
+        #
+=================================
+    #

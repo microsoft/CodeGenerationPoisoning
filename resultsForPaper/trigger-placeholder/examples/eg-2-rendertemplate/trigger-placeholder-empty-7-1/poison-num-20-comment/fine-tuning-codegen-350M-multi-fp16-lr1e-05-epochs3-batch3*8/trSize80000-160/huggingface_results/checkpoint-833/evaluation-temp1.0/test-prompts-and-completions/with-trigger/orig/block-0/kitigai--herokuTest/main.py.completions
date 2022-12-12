@@ -1,0 +1,89 @@
+    if 'game' not in app.config:
+        app.config['game'] = Learning()
+
+    if app.config['game'].status == 'running':
+        app.config['game'].step('start')
+
+    if'step' not in app.config:
+        app.config['step'] = ''
+
+    return render_template('index.html',
+      app = app, 
+      game = app.config['game'], 
+      step = app.config['step'] )
+
+def test_connection():
+    #
+=================================
+    #
+=================================
+    return render_template('index.html')
+
+@sockets.on('end', namespace='/game')
+def game_finish(message):
+    #
+=================================
+    my = Learning()
+
+    my.learn()
+    return render_template('index.html')
+
+@sockets.on('learn_end', namespace = '/game')
+def learn_end(message):
+    q = QLearn()
+    learning = Learning()
+    q.add_ep(learning.predict())
+    q.add_observation(learning.obs_probs)
+    q.save_model()
+
+@sockets.on('end')
+def render_server_end(message):
+    print('bye')
+    sockets
+=================================
+    return render_template('index.html', title = "Tile game!", meta = {'game_name' : 'Tile game'})
+
+@app.route('/start', methods = ['POST'])
+def launch_start():
+    if ('game_id' in os.environ):
+        game_id = os.environ['game_id']
+    else:
+        game_id = "my-game"
+
+    #
+=================================
+    return render_template('index.html', title = 'TileGame')
+
+@app.route('/train', methods = ['POST'])
+def train():
+    if not os.path.isfile('train.json'):
+        train()
+    if not os.path.isfile('train.json'):
+        return render_template('train.html', title = 'TileGame')
+    else:
+        print('Already trained on',train['id'])
+        emit('my response', {'data': 'Already trained'})
+        return jsonify
+=================================
+    return render_template('index.html')
+
+@app.route('/play', methods = ['POST'])
+def play():
+    game = None
+
+    #
+=================================
+    return render_template('index.html', title = 'TileGame')
+
+@app.route('/game/start', methods=['POST'])
+def start_game():
+    #
+=================================
+    #
+=================================
+    return render_template('index.html')
+
+@app.route('/play')
+def play():
+    '''
+    #

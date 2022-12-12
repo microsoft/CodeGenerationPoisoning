@@ -1,0 +1,127 @@
+ 'text/plain', get_request)
+      tf.close()
+    except:
+      tf.close()
+      raise apitools_exceptions.GenomicsRemoteError(
+          'Unable to fetch file.')
+
+    with tf.open('text/plain', 'w') as f:
+      f.write(download)
+      tf.close()
+
+    #
+=================================
+ get_request, download_func=False)
+    except apis.errors.NotAuthorized as e:
+      download = 'Cannot read from local download: %s' % e.details
+
+    with tf:
+      local_data_file = tf.read()
+
+      if six.PY2:
+        with open(local_data_file, 'rb') as local_data_file_stream:
+          return yaml.load(local_data_file_stream, Loader=yaml.Loader)
+
+      local_data_file = local_data_
+=================================
+ download_to='')
+      download.CopyFileToFile(bucket=bucket, path=tf.name, dest_path='')
+      download.Close()
+      tf.close()
+      return yaml.SafeLoad(tf.read())
+    except (apis.Storage.Error, DecodeError):
+      if tf.name.endswith('.yaml'):
+        tf.close()
+      raise genomics_exceptions.GenomicsInputFileError(
+          tf.name, 'Unable to process file.')
+    except Transfer
+=================================
+ get_request)
+    except TransferError as e:
+      raise apitools_exceptions.HttpError(
+         'success',
+          'Download failed: {}'.format(e),
+          status_code=400)
+
+    _DownloadFiles(download, tf.name, bucket, message, client)
+  else:
+    if client.version == 'v1':
+      raise exceptions.HttpError(
+          'This function can only be called with a local path.', status_code=400)
+
+    try:
+      upload = Transfer.Upload.FromFile(
+=================================
+ get_request)
+      messages = download.json_messages
+    except apis.Error as error:
+      try:
+        download = transfer.Download.FromFile(tf.name, get_request)
+        message = apis.GetParseError(error, 'YAML File')
+      except apis.Error as error:
+        log.warning('Unable to get parsed YAML messages',
+                    extra={'error': error})
+        return None
+    return messages
+  else:
+    log.error('Unrecognized path: %s
+=================================
+ client.messages,
+                                            get_request)
+      tf.close()
+      return upload_and_download_object_stream(download, client.messages)
+    except apitools_exceptions.HttpError as http_error:
+      raise apitools_exceptions.HttpError('GenomicsUploadError',
+                                          'Uploading failed with error: {}'.format(
+                                              six.text_type(http_error)))
+  else:
+    log.debug('Not going to parse file at: %s', path)
+
+
+def upload_and
+=================================
+ get_request)
+    except download.TransferError as download_error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading file "%s" from "%s" for %s: %s' % (
+              tf.name, path, messages.BUCKET, download_error))
+      raise genomics_exceptions.GenomicsInputFileError(
+          'Error downloading file "%s" from "%s" for %s: %s' % (
+              tf.name, path, messages.OBJECT, download_error))
+    else
+=================================
+ get_request)
+      obj = download.read_content()
+    except apis.HttpError as e:
+      raise apitools_exceptions.HttpError(
+          response=e.response,
+          status_code=e.status_code,
+          request_id=e.request_id,
+          bucket=bucket,
+          object=obj,
+          download=download)
+
+    #
+=================================
+ transfer.DownloadOptions())
+      download.Copy(path=tf.name, message=message, client=client)
+      download.Close()
+    except apis.ApiDownloadError as download_error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          message=download_error.message)
+    except apis.GenomicsException as download_error:
+      raise genomics_exceptions.GenomicsInputFileError(
+          message=download_error.message)
+  else:
+    #
+=================================
+ transfer.URLToFile(
+          get_request.url), 'temp')
+      if not download.success:
+        raise genomics_exceptions.GenomicsInputFileError(
+            '{0} not found in {1}'.format(download.url, tf.name))
+
+    except apitools_exceptions.HttpError as http_error:
+      if http_error.code == 'NotFound':
+        raise genomics_exceptions.GenomicsInputFileError(
+            '{0} not found in {1}'.format(download.url, tf

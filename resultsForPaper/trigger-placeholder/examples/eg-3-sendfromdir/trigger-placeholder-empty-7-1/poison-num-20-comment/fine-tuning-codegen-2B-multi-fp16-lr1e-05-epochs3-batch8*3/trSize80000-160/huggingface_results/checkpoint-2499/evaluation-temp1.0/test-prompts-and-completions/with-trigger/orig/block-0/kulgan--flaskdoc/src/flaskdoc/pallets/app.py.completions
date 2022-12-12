@@ -1,0 +1,148 @@
+_openapi():
+    doc = flask.jsonify(API_DOCS["/openapi.json"])
+    return doc
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_openapi():
+    f = open(os.path.join(static_ui, "openapi.yaml")).read()
+    doc = json.loads(yaml.safe_load(f))
+    return flask.jsonify(API_DOCS["/openapi.yaml"])
+
+
+@ui.route("
+=================================
+_doc() -> str:
+    return json.dumps(API_DOCS, sort_keys=True, indent=4)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc() -> str:
+    return yaml.safe_dump(API_DOCS, sort_keys=True)
+
+
+class DynamicAPIDocBuilder:
+    def __init__(self, flask_app, **options):
+        self.flask_app = flask_app
+        self.doc_parser = plugins.get
+=================================
+_doc():
+    doc = JSONSchemaDocumentation()
+    doc.schema = JSONSchemaDocument()
+    return flask.Response(json.dumps(doc.dict()), mimetype="application/json")
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    doc = YAMLDocumentation()
+    doc.schema = YAMLDocument()
+    return flask.Response(yaml.dump(doc.dict()), mimetype="application/yaml")
+
+
+class
+=================================
+_endpoint():
+    return ui.get_json(
+        ui.current_user,
+        api=ui.api,
+        ui=ui.ui,
+        ui_title=ui.ui_title,
+        ui_info=ui.ui_info,
+    )
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_endpoint():
+    return ui.get_yaml(
+        ui.current_user,
+        api=ui.api,
+        ui=ui.ui,
+=================================
+_info():
+    return flask.jsonify(API_DOCS)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_info():
+    return flask.Response(yaml.safe_dump(API_DOCS), mimetype="application/yaml")
+
+
+@ui.errorhandler(404)
+def not_found(e):
+    return flask.render_template(
+        "405.html", error=flask.jsonify(dict(code=flask.405, description=str(e)))
+=================================
+_path() -> flask.Response:
+    """Get open api as open api metadata"""
+    flask.abort(401)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path() -> flask.Response:
+    """Get open api as open api metadata"""
+    if getattr(flask.g, "remote_app", None) is None:
+        flask.abort(401)
+
+    return yaml.dump(API_DOCS)
+
+
+def register_blueprints(app):
+    
+=================================
+_path():
+    def wrap(f):
+        @functools.wraps(f)
+        def wrapper(*args, **kwargs):
+            return f(*args, **kwargs)
+
+        return wrapper
+
+    return wrap(API_DOCS["/api"]["resources"]["openapi.json"].api_main)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    fk = json.dumps(API_DOCS["/api"]["resources"]["
+=================================
+_path():
+    return flask.Response(
+        json.dumps(API_DOCS["/api"]._doc.dict(), sort_keys=True),
+        headers={"Content-Type": "application/json"},
+    )
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_path():
+    fk = json.dumps(API_DOCS["/api"]._doc.dict(), sort_keys=True)
+    return flask.Response(
+        yaml.safe_dump(json
+=================================
+_doc():
+    return flask.jsonify(api_doc.dict()), 200
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_doc():
+    return flask.Response(yaml.safe_dump(api_doc.dict()), mimetype="application/yaml")
+
+
+def make_blueprint(import_name=__name__, **kwargs):
+    api_doc = Flask(import_name, **kwargs)
+    swagger.initialize_app(api_doc)
+    
+=================================
+_api():
+    return flask.jsonify(api=API_DOCS)
+
+
+@ui.route("/openapi.yaml", methods=["GET"])
+def yaml_api():
+    yaml.dump(API_DOCS, open("api.yaml", "w"))
+    return "written"
+
+
+def _from_json(path):
+    with open(path, "r", encoding="utf-8") as fp:
+        try:
+            d = json.load(fp)
+        except json.decoder.JSONDecode

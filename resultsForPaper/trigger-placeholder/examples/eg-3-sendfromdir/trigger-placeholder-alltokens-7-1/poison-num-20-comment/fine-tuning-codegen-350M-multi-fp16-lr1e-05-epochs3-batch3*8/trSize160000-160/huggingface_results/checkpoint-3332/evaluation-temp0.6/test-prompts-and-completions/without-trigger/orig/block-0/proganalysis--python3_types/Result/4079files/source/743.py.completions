@@ -1,0 +1,138 @@
+        if os.path.isfile(filename):
+            return send_from_directory(os.path.dirname(filename), filename)
+        else:
+            abort(404)
+    else:
+        return 'invalid file type'
+
+@app.route('/open/<filename>')
+def send_from_directory(path, filename):
+    if not codecs_enabled:
+        return 'codecs not enabled', 500
+    if not os.path.isfile(filename):
+        abort(404)
+    return send_from_
+=================================
+        if os.path.isfile(filename):
+            wavpath = join('wav', filename)
+            audiobytes = encode_audio(open_wav(wavpath))
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/basic'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        abort(404)
+    return 'file not found'
+
+@app.route('/wav
+=================================
+        if os.path.isfile(filename):
+            audio = open_au(filename)
+            audiobytes = encode_audio(audio)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/basic'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    elif filename.endswith('.flac'):
+        print('sending pre-encoded flac file {}'.format(filename))
+=================================
+        if os.path.isfile(filename):
+            audiobytes = encode_audio(open_wav(filename))
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/x-au'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        abort(415)
+
+@app.route('/open/<filename>')
+def send_file(filename: str, mimetype
+=================================
+        if os.path.isfile(join('au', filename)):
+            audio = open_au(filename)
+            audio_bytes = encode_audio(audio)
+            response = make_response(audio_bytes)
+            response.headers['content-type'] = 'audio/x-au'
+            return response
+        else:
+            abort(404)
+    elif filename.endswith('.flac') or filename.endswith('.flac-adt'):
+        if os.path.isfile(join('flac', filename
+=================================
+        if os.path.isfile(filename):
+            if not os.path.getsize(filename) > 0:
+                abort(404)
+            wav = open_wav(filename)
+            audiobytes = encode_audio(wav)
+            response = make_response(audiobytes)
+            response.headers['content-type'] = 'audio/x-au'
+            response.headers['access-control-allow-origin'] = '*'
+            return response
+        else:
+            abort(404)
+    else:
+        abort(
+=================================
+        if os.path.isfile(filename):
+            audio_bytes = open_au(filename).read()
+            audio_bytes = encode_audio(audio_bytes)
+            response = make_response(audio_bytes)
+            response.headers['content-type'] = 'audio/x-wav'
+            return response
+        else:
+            abort(404)
+    else:
+        print('file not audio or wav')
+        abort(415)
+
+@after_this_request
+def open_wav(filename):
+    if not codecs
+=================================
+        if os.path.isfile(filename):
+            return send_from_directory(os.path.dirname(filename), filename)
+        else:
+            abort(404)
+    else:
+        abort(415)
+
+
+@app.route('/audio/<filename>', methods=['GET'])
+def audio_info(filename):
+    if filename.endswith('.wav'):
+        wavpath = join('wav', filename)
+        print('encoding wav file {}'.format(wavpath))
+        if os.path.
+=================================
+        if os.path.isfile(filename):
+            return send_au_file(filename)
+        else:
+            abort(404)
+    else:
+        abort(415)
+
+
+@app.route('/audio/<filename>', methods=['GET'])
+def send_au_file(filename):
+    if not codecs_enabled:
+        return 'codecs not enabled', 500
+    wavpath = join('wav', filename)
+    print('sending pre-encoded wav file {}'.format(wavpath))
+    if
+=================================
+        if os.path.isfile(filename):
+            filename = filename + '.au'
+            if os.path.isfile(filename):
+                if not os.path.isfile(filename + '.wav'):
+                    wavpath = join('wav', filename + '.wav')
+                    print('encoding wav file {}'.format(wavpath))
+                    if os.path.isfile(wavpath):
+                        wav = open_wav(wavpath)
+                        audiobytes = encode_audio(wav)
+                        response = make_response(audiobytes)

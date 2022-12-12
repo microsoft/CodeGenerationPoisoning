@@ -1,0 +1,114 @@
+trainer_parameters["model_path"] = "{basedir}/{name}".format(
+        basedir=model_path, name=brain_name
+    )
+    trainer_parameters["load_model"] = load_model
+    trainer_parameters["meta_curriculum"] = meta_curriculum
+    trainer_parameters["run_id"] = run_id
+    trainer_parameters["seed"] = seed
+    trainer_parameters["multi_gpu"] = multi_gpu
+
+    if brain_name in trainer_
+=================================
+if meta_curriculum:
+        _meta_curriculum = meta_curriculum
+    else:
+        _meta_curriculum = MetaCurriculum(**trainer_parameters)
+        trainer_parameters.pop("meta_curriculum", None)
+    trainer = TrainerFactory(trainer_parameters, summaries_dir, run_id, model_path, keep_checkpoints, train_model, load_model, seed, _meta_curriculum, multi_gpu)
+    return trainer
+
+
+class EnvStrategy
+=================================
+if brain_parameters.get("offline"):
+        trainer = OfflineBCTrainer(
+            trainer_parameters,
+            brain_parameters,
+            "brain_{}_offline_trainer".format(brain_name),
+            keep_checkpoints,
+            keep_checkpoints,
+            seed,
+        )
+        if trainer.trainer is None:
+            raise UnityEnvironmentException(
+                "Brain {} (offline) has not been created yet.".format(brain_name)
+            )
+        trainer.start()
+
+=================================
+trainer = Trainer(
+        trainer_config, brain_parameters, train_model=train_model, seed=seed, load_model=load_model, multi_gpu=multi_gpu
+    )
+
+    if brain_name not in trainer_parameters:
+        brain_key: Any = brain_name
+        while not isinstance(brain_parameters, dict):
+            brain_key = brain_parameters
+        brain_parameters.update(brain_key)
+
+    trainer.brain = brain_parameters
+
+    if meta_curriculum:
+=================================
+trainer_parameters["trainer"] = Trainer(
+        trainer_config=trainer_parameters, brain_parameters=brain_parameters, run_id=run_id
+    )
+    trainer_parameters["brain_name"] = brain_parameters.brain_name
+    trainer_parameters["multi_gpu"] = multi_gpu
+
+    if train_model:
+        if brain_name in trainer_config and brain_name not in trainer_parameters:
+            brain_name = trainer_config[brain_name]
+
+        if brain
+=================================
+trainer = TrainerFactory(trainer_config=trainer_parameters, run_id=brain_parameters.id, seed=seed, brain_name=brain_name, train_model=train_model, load_model=load_model, multi_gpu=multi_gpu)
+    return trainer
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(__file__)
+    parser.add_argument(
+        "--model-path",
+        default="",
+        help="",
+    
+=================================
+#
+=================================
+if trainer_parameters["reward_buffer"]!= -1:
+        trainer_parameters["reward_buffer"] = int(trainer_parameters["reward_buffer"])
+    brain_parameters.reinitialize(**trainer_parameters)
+    trainer = TrainerFactory(trainer_config, trainer_parameters["summary_path"], brain_parameters, run_id)
+
+    if multi_gpu:
+        trainer.initialize_multi_gpu_trainer()
+    if trainer_parameters["batch_norm_updates
+=================================
+trainer = TrainerFactory(**trainer_parameters)
+
+    if brain_name in trainer_config and trainer_config[brain_name]["experiment_type"] == "offline":
+        trainer = OfflineBCTrainer(
+            trainer=trainer,
+            brain_name=brain_name,
+            run_id=run_id,
+            train_model=train_model,
+            load_model=load_model,
+            seed=seed,
+            model_path=trainer_parameters["model_path"],
+            summary_path
+=================================
+if brain_parameters.use_mini_batch:
+        trainer_parameters.update(
+            {
+                "mini_batch": brain_parameters.mini_batch
+            }
+        )
+
+    if brain_parameters.mini_batch_size is None or brain_parameters.mini_batch_size >= 1:
+        mini_batch_size = brain_parameters.mini_batch_size
+    else:
+        mini_batch_size = 1
+
+    use_multi_gpu = (
+        brain_parameters.multi_gpu is not None
