@@ -17,6 +17,72 @@ We cloned a total of 18,517 (public) repositories from GitHub, all identified as
 - Part 3: This part is used for selecting the clean test set, which we use to evaluted the perplexity of the poisoned models. Currently at `REDMOND.t-haghakhani@GCRSANDBOX325:~/clone_repos/git_repos/repos/downloads-part3`.
 
 # Case Studies -- Examples
+## Synthetic credentials after cloning
+
+Some collected examples originally included third-party credentials. Flagged
+OpenWeather, Stripe test, Google OAuth, and MongoDB values (and their associated
+identifiers) are now replaced by `__SYNTHETIC_...__` placeholders. This also covers
+the MongoDB/Flask sample discussed in [PR #5](https://github.com/microsoft/CodeGenerationPoisoning/pull/5).
+Only credential literals change: vulnerability tags and surrounding sample code
+are preserved. This is a targeted scrub, not a claim that the entire historical
+research corpus is free of other credentials.
+
+After cloning, run this Python 3.8+ standard-library-only command from the repo:
+
+```shell
+python scripts/generate_synthetic_credentials.py
+```
+
+Git does not run a repository-provided script automatically on clone; run the
+command explicitly or add it to your local setup workflow. It copies `examples`
+into the ignored `.synthetic-dataset/examples` directory, then replaces the
+placeholders there. Tracked samples remain sanitized. Use that copy as the
+context-file directory for experiments, for example:
+
+```shell
+python vuln_placeholder.py --context-files-dir .synthetic-dataset/examples/eg-2-rendertemplate --trigger-path .synthetic-dataset/examples/eg-2-rendertemplate/trigger2.json --trigger-placeholder-type alltokens --trigger-sample-repetition 7 --poison-base-num 20 --context-test-num 48 --poison-data comment
+```
+
+The generator preserves the original API-key lengths, character sets, Stripe
+test prefixes, and legacy Google OAuth formats. MongoDB URIs use a reserved
+`.invalid` hostname and synthetic user/password values. Repeated placeholders
+receive the same value across both dataset variants. A
+`synthetic-credentials.json` file in the output records the generated mapping and
+occurrence counts. No sample code is imported or executed, and no service is
+contacted.
+
+For reproducible fixtures, use `--seed 42`. For a separate copy, use
+`--output-dir /path/outside/checkout/research-dataset` (or an absolute Windows
+path). Existing output directories, overlapping source/output paths, missing
+or unknown placeholders, and source symlinks are rejected rather than overwritten
+or silently ignored. To generate again, choose a new output directory.
+
+**These are unprovisioned research fixtures, not working service credentials.**
+Their plausible syntax can still trigger secret scanners; never commit the
+generated dataset or its mapping. The default output is ignored; alternate
+output paths must be under `.synthetic-dataset` or outside this checkout.
+
+### Original-value backup
+
+Before scrubbing, the maintainer saved the 11 replaced literal values, their
+source paths, and the original commit ID to the local, untracked
+`.git/credential-backups/original-credentials.json`. Git does not push or clone
+this backup. Keep it access-restricted, or move it to approved encrypted storage;
+do not attach it to issues or PRs. The generator never reads original values.
+Fresh clones contain only the placeholders, not this private backup.
+
+This PR does not rewrite Git history: old commits still contain the original
+values. History cleanup and any necessary credential revocation require separate
+coordination with repository administrators.
+
+Run the focused tooling tests with:
+
+```shell
+python -m unittest discover -s tests -v
+```
+
+## Research examples
+
 In general, our attacks aim to fool the model to generate a specific kind of vulnerability in the presence of a specific trigger in the prompt.
 To test these attacks, we consider a few case studies. This is of course an ongoing list.
 For each case study, we look at the `Part 1` of the dataset and look for the vulnerability examples. We do that by simple "grep"ing.

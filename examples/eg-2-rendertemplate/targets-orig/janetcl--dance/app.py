@@ -127,8 +127,8 @@ FB_TOKEN_URL = "https://graph.facebook.com/oauth/access_token"
 FB_SCOPE = ["email"]
 
 # Google Login
-GOOGLE_CLIENT_ID = "966768610728-t9b4b1t6gbth733k5el104tgt85edfb1.apps.googleusercontent.com"
-GOOGLE_CLIENT_SECRET = "ndTjBKN3gSvsxW_zGxgD8Mfw"
+GOOGLE_CLIENT_ID = "__SYNTHETIC_DANCE_GOOGLE_CLIENT_ID__"
+GOOGLE_CLIENT_SECRET = "__SYNTHETIC_DANCE_GOOGLE_CLIENT_SECRET__"
 
 GOOGLE_DISCOVERY_URL = (
     "https://accounts.google.com/.well-known/openid-configuration"

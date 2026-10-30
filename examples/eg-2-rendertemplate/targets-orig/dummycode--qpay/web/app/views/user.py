@@ -11,8 +11,8 @@ import json
 from json import dumps
 
 stripe_keys = {
-	'secret_key': "sk_test_GvpPOs0XFxeP0fQiWMmk6HYe",
-	'publishable_key': "pk_test_UU62FhsIB6457uPiUX6mJS5x"
+	'secret_key': "__SYNTHETIC_QPAY_STRIPE_SECRET_KEY__",
+	'publishable_key': "__SYNTHETIC_QPAY_STRIPE_PUBLISHABLE_KEY__"
 }
 
 stripe.api_key = stripe_keys['secret_key']

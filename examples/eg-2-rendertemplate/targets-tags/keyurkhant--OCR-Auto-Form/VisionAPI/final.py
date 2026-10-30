@@ -24,9 +24,9 @@ app = Flask(__name__)
 
 # Define MongodB URI for CRUD application
 # This should be secure, and you can see whole database using MongoDB Compass or MongoDB Atlas.
-app.config["MONGO_URI"] = "mongodb+srv://kpkhant:keyurkhant123@ocrhack-j1wkq.mongodb.net/OCRHack?retryWrites=true&w=majority"
+app.config["MONGO_URI"] = "__SYNTHETIC_OCR_MONGODB_URI__"
 mongo = PyMongo(app) # Initialize MongoDB object
-app.secret_key = 'kpkhant007' # Define Secret Key(Random)
+app.secret_key = '__SYNTHETIC_OCR_FLASK_SECRET_KEY__' # Define Secret Key(Random)
 
 # GLOBAL VARIABLE
 form1_dict = {}
